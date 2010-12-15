@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE faqs PUBLIC "-//APACHE//DTD FAQ V1.1//EN" "dtd/faq-v11.dtd"
+[
+  <!ENTITY % xmlsec_entities SYSTEM "../xmlsec_entities.ent"> 
+  %xmlsec_entities; 
+]>
+<faqs title="Frequently Asked Questions - C++">
+  <part id="general_c">
+    <title>Compiling and Using the Library</title>
+    <faq id="openssl_c">
+	  <question>
+		Is OpenSSL required?
+      </question>
+      <answer>
+		<p>
+		  The main development work for the library is done using OpenSSL, so
+		  this is the recommended option.  However, a developmental Windows
+		  Crypto API interface is also now provided.
+		</p>
+		<p>
+		  It is also possible to implement interfaces for other cryptographic
+		  libraries and pass them into the xml-security-c library during
+		  initialisation (via the <em>XSECPlatformUtils::Initialise()</em>
+		  call).
+		</p>
+      </answer>
+    </faq>
+	<faq id="openssl2_c">
+	  <question>
+		Does the library provide a full C++ wrapper for OpenSSL?
+	  </question>
+	  <answer>
+		<p>
+		  The C++ crypto interface layer provided for the library provides only
+		  the smallest subset of cryptographic functions necessary for the
+		  library to make calls to the provided library.  Applications will
+		  need to work directly with OpenSSL (or other libraries) to read and
+		  manipulate encryption keys that should then be wrapped in XSECCrypto*
+		  objects and passed into the library.
+		</p>
+	  </answer>
+	</faq>
+	<faq id="wincapi_c">
+	  <question>
+		What is WinCAPI?
+	  </question>
+	  <answer>
+		<p>
+		  WinCAPI is the developmental interface being built to give
+		  users of the library access to the Windows Cryptographic library.
+		</p>
+		<p>
+		  It is <em>not</em> a C API wrapper for the overall library.
+		</p>
+	  </answer>
+	</faq>
+    <faq id="xalan_c">
+      <question>
+		Is Xalan required?
+      </question>
+      <answer>
+		<p>
+		  The library can be compiled without linking to Xalan-c.  However
+		  doing so will disable support for XPath and XSLT transformations.
+		</p>
+		<p>
+		  To disable Xalan-c support either use --without-xalan when running
+		  configure on UNIX, or use the VC++ "without Xalan" settings.
+		</p>
+      </answer>
+    </faq>
+	<faq id="oldXalanC">
+	  <question>
+		Are versions of Xalan prior to 1.6 supported?
+	  </question>
+	  <answer>
+		<p>
+		  No.  Whilst the functionality required is available in prior
+		  versions, the location of include files changed in 1.6.  A
+		  decision was made in version 1.0.0 of xml-security-c to
+		  update the source to support these new locations.
+		</p>
+	  </answer>
+	</faq>
+	<faq id="elementorder">
+	  <question>
+		I sign a document and when I try to verify using the same key, it fails
+	  </question>
+	  <answer>
+		<p>
+		  After you have created the XMLSignature object, before you sign the
+		  document, you <em>must</em> embed the signature element in the owning
+		  document (which is returned by the call to 
+		  <code>DSIGSignature::createBlankSignature(...)</code>) before
+		  calling the <code>DSIGSignature::sign()</code> method,
+		</p>
+		<p>
+		  During canonicalisation of the SignedInfo element, the library looks
+		  at the parent and ancestor nodes of the Signature element to find
+		  any namespaces that the SignedInfo node has inherited.  Any that are
+		  found are embedded in the canonical form of the SignedInfo.  (This
+		  is not true when Exclusive Canonicalisation is used, but it is still
+		  good practice to insert the element node prior to the sign()
+		  method being called).
+		</p>
+		<p>
+		  If you have not embedded the signature node in the document, it will
+		  not have any parent or ancestor nodes, so it will not inherit their
+		  namespaces.  If you then embed it in the document and call <code>
+			verify()</code>, the namespaces will be found and the canonical 
+		  form of SignedInfo will be different to that generated during 
+		  <code>sign()</code>.
+		</p>
+	  </answer>
+	</faq>
+  </part>
+</faqs>
+
+
+
+<!-- Keep this comment at the end of the file
+Local variables:
+mode: xml
+sgml-omittag:nil
+sgml-shorttag:nil
+sgml-namecase-general:nil
+sgml-general-insert-case:lower
+sgml-minimize-attributes:nil
+sgml-always-quote-attributes:t
+sgml-indent-step:2
+sgml-indent-data:t
+sgml-parent-document:nil
+sgml-exposed-tags:nil
+sgml-local-catalogs:nil
+sgml-local-ecat-files:nil
+End:
+-->
