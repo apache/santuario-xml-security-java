@@ -1,0 +1,27 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE s1 SYSTEM "./dtd/document.dtd">
+
+<s1 title="Readme">
+	<s2 title="XML Security Release">
+		<p>The &packagenamelong; &packageversion; supports the <jump href="http://www.w3.org/TR/2002/REC-xmldsig-core-20020212/">XML-Signature Syntax and Processing</jump> recommendation.</p>
+                <p>Note that there is no standard API avaliable at the moment. SUN is working on a JAVA Specification Request <jump href="http://jcp.org/jsr/detail/105.jsp">JSR-105: XML Digital Signature APIs</jump> on an API for XML Signature and <jump href="http://jcp.org/jsr/detail/106.jsp">JSR-106: XML Digital Encryption APIs</jump>, but until no, nothing has been published. So, this software does <em>not</em> conform to any of these specifications.</p>
+	</s2>
+	<s2 title="License Information">
+		<p>The XML Security package is available in both source code and precompiled binary (JAR files) form. Both  packages are made available under the <jump href='../../../LICENSE.txt'>Apache Software License</jump>.
+                </p>
+	</s2>
+	<s2 title="Sample programs">
+		<p>This software can be used to create and verify arbitrary forms of XML Signatures. The documentation available here is not very huge; my first approach is to supply usage examples which are available in the <code>src_samples/</code> directory to give interested users a first starting point to jump-start with XML Signature. NOTE: The samples divide into two groups: Samples that <em>create</em> and samples that <em>verify</em> Signatures. Eventually, you should adjust the verifying program to another filename if you get <code>FileNotFoundException</code>s.</p>
+	</s2>
+	<s2 title="Mailing lists">
+		<p>There exists a mailing list which you can subscribe to ask questions:</p>
+		<p>The <jump href="http://xml.apache.org/mail.html">ezmlm mailing list controller</jump> accepts commands by sending emails to it, generally like the following:<br/>
+			<jump href="mailto:security-dev-subscribe@xml.apache.org">security-dev-subscribe</jump> to subscribe your current email address to the list <br/>
+			<jump href="mailto:security-dev-unsubscribe@xml.apache.org">security-dev-unsubscribe</jump> to <em>un</em>subscribe your *current* email address from the list <br/>
+			<jump href="mailto:security-dev-help@xml.apache.org">security-dev-help</jump> to get Help on mailing list commands 
+                </p>
+	</s2>
+	<s2 title="Contact information">
+		<p>For comments about the software please send them to the author <code><jump href="mailto:geuer-pollmann@nue.et-inf.uni-siegen.de">geuer-pollmann@nue.et-inf.uni-siegen.de</jump></code></p>
+	</s2>
+</s1>

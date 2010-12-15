@@ -1,0 +1,7 @@
+<?xml encoding="UTF-8"?>
+
+<!ENTITY packagenamelong  "@@packagenamelong@@">
+<!ENTITY packagename      "@@packagename@@">
+<!ENTITY packageversion   "@@packageversion@@">
+<!ENTITY packagedirectory "@@packagedirectory@@">
+<!ENTITY packagedistname  "@@packagedistname@@">
