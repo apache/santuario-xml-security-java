@@ -1,0 +1,341 @@
+/*
+ * The Apache Software License, Version 1.1
+ *
+ *
+ * Copyright (c) 1999 The Apache Software Foundation.  All rights
+ * reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in
+ *    the documentation and/or other materials provided with the
+ *    distribution.
+ *
+ * 3. The end-user documentation included with the redistribution,
+ *    if any, must include the following acknowledgment:
+ *       "This product includes software developed by the
+ *        Apache Software Foundation (http://www.apache.org/)."
+ *    Alternately, this acknowledgment may appear in the software itself,
+ *    if and wherever such third-party acknowledgments normally appear.
+ *
+ * 4. The names "<WebSig>" and "Apache Software Foundation" must
+ *    not be used to endorse or promote products derived from this
+ *    software without prior written permission. For written
+ *    permission, please contact apache@apache.org.
+ *
+ * 5. Products derived from this software may not be called "Apache",
+ *    nor may "Apache" appear in their name, without prior written
+ *    permission of the Apache Software Foundation.
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
+ * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
+ * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+ * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ * ====================================================================
+ *
+ * This software consists of voluntary contributions made by many
+ * individuals on behalf of the Apache Software Foundation and was
+ * originally based on software copyright (c) 2001, Institute for
+ * Data Communications Systems, <http://www.nue.et-inf.uni-siegen.de/>.
+ * The development of this software was partly funded by the European
+ * Commission in the <WebSig> project in the ISIS Programme.
+ * For more information on the Apache Software Foundation, please see
+ * <http://www.apache.org/>.
+ */
+package org.apache.xml.security.keys.keyresolver.implementations;
+
+
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.security.PublicKey;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
+
+import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.keys.content.RetrievalMethod;
+import org.apache.xml.security.keys.content.x509.XMLX509Certificate;
+import org.apache.xml.security.keys.keyresolver.KeyResolver;
+import org.apache.xml.security.keys.keyresolver.KeyResolverException;
+import org.apache.xml.security.keys.keyresolver.KeyResolverSpi;
+import org.apache.xml.security.keys.storage.StorageResolver;
+import org.apache.xml.security.signature.XMLSignatureException;
+import org.apache.xml.security.signature.XMLSignatureInput;
+import org.apache.xml.security.transforms.Transforms;
+import org.apache.xml.security.utils.Constants;
+import org.apache.xml.security.utils.XMLUtils;
+import org.apache.xml.security.utils.resolver.ResourceResolver;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Element;
+
+
+/**
+ * The RetrievalMethodResolver can retrieve public keys and certificates from
+ * other locations. The location is specified using the ds:RetrievalMethod
+ * element which points to the location. This includes the handling of raw
+ * (binary) X.509 certificate which are not encapsulated in an XML structure.
+ * If the retrieval process encounters an element which the
+ * RetrievalMethodResolver cannot handle itself, resolving of the extracted
+ * element is delegated back to the KeyResolver mechanism.
+ *
+ * @author $Author$
+ */
+public class RetrievalMethodResolver extends KeyResolverSpi {
+
+   /** {@link org.apache.commons.logging} logging facility */
+    static org.apache.commons.logging.Log log = 
+        org.apache.commons.logging.LogFactory.getLog(
+                        RetrievalMethodResolver.class.getName());
+
+   /**
+    * Method engineCanResolve
+    *
+    * @param element
+    * @param BaseURI
+    * @param storage
+    *
+    */
+   public boolean engineCanResolve(Element element, String BaseURI,
+                                   StorageResolver storage) {
+
+      try {
+         XMLUtils.guaranteeThatElementInSignatureSpace(element,
+                 Constants._TAG_RETRIEVALMETHOD);
+      } catch (XMLSignatureException ex) {
+         return false;
+      }
+
+      return true;
+   }
+
+   /**
+    * Method engineResolvePublicKey
+    *
+    * @param element
+    * @param BaseURI
+    * @param storage
+    *
+    * @throws KeyResolverException
+    */
+   public PublicKey engineResolvePublicKey(
+           Element element, String BaseURI, StorageResolver storage)
+              throws KeyResolverException {
+
+      try {
+         RetrievalMethod rm = new RetrievalMethod(element, BaseURI);
+         Attr uri = rm.getURIAttr();
+
+         // type can be null because it's optional
+         String type = rm.getType();
+         Transforms transforms = rm.getTransforms();
+         ResourceResolver resRes = ResourceResolver.getInstance(uri, BaseURI);
+
+         if (resRes != null) {
+            XMLSignatureInput resource = resRes.resolve(uri, BaseURI);
+
+            log.debug("Before applying Transforms, resource has "
+                      + resource.getBytes().length + "bytes");
+
+            if (transforms != null) {
+               log.debug("We have Transforms");
+
+               resource = transforms.performTransforms(resource);
+            }
+
+            log.debug("After applying Transforms, resource has "
+                      + resource.getBytes().length + "bytes");
+            log.debug("Resolved to resource " + resource.getSourceURI());
+
+            byte inputBytes[] = resource.getBytes();
+
+            if ((type != null) && type.equals(RetrievalMethod.TYPE_RAWX509)) {
+
+               // if the resource stores a raw certificate, we have to handle it
+               CertificateFactory certFact =
+                  CertificateFactory
+                     .getInstance(XMLX509Certificate.JCA_CERT_ID);
+               X509Certificate cert =
+                  (X509Certificate) certFact
+                     .generateCertificate(new ByteArrayInputStream(inputBytes));
+
+               if (cert != null) {
+                  return cert.getPublicKey();
+               }
+            } else {
+
+               // otherwise, we parse the resource, create an Element and delegate
+               log.debug("we have to parse " + inputBytes.length + " bytes");
+
+               Element e = this.getDocFromBytes(inputBytes);
+
+               log.debug("Now we have a {" + e.getNamespaceURI() + "}"
+                         + e.getLocalName() + " Element");
+
+               if (e != null) {
+                  KeyResolver newKeyResolver = KeyResolver.getInstance(e,
+                                                  BaseURI, storage);
+
+                  if (newKeyResolver != null) {
+                     return newKeyResolver.resolvePublicKey(e, BaseURI,
+                                                            storage);
+                  }
+               }
+            }
+         }
+      } catch (XMLSecurityException ex) {
+         log.debug("XMLSecurityException", ex);
+      } catch (CertificateException ex) {
+         log.debug("CertificateException", ex);
+      } catch (IOException ex) {
+         log.debug("IOException", ex);
+      }
+
+      return null;
+   }
+
+   /**
+    * Method engineResolveX509Certificate
+    *
+    * @param element
+    * @param BaseURI
+    * @param storage
+    *
+    * @throws KeyResolverException
+    */
+   public X509Certificate engineResolveX509Certificate(
+           Element element, String BaseURI, StorageResolver storage)
+              throws KeyResolverException {
+
+      try {
+         RetrievalMethod rm = new RetrievalMethod(element, BaseURI);
+         Attr uri = rm.getURIAttr();
+         String type = rm.getType();
+         Transforms transforms = rm.getTransforms();
+
+         log.debug("Asked to resolve URI " + uri);
+
+         ResourceResolver resRes = ResourceResolver.getInstance(uri, BaseURI);
+
+         if (resRes != null) {
+            XMLSignatureInput resource = resRes.resolve(uri, BaseURI);
+
+            log.debug("Before applying Transforms, resource has "
+                      + resource.getBytes().length + "bytes");
+
+            if (transforms != null) {
+               log.debug("We have Transforms");
+
+               resource = transforms.performTransforms(resource);
+            }
+
+            log.debug("After applying Transforms, resource has "
+                      + resource.getBytes().length + "bytes");
+            log.debug("Resolved to resource " + resource.getSourceURI());
+
+            byte inputBytes[] = resource.getBytes();
+
+            if ((rm.getType() != null)
+                    && rm.getType().equals(RetrievalMethod.TYPE_RAWX509)) {
+
+               // if the resource stores a raw certificate, we have to handle it
+               CertificateFactory certFact =
+                  CertificateFactory
+                     .getInstance(XMLX509Certificate.JCA_CERT_ID);
+               X509Certificate cert =
+                  (X509Certificate) certFact
+                     .generateCertificate(new ByteArrayInputStream(inputBytes));
+
+               if (cert != null) {
+                  return cert;
+               }
+            } else {
+
+               // otherwise, we parse the resource, create an Element and delegate
+               log.debug("we have to parse " + inputBytes.length + " bytes");
+
+               Element e = this.getDocFromBytes(inputBytes);
+
+               log.debug("Now we have a {" + e.getNamespaceURI() + "}"
+                         + e.getLocalName() + " Element");
+
+               if (e != null) {
+                  KeyResolver newKeyResolver = KeyResolver.getInstance(e,
+                                                  BaseURI, storage);
+
+                  if (newKeyResolver != null) {
+                     return newKeyResolver.resolveX509Certificate(e, BaseURI,
+                             storage);
+                  }
+               }
+            }
+         }
+      } catch (XMLSecurityException ex) {
+         log.debug("XMLSecurityException", ex);
+      } catch (CertificateException ex) {
+         log.debug("CertificateException", ex);
+      } catch (IOException ex) {
+         log.debug("IOException", ex);
+      }
+
+      return null;
+   }
+
+   /**
+    * Parses a byte array and returns the parsed Element.
+    *
+    * @param bytes
+    *
+    * @throws KeyResolverException if something goes wrong
+    */
+   Element getDocFromBytes(byte[] bytes) throws KeyResolverException {
+
+      try {
+         javax.xml.parsers.DocumentBuilderFactory dbf =
+            javax.xml.parsers.DocumentBuilderFactory.newInstance();
+
+         dbf.setNamespaceAware(true);
+
+         javax.xml.parsers.DocumentBuilder db = dbf.newDocumentBuilder();
+         org.w3c.dom.Document doc =
+            db.parse(new java.io.ByteArrayInputStream(bytes));
+
+         return doc.getDocumentElement();
+      } catch (org.xml.sax.SAXException ex) {
+         throw new KeyResolverException("empty", ex);
+      } catch (java.io.IOException ex) {
+         throw new KeyResolverException("empty", ex);
+      } catch (javax.xml.parsers.ParserConfigurationException ex) {
+         throw new KeyResolverException("empty", ex);
+      }
+   }
+
+   /**
+    * Method engineResolveSecretKey
+    *
+    * @param element
+    * @param BaseURI
+    * @param storage
+    *
+    * @throws KeyResolverException
+    */
+   public javax.crypto.SecretKey engineResolveSecretKey(
+           Element element, String BaseURI, StorageResolver storage)
+              throws KeyResolverException {
+      return null;
+   }
+}
