@@ -1,0 +1,122 @@
+XML Security v1.1.0 Released
+---------------------
+  We are proud to announce the 1.1.0 final
+  release of the XML Security package.
+
+About XML Security
+------------------
+  The XML Security project is an implementation of
+  security related XML standards. Currently, it includes
+  implementations of W3C recommendations "Canonical XML"
+  and "XML Signature Syntax and Processing".  It also
+  includes a beta implementation of "XML Encryption
+  Syntax and Processing".
+
+  Basically, this means that you can use this software
+  for creating and verifying digital signatures which
+  are expressed in XML and sign both XML and/or arbitrary
+  contents.
+
+  You can now also use the library to encrypt and decrypt
+  portions of XML documents.
+
+For more information about the XML Security project, please go to
+http://xml.apache.org/security/
+
+For more information about XML Signature, go to
+http://www.w3.org/Signature/
+
+For pointers about XML Security in general, please go to
+http://www.nue.et-inf.uni-siegen.de/~geuer-pollmann/xml_security.html
+
+---------------------------------------------------------
+
+Downloads for XML Security v1.1.0 are available at
+http://xml.apache.org/security/dist/
+
+The source distibution is available at
+http://xml.apache.org/security/dist/xml-security-src-1_1_0.zip
+http://xml.apache.org/security/dist/xml-security-src-1_1_0.zip.sig
+
+The binary distibution is available at
+http://xml.apache.org/security/dist/xml-security-bin-1_1_0.zip
+http://xml.apache.org/security/dist/xml-security-bin-1_1_0.zip.sig
+
+---------------------------------------------------------
+
+The source distibution includes
+ - JAVA source code for the library itself
+ - JAVA unit test code for the library
+ - JAVA sample code for the library
+ - test vectors for the unit tests
+
+The source distibution does _not_ include
+ - JavaDocs
+ - the required (binary JAR) libraries.
+   The libraries are available under http://xml.apache.org/ .
+   It requires
+   - Jakarta ANT (1.6 or above) as build/make tool
+   - Apache Xerces v2.6.2 or above
+     http://xml.apache.org/dist/xerces-j/
+   - Apache Xalan v2.6 or above
+   - Apache Log4J
+   - JUnit 3.7 or above
+   - A JCE Cryptographic Service Provider.
+     The distibution uses the BounceCastle JCE as a default provider.
+     When you first start ant for compiling, the JCE JAR is downloaded
+     from http://www.bouncycastle.org/ . This hook is included to
+     circumvent US export restrictions.
+
+---------------------------------------------------------
+
+The binary distibution includes
+ - JAVA sample code for the library
+ - JAVA code for the unit tests
+ - test vectors for the unit tests
+ - Generated JavaDocs
+ - The complete library compiled
+ - All required libaries (but not the JCE which is downloaded online).
+
+---------------------------------------------------------
+
+Download of the JCE
+
+The ant make tools initiates an automated download of the BouncyCastle JCE. 
+The file is downloaded into the libs/ directory and a "bc-" is prepended 
+to the filename. This is done because we want the provider name (bc means 
+BouncyCastle) being visible in the JAR's filename. 
+
+If you are a little paranoid like all security people and don't want ant to 
+make automated downloads or your firewall doesn't permit it, look in the 
+./build.xml file for the properties called
+
+<property 
+     name="jce.download.file" 
+     value="jce-jdk13-129.jar" />
+<property 
+     name="jce.download" 
+     value="http://www.bouncycastle.org/download/${jce.download.file}" />
+<property 
+     name="lib.jce"      
+     value="${libs}/bc-${jce.download.file}" />
+
+Here you can see that the file 
+
+http://www.bouncycastle.org/download/jce-jdk13-129.jar
+
+is downloaded and stored in the location 
+
+libs/bc-jce-jdk13-129.jar
+
+If you do this by hand (pointing you favourite web browser and download it 
+yourself), simply put a "bc-" in front of the filename and put it to ./libs/, 
+then ant won't try to make a download.
+
+---------------------------------------------------------
+
+Questions and comments about the software:
+mailto:security-dev@xml.apache.org
+
+---------------------------------------------------------
+
+
