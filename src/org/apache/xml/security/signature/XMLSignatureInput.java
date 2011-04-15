@@ -147,7 +147,11 @@ public class XMLSignatureInput implements Cloneable {
      * @param inputStr the input String which including XML document or node
      */
     public XMLSignatureInput(String inputStr) {
-        this(inputStr.getBytes());
+        try {
+            this.bytes = inputStr.getBytes("UTF-8");
+        } catch(UnsupportedEncodingException e) {
+            throw new RuntimeException("UTF-8 not supported", e);
+        }
     }
 
     /**
@@ -614,9 +618,9 @@ public class XMLSignatureInput implements Cloneable {
             // if a not-wellformed nodeset exists, put a container around it...
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-            baos.write("<container>".getBytes());
+            baos.write("<container>".getBytes("UTF-8"));
             baos.write(this.getBytes());
-            baos.write("</container>".getBytes());
+            baos.write("</container>".getBytes("UTF-8"));
 
             byte result[] = baos.toByteArray();
             Document document = db.parse(new ByteArrayInputStream(result));
