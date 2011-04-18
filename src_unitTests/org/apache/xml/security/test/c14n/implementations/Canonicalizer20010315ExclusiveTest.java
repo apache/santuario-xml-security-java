@@ -390,7 +390,84 @@ public class Canonicalizer20010315ExclusiveTest extends TestCase {
         byte[] bytes = c14n.engineCanonicalize(input, "env ns0 xsi wsu");
         assertEquals(c14nXML,new String(bytes));
     }
+    
+    /**
+     * Method test24excl - a testcase for SANTUARIO-263 
+     * "Canonicalizer can't handle dynamical created DOM correctly"
+     * https://issues.apache.org/jira/browse/SANTUARIO-263
+     *
+     * @throws CanonicalizationException
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws InvalidCanonicalizerException
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws TransformerException
+     * @throws XMLSecurityException
+     * @throws XMLSignatureException
+     */
+    public void test24excl()
+        throws IOException, FileNotFoundException, SAXException,
+        ParserConfigurationException, CanonicalizationException,
+        InvalidCanonicalizerException, TransformerException,
+        XMLSignatureException, XMLSecurityException {
 
+        Document doc =
+            this.db.parse(getAbsolutePath("data/org/apache/xml/security/c14n/inExcl/example2_4.xml"));
+        Node root = 
+            doc.getElementsByTagNameNS("http://example.net", "elem2").item(0);
+        Canonicalizer20010315Excl c = new Canonicalizer20010315ExclWithComments();
+        byte[] reference = 
+            JavaUtils.getBytesFromFile(getAbsolutePath(
+                "data/org/apache/xml/security/c14n/inExcl/example2_4_c14nized.xml"));
+        byte[] result = c.engineCanonicalizeSubTree(root);
+        boolean equals = java.security.MessageDigest.isEqual(reference, result);
+
+        assertTrue(equals);
+    }
+
+    /**
+     * Method test24Aexcl - a testcase for SANTUARIO-263 
+     * "Canonicalizer can't handle dynamical created DOM correctly"
+     * https://issues.apache.org/jira/browse/SANTUARIO-263
+     *
+     * @throws CanonicalizationException
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws InvalidCanonicalizerException
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws TransformerException
+     * @throws XMLSecurityException
+     * @throws XMLSignatureException
+     */
+    public void test24Aexcl()
+        throws IOException, FileNotFoundException, SAXException,
+        ParserConfigurationException, CanonicalizationException,
+        InvalidCanonicalizerException, TransformerException,
+        XMLSignatureException, XMLSecurityException {
+
+        Document doc = dbf.newDocumentBuilder ().newDocument ();
+        Element local = doc.createElementNS("foo:bar", "dsig:local");
+        Element test = doc.createElementNS("http://example.net", "etsi:test");
+        Element elem2 = doc.createElementNS("http://example.net", "etsi:elem2");
+        Element stuff = doc.createElementNS("foo:bar", "dsig:stuff");
+        elem2.appendChild(stuff);
+        test.appendChild(elem2);
+        local.appendChild(test);
+        doc.appendChild(local);
+
+        Node root = doc.getElementsByTagNameNS("http://example.net", "elem2").item(0);
+        Canonicalizer20010315Excl c = new Canonicalizer20010315ExclWithComments();
+        byte[] reference = 
+            JavaUtils.getBytesFromFile(getAbsolutePath(
+                "data/org/apache/xml/security/c14n/inExcl/example2_4_c14nized.xml"));
+        byte[] result = c.engineCanonicalizeSubTree(root);
+        boolean equals = java.security.MessageDigest.isEqual(reference, result);
+
+        assertTrue(equals);
+    }
+    
    private String getAbsolutePath(String path)
    {
    	  String basedir = System.getProperty("basedir");
