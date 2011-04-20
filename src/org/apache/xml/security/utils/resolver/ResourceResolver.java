@@ -48,13 +48,10 @@ public class ResourceResolver {
     static org.apache.commons.logging.Log log = 
         org.apache.commons.logging.LogFactory.getLog(ResourceResolver.class.getName());
 
-   /** Field _alreadyInitialized */
-   static boolean _alreadyInitialized = false;
-
    /** these are the system-wide resolvers */
-   static List _resolverVector = null;
+   private static List _resolverVector = new ArrayList(10);
    
-   static boolean allThreadSafeInList=true;
+   private static boolean allThreadSafeInList=true;
 
    /** Field transformSpi */
    protected ResourceResolverSpi _resolverSpi = null;
@@ -113,17 +110,6 @@ public class ResourceResolver {
          	log.debug("check resolvability by class " + resolver._resolverSpi.getClass().getName());
 
          if ((resolver != null) && resolverTmp.canResolve(uri, BaseURI)) {
-        	 if (i!=0) {
-            	 //update resolver.
-        		 //System.out.println("Swaping");
-        		 List resolverVector=(List)((ArrayList)_resolverVector).clone();
-        		 resolverVector.remove(i);
-        		 resolverVector.add(0,resolver);        		 
-        		 _resolverVector=resolverVector;        		 
-        	 } else {
-        		 //System.out.println("hitting");
-        	 }
-        	 
             return resolverTmp;
          }
       }
@@ -180,11 +166,6 @@ public class ResourceResolver {
     * The init() function is called by org.apache.xml.security.Init.init()
     */
    public static void init() {
-
-      if (!ResourceResolver._alreadyInitialized) {
-         ResourceResolver._resolverVector = new ArrayList(10);
-         _alreadyInitialized = true;
-      }
    }
 
     /**
