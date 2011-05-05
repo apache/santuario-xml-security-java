@@ -1,5 +1,5 @@
 /*
- * Copyright  1999-2004 The Apache Software Foundation.
+ * Copyright  1999-2011 The Apache Software Foundation.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -95,7 +95,6 @@ public class VerifyMerlinsExamplesTwentyThree {
                              merlinsDir + "signature-enveloped-dsa.xml",
                              merlinsDir + "signature-enveloping-b64-dsa.xml",
                              merlinsDir + "signature-enveloping-dsa.xml",
-                             merlinsDir + "signature-enveloping-hmac-sha1-40.xml",
                              merlinsDir + "signature-enveloping-hmac-sha1.xml",
                              merlinsDir + "signature-enveloping-rsa.xml",
                              merlinsDir + "signature-external-b64-dsa.xml",
