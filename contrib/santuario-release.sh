@@ -68,10 +68,3 @@ for i in *.jar *.pom
 do
     md5sum $i > $i.md5
 done
-#
-# Build the web site
-#
-cd ${SANTUARIO_SRC_ROOT}
-ant xdocs || exit 1
-cp -r doc/site/build/site ${SANTUARIO_STAGE_ROOT}
-
