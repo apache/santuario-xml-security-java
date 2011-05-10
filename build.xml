@@ -685,9 +685,6 @@
 	      todir="${dir.build.bindist}/libs"/>
 
 	<mkdir dir="${dir.build.bindist}/doc"/>
-	<copy todir="${dir.build.bindist}/doc">
-	    <fileset dir="${dir.docs}/build/site"/>
-	</copy>
 	<mkdir dir="${dir.build.bindist}/doc/Java/api" />
 	<copy todir="${dir.build.bindist}/doc/Java/api">
 	    <fileset dir="${dir.build.docs.html}/javadoc"/>
