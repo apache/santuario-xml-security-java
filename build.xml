@@ -17,7 +17,7 @@
     <property name="product.version.major" value="1"/>
     <property name="product.version.minor" value="4"/>
     <property name="product.version.level" value="5"/>
-    <property name='product.version.qualifier' value='-SNAPSHOT'/>
+    <property name='product.version.qualifier' value='-RC1'/>
     <property name="product.version" 
 	  value="${product.version.major}.${product.version.minor}.${product.version.level}${product.version.qualifier}"/>
     <property name="product_version" 
@@ -685,9 +685,6 @@
 	      todir="${dir.build.bindist}/libs"/>
 
 	<mkdir dir="${dir.build.bindist}/doc"/>
-	<copy todir="${dir.build.bindist}/doc">
-	    <fileset dir="${dir.docs}/build/site"/>
-	</copy>
 	<mkdir dir="${dir.build.bindist}/doc/Java/api" />
 	<copy todir="${dir.build.bindist}/doc/Java/api">
 	    <fileset dir="${dir.build.docs.html}/javadoc"/>
