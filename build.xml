@@ -17,7 +17,7 @@
     <property name="product.version.major" value="1"/>
     <property name="product.version.minor" value="4"/>
     <property name="product.version.level" value="5"/>
-    <property name='product.version.qualifier' value='-RC1'/>
+    <property name='product.version.qualifier' value=''/>
     <property name="product.version" 
 	  value="${product.version.major}.${product.version.minor}.${product.version.level}${product.version.qualifier}"/>
     <property name="product_version" 
