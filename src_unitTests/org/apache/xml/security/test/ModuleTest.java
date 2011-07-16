@@ -51,6 +51,7 @@ public class ModuleTest extends TestCase {
       suite.addTest(org.apache.xml.security.test.c14n.implementations.Canonicalizer11Test.suite());
       suite.addTest(org.apache.xml.security.test.c14n.implementations.Bug45961Test.suite());
       suite.addTest(org.apache.xml.security.test.c14n.implementations.Santuario191Test.suite());
+      suite.addTest(org.apache.xml.security.test.c14n.implementations.Santuario273Test.suite());
       suite.addTest(org.apache.xml.security.test.external.org.apache.xalan.XPathAPI.XalanBug1425Test.suite());
       suite.addTest(org.apache.xml.security.test.external.org.apache.xalan.XPathAPI.AttributeAncestorOrSelfTest.suite());
       suite.addTest(org.apache.xml.security.test.signature.AllTests.suite());      

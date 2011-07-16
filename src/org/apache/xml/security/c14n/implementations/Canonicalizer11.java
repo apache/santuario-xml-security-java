@@ -95,13 +95,13 @@ public abstract class Canonicalizer11 extends CanonicalizerBase {
     	    cur.nodes.add(n);
     	}
     	void getXmlnsAttr(Collection col) {
+    	    int size = levels.size() - 1;
 	    if (cur == null) {
 		cur = new XmlsStackElement();
     		cur.level = currentLevel;
     		lastlevel = currentLevel;
     		levels.add(cur);
     	    }
-	    int size = levels.size() - 2;
 	    boolean parentRendered = false;
 	    XmlsStackElement e = null;
 	    if (size == -1) {
@@ -137,7 +137,7 @@ public abstract class Canonicalizer11 extends CanonicalizerBase {
 	        }
 	    }
 	    if (!baseAttrs.isEmpty()) {
-    	        Iterator it = cur.nodes.iterator();
+    	        Iterator it = col.iterator();
 		String base = null;
 		Attr baseAttr = null;
     	        while (it.hasNext()) {
