@@ -1,5 +1,5 @@
 /*
- * Copyright 1999-2009 The Apache Software Foundation.
+ * Copyright 1999-2011 The Apache Software Foundation.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@ import java.security.Key;
 import java.security.SecureRandom;
 import java.security.spec.AlgorithmParameterSpec;
 import java.util.HashMap;
-import java.util.Map;
 
 import org.apache.xml.security.algorithms.implementations.IntegrityHmac;
 import org.apache.xml.security.exceptions.AlgorithmAlreadyRegisteredException;
@@ -49,34 +48,10 @@ public class SignatureAlgorithm extends Algorithm {
     /** All available algorithm classes are registered here */
     static HashMap _algorithmHash = null;
    
-    static ThreadLocal instancesSigning=new ThreadLocal() {
-        protected Object initialValue() {
-	    return new HashMap();
-        };
-    };
-   
-    static ThreadLocal instancesVerify=new ThreadLocal() {
-        protected Object initialValue() {
-	    return new HashMap();
-        };
-    };
-   
-    static ThreadLocal keysSigning=new ThreadLocal() {
-        protected Object initialValue() {
- 	    return new HashMap();
-        };
-    };
-
-    static ThreadLocal keysVerify=new ThreadLocal() {
-        protected Object initialValue() {
- 	    return new HashMap();
-        };
-    };
-
     /** Field _signatureAlgorithm */
-    protected SignatureAlgorithmSpi _signatureAlgorithm = null;
+    protected SignatureAlgorithmSpi _signatureAlgorithm;
 
-    private String algorithmURI;
+    private final String algorithmURI;
 
     /**
      * Constructor SignatureAlgorithm
@@ -91,65 +66,6 @@ public class SignatureAlgorithm extends Algorithm {
         this.algorithmURI = algorithmURI;
     }
 
-    private void initializeAlgorithm(boolean isForSigning) 
-        throws XMLSignatureException {
-        _signatureAlgorithm=isForSigning ? getInstanceForSigning(algorithmURI) :
-            getInstanceForVerify(algorithmURI);	   
-	this._signatureAlgorithm
-            .engineGetContextFromElement(this._constructionElement);
-    }
-
-    private static SignatureAlgorithmSpi getInstanceForSigning
-        (String algorithmURI) throws XMLSignatureException {
-        SignatureAlgorithmSpi result=(SignatureAlgorithmSpi) 
-            ((Map)instancesSigning.get()).get(algorithmURI);
-        if (result!=null) {
-            result.reset();
-            return result;
-        }
-        result=buildSigner(algorithmURI);
-        ((Map)instancesSigning.get()).put(algorithmURI,result);
-        return result;
-    }
-
-    private static SignatureAlgorithmSpi getInstanceForVerify
-        (String algorithmURI) throws XMLSignatureException {
-        SignatureAlgorithmSpi result=(SignatureAlgorithmSpi) 
-            ((Map)instancesVerify.get()).get(algorithmURI);
-        if (result!=null) {
-	    result.reset();
-	    return result;
-	}
-	result=buildSigner(algorithmURI);
-	((Map)instancesVerify.get()).put(algorithmURI,result);
-	return result;
-    }
-
-    private static SignatureAlgorithmSpi buildSigner(String algorithmURI) 
-        throws XMLSignatureException {
-        try {
-            Class implementingClass =
-                SignatureAlgorithm.getImplementingClass(algorithmURI);
-            if (log.isDebugEnabled())
-         	log.debug("Create URI \"" + algorithmURI + "\" class \""
-                   + implementingClass + "\"");
-            return (SignatureAlgorithmSpi) implementingClass.newInstance();   
-        }  catch (IllegalAccessException ex) {
-            Object exArgs[] = { algorithmURI, ex.getMessage() };
-
-            throw new XMLSignatureException
-                ("algorithms.NoSuchAlgorithm", exArgs, ex);
-        } catch (InstantiationException ex) {
-            Object exArgs[] = { algorithmURI, ex.getMessage() };
-            throw new XMLSignatureException
-                ("algorithms.NoSuchAlgorithm", exArgs, ex);
-        } catch (NullPointerException ex) {
-            Object exArgs[] = { algorithmURI, ex.getMessage() };
-            throw new XMLSignatureException
-                ("algorithms.NoSuchAlgorithm", exArgs, ex);
-        }
-    }
-
     /**
      * Constructor SignatureAlgorithm
      *
@@ -161,13 +77,42 @@ public class SignatureAlgorithm extends Algorithm {
     public SignatureAlgorithm(
            Document doc, String algorithmURI, int HMACOutputLength)
               throws XMLSecurityException {
-
-        this(doc, algorithmURI);
-        this.algorithmURI=algorithmURI;
-        initializeAlgorithm(true);
+        super(doc, algorithmURI);
+        this.algorithmURI = algorithmURI;
+        initializeAlgorithm();
+        
         this._signatureAlgorithm.engineSetHMACOutputLength(HMACOutputLength);
         ((IntegrityHmac)this._signatureAlgorithm)
             .engineAddContextToElement(this._constructionElement);
+    }
+    
+    /**
+     * Get a SignatureAlgorithmSpi object corresponding to the algorithmURI argument
+     */
+    private static SignatureAlgorithmSpi getSignatureAlgorithmSpi(String algorithmURI) 
+        throws XMLSignatureException {
+        try {
+            Class implementingClass = (Class)_algorithmHash.get(algorithmURI);
+            if (log.isDebugEnabled()) {
+                log.debug("Create URI \"" + algorithmURI + "\" class \""
+                          + implementingClass + "\"");
+            }
+            return (SignatureAlgorithmSpi)implementingClass.newInstance();   
+        }  catch (IllegalAccessException ex) {
+            Object exArgs[] = { algorithmURI, ex.getMessage() };
+            throw new XMLSignatureException("algorithms.NoSuchAlgorithm", exArgs, ex);
+        } catch (InstantiationException ex) {
+            Object exArgs[] = { algorithmURI, ex.getMessage() };
+            throw new XMLSignatureException("algorithms.NoSuchAlgorithm", exArgs, ex);
+        } catch (NullPointerException ex) {
+            Object exArgs[] = { algorithmURI, ex.getMessage() };
+            throw new XMLSignatureException("algorithms.NoSuchAlgorithm", exArgs, ex);
+        }
+    }
+    
+    private void initializeAlgorithm() throws XMLSignatureException {
+        _signatureAlgorithm = getSignatureAlgorithmSpi(algorithmURI);
+        _signatureAlgorithm.engineGetContextFromElement(this._constructionElement);
     }
 
     /**
@@ -179,9 +124,8 @@ public class SignatureAlgorithm extends Algorithm {
      */
     public SignatureAlgorithm(Element element, String BaseURI)
            throws XMLSecurityException {
-
         super(element, BaseURI);      
-        algorithmURI = this.getURI();           
+        algorithmURI = this.getURI();   
     }
 
     /**
@@ -203,11 +147,13 @@ public class SignatureAlgorithm extends Algorithm {
      */
     public String getJCEAlgorithmString() {
         try {
-	    return getInstanceForVerify(algorithmURI).engineGetJCEAlgorithmString();
-	} catch (XMLSignatureException e) {
-	    //Ignore.
-	    return null;
-	}
+            SignatureAlgorithmSpi signatureAlgorithmSpi =
+                getSignatureAlgorithmSpi(algorithmURI);
+            return signatureAlgorithmSpi.engineGetJCEAlgorithmString();
+        } catch (XMLSignatureException e) {
+            // Ignore
+            return null;
+        }
     }
 
     /**
@@ -217,10 +163,13 @@ public class SignatureAlgorithm extends Algorithm {
      */
     public String getJCEProviderName() {
         try {
-	    return getInstanceForVerify(algorithmURI).engineGetJCEProviderName();
-	} catch (XMLSignatureException e) {
-	    return null;
-	}
+            SignatureAlgorithmSpi signatureAlgorithmSpi =
+                getSignatureAlgorithmSpi(algorithmURI);
+            return signatureAlgorithmSpi.engineGetJCEProviderName();
+        } catch (XMLSignatureException e) {
+            // Ignore
+            return null;
+        }
     }
 
     /**
@@ -267,12 +216,7 @@ public class SignatureAlgorithm extends Algorithm {
      * @throws XMLSignatureException
      */
     public void initSign(Key signingKey) throws XMLSignatureException {	   
-        initializeAlgorithm(true);
-        Map map=(Map)keysSigning.get();
-        if (map.get(this.algorithmURI)==signingKey) {
-    	    return;
-        }
-        map.put(this.algorithmURI,signingKey);
+        initializeAlgorithm();
         this._signatureAlgorithm.engineInitSign(signingKey);
     }
 
@@ -286,7 +230,7 @@ public class SignatureAlgorithm extends Algorithm {
      */
     public void initSign(Key signingKey, SecureRandom secureRandom)
            throws XMLSignatureException {
-        initializeAlgorithm(true);
+        initializeAlgorithm();
         this._signatureAlgorithm.engineInitSign(signingKey, secureRandom);
     }
 
@@ -301,7 +245,7 @@ public class SignatureAlgorithm extends Algorithm {
     public void initSign(
            Key signingKey, AlgorithmParameterSpec algorithmParameterSpec)
               throws XMLSignatureException {
-        initializeAlgorithm(true);
+        initializeAlgorithm();
         this._signatureAlgorithm.engineInitSign(signingKey,
                                               algorithmParameterSpec);
     }
@@ -326,12 +270,7 @@ public class SignatureAlgorithm extends Algorithm {
      * @throws XMLSignatureException
      */
     public void initVerify(Key verificationKey) throws XMLSignatureException {
-        initializeAlgorithm(false);
-        Map map=(Map)keysVerify.get();
-        if (map.get(this.algorithmURI)==verificationKey) {
-            return;
-        }
-        map.put(this.algorithmURI,verificationKey);
+        initializeAlgorithm();
         this._signatureAlgorithm.engineInitVerify(verificationKey);
     }
     
@@ -339,20 +278,14 @@ public class SignatureAlgorithm extends Algorithm {
      * Clear the verification caches keysVerify and instancesVerify.
      */
     public void clearVerificationCache() {
-        Map keysMap = (Map)keysVerify.get();
-        keysMap.clear();
-        Map instancesMap = (Map)instancesVerify.get();
-        instancesMap.clear();
+        // Do nothing
     }
     
     /**
      * Clear the signature caches keysSigning and instancesSigning.
      */
     public void clearSignatureCache() {
-        Map keysMap = (Map)keysSigning.get();
-        keysMap.clear();
-        Map instancesMap = (Map)instancesSigning.get();
-        instancesMap.clear();
+        // Do nothing
     }
 
     /**

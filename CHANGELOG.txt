@@ -1,6 +1,8 @@
 Changelog for "Apache xml-security" <http://santuario.apache.org/>
 
 New in v.1.4.6-SNAPSHOT:
+    Fixed SANTUARIO-281: Invalid signature value when using XMLSignature in two EJB modules on AS
+    Fixed SANTUARIO-102: Private keys must be instance of RSAPrivate or have PKCS#8 encoding
     Fixed SANTUARIO-273: xml:base attribute not processed correctly in C14N11 canonicalization.
 
 New in v1.4.5
