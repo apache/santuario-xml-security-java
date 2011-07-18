@@ -44,6 +44,7 @@ public final class DOMXMLObject extends DOMStructure implements XMLObject {
     private final String mimeType;
     private final String encoding;
     private final List content;
+    private Element objectElem;
 
     /**
      * Creates an <code>XMLObject</code> from the specified parameters.
@@ -117,6 +118,7 @@ public final class DOMXMLObject extends DOMStructure implements XMLObject {
         } else {
             this.content = Collections.unmodifiableList(content);
         }
+        this.objectElem = objElem;
     }
 
     public List getContent() {
@@ -139,23 +141,24 @@ public final class DOMXMLObject extends DOMStructure implements XMLObject {
 	throws MarshalException {
         Document ownerDoc = DOMUtils.getOwnerDocument(parent);
 
-        Element objElem = DOMUtils.createElement
-            (ownerDoc, "Object", XMLSignature.XMLNS, dsPrefix);
-
-	// set attributes
-        DOMUtils.setAttributeID(objElem, "Id", id);
-	DOMUtils.setAttribute(objElem, "MimeType", mimeType);
-        DOMUtils.setAttribute(objElem, "Encoding", encoding);
-
-        // create and append any elements and mixed content, if necessary
-	for (int i = 0, size = content.size(); i < size; i++) {
-            XMLStructure object = (XMLStructure) content.get(i);
-            if (object instanceof DOMStructure) {
-                ((DOMStructure) object).marshal(objElem, dsPrefix, context);
-            } else {
-	        javax.xml.crypto.dom.DOMStructure domObject = 
-		    (javax.xml.crypto.dom.DOMStructure) object;
-		DOMUtils.appendChild(objElem, domObject.getNode());
+        Element objElem = objectElem != null ? objectElem : null;
+        if (objElem == null) {
+            objElem = DOMUtils.createElement(ownerDoc, "Object",
+                                             XMLSignature.XMLNS, dsPrefix);
+            // set attributes
+            DOMUtils.setAttributeID(objElem, "Id", id);
+            DOMUtils.setAttribute(objElem, "MimeType", mimeType);
+            DOMUtils.setAttribute(objElem, "Encoding", encoding);
+            // create and append any elements and mixed content, if necessary
+            for (int i = 0, size = content.size(); i < size; i++) {
+                XMLStructure object = (XMLStructure)content.get(i);
+                if (object instanceof DOMStructure) {
+                    ((DOMStructure)object).marshal(objElem, dsPrefix, context);
+                } else {
+                    javax.xml.crypto.dom.DOMStructure domObject = 
+                        (javax.xml.crypto.dom.DOMStructure)object;
+                    DOMUtils.appendChild(objElem, domObject.getNode());
+                }
             }
         }
 	    
