@@ -1,12 +1,12 @@
 Changelog for "Apache xml-security" <http://santuario.apache.org/>
 
 New in v.1.4.6-SNAPSHOT:
+    Fixed SANTUARIO-283: JSR105 does not retain namespace definitions on Object element when unmarshalling
     Fixed SANTUARIO-281: Invalid signature value when using XMLSignature in two EJB modules on AS
     Fixed SANTUARIO-102: Private keys must be instance of RSAPrivate or have PKCS#8 encoding
     Fixed SANTUARIO-273: xml:base attribute not processed correctly in C14N11 canonicalization.
 
 New in v1.4.5
-    Fixed SANTUARIO-283: JSR105 does not retain namespace definitions on Object element when unmarshalling
     Fixed SANTUARIO-250: VerifyMerlinsExamplesFifteen/TwentyThree.java samples should ignore signature-enveloping-hmac-sha1-40.xml
     Fixed SANTUARIO-191: xml:id attributes are not correctly handled when using c14n11.
     Fixed SANTUARIO-266: c14n11 produces different signatures using version 1.4.3 and 1.4.4.
