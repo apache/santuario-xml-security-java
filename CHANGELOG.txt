@@ -1,6 +1,7 @@
 Changelog for "Apache xml-security" <http://santuario.apache.org/>
 
 New in v.1.4.6-SNAPSHOT:
+    Fixed SANTUARIO-284: ElementProxy#getTextFromChildElement() doesn't get all of the text if the element contains an entity like &amp;
     Fixed SANTUARIO-283: JSR105 does not retain namespace definitions on Object element when unmarshalling
     Fixed SANTUARIO-281: Invalid signature value when using XMLSignature in two EJB modules on AS
     Fixed SANTUARIO-102: Private keys must be instance of RSAPrivate or have PKCS#8 encoding
