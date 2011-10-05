@@ -100,14 +100,11 @@ public class TransformXPath2Filter extends TransformSpi {
             new CachedXPathFuncHereAPI(CachedXPathAPIHolder.getCachedXPathAPI());
 
          
-         Element []xpathElements =XMLUtils.selectNodes(
+         Element[] xpathElements =XMLUtils.selectNodes(
                 _transformObject.getElement().getFirstChild(),
                    XPath2FilterContainer.XPathFilter2NS,
                    XPath2FilterContainer._TAG_XPATH2);
-         int noOfSteps = xpathElements.length;
-
-
-         if (noOfSteps == 0) {
+         if (xpathElements.length == 0) {
             Object exArgs[] = { Transforms.TRANSFORM_XPATH2FILTER, "XPath" };
 
             throw new TransformationException("xml.WrongContent", exArgs);
@@ -120,11 +117,8 @@ public class TransformXPath2Filter extends TransformSpi {
             inputDoc = XMLUtils.getOwnerDocument(input.getNodeSet());
 	 }
 
-         for (int i = 0; i < noOfSteps; i++) {
-            Element xpathElement =XMLUtils.selectNode(
-               _transformObject.getElement().getFirstChild(),
-                  XPath2FilterContainer.XPathFilter2NS,
-                  XPath2FilterContainer._TAG_XPATH2,i);
+         for (int i = 0; i < xpathElements.length; i++) {
+            Element xpathElement = xpathElements[i];
             XPath2FilterContainer xpathContainer =
                XPath2FilterContainer.newInstance(xpathElement,
                                                    input.getSourceURI());
