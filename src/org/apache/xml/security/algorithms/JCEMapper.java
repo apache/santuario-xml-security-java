@@ -123,9 +123,11 @@ public class JCEMapper {
     *
     */
    public static String getJCEKeyAlgorithmFromURI(String AlgorithmURI) {
-
-        return  ((Algorithm) algorithmsMap.get(AlgorithmURI)).requiredKey;
-
+       Algorithm algorithm = (Algorithm) algorithmsMap.get(AlgorithmURI);
+       if (algorithm != null) {
+           return algorithm.requiredKey;
+       }
+       return null;
    }
 
    /**
