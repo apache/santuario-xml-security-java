@@ -1,6 +1,7 @@
 Changelog for "Apache xml-security" <http://santuario.apache.org/>
 
 New in v.1.4.7-SNAPSHOT:
+    Fixed SANTUARIO-286: Test case Santuario273.testC14n11Base() tests for a side-effect of canonicalization, rather than the desired effect.
 
 New in v.1.4.6
     Fixed SANTUARIO-284: ElementProxy#getTextFromChildElement() doesn't get all of the text if the element contains an entity like &amp;
