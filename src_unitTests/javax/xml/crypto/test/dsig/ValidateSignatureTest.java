@@ -129,6 +129,16 @@ public class ValidateSignatureTest extends TestCase {
 	assertTrue("Signature failed core validation", coreValidity);
     }
 
+    // Bug https://issues.apache.org/jira/browse/SANTUARIO-295
+    // Validates a signature with an XPathFilter2 Transform with an intersect
+    // filter that produces an empty node-set.
+    public void test_signature_xpathfilter2() throws Exception {
+        String file = "xmldsig-xfilter2.xml";
+        boolean coreValidity = validator.validate
+            (file, new KeySelectors.KeyValueKeySelector());
+        assertTrue("Signature failed core validation", coreValidity);
+    }
+
     /**
      * Set flag if called.
      */
