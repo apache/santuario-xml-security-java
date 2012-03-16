@@ -3048,7 +3048,7 @@ public class XMLCipher {
                         super.getEncryptionMethod()).toElement());
                 }
                 if (null != super.getKeyInfo()) {
-                    result.appendChild(super.getKeyInfo().getElement());
+                    result.appendChild(super.getKeyInfo().getElement().cloneNode(true));
                 }
 
                 result.appendChild(
@@ -3185,7 +3185,7 @@ public class XMLCipher {
                         super.getEncryptionMethod()).toElement());
                 }
                 if (null != super.getKeyInfo()) {
-                    result.appendChild(super.getKeyInfo().getElement());
+                    result.appendChild(super.getKeyInfo().getElement().cloneNode(true));
                 }
                 result.appendChild(
                     ((CipherDataImpl) super.getCipherData()).toElement());

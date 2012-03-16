@@ -33,7 +33,10 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import org.apache.xml.security.algorithms.JCEMapper;
+import org.apache.xml.security.encryption.EncryptedData;
 import org.apache.xml.security.encryption.XMLCipher;
+import org.apache.xml.security.keys.KeyInfo;
+import org.apache.xml.security.utils.Constants;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -54,6 +57,18 @@ public class EncryptContentTest extends TestCase {
         "    <serial>Y10</serial>\n" +
 	"  </user>\n" +
 	"</users>\n";
+    
+    private static final String MULTIPLE_USER_DATA =
+            "<users>\n" +
+            "  <user>\n" +
+            "    <firstname>Bugs</firstname>\n" +
+            "    <lastname>Bunny</lastname>\n" +
+            "  </user>\n" +
+            "  <user>\n" +
+            "    <firstname>Daffy</firstname>\n" +
+            "    <lastname>Duck</lastname>\n" +
+            "  </user>\n" +
+            "</users>\n";
 
     private DocumentBuilder db;
     private SecretKey secretKey;
@@ -140,5 +155,35 @@ public class EncryptContentTest extends TestCase {
 	}
 
 	// t.transform(new DOMSource(doc), new StreamResult(System.out));
+    }
+    
+    /**
+     * See SANTUARIO-301:
+     * https://issues.apache.org/jira/browse/SANTUARIO-301
+     */
+    public void testMultipleKeyInfoElements() throws Exception {
+        if (!haveISOPadding) {
+            log.warn("Test testMultipleKeyInfoElements skipped as necessary algorithms not available");
+            return;
+        }
+
+        Document doc = db.parse(new ByteArrayInputStream(MULTIPLE_USER_DATA.getBytes("UTF8")));
+        NodeList dataToEncrypt = doc.getElementsByTagName("user");
+
+        XMLCipher dataCipher = XMLCipher.getInstance(XMLCipher.TRIPLEDES);
+        dataCipher.init(XMLCipher.ENCRYPT_MODE, secretKey);
+
+        KeyInfo keyInfo = new KeyInfo(doc);
+        keyInfo.addKeyName("mykey");
+
+        EncryptedData encryptedData = dataCipher.getEncryptedData();
+        encryptedData.setKeyInfo(keyInfo);
+        
+        for (int i = 0; i < dataToEncrypt.getLength(); i++) {
+            dataCipher.doFinal(doc,(Element) dataToEncrypt.item(i), true);
+        }
+
+        NodeList keyInfoList = doc.getElementsByTagNameNS(Constants.SignatureSpecNS, "KeyInfo");
+        assertEquals(keyInfoList.getLength(), 2);
     }
 }

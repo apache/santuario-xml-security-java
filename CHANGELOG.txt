@@ -1,6 +1,7 @@
 Changelog for "Apache xml-security" <http://santuario.apache.org/>
 
 New in v.1.4.7-SNAPSHOT:
+    Fixed SANTUARIO-301 - Missing KeyInfo element when encrypting multiple elements.
     Fixed SANTUARIO-299: StringIndexOutOfBoundsException is thrown during reference verification (if URI = "#")
     Fixed SANTUARIO-295: XMLDSig XPathFilter2Transform bug involving intersect filter
     Fixed SANTUARIO-286: Test case Santuario273.testC14n11Base() tests for a side-effect of canonicalization, rather than the desired effect.
