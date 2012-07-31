@@ -104,7 +104,6 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
    public XMLSignatureInput engineResolve(Attr uri, String BaseURI)
            throws ResourceResolverException {
 
-      try {
          boolean useProxy = false;
          String proxyHost =
             engineGetProperty(ResolverDirectHTTP
@@ -138,6 +137,7 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
                                     && (oldProxyHost != null)
                                     && (oldProxyPort != null));
 
+       try {
          // calculate new URI
          URI uriNew = getNewURI(uri.getNodeValue(), BaseURI);
 
@@ -163,9 +163,8 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
                String password = proxyUser + ":" + proxyPass;
                String encodedPassword = Base64.encode(password.getBytes("ISO-8859-1"));
 
-               // or was it Proxy-Authenticate ?
                urlConnection.setRequestProperty("Proxy-Authorization",
-                                                encodedPassword);
+                                                "Basic " + encodedPassword);
             }
          }
 
@@ -223,13 +222,6 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
          result.setSourceURI(uriNew.toString());
          result.setMIMEType(mimeType);
 
-         // switch off proxy usage
-         if (useProxy && switchBackProxy) {
-            System.setProperty("http.proxySet", oldProxySet);
-            System.setProperty("http.proxyHost", oldProxyHost);
-            System.setProperty("http.proxyPort", oldProxyPort);
-         }
-
          return result;
       } catch (MalformedURLException ex) {
          throw new ResourceResolverException("generic.EmptyMessage", ex, uri,
@@ -237,6 +229,13 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
       } catch (IOException ex) {
          throw new ResourceResolverException("generic.EmptyMessage", ex, uri,
                                              BaseURI);
+      } finally {
+           // switch off proxy usage
+           if (useProxy && switchBackProxy) {
+               System.setProperty("http.proxySet", oldProxySet);
+               System.setProperty("http.proxyHost", oldProxyHost);
+               System.setProperty("http.proxyPort", oldProxyPort);
+           }
       }
    }
 
