@@ -1,6 +1,7 @@
 Changelog for "Apache xml-security" <http://santuario.apache.org/>
 
 New in v1.5.3-SNAPSHOT:
+    Fixed SANTUARIO-334 - UnsyncByteArrayOutputStream hangs on messages larger 512 MB.
 
 New in v1.5.2:
     Fixed SANTUARIO-313 - Javadocs warnings.
