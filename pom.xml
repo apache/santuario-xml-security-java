@@ -314,7 +314,7 @@
         <xalan.version>2.7.1</xalan.version>
         <xerces.version>2.9.1</xerces.version>
         <junit.version>4.8.2</junit.version>
-        <log4j.version>1.2.16</log4j.version>
+        <log4j.version>1.2.17</log4j.version>
         <bcprov.version>1.47</bcprov.version>
     </properties>
     
