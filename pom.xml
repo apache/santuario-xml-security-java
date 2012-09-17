@@ -110,7 +110,7 @@
                     <targetJdk>1.5</targetJdk>
                     <excludes>
                         <exclude>
-                            **/XMLX509SKI.java,**/KeyInfoFactory.java,**/XMLDSigSecurity.java
+                            **/XMLX509SKI.java,**/KeyInfoFactory.java,**/XMLDSigSecurity.java,**/DEREncodedKeyValue.java
                         </exclude>
                     </excludes>
                 </configuration>
