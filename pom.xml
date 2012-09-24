@@ -16,13 +16,15 @@
   specific language governing permissions and limitations
   under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.apache.santuario</groupId>
     <artifactId>xmlsec</artifactId>
     <packaging>bundle</packaging>
     <name>Apache XML Security for Java</name>
-    <version>1.5.4-SNAPSHOT</version>
+    <version>1.5.3-SNAPSHOT</version>
     <description>
         Apache XML Security for Java supports XML-Signature Syntax and Processing,
         W3C Recommendation 12 February 2002, and XML Encryption Syntax and
@@ -280,7 +282,7 @@
             <activation>
                 <property>
                     <name>release</name>
-                    <value />
+                    <value></value>
                 </property>
             </activation>
             <build>
