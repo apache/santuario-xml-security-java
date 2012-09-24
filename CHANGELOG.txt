@@ -1,6 +1,6 @@
 Changelog for "Apache xml-security" <http://santuario.apache.org/>
 
-New in v1.5.3-SNAPSHOT:
+New in v1.5.3:
     Fixed SANTUARIO-344 - XMLSignature keeps file-handle on xml-file.
     Fixed SANTUARIO-345 - Support Signature 1.1 KeyInfo Extensions: DEREncodedKeyValue, KeyInfoReference, X509Digest.
     Fixed SANTUARIO-342 - NullPointer in javax.xml.crypto.KeySelectorException.printStackTrace
