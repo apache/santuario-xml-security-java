@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.exceptions;
 
+import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.text.MessageFormat;
 
 import org.apache.xml.security.utils.Constants;
@@ -128,7 +130,7 @@ public class XMLSecurityRuntimeException extends RuntimeException {
      * @param originalException
      */
     public XMLSecurityRuntimeException(String msgID, Object exArgs[], Exception originalException) {
-        super(MessageFormat.format(I18n.getExceptionMessage(msgID), exArgs), originalException);
+        super(MessageFormat.format(I18n.getExceptionMessage(msgID), exArgs));
 
         this.msgID = msgID;
     }
@@ -161,6 +163,34 @@ public class XMLSecurityRuntimeException extends RuntimeException {
         }
 
         return message;
+    }
+
+    /**
+     * Method printStackTrace
+     *
+     */
+    public void printStackTrace() {
+        synchronized (System.err) {
+            super.printStackTrace(System.err);
+        }
+    }
+
+    /**
+     * Method printStackTrace
+     *
+     * @param printwriter
+     */
+    public void printStackTrace(PrintWriter printwriter) {
+        super.printStackTrace(printwriter);
+    }
+
+    /**
+     * Method printStackTrace
+     *
+     * @param printstream
+     */
+    public void printStackTrace(PrintStream printstream) {
+        super.printStackTrace(printstream);
     }
 
     /**

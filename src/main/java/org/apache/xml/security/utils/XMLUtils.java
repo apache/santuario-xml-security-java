@@ -196,7 +196,7 @@ public class XMLUtils {
             }
 
             os.write(Canonicalizer.getInstance(
-                Canonicalizer.ALGO_ID_C14N_PHYSICAL).canonicalizeSubtree(contextNode)
+                Canonicalizer.ALGO_ID_C14N_WITH_COMMENTS).canonicalizeSubtree(contextNode)
             );
         } catch (IOException ex) {
             if (log.isDebugEnabled()) {
