@@ -1,3 +1,0 @@
-<Sample xmlns="http://iaik.at#Sample"><DataItem Id="DataItem">
-    Some Data from IAIK
-  </DataItem></Sample>

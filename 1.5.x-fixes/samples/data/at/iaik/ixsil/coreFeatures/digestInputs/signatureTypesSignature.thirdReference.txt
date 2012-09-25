@@ -1,3 +1,0 @@
-<DataItem xmlns="http://iaik.at#Envelope" Id="DataItem">
-    Some Data from IAIK
-  </DataItem>
