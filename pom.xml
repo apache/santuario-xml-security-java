@@ -22,7 +22,7 @@
     <artifactId>xmlsec</artifactId>
     <packaging>bundle</packaging>
     <name>Apache XML Security for Java</name>
-    <version>1.5.4-SNAPSHOT</version>
+    <version>1.5.3-SNAPSHOT</version>
     <description>
         Apache XML Security for Java supports XML-Signature Syntax and Processing,
         W3C Recommendation 12 February 2002, and XML Encryption Syntax and
@@ -68,6 +68,12 @@
         <name>The Apache Software Foundation</name>
         <url>http://www.apache.org/</url>
     </organization>
+
+    <parent>
+        <groupId>org.apache</groupId>
+        <artifactId>apache</artifactId>
+        <version>10</version>
+    </parent>
     
     <build>
         <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
@@ -184,6 +190,18 @@
                         </Import-Package>
                         <DynamicImport-Package>*</DynamicImport-Package>
                     </instructions>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.2.1</version>
+                <configuration>
+                    <useReleaseProfile>false</useReleaseProfile>
+                    <preparationGoals>clean install</preparationGoals>
+                    <goals>deploy</goals>
+                    <arguments>-Papache-release</arguments>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
                 </configuration>
             </plugin>
         </plugins>
