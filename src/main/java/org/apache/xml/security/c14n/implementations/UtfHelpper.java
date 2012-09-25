@@ -121,7 +121,7 @@ public class UtfHelpper {
     public static final byte[] getStringInUtf8(final String str) {
         final int length = str.length();
         boolean expanded = false;
-        byte []result = new byte[length];
+        byte[] result = new byte[length];
         int i = 0;
         int out = 0;
         char c;    
