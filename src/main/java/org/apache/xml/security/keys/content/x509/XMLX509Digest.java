@@ -46,7 +46,7 @@ public class XMLX509Digest extends Signature11ElementProxy implements XMLX509Dat
     public XMLX509Digest(Element element, String BaseURI) throws XMLSecurityException {
         super(element, BaseURI);
     }
-    
+
     /**
      * Constructor XMLX509Digest
      *
@@ -73,7 +73,7 @@ public class XMLX509Digest extends Signature11ElementProxy implements XMLX509Dat
         this.addBase64Text(getDigestBytesFromCert(x509certificate, algorithmURI));
         this.constructionElement.setAttributeNS(null, Constants._ATT_ALGORITHM, algorithmURI);
     }
-    
+
     /**
      * Method getAlgorithmAttr
      *
@@ -112,20 +112,20 @@ public class XMLX509Digest extends Signature11ElementProxy implements XMLX509Dat
      * @throws XMLSecurityException
      */
     public static byte[] getDigestBytesFromCert(X509Certificate cert, String algorithmURI) throws XMLSecurityException {
-    	String jcaDigestAlgorithm = JCEMapper.translateURItoJCEID(algorithmURI);
-    	if (jcaDigestAlgorithm == null) {
-    		Object exArgs[] = { algorithmURI };
-    		throw new XMLSecurityException("XMLX509Digest.UnknownDigestAlgorithm", exArgs);
-    	}
-    	
-    	try {
-			MessageDigest md = MessageDigest.getInstance(jcaDigestAlgorithm);
-			return md.digest(cert.getEncoded());
-		} catch (Exception e) {
-    		Object exArgs[] = { jcaDigestAlgorithm };
-			throw new XMLSecurityException("XMLX509Digest.FailedDigest", exArgs);
-		}
-    	
+        String jcaDigestAlgorithm = JCEMapper.translateURItoJCEID(algorithmURI);
+        if (jcaDigestAlgorithm == null) {
+            Object exArgs[] = { algorithmURI };
+            throw new XMLSecurityException("XMLX509Digest.UnknownDigestAlgorithm", exArgs);
+        }
+
+        try {
+            MessageDigest md = MessageDigest.getInstance(jcaDigestAlgorithm);
+            return md.digest(cert.getEncoded());
+        } catch (Exception e) {
+            Object exArgs[] = { jcaDigestAlgorithm };
+            throw new XMLSecurityException("XMLX509Digest.FailedDigest", exArgs);
+        }
+
     }
 
     /** @inheritDoc */
