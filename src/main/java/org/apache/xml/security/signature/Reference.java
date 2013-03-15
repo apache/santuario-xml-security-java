@@ -618,17 +618,14 @@ public class Reference extends SignatureElementProxy {
                             
                             Iterator<Node> sIterator = s.iterator();
                             
-                            @Override
                             public boolean hasNext() {
                                 return sIterator.hasNext();
                             }
 
-                            @Override
                             public Node next() {
                                 return sIterator.next();
                             }
 
-                            @Override
                             public void remove() {
                                 throw new UnsupportedOperationException();
                             }

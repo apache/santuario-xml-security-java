@@ -1,6 +1,8 @@
 Changelog for "Apache xml-security" <http://santuario.apache.org/>
 
-New in v1.5.4-SNAPSHOT:
+New in v1.5.4:
+    Fixed SANTUARIO-337 - ResourceResolver does thread-unsafe handling of the "secureValidation" flag.
+    Fixed SANTUARIO-353 - ReferenceSubTreeData.iterator() does not return nodes in document order.
     Fixed SANTUARIO-351 - Avoid possible NPE in Unsync OutputStreams.
 
 New in v1.5.3:
