@@ -22,7 +22,7 @@
     <artifactId>xmlsec</artifactId>
     <packaging>bundle</packaging>
     <name>Apache Santuario</name>
-    <version>1.4.8</version>
+    <version>1.4.9-SNAPSHOT</version>
     <description>
         Apache Santuario supports XML-Signature Syntax and Processing,
         W3C Recommendation 12 February 2002, and XML Encryption Syntax and
@@ -58,12 +58,12 @@
     </licenses>
     <scm>
         <connection>
-            scm:svn:http://svn.apache.org/repos/asf/santuario/xml-security-java/tags/1.4.8
+            scm:svn:http://svn.apache.org/repos/asf/santuario/xml-security-java/branches/1.4.x-fixes
         </connection>
         <developerConnection>
-            scm:svn:https://svn.apache.org/repos/asf/santuario/xml-security-java/tags/1.4.8
+            scm:svn:https://svn.apache.org/repos/asf/santuario/xml-security-java/branches/1.4.x-fixes
         </developerConnection>
-        <url>http://http://svn.apache.org/repos/asf/santuario/xml-security-java/tags/1.4.8</url>
+        <url>http://http://svn.apache.org/repos/asf/santuario/xml-security-java/branches/1.4.x-fixes/</url>
     </scm>
     <organization>
         <name>The Apache Software Foundation</name>
