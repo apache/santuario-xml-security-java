@@ -1,6 +1,6 @@
 Changelog for "Apache xml-security" <http://santuario.apache.org/>
 
-New in v.1.4.8-SNAPSHOT:
+New in v.1.4.8:
     Fixed SANTUARIO-342 - NullPointer in javax.xml.crypto.KeySelectorException.printStackTrace
     Fixed SANTUARIO-336 - Multiple race conditions in the ResolverDirectHttp implementation
     Fixed SANTUARIO-334 - UnsyncByteArrayOutputStream hangs on messages larger 512 MB.
