@@ -16,15 +16,13 @@
   specific language governing permissions and limitations
   under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.apache.santuario</groupId>
     <artifactId>xmlsec</artifactId>
     <packaging>bundle</packaging>
     <name>Apache Santuario</name>
-    <version>1.4.8-SNAPSHOT</version>
+    <version>1.4.8</version>
     <description>
         Apache Santuario supports XML-Signature Syntax and Processing,
         W3C Recommendation 12 February 2002, and XML Encryption Syntax and
@@ -60,12 +58,12 @@
     </licenses>
     <scm>
         <connection>
-            scm:svn:http://svn.apache.org/repos/asf/santuario/xml-security-java/branches/1.4.x-fixes
+            scm:svn:http://svn.apache.org/repos/asf/santuario/xml-security-java/tags/1.4.8
         </connection>
         <developerConnection>
-            scm:svn:https://svn.apache.org/repos/asf/santuario/xml-security-java/branches/1.4.x-fixes
+            scm:svn:https://svn.apache.org/repos/asf/santuario/xml-security-java/tags/1.4.8
         </developerConnection>
-        <url>http://http://svn.apache.org/repos/asf/santuario/xml-security-java/branches/1.4.x-fixes/</url>
+        <url>http://http://svn.apache.org/repos/asf/santuario/xml-security-java/tags/1.4.8</url>
     </scm>
     <organization>
         <name>The Apache Software Foundation</name>
