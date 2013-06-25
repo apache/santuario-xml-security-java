@@ -95,12 +95,7 @@ public final class DOMManifest extends DOMStructure implements Manifest {
             this.id = null;
         }
         
-        Boolean secureValidation = (Boolean)
-            context.getProperty("org.apache.jcp.xml.dsig.secureValidation");
-        boolean secVal = false;
-        if (secureValidation != null && secureValidation.booleanValue()) {
-            secVal = true;
-        }
+        boolean secVal = Utils.secureValidation(context);
         
         Element refElem = DOMUtils.getFirstChildElement(manElem);
         List<Reference> refs = new ArrayList<Reference>();
