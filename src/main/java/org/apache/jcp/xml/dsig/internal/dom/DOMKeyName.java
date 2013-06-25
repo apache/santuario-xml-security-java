@@ -94,9 +94,7 @@ public final class DOMKeyName extends DOMStructure implements KeyName {
     @Override
     public int hashCode() {
         int result = 17;
-        if (name != null) {
-            result = 31 * result + name.hashCode();
-        }
+        result = 31 * result + name.hashCode();
         
         return result;
     }

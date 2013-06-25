@@ -168,9 +168,7 @@ public final class DOMSignatureProperties extends DOMStructure
         if (id != null) {
             result = 31 * result + id.hashCode();
         }
-        if (properties != null) {
-            result = 31 * result + properties.hashCode();
-        }
+        result = 31 * result + properties.hashCode();
         
         return result;
     }

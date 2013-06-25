@@ -173,8 +173,14 @@ public final class DOMSignatureProperty extends DOMStructure
     
     @Override
     public int hashCode() {
-        assert false : "hashCode not designed";
-        return 42; // any arbitrary constant will do 
+        int result = 17;
+        if (id != null) {
+            result = 31 * result + id.hashCode();
+        }
+        result = 31 * result + target.hashCode();
+        result = 31 * result + content.hashCode();
+
+        return result;
     }
 
     private boolean equalsContent(List<XMLStructure> otherContent) {

@@ -125,12 +125,8 @@ public final class DOMX509IssuerSerial extends DOMStructure
     @Override
     public int hashCode() {
         int result = 17;
-        if (issuerName != null) {
-            result = 31 * result + issuerName.hashCode();
-        }
-        if (serialNumber != null) {
-            result = 31 * result + serialNumber.hashCode();
-        }
+        result = 31 * result + issuerName.hashCode();
+        result = 31 * result + serialNumber.hashCode();
         
         return result;
     }

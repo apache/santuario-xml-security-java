@@ -162,9 +162,7 @@ public final class DOMManifest extends DOMStructure implements Manifest {
         if (id != null) {
             result = 31 * result + id.hashCode();
         }
-        if (references != null) {
-            result = 31 * result + references.hashCode();
-        }
+        result = 31 * result + references.hashCode();
         
         return result;
     }
