@@ -414,7 +414,7 @@ public class Reference extends SignatureElementProxy {
                 );
             resolver.addProperties(this.manifest.getResolverProperties());
 
-            return resolver.resolve(uriAttr, this.baseURI);
+            return resolver.resolve(uriAttr, this.baseURI, secureValidation);
         }  catch (ResourceResolverException ex) {
             throw new ReferenceNotInitializedException("empty", ex);
         }

@@ -57,6 +57,7 @@ public class TransformSerializer extends AbstractSerializer {
      * @return the Node resulting from the parse of the source
      * @throws XMLEncryptionException
      */
+    @Deprecated
     public Node deserialize(String source, Node ctx) throws XMLEncryptionException {
         String fragment = createContext(source, ctx);
         return deserialize(ctx, new StreamSource(new StringReader(fragment)));

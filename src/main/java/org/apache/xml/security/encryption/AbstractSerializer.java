@@ -55,6 +55,7 @@ public abstract class AbstractSerializer implements Serializer {
      *   <code>Element</code>.
      * @throws Exception
      */
+    @Deprecated
     public String serialize(Element element) throws Exception {
         return canonSerialize(element);
     }
@@ -94,6 +95,7 @@ public abstract class AbstractSerializer implements Serializer {
      *   <code>NodeList</code>.
      * @throws Exception
      */
+    @Deprecated
     public String serialize(NodeList content) throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         canon.setWriter(baos);
@@ -131,6 +133,7 @@ public abstract class AbstractSerializer implements Serializer {
      * @return the canonicalization of the node
      * @throws Exception
      */ 
+    @Deprecated
     public String canonSerialize(Node node) throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         canon.setWriter(baos);                      
@@ -161,6 +164,7 @@ public abstract class AbstractSerializer implements Serializer {
      * @return the Node resulting from the parse of the source
      * @throws XMLEncryptionException
      */
+    @Deprecated
     public abstract Node deserialize(String source, Node ctx) throws XMLEncryptionException;
 
     /**
