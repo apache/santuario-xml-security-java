@@ -35,6 +35,7 @@ import org.apache.xml.security.signature.reference.ReferenceData;
 import org.apache.xml.security.signature.reference.ReferenceNodeSetData;
 import org.apache.xml.security.signature.reference.ReferenceOctetStreamData;
 import org.apache.xml.security.test.DSNamespaceContext;
+import org.apache.xml.security.utils.XMLUtils;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -44,19 +45,6 @@ public class InteropTestBase extends org.junit.Assert {
     /** {@link org.apache.commons.logging} logging facility */
     static org.apache.commons.logging.Log log = 
         org.apache.commons.logging.LogFactory.getLog(InteropTestBase.class.getName());
-
-    /** Field dbf */
-    static javax.xml.parsers.DocumentBuilderFactory dbf = null;
-
-    /**
-     * Method setUp
-     *
-     */
-    public InteropTestBase() {
-        dbf = javax.xml.parsers.DocumentBuilderFactory.newInstance();
-        dbf.setNamespaceAware(true);
-    }
-
 
     /**
      * Method verifyHMAC
@@ -71,7 +59,7 @@ public class InteropTestBase extends org.junit.Assert {
         String filename, ResourceResolverSpi resolver, boolean followManifests, byte[] hmacKey
     ) throws Exception {
         File f = new File(filename);
-        javax.xml.parsers.DocumentBuilder db = dbf.newDocumentBuilder();
+        javax.xml.parsers.DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
         org.w3c.dom.Document doc = db.parse(new java.io.FileInputStream(f));
         
         XPathFactory xpf = XPathFactory.newInstance();
@@ -105,7 +93,7 @@ public class InteropTestBase extends org.junit.Assert {
     public boolean verify(String filename, ResourceResolverSpi resolver, boolean followManifests)
         throws Exception {
         File f = new File(filename);
-        javax.xml.parsers.DocumentBuilder db = dbf.newDocumentBuilder();
+        javax.xml.parsers.DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
         org.w3c.dom.Document doc = db.parse(f);
         
         XPathFactory xpf = XPathFactory.newInstance();
