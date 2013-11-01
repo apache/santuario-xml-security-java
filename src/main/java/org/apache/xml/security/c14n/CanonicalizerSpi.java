@@ -156,4 +156,12 @@ public abstract class CanonicalizerSpi {
      */
     public abstract void setWriter(OutputStream os);
 
+    public boolean isSecureValidation() {
+        return secureValidation;
+    }
+
+    public void setSecureValidation(boolean secureValidation) {
+        this.secureValidation = secureValidation;
+    }
+
 }
