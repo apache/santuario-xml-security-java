@@ -57,6 +57,7 @@ public class ResolverLocalFilesystem extends ResourceResolverSpi {
                 ResolverLocalFilesystem.translateUriToFilename(uriNew.toString());
             FileInputStream inputStream = new FileInputStream(fileName);
             XMLSignatureInput result = new XMLSignatureInput(inputStream);
+            result.setSecureValidation(context.secureValidation);
 
             result.setSourceURI(uriNew.toString());
 

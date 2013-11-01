@@ -296,6 +296,7 @@ public class Transforms extends SignatureElementProxy {
                 "signature.Transform.ForbiddenTransform", exArgs
             );
         }
+        transform.setSecureValidation(secureValidation);
     }
 
     /**

@@ -39,6 +39,7 @@ import org.w3c.dom.NodeList;
 public abstract class AbstractSerializer implements Serializer {
     
     protected Canonicalizer canon;
+    protected boolean secureValidation;
     
     public void setCanonicalizer(Canonicalizer canon) {
         this.canon = canon;
@@ -98,6 +99,7 @@ public abstract class AbstractSerializer implements Serializer {
     @Deprecated
     public String serialize(NodeList content) throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        canon.setSecureValidation(secureValidation);
         canon.setWriter(baos);
         canon.notReset();
         for (int i = 0; i < content.getLength(); i++) {                
@@ -119,6 +121,7 @@ public abstract class AbstractSerializer implements Serializer {
      */
     public byte[] serializeToByteArray(NodeList content) throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        canon.setSecureValidation(secureValidation);
         canon.setWriter(baos);
         canon.notReset();
         for (int i = 0; i < content.getLength(); i++) {
@@ -136,6 +139,7 @@ public abstract class AbstractSerializer implements Serializer {
     @Deprecated
     public String canonSerialize(Node node) throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        canon.setSecureValidation(secureValidation);
         canon.setWriter(baos);                      
         canon.notReset();
         canon.canonicalizeSubtree(node);                    
@@ -152,6 +156,7 @@ public abstract class AbstractSerializer implements Serializer {
      */ 
     public byte[] canonSerializeToByteArray(Node node) throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        canon.setSecureValidation(secureValidation);
         canon.setWriter(baos);
         canon.notReset();
         canon.canonicalizeSubtree(node);
@@ -244,6 +249,14 @@ public abstract class AbstractSerializer implements Serializer {
         }
         sb.append(">" + source + "</dummy>");
         return sb.toString();
+    }
+
+    public boolean isSecureValidation() {
+        return secureValidation;
+    }
+
+    public void setSecureValidation(boolean secureValidation) {
+        this.secureValidation = secureValidation;
     }
     
 }

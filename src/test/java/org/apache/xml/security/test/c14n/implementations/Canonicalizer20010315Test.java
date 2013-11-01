@@ -609,7 +609,7 @@ public class Canonicalizer20010315Test extends org.junit.Assert {
         //String c14nURI = Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS;
         //boolean validating = true;
 
-        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+        DocumentBuilder db = XMLUtils.createDocumentBuilder(false, false);
         org.xml.sax.EntityResolver resolver = new TestVectorResolver();
 
         db.setEntityResolver(resolver);
@@ -1038,7 +1038,7 @@ public class Canonicalizer20010315Test extends org.junit.Assert {
         ParserConfigurationException, CanonicalizationException,
         InvalidCanonicalizerException, TransformerException, XPathExpressionException {
 
-        DocumentBuilder documentBuilder = XMLUtils.createDocumentBuilder(validating);
+        DocumentBuilder documentBuilder = XMLUtils.createDocumentBuilder(validating, false);
 
         // throw away all warnings and errors
         documentBuilder.setErrorHandler(new IgnoreAllErrorHandler());

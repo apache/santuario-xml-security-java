@@ -85,6 +85,7 @@ public class XMLSignatureInput {
      * A cached bytes
      */
     private byte[] bytes = null;
+    private boolean secureValidation;
 
     /**
      * Some Transforms may require explicit MIME type, charset (IANA registered
@@ -548,7 +549,7 @@ public class XMLSignatureInput {
         
     void convertToNodes() throws CanonicalizationException, 
         ParserConfigurationException, IOException, SAXException {
-        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+        DocumentBuilder db = XMLUtils.createDocumentBuilder(false, secureValidation);
         // select all nodes, also the comments.        
         try {
             db.setErrorHandler(new org.apache.xml.security.utils.IgnoreAllErrorHandler());
@@ -573,6 +574,14 @@ public class XMLSignatureInput {
             this.inputOctetStreamProxy = null;
             this.bytes = null;
         }
+    }
+
+    public boolean isSecureValidation() {
+        return secureValidation;
+    }
+
+    public void setSecureValidation(boolean secureValidation) {
+        this.secureValidation = secureValidation;
     }
     
 }
