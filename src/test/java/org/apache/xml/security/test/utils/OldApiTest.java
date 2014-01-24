@@ -151,6 +151,7 @@ public class OldApiTest extends org.junit.Assert {
     
     @org.junit.Test
     public void testOldKeyResolverSpi() throws Exception {
+        OldKeyResolverSpi.number = 0;
         KeyResolver.register(OldKeyResolverSpi.class.getName(), true);
         Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();				
         Element el = ((Element)doc.createElement("test"));
@@ -165,6 +166,7 @@ public class OldApiTest extends org.junit.Assert {
 
     @org.junit.Test
     public void testOldKeyResolverSpiInKeyInfo() throws Exception {
+        OldKeyResolverSpi.number = 0;
         Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
         Element el = (Element)doc.createElementNS("http://www.w3.org/2000/09/xmldsig#","KeyInfo");
         el.appendChild((Element)doc.createElementNS("http://www.w3.org/2000/09/xmldsig#","KeyInfo"));
