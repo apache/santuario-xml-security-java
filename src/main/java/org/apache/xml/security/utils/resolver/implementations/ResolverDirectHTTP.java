@@ -104,6 +104,7 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
     @Override
     public XMLSignatureInput engineResolveURI(ResourceResolverContext context)
         throws ResourceResolverException {
+        InputStream inputStream = null;
         try {
 
             // calculate new URI
@@ -135,7 +136,7 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
             }
 
             String mimeType = urlConnection.getHeaderField("Content-Type");
-            InputStream inputStream = urlConnection.getInputStream();
+            inputStream = urlConnection.getInputStream();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             byte buf[] = new byte[4096];
             int read = 0;
@@ -165,6 +166,16 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
             throw new ResourceResolverException("generic.EmptyMessage", ex, context.attr, context.baseUri);
         } catch (IllegalArgumentException e) {
             throw new ResourceResolverException("generic.EmptyMessage", e, context.attr, context.baseUri);
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    if (log.isDebugEnabled()) {
+                        log.debug(e.getMessage(), e);
+                    }
+                }
+            }
         }
     }
 
