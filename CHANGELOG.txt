@@ -1,5 +1,8 @@
 Changelog for "Apache xml-security" <http://santuario.apache.org/>
 
+New in v1.5.7:
+    Fixed SANTUARIO-383 - NPE in DOMXMLSignature.
+
 New in v1.5.6:
     Fixed SANTUARIO-368 - NPE in XMLSignature.
 
