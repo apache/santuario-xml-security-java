@@ -54,6 +54,7 @@ public class JCEMapper {
      * This method registers the default algorithms.
      */
     public static void registerDefaultAlgorithms() {
+        // Digest algorithms
         algorithmsMap.put(
             MessageDigestAlgorithm.ALGO_ID_DIGEST_NOT_RECOMMENDED_MD5, 
             new Algorithm("", "MD5", "MessageDigest")
@@ -78,6 +79,7 @@ public class JCEMapper {
             MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA512, 
             new Algorithm("", "SHA-512", "MessageDigest")
         );
+        // Signature algorithms
         algorithmsMap.put(
             XMLSignature.ALGO_ID_SIGNATURE_DSA, 
             new Algorithm("", "SHA1withDSA", "Signature")
@@ -150,6 +152,7 @@ public class JCEMapper {
             XMLSignature.ALGO_ID_MAC_HMAC_SHA512, 
             new Algorithm("", "HmacSHA512", "Mac")
         );
+        // Encryption algorithms
         algorithmsMap.put(
             XMLCipher.TRIPLEDES, 
             new Algorithm("DESede", "DESede/CBC/ISO10126Padding", "BlockEncryption", 192)
