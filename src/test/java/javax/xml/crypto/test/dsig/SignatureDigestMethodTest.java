@@ -174,7 +174,6 @@ public class SignatureDigestMethodTest extends org.junit.Assert {
         dsc.setDefaultNamespacePrefix("dsig");
 
         sig.sign(dsc);
-        TestUtils.validateSecurityOrEncryptionElement(doc.getDocumentElement());
         
         // XMLUtils.outputDOM(doc.getDocumentElement(), System.out);
 

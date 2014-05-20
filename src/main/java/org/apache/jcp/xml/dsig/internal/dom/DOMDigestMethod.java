@@ -245,11 +245,9 @@ public abstract class DOMDigestMethod extends DOMStructure
         SHA224(Element dmElem) throws MarshalException {
             super(dmElem);
         }
-        @Override
         public String getAlgorithm() {
             return SHA224;
         }
-        @Override
         String getMessageDigestAlgorithm() {
             return "SHA-224";
         }
@@ -311,11 +309,9 @@ public abstract class DOMDigestMethod extends DOMStructure
         RIPEMD160(Element dmElem) throws MarshalException {
             super(dmElem);
         }
-        @Override
         public String getAlgorithm() {
             return DigestMethod.RIPEMD160;
         }
-        @Override
         String getMessageDigestAlgorithm() {
             return "RIPEMD160";
         }
