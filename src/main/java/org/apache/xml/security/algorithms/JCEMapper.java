@@ -146,7 +146,7 @@ public class JCEMapper {
         );
         algorithmsMap.put(
             XMLSignature.ALGO_ID_MAC_HMAC_SHA224, 
-            new Algorithm("HmacSHA224", "HmacSHA224", "Mac", 224, 0)
+            new Algorithm("", "HmacSHA224", "Mac")
         );
         algorithmsMap.put(
             XMLSignature.ALGO_ID_MAC_HMAC_SHA256, 

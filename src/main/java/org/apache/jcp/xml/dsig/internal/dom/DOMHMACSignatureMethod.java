@@ -244,15 +244,12 @@ public abstract class DOMHMACSignatureMethod extends AbstractDOMSignatureMethod 
         SHA224(Element dmElem) throws MarshalException {
             super(dmElem);
         }
-        @Override
         public String getAlgorithm() {
             return HMAC_SHA224;
         }
-        @Override
         String getJCAAlgorithm() {
             return "HmacSHA224";
         }
-        @Override
         int getDigestLength() {
             return 224;
         }
@@ -323,15 +320,12 @@ public abstract class DOMHMACSignatureMethod extends AbstractDOMSignatureMethod 
         RIPEMD160(Element dmElem) throws MarshalException {
             super(dmElem);
         }
-        @Override
         public String getAlgorithm() {
             return HMAC_RIPEMD160;
         }
-        @Override
         String getJCAAlgorithm() {
             return "HMACRIPEMD160";
         }
-        @Override
         int getDigestLength() {
             return 160;
         }
