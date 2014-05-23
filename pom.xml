@@ -288,7 +288,7 @@
         <profile>
             <id>jdk16</id>
             <activation>
-                <jdk>1.6</jdk>
+                <jdk>[1.6,)</jdk>
                 <activeByDefault>true</activeByDefault>
             </activation>
             <dependencies>
@@ -336,7 +336,7 @@
         <xerces.version>2.9.1</xerces.version>
         <junit.version>4.8.2</junit.version>
         <log4j.version>1.2.17</log4j.version>
-        <bcprov.version>1.47</bcprov.version>
+        <bcprov.version>1.50</bcprov.version>
     </properties>
     
     <dependencies>

@@ -35,7 +35,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
 import org.apache.xml.security.signature.XMLSignature;
-import org.apache.xml.security.test.dom.DSNamespaceContext;
+import org.apache.xml.security.test.DSNamespaceContext;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.Assert;

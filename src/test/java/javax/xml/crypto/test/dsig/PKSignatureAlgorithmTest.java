@@ -62,7 +62,7 @@ public class PKSignatureAlgorithmTest extends org.junit.Assert {
     private XMLSignatureFactory fac;
     private DocumentBuilder db;
     private KeyPair rsaKeyPair, ecKeyPair;
-    private KeyInfo rsaki, ecki;
+    private KeyInfo rsaki;
 
     static {
         Security.insertProviderAt
@@ -120,8 +120,6 @@ public class PKSignatureAlgorithmTest extends org.junit.Assert {
         KeyInfoFactory kifac = fac.getKeyInfoFactory();
         rsaki = kifac.newKeyInfo(Collections.singletonList
                                  (kifac.newKeyValue(rsaKeyPair.getPublic())));
-        ecki = kifac.newKeyInfo(Collections.singletonList
-                                (kifac.newKeyValue(ecKeyPair.getPublic())));
     }
 
     @org.junit.Test
@@ -156,32 +154,32 @@ public class PKSignatureAlgorithmTest extends org.junit.Assert {
     
     @org.junit.Test
     public void testECDSA_SHA1() throws Exception {
-        test_create_signature_enveloping(ecdsaSha1, sha1, ecki,
-                                         ecKeyPair.getPrivate(), kvks);
+        test_create_signature_enveloping(ecdsaSha1, sha1, null,
+                                         ecKeyPair.getPrivate(), ecKeyPair.getPublic());
     }
     
     @org.junit.Test
     public void testECDSA_SHA224() throws Exception {
-        test_create_signature_enveloping(ecdsaSha224, sha1, ecki,
-                                         ecKeyPair.getPrivate(), kvks);
+        test_create_signature_enveloping(ecdsaSha224, sha1, null,
+                                         ecKeyPair.getPrivate(), ecKeyPair.getPublic());
     }
     
     @org.junit.Test
     public void testECDSA_SHA256() throws Exception {
-        test_create_signature_enveloping(ecdsaSha256, sha1, ecki,
-                                         ecKeyPair.getPrivate(), kvks);
+        test_create_signature_enveloping(ecdsaSha256, sha1, null,
+                                         ecKeyPair.getPrivate(), ecKeyPair.getPublic());
     }
     
     @org.junit.Test
     public void testECDSA_SHA384() throws Exception {
-        test_create_signature_enveloping(ecdsaSha384, sha1, ecki,
-                                         ecKeyPair.getPrivate(), kvks);
+        test_create_signature_enveloping(ecdsaSha384, sha1, null,
+                                         ecKeyPair.getPrivate(), ecKeyPair.getPublic());
     }
     
     @org.junit.Test
     public void testECDSA_SHA512() throws Exception {
-        test_create_signature_enveloping(ecdsaSha512, sha1, ecki,
-                                         ecKeyPair.getPrivate(), kvks);
+        test_create_signature_enveloping(ecdsaSha512, sha1, null,
+                                         ecKeyPair.getPrivate(), ecKeyPair.getPublic());
     }
   
     private void test_create_signature_enveloping(
@@ -212,7 +210,6 @@ public class PKSignatureAlgorithmTest extends org.junit.Assert {
         dsc.setDefaultNamespacePrefix("dsig");
 
         sig.sign(dsc);
-        TestUtils.validateSecurityOrEncryptionElement(doc.getDocumentElement());
         
         // XMLUtils.outputDOM(doc.getDocumentElement(), System.out);
 
@@ -224,4 +221,42 @@ public class PKSignatureAlgorithmTest extends org.junit.Assert {
         assertTrue(sig2.validate(dvc));
     }
 
+    private void test_create_signature_enveloping(
+        SignatureMethod sm, DigestMethod dm, KeyInfo ki, Key signingKey, Key verifyingKey
+    ) throws Exception {
+
+        // create reference
+        Reference ref = fac.newReference("#DSig.Object_1", dm, null,
+                                         XMLObject.TYPE, null);
+
+        // create SignedInfo
+        SignedInfo si = fac.newSignedInfo(withoutComments, sm,
+                                          Collections.singletonList(ref));
+
+        Document doc = db.newDocument();
+        // create Objects
+        Element webElem = doc.createElementNS(null, "Web");
+        Text text = doc.createTextNode("up up and away");
+        webElem.appendChild(text);
+        XMLObject obj = fac.newXMLObject(Collections.singletonList
+                                         (new DOMStructure(webElem)), "DSig.Object_1", "text/xml", null);
+
+        // create XMLSignature
+        XMLSignature sig = fac.newXMLSignature
+        (si, ki, Collections.singletonList(obj), null, null);
+
+        DOMSignContext dsc = new DOMSignContext(signingKey, doc);
+        dsc.setDefaultNamespacePrefix("dsig");
+
+        sig.sign(dsc);
+        
+        // XMLUtils.outputDOM(doc.getDocumentElement(), System.out);
+
+        DOMValidateContext dvc = new DOMValidateContext
+        (verifyingKey, doc.getDocumentElement());
+        XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
+
+        assertTrue(sig.equals(sig2));
+        assertTrue(sig2.validate(dvc));
+    }
 }

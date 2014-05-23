@@ -337,15 +337,12 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
         RIPEMD160withRSA(Element dmElem) throws MarshalException {
             super(dmElem);
         }
-        @Override
         public String getAlgorithm() {
             return RSA_RIPEMD160;
         }
-        @Override
         String getJCAAlgorithm() {
             return "RIPEMD160withRSA";
         }
-        @Override
         Type getAlgorithmType() {
             return Type.RSA;
         }
@@ -416,15 +413,12 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
         SHA224withECDSA(Element dmElem) throws MarshalException {
             super(dmElem);
         }
-        @Override
         public String getAlgorithm() {
             return ECDSA_SHA224;
         }
-        @Override
         String getJCAAlgorithm() {
             return "SHA224withECDSA";
         }
-        @Override
         Type getAlgorithmType() {
             return Type.ECDSA;
         }
