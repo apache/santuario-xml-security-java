@@ -52,6 +52,8 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
     private Signature signature;
     
     // see RFC 4051 for these algorithm definitions
+    static final String RSA_SHA224 =
+        "http://www.w3.org/2001/04/xmldsig-more#rsa-sha224";
     static final String RSA_SHA256 =
         "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256";
     static final String RSA_SHA384 =
@@ -115,6 +117,8 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
         String alg = DOMUtils.getAttributeValue(smElem, "Algorithm");
         if (alg.equals(SignatureMethod.RSA_SHA1)) {
             return new SHA1withRSA(smElem);
+        } else if (alg.equals(RSA_SHA224)) {
+            return new SHA224withRSA(smElem);
         } else if (alg.equals(RSA_SHA256)) {
             return new SHA256withRSA(smElem);
         } else if (alg.equals(RSA_SHA384)) {
@@ -275,6 +279,25 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
         }
     }
 
+    static final class SHA224withRSA extends DOMSignatureMethod {
+        SHA224withRSA(AlgorithmParameterSpec params)
+            throws InvalidAlgorithmParameterException {
+            super(params);
+        }
+        SHA224withRSA(Element dmElem) throws MarshalException {
+            super(dmElem);
+        }
+        public String getAlgorithm() {
+            return RSA_SHA224;
+        }
+        String getJCAAlgorithm() {
+            return "SHA224withRSA";
+        }
+        Type getAlgorithmType() {
+            return Type.RSA;
+        }
+    }
+    
     static final class SHA256withRSA extends DOMSignatureMethod {
         SHA256withRSA(AlgorithmParameterSpec params)
             throws InvalidAlgorithmParameterException {
