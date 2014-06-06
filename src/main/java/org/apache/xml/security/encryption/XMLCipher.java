@@ -1190,11 +1190,12 @@ public class XMLCipher {
             throw new XMLEncryptionException("empty", uee);
         }
 
-        // Now build up to a properly XML Encryption encoded octet stream
-        // IvParameterSpec iv;
-        if (iv == null) {
+        // Get IV from Cipher Object. If this is null (see BouncyCastle issue BJA-473) then use
+        // the original IV that was generated
+        if (c.getIV() != null) {
             iv = c.getIV();
         }
+        // Now build up to a properly XML Encryption encoded octet stream
         byte[] finalEncryptedBytes = new byte[iv.length + encryptedBytes.length];
         System.arraycopy(iv, 0, finalEncryptedBytes, 0, iv.length);
         System.arraycopy(encryptedBytes, 0, finalEncryptedBytes, iv.length, encryptedBytes.length);
@@ -1208,7 +1209,6 @@ public class XMLCipher {
         try {
             CipherData cd = ed.getCipherData();
             CipherValue cv = cd.getCipherValue();
-            // cv.setValue(base64EncodedEncryptedOctets.getBytes());
             cv.setValue(base64EncodedEncryptedOctets);
 
             if (type != null) {
