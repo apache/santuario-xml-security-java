@@ -29,10 +29,11 @@ import javax.xml.crypto.dom.DOMCryptoContext;
 import javax.xml.crypto.dsig.*;
 import javax.xml.crypto.dsig.keyinfo.KeyValue;
 
-// import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.AccessController;
+import java.security.AlgorithmParameters;
+import java.security.GeneralSecurityException;
 import java.security.KeyException;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
@@ -44,6 +45,7 @@ import java.security.interfaces.DSAPublicKey;
 import java.security.interfaces.ECPublicKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.DSAPublicKeySpec;
+import java.security.spec.ECGenParameterSpec;
 import java.security.spec.ECParameterSpec;
 import java.security.spec.ECPoint;
 import java.security.spec.ECPublicKeySpec;
@@ -332,12 +334,15 @@ public abstract class DOMKeyValue extends DOMStructure implements KeyValue {
     }
 
     static final class EC extends DOMKeyValue {
+
+        private final static String ver = System.getProperty("java.version");
+        private final static boolean atLeast18 = !ver.startsWith("1.5") &&
+            !ver.startsWith("1.6") && !ver.startsWith("1.7");
         // ECKeyValue CryptoBinaries
         private byte[] ecPublicKey;
         private KeyFactory eckf;
         private ECParameterSpec ecParams;
-        private Method encodePoint, decodePoint, getCurveName,
-                       getECParameterSpec;
+        private Method encodePoint, decodePoint;
 
         EC(PublicKey key) throws KeyException {
             super(key);
@@ -374,16 +379,15 @@ public abstract class DOMKeyValue extends DOMStructure implements KeyValue {
         }
 
         void getMethods() throws ClassNotFoundException, NoSuchMethodException {
-            Class c = ClassLoaderUtils.loadClass("sun.security.ec.ECParameters", DOMKeyValue.class);
+            String className = atLeast18
+                ? "sun.security.util.ECUtil"
+                : "sun.security.ec.ECParameters";
+            Class c = ClassLoaderUtils.loadClass(className, DOMKeyValue.class);
             Class[] params = new Class<?>[] { ECPoint.class, EllipticCurve.class };
             encodePoint = c.getMethod("encodePoint", params);
             params = new Class[] { ECParameterSpec.class };
-            getCurveName = c.getMethod("getCurveName", params);
             params = new Class[] { byte[].class, EllipticCurve.class };
             decodePoint = c.getMethod("decodePoint", params);
-            c = ClassLoaderUtils.loadClass("sun.security.ec.NamedCurve", DOMKeyValue.class);
-            params = new Class[] { String.class };
-            getECParameterSpec = c.getMethod("getECParameterSpec", params);
         }
 
         void marshalPublicKey(Node parent, Document doc, String dsPrefix,
@@ -402,12 +406,10 @@ public abstract class DOMKeyValue extends DOMStructure implements KeyValue {
                                                            prefix);
             Object[] args = new Object[] { ecParams };
             try {
-                String oid = (String) getCurveName.invoke(null, args);
+                String oid = getCurveName(ecParams);
                 DOMUtils.setAttribute(namedCurveElem, "URI", "urn:oid:" + oid);
-            } catch (IllegalAccessException iae) {
-                throw new MarshalException(iae);
-            } catch (InvocationTargetException ite) {
-                throw new MarshalException(ite);
+            } catch (GeneralSecurityException gse) {
+                throw new MarshalException(gse);
             }
             String qname = (prefix == null || prefix.length() == 0) 
                        ? "xmlns" : "xmlns:" + prefix;
@@ -419,6 +421,19 @@ public abstract class DOMKeyValue extends DOMStructure implements KeyValue {
                 (DOMUtils.getOwnerDocument(publicKeyElem).createTextNode(encoded));
             ecKeyValueElem.appendChild(publicKeyElem);
             parent.appendChild(ecKeyValueElem);
+        }
+
+        private static String getCurveName(ECParameterSpec spec)
+            throws GeneralSecurityException
+        {
+            AlgorithmParameters ap = AlgorithmParameters.getInstance("EC");
+            ap.init(spec);
+            ECGenParameterSpec nameSpec =
+                ap.getParameterSpec(ECGenParameterSpec.class);
+            if (nameSpec == null) {
+                return null;
+            }
+            return nameSpec.getName();
         }
 
         PublicKey unmarshalKeyValue(Element kvtElem)
@@ -465,12 +480,9 @@ public abstract class DOMKeyValue extends DOMStructure implements KeyValue {
                     String oid = uri.substring(8);
                     try {
                         Object[] args = new Object[] { oid };
-                        ecParams = (ECParameterSpec)
-                                    getECParameterSpec.invoke(null, args);
-                    } catch (IllegalAccessException iae) {
-                        throw new MarshalException(iae);
-                    } catch (InvocationTargetException ite) {
-                        throw new MarshalException(ite);
+                        ecParams = getECParameterSpec(oid);
+                    } catch (GeneralSecurityException gse) {
+                        throw new MarshalException(gse);
                     }
                 } else {
                     throw new MarshalException("Invalid NamedCurve URI");
@@ -497,6 +509,14 @@ public abstract class DOMKeyValue extends DOMStructure implements KeyValue {
 */
             ECPublicKeySpec spec = new ECPublicKeySpec(ecPoint, ecParams);
             return generatePublicKey(eckf, spec);
+        }
+
+        private static ECParameterSpec getECParameterSpec(String name)
+            throws GeneralSecurityException
+        {
+            AlgorithmParameters ap = AlgorithmParameters.getInstance("EC");
+            ap.init(new ECGenParameterSpec(name));
+            return ap.getParameterSpec(ECParameterSpec.class);
         }
     }
 
