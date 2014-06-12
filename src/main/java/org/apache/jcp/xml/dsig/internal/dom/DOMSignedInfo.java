@@ -147,13 +147,15 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
 
         // unmarshal CanonicalizationMethod
         Element cmElem = DOMUtils.getFirstChildElement(siElem,
-                                                       "CanonicalizationMethod");
+                                                       "CanonicalizationMethod",
+                                                       XMLSignature.XMLNS);
         canonicalizationMethod = new DOMCanonicalizationMethod(cmElem, context,
                                                                provider);
 
         // unmarshal SignatureMethod
         Element smElem = DOMUtils.getNextSiblingElement(cmElem,
-                                                        "SignatureMethod");
+                                                        "SignatureMethod",
+                                                        XMLSignature.XMLNS);
         signatureMethod = DOMSignatureMethod.unmarshal(smElem);
         
         boolean secVal = Utils.secureValidation(context);
@@ -168,15 +170,16 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
         
         // unmarshal References
         ArrayList<Reference> refList = new ArrayList<Reference>(5);
-        Element refElem = DOMUtils.getNextSiblingElement(smElem, "Reference");
+        Element refElem = DOMUtils.getNextSiblingElement(smElem, "Reference", XMLSignature.XMLNS);
         refList.add(new DOMReference(refElem, context, provider));
 
         refElem = DOMUtils.getNextSiblingElement(refElem); 
         while (refElem != null) {
             String name = refElem.getLocalName();
-            if (!name.equals("Reference")) {
+            String namespace = refElem.getNamespaceURI();
+            if (!name.equals("Reference") || !XMLSignature.XMLNS.equals(namespace)) {
                 throw new MarshalException("Invalid element name: " +
-                                           name + ", expected Reference");
+                                           namespace + ":" + name + ", expected Reference");
             }
             refList.add(new DOMReference(refElem, context, provider));
             if (secVal && (refList.size() > MAXIMUM_REFERENCE_COUNT)) {

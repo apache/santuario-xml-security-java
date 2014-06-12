@@ -30,6 +30,14 @@ import javax.xml.crypto.dsig.*;
 import javax.xml.crypto.dsig.keyinfo.KeyValue;
 
 
+
+
+
+
+
+
+
+
 // import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -89,11 +97,16 @@ public abstract class DOMKeyValue extends DOMStructure implements KeyValue {
 
     static KeyValue unmarshal(Element kvElem) throws MarshalException {
         Element kvtElem = DOMUtils.getFirstChildElement(kvElem);
-        if (kvtElem.getLocalName().equals("DSAKeyValue")) {
+        if (kvtElem == null) {
+            throw new MarshalException("KeyValue must contain at least one type");
+        }
+        
+        String namespace = kvtElem.getNamespaceURI();
+        if (kvtElem.getLocalName().equals("DSAKeyValue") && XMLSignature.XMLNS.equals(namespace)) {
             return new DSA(kvtElem);
-        } else if (kvtElem.getLocalName().equals("RSAKeyValue")) {
+        } else if (kvtElem.getLocalName().equals("RSAKeyValue") && XMLSignature.XMLNS.equals(namespace)) {
             return new RSA(kvtElem);
-        } else if (kvtElem.getLocalName().equals("ECKeyValue")) {
+        } else if (kvtElem.getLocalName().equals("ECKeyValue") && XMLDSIG_11_XMLNS.equals(namespace)) {
             return new EC(kvtElem);
         } else {
             return new Unknown(kvtElem);
@@ -217,10 +230,12 @@ public abstract class DOMKeyValue extends DOMStructure implements KeyValue {
                 }
             }
             Element modulusElem = DOMUtils.getFirstChildElement(kvtElem,
-                                                                "Modulus");
+                                                                "Modulus",
+                                                                XMLSignature.XMLNS);
             modulus = new DOMCryptoBinary(modulusElem.getFirstChild());
             Element exponentElem = DOMUtils.getNextSiblingElement(modulusElem,
-                                                                  "Exponent");
+                                                                  "Exponent",
+                                                                  XMLSignature.XMLNS);
             exponent = new DOMCryptoBinary(exponentElem.getFirstChild());
             RSAPublicKeySpec spec = new RSAPublicKeySpec(modulus.getBigNum(),
                                                          exponent.getBigNum());
@@ -286,19 +301,25 @@ public abstract class DOMKeyValue extends DOMStructure implements KeyValue {
                 }
             }
             Element curElem = DOMUtils.getFirstChildElement(kvtElem);
+            if (curElem == null) {
+                throw new MarshalException("KeyValue must contain at least one type");
+            }
             // check for P and Q
-            if (curElem.getLocalName().equals("P")) {
+            if (curElem.getLocalName().equals("P") && XMLSignature.XMLNS.equals(curElem.getNamespaceURI())) {
                 p = new DOMCryptoBinary(curElem.getFirstChild());
-                curElem = DOMUtils.getNextSiblingElement(curElem, "Q");
+                curElem = DOMUtils.getNextSiblingElement(curElem, "Q", XMLSignature.XMLNS);
                 q = new DOMCryptoBinary(curElem.getFirstChild());
                 curElem = DOMUtils.getNextSiblingElement(curElem);
             } 
-            if (curElem.getLocalName().equals("G")) {
+            if (curElem != null 
+                && curElem.getLocalName().equals("G") && XMLSignature.XMLNS.equals(curElem.getNamespaceURI())) {
                 g = new DOMCryptoBinary(curElem.getFirstChild());
                 curElem = DOMUtils.getNextSiblingElement(curElem, "Y");
             }
-            y = new DOMCryptoBinary(curElem.getFirstChild());
-            curElem = DOMUtils.getNextSiblingElement(curElem);
+            if (curElem != null) {
+                y = new DOMCryptoBinary(curElem.getFirstChild());
+                curElem = DOMUtils.getNextSiblingElement(curElem);
+            }
             if (curElem != null && curElem.getLocalName().equals("J")) {
                 j = new DOMCryptoBinary(curElem.getFirstChild());
                 // curElem = DOMUtils.getNextSiblingElement(curElem);
@@ -437,10 +458,16 @@ public abstract class DOMKeyValue extends DOMStructure implements KeyValue {
             }
             ECParameterSpec ecParams = null;
             Element curElem = DOMUtils.getFirstChildElement(kvtElem);
-            if (curElem.getLocalName().equals("ECParameters")) {
+            if (curElem == null) {
+                throw new MarshalException("KeyValue must contain at least one type");
+            }
+            
+            if (curElem.getLocalName().equals("ECParameters") 
+                && XMLDSIG_11_XMLNS.equals(curElem.getNamespaceURI())) {
                 throw new UnsupportedOperationException
                     ("ECParameters not supported");
-            } else if (curElem.getLocalName().equals("NamedCurve")) {
+            } else if (curElem.getLocalName().equals("NamedCurve")
+                && XMLDSIG_11_XMLNS.equals(curElem.getNamespaceURI())) {
                 String uri = DOMUtils.getAttributeValue(curElem, "URI");
                 // strip off "urn:oid"
                 if (uri.startsWith("urn:oid:")) {
@@ -460,7 +487,7 @@ public abstract class DOMKeyValue extends DOMStructure implements KeyValue {
             } else {
                 throw new MarshalException("Invalid ECKeyValue");
             }
-            curElem = DOMUtils.getNextSiblingElement(curElem, "PublicKey");
+            curElem = DOMUtils.getNextSiblingElement(curElem, "PublicKey", XMLDSIG_11_XMLNS);
             ECPoint ecPoint = null;
             try {
                 Object[] args = new Object[] { Base64.decode(curElem),

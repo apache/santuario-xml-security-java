@@ -25,6 +25,7 @@
 package org.apache.jcp.xml.dsig.internal.dom;
 
 import java.util.*;
+
 import javax.xml.crypto.*;
 import javax.xml.crypto.dom.DOMCryptoContext;
 import javax.xml.crypto.dsig.*;
@@ -33,7 +34,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
 import org.apache.xml.security.exceptions.Base64DecodingException;
 import org.apache.xml.security.utils.Base64;
 
@@ -153,10 +153,11 @@ public final class DOMPGPData extends DOMStructure implements PGPData {
             if (n.getNodeType() == Node.ELEMENT_NODE) {
                 Element childElem = (Element)n;
                 String localName = childElem.getLocalName();
+                String namespace = childElem.getNamespaceURI();
                 try {
-                    if (localName.equals("PGPKeyID")) {
+                    if (localName.equals("PGPKeyID") && XMLSignature.XMLNS.equals(namespace)) {
                         keyId = Base64.decode(childElem);
-                    } else if (localName.equals("PGPKeyPacket")){
+                    } else if (localName.equals("PGPKeyPacket") && XMLSignature.XMLNS.equals(namespace)) {
                         keyPacket = Base64.decode(childElem);
                     } else {
                         other.add

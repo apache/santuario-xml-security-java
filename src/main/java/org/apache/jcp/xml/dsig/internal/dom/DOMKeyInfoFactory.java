@@ -28,9 +28,12 @@ import java.math.BigInteger;
 import java.security.KeyException;
 import java.security.PublicKey;
 import java.util.List;
+
 import javax.xml.crypto.*;
 import javax.xml.crypto.dom.DOMCryptoContext;
+import javax.xml.crypto.dsig.XMLSignature;
 import javax.xml.crypto.dsig.keyinfo.*;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -143,14 +146,15 @@ public final class DOMKeyInfoFactory extends KeyInfoFactory {
 
         // check tag
         String tag = element.getLocalName();
-        if (tag == null) {
+        String namespace = element.getNamespaceURI();
+        if (tag == null || namespace == null) {
             throw new MarshalException("Document implementation must " +
                 "support DOM Level 2 and be namespace aware");
         }
-        if (tag.equals("KeyInfo")) {
+        if (tag.equals("KeyInfo") && XMLSignature.XMLNS.equals(namespace)) {
             return new DOMKeyInfo(element, new UnmarshalContext(), getProvider());
         } else {
-            throw new MarshalException("invalid KeyInfo tag: " + tag);
+            throw new MarshalException("invalid KeyInfo tag: " + namespace + ":" + tag);
         }
     }
     
