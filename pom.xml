@@ -137,7 +137,6 @@
                 <configuration>
                     <source>1.5</source>
                     <target>1.5</target>
-                    <compilerArgument>-Xlint:unchecked,deprecation</compilerArgument>
                 </configuration>
             </plugin>
             

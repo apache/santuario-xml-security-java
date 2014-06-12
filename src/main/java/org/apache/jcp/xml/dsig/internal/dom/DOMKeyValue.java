@@ -404,7 +404,6 @@ public abstract class DOMKeyValue extends DOMStructure implements KeyValue {
             Element publicKeyElem = DOMUtils.createElement(doc, "PublicKey",
                                                            XMLDSIG_11_XMLNS,
                                                            prefix);
-            Object[] args = new Object[] { ecParams };
             try {
                 String oid = getCurveName(ecParams);
                 DOMUtils.setAttribute(namedCurveElem, "URI", "urn:oid:" + oid);
@@ -479,7 +478,6 @@ public abstract class DOMKeyValue extends DOMStructure implements KeyValue {
                 if (uri.startsWith("urn:oid:")) {
                     String oid = uri.substring(8);
                     try {
-                        Object[] args = new Object[] { oid };
                         ecParams = getECParameterSpec(oid);
                     } catch (GeneralSecurityException gse) {
                         throw new MarshalException(gse);
