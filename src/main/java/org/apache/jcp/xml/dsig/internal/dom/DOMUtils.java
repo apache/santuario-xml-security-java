@@ -350,9 +350,11 @@ public class DOMUtils {
      * @param node the parent node whose children are to be removed
      */
     public static void removeAllChildren(Node node) {
-        NodeList children = node.getChildNodes();
-        for (int i = 0, length = children.getLength(); i < length; i++) {
-            node.removeChild(children.item(i));
+        Node firstChild = node.getFirstChild();
+        while (firstChild != null) {
+            Node nodeToRemove = firstChild;
+            firstChild = firstChild.getNextSibling();
+            node.removeChild(nodeToRemove);
         }
     }
 

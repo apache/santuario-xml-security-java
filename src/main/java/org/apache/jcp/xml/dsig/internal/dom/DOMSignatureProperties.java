@@ -34,7 +34,6 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 /**
  * DOM-based implementation of SignatureProperties.
@@ -98,22 +97,19 @@ public final class DOMSignatureProperties extends DOMStructure
             id = null;
         }
 
-        NodeList nodes = propsElem.getChildNodes();
-        int length = nodes.getLength();
-        List<SignatureProperty> properties =
-            new ArrayList<SignatureProperty>(length);
-        for (int i = 0; i < length; i++) {
-            Node child = nodes.item(i);
-            if (child.getNodeType() == Node.ELEMENT_NODE) {
-                String name = child.getLocalName();
-                String namespace = child.getNamespaceURI();
+        List<SignatureProperty> properties = new ArrayList<SignatureProperty>();
+        Node firstChild = propsElem.getFirstChild();
+        while (firstChild != null) {
+            if (firstChild.getNodeType() == Node.ELEMENT_NODE) {
+                String name = firstChild.getLocalName();
+                String namespace = firstChild.getNamespaceURI();
                 if (!name.equals("SignatureProperty") || !XMLSignature.XMLNS.equals(namespace)) {
                     throw new MarshalException("Invalid element name: " + namespace + ":" + name +
                                                ", expected SignatureProperty");
                 }
-                properties.add(new DOMSignatureProperty((Element)child,
-                                                        context));
+                properties.add(new DOMSignatureProperty((Element)firstChild, context));
             }
+            firstChild = firstChild.getNextSibling();
         }
         if (properties.isEmpty()) {
             throw new MarshalException("properties cannot be empty");

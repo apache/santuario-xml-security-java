@@ -35,7 +35,6 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 /**
  * DOM-based implementation of XMLObject.
@@ -105,28 +104,27 @@ public final class DOMXMLObject extends DOMStructure implements XMLObject {
         }
         this.mimeType = DOMUtils.getAttributeValue(objElem, "MimeType");
 
-        NodeList nodes = objElem.getChildNodes();
-        int length = nodes.getLength();
-        List<XMLStructure> content = new ArrayList<XMLStructure>(length);
-        for (int i = 0; i < length; i++) {
-            Node child = nodes.item(i);
-            if (child.getNodeType() == Node.ELEMENT_NODE) {
-                Element childElem = (Element)child;
+        List<XMLStructure> content = new ArrayList<XMLStructure>();
+        Node firstChild = objElem.getFirstChild();
+        while (firstChild != null) {
+            if (firstChild.getNodeType() == Node.ELEMENT_NODE) {
+                Element childElem = (Element)firstChild;
                 String tag = childElem.getLocalName();
                 String namespace = childElem.getNamespaceURI();
                 if (tag.equals("Manifest") && XMLSignature.XMLNS.equals(namespace)) {
                     content.add(new DOMManifest(childElem, context, provider));
-                    continue;
                 } else if (tag.equals("SignatureProperties") && XMLSignature.XMLNS.equals(namespace)) {
                     content.add(new DOMSignatureProperties(childElem, context));
-                    continue;
                 } else if (tag.equals("X509Data") && XMLSignature.XMLNS.equals(namespace)) {
                     content.add(new DOMX509Data(childElem));
-                    continue;
+                } else {
+                    //@@@FIXME: check for other dsig structures
+                    content.add(new javax.xml.crypto.dom.DOMStructure(firstChild));
                 }
-                //@@@FIXME: check for other dsig structures
+            } else {
+                content.add(new javax.xml.crypto.dom.DOMStructure(firstChild));
             }
-            content.add(new javax.xml.crypto.dom.DOMStructure(child));
+            firstChild = firstChild.getNextSibling();
         }
         if (content.isEmpty()) {
             this.content = Collections.emptyList();
