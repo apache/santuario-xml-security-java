@@ -1,7 +1,16 @@
 Changelog for "Apache xml-security" <http://santuario.apache.org/>
 
 New in v1.5.7:
+    Fixed SANTUARIO-307 - utf8 encode is broken
+    Fixed SANTUARIO-350 - Unmarshalling from existing elements doesn't enforce syntax & semantic requirements
+    Fixed SANTUARIO-375 - Canonicalizer.ALGO_ID_C14N_PHYSICAL's initialization
+    Fixed SANTUARIO-379 - Signing XML with SHA1 with DSA throws exception when key is larger than 1024
     Fixed SANTUARIO-383 - NPE in DOMXMLSignature.
+    Fixed SANTUARIO-388 - Add support + testing for RIPE-MD160 digest algorithm
+    Fixed SANTUARIO-389 - Add support + testing for SHA-224 digest algorithm
+    Fixed SANTUARIO-391 - Support for Signature Algorithm RSA with SHA-224 
+    Fixed SANTUARIO-392 - In XMLCipher support use of GCMParameterSpec for AES GCM modes
+    Fixed SANTUARIO-393 - Performance regression as signature data is not buffered
 
 New in v1.5.6:
     Fixed SANTUARIO-368 - NPE in XMLSignature.
