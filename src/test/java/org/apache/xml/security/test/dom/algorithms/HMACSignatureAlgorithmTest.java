@@ -18,6 +18,9 @@
  */
 package org.apache.xml.security.test.dom.algorithms;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.security.Key;
@@ -52,6 +55,8 @@ public class HMACSignatureAlgorithmTest extends org.junit.Assert {
         org.apache.xml.security.Init.init();
     }
     
+    private boolean bouncyCastleAvailable = true;
+    
     public HMACSignatureAlgorithmTest() throws Exception {
         //
         // If the BouncyCastle provider is not installed, then try to load it 
@@ -66,6 +71,7 @@ public class HMACSignatureAlgorithmTest extends org.junit.Assert {
                 //ignore
             }
             if (cons == null) {
+                bouncyCastleAvailable = false;
                 // BouncyCastle is not available so just return
                 return;
             } else {
@@ -78,9 +84,7 @@ public class HMACSignatureAlgorithmTest extends org.junit.Assert {
     @org.junit.Test
     public void testHMACSHA1() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
+        InputStream sourceDocument = readPlaintextDocument();
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
         
@@ -99,9 +103,7 @@ public class HMACSignatureAlgorithmTest extends org.junit.Assert {
     @org.junit.Test
     public void testHMACMD5() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
+        InputStream sourceDocument = readPlaintextDocument();
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
         
@@ -119,10 +121,13 @@ public class HMACSignatureAlgorithmTest extends org.junit.Assert {
     
     @org.junit.Test
     public void testHMACSHA_224() throws Exception {
+        
+        if (!bouncyCastleAvailable) {
+            return;
+        }
+        
         // Read in plaintext document
-        InputStream sourceDocument = 
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
+        InputStream sourceDocument = readPlaintextDocument();
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
         
@@ -141,9 +146,7 @@ public class HMACSignatureAlgorithmTest extends org.junit.Assert {
     @org.junit.Test
     public void testHMACSHA_256() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
+        InputStream sourceDocument = readPlaintextDocument();
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
         
@@ -162,9 +165,7 @@ public class HMACSignatureAlgorithmTest extends org.junit.Assert {
     @org.junit.Test
     public void testHMACSHA_384() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
+        InputStream sourceDocument = readPlaintextDocument();
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
         
@@ -183,9 +184,7 @@ public class HMACSignatureAlgorithmTest extends org.junit.Assert {
     @org.junit.Test
     public void testHMACSHA_512() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
+        InputStream sourceDocument = readPlaintextDocument();
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
         
@@ -203,10 +202,12 @@ public class HMACSignatureAlgorithmTest extends org.junit.Assert {
     
     @org.junit.Test
     public void testHMACRIPEMD160() throws Exception {
+        if (!bouncyCastleAvailable) {
+            return;
+        }
+        
         // Read in plaintext document
-        InputStream sourceDocument = 
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
+        InputStream sourceDocument = readPlaintextDocument();
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
         
@@ -220,6 +221,25 @@ public class HMACSignatureAlgorithmTest extends org.junit.Assert {
         sign("http://www.w3.org/2001/04/xmldsig-more#hmac-ripemd160", document, localNames, key);
         // XMLUtils.outputDOM(document, System.out);
         verify(document, key, localNames);
+    }
+    
+    private InputStream readPlaintextDocument() throws FileNotFoundException {
+        // Read in plaintext document
+        InputStream sourceDocument = 
+                this.getClass().getClassLoader().getResourceAsStream(
+                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
+        if (sourceDocument == null) {
+            String filename = 
+                "src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml";
+            String basedir = System.getProperty("basedir");
+            if (basedir != null && !"".equals(basedir)) {
+                filename = basedir + "/" + filename;
+            }
+            File f = new File(filename);
+            sourceDocument = new FileInputStream(f);
+        }
+        
+        return sourceDocument;
     }
 
     private XMLSignature sign(

@@ -37,6 +37,8 @@ public class DigestAlgorithmTest extends org.junit.Assert {
         org.apache.xml.security.Init.init();
     }
     
+    private boolean bouncyCastleAvailable = true;
+    
     public DigestAlgorithmTest() throws Exception {
         //
         // If the BouncyCastle provider is not installed, then try to load it 
@@ -51,6 +53,7 @@ public class DigestAlgorithmTest extends org.junit.Assert {
                 //ignore
             }
             if (cons == null) {
+                bouncyCastleAvailable = false;
                 // BouncyCastle is not available so just return
                 return;
             } else {
@@ -80,6 +83,11 @@ public class DigestAlgorithmTest extends org.junit.Assert {
     
     @org.junit.Test
     public void testSHA224() throws Exception {
+        
+        if (!bouncyCastleAvailable) {
+            return;
+        }
+        
         Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
         
         MessageDigestAlgorithm digestAlgorithm = 

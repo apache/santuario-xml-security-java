@@ -57,6 +57,7 @@ public class HMACSignatureAlgorithmTest extends org.junit.Assert {
     private SignatureMethod hmacSha1, hmacSha224, hmacSha256, hmacSha384, hmacSha512, ripemd160;
     private XMLSignatureFactory fac;
     private DocumentBuilder db;
+    private boolean bouncyCastleAvailable = true;
 
     static {
         Security.insertProviderAt
@@ -77,6 +78,7 @@ public class HMACSignatureAlgorithmTest extends org.junit.Assert {
                 //ignore
             }
             if (cons == null) {
+                bouncyCastleAvailable = false;
                 // BouncyCastle is not available so just return
                 return;
             } else {
@@ -106,36 +108,60 @@ public class HMACSignatureAlgorithmTest extends org.junit.Assert {
 
     @org.junit.Test
     public void testHMACSHA1() throws Exception {
+        if (!bouncyCastleAvailable) {
+            return;
+        }
+        
         test_create_signature_enveloping(hmacSha1, sha1, null,
                                          TestUtils.getSecretKey("testkey".getBytes("ASCII")), sks);
     }
   
     @org.junit.Test
     public void testHMACSHA_224() throws Exception {
+        if (!bouncyCastleAvailable) {
+            return;
+        }
+        
         test_create_signature_enveloping(hmacSha224, sha1, null,
                                          TestUtils.getSecretKey("testkey".getBytes("ASCII")), sks);
     }
     
     @org.junit.Test
     public void testHMACSHA_256() throws Exception {
+        if (!bouncyCastleAvailable) {
+            return;
+        }
+        
         test_create_signature_enveloping(hmacSha256, sha1, null,
                                          TestUtils.getSecretKey("testkey".getBytes("ASCII")), sks);
     }
     
     @org.junit.Test
     public void testHMACSHA_384() throws Exception {
+        if (!bouncyCastleAvailable) {
+            return;
+        }
+        
         test_create_signature_enveloping(hmacSha384, sha1, null,
                                          TestUtils.getSecretKey("testkey".getBytes("ASCII")), sks);
     }
     
     @org.junit.Test
     public void testHMACSHA_512() throws Exception {
+        if (!bouncyCastleAvailable) {
+            return;
+        }
+        
         test_create_signature_enveloping(hmacSha512, sha1, null,
                                          TestUtils.getSecretKey("testkey".getBytes("ASCII")), sks);
     }
   
     @org.junit.Test
     public void testHMACRIPEMD160() throws Exception {
+        if (!bouncyCastleAvailable) {
+            return;
+        }
+        
         test_create_signature_enveloping(ripemd160, sha1, null,
                                          TestUtils.getSecretKey("testkey".getBytes("ASCII")), sks);
     }
