@@ -63,6 +63,7 @@ public class PKSignatureAlgorithmTest extends org.junit.Assert {
     private DocumentBuilder db;
     private KeyPair rsaKeyPair, ecKeyPair;
     private KeyInfo rsaki;
+    private boolean bouncyCastleAvailable = true;
 
     static {
         Security.insertProviderAt
@@ -83,6 +84,7 @@ public class PKSignatureAlgorithmTest extends org.junit.Assert {
                 //ignore
             }
             if (cons == null) {
+                bouncyCastleAvailable = false;
                 // BouncyCastle is not available so just return
                 return;
             } else {
@@ -125,66 +127,110 @@ public class PKSignatureAlgorithmTest extends org.junit.Assert {
 
     @org.junit.Test
     public void testRSA_SHA1() throws Exception {
+        if (!bouncyCastleAvailable) {
+            return;
+        }
+        
         test_create_signature_enveloping(rsaSha1, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
     
     @org.junit.Test
     public void testRSA_SHA_224() throws Exception {
+        if (!bouncyCastleAvailable) {
+            return;
+        }
+        
         test_create_signature_enveloping(rsaSha224, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
     
     @org.junit.Test
     public void testRSA_SHA_256() throws Exception {
+        if (!bouncyCastleAvailable) {
+            return;
+        }
+        
         test_create_signature_enveloping(rsaSha256, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
     
     @org.junit.Test
     public void testRSA_SHA_384() throws Exception {
+        if (!bouncyCastleAvailable) {
+            return;
+        }
+        
         test_create_signature_enveloping(rsaSha384, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
     
     @org.junit.Test
     public void testRSA_SHA_512() throws Exception {
+        if (!bouncyCastleAvailable) {
+            return;
+        }
+    
         test_create_signature_enveloping(rsaSha512, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
     
     @org.junit.Test
     public void testRSA_RIPEMD160() throws Exception {
+        if (!bouncyCastleAvailable) {
+            return;
+        }
+        
         test_create_signature_enveloping(rsaRipemd160, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
     
     @org.junit.Test
     public void testECDSA_SHA1() throws Exception {
+        if (!bouncyCastleAvailable) {
+            return;
+        }
+        
         test_create_signature_enveloping(ecdsaSha1, sha1, null,
                                          ecKeyPair.getPrivate(), ecKeyPair.getPublic());
     }
     
     @org.junit.Test
     public void testECDSA_SHA224() throws Exception {
+        if (!bouncyCastleAvailable) {
+            return;
+        }
+        
         test_create_signature_enveloping(ecdsaSha224, sha1, null,
                                          ecKeyPair.getPrivate(), ecKeyPair.getPublic());
     }
     
     @org.junit.Test
     public void testECDSA_SHA256() throws Exception {
+        if (!bouncyCastleAvailable) {
+            return;
+        }
+        
         test_create_signature_enveloping(ecdsaSha256, sha1, null,
                                          ecKeyPair.getPrivate(), ecKeyPair.getPublic());
     }
     
     @org.junit.Test
     public void testECDSA_SHA384() throws Exception {
+        if (!bouncyCastleAvailable) {
+            return;
+        }
+        
         test_create_signature_enveloping(ecdsaSha384, sha1, null,
                                          ecKeyPair.getPrivate(), ecKeyPair.getPublic());
     }
     
     @org.junit.Test
     public void testECDSA_SHA512() throws Exception {
+        if (!bouncyCastleAvailable) {
+            return;
+        }
+        
         test_create_signature_enveloping(ecdsaSha512, sha1, null,
                                          ecKeyPair.getPrivate(), ecKeyPair.getPublic());
     }

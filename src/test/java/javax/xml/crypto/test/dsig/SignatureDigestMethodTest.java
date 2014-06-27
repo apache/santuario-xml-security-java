@@ -59,6 +59,7 @@ public class SignatureDigestMethodTest extends org.junit.Assert {
     private KeyInfo rsaki;
     private XMLSignatureFactory fac;
     private DocumentBuilder db;
+    private boolean bouncyCastleAvailable = true;
 
     static {
         Security.insertProviderAt
@@ -79,6 +80,7 @@ public class SignatureDigestMethodTest extends org.junit.Assert {
                 //ignore
             }
             if (cons == null) {
+                bouncyCastleAvailable = false;
                 // BouncyCastle is not available so just return
                 return;
             } else {
@@ -112,36 +114,60 @@ public class SignatureDigestMethodTest extends org.junit.Assert {
 
     @org.junit.Test
     public void testSHA1() throws Exception {
+        if (!bouncyCastleAvailable) {
+            return;
+        }
+        
         test_create_signature_enveloping(rsaSha1, sha1, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
   
     @org.junit.Test
     public void testSHA224() throws Exception {
+        if (!bouncyCastleAvailable) {
+            return;
+        }
+        
         test_create_signature_enveloping(rsaSha1, sha224, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
     
     @org.junit.Test
     public void testSHA256() throws Exception {
+        if (!bouncyCastleAvailable) {
+            return;
+        }
+        
         test_create_signature_enveloping(rsaSha1, sha256, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
     
     @org.junit.Test
     public void testSHA384() throws Exception {
+        if (!bouncyCastleAvailable) {
+            return;
+        }
+        
         test_create_signature_enveloping(rsaSha1, sha384, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
     
     @org.junit.Test
     public void testSHA512() throws Exception {
+        if (!bouncyCastleAvailable) {
+            return;
+        }
+        
         test_create_signature_enveloping(rsaSha1, sha512, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
     
     @org.junit.Test
     public void testRIPEMD160() throws Exception {
+        if (!bouncyCastleAvailable) {
+            return;
+        }
+        
         test_create_signature_enveloping(rsaSha1, ripemd160, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
