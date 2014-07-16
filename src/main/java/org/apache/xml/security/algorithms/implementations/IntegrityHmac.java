@@ -135,7 +135,10 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
      */
     protected void engineInitVerify(Key secretKey) throws XMLSignatureException {
         if (!(secretKey instanceof SecretKey)) {
-            String supplied = secretKey.getClass().getName();
+            String supplied = null;
+            if (secretKey != null) {
+                supplied = secretKey.getClass().getName();
+            }
             String needed = SecretKey.class.getName();
             Object exArgs[] = { supplied, needed };
 
@@ -191,19 +194,7 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
      * @throws XMLSignatureException
      */
     protected void engineInitSign(Key secretKey) throws XMLSignatureException {
-        if (!(secretKey instanceof SecretKey)) {
-            String supplied = secretKey.getClass().getName();
-            String needed = SecretKey.class.getName();
-            Object exArgs[] = { supplied, needed };
-
-            throw new XMLSignatureException("algorithms.WrongKeyForThisOperation", exArgs);
-        }
-
-        try {
-            this.macAlgorithm.init(secretKey);
-        } catch (InvalidKeyException ex) {
-            throw new XMLSignatureException("empty", ex);
-        }
+        engineInitSign(secretKey, (AlgorithmParameterSpec)null);
     }
 
     /**
@@ -217,7 +208,10 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
         Key secretKey, AlgorithmParameterSpec algorithmParameterSpec
     ) throws XMLSignatureException {
         if (!(secretKey instanceof SecretKey)) {
-            String supplied = secretKey.getClass().getName();
+            String supplied = null;
+            if (secretKey != null) {
+                supplied = secretKey.getClass().getName();
+            }
             String needed = SecretKey.class.getName();
             Object exArgs[] = { supplied, needed };
 
@@ -225,7 +219,11 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
         }
 
         try {
-            this.macAlgorithm.init(secretKey, algorithmParameterSpec);
+            if (algorithmParameterSpec == null) {
+                this.macAlgorithm.init(secretKey);
+            } else {
+                this.macAlgorithm.init(secretKey, algorithmParameterSpec);
+            }
         } catch (InvalidKeyException ex) {
             throw new XMLSignatureException("empty", ex);
         } catch (InvalidAlgorithmParameterException ex) {
