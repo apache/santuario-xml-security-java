@@ -332,7 +332,7 @@
     <properties>
         <xml.apis.version>1.3.04</xml.apis.version>
         <commons.logging.version>1.1.1</commons.logging.version>
-        <xalan.version>2.7.1</xalan.version>
+        <xalan.version>2.7.2</xalan.version>
         <xerces.version>2.9.1</xerces.version>
         <junit.version>4.8.2</junit.version>
         <log4j.version>1.2.17</log4j.version>
