@@ -39,7 +39,7 @@ import org.w3c.dom.Element;
  */
 public final class DOMManifest extends BaseStructure implements Manifest {
 
-    private final List<DOMReference> references;
+    private final List<Reference> references;
     private final String id;
 
     /**
@@ -60,7 +60,7 @@ public final class DOMManifest extends BaseStructure implements Manifest {
             throw new NullPointerException("references cannot be null");
         }
         this.references =
-            Collections.unmodifiableList(new ArrayList<DOMReference>(references));
+            Collections.unmodifiableList(new ArrayList<Reference>(references));
         if (this.references.isEmpty()) {
             throw new IllegalArgumentException("list of references must " +
                 "contain at least one entry");
@@ -88,7 +88,7 @@ public final class DOMManifest extends BaseStructure implements Manifest {
         boolean secVal = Utils.secureValidation(context);
         
         Element refElem = DOMUtils.getFirstChildElement(manElem, "Reference", XMLSignature.XMLNS);
-        List<DOMReference> refs = new ArrayList<DOMReference>();
+        List<Reference> refs = new ArrayList<Reference>();
         refs.add(new DOMReference(refElem, context, provider));
         
         refElem = DOMUtils.getNextSiblingElement(refElem);
@@ -121,7 +121,7 @@ public final class DOMManifest extends BaseStructure implements Manifest {
     }
     
     @Override
-    public List<DOMReference> getReferences() {
+    public List<Reference> getReferences() {
         return references;
     }
 
