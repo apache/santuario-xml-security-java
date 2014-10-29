@@ -47,7 +47,7 @@ public class ManifestTest extends org.junit.Assert {
     public void testConstructor() throws Exception {
         Manifest man = null;
         String id = "manifest_id";
-        List<Object> refs = new Vector<Object>();
+        List<Reference> refs = new Vector<Reference>();
         // test XMLSignatureFactory.newManifest(List references)
         // and  XMLSignatureFactory.newManifest(List references, 
         //                                       String id)
@@ -111,9 +111,12 @@ public class ManifestTest extends org.junit.Assert {
                  " for empty references");
         }
         
-        refs.add("references");
+        // use raw List type to test for invalid Reference entries
+        List invalidRefs = new Vector();
+        addEntryToRawList(invalidRefs, "references");
         try {
-            man = fac.newManifest(refs);
+            @SuppressWarnings("unchecked")
+            Manifest man2 = fac.newManifest(invalidRefs);
             fail("Should throw a CCE for references containing " + 
                  "non-Reference objects");
         } catch (ClassCastException cce) {
@@ -123,14 +126,15 @@ public class ManifestTest extends org.junit.Assert {
         }
         
         try {
-            man = fac.newManifest(refs, id);
+            @SuppressWarnings("unchecked")
+            Manifest man2 = fac.newManifest(invalidRefs, id);
             fail("Should throw a CCE for references containing " + 
                  "non-Reference objects");
         } catch (ClassCastException cce) {
         } catch (Exception ex) {
             fail("Should throw a CCE instead of " + ex + 
                  " for references containing non-Reference objects");
-        }	
+        }
     }
     
     @org.junit.Test
@@ -149,23 +153,27 @@ public class ManifestTest extends org.junit.Assert {
     }
 
     @org.junit.Test
-    @SuppressWarnings("unchecked")
     public void testgetReferences() throws Exception {
         List<Reference> refs = new Vector<Reference>();
         refs.add(VALID_REF);	
         Manifest man = fac.newManifest(refs);
-        List<Object> stored = man.getReferences();
+        @SuppressWarnings("unchecked")
+        List<Reference> stored = man.getReferences();
         try {
             stored.add(INVALID_REF);
             fail("Should not be able to modify the references directly");
         } catch (UnsupportedOperationException ex) {
         }
         try {
-            ListIterator<Object> li = stored.listIterator();
+            ListIterator<Reference> li = stored.listIterator();
             li.add(INVALID_REF);
             fail("Should not be able to modify the references indirectly");
         } catch (UnsupportedOperationException ex) {
         }
     }
     
+    @SuppressWarnings("unchecked")
+    private static void addEntryToRawList(List list, Object entry) {
+        list.add(entry);
+    }
 }

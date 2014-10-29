@@ -54,6 +54,7 @@ import javax.xml.crypto.XMLStructure;
 import javax.xml.crypto.dom.DOMStructure;
 import javax.xml.crypto.dsig.DigestMethod;
 import javax.xml.crypto.dsig.Reference;
+import javax.xml.crypto.dsig.Transform;
 import javax.xml.crypto.dsig.XMLSignatureException;
 import javax.xml.crypto.dsig.XMLSignatureFactory;
 import javax.xml.crypto.dsig.XMLValidateContext;
@@ -293,8 +294,8 @@ public class TestUtils {
             return null;
         }
         
-        public List<?> getTransforms() {
-            return Collections.EMPTY_LIST;
+        public List<Transform> getTransforms() {
+            return Collections.emptyList();
         }
         
         public boolean validate(XMLValidateContext vCtx) 
@@ -362,7 +363,7 @@ public class TestUtils {
         
         public Data dereference(URIReference ref, XMLCryptoContext ctxt) {
             return new NodeSetData() {
-                public Iterator<?> iterator() {
+                public Iterator<Node> iterator() {
                     return Collections.singletonList(data).iterator();
                 }
             };

@@ -95,9 +95,10 @@ public class KeySelectors {
                 throw new KeySelectorException("Null KeyInfo object!");
             } 
             // search for X509Data in keyinfo
-            Iterator<?> iter = keyInfo.getContent().iterator();
+            @SuppressWarnings("unchecked")
+            Iterator<XMLStructure> iter = keyInfo.getContent().iterator();
             while (iter.hasNext()) {
-                XMLStructure kiType = (XMLStructure) iter.next();
+                XMLStructure kiType = iter.next();
                 if (kiType instanceof X509Data) {
                     X509Data xd = (X509Data) kiType;
                     Object[] entries = xd.getContent().toArray();
@@ -108,7 +109,8 @@ public class KeySelectors {
                             crl = (X509CRL) entries[i];
                         }
                     }
-                    Iterator<?> xi = xd.getContent().iterator();
+                    @SuppressWarnings("unchecked")
+                    Iterator<Object> xi = xd.getContent().iterator();
                     while (xi.hasNext()) {
                         Object o = xi.next();
                         // skip non-X509Certificate entries
@@ -144,10 +146,10 @@ public class KeySelectors {
             if (keyInfo == null) {
                 throw new KeySelectorException("Null KeyInfo object!");
             }
-            List<?> list = keyInfo.getContent();
+            @SuppressWarnings("unchecked")
+            List<XMLStructure> list = keyInfo.getContent();
             
-            for (int i = 0; i < list.size(); i++) {
-                XMLStructure xmlStructure = (XMLStructure) list.get(i);
+            for (XMLStructure xmlStructure : list) {
                 if (xmlStructure instanceof KeyValue) {
                     PublicKey pk = null;
                     try {
@@ -253,9 +255,10 @@ public class KeySelectors {
             if (keyInfo == null) {
                 throw new KeySelectorException("Null KeyInfo object!");
             }
-            Iterator<?> iter = keyInfo.getContent().iterator();
+            @SuppressWarnings("unchecked")
+            Iterator<XMLStructure> iter = keyInfo.getContent().iterator();
             while (iter.hasNext()) {
-                XMLStructure xmlStructure = (XMLStructure) iter.next();
+                XMLStructure xmlStructure = iter.next();
                 try {
                     if (xmlStructure instanceof KeyName) {
                         String name = ((KeyName)xmlStructure).getName();
@@ -298,7 +301,8 @@ public class KeySelectors {
                                 ("Unsupported RetrievalMethod type");
                         }
                     } else if (xmlStructure instanceof X509Data) {
-                        List<?> content = ((X509Data)xmlStructure).getContent();
+                        @SuppressWarnings("unchecked")
+                        List<Object> content = ((X509Data)xmlStructure).getContent();
                         int size = content.size();
                         List<X509Certificate> result = null;
                         // Lookup the public key using the information 

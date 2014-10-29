@@ -63,21 +63,12 @@ public class KeyInfoTest extends org.junit.Assert {
             (Collections.singletonList(fac.newKeyName("foo")));
         for (int j = 0; j < infos.length; j++) {
             KeyInfo ki = infos[j];
-            List<Object> li = ki.getContent();
+            List<XMLStructure> li = ki.getContent();
             assertNotNull(ki.getContent());
-            if (!li.isEmpty()) {
-                Object[] content = li.toArray();
-                for (int i = 0; i < content.length; i++) {
-                    if (!(content[i] instanceof XMLStructure)) {
-                        fail("KeyInfo element has the wrong type");
-                    }
-                }
-            } else {
-                try {
-                    li.add(new Object());
-                    fail("Added KeyInfo element of wrong type");
-                } catch (ClassCastException ex) {
-                    // expected
+            Object[] content = li.toArray();
+            for (int i = 0; i < content.length; i++) {
+                if (!(content[i] instanceof XMLStructure)) {
+                    fail("KeyInfo element has the wrong type");
                 }
             }
         }

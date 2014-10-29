@@ -42,7 +42,6 @@ public class SignaturePropertyTest extends org.junit.Assert {
     }
     
     @org.junit.Test
-    @SuppressWarnings("unchecked")
     public void testConstructor() {
         // test XMLSignatureFactory.newSignatureProperty(List, String, String) 
         SignatureProperty prop;
@@ -54,7 +53,7 @@ public class SignaturePropertyTest extends org.junit.Assert {
         } catch (Exception ex) {
             fail("Should raise a NPE for null content instead of " + ex);
         }
-        List<Object> list = new Vector<Object>();
+        List<XMLStructure> list = new Vector<XMLStructure>();
         try {
             prop = factory.newSignatureProperty(list, target, id); 
             fail("Should raise an IAE for empty content"); 
@@ -63,9 +62,12 @@ public class SignaturePropertyTest extends org.junit.Assert {
             fail("Should raise an IAE for empty content instead of " + ex);
         }
         String strEntry = "wrong type";
-        list.add(strEntry);
+        // use raw List type to test for invalid XMLStructure entries
+        List invalidList = new Vector();
+        addEntryToRawList(invalidList, strEntry);
         try {
-            prop = factory.newSignatureProperty(list, target, id); 
+            @SuppressWarnings("unchecked")
+            SignatureProperty prop2 = factory.newSignatureProperty(invalidList, target, id); 
             fail("Should raise a CCE for content containing " +
                  "invalid, i.e. non-XMLStructure, entries"); 
         } catch (ClassCastException cce) {
@@ -73,7 +75,6 @@ public class SignaturePropertyTest extends org.junit.Assert {
             fail("Should raise a CCE for content with invalid entries " +
                  "instead of " + ex);
         }
-        list.remove(strEntry);
         list.add(new TestUtils.MyOwnXMLStructure());
         try {
             prop = factory.newSignatureProperty(list, null, id);
@@ -85,7 +86,8 @@ public class SignaturePropertyTest extends org.junit.Assert {
 
         prop = factory.newSignatureProperty(list, target, id);
         assertNotNull(prop);
-        List<Object> unmodifiable = prop.getContent();
+        @SuppressWarnings("unchecked")
+        List<XMLStructure> unmodifiable = prop.getContent();
         assertNotNull(unmodifiable);
         try {
             unmodifiable.add(new TestUtils.MyOwnXMLStructure());
@@ -111,4 +113,8 @@ public class SignaturePropertyTest extends org.junit.Assert {
         assertTrue(!prop.isFeatureSupported("not supported"));
     }
     
+    @SuppressWarnings("unchecked")
+    private static void addEntryToRawList(List list, Object entry) {
+        list.add(entry);
+    }
 }

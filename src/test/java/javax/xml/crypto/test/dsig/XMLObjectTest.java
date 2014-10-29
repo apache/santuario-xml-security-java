@@ -22,6 +22,7 @@
 package javax.xml.crypto.test.dsig;
 
 import java.util.*;
+import javax.xml.crypto.XMLStructure;
 import javax.xml.crypto.dsig.*;
 
 /**
@@ -42,7 +43,6 @@ public class XMLObjectTest extends org.junit.Assert {
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
     }
     
-    @SuppressWarnings("unchecked")
     @org.junit.Test
     public void testConstructor() {
         // test XMLSignatureFactory.newXMLObject(List, String, String, String) 
@@ -51,14 +51,17 @@ public class XMLObjectTest extends org.junit.Assert {
         obj = factory.newXMLObject(null, null, null, null); 
         assertNotNull(obj);
 
-        List<Object> list = new Vector<Object>();
+        List<XMLStructure> list = new Vector<XMLStructure>();
         obj = factory.newXMLObject(list, null, null, null); 
         assertNotNull(obj);
         
         String strEntry = "wrong type";
-        list.add(strEntry);
+        // use raw List type to test for invalid XMLStructure entries
+        List invalidList = new Vector();
+        addEntryToRawList(invalidList, strEntry);
         try {
-            obj = factory.newXMLObject(list, null, null, null); 
+            @SuppressWarnings("unchecked")
+            XMLObject obj2 = factory.newXMLObject(invalidList, null, null, null); 
             fail("Should raise a CCE for content containing " +
                  "invalid, i.e. non-XMLStructure, entries"); 
         } catch (ClassCastException cce) {
@@ -66,7 +69,6 @@ public class XMLObjectTest extends org.junit.Assert {
             fail("Should raise a CCE for content with invalid entries " +
                  "instead of " + ex);
         }
-        list.remove(strEntry);
         list.add(new TestUtils.MyOwnXMLStructure());
         obj = factory.newXMLObject(list, id, mimeType, encoding);
         assertNotNull(obj);
@@ -76,7 +78,8 @@ public class XMLObjectTest extends org.junit.Assert {
         assertEquals(obj.getMimeType(), mimeType);
         assertEquals(obj.getEncoding(), encoding);
 
-        List<Object> unmodifiable = obj.getContent();
+        @SuppressWarnings("unchecked")
+        List<XMLStructure> unmodifiable = obj.getContent();
         try {
             unmodifiable.add(new TestUtils.MyOwnXMLStructure());
             fail("Should return an unmodifiable List object");
@@ -86,7 +89,7 @@ public class XMLObjectTest extends org.junit.Assert {
 
     @org.junit.Test
     public void testisFeatureSupported() {
-        List<Object> list = new Vector<Object>();
+        List<XMLStructure> list = new Vector<XMLStructure>();
         list.add(new TestUtils.MyOwnXMLStructure());
         XMLObject obj = factory.newXMLObject(list, id, mimeType, encoding);
         try {
@@ -95,5 +98,10 @@ public class XMLObjectTest extends org.junit.Assert {
         } catch (NullPointerException npe) {}
 
         assertTrue(!obj.isFeatureSupported("not supported"));
+    }
+
+    @SuppressWarnings("unchecked")
+    private static void addEntryToRawList(List list, Object entry) {
+        list.add(entry);
     }
 }

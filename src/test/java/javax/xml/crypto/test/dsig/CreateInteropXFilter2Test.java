@@ -26,6 +26,7 @@ import java.security.*;
 import java.security.cert.Certificate;
 import java.util.*;
 
+import javax.xml.crypto.XMLStructure;
 import javax.xml.crypto.dsig.*;
 import javax.xml.crypto.dsig.dom.*;
 import javax.xml.crypto.dsig.keyinfo.*;
@@ -111,7 +112,7 @@ public class CreateInteropXFilter2Test extends org.junit.Assert {
             fac.newSignatureMethod(SignatureMethod.DSA_SHA1, null), refs);
 
         // create KeyInfo
-        List<Object> kits = new ArrayList<Object>(2);
+        List<XMLStructure> kits = new ArrayList<XMLStructure>(2);
         kits.add(kifac.newKeyValue(validatingKey));
         List<Object> xds = new ArrayList<Object>(2);
         xds.add("CN=Sean Mullan, DC=sun, DC=com");

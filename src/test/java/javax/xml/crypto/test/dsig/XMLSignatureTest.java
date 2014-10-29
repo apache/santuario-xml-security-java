@@ -117,8 +117,12 @@ public class XMLSignatureTest extends org.junit.Assert {
             }
         }
         try {
-            sig = fac.newXMLSignature(defSi, defKi, 
-                     Collections.singletonList("wrongType"), id, sigValueId);
+            // use raw List type to test for invalid entries
+            List invalidObjects = new Vector();
+            addEntryToRawList(invalidObjects, "wrongType");
+            @SuppressWarnings("unchecked")
+            XMLSignature sig2 = fac.newXMLSignature(defSi, defKi, 
+                     invalidObjects, id, sigValueId);
             fail("Should throw a CCE for invalid objects");
         } catch (ClassCastException cce) {
         } catch (Exception ex) {
@@ -404,6 +408,11 @@ public class XMLSignatureTest extends org.junit.Assert {
         List<Reference> refs = Collections.singletonList(fac.newReference
             ("http://www.w3.org/Signature/2002/04/xml-stylesheet.b64", dm));
         return fac.newSignedInfo(cm, sm, refs);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static void addEntryToRawList(List list, Object entry) {
+        list.add(entry);
     }
 
     static class TestProvider extends Provider {

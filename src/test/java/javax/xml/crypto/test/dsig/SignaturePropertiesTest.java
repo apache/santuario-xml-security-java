@@ -44,7 +44,6 @@ public class SignaturePropertiesTest extends org.junit.Assert {
     }
     
     @org.junit.Test
-    @SuppressWarnings("unchecked")
     public void testConstructor() {
         // test XMLSignatureFactory.newSignatureProperties(List, String) 
         SignatureProperties props;
@@ -57,7 +56,7 @@ public class SignaturePropertiesTest extends org.junit.Assert {
             fail("Should raise a NPE for null content instead of " + ex);
         }
         
-        List<Object> list = new Vector<Object>();
+        List<SignatureProperty> list = new Vector<SignatureProperty>();
         try {
             props = factory.newSignatureProperties(list, id); 
             fail("Should raise an IAE for empty content"); 
@@ -67,9 +66,12 @@ public class SignaturePropertiesTest extends org.junit.Assert {
         }
         
         String strEntry = "wrong type";
-        list.add(strEntry);
+        // use raw List type to test for invalid SignatureProperty types
+        List invalidList = new Vector();
+        addEntryToRawList(invalidList, strEntry);
         try {
-            props = factory.newSignatureProperties(list, id); 
+            @SuppressWarnings("unchecked")
+            SignatureProperties props2 = factory.newSignatureProperties(invalidList, id); 
             fail("Should raise a CCE for content containing " +
                  "invalid, i.e. non-SignatureProperty, entries"); 
         } catch (ClassCastException cce) {
@@ -79,11 +81,11 @@ public class SignaturePropertiesTest extends org.junit.Assert {
                  "instead of " + ex);
         }
         
-        list.remove(strEntry);
         list.add(prop);
         props = factory.newSignatureProperties(list, id);
         assertNotNull(props);
-        List<Object> unmodifiable = props.getProperties();
+        @SuppressWarnings("unchecked")
+        List<SignatureProperty> unmodifiable = props.getProperties();
         assertNotNull(unmodifiable);
         try {
             unmodifiable.add(prop);
@@ -96,7 +98,7 @@ public class SignaturePropertiesTest extends org.junit.Assert {
 
     @org.junit.Test
     public void testisFeatureSupported() {
-        List<Object> list = new Vector<Object>();
+        List<SignatureProperty> list = new Vector<SignatureProperty>();
         list.add(prop);
         SignatureProperties props = factory.newSignatureProperties(list, id);
         try {
@@ -107,4 +109,8 @@ public class SignaturePropertiesTest extends org.junit.Assert {
         assertTrue(!props.isFeatureSupported("not supported"));
     }
     
+    @SuppressWarnings("unchecked")
+    private static void addEntryToRawList(List list, Object entry) {
+        list.add(entry);
+    }
 }

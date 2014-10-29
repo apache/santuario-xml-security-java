@@ -159,9 +159,10 @@ public class DetachedTest extends org.junit.Assert {
             // Check core validation status
             if (coreValidity == false) {
                 // check the validation status of each Reference
-                Iterator<?> i = signature.getSignedInfo().getReferences().iterator();
+                @SuppressWarnings("unchecked")
+                Iterator<Reference> i = signature.getSignedInfo().getReferences().iterator();
                 while (i.hasNext()) {
-                    Reference reference = (Reference) i.next();
+                    Reference reference = i.next();
                     reference.validate(vc);
                 }
                 fail("Signature failed core validation");

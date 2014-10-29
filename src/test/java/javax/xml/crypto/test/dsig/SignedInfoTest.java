@@ -83,7 +83,7 @@ public class SignedInfoTest extends org.junit.Assert {
             }
         }
 
-        List<Object> empty = new Vector<Object>();
+        List<Reference> empty = new Vector<Reference>();
         try {
             si = fac.newSignedInfo(cm, sm, empty);
             fail("Should throw an IAE for empty references");
@@ -93,9 +93,12 @@ public class SignedInfoTest extends org.junit.Assert {
                  " for empty references");
         }
         
-        empty.add("String");
+        // use raw List type to test for invalid Reference entries
+        List invalidRefs = new Vector();
+        addEntryToRawList(invalidRefs, "String");
         try {
-            si = fac.newSignedInfo(cm, sm, empty);
+            @SuppressWarnings("unchecked")
+            SignedInfo si2 = fac.newSignedInfo(cm, sm, invalidRefs);
             fail("Should throw an CCE for illegal references");
         } catch(ClassCastException cce) {
         } catch(Exception ex) {
@@ -127,5 +130,9 @@ public class SignedInfoTest extends org.junit.Assert {
         assertNotNull(si);
         assertEquals(si.getId(), "id");
     }
-    
+
+    @SuppressWarnings("unchecked")
+    private static void addEntryToRawList(List list, Object entry) {
+        list.add(entry);
+    }
 }

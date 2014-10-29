@@ -123,7 +123,7 @@ public class ReferenceTest extends org.junit.Assert {
             fail("Unexpected Exception: " + ex);
         }
         
-        List<Object> transforms = new Vector<Object>();
+        List<Transform> transforms = new Vector<Transform>();
         try {
             // try empty transforms list
             ref = fac.newReference(uri, dmSHA1, transforms, 
@@ -133,10 +133,12 @@ public class ReferenceTest extends org.junit.Assert {
         } catch(Exception ex) {
             fail("Unexpected Exception: " + ex);
         }
-        transforms.add(new Object());
+        List invalidTransforms = new Vector();
+        addEntryToRawList(invalidTransforms, new Object());
         try {
             // try a transforms list with an invalid object
-            ref = fac.newReference(uri, dmSHA1, transforms, 
+            @SuppressWarnings("unchecked")
+            Reference ref2 = fac.newReference(uri, dmSHA1, invalidTransforms, 
                                    type, id);
         } catch (ClassCastException cce) {
         } catch (Exception ex) {
@@ -145,11 +147,12 @@ public class ReferenceTest extends org.junit.Assert {
         
         // Test with various composition of Transform list 
         // 1. String only 
-        transforms.clear();
-        transforms.add(Transform.BASE64);
+        invalidTransforms.clear();
+        addEntryToRawList(invalidTransforms, Transform.BASE64);
         try {
             // try a transforms list with a String object
-            ref = fac.newReference(uri, dmSHA1, transforms, 
+            @SuppressWarnings("unchecked")
+            Reference ref2 = fac.newReference(uri, dmSHA1, invalidTransforms, 
                                    type, id);
             fail("Should throw a CCE for illegal transforms");
         } catch (ClassCastException cce) {
@@ -248,9 +251,10 @@ public class ReferenceTest extends org.junit.Assert {
                 boolean result = sig.validate(validateContext);
                 assertTrue(result);
      
-                Iterator<?> iter = sig.getSignedInfo().getReferences().iterator();
+                @SuppressWarnings("unchecked")
+                Iterator<Reference> iter = sig.getSignedInfo().getReferences().iterator();
                 while (iter.hasNext()) {
-                    Reference validated_ref = (Reference) iter.next();
+                    Reference validated_ref = iter.next();
                     if (!cache) {
                         assertNull(validated_ref.getDereferencedData());
                         assertNull(validated_ref.getDigestInputStream());
@@ -280,5 +284,10 @@ public class ReferenceTest extends org.junit.Assert {
             md.update(buf, 0, nbytes);
         }
         return Arrays.equals(md.digest(), ref.getDigestValue());
+    }
+
+    @SuppressWarnings("unchecked")
+    private static void addEntryToRawList(List list, Object entry) {
+        list.add(entry);
     }
 }

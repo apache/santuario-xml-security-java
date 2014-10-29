@@ -141,9 +141,10 @@ public class X509KeySelector extends KeySelector {
             }
 
             // Iterate through KeyInfo types
-            Iterator<?> i = keyInfo.getContent().iterator();
+            @SuppressWarnings("unchecked")
+            Iterator<XMLStructure> i = keyInfo.getContent().iterator();
             while (i.hasNext()) {
-                XMLStructure kiType = (XMLStructure) i.next();
+                XMLStructure kiType = i.next();
                 // check X509Data
                 if (kiType instanceof X509Data) {
                     X509Data xd = (X509Data) kiType;
@@ -305,7 +306,8 @@ public class X509KeySelector extends KeySelector {
         }
         Collection<X509Certificate> certs = new ArrayList<X509Certificate>();
 
-        Iterator<?> xi = xd.getContent().iterator();
+        @SuppressWarnings("unchecked")
+        Iterator<Object> xi = xd.getContent().iterator();
         while (xi.hasNext()) {
             Object o = xi.next();
             // check X509IssuerSerial
