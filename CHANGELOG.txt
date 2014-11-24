@@ -1,6 +1,7 @@
 Changelog for "Apache xml-security" <http://santuario.apache.org/>
 
 New in v1.5.8:
+    Fixed SANTUARIO-406 - RSA/ECB/OAEPWithSHA-256AndMGF1Padding not working
     Fixed SANTUARIO-403 - Support EncryptionProperty child elements
     Fixed SANTUARIO-399 - XMLCipher fails to declare signature namespace on xenc:EncryptionMethod/ds:DigestMethod elements
     Fixed SANTUARIO-398 - SignedInfo.getCanonicalizedOctetStream() -- getInclusiveNamespaces()
