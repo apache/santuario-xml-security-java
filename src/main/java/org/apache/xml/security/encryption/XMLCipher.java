@@ -1606,21 +1606,7 @@ public class XMLCipher {
         } catch (NoSuchAlgorithmException nsae) {
             // Check to see if an RSA OAEP MGF-1 with SHA-1 algorithm was requested
             // Some JDKs don't support RSA/ECB/OAEPPadding
-            if (XMLCipher.RSA_OAEP.equals(algorithm)
-                && (digestAlgorithm == null 
-                    || MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA1.equals(digestAlgorithm))) {
-                try {
-                    if (requestedJCEProvider == null) {
-                        c = Cipher.getInstance("RSA/ECB/OAEPWithSHA1AndMGF1Padding");
-                    } else {
-                        c = Cipher.getInstance("RSA/ECB/OAEPWithSHA1AndMGF1Padding", requestedJCEProvider);
-                    }
-                } catch (Exception ex) {
-                    throw new XMLEncryptionException("empty", ex);
-                }
-            } else {
-                throw new XMLEncryptionException("empty", nsae);
-            }
+            c = constructCipher(algorithm, digestAlgorithm, nsae);
         } catch (NoSuchProviderException nspre) {
             throw new XMLEncryptionException("empty", nspre);
         } catch (NoSuchPaddingException nspae) {
@@ -1628,6 +1614,57 @@ public class XMLCipher {
         }
         
         return c;
+    }
+    
+    private Cipher constructCipher(String algorithm, String digestAlgorithm, Exception nsae) throws XMLEncryptionException {
+        if (!XMLCipher.RSA_OAEP.equals(algorithm)) {
+            throw new XMLEncryptionException("empty", nsae);
+        }
+        
+        if (digestAlgorithm == null 
+            || MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA1.equals(digestAlgorithm)) {
+            try {
+                if (requestedJCEProvider == null) {
+                    return Cipher.getInstance("RSA/ECB/OAEPWithSHA1AndMGF1Padding");
+                } else {
+                    return Cipher.getInstance("RSA/ECB/OAEPWithSHA1AndMGF1Padding", requestedJCEProvider);
+                }
+            } catch (Exception ex) {
+                throw new XMLEncryptionException("empty", ex);
+            }
+        } else if (MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256.equals(digestAlgorithm)) {
+            try {
+                if (requestedJCEProvider == null) {
+                    return Cipher.getInstance("RSA/ECB/OAEPWithSHA-256AndMGF1Padding");
+                } else {
+                    return Cipher.getInstance("RSA/ECB/OAEPWithSHA-256AndMGF1Padding", requestedJCEProvider);
+                }
+            } catch (Exception ex) {
+                throw new XMLEncryptionException("empty", ex);
+            }
+        } else if (MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA384.equals(digestAlgorithm)) {
+            try {
+                if (requestedJCEProvider == null) {
+                    return Cipher.getInstance("RSA/ECB/OAEPWithSHA-384AndMGF1Padding");
+                } else {
+                    return Cipher.getInstance("RSA/ECB/OAEPWithSHA-384AndMGF1Padding", requestedJCEProvider);
+                }
+            } catch (Exception ex) {
+                throw new XMLEncryptionException("empty", ex);
+            }
+        } else if (MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA512.equals(digestAlgorithm)) {
+            try {
+                if (requestedJCEProvider == null) {
+                    return Cipher.getInstance("RSA/ECB/OAEPWithSHA-512AndMGF1Padding");
+                } else {
+                    return Cipher.getInstance("RSA/ECB/OAEPWithSHA-512AndMGF1Padding", requestedJCEProvider);
+                }
+            } catch (Exception ex) {
+                throw new XMLEncryptionException("empty", ex);
+            }
+        } else {
+            throw new XMLEncryptionException("empty", nsae);
+        }
     }
 
     /**
