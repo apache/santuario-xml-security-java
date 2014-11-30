@@ -62,7 +62,7 @@ public class XMLSignatureEndingOutputProcessor extends AbstractSignatureEndingOu
         this.signedInfoProcessor.init(outputProcessorChain);
         return this.signedInfoProcessor;
     }
-    
+
     @Override
     public void processHeaderEvent(OutputProcessorChain outputProcessorChain) throws XMLStreamException, XMLSecurityException {
         super.processHeaderEvent(outputProcessorChain);
@@ -76,8 +76,16 @@ public class XMLSignatureEndingOutputProcessor extends AbstractSignatureEndingOu
             OutputProcessorChain outputProcessorChain, Deque<XMLSecEvent> xmlSecEventDeque)
             throws XMLStreamException, XMLSecurityException {
 
-        //@see SANTUARIO-324
-        //output root element...
+        // @see SANTUARIO-405
+        // Enhances SANTUARIO-324
+        // Output the signature at a specific position. 
+        // By default, this is just after the root element
+        int signaturePosition = getSecurityProperties().getSignaturePosition();
+        if (signaturePosition < 0) {
+            signaturePosition = 0;
+        }
+
+        // forward to the root element and output it
         XMLSecEvent xmlSecEvent = xmlSecEventDeque.pop();
         while (!xmlSecEvent.isStartElement()) {
             outputProcessorChain.reset();
@@ -86,6 +94,30 @@ public class XMLSignatureEndingOutputProcessor extends AbstractSignatureEndingOu
         }
         outputProcessorChain.reset();
         outputProcessorChain.processEvent(xmlSecEvent);
+
+        // search the specified position
+        int depth = 0;
+        int position = 0;
+        while (position != signaturePosition) {
+            xmlSecEvent = xmlSecEventDeque.pop();
+
+            if (xmlSecEvent.isStartElement()) {
+                depth++;
+            } else if (xmlSecEvent.isEndElement()) {
+                depth--;
+                if (depth == 0) {
+                    position++;
+                } else if (depth < 0) {
+                    // root-end-element reached
+                    xmlSecEventDeque.push(xmlSecEvent);
+                    break;
+                }
+            }
+
+            outputProcessorChain.reset();
+            outputProcessorChain.processEvent(xmlSecEvent);
+        }
+
         //...then call super to append the signature and flush the rest
         super.flushBufferAndCallbackAfterHeader(outputProcessorChain, xmlSecEventDeque);
     }

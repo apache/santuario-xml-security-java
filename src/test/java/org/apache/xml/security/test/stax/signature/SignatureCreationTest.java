@@ -271,7 +271,86 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
     }
-    
+
+    @Test
+    public void testSignAtSpecificPosition() throws Exception {
+        signAtSpecificPosition(-1);
+        signAtSpecificPosition(0);
+        signAtSpecificPosition(1);
+        signAtSpecificPosition(2);
+        signAtSpecificPosition(999);
+    }
+
+    private void signAtSpecificPosition(int position) throws Exception {
+        // Set up the Configuration
+        XMLSecurityProperties properties = new XMLSecurityProperties();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
+        actions.add(XMLSecurityConstants.SIGNATURE);
+        properties.setActions(actions);
+
+        // Specify the signature position
+        properties.setSignaturePosition(position);
+
+        // Set the key up
+        KeyStore keyStore = KeyStore.getInstance("jks");
+        keyStore.load(
+                this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
+                "default".toCharArray()
+        );
+        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        properties.setSignatureKey(key);
+        X509Certificate cert = (X509Certificate) keyStore.getCertificate("transmitter");
+        properties.setSignatureCerts(new X509Certificate[]{cert});
+
+        SecurePart securePart
+                = new SecurePart(null,
+                SecurePart.Modifier.Content,
+                new String[]{
+                        "http://www.w3.org/2000/09/xmldsig#enveloped-signature",
+                        "http://www.w3.org/TR/2001/REC-xml-c14n-20010315"
+                },
+                "http://www.w3.org/2000/09/xmldsig#sha1");
+        securePart.setSecureEntireRequest(true);
+        properties.addSignaturePart(securePart);
+
+        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
+
+        InputStream sourceDocument
+                = this.getClass().getClassLoader().getResourceAsStream(
+                "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
+        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+
+        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
+        xmlStreamWriter.close();
+
+        System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
+
+        Document document
+                = XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
+
+        //find first child element:
+        Node childNode = XMLUtils.getNextElement(document.getDocumentElement().getFirstChild());
+
+        int expectedPosition = position < 0 ? 0 : position;
+        int curPos = 0;
+        while (curPos != expectedPosition) {
+            Node node = XMLUtils.getNextElement(childNode.getNextSibling());
+            curPos++;
+            if (node != null) {
+                childNode = node;
+            } else {
+                break;
+            }
+        }
+
+        Assert.assertEquals(childNode.getLocalName(), "Signature");
+
+        // Verify using DOM
+        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+    }
+
     @Test
     public void testMultipleElements() throws Exception {
         // Set up the Configuration

@@ -67,6 +67,8 @@ public class XMLSecurityProperties {
 
     private Key signatureVerificationKey;
 
+    private int signaturePosition = 0;
+
     public XMLSecurityProperties() {
     }
 
@@ -96,6 +98,7 @@ public class XMLSecurityProperties {
         this.signatureKeyIdentifier = xmlSecurityProperties.signatureKeyIdentifier;
         this.useSingleCert = xmlSecurityProperties.useSingleCert;
         this.signatureVerificationKey = xmlSecurityProperties.signatureVerificationKey;
+        this.signaturePosition = xmlSecurityProperties.signaturePosition;        
     }
 
     public SecurityTokenConstants.KeyIdentifier getSignatureKeyIdentifier() {
@@ -104,6 +107,25 @@ public class XMLSecurityProperties {
 
     public void setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier signatureKeyIdentifier) {
         this.signatureKeyIdentifier = signatureKeyIdentifier;
+    }
+
+    /**
+     * returns the position of the signature. By default, the signature
+     * is located at the first child of the root element
+     *
+     * @return The signature position
+     */
+    public int getSignaturePosition() {
+        return signaturePosition;
+    }
+
+    /**
+     * Specifies the position of the signature
+     *
+     * @param signaturePosition Position of the signature (by default: 0)
+     */
+    public void setSignaturePosition(int signaturePosition) {
+        this.signaturePosition = signaturePosition;
     }
     
     /**
