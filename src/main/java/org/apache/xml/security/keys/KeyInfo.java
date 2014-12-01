@@ -48,6 +48,7 @@ import org.apache.xml.security.keys.keyresolver.KeyResolverSpi;
 import org.apache.xml.security.keys.storage.StorageResolver;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.Constants;
+import org.apache.xml.security.utils.ElementProxy;
 import org.apache.xml.security.utils.EncryptionConstants;
 import org.apache.xml.security.utils.SignatureElementProxy;
 import org.apache.xml.security.utils.XMLUtils;
@@ -123,6 +124,13 @@ public class KeyInfo extends SignatureElementProxy {
     public KeyInfo(Document doc) {
         super(doc);
         addReturnToSelf();
+        
+        String prefix = ElementProxy.getDefaultPrefix(this.getBaseNamespace());
+        if (prefix != null && prefix.length() > 0) {
+            getElement().setAttributeNS(Constants.NamespaceSpecNS, "xmlns:" + prefix, 
+                                        this.getBaseNamespace());
+        }
+        
     }
 
     /**
