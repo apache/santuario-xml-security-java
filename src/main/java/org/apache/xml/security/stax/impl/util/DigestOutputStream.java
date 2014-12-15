@@ -18,11 +18,12 @@
  */
 package org.apache.xml.security.stax.impl.util;
 
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.OutputStream;
-import java.security.MessageDigest;
 
 /**
  * A Streaming based message-digest implementation
@@ -52,9 +53,10 @@ public class DigestOutputStream extends OutputStream {
 
     @Override
     public void write(int arg0) {
-        messageDigest.update((byte) arg0);
+        byte asByte = (byte) arg0;
+        messageDigest.update(asByte);
         if (isDebugEnabled) {
-            stringBuilder.append(new String(new byte[]{(byte) arg0}));
+            stringBuilder.append((char)asByte);
         }
     }
 
@@ -62,7 +64,11 @@ public class DigestOutputStream extends OutputStream {
     public void write(byte[] arg0, int arg1, int arg2) {
         messageDigest.update(arg0, arg1, arg2);
         if (isDebugEnabled) {
-            stringBuilder.append(new String(arg0, arg1, arg2));
+            try {
+                stringBuilder.append(new String(arg0, arg1, arg2, "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                log.warn(e.toString(), e);//UTF-8 is mandatory actually
+            }
         }
     }
 

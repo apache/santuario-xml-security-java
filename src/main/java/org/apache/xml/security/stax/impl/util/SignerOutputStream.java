@@ -18,12 +18,13 @@
  */
 package org.apache.xml.security.stax.impl.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.impl.algorithms.SignatureAlgorithm;
-
-import java.io.OutputStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author $Author$
@@ -52,9 +53,10 @@ public class SignerOutputStream extends OutputStream {
     @Override
     public void write(int arg0) {
         try {
-            signatureAlgorithm.engineUpdate((byte) arg0);
+            byte asByte = (byte) arg0;
+            signatureAlgorithm.engineUpdate(asByte);
             if (isDebugEnabled) {
-                stringBuilder.append(new String(new byte[]{(byte) arg0}));
+                stringBuilder.append((char)asByte);
             }
         } catch (XMLSecurityException e) {
             throw new RuntimeException(e);
@@ -66,10 +68,12 @@ public class SignerOutputStream extends OutputStream {
         try {
             signatureAlgorithm.engineUpdate(arg0, arg1, arg2);
             if (isDebugEnabled) {
-                stringBuilder.append(new String(arg0, arg1, arg2));
+                stringBuilder.append(new String(arg0, arg1, arg2, "UTF-8"));
             }
         } catch (XMLSecurityException e) {
             throw new RuntimeException(e);
+        } catch (UnsupportedEncodingException e) {
+            log.warn(e.toString(), e);//UTF-8 is mandatory actually
         }
     }
 

@@ -325,7 +325,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
+        //System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
         Document document
                 = XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
@@ -845,7 +845,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        //System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
         Document document =
                 XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
