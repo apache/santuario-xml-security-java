@@ -406,8 +406,8 @@
 
     <properties>
         <xml.apis.version>1.4.01</xml.apis.version>
-        <oldxmlsec.version>1.5.6</oldxmlsec.version>
-        <slf4j.version>1.7.7</slf4j.version>
+        <oldxmlsec.version>1.5.7</oldxmlsec.version>
+        <slf4j.version>1.7.9</slf4j.version>
         <xalan.version>2.7.2</xalan.version>
         <xerces.version>2.11.0</xerces.version>
         <junit.version>4.11</junit.version>
