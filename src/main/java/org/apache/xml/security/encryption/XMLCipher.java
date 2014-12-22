@@ -2321,7 +2321,7 @@ public class XMLCipher {
             result.setId(element.getAttributeNS(null, EncryptionConstants._ATT_ID));
             result.setType(element.getAttributeNS(null, EncryptionConstants._ATT_TYPE));
             result.setMimeType(element.getAttributeNS(null, EncryptionConstants._ATT_MIMETYPE));
-            result.setEncoding( element.getAttributeNS(null, Constants._ATT_ENCODING));
+            result.setEncoding(element.getAttributeNS(null, Constants._ATT_ENCODING));
 
             Element encryptionMethodElement =
                 (Element) element.getElementsByTagNameNS(
