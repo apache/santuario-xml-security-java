@@ -32,9 +32,9 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.xml.security.c14n.CanonicalizationException;
-import org.apache.xml.security.c14n.implementations.CanonicalizerBase;
-import org.apache.xml.security.c14n.implementations.Canonicalizer20010315OmitComments;
 import org.apache.xml.security.c14n.implementations.Canonicalizer11_OmitComments;
+import org.apache.xml.security.c14n.implementations.Canonicalizer20010315OmitComments;
+import org.apache.xml.security.c14n.implementations.CanonicalizerBase;
 import org.apache.xml.security.exceptions.XMLSecurityRuntimeException;
 import org.apache.xml.security.utils.JavaUtils;
 import org.apache.xml.security.utils.XMLUtils;
@@ -565,8 +565,9 @@ public class XMLSignatureInput {
 
             byte result[] = baos.toByteArray();
             Document document = db.parse(new ByteArrayInputStream(result));
-            this.subNode = document.getDocumentElement().getFirstChild().getFirstChild();				
+            this.subNode = document.getDocumentElement().getFirstChild().getFirstChild();
         } finally {
+            XMLUtils.repoolDocumentBuilder(db);
             if (this.inputOctetStreamProxy != null) {
                 this.inputOctetStreamProxy.close();
             }

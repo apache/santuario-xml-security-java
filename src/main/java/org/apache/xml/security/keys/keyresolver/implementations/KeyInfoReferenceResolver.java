@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.keys.keyresolver.implementations;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -26,7 +25,6 @@ import java.security.cert.X509Certificate;
 
 import javax.crypto.SecretKey;
 import javax.xml.namespace.QName;
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.xml.security.c14n.CanonicalizationException;
@@ -41,7 +39,6 @@ import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 import org.apache.xml.security.utils.resolver.ResourceResolver;
 import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
@@ -268,30 +265,8 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
         } else {
             // Retrieved resource is a byte stream
             byte inputBytes[] = resource.getBytes();
-            e = getDocFromBytes(inputBytes);
+            e = getDocFromBytes(inputBytes, this.secureValidation);
         }
         return e;
     }
-
-    /**
-     * Parses a byte array and returns the parsed Element.
-     *
-     * @param bytes
-     * @return the Document Element after parsing bytes 
-     * @throws KeyResolverException if something goes wrong
-     */
-    private Element getDocFromBytes(byte[] bytes) throws KeyResolverException {
-        try {
-            DocumentBuilder db = XMLUtils.createDocumentBuilder(false, secureValidation);
-            Document doc = db.parse(new ByteArrayInputStream(bytes));
-            return doc.getDocumentElement();
-        } catch (SAXException ex) {
-            throw new KeyResolverException("empty", ex);
-        } catch (IOException ex) {
-            throw new KeyResolverException("empty", ex);
-        } catch (ParserConfigurationException ex) {
-            throw new KeyResolverException("empty", ex);
-        }
-    }
-
 }

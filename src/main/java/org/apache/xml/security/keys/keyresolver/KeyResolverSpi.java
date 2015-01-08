@@ -18,15 +18,22 @@
  */
 package org.apache.xml.security.keys.keyresolver;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
 import java.util.HashMap;
 
 import javax.crypto.SecretKey;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.xml.security.keys.storage.StorageResolver;
+import org.apache.xml.security.utils.XMLUtils;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 /**
  * This class is an abstract class for a child KeyInfo Element.
@@ -252,6 +259,33 @@ public abstract class KeyResolverSpi {
     
     public void setGlobalResolver(boolean globalResolver) {
         this.globalResolver = globalResolver;
+    }
+
+    
+    /**
+     * Parses a byte array and returns the parsed Element.
+     *
+     * @param bytes
+     * @return the Document Element after parsing bytes 
+     * @throws KeyResolverException if something goes wrong
+     */
+    protected static Element getDocFromBytes(byte[] bytes, boolean secureValidation) throws KeyResolverException {
+        DocumentBuilder db = null;
+        try {
+            db = XMLUtils.createDocumentBuilder(false, secureValidation);
+            Document doc = db.parse(new ByteArrayInputStream(bytes));
+            return doc.getDocumentElement();
+        } catch (SAXException ex) {
+            throw new KeyResolverException("empty", ex);
+        } catch (IOException ex) {
+            throw new KeyResolverException("empty", ex);
+        } catch (ParserConfigurationException ex) {
+            throw new KeyResolverException("empty", ex);
+        } finally {
+            if (db != null) {
+                XMLUtils.repoolDocumentBuilder(db);
+            }
+        }
     }
 
 }

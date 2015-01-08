@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.xml.security.c14n.CanonicalizationException;
@@ -47,7 +46,6 @@ import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 import org.apache.xml.security.utils.resolver.ResourceResolver;
 import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
@@ -310,27 +308,6 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
             resource = transforms.performTransforms(resource);
         }		  
         return resource;
-    }
-   
-    /**
-     * Parses a byte array and returns the parsed Element.
-     *
-     * @param bytes
-     * @return the Document Element after parsing bytes 
-     * @throws KeyResolverException if something goes wrong
-     */
-    private static Element getDocFromBytes(byte[] bytes, boolean secureValidation) throws KeyResolverException {
-        try {
-            DocumentBuilder db = XMLUtils.createDocumentBuilder(false, secureValidation);
-            Document doc = db.parse(new ByteArrayInputStream(bytes));
-            return doc.getDocumentElement();
-        } catch (SAXException ex) {
-            throw new KeyResolverException("empty", ex);
-        } catch (IOException ex) {
-            throw new KeyResolverException("empty", ex);
-        } catch (ParserConfigurationException ex) {
-            throw new KeyResolverException("empty", ex);
-        }
     }
 
     /**

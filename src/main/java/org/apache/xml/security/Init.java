@@ -167,7 +167,13 @@ public class Init {
         try {
             /* read library configuration file */
             DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
-            Document doc = db.parse(is);
+            Document doc;
+            try {
+                doc = db.parse(is);
+            } finally {
+                XMLUtils.repoolDocumentBuilder(db);
+                db = null;
+            }
             Node config = doc.getFirstChild();
             for (; config != null; config = config.getNextSibling()) {
                 if ("Configuration".equals(config.getLocalName())) {
