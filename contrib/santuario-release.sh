@@ -40,8 +40,8 @@ mkdir -p ${SANTUARIO_STAGE_ROOT}/maven/org/apache/santuario/xmlsec/${SANTUARIO_V
 #
 cd ${SANTUARIO_SRC_ROOT}
 mvn clean || exit 1
-mvn -Prelease install || exit 1
-cp -r ${M2_REPO}/org/apache/santuario/xmlsec/${SANTUARIO_VERSION} ${SANTUARIO_STAGE_ROOT}/maven/org/apache/santuario/xmlsec
+#mvn -Prelease install || exit 1
+#cp -r ${M2_REPO}/org/apache/santuario/xmlsec/${SANTUARIO_VERSION} ${SANTUARIO_STAGE_ROOT}/maven/org/apache/santuario/xmlsec
 #
 # Build and stage the distribution using ant
 #

@@ -45,8 +45,8 @@
     <!-- library properties -->
     <property name="lib.logging"        value="${dir.libs}/commons-logging-1.1.1.jar" />
     <property name="lib.log4j"          value="${dir.libs}/log4j-1.2.16.jar" />
-    <property name="lib.xalan.1"        value="${dir.libs}/xalan-2.7.1.jar" />
-    <property name="lib.xalan.2"        value="${dir.libs}/serializer-2.7.1.jar" />
+    <property name="lib.xalan.1"        value="${dir.libs}/xalan-2.7.2.jar" />
+    <property name="lib.xalan.2"        value="${dir.libs}/serializer-2.7.2.jar" />
     <property name="lib.xalan.3"        value="${dir.libs}/xml-apis-1.3.04.jar" />
     <property name="lib.xerces.1"       value="${dir.libs}/xercesImpl-2.9.1.jar" />
     <property name="lib.jce"            value="${dir.libs}/${jce.provider.prefix}-${jce.provider.jar}" />
