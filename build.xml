@@ -9,13 +9,13 @@
 
     <property name="product.version.major" value="1"/>
     <property name="product.version.minor" value="5"/>
-    <property name="product.version.level" value="8"/>
+    <property name="product.version.level" value="9"/>
     <property name='product.version.qualifier' value='-SNAPSHOT'/>
     <property name="product.version" 
 	  value="${product.version.major}.${product.version.minor}.${product.version.level}${product.version.qualifier}"/>
     <property name="product_version" 
 	  value="${product.version.major}_${product.version.minor}_${product.version.level}${product.version.qualifier}"/>
-    <property name="year" value="2000-2014"/>
+    <property name="year" value="2000-2015"/>
     <property name="copyright" 
 			  value="Copyright © ${year} Apache XML Project. All Rights Reserved."/>
 
@@ -45,8 +45,8 @@
     <!-- library properties -->
     <property name="lib.logging"        value="${dir.libs}/commons-logging-1.1.1.jar" />
     <property name="lib.log4j"          value="${dir.libs}/log4j-1.2.16.jar" />
-    <property name="lib.xalan.1"        value="${dir.libs}/xalan-2.7.1.jar" />
-    <property name="lib.xalan.2"        value="${dir.libs}/serializer-2.7.1.jar" />
+    <property name="lib.xalan.1"        value="${dir.libs}/xalan-2.7.2.jar" />
+    <property name="lib.xalan.2"        value="${dir.libs}/serializer-2.7.2.jar" />
     <property name="lib.xalan.3"        value="${dir.libs}/xml-apis-1.3.04.jar" />
     <property name="lib.xerces.1"       value="${dir.libs}/xercesImpl-2.9.1.jar" />
     <property name="lib.jce"            value="${dir.libs}/${jce.provider.prefix}-${jce.provider.jar}" />
