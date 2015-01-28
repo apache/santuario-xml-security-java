@@ -184,7 +184,8 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
                 String NName = attribute.getLocalName();
                 String NNodeValue = attribute.getNodeValue();
                 
-                if (!XMLNS_URI.equals(attribute.getNamespaceURI())) {
+                if (!(XMLNS_URI.equals(attribute.getNamespaceURI())
+                    || XMLNS.equals(attribute.getName()))) {
                     // Not a namespace definition.
                     // The Element is output element, add the prefix (if used) to 
                     // visiblyUtilized
