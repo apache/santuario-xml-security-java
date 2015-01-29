@@ -181,7 +181,7 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
             int attrsLength = attrs.getLength();
             for (int i = 0; i < attrsLength; i++) {
                 Attr attribute = (Attr) attrs.item(i);
-                String NName = attribute.getLocalName();
+                String NName = attribute.getLocalName() == null ? "" : attribute.getLocalName();
                 String NNodeValue = attribute.getNodeValue();
                 
                 if (!(XMLNS_URI.equals(attribute.getNamespaceURI())
