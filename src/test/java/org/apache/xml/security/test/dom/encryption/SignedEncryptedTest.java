@@ -81,15 +81,14 @@ public class SignedEncryptedTest extends Assert {
     @Ignore
     @Test
     public void decryptUsingSunTransformer() throws Exception {
-
-        Class<?> tf = getClass().getClassLoader().loadClass(
-                "com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl");
-        if (tf == null) {
+        try {
+            Class<?> tf = getClass().getClassLoader().loadClass(
+                    "com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl");
+            secureAndVerify((TransformerFactory) tf.newInstance(), false);
+        } catch (ClassNotFoundException e) {
             System.out.println(
                     "com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl not found, skipping test");
-            return;
         }
-        secureAndVerify((TransformerFactory) tf.newInstance(), false);
     }
 
     /**
@@ -99,15 +98,14 @@ public class SignedEncryptedTest extends Assert {
      */
     @Test
     public void decryptUsingXalanTransformer() throws Exception {
-
-        Class<?> tf = getClass().getClassLoader().loadClass(
-                "org.apache.xalan.processor.TransformerFactoryImpl");
-        if (tf == null) {
+        try {
+            Class<?> tf = getClass().getClassLoader().loadClass(
+                    "org.apache.xalan.processor.TransformerFactoryImpl");
+            secureAndVerify((TransformerFactory) tf.newInstance(), false);
+        } catch (ClassNotFoundException e) {
             System.out.println(
                     "org.apache.xalan.processor.TransformerFactoryImpl not found, skipping test");
-            return;
         }
-        secureAndVerify((TransformerFactory) tf.newInstance(), false);
     }
 
     /**
