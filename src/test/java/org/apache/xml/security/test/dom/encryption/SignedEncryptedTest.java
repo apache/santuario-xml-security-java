@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.xml.security.test.dom.c14n.implementations;
+package org.apache.xml.security.test.dom.encryption;
 
 import org.apache.xml.security.encryption.DocumentSerializer;
 import org.apache.xml.security.encryption.TransformSerializer;
