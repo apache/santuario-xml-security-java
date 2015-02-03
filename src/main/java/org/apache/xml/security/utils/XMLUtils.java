@@ -1074,8 +1074,7 @@ public final class XMLUtils {
     /**
      * Return this document builder to be reused
      * @param db DocumentBuilder returned from any of {@link #createDocumentBuilder} methods.
-     * @param disAllowDocTypeDeclarations We can't figure out its value from the documentBuilder itself 
-     * @return whether it was successfully returned to the pool  
+     * @return whether it was successfully returned to the pool
      */
     public static boolean repoolDocumentBuilder(DocumentBuilder db) {
         if (db == null || !(db instanceof DocumentBuilderProxy)) {
@@ -1107,20 +1106,12 @@ public final class XMLUtils {
             return disAllowDocTypeDeclarations;
         }
         
-        public int hashCode() {
-            return delegate.hashCode();
-        }
-
         public void reset() {
             delegate.reset();
         }
 
         public Document parse(InputStream is) throws SAXException, IOException {
             return delegate.parse(is);
-        }
-
-        public boolean equals(Object obj) {
-            return delegate.equals(obj);
         }
 
         public Document parse(InputStream is, String systemId)
@@ -1134,10 +1125,6 @@ public final class XMLUtils {
 
         public Document parse(File f) throws SAXException, IOException {
             return delegate.parse(f);
-        }
-
-        public String toString() {
-            return delegate.toString();
         }
 
         public Schema getSchema() {

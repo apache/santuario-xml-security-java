@@ -27,7 +27,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  * Abstract base class for pooling objects.  The two public methods are
- * {@link #getObject()} and ({@link #repool()}.  Objects are held through
+ * {@link #getObject()} and ({@link #repool(Object)}.  Objects are held through
  * weak references so even objects that are not repooled are subject to garbage collection.
  *
  * Subclasses must implement the abstract {@link #createObject()}.
@@ -39,6 +39,16 @@ import java.util.concurrent.LinkedBlockingDeque;
 public abstract class WeakObjectPool<T, E extends Throwable> {
 
     private static final Integer MARKER_VALUE = Integer.MAX_VALUE;//once here rather than auto-box it?
+
+    /** created, available objects to be checked out to clients */
+    private final BlockingQueue<WeakReference<T>> available;
+
+    /**
+     * Synchronized, identity map of loaned out objects (WeakHashMap);
+     * use to ensure we repool only object originating from here
+     * and do it once.
+     */
+    private final Map<T, Integer> onLoan;
 
     /**
      * The lone constructor.
@@ -76,7 +86,6 @@ public abstract class WeakObjectPool<T, E extends Throwable> {
         if (retValue == null) {
             //empty pool; create & add new one
             retValue = createObject();
-            ref = new WeakReference<T>(retValue);
         }
         onLoan.put(retValue, MARKER_VALUE);
         return retValue;
@@ -102,14 +111,4 @@ public abstract class WeakObjectPool<T, E extends Throwable> {
         }
         return false;
     }
-
-    /** created, available objects to be checked out to clients */
-    private final BlockingQueue<WeakReference<T>> available;
-
-    /**
-     * Synchronized, identity map of loaned out objects (WeakHashMap);
-     * use to ensure we repool only object originating from here
-     * and do it once.
-     */
-    private final Map<T, Integer> onLoan;
 }
