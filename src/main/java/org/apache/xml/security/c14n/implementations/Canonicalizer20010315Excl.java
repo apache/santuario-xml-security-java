@@ -181,11 +181,10 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
             int attrsLength = attrs.getLength();
             for (int i = 0; i < attrsLength; i++) {
                 Attr attribute = (Attr) attrs.item(i);
-                String NName = attribute.getLocalName() == null ? "" : attribute.getLocalName();
+                String NName = attribute.getLocalName();
                 String NNodeValue = attribute.getNodeValue();
                 
-                if (!(XMLNS_URI.equals(attribute.getNamespaceURI())
-                    || XMLNS.equals(attribute.getName()))) {
+                if (!XMLNS_URI.equals(attribute.getNamespaceURI())) {
                     // Not a namespace definition.
                     // The Element is output element, add the prefix (if used) to 
                     // visiblyUtilized

@@ -252,6 +252,8 @@ public class XMLCipher {
     CAMELLIA_128_KeyWrap + "\n" + CAMELLIA_192_KeyWrap + "\n" + CAMELLIA_256_KeyWrap + "\n" +
     SEED_128_KeyWrap + "\n";
 
+    private static final boolean HAVE_FUNCTIONAL_IDENTITY_TRANSFORMER = haveFunctionalIdentityTransformer();
+
     /** Cipher created during initialisation that is used for encryption */
     private Cipher contextCipher;
     
@@ -357,7 +359,11 @@ public class XMLCipher {
         }
 
         if (serializer == null) {
-            serializer = new TransformSerializer();
+            if (HAVE_FUNCTIONAL_IDENTITY_TRANSFORMER) {
+                serializer = new TransformSerializer();
+            } else {
+                serializer = new DocumentSerializer();
+            }
         }
         serializer.setCanonicalizer(this.canon);
         
@@ -3666,6 +3672,31 @@ public class XMLCipher {
                     return EncryptionConstants._TAG_KEYREFERENCE;
                 }
             }
+        }
+    }
+
+    private static boolean haveFunctionalIdentityTransformer() {
+        final String xml =
+                "<a:e1 xmlns:a=\"a\" xmlns:b=\"b\">"
+                        + "<a xmlns=\"a\" xmlns:b=\"b\"/>"
+                        + "</a:e1>";
+
+        try {
+            final javax.xml.transform.dom.DOMResult domResult = new javax.xml.transform.dom.DOMResult();
+            final javax.xml.transform.TransformerFactory transformerFactory =
+                    javax.xml.transform.TransformerFactory.newInstance();
+            transformerFactory.newTransformer().transform(
+                    new javax.xml.transform.stream.StreamSource(
+                            new java.io.ByteArrayInputStream(xml.getBytes("UTF-8"))), domResult);
+
+            final boolean result = "http://www.w3.org/2000/xmlns/".equals(
+                    domResult.getNode().getFirstChild().getFirstChild().getAttributes().item(1).getNamespaceURI());
+            log.debug("Have functional IdentityTransformer: " + result);
+            return result;
+
+        } catch (Exception e) {
+            log.debug(e.getMessage(), e);
+            return false;
         }
     }
 }
