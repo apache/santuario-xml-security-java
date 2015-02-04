@@ -109,83 +109,83 @@ public class JCEMapper {
         // Signature algorithms
         algorithmsMap.put(
             XMLSignature.ALGO_ID_SIGNATURE_DSA, 
-            new Algorithm("SHA1withDSA", "SHA1withDSA", "Signature")
+            new Algorithm("DSA", "SHA1withDSA", "Signature")
         );
         algorithmsMap.put(
             XMLSignature.ALGO_ID_SIGNATURE_DSA_SHA256,
-            new Algorithm("", "SHA256withDSA", "Signature")
+            new Algorithm("DSA", "SHA256withDSA", "Signature")
         );
         algorithmsMap.put(
             XMLSignature.ALGO_ID_SIGNATURE_NOT_RECOMMENDED_RSA_MD5, 
-            new Algorithm("MD5withRSA", "MD5withRSA", "Signature")
+            new Algorithm("RSA", "MD5withRSA", "Signature")
         );
         algorithmsMap.put(
             XMLSignature.ALGO_ID_SIGNATURE_RSA_RIPEMD160, 
-            new Algorithm("RIPEMD160withRSA", "RIPEMD160withRSA", "Signature")
+            new Algorithm("RSA", "RIPEMD160withRSA", "Signature")
         );
         algorithmsMap.put(
             XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1, 
-            new Algorithm("SHA1withRSA", "SHA1withRSA", "Signature")
+            new Algorithm("RSA", "SHA1withRSA", "Signature")
         );
         algorithmsMap.put(
             XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA224, 
-            new Algorithm("SHA224withRSA", "SHA224withRSA", "Signature")
+            new Algorithm("RSA", "SHA224withRSA", "Signature")
         );
         algorithmsMap.put(
             XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA256, 
-            new Algorithm("SHA256withRSA", "SHA256withRSA", "Signature")
+            new Algorithm("RSA", "SHA256withRSA", "Signature")
         );
         algorithmsMap.put(
             XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA384, 
-            new Algorithm("SHA384withRSA", "SHA384withRSA", "Signature")
+            new Algorithm("RSA", "SHA384withRSA", "Signature")
         );
         algorithmsMap.put(
             XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA512, 
-            new Algorithm("SHA512withRSA", "SHA512withRSA", "Signature")
+            new Algorithm("RSA", "SHA512withRSA", "Signature")
         );
         algorithmsMap.put(
             XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1_MGF1, 
-            new Algorithm("SHA1withRSAandMGF1", "SHA1withRSAandMGF1", "Signature")
+            new Algorithm("RSA", "SHA1withRSAandMGF1", "Signature")
         );
         algorithmsMap.put(
             XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA224_MGF1, 
-            new Algorithm("SHA224withRSAandMGF1", "SHA224withRSAandMGF1", "Signature")
+            new Algorithm("RSA", "SHA224withRSAandMGF1", "Signature")
         );
         algorithmsMap.put(
             XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA256_MGF1, 
-            new Algorithm("SHA256withRSAandMGF1", "SHA256withRSAandMGF1", "Signature")
+            new Algorithm("RSA", "SHA256withRSAandMGF1", "Signature")
         );
         algorithmsMap.put(
             XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA384_MGF1, 
-            new Algorithm("SHA384withRSAandMGF1", "SHA384withRSAandMGF1", "Signature")
+            new Algorithm("RSA", "SHA384withRSAandMGF1", "Signature")
         );
         algorithmsMap.put(
             XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA512_MGF1, 
-            new Algorithm("SHA512withRSAandMGF1", "SHA512withRSAandMGF1", "Signature")
+            new Algorithm("RSA", "SHA512withRSAandMGF1", "Signature")
         );
         algorithmsMap.put(
             XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA1, 
-            new Algorithm("SHA1withECDSA", "SHA1withECDSA", "Signature")
+            new Algorithm("EC", "SHA1withECDSA", "Signature")
         );
         algorithmsMap.put(
             XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA224, 
-            new Algorithm("SHA224withECDSA", "SHA224withECDSA", "Signature")
+            new Algorithm("EC", "SHA224withECDSA", "Signature")
         );
         algorithmsMap.put(
             XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA256, 
-            new Algorithm("SHA256withECDSA", "SHA256withECDSA", "Signature")
+            new Algorithm("EC", "SHA256withECDSA", "Signature")
         );
         algorithmsMap.put(
             XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA384, 
-            new Algorithm("SHA384withECDSA", "SHA384withECDSA", "Signature")
+            new Algorithm("EC", "SHA384withECDSA", "Signature")
         );
         algorithmsMap.put(
             XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA512, 
-            new Algorithm("SHA512withECDSA", "SHA512withECDSA", "Signature")
+            new Algorithm("EC", "SHA512withECDSA", "Signature")
         );
         algorithmsMap.put(
             XMLSignature.ALGO_ID_SIGNATURE_ECDSA_RIPEMD160, 
-            new Algorithm("RIPEMD160withECDSA", "RIPEMD160withECDSA", "Signature")
+            new Algorithm("EC", "RIPEMD160withECDSA", "Signature")
         );
         algorithmsMap.put(
             XMLSignature.ALGO_ID_MAC_HMAC_NOT_RECOMMENDED_MD5,
