@@ -215,6 +215,7 @@
                     Description="Digital Signature Algorithm with SHA-1 message digest"
                     AlgorithmClass="Signature"
                     RequirementLevel="REQUIRED"
+                    RequiredKey="DSA"
                     JCEName="SHA1withDSA"/>
 
          <Algorithm URI="http://www.w3.org/2001/04/xmldsig-more#rsa-md5"
@@ -222,6 +223,7 @@
                     AlgorithmClass="Signature"
                     RequirementLevel="NOT RECOMMENDED"
                     SpecificationURL="http://www.ietf.org/rfc/rfc4051.txt"
+                    RequiredKey="RSA"
                     JCEName="MD5withRSA"/>
 
          <Algorithm URI="http://www.w3.org/2001/04/xmldsig-more#rsa-ripemd160"
@@ -229,12 +231,14 @@
                     AlgorithmClass="Signature"
                     RequirementLevel="OPTIONAL"
                     SpecificationURL="http://www.ietf.org/rfc/rfc4051.txt"
+                    RequiredKey="RSA"
                     JCEName="RIPEMD160withRSA"/>
 
          <Algorithm URI="http://www.w3.org/2000/09/xmldsig#rsa-sha1"
                     Description="RSA Signature with SHA-1 message digest"
                     AlgorithmClass="Signature"
                     RequirementLevel="RECOMMENDED"
+                    RequiredKey="RSA"
                     JCEName="SHA1withRSA"/>
 
          <Algorithm URI="http://www.w3.org/2001/04/xmldsig-more#rsa-sha2224"
@@ -242,6 +246,7 @@
                     AlgorithmClass="Signature"
                     RequirementLevel="OPTIONAL"
                     SpecificationURL="http://www.ietf.org/rfc/rfc4051.txt"
+                    RequiredKey="RSA"
                     JCEName="SHA224withRSA"/>
                     
          <Algorithm URI="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"
@@ -249,6 +254,7 @@
                     AlgorithmClass="Signature"
                     RequirementLevel="OPTIONAL"
                     SpecificationURL="http://www.ietf.org/rfc/rfc4051.txt"
+                    RequiredKey="RSA"
                     JCEName="SHA256withRSA"/>
 
          <Algorithm URI="http://www.w3.org/2001/04/xmldsig-more#rsa-sha384"
@@ -256,6 +262,7 @@
                     AlgorithmClass="Signature"
                     RequirementLevel="OPTIONAL"
                     SpecificationURL="http://www.ietf.org/rfc/rfc4051.txt"
+                    RequiredKey="RSA"
                     JCEName="SHA384withRSA"/>
 
          <Algorithm URI="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"
@@ -263,12 +270,14 @@
                     AlgorithmClass="Signature"
                     RequirementLevel="OPTIONAL"
                     SpecificationURL="http://www.ietf.org/rfc/rfc4051.txt"
+                    RequiredKey="RSA"
                     JCEName="SHA512withRSA"/>
                     
          <Algorithm URI="http://www.w3.org/2007/05/xmldsig-more#sha1-rsa-MGF1"
                     Description="RSASSA-PSS Signature with SHA-1 message digest"
                     AlgorithmClass="Signature"
                     RequirementLevel="RECOMMENDED"
+                    RequiredKey="RSA"
                     JCEName="SHA1withRSAandMGF1"/>
 
          <Algorithm URI="http://www.w3.org/2007/05/xmldsig-more#sha224-rsa-MGF1"
@@ -276,6 +285,7 @@
                     AlgorithmClass="Signature"
                     RequirementLevel="OPTIONAL"
                     SpecificationURL="http://www.ietf.org/rfc/rfc6931.txt"
+                    RequiredKey="RSA"
                     JCEName="SHA224withRSAandMGF1"/>
 
          <Algorithm URI="http://www.w3.org/2007/05/xmldsig-more#sha256-rsa-MGF1"
@@ -283,6 +293,7 @@
                     AlgorithmClass="Signature"
                     RequirementLevel="OPTIONAL"
                     SpecificationURL="http://www.ietf.org/rfc/rfc6931.txt"
+                    RequiredKey="RSA"
                     JCEName="SHA256withRSAandMGF1"/>
 
          <Algorithm URI="http://www.w3.org/2007/05/xmldsig-more#sha384-rsa-MGF1"
@@ -290,6 +301,7 @@
                     AlgorithmClass="Signature"
                     RequirementLevel="OPTIONAL"
                     SpecificationURL="http://www.ietf.org/rfc/rfc6931.txt"
+                    RequiredKey="RSA"
                     JCEName="SHA384withRSAandMGF1"/>
 
          <Algorithm URI="http://www.w3.org/2007/05/xmldsig-more#sha512-rsa-MGF1"
@@ -297,6 +309,7 @@
                     AlgorithmClass="Signature"
                     RequirementLevel="OPTIONAL"
                     SpecificationURL="http://www.ietf.org/rfc/rfc6931.txt"
+                    RequiredKey="RSA"
                     JCEName="SHA512withRSAandMGF1"/>
                     
          <Algorithm URI="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1"
@@ -311,6 +324,7 @@
                     AlgorithmClass="Signature"
                     RequirementLevel="OPTIONAL"
                     SpecificationURL="http://www.ietf.org/rfc/rfc4051.txt"
+                    RequiredKey="EC"
                     JCEName="SHA224withECDSA"/>
                     
          <Algorithm URI="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"
@@ -318,6 +332,7 @@
                     AlgorithmClass="Signature"
                     RequirementLevel="OPTIONAL"
                     SpecificationURL="http://www.ietf.org/rfc/rfc4051.txt"
+                    RequiredKey="EC"
                     JCEName="SHA256withECDSA"/>
 
          <Algorithm URI="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha384"
@@ -325,6 +340,7 @@
                     AlgorithmClass="Signature"
                     RequirementLevel="OPTIONAL"
                     SpecificationURL="http://www.ietf.org/rfc/rfc4051.txt"
+                    RequiredKey="EC"
                     JCEName="SHA384withECDSA"/>
 
          <Algorithm URI="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512"
@@ -339,6 +355,7 @@
                     AlgorithmClass="Signature"
                     RequirementLevel="OPTIONAL"
                     SpecificationURL="https://tools.ietf.org/html/rfc6931"
+                    RequiredKey="EC"
                     JCEName="RIPEMD160withECDSA"/>
                     
          <!-- MAC Algorithms -->
