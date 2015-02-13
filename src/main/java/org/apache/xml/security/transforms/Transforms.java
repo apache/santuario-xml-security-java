@@ -263,8 +263,8 @@ public class Transforms extends SignatureElementProxy {
             int last = this.getLength() - 1;
             for (int i = 0; i < last; i++) {
                 Transform t = this.item(i);
-                String uri = t.getURI();
                 if (log.isDebugEnabled()) {
+                    String uri = t.getURI();
                     log.debug("Perform the (" + i + ")th " + uri + " transform");
                 }
                 checkSecureValidation(t);
@@ -272,6 +272,10 @@ public class Transforms extends SignatureElementProxy {
             }
             if (last >= 0) {
                 Transform t = this.item(last);
+                if (log.isDebugEnabled()) {
+                    String uri = t.getURI();
+                    log.debug("Perform the (" + last + ")th " + uri + " transform");
+                }
                 checkSecureValidation(t);
                 xmlSignatureInput = t.performTransform(xmlSignatureInput, os);
             }
