@@ -22,6 +22,9 @@ import org.apache.xml.security.stax.ext.stax.XMLSecComment;
 import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
 
 import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+import java.io.IOException;
+import java.io.Writer;
 
 /**
  * @author $Author$
@@ -44,5 +47,16 @@ public class XMLSecCommentImpl extends XMLSecEventBaseImpl implements XMLSecComm
     @Override
     public int getEventType() {
         return XMLStreamConstants.COMMENT;
+    }
+
+    @Override
+    public void writeAsEncodedUnicode(Writer writer) throws XMLStreamException {
+        try {
+            writer.write("<!--");
+            writer.write(getText());
+            writer.write("-->");
+        } catch (IOException e) {
+            throw new XMLStreamException(e);
+        }
     }
 }

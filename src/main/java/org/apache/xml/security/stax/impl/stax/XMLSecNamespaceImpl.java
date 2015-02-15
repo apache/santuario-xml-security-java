@@ -23,6 +23,9 @@ import org.apache.xml.security.stax.ext.stax.XMLSecNamespace;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -146,6 +149,46 @@ public class XMLSecNamespaceImpl extends XMLSecEventBaseImpl implements XMLSecNa
     @Override
     public boolean isNamespace() {
         return true;
+    }
+
+    @Override
+    public void writeAsEncodedUnicode(Writer writer) throws XMLStreamException {
+        try {
+            writer.write("xmlns");
+            if (getPrefix() != null && !getPrefix().isEmpty()) {
+                writer.write(':');
+                writer.write(getPrefix());
+            }
+            writer.write("=\"");
+            writeEncoded(writer, getValue());
+            writer.write("\"");
+        } catch (IOException e) {
+            throw new XMLStreamException(e);
+        }
+    }
+
+    private void writeEncoded(Writer writer, String text) throws IOException {
+        final int length = text.length();
+
+        int i = 0;
+        int idx = 0;
+        while (i < length) {
+            char c = text.charAt(i);
+            switch (c) {
+                case '&':
+                    writer.write(text, idx, i - idx);
+                    writer.write("&amp;");
+                    idx = i + 1;
+                    break;
+                case '"':
+                    writer.write(text, idx, i - idx);
+                    writer.write("&quot;");
+                    idx = i + 1;
+                    break;
+            }
+            i++;
+        }
+        writer.write(text, idx, length - idx);
     }
 
     @Override

@@ -23,6 +23,9 @@ import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Iterator;
 
 /**
@@ -61,5 +64,21 @@ public class XMLSecEndElementImpl extends XMLSecEventBaseImpl implements XMLSecE
     @Override
     public XMLSecEndElement asEndElement() {
         return this;
+    }
+
+    @Override
+    public void writeAsEncodedUnicode(Writer writer) throws XMLStreamException {
+        try {
+            writer.write("</");
+            final String prefix = getName().getPrefix();
+            if (prefix != null && !prefix.isEmpty()) {
+                writer.write(getName().getPrefix());
+                writer.write(':');
+            }
+            writer.write(getName().getLocalPart());
+            writer.write('>');
+        } catch (IOException e) {
+            throw new XMLStreamException(e);
+        }
     }
 }

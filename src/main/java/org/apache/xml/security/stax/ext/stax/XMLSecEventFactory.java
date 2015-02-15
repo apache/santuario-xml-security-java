@@ -75,7 +75,7 @@ public class XMLSecEventFactory {
                 return new XMLSecCharactersImpl(xmlStreamReader.getText(), false, true, xmlStreamReader.isWhiteSpace(), parentXMLSecStartElement);
             case XMLStreamConstants.START_DOCUMENT:
                 String systemId = xmlStreamReader.getLocation() != null ? xmlStreamReader.getLocation().getSystemId() : null;
-                return new XMLSecStartDocumentImpl(systemId, xmlStreamReader.getEncoding(),
+                return new XMLSecStartDocumentImpl(systemId, xmlStreamReader.getCharacterEncodingScheme(),
                         xmlStreamReader.standaloneSet() ? xmlStreamReader.isStandalone() : null, xmlStreamReader.getVersion());
             case XMLStreamConstants.END_DOCUMENT:
                 return new XMLSecEndDocumentImpl();

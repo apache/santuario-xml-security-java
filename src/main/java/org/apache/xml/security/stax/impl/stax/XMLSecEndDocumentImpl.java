@@ -21,6 +21,8 @@ package org.apache.xml.security.stax.impl.stax;
 import org.apache.xml.security.stax.ext.stax.XMLSecEndDocument;
 
 import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+import java.io.Writer;
 
 /**
  * @author $Author$
@@ -41,5 +43,10 @@ public class XMLSecEndDocumentImpl extends XMLSecEventBaseImpl implements XMLSec
     @Override
     public XMLSecEndDocument asEndEndDocument() {
         return this;
+    }
+
+    @Override
+    public void writeAsEncodedUnicode(Writer writer) throws XMLStreamException {
+        // nothing to write.
     }
 }

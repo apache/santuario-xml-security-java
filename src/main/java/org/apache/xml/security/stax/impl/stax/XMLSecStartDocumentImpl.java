@@ -21,6 +21,9 @@ package org.apache.xml.security.stax.impl.stax;
 import org.apache.xml.security.stax.ext.stax.XMLSecStartDocument;
 
 import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+import java.io.IOException;
+import java.io.Writer;
 
 /**
  * @author $Author$
@@ -83,5 +86,33 @@ public class XMLSecStartDocumentImpl extends XMLSecEventBaseImpl implements XMLS
     @Override
     public XMLSecStartDocument asStartDocument() {
         return this;
+    }
+
+    @Override
+    public void writeAsEncodedUnicode(Writer writer) throws XMLStreamException {
+        try {
+            writer.write("<?xml version=\"");
+            if (getVersion() == null || getVersion().isEmpty()) {
+                writer.write("1.0");
+            } else {
+                writer.write(getVersion());
+            }
+            writer.write('"');
+            if (encodingSet()) {
+                writer.write(" encoding=\"");
+                writer.write(getCharacterEncodingScheme());
+                writer.write('"');
+            }
+            if (standaloneSet()) {
+                if (isStandalone()) {
+                    writer.write(" standalone=\"yes\"");
+                } else {
+                    writer.write(" standalone=\"no\"");
+                }
+            }
+            writer.write(" ?>");
+        } catch (IOException e) {
+            throw new XMLStreamException(e);
+        }
     }
 }

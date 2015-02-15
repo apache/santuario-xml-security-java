@@ -21,6 +21,9 @@ package org.apache.xml.security.stax.impl.stax;
 import org.apache.xml.security.stax.ext.stax.XMLSecEntityDeclaration;
 
 import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+import java.io.IOException;
+import java.io.Writer;
 
 /**
  * @author $Author$
@@ -72,5 +75,21 @@ public class XMLSecEntityDeclarationImpl extends XMLSecEventBaseImpl implements 
     @Override
     public boolean isEntityReference() {
         return true;
+    }
+
+    @Override
+    public void writeAsEncodedUnicode(Writer writer) throws XMLStreamException {
+        try {
+            writer.write("<!ENTITY ");
+            writer.write(getName());
+            writer.write(" \"");
+            final String replacementText = getReplacementText();
+            if (replacementText != null) {
+                writer.write(replacementText);
+            }
+            writer.write("\">");
+        } catch (IOException e) {
+            throw new XMLStreamException(e);
+        }
     }
 }

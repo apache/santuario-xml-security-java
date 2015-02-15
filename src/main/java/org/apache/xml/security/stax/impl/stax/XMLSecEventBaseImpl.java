@@ -158,7 +158,8 @@ public abstract class XMLSecEventBaseImpl implements XMLSecEvent {
 
     @Override
     public void writeAsEncodedUnicode(Writer writer) throws XMLStreamException {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException(
+                "writeAsEncodedUnicode not implemented for " + this.getClass().getName());
     }
 
     static final class LocationImpl implements Location {

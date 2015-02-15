@@ -22,6 +22,9 @@ import org.apache.xml.security.stax.ext.stax.XMLSecDTD;
 import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
 
 import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Collections;
 import java.util.List;
 
@@ -61,5 +64,14 @@ public class XMLSecDTDImpl extends XMLSecEventBaseImpl implements XMLSecDTD {
     @Override
     public int getEventType() {
         return XMLStreamConstants.DTD;
+    }
+
+    @Override
+    public void writeAsEncodedUnicode(Writer writer) throws XMLStreamException {
+        try {
+            writer.write(getDocumentTypeDeclaration());
+        } catch (IOException e) {
+            throw new XMLStreamException(e);
+        }
     }
 }

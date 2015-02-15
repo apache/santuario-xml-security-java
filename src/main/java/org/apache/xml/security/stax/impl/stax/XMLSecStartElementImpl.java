@@ -25,7 +25,10 @@ import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.*;
 
 /**
@@ -243,5 +246,48 @@ public class XMLSecStartElementImpl extends XMLSecEventBaseImpl implements XMLSe
     @Override
     public XMLSecStartElement asStartElement() {
         return this;
+    }
+
+    @Override
+    public void writeAsEncodedUnicode(Writer writer) throws XMLStreamException {
+        try {
+            writer.write('<');
+            final String prefix = getName().getPrefix();
+            if (prefix != null && !prefix.isEmpty()) {
+                writer.write(prefix);
+                writer.write(':');
+            }
+            writer.write(getName().getLocalPart());
+
+            for (XMLSecNamespace xmlSecNamespace : namespaces) {
+                writer.write(" xmlns");
+
+                final String nsPrefix = xmlSecNamespace.getPrefix();
+                if (nsPrefix != null && !nsPrefix.isEmpty()) {
+                    writer.write(':');
+                    writer.write(nsPrefix);
+                }
+                writer.write("=\"");
+                writer.write(xmlSecNamespace.getValue());
+                writer.write('"');
+            }
+
+            for (XMLSecAttribute xmlSecAttribute : attributes) {
+                writer.write(' ');
+                final String attrPrefix = xmlSecAttribute.getName().getPrefix();
+                if (attrPrefix != null && !attrPrefix.isEmpty()) {
+                    writer.write(attrPrefix);
+                    writer.write(':');
+                }
+                writer.write(xmlSecAttribute.getName().getLocalPart());
+                writer.write("=\"");
+                writer.write(xmlSecAttribute.getValue());
+                writer.write('"');
+            }
+
+            writer.write('>');
+        } catch (IOException e) {
+            throw new XMLStreamException(e);
+        }
     }
 }

@@ -22,6 +22,9 @@ import org.apache.xml.security.stax.ext.stax.XMLSecCharacters;
 import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
 
 import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+import java.io.IOException;
+import java.io.Writer;
 
 /**
  * @author $Author$
@@ -98,5 +101,49 @@ public class XMLSecCharactersImpl extends XMLSecEventBaseImpl implements XMLSecC
     @Override
     public XMLSecCharacters asCharacters() {
         return this;
+    }
+
+    @Override
+    public void writeAsEncodedUnicode(Writer writer) throws XMLStreamException {
+        try {
+            if (isCData) {
+                writer.write("<![CDATA[");
+                writer.write(getText());
+                writer.write("]]>");
+            } else {
+                writeEncoded(writer, getText());
+            }
+        } catch (IOException e) {
+            throw new XMLStreamException(e);
+        }
+    }
+
+    private void writeEncoded(Writer writer, char[] text) throws IOException {
+        final int length = text.length;
+
+        int i = 0;
+        int idx = 0;
+        while (i < length) {
+            char c = text[i];
+            switch (c) {
+                case '<':
+                    writer.write(text, idx, i - idx);
+                    writer.write("&lt;");
+                    idx = i + 1;
+                    break;
+                case '>':
+                    writer.write(text, idx, i - idx);
+                    writer.write("&gt;");
+                    idx = i + 1;
+                    break;
+                case '&':
+                    writer.write(text, idx, i - idx);
+                    writer.write("&amp;");
+                    idx = i + 1;
+                    break;
+            }
+            i++;
+        }
+        writer.write(text, idx, length - idx);
     }
 }

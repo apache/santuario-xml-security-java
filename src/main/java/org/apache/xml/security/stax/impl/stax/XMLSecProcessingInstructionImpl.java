@@ -22,6 +22,9 @@ import org.apache.xml.security.stax.ext.stax.XMLSecProcessingInstruction;
 import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
 
 import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+import java.io.IOException;
+import java.io.Writer;
 
 /**
  * @author $Author$
@@ -56,5 +59,21 @@ public class XMLSecProcessingInstructionImpl extends XMLSecEventBaseImpl impleme
     @Override
     public boolean isProcessingInstruction() {
         return true;
+    }
+
+    @Override
+    public void writeAsEncodedUnicode(Writer writer) throws XMLStreamException {
+        try {
+            writer.write("<?");
+            writer.write(getTarget());
+            final String data = getData();
+            if (data != null && !data.isEmpty()) {
+                writer.write(' ');
+                writer.write(data);
+            }
+            writer.write("?>");
+        } catch (IOException e) {
+            throw new XMLStreamException(e);
+        }
     }
 }
