@@ -1077,7 +1077,7 @@ public final class XMLUtils {
      * @return whether it was successfully returned to the pool
      */
     public static boolean repoolDocumentBuilder(DocumentBuilder db) {
-        if (db == null || !(db instanceof DocumentBuilderProxy)) {
+        if (!(db instanceof DocumentBuilderProxy)) {
             return false;
         }
         db.reset();

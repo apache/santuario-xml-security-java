@@ -265,7 +265,7 @@ public class Reference extends SignatureElementProxy {
 
         String uri = digestMethodElem.getAttributeNS(null, Constants._ATT_ALGORITHM);
 
-        if (uri == null) {
+        if ("".equals(uri)) {
             return null;
         }
         
