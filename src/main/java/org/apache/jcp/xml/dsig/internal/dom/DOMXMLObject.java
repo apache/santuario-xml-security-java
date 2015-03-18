@@ -91,7 +91,7 @@ public final class DOMXMLObject extends BaseStructure implements XMLObject {
     {
         // unmarshal attributes
         this.encoding = DOMUtils.getAttributeValue(objElem, "Encoding");
-        
+
         Attr attr = objElem.getAttributeNodeNS(null, "Id");
         if (attr != null) {
             this.id = attr.getValue();
@@ -207,7 +207,7 @@ public final class DOMXMLObject extends BaseStructure implements XMLObject {
         return idsEqual && encodingsEqual && mimeTypesEqual && 
                 equalsContent(getXmlObjectContent(oxo));
     }
-    
+
     @Override
     public int hashCode() {
         int result = 17;

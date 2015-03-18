@@ -80,7 +80,7 @@ public abstract class ApacheTransform extends TransformService {
         if (!(parent instanceof javax.xml.crypto.dom.DOMStructure)) {
             throw new ClassCastException("parent must be of type DOMStructure");
         }
-        transformElem = (Element) 
+        transformElem = (Element)
             ((javax.xml.crypto.dom.DOMStructure) parent).getNode();
         ownerDoc = DOMUtils.getOwnerDocument(transformElem);
     }
@@ -99,7 +99,7 @@ public abstract class ApacheTransform extends TransformService {
         if (!(parent instanceof javax.xml.crypto.dom.DOMStructure)) {
             throw new ClassCastException("parent must be of type DOMStructure");
         }
-        transformElem = (Element) 
+        transformElem = (Element)
             ((javax.xml.crypto.dom.DOMStructure) parent).getNode();
         ownerDoc = DOMUtils.getOwnerDocument(transformElem);
     }
@@ -136,7 +136,7 @@ public abstract class ApacheTransform extends TransformService {
 
         if (apacheTransform == null) {
             try {
-                apacheTransform = 
+                apacheTransform =
                     new Transform(ownerDoc, getAlgorithm(), transformElem.getChildNodes());
                 apacheTransform.setElement(transformElem, xc.getBaseURI());
                 boolean secVal = Utils.secureValidation(xc);
@@ -148,9 +148,9 @@ public abstract class ApacheTransform extends TransformService {
             } catch (Exception ex) {
                 throw new TransformException("Couldn't find Transform for: " +
                                              getAlgorithm(), ex);
-            } 
+            }
         }
-        
+
         if (Utils.secureValidation(xc)) {
             String algorithm = getAlgorithm();
             if (Transforms.TRANSFORM_XSLT.equals(algorithm)) {

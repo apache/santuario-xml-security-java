@@ -74,7 +74,7 @@ public final class DOMRetrievalMethod extends DOMStructure
     private Attr here;
 
     /**
-     * Creates a <code>DOMRetrievalMethod</code> containing the specified 
+     * Creates a <code>DOMRetrievalMethod</code> containing the specified
      * URIReference and List of Transforms.
      *
      * @param uri the URI
@@ -82,11 +82,11 @@ public final class DOMRetrievalMethod extends DOMStructure
      * @param transforms a list of {@link Transform}s. The list is defensively
      *    copied to prevent subsequent modification. May be <code>null</code>
      *    or empty.
-     * @throws IllegalArgumentException if the format of <code>uri</code> is 
+     * @throws IllegalArgumentException if the format of <code>uri</code> is
      *    invalid, as specified by Reference's URI attribute in the W3C
      *    specification for XML-Signature Syntax and Processing
      * @throws NullPointerException if <code>uriReference</code>
-     *    is <code>null</code> 
+     *    is <code>null</code>
      * @throws ClassCastException if <code>transforms</code> contains any
      *    entries that are not of type {@link Transform}
      */
@@ -119,7 +119,7 @@ public final class DOMRetrievalMethod extends DOMStructure
 
         this.type = type;
     }
-        
+
     /**
      * Creates a <code>DOMRetrievalMethod</code> from an element.
      *
@@ -135,13 +135,13 @@ public final class DOMRetrievalMethod extends DOMStructure
 
         // get here node
         here = rmElem.getAttributeNodeNS(null, "URI");
-        
+
         boolean secVal = Utils.secureValidation(context);
 
         // get Transforms, if specified
         List<Transform> transforms = new ArrayList<Transform>();
         Element transformsElem = DOMUtils.getFirstChildElement(rmElem);
-        
+
         if (transformsElem != null) {
             String localName = transformsElem.getLocalName();
             String namespace = transformsElem.getNamespaceURI();
@@ -227,7 +227,7 @@ public final class DOMRetrievalMethod extends DOMStructure
         }
 
         /*
-         * If URIDereferencer is specified in context; use it, otherwise use 
+         * If URIDereferencer is specified in context; use it, otherwise use
          * built-in.
          */
         URIDereferencer deref = context.getURIDereferencer();
@@ -305,7 +305,7 @@ public final class DOMRetrievalMethod extends DOMStructure
         return uri.equals(orm.getURI()) &&
             transforms.equals(orm.getTransforms()) && typesEqual;
     }
-    
+
     @Override
     public int hashCode() {
         int result = 17;
@@ -314,7 +314,7 @@ public final class DOMRetrievalMethod extends DOMStructure
         }
         result = 31 * result + uri.hashCode();
         result = 31 * result + transforms.hashCode();
-        
+
         return result;
     }
 }

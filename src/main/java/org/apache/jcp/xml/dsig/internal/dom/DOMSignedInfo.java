@@ -46,7 +46,7 @@ import org.apache.xml.security.utils.UnsyncBufferedOutputStream;
  * @author Sean Mullan
  */
 public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
-    
+
     /**
      * The maximum number of references per Manifest, if secure validation is enabled.
      */
@@ -56,13 +56,13 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
         org.slf4j.LoggerFactory.getLogger(DOMSignedInfo.class);
     
     /** Signature - NOT Recommended RSAwithMD5 */
-    private static final String ALGO_ID_SIGNATURE_NOT_RECOMMENDED_RSA_MD5 = 
+    private static final String ALGO_ID_SIGNATURE_NOT_RECOMMENDED_RSA_MD5 =
         Constants.MoreAlgorithmsSpecNS + "rsa-md5";
-    
+
     /** HMAC - NOT Recommended HMAC-MD5 */
-    private static final String ALGO_ID_MAC_HMAC_NOT_RECOMMENDED_MD5 = 
+    private static final String ALGO_ID_MAC_HMAC_NOT_RECOMMENDED_MD5 =
         Constants.MoreAlgorithmsSpecNS + "hmac-md5";
-    
+
     private List<Reference> references;
     private CanonicalizationMethod canonicalizationMethod;
     private SignatureMethod signatureMethod;
@@ -78,7 +78,7 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
      * @param sm the signature method
      * @param references the list of references. The list is copied.
      * @throws NullPointerException if
-     *    <code>cm</code>, <code>sm</code>, or <code>references</code> is 
+     *    <code>cm</code>, <code>sm</code>, or <code>references</code> is
      *    <code>null</code>
      * @throws IllegalArgumentException if <code>references</code> is empty
      * @throws ClassCastException if any of the references are not of
@@ -121,7 +121,7 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
      * @throws ClassCastException if any of the references are not of
      *    type <code>Reference</code>
      */
-    public DOMSignedInfo(CanonicalizationMethod cm, SignatureMethod sm, 
+    public DOMSignedInfo(CanonicalizationMethod cm, SignatureMethod sm,
                          List<? extends Reference> references, String id) {
         this(cm, sm, references);
         this.id = id;
@@ -151,7 +151,7 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
                                                         "SignatureMethod",
                                                         XMLSignature.XMLNS);
         signatureMethod = DOMSignatureMethod.unmarshal(smElem);
-        
+
         boolean secVal = Utils.secureValidation(context);
 
         String signatureMethodAlgorithm = signatureMethod.getAlgorithm();
@@ -161,12 +161,12 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
                 "It is forbidden to use algorithm " + signatureMethod + " when secure validation is enabled"
             );
         }
-        
+
         // unmarshal References
         ArrayList<Reference> refList = new ArrayList<Reference>(5);
         Element refElem = DOMUtils.getNextSiblingElement(smElem, "Reference", XMLSignature.XMLNS);
         refList.add(new DOMReference(refElem, context, provider));
-                
+
         refElem = DOMUtils.getNextSiblingElement(refElem);
         while (refElem != null) {
             String name = refElem.getLocalName();
@@ -218,15 +218,15 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
         }
 
         OutputStream os = new UnsyncBufferedOutputStream(bos);
-        
+
         DOMSubTreeData subTree = new DOMSubTreeData(localSiElem, true);
         try {
-            ((DOMCanonicalizationMethod) 
+            ((DOMCanonicalizationMethod)
                 canonicalizationMethod).canonicalize(subTree, context, os);
         } catch (TransformException te) {
             throw new XMLSignatureException(te);
         }
-        
+
         try {
             os.flush();
         } catch (IOException e) {
@@ -250,7 +250,7 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
         }
 
         this.canonData = new ByteArrayInputStream(signedInfoBytes);
-        
+
         try {
             os.close();
         } catch (IOException e) {
@@ -323,7 +323,7 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
         result = 31 * result + canonicalizationMethod.hashCode();
         result = 31 * result + signatureMethod.hashCode();
         result = 31 * result + references.hashCode();
-        
+
         return result;
     }
 }

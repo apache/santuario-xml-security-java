@@ -42,7 +42,7 @@ import org.apache.xml.security.c14n.InvalidCanonicalizerException;
 public final class DOMCanonicalXMLC14N11Method extends ApacheCanonicalizer {
 
     public static final String C14N_11 = "http://www.w3.org/2006/12/xml-c14n11";
-    public static final String C14N_11_WITH_COMMENTS 
+    public static final String C14N_11_WITH_COMMENTS
         = "http://www.w3.org/2006/12/xml-c14n11#WithComments";
 
     @Override

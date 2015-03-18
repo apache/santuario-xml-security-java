@@ -91,7 +91,7 @@ public final class DOMXPathTransform extends ApacheTransform {
         throws MarshalException
     {
         super.marshalParams(parent, context);
-        XPathFilterParameterSpec xp = 
+        XPathFilterParameterSpec xp =
             (XPathFilterParameterSpec)getParameterSpec();
         Element xpathElem = DOMUtils.createElement(ownerDoc, "XPath",
              XMLSignature.XMLNS, DOMUtils.getSignaturePrefix(context));

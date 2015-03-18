@@ -83,7 +83,7 @@ abstract class AbstractDOMSignatureMethod extends BaseStructure
         throws InvalidKeyException, XMLSignatureException;
 
     /**
-     * Returns the java.security.Signature or javax.crypto.Mac standard 
+     * Returns the java.security.Signature or javax.crypto.Mac standard
      * algorithm name.
      */
     abstract String getJCAAlgorithm();
@@ -180,7 +180,7 @@ abstract class AbstractDOMSignatureMethod extends BaseStructure
         return getAlgorithm().equals(osm.getAlgorithm()) &&
             paramsEqual(osm.getParameterSpec());
     }
-    
+
     @Override
     public int hashCode() {
         int result = 17;
@@ -189,7 +189,7 @@ abstract class AbstractDOMSignatureMethod extends BaseStructure
         if (spec != null) {
             result = 31 * result + spec.hashCode();
         }
-        
+
         return result;
     }
 

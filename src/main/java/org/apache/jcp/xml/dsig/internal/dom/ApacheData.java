@@ -28,7 +28,7 @@ import javax.xml.crypto.Data;
 import org.apache.xml.security.signature.XMLSignatureInput;
 
 /**
- * XMLSignatureInput Data wrapper. 
+ * XMLSignatureInput Data wrapper.
  *
  * @author Sean Mullan
  */

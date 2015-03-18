@@ -39,7 +39,7 @@ import javax.xml.crypto.dsig.*;
  *
  * @author Sean Mullan
  */
-public class DOMCanonicalizationMethod extends DOMTransform 
+public class DOMCanonicalizationMethod extends DOMTransform
     implements CanonicalizationMethod {
 
     /**
@@ -69,7 +69,7 @@ public class DOMCanonicalizationMethod extends DOMTransform
         super(cmElem, context, provider);
         if (!(spi instanceof ApacheCanonicalizer) && !isC14Nalg(spi.getAlgorithm())) {
             throw new MarshalException("Illegal CanonicalizationMethod");
-        } 
+        }
     }
 
     /**
@@ -111,7 +111,7 @@ public class DOMCanonicalizationMethod extends DOMTransform
         return getAlgorithm().equals(ocm.getAlgorithm()) &&
             DOMUtils.paramsEqual(getParameterSpec(), ocm.getParameterSpec());
     }
-    
+
     @Override
     public int hashCode() {
         int result = 17;
@@ -123,7 +123,7 @@ public class DOMCanonicalizationMethod extends DOMTransform
 
         return result;
     }
-    
+
     private static boolean isC14Nalg(String alg) {
         return alg.equals(CanonicalizationMethod.INCLUSIVE) 
             || alg.equals(CanonicalizationMethod.INCLUSIVE_WITH_COMMENTS) 

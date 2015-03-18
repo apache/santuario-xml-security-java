@@ -56,7 +56,7 @@ public final class DOMX509Data extends BaseStructure implements X509Data {
      *    {@link String} (subject names), <code>byte[]</code> (subject key ids),
      *    {@link java.security.cert.X509Certificate}, {@link X509CRL},
      *    or {@link javax.xml.dsig.XMLStructure}
-     *    objects or elements from an external namespace). The list is 
+     *    objects or elements from an external namespace). The list is
      *    defensively copied to protect against subsequent modification.
      * @throws NullPointerException if <code>content</code> is <code>null</code>
      * @throws IllegalArgumentException if <code>content</code> is empty
@@ -186,7 +186,7 @@ public final class DOMX509Data extends BaseStructure implements X509Data {
         }
     }
 
-    private X509Certificate unmarshalX509Certificate(Element elem) 
+    private X509Certificate unmarshalX509Certificate(Element elem)
         throws MarshalException
     {
         try {
@@ -206,7 +206,7 @@ public final class DOMX509Data extends BaseStructure implements X509Data {
         }
     }
 
-    private ByteArrayInputStream unmarshalBase64Binary(Element elem) 
+    private ByteArrayInputStream unmarshalBase64Binary(Element elem)
         throws MarshalException {
         try {
             if (cf == null) {
@@ -241,10 +241,10 @@ public final class DOMX509Data extends BaseStructure implements X509Data {
             Object x = content.get(i);
             Object ox = ocontent.get(i);
             if (x instanceof byte[]) {
-                if (!(ox instanceof byte[]) || 
+                if (!(ox instanceof byte[]) ||
                     !Arrays.equals((byte[])x, (byte[])ox)) {
                     return false;
-                } 
+                }
             } else {
                 if (!(x.equals(ox))) {
                     return false;
@@ -254,7 +254,7 @@ public final class DOMX509Data extends BaseStructure implements X509Data {
 
         return true;
     }
-    
+
     @Override
     public int hashCode() {
         int result = 17;

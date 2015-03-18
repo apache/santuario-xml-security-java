@@ -38,7 +38,7 @@ public final class DOMKeyName extends BaseStructure implements KeyName {
     private final String name;
 
     /**
-     * Creates a <code>DOMKeyName</code>. 
+     * Creates a <code>DOMKeyName</code>.
      *
      * @param name the name of the key identifier
      * @throws NullPointerException if <code>name</code> is null
@@ -75,12 +75,12 @@ public final class DOMKeyName extends BaseStructure implements KeyName {
         KeyName okn = (KeyName)obj;
         return name.equals(okn.getName());
     }
-    
+
     @Override
     public int hashCode() {
         int result = 17;
         result = 31 * result + name.hashCode();
-        
+
         return result;
     }
 }

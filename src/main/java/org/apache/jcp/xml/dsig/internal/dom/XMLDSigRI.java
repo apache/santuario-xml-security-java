@@ -90,7 +90,7 @@ public final class XMLDSigRI extends Provider {
         map.put("TransformService.http://www.w3.org/2006/12/xml-c14n11" +
                 " MechanismType", "DOM");
 
-        // InclusiveWithComments C14N 1.1 
+        // InclusiveWithComments C14N 1.1
         map.put("TransformService.http://www.w3.org/2006/12/xml-c14n11#WithComments",
                 "org.apache.jcp.xml.dsig.internal.dom.DOMCanonicalXMLC14N11Method");
         map.put("TransformService.http://www.w3.org/2006/12/xml-c14n11#WithComments" +

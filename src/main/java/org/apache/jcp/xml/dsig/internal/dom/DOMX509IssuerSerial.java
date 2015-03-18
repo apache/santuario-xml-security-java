@@ -46,16 +46,16 @@ public final class DOMX509IssuerSerial extends BaseStructure
     private final BigInteger serialNumber;
 
     /**
-     * Creates a <code>DOMX509IssuerSerial</code> containing the specified 
+     * Creates a <code>DOMX509IssuerSerial</code> containing the specified
      * issuer distinguished name/serial number pair.
      *
-     * @param issuerName the X.509 issuer distinguished name in RFC 2253 
+     * @param issuerName the X.509 issuer distinguished name in RFC 2253
      *    String format
      * @param serialNumber the serial number
      * @throws IllegalArgumentException if the format of <code>issuerName</code>
      *    is not RFC 2253 compliant
-     * @throws NullPointerException if <code>issuerName</code> or 
-     *    <code>serialNumber</code> is <code>null</code> 
+     * @throws NullPointerException if <code>issuerName</code> or
+     *    <code>serialNumber</code> is <code>null</code>
      */
     public DOMX509IssuerSerial(String issuerName, BigInteger serialNumber) {
         if (issuerName == null) {
@@ -108,7 +108,7 @@ public final class DOMX509IssuerSerial extends BaseStructure
         return issuerName.equals(ois.getIssuerName()) &&
                 serialNumber.equals(ois.getSerialNumber());
     }
-    
+ 
     @Override
     public int hashCode() {
         int result = 17;

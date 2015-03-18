@@ -59,7 +59,7 @@ public abstract class ApacheCanonicalizer extends TransformService {
     protected C14NMethodParameterSpec params;
     protected Document ownerDoc;
     protected Element transformElem;
-    
+
     public final AlgorithmParameterSpec getParameterSpec()
     {
         return params;
@@ -102,14 +102,14 @@ public abstract class ApacheCanonicalizer extends TransformService {
             ((javax.xml.crypto.dom.DOMStructure)parent).getNode();
         ownerDoc = DOMUtils.getOwnerDocument(transformElem);
     }
-    
-    public Data canonicalize(Data data, XMLCryptoContext xc) 
+
+    public Data canonicalize(Data data, XMLCryptoContext xc)
         throws TransformException
     {
         return canonicalize(data, xc, null);
     }
 
-    public Data canonicalize(Data data, XMLCryptoContext xc, OutputStream os) 
+    public Data canonicalize(Data data, XMLCryptoContext xc, OutputStream os)
         throws TransformException
     {
         if (apacheCanonicalizer == null) {
@@ -136,7 +136,7 @@ public abstract class ApacheCanonicalizer extends TransformService {
         try {
             Set<Node> nodeSet = null;
             if (data instanceof ApacheData) {
-                XMLSignatureInput in = 
+                XMLSignatureInput in =
                     ((ApacheData)data).getXMLSignatureInput();
                 if (in.isElement()) {
                     if (inclusiveNamespaces != null) {
@@ -210,7 +210,7 @@ public abstract class ApacheCanonicalizer extends TransformService {
 
         if (apacheTransform == null) {
             try {
-                apacheTransform = 
+                apacheTransform =
                     new Transform(ownerDoc, getAlgorithm(), transformElem.getChildNodes());
                 apacheTransform.setElement(transformElem, xc.getBaseURI());
                 boolean secVal = Utils.secureValidation(xc);

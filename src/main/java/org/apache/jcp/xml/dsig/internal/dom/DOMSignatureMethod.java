@@ -50,7 +50,7 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
 
     private SignatureMethodParameterSpec params;
     private Signature signature;
-    
+
     // see RFC 4051 for these algorithm definitions
     static final String RSA_SHA224 =
         "http://www.w3.org/2001/04/xmldsig-more#rsa-sha224";
@@ -98,10 +98,10 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
      * @throws InvalidAlgorithmParameterException if the parameters are not
      *    appropriate for this signature method
      */
-    DOMSignatureMethod(AlgorithmParameterSpec params) 
+    DOMSignatureMethod(AlgorithmParameterSpec params)
         throws InvalidAlgorithmParameterException
     {
-        if (params != null && 
+        if (params != null &&
             !(params instanceof SignatureMethodParameterSpec)) {
             throw new InvalidAlgorithmParameterException
                 ("params must be of type SignatureMethodParameterSpec");
@@ -727,5 +727,5 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
             return Type.ECDSA;
         }
     }
-    
+
 }

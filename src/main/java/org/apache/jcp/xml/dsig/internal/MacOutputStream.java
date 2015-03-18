@@ -22,7 +22,7 @@ import java.io.ByteArrayOutputStream;
 import javax.crypto.Mac;
 
 /**
- * Derived from Apache sources and changed to use Mac objects instead of 
+ * Derived from Apache sources and changed to use Mac objects instead of
  * org.apache.xml.security.algorithms.SignatureAlgorithm objects.
  *
  * @author raul
@@ -41,7 +41,7 @@ public class MacOutputStream extends ByteArrayOutputStream {
         super.write(arg0);
         mac.update((byte) arg0);
     }
-    
+
     @Override
     public void write(byte[] arg0, int arg1, int arg2) {
         super.write(arg0, arg1, arg2);

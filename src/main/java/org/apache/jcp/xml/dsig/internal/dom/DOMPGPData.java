@@ -47,18 +47,18 @@ public final class DOMPGPData extends BaseStructure implements PGPData {
     private final List<XMLStructure> externalElements;
 
     /**
-     * Creates a <code>DOMPGPData</code> containing the specified key packet. 
+     * Creates a <code>DOMPGPData</code> containing the specified key packet.
      * and optional list of external elements.
      *
-     * @param keyPacket a PGP Key Material Packet as defined in section 5.5 of 
-     *    <a href="http://www.ietf.org/rfc/rfc2440.txt"/>RFC 2440</a>. The 
+     * @param keyPacket a PGP Key Material Packet as defined in section 5.5 of
+     *    <a href="http://www.ietf.org/rfc/rfc2440.txt"/>RFC 2440</a>. The
      *    array is cloned to prevent subsequent modification.
      * @param other a list of {@link XMLStructure}s representing elements from
      *    an external namespace. The list is defensively copied to prevent
      *    subsequent modification. May be <code>null</code> or empty.
-     * @throws NullPointerException if <code>keyPacket</code> is 
+     * @throws NullPointerException if <code>keyPacket</code> is
      *    <code>null</code>
-     * @throws IllegalArgumentException if the key packet is not in the 
+     * @throws IllegalArgumentException if the key packet is not in the
      *    correct format
      * @throws ClassCastException if <code>other</code> contains any
      *    entries that are not of type {@link XMLStructure}
@@ -88,24 +88,24 @@ public final class DOMPGPData extends BaseStructure implements PGPData {
      * Creates a <code>DOMPGPData</code> containing the specified key id and
      * optional key packet and list of external elements.
      *
-     * @param keyId a PGP public key id as defined in section 11.2 of 
-     *    <a href="http://www.ietf.org/rfc/rfc2440.txt"/>RFC 2440</a>. The 
+     * @param keyId a PGP public key id as defined in section 11.2 of
+     *    <a href="http://www.ietf.org/rfc/rfc2440.txt"/>RFC 2440</a>. The
      *    array is cloned to prevent subsequent modification.
-     * @param keyPacket a PGP Key Material Packet as defined in section 5.5 of 
+     * @param keyPacket a PGP Key Material Packet as defined in section 5.5 of
      *    <a href="http://www.ietf.org/rfc/rfc2440.txt"/>RFC 2440</a> (may
-     *    be <code>null</code>). The array is cloned to prevent subsequent 
+     *    be <code>null</code>). The array is cloned to prevent subsequent
      *    modification.
      * @param other a list of {@link XMLStructure}s representing elements from
      *    an external namespace. The list is defensively copied to prevent
      *    subsequent modification. May be <code>null</code> or empty.
      * @throws NullPointerException if <code>keyId</code> is <code>null</code>
-     * @throws IllegalArgumentException if the key id or packet is not in the 
+     * @throws IllegalArgumentException if the key id or packet is not in the
      *    correct format
      * @throws ClassCastException if <code>other</code> contains any
      *    entries that are not of type {@link XMLStructure}
      */
     public DOMPGPData(byte[] keyId, byte[] keyPacket,
-                      List<? extends XMLStructure> other) 
+                      List<? extends XMLStructure> other)
     {
         if (keyId == null) {
             throw new NullPointerException("keyId cannot be null");
@@ -191,7 +191,7 @@ public final class DOMPGPData extends BaseStructure implements PGPData {
      * section 4 of RFC 2440.
      *
      * This method only checks if the packet contains a valid tag. The
-     * contents of the packet should be checked by the application. 
+     * contents of the packet should be checked by the application.
      */
     private void checkKeyPacket(byte[] keyPacket) {
         // length must be at least 3 (one byte for tag, one byte for length,

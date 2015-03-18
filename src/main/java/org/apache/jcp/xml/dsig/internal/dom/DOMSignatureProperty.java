@@ -39,7 +39,7 @@ import org.w3c.dom.Node;
  */
 public final class DOMSignatureProperty extends BaseStructure
     implements SignatureProperty {
- 
+
     private final String id;
     private final String target;
     private final List<XMLStructure> content;
@@ -54,7 +54,7 @@ public final class DOMSignatureProperty extends BaseStructure
      * @throws ClassCastException if <code>content</code> contains any
      *    entries that are not of type {@link XMLStructure}
      * @throws IllegalArgumentException if <code>content</code> is empty
-     * @throws NullPointerException if <code>content</code> or 
+     * @throws NullPointerException if <code>content</code> or
      *    <code>target</code> is <code>null</code>
      */
     public DOMSignatureProperty(List<? extends XMLStructure> content,
@@ -160,7 +160,7 @@ public final class DOMSignatureProperty extends BaseStructure
         return equalsContent(ospContent) &&
                 target.equals(osp.getTarget()) && idsEqual;
     }
-    
+
     @Override
     public int hashCode() {
         int result = 17;

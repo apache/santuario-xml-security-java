@@ -39,15 +39,15 @@ import org.w3c.dom.Node;
  */
 public final class DOMSignatureProperties extends BaseStructure
     implements SignatureProperties {
- 
+
     private final String id;
     private final List<SignatureProperty> properties;
 
     /**
-     * Creates a <code>DOMSignatureProperties</code> from the specified 
+     * Creates a <code>DOMSignatureProperties</code> from the specified
      * parameters.
      *
-     * @param properties a list of one or more {@link SignatureProperty}s. The 
+     * @param properties a list of one or more {@link SignatureProperty}s. The
      *    list is defensively copied to protect against subsequent modification.
      * @param id the Id (may be <code>null</code>)
      * @throws ClassCastException if <code>properties</code> contains any
@@ -152,7 +152,7 @@ public final class DOMSignatureProperties extends BaseStructure
 
         return properties.equals(osp.getProperties()) && idsEqual;
     }
-    
+
     @Override
     public int hashCode() {
         int result = 17;
@@ -160,7 +160,7 @@ public final class DOMSignatureProperties extends BaseStructure
             result = 31 * result + id.hashCode();
         }
         result = 31 * result + properties.hashCode();
-        
+
         return result;
     }
 }

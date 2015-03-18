@@ -70,7 +70,7 @@ public abstract class DOMHMACSignatureMethod extends AbstractDOMSignatureMethod 
     private SignatureMethodParameterSpec params;
 
     /**
-     * Creates a <code>DOMHMACSignatureMethod</code> with the specified params 
+     * Creates a <code>DOMHMACSignatureMethod</code> with the specified params
      *
      * @param params algorithm-specific parameters (may be <code>null</code>)
      * @throws InvalidAlgorithmParameterException if params are inappropriate
@@ -100,7 +100,7 @@ public abstract class DOMHMACSignatureMethod extends AbstractDOMSignatureMethod 
     }
 
     @Override
-    void checkParams(SignatureMethodParameterSpec params) 
+    void checkParams(SignatureMethodParameterSpec params)
         throws InvalidAlgorithmParameterException
     {
         if (params != null) {

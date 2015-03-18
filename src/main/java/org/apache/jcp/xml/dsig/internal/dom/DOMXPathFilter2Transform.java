@@ -92,7 +92,7 @@ public final class DOMXPathFilter2Transform extends ApacheTransform {
             XPathType.Filter filter = null;
             if (filterVal.equals("intersect")) {
                 filter = XPathType.Filter.INTERSECT;
-            } else if (filterVal.equals("subtract")) {   
+            } else if (filterVal.equals("subtract")) {
                 filter = XPathType.Filter.SUBTRACT;
             } else if (filterVal.equals("union")) {
                 filter = XPathType.Filter.UNION;
@@ -127,7 +127,7 @@ public final class DOMXPathFilter2Transform extends ApacheTransform {
         throws MarshalException
     {
         super.marshalParams(parent, context);
-        XPathFilter2ParameterSpec xp = 
+        XPathFilter2ParameterSpec xp =
             (XPathFilter2ParameterSpec)getParameterSpec();
         String prefix = DOMUtils.getNSPrefix(context, Transform.XPATH2);
         String qname = prefix == null || prefix.length() == 0 
@@ -150,7 +150,7 @@ public final class DOMXPathFilter2Transform extends ApacheTransform {
                 xpathType.getNamespaceMap().entrySet();
             for (Map.Entry<String, String> entry : entries) {
                 elem.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:" +
-                                    entry.getKey(), 
+                                    entry.getKey(),
                                     entry.getValue());
             }
 

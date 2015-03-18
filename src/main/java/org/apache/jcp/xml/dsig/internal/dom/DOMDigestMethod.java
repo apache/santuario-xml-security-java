@@ -150,9 +150,9 @@ public abstract class DOMDigestMethod extends BaseStructure
     }
 
     /**
-     * Unmarshals <code>DigestMethodParameterSpec</code> from the specified 
+     * Unmarshals <code>DigestMethodParameterSpec</code> from the specified
      * <code>Element</code>.  By default, this method throws an exception since
-     * most DigestMethod algorithms do not have parameters. Subclasses should 
+     * most DigestMethod algorithms do not have parameters. Subclasses should
      * override it if they have parameters.
      *
      * @param paramsElem the <code>Element</code> holding the input params
@@ -169,7 +169,7 @@ public abstract class DOMDigestMethod extends BaseStructure
     }
 
     /**
-     * This method invokes the abstract {@link #marshalParams marshalParams} 
+     * This method invokes the abstract {@link #marshalParams marshalParams}
      * method to marshal any algorithm-specific parameters.
      */
     public static void marshal(XmlWriter xwriter, DigestMethod digest, String prefix)
@@ -201,7 +201,7 @@ public abstract class DOMDigestMethod extends BaseStructure
 
         return getAlgorithm().equals(odm.getAlgorithm()) && paramsEqual;
     }
-    
+
     @Override
     public int hashCode() {
         int result = 17;
@@ -209,7 +209,7 @@ public abstract class DOMDigestMethod extends BaseStructure
             result = 31 * result + params.hashCode();
         }
         result = 31 * result + getAlgorithm().hashCode();
-        
+
         return result;
     }
 

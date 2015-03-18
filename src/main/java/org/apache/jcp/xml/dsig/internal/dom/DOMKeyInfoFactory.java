@@ -148,7 +148,7 @@ public final class DOMKeyInfoFactory extends KeyInfoFactory {
         if (!(xmlStructure instanceof javax.xml.crypto.dom.DOMStructure)) {
             throw new ClassCastException("xmlStructure must be of type DOMStructure");
         }
-        Node node = 
+        Node node =
             ((javax.xml.crypto.dom.DOMStructure) xmlStructure).getNode();
         node.normalize();
 
@@ -175,7 +175,7 @@ public final class DOMKeyInfoFactory extends KeyInfoFactory {
             throw new MarshalException("invalid KeyInfo tag: " + namespace + ":" + tag);
         }
     }
-    
+
     private static class UnmarshalContext extends DOMCryptoContext {
         UnmarshalContext() {}
     }

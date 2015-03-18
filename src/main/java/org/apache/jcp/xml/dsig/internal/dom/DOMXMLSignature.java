@@ -75,7 +75,7 @@ public final class DOMXMLSignature extends DOMStructure
     static {
         org.apache.xml.security.Init.init();
     }
- 
+
     /**
      * Creates a <code>DOMXMLSignature</code> from the specified components.
      *
@@ -134,7 +134,7 @@ public final class DOMXMLSignature extends DOMStructure
                                                        XMLSignature.XMLNS);
         si = new DOMSignedInfo(siElem, context, provider);
 
-        // unmarshal SignatureValue 
+        // unmarshal SignatureValue
         Element sigValElem = DOMUtils.getNextSiblingElement(siElem,
                                                             "SignatureValue",
                                                             XMLSignature.XMLNS);
@@ -164,7 +164,7 @@ public final class DOMXMLSignature extends DOMStructure
                                                  context, provider));
                 nextSibling = DOMUtils.getNextSiblingElement(nextSibling);
             }
-            objects = Collections.unmodifiableList(tempObjects);    
+            objects = Collections.unmodifiableList(tempObjects);
         }
     }
 
@@ -233,7 +233,7 @@ public final class DOMXMLSignature extends DOMStructure
     }
 
     @Override
-    public boolean validate(XMLValidateContext vc) 
+    public boolean validate(XMLValidateContext vc)
         throws XMLSignatureException
     {
         if (vc == null) {
@@ -316,7 +316,7 @@ public final class DOMXMLSignature extends DOMStructure
     }
 
     @Override
-    public void sign(XMLSignContext signContext) 
+    public void sign(XMLSignContext signContext)
         throws MarshalException, XMLSignatureException
     {
         if (signContext == null) {
@@ -427,7 +427,7 @@ public final class DOMXMLSignature extends DOMStructure
                 si.equals(osig.getSignedInfo()) &&
                 objects.equals(osig.getObjects());
     }
-    
+
     @Override
     public int hashCode() {
         int result = 17;
@@ -484,7 +484,7 @@ public final class DOMXMLSignature extends DOMStructure
         ref.digest(signContext);
     }
 
-    public class DOMSignatureValue extends DOMStructure 
+    public class DOMSignatureValue extends DOMStructure
         implements SignatureValue
     {
         private String id;
@@ -588,7 +588,7 @@ public final class DOMXMLSignature extends DOMStructure
             //XXX compare signature values?
             return idEqual;
         }
-        
+
         @Override
         public int hashCode() {
             int result = 17;

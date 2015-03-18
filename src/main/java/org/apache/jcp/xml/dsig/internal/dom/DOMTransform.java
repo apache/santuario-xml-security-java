@@ -187,7 +187,7 @@ public class DOMTransform extends BaseStructure implements Transform {
 
         return result;
     }
-    
+
     /**
      * Transforms the specified data using the underlying transform algorithm.
      * This method invokes the {@link #marshal marshal} method and passes it
@@ -199,7 +199,7 @@ public class DOMTransform extends BaseStructure implements Transform {
      * @param context the marshalling context
      * @return the transformed data
      * @throws MarshalException if an exception occurs while marshalling
-     * @throws NullPointerException if <code>data</code> or <code>context</code> 
+     * @throws NullPointerException if <code>data</code> or <code>context</code>
      *    is <code>null</code>
      * @throws XMLSignatureException if an unexpected error occurs while
      *    executing the transform

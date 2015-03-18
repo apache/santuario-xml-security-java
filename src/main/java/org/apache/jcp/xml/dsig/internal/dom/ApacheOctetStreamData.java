@@ -29,7 +29,7 @@ import javax.xml.crypto.OctetStreamData;
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.signature.XMLSignatureInput;
 
-public class ApacheOctetStreamData extends OctetStreamData 
+public class ApacheOctetStreamData extends OctetStreamData
     implements ApacheData {
 
     private XMLSignatureInput xi;

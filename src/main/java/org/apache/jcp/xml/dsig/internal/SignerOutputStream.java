@@ -29,8 +29,8 @@ import java.security.Signature;
 import java.security.SignatureException;
 
 /**
- * Derived from Apache sources and changed to use java.security.Signature 
- * objects as input instead of 
+ * Derived from Apache sources and changed to use java.security.Signature
+ * objects as input instead of
  * org.apache.xml.security.algorithms.SignatureAlgorithm objects.
  *
  * @author raul

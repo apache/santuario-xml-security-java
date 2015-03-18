@@ -155,7 +155,7 @@ public final class DOMManifest extends BaseStructure implements Manifest {
 
         return idsEqual && references.equals(oman.getReferences());
     }
-    
+
     @Override
     public int hashCode() {
         int result = 17;
@@ -163,7 +163,7 @@ public final class DOMManifest extends BaseStructure implements Manifest {
             result = 31 * result + id.hashCode();
         }
         result = 31 * result + references.hashCode();
-        
+
         return result;
     }
 }

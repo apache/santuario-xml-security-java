@@ -66,7 +66,7 @@ import org.apache.xml.security.utils.ClassLoaderUtils;
  */
 public abstract class DOMKeyValue<K extends PublicKey> extends BaseStructure implements KeyValue {
 
-    private static final String XMLDSIG_11_XMLNS 
+    private static final String XMLDSIG_11_XMLNS
         = "http://www.w3.org/2009/xmldsig11#";
     private final K publicKey;
 

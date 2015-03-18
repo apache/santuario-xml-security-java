@@ -45,7 +45,7 @@ import javax.xml.crypto.dsig.spec.*;
 public final class DOMUtils {
 
     // class cannot be instantiated
-    private DOMUtils() {} 
+    private DOMUtils() {}
 
     /**
      * Returns the owner document of the specified node.
@@ -93,12 +93,12 @@ public final class DOMUtils {
     }
 
     /**
-     * Sets an element's attribute (using DOM level 2) with the 
+     * Sets an element's attribute (using DOM level 2) with the
      * specified value and namespace prefix.
      *
      * @param elem the element to set the attribute on
      * @param name the name of the attribute
-     * @param value the attribute value. If null, no attribute is set. 
+     * @param value the attribute value. If null, no attribute is set.
      */
     public static void setAttribute(Element elem, String name, String value) {
         if (value == null) {
@@ -108,14 +108,14 @@ public final class DOMUtils {
     }
 
     /**
-     * Sets an element's attribute (using DOM level 2) with the 
+     * Sets an element's attribute (using DOM level 2) with the
      * specified value and namespace prefix AND registers the ID value with
      * the specified element. This is for resolving same-document
      * ID references.
      *
      * @param elem the element to set the attribute on
      * @param name the name of the attribute
-     * @param value the attribute value. If null, no attribute is set. 
+     * @param value the attribute value. If null, no attribute is set.
      */
     public static void setAttributeID(Element elem, String name, String value) {
         if (value == null) {
@@ -126,11 +126,11 @@ public final class DOMUtils {
     }
 
     /**
-     * Returns the first child element of the specified node, or null if there 
+     * Returns the first child element of the specified node, or null if there
      * is no such element.
      *
      * @param node the node
-     * @return the first child element of the specified node, or null if there 
+     * @return the first child element of the specified node, or null if there
      *    is no such element
      * @throws NullPointerException if <code>node == null</code>
      */
@@ -207,11 +207,11 @@ public final class DOMUtils {
     }
 
     /**
-     * Returns the last child element of the specified node, or null if there 
+     * Returns the last child element of the specified node, or null if there
      * is no such element.
      *
      * @param node the node
-     * @return the last child element of the specified node, or null if there 
+     * @return the last child element of the specified node, or null if there
      *    is no such element
      * @throws NullPointerException if <code>node == null</code>
      */
@@ -224,11 +224,11 @@ public final class DOMUtils {
     }
 
     /**
-     * Returns the next sibling element of the specified node, or null if there 
+     * Returns the next sibling element of the specified node, or null if there
      * is no such element.
      *
      * @param node the node
-     * @return the next sibling element of the specified node, or null if there 
+     * @return the next sibling element of the specified node, or null if there
      *    is no such element
      * @throws NullPointerException if <code>node == null</code>
      */
@@ -239,7 +239,7 @@ public final class DOMUtils {
         }
         return (Element)sibling;
     }
-    
+
     /**
      * Returns the next sibling element of the specified node and checks that
      * the local name is equal to {@code localName}.
@@ -276,7 +276,7 @@ public final class DOMUtils {
 
     /**
      * Returns the attribute value for the attribute with the specified name.
-     * Returns null if there is no such attribute, or 
+     * Returns null if there is no such attribute, or
      * the empty string if the attribute value is empty.
      *
      * <p>This works around a limitation of the DOM
@@ -357,7 +357,7 @@ public final class DOMUtils {
             };
         }
     }
-    
+
     /**
      * Returns the prefix associated with the specified namespace URI
      *
@@ -385,7 +385,7 @@ public final class DOMUtils {
     public static String getSignaturePrefix(XMLCryptoContext context) {
         return getNSPrefix(context, XMLSignature.XMLNS);
     }
-    
+
     /**
      * Removes all children nodes from the specified node.
      *
@@ -415,7 +415,7 @@ public final class DOMUtils {
     }
 
     /**
-     * Checks if child element has same owner document before 
+     * Checks if child element has same owner document before
      * appending to the parent, and imports it to the parent's document
      * if necessary.
      */
@@ -502,7 +502,7 @@ public final class DOMUtils {
         }
         Node ostylesheetElem =
             ((javax.xml.crypto.dom.DOMStructure) ostylesheet).getNode();
-        XMLStructure stylesheet = spec1.getStylesheet();        
+        XMLStructure stylesheet = spec1.getStylesheet();
         Node stylesheetElem =
             ((javax.xml.crypto.dom.DOMStructure) stylesheet).getNode();
         return nodesEqual(stylesheetElem, ostylesheetElem);

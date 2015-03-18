@@ -42,7 +42,7 @@ import javax.xml.crypto.dom.*;
  * @author Sean Mullan
  */
 public class DOMURIDereferencer implements URIDereferencer {
-    
+
     static final URIDereferencer INSTANCE = new DOMURIDereferencer();
 
     private DOMURIDereferencer() {
@@ -67,9 +67,9 @@ public class DOMURIDereferencer implements URIDereferencer {
         String uri = uriRef.getURI();
         DOMCryptoContext dcc = (DOMCryptoContext) context;
         String baseURI = context.getBaseURI();
-        
+
         boolean secVal = Utils.secureValidation(context);
-        
+
         // Check if same-document URI and already registered on the context
         if (uri != null && uri.length() != 0 && uri.charAt(0) == '#') {
             String id = uri.substring(1);
@@ -89,7 +89,7 @@ public class DOMURIDereferencer implements URIDereferencer {
                         throw new URIReferenceException(error);
                     }
                 }
-                
+
                 XMLSignatureInput result = new XMLSignatureInput(referencedElem);
                 result.setSecureValidation(secVal);
                 if (!uri.substring(1).startsWith("xpointer(id(")) {
@@ -98,16 +98,16 @@ public class DOMURIDereferencer implements URIDereferencer {
 
                 result.setMIMEType("text/xml");
                 if (baseURI != null && baseURI.length() > 0) {
-                    result.setSourceURI(baseURI.concat(uriAttr.getNodeValue()));      
+                    result.setSourceURI(baseURI.concat(uriAttr.getNodeValue()));
                 } else {
-                    result.setSourceURI(uriAttr.getNodeValue());      
+                    result.setSourceURI(uriAttr.getNodeValue());
                 }
                 return new ApacheNodeSetData(result);
             }
-        } 
+        }
 
         try {
-            ResourceResolver apacheResolver = 
+            ResourceResolver apacheResolver =
                 ResourceResolver.getInstance(uriAttr, baseURI, secVal);
             XMLSignatureInput in = apacheResolver.resolve(uriAttr, baseURI, secVal);
             if (in.isOctetStream()) {

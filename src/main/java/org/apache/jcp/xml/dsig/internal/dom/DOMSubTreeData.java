@@ -172,7 +172,7 @@ public class DOMSubTreeData implements NodeSetData {
                     nodeSet.add(node);
                     break;
                 case Node.COMMENT_NODE:
-                    if (withComments) { 
+                    if (withComments) {
                         nodeSet.add(node);
                     }
             }

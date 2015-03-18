@@ -57,9 +57,9 @@ import org.apache.xml.security.utils.UnsyncBufferedOutputStream;
  * @author Sean Mullan
  * @author Joyce Leung
  */
-public final class DOMReference extends DOMStructure 
+public final class DOMReference extends DOMStructure
     implements Reference, DOMURIReference {
-    
+
    /**
     * The maximum number of transforms per reference, if secure validation is enabled.
     */
@@ -182,18 +182,18 @@ public final class DOMReference extends DOMStructure
         this.appliedTransformData = result;
         this.provider = provider;
     }
- 
+
     /**
      * Creates a <code>DOMReference</code> from an element.
      *
      * @param refElem a Reference element
      */
-    public DOMReference(Element refElem, XMLCryptoContext context, 
+    public DOMReference(Element refElem, XMLCryptoContext context,
                         Provider provider)
         throws MarshalException
     {
         boolean secVal = Utils.secureValidation(context);
-        
+
         // unmarshal Transforms, if specified
         Element nextSibling = DOMUtils.getFirstChildElement(refElem);
         List<Transform> transforms = new ArrayList<Transform>(5);
@@ -234,7 +234,7 @@ public final class DOMReference extends DOMStructure
         Element dmElem = nextSibling;
         this.digestMethod = DOMDigestMethod.unmarshal(dmElem);
         String digestMethodAlgorithm = this.digestMethod.getAlgorithm();
-        if (secVal 
+        if (secVal
             && MessageDigestAlgorithm.ALGO_ID_DIGEST_NOT_RECOMMENDED_MD5.equals(digestMethodAlgorithm)) {
             throw new MarshalException(
                 "It is forbidden to use algorithm " + digestMethod + " when secure validation is enabled"
@@ -344,7 +344,7 @@ public final class DOMReference extends DOMStructure
         xwriter.writeEndElement(); // "Reference"
     }
 
-    public void digest(XMLSignContext signContext) 
+    public void digest(XMLSignContext signContext)
         throws XMLSignatureException
     {
         Data data = null;
@@ -407,7 +407,7 @@ public final class DOMReference extends DOMStructure
         return dis;
     }
 
-    private Data dereference(XMLCryptoContext context) 
+    private Data dereference(XMLCryptoContext context)
         throws XMLSignatureException
     {
         Data data = null;
@@ -430,7 +430,7 @@ public final class DOMReference extends DOMStructure
         return data;
     }
 
-    private byte[] transform(Data dereferencedData, 
+    private byte[] transform(Data dereferencedData,
                              XMLCryptoContext context)
         throws XMLSignatureException
     {
@@ -464,7 +464,7 @@ public final class DOMReference extends DOMStructure
                     data = transform.transform(data, context, os);
                 }
             }
-        
+
             if (data != null) {
                 XMLSignatureInput xi;
                 // explicitly use C14N 1.1 when generating signature
@@ -520,15 +520,15 @@ public final class DOMReference extends DOMStructure
                             spi = TransformService.getInstance(c14nalg, "DOM");
                         }
                     }
-                    
+
                     DOMTransform t = new DOMTransform(spi);
                     Element transformsElem = null;
                     String dsPrefix = DOMUtils.getSignaturePrefix(context);
                     if (allTransforms.isEmpty()) {
                         transformsElem = DOMUtils.createElement(
-                            refElem.getOwnerDocument(), 
+                            refElem.getOwnerDocument(),
                             "Transforms", XMLSignature.XMLNS, dsPrefix);
-                        refElem.insertBefore(transformsElem, 
+                        refElem.insertBefore(transformsElem,
                             DOMUtils.getFirstChildElement(refElem));
                     } else {
                         transformsElem = DOMUtils.getFirstChildElement(refElem);
@@ -562,14 +562,14 @@ public final class DOMReference extends DOMStructure
                     os.close();
                 } catch (IOException e) {
                     throw new XMLSignatureException(e);
-                } 
+                }
             }
             if (dos != null) {
                 try {
                     dos.close();
                 } catch (IOException e) {
                     throw new XMLSignatureException(e);
-                } 
+                }
             }
         }
     }
@@ -600,10 +600,10 @@ public final class DOMReference extends DOMStructure
             Arrays.equals(digestValue, oref.getDigestValue());
 
         return digestMethod.equals(oref.getDigestMethod()) && idsEqual &&
-            urisEqual && typesEqual && 
+            urisEqual && typesEqual &&
             allTransforms.equals(oref.getTransforms()) && digestValuesEqual;
     }
-    
+
     @Override
     public int hashCode() {
         int result = 17;
@@ -621,7 +621,7 @@ public final class DOMReference extends DOMStructure
         }
         result = 31 * result + digestMethod.hashCode();
         result = 31 * result + allTransforms.hashCode();
-        
+
         return result;
     }
 
