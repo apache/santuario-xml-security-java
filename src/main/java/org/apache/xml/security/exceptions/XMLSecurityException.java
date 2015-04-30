@@ -114,7 +114,7 @@ public class XMLSecurityException extends Exception {
      * @param msgID
      * @param originalException
      */
-    public XMLSecurityException(String msgID, Exception originalException) {
+    public XMLSecurityException(Exception originalException, String msgID) {
         super(I18n.getExceptionMessage(msgID, originalException), originalException);
 
         this.msgID = msgID;
@@ -127,7 +127,7 @@ public class XMLSecurityException extends Exception {
      * @param exArgs
      * @param originalException
      */
-    public XMLSecurityException(String msgID, Object exArgs[], Exception originalException) {
+    public XMLSecurityException(Exception originalException, String msgID, Object exArgs[]) {
         super(MessageFormat.format(I18n.getExceptionMessage(msgID), exArgs), originalException);
 
         this.msgID = msgID;
