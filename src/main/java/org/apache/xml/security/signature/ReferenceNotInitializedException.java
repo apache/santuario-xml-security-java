@@ -61,21 +61,21 @@ public class ReferenceNotInitializedException extends XMLSignatureException {
     /**
      * Constructor ReferenceNotInitializedException
      *
-     * @param msgID
      * @param originalException
+     * @param msgID
      */
-    public ReferenceNotInitializedException(String msgID, Exception originalException) {
-        super(msgID, originalException);
+    public ReferenceNotInitializedException(Exception originalException, String msgID) {
+        super(originalException, msgID);
     }
 
     /**
      * Constructor ReferenceNotInitializedException
      *
+     * @param originalException
      * @param msgID
      * @param exArgs
-     * @param originalException
      */
-    public ReferenceNotInitializedException(String msgID, Object exArgs[], Exception originalException) {
-        super(msgID, exArgs, originalException);
+    public ReferenceNotInitializedException(Exception originalException, String msgID, Object exArgs[]) {
+        super(originalException, msgID, exArgs);
     }
 }

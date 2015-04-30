@@ -83,7 +83,8 @@ public class TransformerAlgorithmMapper {
             clazz = algorithmsClassMapInOut.get(algoURI);
         }
         if (clazz == null) {
-            throw new XMLSecurityException("signature.Transform.UnknownTransform", algoURI);
+            throw new XMLSecurityException("signature.Transform.UnknownTransform", 
+                                           new Object[] {algoURI});
         }
         return clazz;
     }

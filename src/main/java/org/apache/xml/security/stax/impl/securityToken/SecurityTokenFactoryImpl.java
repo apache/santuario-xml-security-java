@@ -106,7 +106,7 @@ public class SecurityTokenFactoryImpl extends SecurityTokenFactory {
             return token;
         }
 
-        throw new XMLSecurityException("stax.noKey", keyUsage);
+        throw new XMLSecurityException("stax.noKey", new Object[] {keyUsage});
     }
 
     private static InboundSecurityToken getSecurityToken(KeyValueType keyValueType, 
@@ -181,7 +181,7 @@ public class SecurityTokenFactoryImpl extends SecurityTokenFactory {
                         && securityProperties.getSignatureVerificationKey() == null
                     || SecurityTokenConstants.KeyUsage_Decryption.equals(keyUsage)
                         && securityProperties.getDecryptionKey() == null) {
-                throw new XMLSecurityException("stax.noKey", keyUsage);
+                throw new XMLSecurityException("stax.noKey", new Object[] {keyUsage});
             }
             X509IssuerSerialSecurityToken token =
                     new X509IssuerSerialSecurityToken(
@@ -201,7 +201,7 @@ public class SecurityTokenFactoryImpl extends SecurityTokenFactory {
                 );
         if (skiBytes != null) {
             if (securityProperties.getSignatureVerificationKey() == null) {
-                throw new XMLSecurityException("stax.noKey", keyUsage);
+                throw new XMLSecurityException("stax.noKey", new Object[] {keyUsage});            
             }
             X509SKISecurityToken token =
                     new X509SKISecurityToken(
@@ -220,7 +220,7 @@ public class SecurityTokenFactoryImpl extends SecurityTokenFactory {
                 );
         if (subjectName != null) {
             if (securityProperties.getSignatureVerificationKey() == null) {
-                throw new XMLSecurityException("stax.noKey", keyUsage);
+                throw new XMLSecurityException("stax.noKey", new Object[] {keyUsage});
             }
             String normalizedSubjectName =
                     RFC2253Parser.normalize(subjectName);
@@ -233,7 +233,7 @@ public class SecurityTokenFactoryImpl extends SecurityTokenFactory {
             return token;
         }
 
-        throw new XMLSecurityException("stax.noKey", keyUsage);
+        throw new XMLSecurityException("stax.noKey", new Object[] {keyUsage});
     }
 
     private static void setTokenKey(XMLSecurityProperties securityProperties, SecurityTokenConstants.KeyUsage keyUsage,

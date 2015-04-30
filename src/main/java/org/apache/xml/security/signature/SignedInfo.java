@@ -224,11 +224,11 @@ public class SignedInfo extends Manifest {
                     XMLUtils.repoolDocumentBuilder(db);
                 }
             } catch (ParserConfigurationException ex) {
-                throw new XMLSecurityException("empty", ex);
+                throw new XMLSecurityException(ex, "empty");
             } catch (IOException ex) {
-                throw new XMLSecurityException("empty", ex);
+                throw new XMLSecurityException(ex, "empty");
             } catch (SAXException ex) {
-                throw new XMLSecurityException("empty", ex);
+                throw new XMLSecurityException(ex, "empty");
             }
         }
         return element;

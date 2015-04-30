@@ -128,7 +128,7 @@ public class ProcessingInstructionTest extends org.junit.Assert {
                 return result;
             } catch (Exception ex) {
                 throw new ResourceResolverException(
-                    "generic.EmptyMessage", ex, context.uriToResolve, context.baseUri
+                    ex, context.uriToResolve, context.baseUri, "generic.EmptyMessage"
                 );
             }
         }

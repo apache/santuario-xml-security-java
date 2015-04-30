@@ -45,7 +45,7 @@ public class XMLSecurityConfigurationException extends XMLSecurityException {
         super(msgID, exArgs);
     }
 
-    public XMLSecurityConfigurationException(String msgID, Exception originalException) {
-        super(msgID, originalException);
+    public XMLSecurityConfigurationException(Exception originalException, String msgID) {
+        super(originalException, msgID);
     }
 }

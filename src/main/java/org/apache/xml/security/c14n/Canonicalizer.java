@@ -117,7 +117,7 @@ public class Canonicalizer {
         } catch (Exception e) {
             Object exArgs[] = { algorithmURI };
             throw new InvalidCanonicalizerException(
-                "signature.Canonicalizer.UnknownCanonicalizer", exArgs, e
+                e, "signature.Canonicalizer.UnknownCanonicalizer", exArgs
             );
         }
     }

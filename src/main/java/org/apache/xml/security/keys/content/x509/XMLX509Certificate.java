@@ -73,7 +73,7 @@ public class XMLX509Certificate extends SignatureElementProxy implements XMLX509
         try {
             this.addBase64Text(x509certificate.getEncoded());
         } catch (java.security.cert.CertificateEncodingException ex) {
-            throw new XMLSecurityException("empty", ex);
+            throw new XMLSecurityException(ex, "empty");
         }
     }
 
@@ -109,7 +109,7 @@ public class XMLX509Certificate extends SignatureElementProxy implements XMLX509
 
             return null;
         } catch (CertificateException ex) {
-            throw new XMLSecurityException("empty", ex);
+            throw new XMLSecurityException(ex, "empty");
         }
     }
 

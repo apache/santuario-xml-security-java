@@ -88,7 +88,7 @@ public class TransformC14NExclusiveWithComments extends TransformSpi {
 
             return output;
         } catch (XMLSecurityException ex) {
-            throw new CanonicalizationException("empty", ex);
+            throw new CanonicalizationException(ex, "empty");
         } 
     }
 }

@@ -161,7 +161,8 @@ public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHand
                         String jceName = JCEAlgorithmMapper.translateURItoJCEID(algorithmURI);
                         String jceProvider = JCEAlgorithmMapper.getJCEProviderFromURI(algorithmURI);
                         if (jceName == null) {
-                            throw new XMLSecurityException("algorithms.NoSuchMap", algorithmURI);
+                            throw new XMLSecurityException("algorithms.NoSuchMap", 
+                                                           new Object[] {algorithmURI});
                         }
 
                         final InboundSecurityToken wrappingSecurityToken = getWrappingSecurityToken(wrappedSecurityToken);

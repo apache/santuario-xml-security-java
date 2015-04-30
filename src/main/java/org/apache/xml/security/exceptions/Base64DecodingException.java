@@ -57,22 +57,22 @@ public class Base64DecodingException extends XMLSecurityException {
     /**
      * Constructor Base64DecodingException
      *
-     * @param msgID
      * @param originalException
+     * @param msgID
      */
-    public Base64DecodingException(String msgID, Exception originalException) {
-        super(msgID, originalException);
+    public Base64DecodingException(Exception originalException, String msgID) {
+        super(originalException, msgID);
     }
 
     /**
      * Constructor Base64DecodingException
      *
+     * @param originalException
      * @param msgID
      * @param exArgs
-     * @param originalException
      */
-    public Base64DecodingException(String msgID, Object exArgs[], Exception originalException) {
-        super(msgID, exArgs, originalException);
+    public Base64DecodingException(Exception originalException, String msgID, Object exArgs[]) {
+        super(originalException, msgID, exArgs);
     }
     
 }

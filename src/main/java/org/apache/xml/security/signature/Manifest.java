@@ -380,7 +380,7 @@ public class Manifest extends SignatureElementProxy {
                         if (referencedManifest == null) {
                             // The Reference stated that it points to a ds:Manifest
                             // but we did not find a ds:Manifest in the signed area
-                            throw new MissingResourceFailureException("empty", currentRef);
+                            throw new MissingResourceFailureException(currentRef, "empty");
                         }
 
                         referencedManifest.perManifestResolvers = this.perManifestResolvers;
@@ -399,18 +399,18 @@ public class Manifest extends SignatureElementProxy {
                             }
                         }
                     } catch (IOException ex) {
-                        throw new ReferenceNotInitializedException("empty", ex);
+                        throw new ReferenceNotInitializedException(ex, "empty");
                     } catch (ParserConfigurationException ex) {
-                        throw new ReferenceNotInitializedException("empty", ex);
+                        throw new ReferenceNotInitializedException(ex, "empty");
                     } catch (SAXException ex) {
-                        throw new ReferenceNotInitializedException("empty", ex);
+                        throw new ReferenceNotInitializedException(ex, "empty");
                     }
                 }
             } catch (ReferenceNotInitializedException ex) {
                 Object exArgs[] = { currentRef.getURI() };
 
                 throw new MissingResourceFailureException(
-                    "signature.Verification.Reference.NoInput", exArgs, ex, currentRef
+                    ex, currentRef, "signature.Verification.Reference.NoInput", exArgs
                 );
             }
         }
@@ -449,14 +449,14 @@ public class Manifest extends SignatureElementProxy {
                     I18n.translate("signature.Verification.IndexOutOfBounds", exArgs)
                 );
 
-            throw new XMLSecurityException("generic.EmptyMessage", e);
+            throw new XMLSecurityException(e, "generic.EmptyMessage");
         }
 
         if (this.verificationResults == null) {
             try {
                 this.verifyReferences();
             } catch (Exception ex) {
-                throw new XMLSecurityException("generic.EmptyMessage", ex);
+                throw new XMLSecurityException(ex, "generic.EmptyMessage");
             }
         }
 
@@ -549,13 +549,13 @@ public class Manifest extends SignatureElementProxy {
         try {
             return this.getReferencedContentAfterTransformsItem(i).getBytes();
         } catch (IOException ex) {
-            throw new XMLSignatureException("empty", ex);
+            throw new XMLSignatureException(ex, "empty");
         } catch (CanonicalizationException ex) {
-            throw new XMLSignatureException("empty", ex);
+            throw new XMLSignatureException(ex, "empty");
         } catch (InvalidCanonicalizerException ex) {
-            throw new XMLSignatureException("empty", ex);
+            throw new XMLSignatureException(ex, "empty");
         } catch (XMLSecurityException ex) {
-            throw new XMLSignatureException("empty", ex);
+            throw new XMLSignatureException(ex, "empty");
         }
     }
 

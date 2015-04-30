@@ -80,7 +80,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
         try {
             this.signatureAlgorithm.setParameter(params);
         } catch (InvalidAlgorithmParameterException ex) {
-            throw new XMLSignatureException("empty", ex);
+            throw new XMLSignatureException(ex, "empty");
         }
     }
 
@@ -89,7 +89,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
         try {
             return this.signatureAlgorithm.verify(signature);
         } catch (SignatureException ex) {
-            throw new XMLSignatureException("empty", ex);
+            throw new XMLSignatureException(ex, "empty");
         }
     }
 
@@ -122,7 +122,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
                 }
                 this.signatureAlgorithm = sig;
             }
-            throw new XMLSignatureException("empty", ex);
+            throw new XMLSignatureException(ex, "empty");
         } 
     }
 
@@ -131,7 +131,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
         try {
             return this.signatureAlgorithm.sign();
         } catch (SignatureException ex) {
-            throw new XMLSignatureException("empty", ex);
+            throw new XMLSignatureException(ex, "empty");
         }
     }
 
@@ -156,7 +156,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
                 this.signatureAlgorithm.initSign((PrivateKey) privateKey, secureRandom);
             }
         } catch (InvalidKeyException ex) {
-            throw new XMLSignatureException("empty", ex);
+            throw new XMLSignatureException(ex, "empty");
         }
     }
 
@@ -170,7 +170,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
         try {
             this.signatureAlgorithm.update(input);
         } catch (SignatureException ex) {
-            throw new XMLSignatureException("empty", ex);
+            throw new XMLSignatureException(ex, "empty");
         }
     }
 
@@ -179,7 +179,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
         try {
             this.signatureAlgorithm.update(input);
         } catch (SignatureException ex) {
-            throw new XMLSignatureException("empty", ex);
+            throw new XMLSignatureException(ex, "empty");
         }
     }
 
@@ -188,7 +188,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
         try {
             this.signatureAlgorithm.update(buf, offset, len);
         } catch (SignatureException ex) {
-            throw new XMLSignatureException("empty", ex);
+            throw new XMLSignatureException(ex, "empty");
         }
     }
 

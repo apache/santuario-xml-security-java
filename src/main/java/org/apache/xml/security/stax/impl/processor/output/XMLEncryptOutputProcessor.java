@@ -186,7 +186,8 @@ public class XMLEncryptOutputProcessor extends AbstractEncryptOutputProcessor {
                         //encrypt the symmetric session key with the public key from the receiver:
                         String jceid = JCEAlgorithmMapper.translateURItoJCEID(encryptionKeyTransportAlgorithm);
                         if (jceid == null) {
-                            throw new XMLSecurityException("algorithms.NoSuchMap", encryptionKeyTransportAlgorithm);
+                            throw new XMLSecurityException("algorithms.NoSuchMap", 
+                                                           new Object[] {encryptionKeyTransportAlgorithm});
                         }
 
                         try {
@@ -294,7 +295,8 @@ public class XMLEncryptOutputProcessor extends AbstractEncryptOutputProcessor {
                         } else if (SecurityTokenConstants.KeyIdentifier_X509SubjectName.equals(keyIdentifier)) {
                             XMLSecurityUtils.createX509SubjectNameStructure(this, outputProcessorChain, x509Certificates);
                         } else {
-                            throw new XMLSecurityException("stax.unsupportedToken", keyIdentifier);
+                            throw new XMLSecurityException("stax.unsupportedToken", 
+                                                           new Object[] {keyIdentifier});
                         }
                         
                         createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_KeyInfo);

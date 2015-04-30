@@ -72,7 +72,7 @@ public class XMLEventReaderInputProcessor extends AbstractInputProcessor {
                 if (currentXMLStructureDepth > maximumAllowedXMLStructureDepth) {
                     XMLSecurityException xmlSecurityException = new XMLSecurityException(
                             "secureProcessing.MaximumAllowedXMLStructureDepth",
-                            maximumAllowedXMLStructureDepth
+                            new Object[] {maximumAllowedXMLStructureDepth}
                     );
                     throw new XMLStreamException(xmlSecurityException);
                 }

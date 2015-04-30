@@ -61,21 +61,21 @@ public class InvalidSignatureValueException extends XMLSignatureException {
     /**
      * Constructor InvalidSignatureValueException
      *
-     * @param msgID
      * @param originalException
+     * @param msgID
      */
-    public InvalidSignatureValueException(String msgID, Exception originalException) {
-        super(msgID, originalException);
+    public InvalidSignatureValueException(Exception originalException, String msgID) {
+        super(originalException, msgID);
     }
 
     /**
      * Constructor InvalidSignatureValueException
      *
+     * @param originalException
      * @param msgID
      * @param exArgs
-     * @param originalException
      */
-    public InvalidSignatureValueException(String msgID, Object exArgs[], Exception originalException) {
-        super(msgID, exArgs, originalException);
+    public InvalidSignatureValueException(Exception originalException, String msgID, Object exArgs[]) {
+        super(originalException, msgID, exArgs);
     }
 }

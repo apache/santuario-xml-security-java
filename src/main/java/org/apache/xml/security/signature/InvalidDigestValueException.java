@@ -62,21 +62,21 @@ public class InvalidDigestValueException extends XMLSignatureException {
     /**
      * Constructor InvalidDigestValueException
      *
-     * @param msgID
      * @param originalException
+     * @param msgID
      */
-    public InvalidDigestValueException(String msgID, Exception originalException) {
-        super(msgID, originalException);
+    public InvalidDigestValueException(Exception originalException, String msgID) {
+        super(originalException, msgID);
     }
 
     /**
      * Constructor InvalidDigestValueException
      *
+     * @param originalException
      * @param msgID
      * @param exArgs
-     * @param originalException
      */
-    public InvalidDigestValueException(String msgID, Object exArgs[], Exception originalException) {
-        super(msgID, exArgs, originalException);
+    public InvalidDigestValueException(Exception originalException, String msgID, Object exArgs[]) {
+        super(originalException, msgID, exArgs);
     }
 }

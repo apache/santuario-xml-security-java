@@ -151,7 +151,7 @@ public class X509DigestResolver extends KeyResolverSpi {
             }
 
         } catch (XMLSecurityException ex) {
-            throw new KeyResolverException("empty", ex);
+            throw new KeyResolverException(ex, "empty");
         }
 
         return null;

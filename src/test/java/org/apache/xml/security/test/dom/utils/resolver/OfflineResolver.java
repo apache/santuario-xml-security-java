@@ -126,7 +126,7 @@ public class OfflineResolver extends ResourceResolverSpi {
             }
         } catch (IOException ex) {
             throw new ResourceResolverException(
-                "generic.EmptyMessage", ex, context.uriToResolve, context.baseUri
+                ex, context.uriToResolve, context.baseUri, "generic.EmptyMessage"
             );
         }
     }

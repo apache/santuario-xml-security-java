@@ -151,13 +151,13 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
 
             return result;
         } catch (URISyntaxException ex) {
-            throw new ResourceResolverException("generic.EmptyMessage", ex, context.uriToResolve, context.baseUri);
+            throw new ResourceResolverException(ex, context.uriToResolve, context.baseUri, "generic.EmptyMessage");
         } catch (MalformedURLException ex) {
-            throw new ResourceResolverException("generic.EmptyMessage", ex, context.uriToResolve, context.baseUri);
+            throw new ResourceResolverException(ex, context.uriToResolve, context.baseUri, "generic.EmptyMessage");
         } catch (IOException ex) {
-            throw new ResourceResolverException("generic.EmptyMessage", ex, context.uriToResolve, context.baseUri);
+            throw new ResourceResolverException(ex, context.uriToResolve, context.baseUri, "generic.EmptyMessage");
         } catch (IllegalArgumentException e) {
-            throw new ResourceResolverException("generic.EmptyMessage", e, context.uriToResolve, context.baseUri);
+            throw new ResourceResolverException(e, context.uriToResolve, context.baseUri, "generic.EmptyMessage");
         } finally {
             if (inputStream != null) {
                 try {

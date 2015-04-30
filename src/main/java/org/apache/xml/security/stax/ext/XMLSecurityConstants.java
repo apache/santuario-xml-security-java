@@ -84,7 +84,7 @@ public class XMLSecurityConstants {
             SECURE_RANDOM.nextBytes(temp);
             return temp;
         } catch (Exception ex) {
-            throw new XMLSecurityException("Error in generating nonce of length " + length, ex);
+            throw new XMLSecurityException(ex);
         }
     }
 

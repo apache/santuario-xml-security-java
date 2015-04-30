@@ -378,7 +378,8 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
             String jceName = JCEAlgorithmMapper.translateURItoJCEID(algorithmURI);
             String jceProvider = JCEAlgorithmMapper.getJCEProviderFromURI(algorithmURI);
             if (jceName == null) {
-                throw new XMLSecurityException("algorithms.NoSuchMap", algorithmURI);
+                throw new XMLSecurityException("algorithms.NoSuchMap", 
+                                               new Object[] {algorithmURI});
             }
             if (jceProvider != null) {
                 symCipher = Cipher.getInstance(jceName, jceProvider);
@@ -444,7 +445,8 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
 
             xmlSecEvents.push(encryptedDataXMLSecEvent);
             if (++count >= maximumAllowedEncryptedDataEvents) {
-                throw new XMLSecurityException("stax.xmlStructureSizeExceeded", maximumAllowedEncryptedDataEvents);
+                throw new XMLSecurityException("stax.xmlStructureSizeExceeded", 
+                                               new Object[] {maximumAllowedEncryptedDataEvents});
             }
 
             //the keyInfoCount is necessary to prevent early while-loop abort when the KeyInfo also contains a CipherValue.
@@ -613,9 +615,9 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                 case XMLStreamConstants.START_ELEMENT:
                     currentXMLStructureDepth++;
                     if (currentXMLStructureDepth > maximumAllowedXMLStructureDepth) {
-                        throw  new XMLSecurityException(
+                        throw new XMLSecurityException(
                                 "secureProcessing.MaximumAllowedXMLStructureDepth",
-                                maximumAllowedXMLStructureDepth
+                                new Object[] {maximumAllowedXMLStructureDepth}
                         );
                     }
 
@@ -805,7 +807,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                         default:
                             throw new XMLSecurityException(
                                     "stax.unexpectedXMLEvent",
-                                    XMLSecurityUtils.getXMLEventAsString(xmlSecEvent)
+                                    new Object[] {XMLSecurityUtils.getXMLEventAsString(xmlSecEvent)}
                             );
                     }
                 }

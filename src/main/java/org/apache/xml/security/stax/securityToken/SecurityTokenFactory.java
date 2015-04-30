@@ -39,7 +39,8 @@ public abstract class SecurityTokenFactory {
         if (securityTokenFactory == null) {
             String stf = ConfigurationProperties.getProperty("securityTokenFactory");
             if (stf == null) {
-                throw new XMLSecurityException("algorithm.ClassDoesNotExist", "null");
+                throw new XMLSecurityException("algorithm.ClassDoesNotExist", 
+                                               new Object[] {"null"});
             }
             Class<?> callingClass = ConfigurationProperties.getCallingClass();
             if (callingClass == null) {
@@ -52,11 +53,11 @@ public abstract class SecurityTokenFactory {
                         (Class<SecurityTokenFactory>) ClassLoaderUtils.loadClass(stf, callingClass);
                 securityTokenFactory = securityTokenFactoryClass.newInstance();
             } catch (ClassNotFoundException e) {
-                throw new XMLSecurityException("algorithm.ClassDoesNotExist", new Object[]{stf}, e);
+                throw new XMLSecurityException(e, "algorithm.ClassDoesNotExist", new Object[]{stf});
             } catch (InstantiationException e) {
-                throw new XMLSecurityException("algorithm.ClassDoesNotExist", new Object[]{stf}, e);
+                throw new XMLSecurityException(e, "algorithm.ClassDoesNotExist", new Object[]{stf});
             } catch (IllegalAccessException e) {
-                throw new XMLSecurityException("algorithm.ClassDoesNotExist", new Object[]{stf}, e);
+                throw new XMLSecurityException(e, "algorithm.ClassDoesNotExist", new Object[]{stf});
             }
         }
         return securityTokenFactory;

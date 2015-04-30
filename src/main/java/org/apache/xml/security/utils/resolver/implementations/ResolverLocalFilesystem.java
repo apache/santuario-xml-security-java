@@ -62,7 +62,7 @@ public class ResolverLocalFilesystem extends ResourceResolverSpi {
 
             return result;
         } catch (Exception e) {
-            throw new ResourceResolverException("generic.EmptyMessage", e, context.uriToResolve, context.baseUri);
+            throw new ResourceResolverException(e, context.uriToResolve, context.baseUri, "generic.EmptyMessage");
         }
     }
 

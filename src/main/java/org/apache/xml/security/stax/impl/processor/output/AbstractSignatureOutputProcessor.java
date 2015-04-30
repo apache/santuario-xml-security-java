@@ -155,7 +155,8 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
                             continue loop;
                         }
                     }
-                    throw new XMLSecurityException("stax.signature.securePartNotFound", securePart.getName());
+                    throw new XMLSecurityException("stax.signature.securePartNotFound", 
+                                                   new Object[] {securePart.getName()});
                 }
             }
         }
@@ -176,7 +177,8 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
         String jceName = JCEAlgorithmMapper.translateURItoJCEID(digestAlgorithm);
         String jceProvider = JCEAlgorithmMapper.getJCEProviderFromURI(digestAlgorithm);
         if (jceName == null) {
-            throw new XMLSecurityException("algorithms.NoSuchMap", digestAlgorithm);
+            throw new XMLSecurityException("algorithms.NoSuchMap",
+                                           new Object[] {digestAlgorithm});
         }
         MessageDigest messageDigest;
         try {

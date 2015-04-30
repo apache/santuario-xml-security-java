@@ -67,14 +67,14 @@ public class ResourceResolverException extends XMLSecurityException {
     /**
      * Constructor ResourceResolverException
      *
-     * @param msgID
      * @param originalException
      * @param uri
      * @param baseURI
+     * @param msgID
      */
-    public ResourceResolverException(String msgID, Exception originalException,
-                                     String uri, String baseURI) {
-        super(msgID, originalException);
+    public ResourceResolverException(Exception originalException,
+                                     String uri, String baseURI, String msgID) {
+        super(originalException, msgID);
 
         this.uri = uri;
         this.baseURI = baseURI;
@@ -83,16 +83,15 @@ public class ResourceResolverException extends XMLSecurityException {
     /**
      * Constructor ResourceResolverException
      *
-     * @param msgID
-     * @param exArgs
      * @param originalException
      * @param uri
      * @param baseURI
+     * @param msgID
+     * @param exArgs
      */
-    public ResourceResolverException(String msgID, Object exArgs[],
-                                     Exception originalException, String uri,
-                                     String baseURI) {
-        super(msgID, exArgs, originalException);
+    public ResourceResolverException(Exception originalException, String uri,
+                                     String baseURI, String msgID, Object exArgs[]) {
+        super(originalException, msgID, exArgs);
 
         this.uri = uri;
         this.baseURI = baseURI;

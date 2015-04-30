@@ -158,13 +158,13 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
             }
             return null;
         } catch (CanonicalizationException ex) {
-            throw new CanonicalizationException("empty", ex);
+            throw new CanonicalizationException(ex, "empty");
         } catch (ParserConfigurationException ex) {
-            throw new CanonicalizationException("empty", ex);
+            throw new CanonicalizationException(ex, "empty");
         } catch (IOException ex) {
-            throw new CanonicalizationException("empty", ex);
+            throw new CanonicalizationException(ex, "empty");
         } catch (SAXException ex) {
-            throw new CanonicalizationException("empty", ex);
+            throw new CanonicalizationException(ex, "empty");
         }
     }
     
@@ -220,9 +220,9 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
             return null;
 
         } catch (UnsupportedEncodingException ex) {
-            throw new CanonicalizationException("empty", ex);
+            throw new CanonicalizationException(ex, "empty");
         } catch (IOException ex) {
-            throw new CanonicalizationException("empty", ex);
+            throw new CanonicalizationException(ex, "empty");
         } 
     }
 
@@ -369,9 +369,9 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
             }
             return null;
         } catch (UnsupportedEncodingException ex) {
-            throw new CanonicalizationException("empty", ex);
+            throw new CanonicalizationException(ex, "empty");
         } catch (IOException ex) {
-            throw new CanonicalizationException("empty", ex);
+            throw new CanonicalizationException(ex, "empty");
         } 
     }
 

@@ -115,9 +115,9 @@ public class DSAKeyValue extends SignatureElementProxy implements KeyValueConten
 
             return pk;
         } catch (NoSuchAlgorithmException ex) {
-            throw new XMLSecurityException("empty", ex);
+            throw new XMLSecurityException(ex, "empty");
         } catch (InvalidKeySpecException ex) {
-            throw new XMLSecurityException("empty", ex);
+            throw new XMLSecurityException(ex, "empty");
         }
     }
 

@@ -101,7 +101,8 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
                         continue loop;
                     }
                 }
-                throw new XMLSecurityException("stax.encryption.securePartNotFound", securePart.getName());
+                throw new XMLSecurityException("stax.encryption.securePartNotFound", 
+                                               new Object[] {securePart.getName()});
             }
         }
     }
@@ -150,7 +151,8 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
                 //initialize the cipher
                 String jceAlgorithm = JCEAlgorithmMapper.translateURItoJCEID(encryptionSymAlgorithm);
                 if (jceAlgorithm == null) {
-                    throw new XMLSecurityException("algorithms.NoSuchMap", encryptionSymAlgorithm);
+                    throw new XMLSecurityException("algorithms.NoSuchMap", 
+                                                   new Object[] {encryptionSymAlgorithm});
                 }
                 Cipher symmetricCipher = Cipher.getInstance(jceAlgorithm);
 

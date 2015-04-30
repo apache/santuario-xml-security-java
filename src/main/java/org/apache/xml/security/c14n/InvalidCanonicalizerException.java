@@ -57,23 +57,23 @@ public class InvalidCanonicalizerException extends XMLSecurityException {
     /**
      * Constructor InvalidCanonicalizerException
      *
-     * @param msgID
      * @param originalException
+     * @param msgID
      */
-    public InvalidCanonicalizerException(String msgID, Exception originalException) {
-        super(msgID, originalException);
+    public InvalidCanonicalizerException(Exception originalException, String msgID) {
+        super(originalException, msgID);
     }
 
     /**
      * Constructor InvalidCanonicalizerException
      *
+     * @param originalException
      * @param msgID
      * @param exArgs
-     * @param originalException
      */
     public InvalidCanonicalizerException(
-        String msgID, Object exArgs[], Exception originalException
+        Exception originalException, String msgID, Object exArgs[]
     ) {
-        super(msgID, exArgs, originalException);
+        super(originalException, msgID, exArgs);
     }
 }

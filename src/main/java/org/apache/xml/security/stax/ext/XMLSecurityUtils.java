@@ -261,7 +261,8 @@ public class XMLSecurityUtils {
         // SKI can only be used for a V3 certificate
         int version = x509Certificates[0].getVersion();
         if (version != 3) {
-            throw new XMLSecurityException("certificate.noSki.lowVersion", version);
+            throw new XMLSecurityException("certificate.noSki.lowVersion",
+                                           new Object[]{version});
         }
         
         abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509Data, true, null);
@@ -358,7 +359,8 @@ public class XMLSecurityUtils {
         } else if (SecurityTokenConstants.EncryptedKeyToken.equals(tokenType)) {
             tokenSecurityEvent = new EncryptedKeyTokenSecurityEvent();
         } else {
-            throw new XMLSecurityException("stax.unsupportedToken", tokenType);
+            throw new XMLSecurityException("stax.unsupportedToken", 
+                                           new Object[]{tokenType});
         }
         tokenSecurityEvent.setSecurityToken(inboundSecurityToken);
         tokenSecurityEvent.setCorrelationID(correlationID);

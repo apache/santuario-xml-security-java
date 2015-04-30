@@ -91,7 +91,7 @@ public class XMLSecurityException extends Exception {
      * @param msgID
      * @param exArgs
      */
-    public XMLSecurityException(String msgID, Object ... exArgs) {
+    public XMLSecurityException(String msgID, Object exArgs[]) {
 
         super(MessageFormat.format(I18n.getExceptionMessage(msgID), exArgs));
 

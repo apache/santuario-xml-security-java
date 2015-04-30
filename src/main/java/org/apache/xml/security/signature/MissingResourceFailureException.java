@@ -38,11 +38,11 @@ public class MissingResourceFailureException extends XMLSignatureException {
 
     /**
      * MissingKeyResourceFailureException constructor.
-     * @param msgID
      * @param reference
+     * @param msgID
      * @see #getReference
      */
-    public MissingResourceFailureException(String msgID, Reference reference) {
+    public MissingResourceFailureException(Reference reference, String msgID) {
         super(msgID);
 
         this.uninitializedReference = reference;
@@ -51,12 +51,12 @@ public class MissingResourceFailureException extends XMLSignatureException {
     /**
      * Constructor MissingResourceFailureException
      *
+     * @param reference
      * @param msgID
      * @param exArgs
-     * @param reference
      * @see #getReference
      */
-    public MissingResourceFailureException(String msgID, Object exArgs[], Reference reference) {
+    public MissingResourceFailureException(Reference reference, String msgID, Object exArgs[]) {
         super(msgID, exArgs);
 
         this.uninitializedReference = reference;
@@ -65,15 +65,15 @@ public class MissingResourceFailureException extends XMLSignatureException {
     /**
      * Constructor MissingResourceFailureException
      *
-     * @param msgID
      * @param originalException
      * @param reference
+     * @param msgID
      * @see #getReference
      */
     public MissingResourceFailureException(
-        String msgID, Exception originalException, Reference reference
+        Exception originalException, Reference reference, String msgID
     ) {
-        super(msgID, originalException);
+        super(originalException, msgID);
 
         this.uninitializedReference = reference;
     }
@@ -81,16 +81,16 @@ public class MissingResourceFailureException extends XMLSignatureException {
     /**
      * Constructor MissingResourceFailureException
      *
-     * @param msgID
-     * @param exArgs
      * @param originalException
      * @param reference
+     * @param msgID
+     * @param exArgs
      * @see #getReference
      */
     public MissingResourceFailureException(
-        String msgID, Object exArgs[], Exception originalException, Reference reference
+        Exception originalException, Reference reference, String msgID, Object exArgs[]
     ) {
-        super(msgID, exArgs, originalException);
+        super(originalException, msgID, exArgs);
 
         this.uninitializedReference = reference;
     }

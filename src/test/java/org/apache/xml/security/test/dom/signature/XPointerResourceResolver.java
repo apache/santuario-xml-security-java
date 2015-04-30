@@ -202,7 +202,7 @@ public class XPointerResourceResolver extends ResourceResolverSpi {
             return result;
         } catch (XPathExpressionException e) {
             throw new ResourceResolverException(
-                 "Problem evaluating XPath expression", e, context.uriToResolve, context.baseUri
+                 e, context.uriToResolve, context.baseUri, "Problem evaluating XPath expression"
             );
         }
     }

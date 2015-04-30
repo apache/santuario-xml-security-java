@@ -132,7 +132,7 @@ public class X509IssuerSerialResolver extends KeyResolverSpi {
                 log.debug("XMLSecurityException", ex);
             }
 
-            throw new KeyResolverException("generic.EmptyMessage", ex);
+            throw new KeyResolverException(ex, "generic.EmptyMessage");
         }
     }
 

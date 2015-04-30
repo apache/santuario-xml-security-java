@@ -158,7 +158,7 @@ public class XMLSignatureInputDebugger {
 
             return this.writer.toString();
         } catch (IOException ex) {
-            throw new XMLSignatureException("empty", ex);
+            throw new XMLSignatureException(ex, "empty");
         } finally {
             this.xpathNodeSet = null;
             this.writer = null;

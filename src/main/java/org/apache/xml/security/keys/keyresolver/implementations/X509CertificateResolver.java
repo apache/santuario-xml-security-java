@@ -102,7 +102,7 @@ public class X509CertificateResolver extends KeyResolverSpi {
             if (log.isDebugEnabled()) {
                 log.debug("XMLSecurityException", ex);
             }
-            throw new KeyResolverException("generic.EmptyMessage", ex);
+            throw new KeyResolverException(ex, "generic.EmptyMessage");
         }
     }
 

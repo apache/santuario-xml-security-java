@@ -161,12 +161,12 @@ public final class Transform extends SignatureElementProxy {
         } catch (InstantiationException ex) {
             Object exArgs[] = { algorithmURI };
             throw new InvalidTransformException(
-                "signature.Transform.UnknownTransform", exArgs, ex
+                ex, "signature.Transform.UnknownTransform", exArgs
             );
         } catch (IllegalAccessException ex) {
             Object exArgs[] = { algorithmURI };
             throw new InvalidTransformException(
-                "signature.Transform.UnknownTransform", exArgs, ex
+                ex, "signature.Transform.UnknownTransform", exArgs
             );
         }
     }
@@ -313,11 +313,11 @@ public final class Transform extends SignatureElementProxy {
         } catch (ParserConfigurationException ex) {
             Object exArgs[] = { this.getURI(), "ParserConfigurationException" };
             throw new CanonicalizationException(
-                "signature.Transform.ErrorDuringTransform", exArgs, ex);
+                ex, "signature.Transform.ErrorDuringTransform", exArgs);
         } catch (SAXException ex) {
             Object exArgs[] = { this.getURI(), "SAXException" };
             throw new CanonicalizationException(
-                "signature.Transform.ErrorDuringTransform", exArgs, ex);
+                ex, "signature.Transform.ErrorDuringTransform", exArgs);
         }
 
         return result;
@@ -347,12 +347,12 @@ public final class Transform extends SignatureElementProxy {
         } catch (InstantiationException ex) {
             Object exArgs[] = { algorithmURI };
             throw new InvalidTransformException(
-                "signature.Transform.UnknownTransform", exArgs, ex
+                ex, "signature.Transform.UnknownTransform", exArgs
             );
         } catch (IllegalAccessException ex) {
             Object exArgs[] = { algorithmURI };
             throw new InvalidTransformException(
-                "signature.Transform.UnknownTransform", exArgs, ex
+                ex, "signature.Transform.UnknownTransform", exArgs
             );
         }
 

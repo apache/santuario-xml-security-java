@@ -86,8 +86,7 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
         if (referencesTypeList.size() > maximumAllowedReferencesPerManifest) {
             throw new XMLSecurityException(
                     "secureProcessing.MaximumAllowedReferencesPerManifest",
-                    referencesTypeList.size(),
-                    maximumAllowedReferencesPerManifest);
+                    new Object[] {referencesTypeList.size(), maximumAllowedReferencesPerManifest});
         }
         sameDocumentReferences = new ArrayList<KeyValue<ResourceResolver, ReferenceType>>(referencesTypeList.size());
         externalReferences = new ArrayList<KeyValue<ResourceResolver, ReferenceType>>(referencesTypeList.size());
@@ -156,7 +155,8 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
                         ReferenceType referenceType = referenceTypes.get(i);
 
                         if (processedReferences.contains(referenceType)) {
-                            throw new XMLSecurityException("signature.Verification.MultipleIDs", referenceType.getURI());
+                            throw new XMLSecurityException("signature.Verification.MultipleIDs", 
+                                                           new Object[] {referenceType.getURI()});
                         }
                         InternalSignatureReferenceVerifier internalSignatureReferenceVerifier =
                                 getSignatureReferenceVerifier(getSecurityProperties(), inputProcessorChain,
@@ -271,7 +271,8 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
         String jceName = JCEAlgorithmMapper.translateURItoJCEID(digestMethodAlgorithm);
         String jceProvider = JCEAlgorithmMapper.getJCEProviderFromURI(digestMethodAlgorithm);
         if (jceName == null) {
-            throw new XMLSecurityException("algorithms.NoSuchMap", digestMethodAlgorithm);
+            throw new XMLSecurityException("algorithms.NoSuchMap", 
+                                           new Object[] {digestMethodAlgorithm});
         }
 
         AlgorithmSuiteSecurityEvent algorithmSuiteSecurityEvent = new AlgorithmSuiteSecurityEvent();
@@ -327,8 +328,7 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
         if (transformTypeList.size() > maximumAllowedTransformsPerReference) {
             throw new XMLSecurityException(
                     "secureProcessing.MaximumAllowedTransformsPerReference",
-                    transformTypeList.size(),
-                    maximumAllowedTransformsPerReference);
+                    new Object[] {transformTypeList.size(), maximumAllowedTransformsPerReference});
         }
 
         Transformer parentTransformer = null;
@@ -375,7 +375,8 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
 
         if (!MessageDigest.isEqual(referenceType.getDigestValue(), calculatedDigest)) {
             throw new XMLSecurityException(
-                    "signature.Verification.InvalidDigestOrReference", referenceType.getURI());
+                    "signature.Verification.InvalidDigestOrReference", 
+                    new Object[] {referenceType.getURI()});
         }
     }
 

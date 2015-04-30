@@ -153,12 +153,12 @@ public class TransformBase64Decode extends TransformSpi {
                 output.setSecureValidation(secureValidation);
                 return output;
             } catch (ParserConfigurationException e) {
-                throw new TransformationException("c14n.Canonicalizer.Exception",e);
+                throw new TransformationException(e, "c14n.Canonicalizer.Exception");
             } catch (SAXException e) {
-                throw new TransformationException("SAX exception", e);
+                throw new TransformationException(e, "SAX exception");
             }      
         } catch (Base64DecodingException e) {
-            throw new TransformationException("Base64Decoding", e);
+            throw new TransformationException(e, "Base64Decoding");
         }
     }
 

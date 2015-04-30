@@ -58,6 +58,6 @@ public class ResourceResolverMapper {
                 return rr.newInstance(uri, baseURI);
             }
         }
-        throw new XMLSecurityException("utils.resolver.noClass", uri, baseURI);
+        throw new XMLSecurityException("utils.resolver.noClass", new Object[]{uri, baseURI});
     }
 }

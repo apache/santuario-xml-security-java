@@ -121,7 +121,7 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
                 return MessageDigestAlgorithm.isEqual(completeResult, signature);
             }
         } catch (IllegalStateException ex) {
-            throw new XMLSignatureException("empty", ex);
+            throw new XMLSignatureException(ex, "empty");
         }
     }
 
@@ -159,7 +159,7 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
                 }
                 this.macAlgorithm = mac;
             }
-            throw new XMLSignatureException("empty", ex);
+            throw new XMLSignatureException(ex, "empty");
         }
     }
 
@@ -182,7 +182,7 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
                 return this.macAlgorithm.doFinal();
             }
         } catch (IllegalStateException ex) {
-            throw new XMLSignatureException("empty", ex);
+            throw new XMLSignatureException(ex, "empty");
         }
     }
 
@@ -224,9 +224,9 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
                 this.macAlgorithm.init(secretKey, algorithmParameterSpec);
             }
         } catch (InvalidKeyException ex) {
-            throw new XMLSignatureException("empty", ex);
+            throw new XMLSignatureException(ex, "empty");
         } catch (InvalidAlgorithmParameterException ex) {
-            throw new XMLSignatureException("empty", ex);
+            throw new XMLSignatureException(ex, "empty");
         }
     }
 
@@ -253,7 +253,7 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
         try {
             this.macAlgorithm.update(input);
         } catch (IllegalStateException ex) {
-            throw new XMLSignatureException("empty", ex);
+            throw new XMLSignatureException(ex, "empty");
         }
     }
 
@@ -268,7 +268,7 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
         try {
             this.macAlgorithm.update(input);
         } catch (IllegalStateException ex) {
-            throw new XMLSignatureException("empty", ex);
+            throw new XMLSignatureException(ex, "empty");
         }
     }
 
@@ -285,7 +285,7 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
         try {
             this.macAlgorithm.update(buf, offset, len);
         } catch (IllegalStateException ex) {
-            throw new XMLSignatureException("empty", ex);
+            throw new XMLSignatureException(ex, "empty");
         }
     }
 

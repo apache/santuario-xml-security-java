@@ -54,24 +54,24 @@ public class AlgorithmAlreadyRegisteredException extends XMLSecurityException {
     /**
      * Constructor AlgorithmAlreadyRegisteredException
      *
-     * @param msgID
      * @param originalException
+     * @param msgID
      */
-    public AlgorithmAlreadyRegisteredException(String msgID, Exception originalException) {
-        super(msgID, originalException);
+    public AlgorithmAlreadyRegisteredException(Exception originalException, String msgID) {
+        super(originalException, msgID);
     }
 
     /**
      * Constructor AlgorithmAlreadyRegisteredException
      *
+     * @param originalException
      * @param msgID
      * @param exArgs
-     * @param originalException
      */
     public AlgorithmAlreadyRegisteredException(
-        String msgID, Object exArgs[], Exception originalException
+        Exception originalException, String msgID, Object exArgs[]
     ) {
-        super(msgID, exArgs, originalException);
+        super(originalException, msgID, exArgs);
     }
     
 }
