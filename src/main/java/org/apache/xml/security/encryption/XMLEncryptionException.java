@@ -37,6 +37,10 @@ public class XMLEncryptionException extends XMLSecurityException {
         super();
     }
     
+    public XMLEncryptionException(Exception ex) {
+        super(ex);
+    }
+    
     /**
      * 
      * @param msgID

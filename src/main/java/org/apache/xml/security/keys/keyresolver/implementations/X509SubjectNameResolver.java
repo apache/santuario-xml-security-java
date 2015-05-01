@@ -150,7 +150,7 @@ public class X509SubjectNameResolver extends KeyResolverSpi {
                 log.debug("XMLSecurityException", ex);
             }
 
-            throw new KeyResolverException(ex, "generic.EmptyMessage");
+            throw new KeyResolverException(ex);
         }
     }
 

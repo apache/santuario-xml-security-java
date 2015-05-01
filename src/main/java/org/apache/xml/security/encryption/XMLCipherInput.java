@@ -131,7 +131,7 @@ public class XMLCipherInput {
                     ResourceResolver.getInstance(uriAttr, null, secureValidation);
                 input = resolver.resolve(uriAttr, null, secureValidation);
             } catch (ResourceResolverException ex) {
-                throw new XMLEncryptionException("empty", ex);
+                throw new XMLEncryptionException(ex);
             } 
 
             if (input != null) {
@@ -156,16 +156,16 @@ public class XMLCipherInput {
                     dsTransforms.setSecureValidation(secureValidation);
                     input = dsTransforms.performTransforms(input);
                 } catch (TransformationException ex) {
-                    throw new XMLEncryptionException("empty", ex);
+                    throw new XMLEncryptionException(ex);
                 }
             }
 
             try {
                 return input.getBytes();
             } catch (IOException ex) {
-                throw new XMLEncryptionException("empty", ex);
+                throw new XMLEncryptionException(ex);
             } catch (CanonicalizationException ex) {
-                throw new XMLEncryptionException("empty", ex);
+                throw new XMLEncryptionException(ex);
             }
 
             // retrieve the cipher text

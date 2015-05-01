@@ -106,9 +106,9 @@ public class RSAKeyValue extends SignatureElementProxy implements KeyValueConten
 
             return pk;
         } catch (NoSuchAlgorithmException ex) {
-            throw new XMLSecurityException(ex, "empty");
+            throw new XMLSecurityException(ex);
         } catch (InvalidKeySpecException ex) {
-            throw new XMLSecurityException(ex, "empty");
+            throw new XMLSecurityException(ex);
         }
     }
 

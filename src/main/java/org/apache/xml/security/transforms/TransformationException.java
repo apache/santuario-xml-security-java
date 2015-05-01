@@ -37,6 +37,10 @@ public class TransformationException extends XMLSecurityException {
     public TransformationException() {
         super();
     }
+    
+    public TransformationException(Exception ex) {
+        super(ex);
+    }
 
     /**
      * Constructor TransformationException

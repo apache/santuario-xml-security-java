@@ -130,7 +130,7 @@ public class X509SKIResolver extends KeyResolverSpi {
                 }
             }
         } catch (XMLSecurityException ex) {
-            throw new KeyResolverException(ex, "empty");
+            throw new KeyResolverException(ex);
         }
 
         return null;

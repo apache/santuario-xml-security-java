@@ -211,7 +211,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
         try {
             this.signatureAlgorithm.setParameter(params);
         } catch (InvalidAlgorithmParameterException ex) {
-            throw new XMLSignatureException(ex, "empty");
+            throw new XMLSignatureException(ex);
         }
     }
 
@@ -226,9 +226,9 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
 
             return this.signatureAlgorithm.verify(jcebytes);
         } catch (SignatureException ex) {
-            throw new XMLSignatureException(ex, "empty");
+            throw new XMLSignatureException(ex);
         } catch (IOException ex) {
-            throw new XMLSignatureException(ex, "empty");
+            throw new XMLSignatureException(ex);
         }
     }
 
@@ -262,7 +262,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
                 }
                 this.signatureAlgorithm = sig;
             }
-            throw new XMLSignatureException(ex, "empty");
+            throw new XMLSignatureException(ex);
         }
     }
 
@@ -273,9 +273,9 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
 
             return SignatureECDSA.convertASN1toXMLDSIG(jcebytes);
         } catch (SignatureException ex) {
-            throw new XMLSignatureException(ex, "empty");
+            throw new XMLSignatureException(ex);
         } catch (IOException ex) {
-            throw new XMLSignatureException(ex, "empty");
+            throw new XMLSignatureException(ex);
         }
     }
 
@@ -300,7 +300,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
                 this.signatureAlgorithm.initSign((PrivateKey) privateKey, secureRandom);
             }
         } catch (InvalidKeyException ex) {
-            throw new XMLSignatureException(ex, "empty");
+            throw new XMLSignatureException(ex);
         }
     }
 
@@ -314,7 +314,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
         try {
             this.signatureAlgorithm.update(input);
         } catch (SignatureException ex) {
-            throw new XMLSignatureException(ex, "empty");
+            throw new XMLSignatureException(ex);
         }
     }
 
@@ -323,7 +323,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
         try {
             this.signatureAlgorithm.update(input);
         } catch (SignatureException ex) {
-            throw new XMLSignatureException(ex, "empty");
+            throw new XMLSignatureException(ex);
         }
     }
 
@@ -332,7 +332,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
         try {
             this.signatureAlgorithm.update(buf, offset, len);
         } catch (SignatureException ex) {
-            throw new XMLSignatureException(ex, "empty");
+            throw new XMLSignatureException(ex);
         }
     }
 

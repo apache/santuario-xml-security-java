@@ -35,6 +35,10 @@ public class StorageResolverException extends XMLSecurityException {
     public StorageResolverException() {
         super();
     }
+    
+    public StorageResolverException(Exception ex) {
+        super(ex);
+    }
 
     /**
      * Constructor StorageResolverException

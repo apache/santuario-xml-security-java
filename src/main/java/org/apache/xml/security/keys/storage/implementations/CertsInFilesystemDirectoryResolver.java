@@ -89,11 +89,11 @@ public class CertsInFilesystemDirectoryResolver extends StorageResolverSpi {
         try {
             cf = CertificateFactory.getInstance("X.509");
         } catch (CertificateException ex) {
-            throw new StorageResolverException(ex, "empty");
+            throw new StorageResolverException(ex);
         }
 
         if (cf == null) {
-            throw new StorageResolverException("empty");
+            throw new StorageResolverException("empty", new Object[] {"No CertificateFactory available"});
         }
 
         for (int i = 0; i < al.size(); i++) {

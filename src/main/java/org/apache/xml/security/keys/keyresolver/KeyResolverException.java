@@ -34,6 +34,10 @@ public class KeyResolverException extends XMLSecurityException {
     public KeyResolverException() {
         super();
     }
+    
+    public KeyResolverException(Exception ex) {
+        super(ex);
+    }
 
     /**
      * Constructor KeyResolverException

@@ -107,7 +107,7 @@ public class TransformXPath extends TransformSpi {
             input.setNodeSet(true);
             return input;
         } catch (DOMException ex) {
-            throw new TransformationException(ex, "empty");
+            throw new TransformationException(ex);
         }
     }
 

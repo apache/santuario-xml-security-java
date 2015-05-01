@@ -39,6 +39,10 @@ public class CanonicalizationException extends XMLSecurityException {
     public CanonicalizationException() {
         super();
     }
+    
+    public CanonicalizationException(Exception ex) {
+        super(ex);
+    }
 
     /**
      * Constructor CanonicalizationException

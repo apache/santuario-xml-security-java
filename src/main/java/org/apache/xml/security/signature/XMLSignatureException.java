@@ -40,6 +40,10 @@ public class XMLSignatureException extends XMLSecurityException {
     public XMLSignatureException() {
         super();
     }
+    
+    public XMLSignatureException(Exception ex) {
+        super(ex);
+    }
 
     /**
      * Constructor XMLSignatureException

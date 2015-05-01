@@ -158,7 +158,7 @@ public class XMLSignatureInputDebugger {
 
             return this.writer.toString();
         } catch (IOException ex) {
-            throw new XMLSignatureException(ex, "empty");
+            throw new XMLSignatureException(ex);
         } finally {
             this.xpathNodeSet = null;
             this.writer = null;
@@ -183,7 +183,7 @@ public class XMLSignatureInputDebugger {
         case Node.NOTATION_NODE:
         case Node.DOCUMENT_FRAGMENT_NODE:
         case Node.ATTRIBUTE_NODE:
-            throw new XMLSignatureException("empty");
+            throw new XMLSignatureException("empty", new Object[]{"An incorrect node was provided for c14n: " + currentNodeType});
         case Node.DOCUMENT_NODE:
             this.writer.write(HTMLPrefix);
 

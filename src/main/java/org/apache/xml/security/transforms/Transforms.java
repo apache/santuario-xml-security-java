@@ -169,7 +169,7 @@ public class Transforms extends SignatureElementProxy {
 
             this.addTransform(transform);
         } catch (InvalidTransformException ex) {
-            throw new TransformationException(ex, "empty");
+            throw new TransformationException(ex);
         }
     }
 
@@ -193,7 +193,7 @@ public class Transforms extends SignatureElementProxy {
 
             this.addTransform(transform);
         } catch (InvalidTransformException ex) {
-            throw new TransformationException(ex, "empty");
+            throw new TransformationException(ex);
         }
     }
 
@@ -213,7 +213,7 @@ public class Transforms extends SignatureElementProxy {
             Transform transform = new Transform(getDocument(), transformURI, contextNodes);
             this.addTransform(transform);
         } catch (InvalidTransformException ex) {
-            throw new TransformationException(ex, "empty");
+            throw new TransformationException(ex);
         }
     }
 
@@ -282,11 +282,11 @@ public class Transforms extends SignatureElementProxy {
 
             return xmlSignatureInput;
         } catch (IOException ex) {
-            throw new TransformationException(ex, "empty");
+            throw new TransformationException(ex);
         } catch (CanonicalizationException ex) {
-            throw new TransformationException(ex, "empty");
+            throw new TransformationException(ex);
         } catch (InvalidCanonicalizerException ex) {
-            throw new TransformationException(ex, "empty");
+            throw new TransformationException(ex);
         }
     }
     
@@ -325,7 +325,7 @@ public class Transforms extends SignatureElementProxy {
             initTransforms();
             return new Transform(transforms[i], this.baseURI);
         } catch (XMLSecurityException ex) {
-            throw new TransformationException(ex, "empty");
+            throw new TransformationException(ex);
         }
     }
 

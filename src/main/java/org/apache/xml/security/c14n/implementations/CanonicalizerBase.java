@@ -157,14 +157,12 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
                 }
             }
             return null;
-        } catch (CanonicalizationException ex) {
-            throw new CanonicalizationException(ex, "empty");
         } catch (ParserConfigurationException ex) {
-            throw new CanonicalizationException(ex, "empty");
+            throw new CanonicalizationException(ex);
         } catch (IOException ex) {
-            throw new CanonicalizationException(ex, "empty");
+            throw new CanonicalizationException(ex);
         } catch (SAXException ex) {
-            throw new CanonicalizationException(ex, "empty");
+            throw new CanonicalizationException(ex);
         }
     }
     
@@ -220,9 +218,9 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
             return null;
 
         } catch (UnsupportedEncodingException ex) {
-            throw new CanonicalizationException(ex, "empty");
+            throw new CanonicalizationException(ex);
         } catch (IOException ex) {
-            throw new CanonicalizationException(ex, "empty");
+            throw new CanonicalizationException(ex);
         } 
     }
 
@@ -255,7 +253,8 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
             case Node.NOTATION_NODE :
             case Node.ATTRIBUTE_NODE :
                 // illegal node type during traversal
-                throw new CanonicalizationException("empty");
+                throw new CanonicalizationException("empty", 
+                                                    new Object[]{"illegal node type during traversal"});
 
             case Node.DOCUMENT_FRAGMENT_NODE :
             case Node.DOCUMENT_NODE :
@@ -369,9 +368,9 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
             }
             return null;
         } catch (UnsupportedEncodingException ex) {
-            throw new CanonicalizationException(ex, "empty");
+            throw new CanonicalizationException(ex);
         } catch (IOException ex) {
-            throw new CanonicalizationException(ex, "empty");
+            throw new CanonicalizationException(ex);
         } 
     }
 
@@ -409,7 +408,8 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
             case Node.NOTATION_NODE :
             case Node.ATTRIBUTE_NODE :
                 // illegal node type during traversal
-                throw new CanonicalizationException("empty");
+                throw new CanonicalizationException("empty",
+                                                    new Object[]{"illegal node type during traversal"});
 
             case Node.DOCUMENT_FRAGMENT_NODE :
             case Node.DOCUMENT_NODE :

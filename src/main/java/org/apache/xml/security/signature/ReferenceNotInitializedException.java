@@ -38,6 +38,10 @@ public class ReferenceNotInitializedException extends XMLSignatureException {
     public ReferenceNotInitializedException() {
         super();
     }
+    
+    public ReferenceNotInitializedException(Exception ex) {
+        super(ex);
+    }
 
     /**
      * Constructor ReferenceNotInitializedException

@@ -102,7 +102,7 @@ public class SignatureProperties extends SignatureElementProxy {
             } 
             return new SignatureProperty(propertyElem, this.baseURI);               
         } catch (XMLSecurityException ex) {
-            throw new XMLSignatureException(ex, "empty");
+            throw new XMLSignatureException(ex);
         }
     }
 

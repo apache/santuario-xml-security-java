@@ -93,7 +93,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
         try {
             this.signatureAlgorithm.setParameter(params);
         } catch (InvalidAlgorithmParameterException ex) {
-            throw new XMLSignatureException(ex, "empty");
+            throw new XMLSignatureException(ex);
         }
     }
 
@@ -112,9 +112,9 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
 
             return this.signatureAlgorithm.verify(jcebytes);
         } catch (SignatureException ex) {
-            throw new XMLSignatureException(ex, "empty");
+            throw new XMLSignatureException(ex);
         } catch (IOException ex) {
-            throw new XMLSignatureException(ex, "empty");
+            throw new XMLSignatureException(ex);
         }
     }
 
@@ -149,7 +149,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
                 }
                 this.signatureAlgorithm = sig;
             }
-            throw new XMLSignatureException(ex, "empty");
+            throw new XMLSignatureException(ex);
         }
         size = ((DSAKey)publicKey).getParams().getQ().bitLength();
     }
@@ -163,9 +163,9 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
 
             return JavaUtils.convertDsaASN1toXMLDSIG(jcebytes, size/8);
         } catch (IOException ex) {
-            throw new XMLSignatureException(ex, "empty");
+            throw new XMLSignatureException(ex);
         } catch (SignatureException ex) {
-            throw new XMLSignatureException(ex, "empty");
+            throw new XMLSignatureException(ex);
         }
     }
 
@@ -192,7 +192,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
                 this.signatureAlgorithm.initSign((PrivateKey) privateKey, secureRandom);
             }
         } catch (InvalidKeyException ex) {
-            throw new XMLSignatureException(ex, "empty");
+            throw new XMLSignatureException(ex);
         }
         size = ((DSAKey)privateKey).getParams().getQ().bitLength();
     }
@@ -211,7 +211,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
         try {
             this.signatureAlgorithm.update(input);
         } catch (SignatureException ex) {
-            throw new XMLSignatureException(ex, "empty");
+            throw new XMLSignatureException(ex);
         }
     }
 
@@ -222,7 +222,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
         try {
             this.signatureAlgorithm.update(input);
         } catch (SignatureException ex) {
-            throw new XMLSignatureException(ex, "empty");
+            throw new XMLSignatureException(ex);
         }
     }
 
@@ -233,7 +233,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
         try {
             this.signatureAlgorithm.update(buf, offset, len);
         } catch (SignatureException ex) {
-            throw new XMLSignatureException(ex, "empty");
+            throw new XMLSignatureException(ex);
         }
     }
 

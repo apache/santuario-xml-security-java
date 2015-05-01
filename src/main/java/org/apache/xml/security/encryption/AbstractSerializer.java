@@ -214,9 +214,9 @@ public abstract class AbstractSerializer implements Serializer {
 
             return byteArrayOutputStream.toByteArray();
         } catch (UnsupportedEncodingException e) {
-            throw new XMLEncryptionException("empty", e);
+            throw new XMLEncryptionException(e);
         } catch (IOException e) {
-            throw new XMLEncryptionException("empty", e);
+            throw new XMLEncryptionException(e);
         }
     }
     

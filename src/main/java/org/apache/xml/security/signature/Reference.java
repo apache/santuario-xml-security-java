@@ -425,7 +425,7 @@ public class Reference extends SignatureElementProxy {
 
             return resolver.resolve(uriAttr, this.baseURI, secureValidation);
         }  catch (ResourceResolverException ex) {
-            throw new ReferenceNotInitializedException(ex, "empty");
+            throw new ReferenceNotInitializedException(ex);
         }
     }
 
@@ -447,15 +447,15 @@ public class Reference extends SignatureElementProxy {
 
             return output;
         } catch (ResourceResolverException ex) {
-            throw new XMLSignatureException(ex, "empty");
+            throw new XMLSignatureException(ex);
         } catch (CanonicalizationException ex) {
-            throw new XMLSignatureException(ex, "empty");
+            throw new XMLSignatureException(ex);
         } catch (InvalidCanonicalizerException ex) {
-            throw new XMLSignatureException(ex, "empty");
+            throw new XMLSignatureException(ex);
         } catch (TransformationException ex) {
-            throw new XMLSignatureException(ex, "empty");
+            throw new XMLSignatureException(ex);
         } catch (XMLSecurityException ex) {
-            throw new XMLSignatureException(ex, "empty");
+            throw new XMLSignatureException(ex);
         }
     }
 
@@ -506,17 +506,17 @@ public class Reference extends SignatureElementProxy {
             }
             return output;
         } catch (IOException ex) {
-            throw new XMLSignatureException(ex, "empty");
+            throw new XMLSignatureException(ex);
         } catch (ResourceResolverException ex) {
-            throw new XMLSignatureException(ex, "empty");
+            throw new XMLSignatureException(ex);
         } catch (CanonicalizationException ex) {
-            throw new XMLSignatureException(ex, "empty");
+            throw new XMLSignatureException(ex);
         } catch (InvalidCanonicalizerException ex) {
-            throw new XMLSignatureException(ex, "empty");
+            throw new XMLSignatureException(ex);
         } catch (TransformationException ex) {
-            throw new XMLSignatureException(ex, "empty");
+            throw new XMLSignatureException(ex);
         } catch (XMLSecurityException ex) {
-            throw new XMLSignatureException(ex, "empty");
+            throw new XMLSignatureException(ex);
         }
     }
 
@@ -567,11 +567,11 @@ public class Reference extends SignatureElementProxy {
 
             return nodes.getHTMLRepresentation(inclusiveNamespaces);
         } catch (TransformationException ex) {
-            throw new XMLSignatureException(ex, "empty");
+            throw new XMLSignatureException(ex);
         } catch (InvalidTransformException ex) {
-            throw new XMLSignatureException(ex, "empty");
+            throw new XMLSignatureException(ex);
         } catch (XMLSecurityException ex) {
-            throw new XMLSignatureException(ex, "empty");
+            throw new XMLSignatureException(ex);
         }
     }
 
@@ -610,7 +610,7 @@ public class Reference extends SignatureElementProxy {
             this.transformsOutput = output;
             return output;
         } catch (XMLSecurityException ex) {
-            throw new ReferenceNotInitializedException(ex, "empty");
+            throw new ReferenceNotInitializedException(ex);
         }
     }
     
@@ -691,9 +691,9 @@ public class Reference extends SignatureElementProxy {
             XMLSignatureInput output = this.dereferenceURIandPerformTransforms(null);
             return output.getBytes();
         } catch (IOException ex) {
-            throw new ReferenceNotInitializedException(ex, "empty");
+            throw new ReferenceNotInitializedException(ex);
         } catch (CanonicalizationException ex) {
-            throw new ReferenceNotInitializedException(ex, "empty");
+            throw new ReferenceNotInitializedException(ex);
         } 
     }
 
@@ -741,15 +741,15 @@ public class Reference extends SignatureElementProxy {
 
             return diOs.getDigestValue();
         } catch (XMLSecurityException ex) {
-            throw new ReferenceNotInitializedException(ex, "empty");
+            throw new ReferenceNotInitializedException(ex);
         } catch (IOException ex) {
-            throw new ReferenceNotInitializedException(ex, "empty");
+            throw new ReferenceNotInitializedException(ex);
         } finally {
             if (os != null) {
                 try {
                     os.close();
                 } catch (IOException ex) {
-                    throw new ReferenceNotInitializedException(ex, "empty");
+                    throw new ReferenceNotInitializedException(ex);
                 } 
             }
         }

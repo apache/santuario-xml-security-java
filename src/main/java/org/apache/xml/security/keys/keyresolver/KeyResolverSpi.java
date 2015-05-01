@@ -276,11 +276,11 @@ public abstract class KeyResolverSpi {
             Document doc = db.parse(new ByteArrayInputStream(bytes));
             return doc.getDocumentElement();
         } catch (SAXException ex) {
-            throw new KeyResolverException(ex, "empty");
+            throw new KeyResolverException(ex);
         } catch (IOException ex) {
-            throw new KeyResolverException(ex, "empty");
+            throw new KeyResolverException(ex);
         } catch (ParserConfigurationException ex) {
-            throw new KeyResolverException(ex, "empty");
+            throw new KeyResolverException(ex);
         } finally {
             if (db != null) {
                 XMLUtils.repoolDocumentBuilder(db);

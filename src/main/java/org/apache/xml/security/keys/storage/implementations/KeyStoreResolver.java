@@ -49,7 +49,7 @@ public class KeyStoreResolver extends StorageResolverSpi {
         try {
             keyStore.aliases();
         } catch (KeyStoreException ex) {
-            throw new StorageResolverException(ex, "generic.EmptyMessage");
+            throw new StorageResolverException(ex);
         }
     }
 

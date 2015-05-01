@@ -120,7 +120,7 @@ public class RetrievalMethod extends SignatureElementProxy implements KeyInfoCon
 
             return null;
         } catch (XMLSignatureException ex) {
-            throw new XMLSecurityException(ex, "empty");
+            throw new XMLSecurityException(ex);
         }
     }
 

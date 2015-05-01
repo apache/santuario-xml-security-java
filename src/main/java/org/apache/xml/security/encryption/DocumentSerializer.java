@@ -90,11 +90,11 @@ public class DocumentSerializer extends AbstractSerializer {
             }
             return result;
         } catch (SAXException se) {
-            throw new XMLEncryptionException("empty", se);
+            throw new XMLEncryptionException(se);
         } catch (ParserConfigurationException pce) {
-            throw new XMLEncryptionException("empty", pce);
+            throw new XMLEncryptionException(pce);
         } catch (IOException ioe) {
-            throw new XMLEncryptionException("empty", ioe);
+            throw new XMLEncryptionException(ioe);
         } finally {
             if (db != null) {
                 XMLUtils.repoolDocumentBuilder(db);

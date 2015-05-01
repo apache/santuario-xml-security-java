@@ -107,7 +107,7 @@ public class TransformSerializer extends AbstractSerializer {
             
             return docfrag;
         } catch (Exception e) {
-            throw new XMLEncryptionException("empty", e);
+            throw new XMLEncryptionException(e);
         }
     }
 

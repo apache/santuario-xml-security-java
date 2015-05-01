@@ -135,21 +135,21 @@ public class TransformXPath2Filter extends TransformSpi {
             input.setNodeSet(true);
             return input;
         } catch (TransformerException ex) {
-            throw new TransformationException(ex, "empty");
+            throw new TransformationException(ex);
         } catch (DOMException ex) {
-            throw new TransformationException(ex, "empty");
+            throw new TransformationException(ex);
         } catch (CanonicalizationException ex) {
-            throw new TransformationException(ex, "empty");
+            throw new TransformationException(ex);
         } catch (InvalidCanonicalizerException ex) {
-            throw new TransformationException(ex, "empty");
+            throw new TransformationException(ex);
         } catch (XMLSecurityException ex) {
-            throw new TransformationException(ex, "empty");
+            throw new TransformationException(ex);
         } catch (SAXException ex) {
-            throw new TransformationException(ex, "empty");
+            throw new TransformationException(ex);
         } catch (IOException ex) {
-            throw new TransformationException(ex, "empty");
+            throw new TransformationException(ex);
         } catch (ParserConfigurationException ex) {
-            throw new TransformationException(ex, "empty");
+            throw new TransformationException(ex);
         }
     }
 }
