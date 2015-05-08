@@ -1485,7 +1485,7 @@ public class XMLCipher {
      *
      * @param encryptedKey Previously loaded EncryptedKey that needs
      * to be decrypted.
-     * @param algorithm Algorithm for the decryption
+     * @param algorithm Algorithm for the decrypted key
      * @return a key corresponding to the given type
      * @throws XMLEncryptionException
      */
@@ -1514,7 +1514,7 @@ public class XMLCipher {
                 try {
                     String keyWrapAlg = encryptedKey.getEncryptionMethod().getAlgorithm();
                     String keyType = JCEMapper.getJCEKeyAlgorithmFromURI(keyWrapAlg);
-                    if ("RSA".equals(keyType)) {
+                    if ("RSA".equals(keyType) || "EC".equals(keyType)) {
                         key = ki.getPrivateKey();
                     } else {
                         key = ki.getSecretKey();
