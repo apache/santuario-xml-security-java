@@ -441,7 +441,8 @@ public class XMLEncryption11Test extends org.junit.Assert {
         } catch (XMLStreamException e) {
             Assert.assertTrue(e.getCause() instanceof IOException);
             Assert.assertTrue(e.getCause().getCause() instanceof BadPaddingException);
-            Assert.assertEquals("mac check in GCM failed", e.getCause().getCause().getMessage());
+            String cause = e.getCause().getCause().getMessage();
+            Assert.assertTrue("mac check in GCM failed".equals(cause) || "Tag mismatch!".equals(cause));
         }
     }
 
