@@ -23,13 +23,11 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.security.AccessController;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-import java.security.PrivilegedAction;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.MGF1ParameterSpec;
 import java.util.ArrayList;
@@ -43,7 +41,6 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.OAEPParameterSpec;
 import javax.crypto.spec.PSource;
 
@@ -62,7 +59,6 @@ import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.transforms.InvalidTransformException;
 import org.apache.xml.security.transforms.TransformationException;
 import org.apache.xml.security.utils.Base64;
-import org.apache.xml.security.utils.ClassLoaderUtils;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.ElementProxy;
 import org.apache.xml.security.utils.EncryptionConstants;
@@ -87,14 +83,6 @@ public class XMLCipher {
     private static org.slf4j.Logger log = 
         org.slf4j.LoggerFactory.getLogger(XMLCipher.class);
     
-    private static final boolean gcmUseIvParameterSpec =
-        AccessController.doPrivileged(new PrivilegedAction<Boolean>() {
-            public Boolean run() {
-                return Boolean.getBoolean
-                    ("org.apache.xml.security.cipher.gcm.useIvParameterSpec");
-            }
-        });
-
     /** Triple DES EDE (192 bit key) in CBC mode */
     public static final String TRIPLEDES =                   
         EncryptionConstants.ALGO_ID_BLOCKCIPHER_TRIPLEDES;
@@ -1268,39 +1256,7 @@ public class XMLCipher {
      *         specified algorithm
      */
     private AlgorithmParameterSpec constructBlockCipherParameters(String algorithm, byte[] iv) {
-        if (EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM.equals(algorithm)
-                || EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192_GCM.equals(algorithm)
-                || EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256_GCM.equals(algorithm)) {
-            
-            if (gcmUseIvParameterSpec) {
-                // This override allows to support Java 1.7+ with (usually older versions of) third-party security 
-                // providers which support or even require GCM via IvParameterSpec rather than GCMParameterSpec,
-                // e.g. BouncyCastle <= 1.49 (really <= 1.50 due to a semi-related bug).
-                log.debug("Saw AES-GCM block cipher, using IvParameterSpec due to system property override: {}", algorithm);
-                return new IvParameterSpec(iv);
-            }
-            
-            log.debug("Saw AES-GCM block cipher, attempting to create GCMParameterSpec: {}", algorithm);
-            
-            try {
-                // This class only added in Java 1.7. So load reflectively until Santuario starts targeting a minimum of Java 1.7. 
-                Class<?> gcmSpecClass = ClassLoaderUtils.loadClass("javax.crypto.spec.GCMParameterSpec", this.getClass());
-                
-                // XML Encryption 1.1 mandates a 128-bit Authentication Tag for AES GCM modes.
-                AlgorithmParameterSpec gcmSpec = (AlgorithmParameterSpec) gcmSpecClass.getConstructor(int.class, byte[].class)
-                        .newInstance(128, iv);
-                log.debug("Successfully created GCMParameterSpec");
-                return gcmSpec;
-            } catch (Exception e) {
-                // This handles the case of Java < 1.7 with a third-party security provider that 
-                // supports GCM mode using only an IvParameterSpec, such as BouncyCastle.
-                log.debug("Failed to create GCMParameterSpec, falling back to returning IvParameterSpec", e);
-                return new IvParameterSpec(iv);
-            }
-        } else {
-            log.debug("Saw non-AES-GCM mode block cipher, returning IvParameterSpec: {}", algorithm);
-            return new IvParameterSpec(iv);
-        }
+        return XMLCipherUtil.constructBlockCipherParameters(algorithm, iv, this.getClass());
     }
 
     /**

@@ -19,13 +19,16 @@
 package org.apache.xml.security.stax.impl.util;
 
 import javax.crypto.Cipher;
-import javax.crypto.spec.IvParameterSpec;
+
+import org.apache.xml.security.encryption.XMLCipherUtil;
+
 import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
+import java.security.spec.AlgorithmParameterSpec;
 
 /**
  * IV splitting from the first few bytes in the stream.
@@ -63,7 +66,7 @@ public class IVSplittingOutputStream extends FilterOutputStream {
     }
 
     private void initializeCipher() throws IOException {
-        IvParameterSpec iv = new IvParameterSpec(this.getIv());
+        AlgorithmParameterSpec iv = XMLCipherUtil.constructBlockCipherParameters(cipher.getAlgorithm().toUpperCase().contains("GCM"), this.getIv(), this.getClass());
         try {
             cipher.init(Cipher.DECRYPT_MODE, secretKey, iv);
         } catch (InvalidKeyException e) {
