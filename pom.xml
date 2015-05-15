@@ -72,7 +72,7 @@
     <parent>
         <groupId>org.apache</groupId>
         <artifactId>apache</artifactId>
-        <version>16</version>
+        <version>17</version>
     </parent>
     
     <build>
