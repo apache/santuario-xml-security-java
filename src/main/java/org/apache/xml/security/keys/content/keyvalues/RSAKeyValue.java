@@ -40,11 +40,11 @@ public class RSAKeyValue extends SignatureElementProxy implements KeyValueConten
      * Constructor RSAKeyValue
      *
      * @param element
-     * @param BaseURI
+     * @param baseURI
      * @throws XMLSecurityException
      */
-    public RSAKeyValue(Element element, String BaseURI) throws XMLSecurityException {
-        super(element, BaseURI);
+    public RSAKeyValue(Element element, String baseURI) throws XMLSecurityException {
+        super(element, baseURI);
     }
 
     /**

@@ -82,9 +82,10 @@ public final class DOMXPathFilter2Transform extends ApacheTransform {
     private void unmarshalParams(Element curXPathElem) throws MarshalException
     {
         List<XPathType> list = new ArrayList<XPathType>();
-        while (curXPathElem != null) {
-            String xPath = curXPathElem.getFirstChild().getNodeValue();
-            String filterVal = DOMUtils.getAttributeValue(curXPathElem,
+        Element currentElement = curXPathElem;
+        while (currentElement != null) {
+            String xPath = currentElement.getFirstChild().getNodeValue();
+            String filterVal = DOMUtils.getAttributeValue(currentElement,
                                                           "Filter");
             if (filterVal == null) {
                 throw new MarshalException("filter cannot be null");
@@ -100,7 +101,7 @@ public final class DOMXPathFilter2Transform extends ApacheTransform {
                 throw new MarshalException("Unknown XPathType filter type" +
                                            filterVal);
             }
-            NamedNodeMap attributes = curXPathElem.getAttributes();
+            NamedNodeMap attributes = currentElement.getAttributes();
             if (attributes != null) {
                 int length = attributes.getLength();
                 Map<String, String> namespaceMap =
@@ -117,7 +118,7 @@ public final class DOMXPathFilter2Transform extends ApacheTransform {
                 list.add(new XPathType(xPath, filter));
             }
 
-            curXPathElem = DOMUtils.getNextSiblingElement(curXPathElem);
+            currentElement = DOMUtils.getNextSiblingElement(currentElement);
         }
         this.params = new XPathFilter2ParameterSpec(list);
     }

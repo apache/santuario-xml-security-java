@@ -39,12 +39,12 @@ public class DSAKeyValueResolver extends KeyResolverSpi {
      * Method engineResolvePublicKey
      *
      * @param element
-     * @param BaseURI
+     * @param baseURI
      * @param storage
      * @return null if no {@link PublicKey} could be obtained
      */
     public PublicKey engineLookupAndResolvePublicKey(
-        Element element, String BaseURI, StorageResolver storage
+        Element element, String baseURI, StorageResolver storage
     ) {
         if (element == null) {
             return null;
@@ -66,7 +66,7 @@ public class DSAKeyValueResolver extends KeyResolverSpi {
         }
 
         try {
-            DSAKeyValue dsaKeyValue = new DSAKeyValue(dsaKeyElement, BaseURI);
+            DSAKeyValue dsaKeyValue = new DSAKeyValue(dsaKeyElement, baseURI);
             PublicKey pk = dsaKeyValue.getPublicKey();
 
             return pk;
@@ -83,14 +83,14 @@ public class DSAKeyValueResolver extends KeyResolverSpi {
 
     /** @inheritDoc */
     public X509Certificate engineLookupResolveX509Certificate(
-        Element element, String BaseURI, StorageResolver storage
+        Element element, String baseURI, StorageResolver storage
     ) {
         return null;
     }
 
     /** @inheritDoc */
     public javax.crypto.SecretKey engineLookupAndResolveSecretKey(
-        Element element, String BaseURI, StorageResolver storage
+        Element element, String baseURI, StorageResolver storage
     ) {
         return null;
     }

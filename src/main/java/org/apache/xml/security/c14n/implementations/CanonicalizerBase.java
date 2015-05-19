@@ -630,9 +630,8 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
             handleParent(ele, ns);
         }
         parents.clear();
-        Attr nsprefix;
-        if ((nsprefix = ns.getMappingWithoutRendered(XMLNS)) != null 
-                && "".equals(nsprefix.getValue())) {
+        Attr nsprefix = ns.getMappingWithoutRendered(XMLNS);
+        if (nsprefix != null && "".equals(nsprefix.getValue())) {
             ns.addMappingAndRender(
                     XMLNS, "", getNullNode(nsprefix.getOwnerDocument()));
         }

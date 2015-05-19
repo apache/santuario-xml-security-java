@@ -67,11 +67,11 @@ public class PrivateKeyResolver extends KeyResolverSpi {
      * This method returns whether the KeyResolverSpi is able to perform the requested action.
      *
      * @param element
-     * @param BaseURI
+     * @param baseURI
      * @param storage
      * @return whether the KeyResolverSpi is able to perform the requested action.
      */
-    public boolean engineCanResolve(Element element, String BaseURI, StorageResolver storage) {
+    public boolean engineCanResolve(Element element, String baseURI, StorageResolver storage) {
         if (XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_X509DATA) 
             || XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_KEYNAME)) {
             return true;
@@ -84,13 +84,13 @@ public class PrivateKeyResolver extends KeyResolverSpi {
      * Method engineLookupAndResolvePublicKey
      *
      * @param element
-     * @param BaseURI
+     * @param baseURI
      * @param storage
      * @return null if no {@link PublicKey} could be obtained
      * @throws KeyResolverException
      */
     public PublicKey engineLookupAndResolvePublicKey(
-        Element element, String BaseURI, StorageResolver storage
+        Element element, String baseURI, StorageResolver storage
     ) throws KeyResolverException {
         return null;
     }
@@ -99,12 +99,12 @@ public class PrivateKeyResolver extends KeyResolverSpi {
      * Method engineResolveX509Certificate
      * @inheritDoc
      * @param element
-     * @param BaseURI
+     * @param baseURI
      * @param storage
      * @throws KeyResolverException
      */
     public X509Certificate engineLookupResolveX509Certificate(
-        Element element, String BaseURI, StorageResolver storage
+        Element element, String baseURI, StorageResolver storage
     ) throws KeyResolverException {
         return null;
     }
@@ -113,14 +113,14 @@ public class PrivateKeyResolver extends KeyResolverSpi {
      * Method engineResolveSecretKey
      *
      * @param element
-     * @param BaseURI
+     * @param baseURI
      * @param storage
      * @return resolved SecretKey key or null if no {@link SecretKey} could be obtained
      *
      * @throws KeyResolverException
      */
     public SecretKey engineResolveSecretKey(
-        Element element, String BaseURI, StorageResolver storage
+        Element element, String baseURI, StorageResolver storage
     ) throws KeyResolverException {
         return null;
     }

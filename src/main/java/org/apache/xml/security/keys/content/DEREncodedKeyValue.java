@@ -44,11 +44,11 @@ public class DEREncodedKeyValue extends Signature11ElementProxy implements KeyIn
      * Constructor DEREncodedKeyValue
      *
      * @param element
-     * @param BaseURI
+     * @param baseURI
      * @throws XMLSecurityException
      */
-    public DEREncodedKeyValue(Element element, String BaseURI) throws XMLSecurityException {
-        super(element, BaseURI);
+    public DEREncodedKeyValue(Element element, String baseURI) throws XMLSecurityException {
+        super(element, baseURI);
     }
 
     /**

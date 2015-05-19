@@ -43,11 +43,11 @@ public abstract class Algorithm extends SignatureElementProxy {
      * Constructor Algorithm
      *
      * @param element
-     * @param BaseURI
+     * @param baseURI
      * @throws XMLSecurityException
      */
-    public Algorithm(Element element, String BaseURI) throws XMLSecurityException {
-        super(element, BaseURI);
+    public Algorithm(Element element, String baseURI) throws XMLSecurityException {
+        super(element, baseURI);
     }
 
     /**

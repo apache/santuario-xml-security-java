@@ -79,20 +79,20 @@ public abstract class ElementProxy {
      * Constructor ElementProxy
      *
      * @param element
-     * @param BaseURI
+     * @param baseURI
      * @throws XMLSecurityException
      */
-    public ElementProxy(Element element, String BaseURI) throws XMLSecurityException {
+    public ElementProxy(Element element, String baseURI) throws XMLSecurityException {
         if (element == null) {
             throw new XMLSecurityException("ElementProxy.nullElement");
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("setElement(\"" + element.getTagName() + "\", \"" + BaseURI + "\")");
+            log.debug("setElement(\"" + element.getTagName() + "\", \"" + baseURI + "\")");
         }
 
         setElement(element);
-        this.baseURI = BaseURI;
+        this.baseURI = baseURI;
 
         this.guaranteeThatElementInCorrectSpace();
     }
@@ -169,20 +169,20 @@ public abstract class ElementProxy {
      * Method setElement
      *
      * @param element
-     * @param BaseURI
+     * @param baseURI
      * @throws XMLSecurityException
      */
-    public void setElement(Element element, String BaseURI) throws XMLSecurityException {
+    public void setElement(Element element, String baseURI) throws XMLSecurityException {
         if (element == null) {
             throw new XMLSecurityException("ElementProxy.nullElement");
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("setElement(" + element.getTagName() + ", \"" + BaseURI + "\"");
+            log.debug("setElement(" + element.getTagName() + ", \"" + baseURI + "\"");
         }
 
         setElement(element);
-        this.baseURI = BaseURI;
+        this.baseURI = baseURI;
     }
 
     /**

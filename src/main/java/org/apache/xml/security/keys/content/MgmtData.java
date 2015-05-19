@@ -33,12 +33,12 @@ public class MgmtData extends SignatureElementProxy implements KeyInfoContent {
      * Constructor MgmtData
      *
      * @param element
-     * @param BaseURI
+     * @param baseURI
      * @throws XMLSecurityException
      */
-    public MgmtData(Element element, String BaseURI)
+    public MgmtData(Element element, String baseURI)
         throws XMLSecurityException {
-        super(element, BaseURI);
+        super(element, baseURI);
     }
 
     /**

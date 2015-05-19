@@ -36,12 +36,12 @@ public class XMLX509SubjectName extends SignatureElementProxy implements XMLX509
      * Constructor X509SubjectName
      *
      * @param element
-     * @param BaseURI
+     * @param baseURI
      * @throws XMLSecurityException
      */
-    public XMLX509SubjectName(Element element, String BaseURI)
+    public XMLX509SubjectName(Element element, String baseURI)
         throws XMLSecurityException {
-        super(element, BaseURI);
+        super(element, baseURI);
     }
 
     /**

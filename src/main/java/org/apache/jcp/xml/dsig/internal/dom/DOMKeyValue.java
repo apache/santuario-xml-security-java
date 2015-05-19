@@ -317,9 +317,9 @@ public abstract class DOMKeyValue<K extends PublicKey> extends BaseStructure imp
 
     static final class EC extends DOMKeyValue<ECPublicKey> {
 
-        private final static String ver = System.getProperty("java.version");
-        private final static boolean atLeast18 = !ver.startsWith("1.5") &&
-            !ver.startsWith("1.6") && !ver.startsWith("1.7");
+        private static final String VER = System.getProperty("java.version");
+        private static final boolean AT_LEAST_18 = !VER.startsWith("1.5") &&
+            !VER.startsWith("1.6") && !VER.startsWith("1.7");
         // ECKeyValue CryptoBinaries
         private byte[] ecPublicKey;
         private KeyFactory eckf;
@@ -361,7 +361,7 @@ public abstract class DOMKeyValue<K extends PublicKey> extends BaseStructure imp
         }
 
         void getMethods() throws ClassNotFoundException, NoSuchMethodException {
-            String className = atLeast18
+            String className = AT_LEAST_18
                 ? "sun.security.util.ECUtil"
                 : "sun.security.ec.ECParameters";
             Class<?> c = ClassLoaderUtils.loadClass(className, DOMKeyValue.class);
@@ -453,7 +453,7 @@ public abstract class DOMKeyValue<K extends PublicKey> extends BaseStructure imp
                 String uri = DOMUtils.getAttributeValue(curElem, "URI");
                 // strip off "urn:oid"
                 if (uri.startsWith("urn:oid:")) {
-                    String oid = uri.substring(8);
+                    String oid = uri.substring("urn:oid:".length());
                     try {
                         ecParams = getECParameterSpec(oid);
                     } catch (GeneralSecurityException gse) {

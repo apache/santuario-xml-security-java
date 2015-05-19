@@ -94,12 +94,12 @@ public class XPath2FilterContainer extends ElementProxy implements TransformPara
      * Constructor XPath2FilterContainer
      *
      * @param element
-     * @param BaseURI
+     * @param baseURI
      * @throws XMLSecurityException
      */
-    private XPath2FilterContainer(Element element, String BaseURI) throws XMLSecurityException {
+    private XPath2FilterContainer(Element element, String baseURI) throws XMLSecurityException {
 
-        super(element, BaseURI);
+        super(element, baseURI);
 
         String filterStr = getLocalAttribute(XPath2FilterContainer._ATT_FILTER);
 
@@ -191,15 +191,15 @@ public class XPath2FilterContainer extends ElementProxy implements TransformPara
      * Creates a XPath2FilterContainer from an existing Element; needed for verification.
      *
      * @param element
-     * @param BaseURI
+     * @param baseURI
      * @return the filter
      *
      * @throws XMLSecurityException
      */
     public static XPath2FilterContainer newInstance(
-        Element element, String BaseURI
+        Element element, String baseURI
     ) throws XMLSecurityException {
-        return new XPath2FilterContainer(element, BaseURI);
+        return new XPath2FilterContainer(element, baseURI);
     }
 
     /**

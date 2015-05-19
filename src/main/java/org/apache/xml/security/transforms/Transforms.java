@@ -122,17 +122,17 @@ public class Transforms extends SignatureElementProxy {
      * <code>Transforms</code> Element
      *
      * @param element  is <code>Transforms</code> element
-     * @param BaseURI the URI where the XML instance was stored
+     * @param baseURI the URI where the XML instance was stored
      * @throws DOMException
      * @throws InvalidTransformException
      * @throws TransformationException
      * @throws XMLSecurityException
      * @throws XMLSignatureException
      */
-    public Transforms(Element element, String BaseURI)
+    public Transforms(Element element, String baseURI)
         throws DOMException, XMLSignatureException, InvalidTransformException, 
             TransformationException, XMLSecurityException {
-        super(element, BaseURI);
+        super(element, baseURI);
 
         int numberOfTransformElems = this.getLength();
 

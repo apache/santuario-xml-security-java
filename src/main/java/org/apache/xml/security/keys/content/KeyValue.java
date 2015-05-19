@@ -111,11 +111,11 @@ public class KeyValue extends SignatureElementProxy implements KeyInfoContent {
      * Constructor KeyValue
      *
      * @param element
-     * @param BaseURI
+     * @param baseURI
      * @throws XMLSecurityException
      */
-    public KeyValue(Element element, String BaseURI) throws XMLSecurityException {
-        super(element, BaseURI);
+    public KeyValue(Element element, String baseURI) throws XMLSecurityException {
+        super(element, baseURI);
     }
 
     /**

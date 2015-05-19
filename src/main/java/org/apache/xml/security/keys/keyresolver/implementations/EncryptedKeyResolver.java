@@ -91,21 +91,21 @@ public class EncryptedKeyResolver extends KeyResolverSpi {
 
     /** @inheritDoc */
     public PublicKey engineLookupAndResolvePublicKey(
-        Element element, String BaseURI, StorageResolver storage
+        Element element, String baseURI, StorageResolver storage
     ) {
         return null;
     }
 
     /** @inheritDoc */
     public X509Certificate engineLookupResolveX509Certificate(
-        Element element, String BaseURI, StorageResolver storage
+        Element element, String baseURI, StorageResolver storage
     ) {
         return null;
     }
 
     /** @inheritDoc */
     public SecretKey engineLookupAndResolveSecretKey(
-        Element element, String BaseURI, StorageResolver storage
+        Element element, String baseURI, StorageResolver storage
     ) {
         if (log.isDebugEnabled()) {
             log.debug("EncryptedKeyResolver - Can I resolve " + element.getTagName());

@@ -134,14 +134,14 @@ public final class Transform extends SignatureElementProxy {
 
     /**
      * @param element <code>ds:Transform</code> element
-     * @param BaseURI the URI of the resource where the XML instance was stored
+     * @param baseURI the URI of the resource where the XML instance was stored
      * @throws InvalidTransformException
      * @throws TransformationException
      * @throws XMLSecurityException
      */
-    public Transform(Element element, String BaseURI)
+    public Transform(Element element, String baseURI)
         throws InvalidTransformException, TransformationException, XMLSecurityException {
-        super(element, BaseURI);
+        super(element, baseURI);
 
         // retrieve Algorithm Attribute from ds:Transform
         String algorithmURI = element.getAttributeNS(null, Constants._ATT_ALGORITHM);

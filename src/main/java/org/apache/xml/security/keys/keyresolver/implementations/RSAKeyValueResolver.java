@@ -38,7 +38,7 @@ public class RSAKeyValueResolver extends KeyResolverSpi {
 
     /** @inheritDoc */
     public PublicKey engineLookupAndResolvePublicKey(
-        Element element, String BaseURI, StorageResolver storage
+        Element element, String baseURI, StorageResolver storage
     ) {
         if (log.isDebugEnabled()) {
             log.debug("Can I resolve " + element.getTagName());
@@ -63,7 +63,7 @@ public class RSAKeyValueResolver extends KeyResolverSpi {
         }
 
         try {
-            RSAKeyValue rsaKeyValue = new RSAKeyValue(rsaKeyElement, BaseURI);
+            RSAKeyValue rsaKeyValue = new RSAKeyValue(rsaKeyElement, baseURI);
 
             return rsaKeyValue.getPublicKey();
         } catch (XMLSecurityException ex) {
@@ -77,14 +77,14 @@ public class RSAKeyValueResolver extends KeyResolverSpi {
 
     /** @inheritDoc */
     public X509Certificate engineLookupResolveX509Certificate(
-        Element element, String BaseURI, StorageResolver storage
+        Element element, String baseURI, StorageResolver storage
     ) {
         return null;
     }
 
     /** @inheritDoc */
     public javax.crypto.SecretKey engineLookupAndResolveSecretKey(
-        Element element, String BaseURI, StorageResolver storage
+        Element element, String baseURI, StorageResolver storage
     ) {
         return null;
     }

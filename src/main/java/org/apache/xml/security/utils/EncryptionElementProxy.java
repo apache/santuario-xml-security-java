@@ -44,12 +44,12 @@ public abstract class EncryptionElementProxy extends ElementProxy {
      * Constructor EncryptionElementProxy
      *
      * @param element
-     * @param BaseURI
+     * @param baseURI
      * @throws XMLSecurityException
      */
-    public EncryptionElementProxy(Element element, String BaseURI)
+    public EncryptionElementProxy(Element element, String baseURI)
         throws XMLSecurityException {
-        super(element, BaseURI);
+        super(element, baseURI);
     }
 
     /** @inheritDoc */

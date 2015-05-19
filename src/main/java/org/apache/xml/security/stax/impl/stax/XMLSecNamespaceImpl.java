@@ -50,28 +50,30 @@ public class XMLSecNamespaceImpl extends XMLSecEventBaseImpl implements XMLSecNa
     }
 
     public static XMLSecNamespace getInstance(String prefix, String uri) {
-        if (prefix == null) {
-            prefix = "";
+        String prefixToUse = prefix;
+        if (prefixToUse == null) {
+            prefixToUse = "";
         }
         //sun's stax parser returns null for the default namespace
-        if (uri == null) {
-            uri = "";
+        String uriToUse = uri;
+        if (uriToUse == null) {
+            uriToUse = "";
         }
-        Map<String, XMLSecNamespace> nsMap = xmlSecNamespaceMap.get(prefix);
+        Map<String, XMLSecNamespace> nsMap = xmlSecNamespaceMap.get(prefixToUse);
         if (nsMap != null) {
-            XMLSecNamespace xmlSecNamespace = nsMap.get(uri);
+            XMLSecNamespace xmlSecNamespace = nsMap.get(uriToUse);
             if (xmlSecNamespace != null) {
                 return xmlSecNamespace;
             } else {
-                xmlSecNamespace = new XMLSecNamespaceImpl(prefix, uri);
-                nsMap.put(uri, xmlSecNamespace);
+                xmlSecNamespace = new XMLSecNamespaceImpl(prefixToUse, uriToUse);
+                nsMap.put(uriToUse, xmlSecNamespace);
                 return xmlSecNamespace;
             }
         } else {
             nsMap = new WeakHashMap<String, XMLSecNamespace>();
-            XMLSecNamespace xmlSecNamespace = new XMLSecNamespaceImpl(prefix, uri);
-            nsMap.put(uri, xmlSecNamespace);
-            xmlSecNamespaceMap.put(prefix, nsMap);
+            XMLSecNamespace xmlSecNamespace = new XMLSecNamespaceImpl(prefixToUse, uriToUse);
+            nsMap.put(uriToUse, xmlSecNamespace);
+            xmlSecNamespaceMap.put(prefixToUse, nsMap);
             return xmlSecNamespace;
         }
     }

@@ -40,11 +40,11 @@ public class XMLX509Certificate extends SignatureElementProxy implements XMLX509
      * Constructor X509Certificate
      *
      * @param element
-     * @param BaseURI
+     * @param baseURI
      * @throws XMLSecurityException
      */
-    public XMLX509Certificate(Element element, String BaseURI) throws XMLSecurityException {
-        super(element, BaseURI);
+    public XMLX509Certificate(Element element, String baseURI) throws XMLSecurityException {
+        super(element, baseURI);
     }
 
     /**

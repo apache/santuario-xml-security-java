@@ -93,12 +93,12 @@ public class InclusiveNamespaces extends ElementProxy implements TransformParam 
      * Constructor InclusiveNamespaces
      *
      * @param element
-     * @param BaseURI
+     * @param baseURI
      * @throws XMLSecurityException
      */
-    public InclusiveNamespaces(Element element, String BaseURI)
+    public InclusiveNamespaces(Element element, String baseURI)
         throws XMLSecurityException {
-        super(element, BaseURI);
+        super(element, baseURI);
     }
 
     /**

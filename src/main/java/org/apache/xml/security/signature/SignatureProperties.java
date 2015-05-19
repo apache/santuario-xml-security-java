@@ -50,11 +50,11 @@ public class SignatureProperties extends SignatureElementProxy {
     /**
      * Constructs {@link SignatureProperties} from {@link Element}
      * @param element <code>SignatureProperties</code> element
-     * @param BaseURI the URI of the resource where the XML instance was stored
+     * @param baseURI the URI of the resource where the XML instance was stored
      * @throws XMLSecurityException
      */
-    public SignatureProperties(Element element, String BaseURI) throws XMLSecurityException {
-        super(element, BaseURI);
+    public SignatureProperties(Element element, String baseURI) throws XMLSecurityException {
+        super(element, baseURI);
         
         Attr attr = element.getAttributeNodeNS(null, "Id");
         if (attr != null) {

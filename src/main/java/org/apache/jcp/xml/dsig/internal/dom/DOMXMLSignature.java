@@ -203,30 +203,31 @@ public final class DOMXMLSignature extends DOMStructure
         throws MarshalException
     {
         // rationalize the prefix.
-        if (dsPrefix == null) {
-            dsPrefix = "";
+        String prefix = dsPrefix;
+        if (prefix == null) {
+            prefix = "";
         }
-        xwriter.writeStartElement(dsPrefix, "Signature", XMLSignature.XMLNS);
+        xwriter.writeStartElement(prefix, "Signature", XMLSignature.XMLNS);
         
-        xwriter.writeNamespace(dsPrefix, XMLSignature.XMLNS);
+        xwriter.writeNamespace(prefix, XMLSignature.XMLNS);
  
         // append Id attribute
         xwriter.writeIdAttribute("", "", "Id", id);
         
         // create and append SignedInfo element
-        ((DOMSignedInfo) si).marshal(xwriter, dsPrefix, context);
+        ((DOMSignedInfo) si).marshal(xwriter, prefix, context);
 
         // create and append SignatureValue element
-        ((DOMSignatureValue) sv).marshal(xwriter, dsPrefix, context);
+        ((DOMSignatureValue) sv).marshal(xwriter, prefix, context);
 
         // create and append KeyInfo element if necessary
         if (ki != null) {
-            DOMKeyInfo.marshal(xwriter, ki, dsPrefix, context);
+            DOMKeyInfo.marshal(xwriter, ki, prefix, context);
         }
 
         // create and append Object elements if necessary
         for (XMLObject xmlObj : objects) {
-            DOMXMLObject.marshal(xwriter, xmlObj, dsPrefix, context);
+            DOMXMLObject.marshal(xwriter, xmlObj, prefix, context);
         }
 
         xwriter.writeEndElement(); // "Signature"
@@ -376,17 +377,17 @@ public final class DOMXMLSignature extends DOMStructure
         }
 
         Key signingKey = null;
-        KeySelectorResult ksr = null;
         try {
-            ksr = signContext.getKeySelector().select(ki,
+            KeySelectorResult keySelectorResult = signContext.getKeySelector().select(ki,
                                                       KeySelector.Purpose.SIGN,
                                                       si.getSignatureMethod(),
                                                       signContext);
-            signingKey = ksr.getKey();
+            signingKey = keySelectorResult.getKey();
             if (signingKey == null) {
                 throw new XMLSignatureException("the keySelector did not " +
                                                 "find a signing key");
             }
+            ksr = keySelectorResult;
         } catch (KeySelectorException kse) {
             throw new XMLSignatureException("cannot find signing key", kse);
         }
@@ -401,8 +402,6 @@ public final class DOMXMLSignature extends DOMStructure
         } catch (InvalidKeyException ike) {
             throw new XMLSignatureException(ike);
         }
-
-        this.ksr = ksr;
     }
 
     @Override
@@ -453,9 +452,9 @@ public final class DOMXMLSignature extends DOMStructure
         // check dependencies
         String uri = ref.getURI();
         if (Utils.sameDocumentURI(uri)) {
-            String id = Utils.parseIdFromSameDocumentURI(uri);
-            if (id != null && signatureIdMap.containsKey(id)) {
-                XMLStructure xs = signatureIdMap.get(id);
+            String parsedId = Utils.parseIdFromSameDocumentURI(uri);
+            if (parsedId != null && signatureIdMap.containsKey(parsedId)) {
+                XMLStructure xs = signatureIdMap.get(parsedId);
                 if (xs instanceof DOMReference) {
                     digestReference((DOMReference)xs, signContext);
                 } else if (xs instanceof Manifest) {

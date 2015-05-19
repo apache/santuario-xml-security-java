@@ -78,11 +78,11 @@ public class XMLX509SKI extends SignatureElementProxy implements XMLX509DataCont
      * Constructor XMLX509SKI
      *
      * @param element
-     * @param BaseURI
+     * @param baseURI
      * @throws XMLSecurityException
      */
-    public XMLX509SKI(Element element, String BaseURI) throws XMLSecurityException {
-        super(element, BaseURI);
+    public XMLX509SKI(Element element, String baseURI) throws XMLSecurityException {
+        super(element, baseURI);
     }
 
     /**

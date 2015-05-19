@@ -55,7 +55,7 @@ public class XMLSignatureTest extends org.junit.Assert {
     private Key[] VALIDATE_KEYS;
     private SignatureMethod[] SIG_METHODS;
     private URIDereferencer ud;
-    private final static String DSA_SHA256 =
+    private static final String DSA_SHA256 =
         "http://www.w3.org/2009/xmldsig11#dsa-sha256";
 
     static {

@@ -33,12 +33,12 @@ public class SPKIData extends SignatureElementProxy implements KeyInfoContent {
      * Constructor SPKIData
      *
      * @param element
-     * @param BaseURI
+     * @param baseURI
      * @throws XMLSecurityException
      */
-    public SPKIData(Element element, String BaseURI)
+    public SPKIData(Element element, String baseURI)
         throws XMLSecurityException {
-        super(element, BaseURI);
+        super(element, baseURI);
     }
 
     /** @inheritDoc */

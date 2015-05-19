@@ -64,11 +64,11 @@ public class SignatureProperty extends SignatureElementProxy {
     /**
      * Constructs a {@link SignatureProperty} from an {@link Element}
      * @param element <code>SignatureProperty</code> element
-     * @param BaseURI the URI of the resource where the XML instance was stored
+     * @param baseURI the URI of the resource where the XML instance was stored
      * @throws XMLSecurityException
      */
-    public SignatureProperty(Element element, String BaseURI) throws XMLSecurityException {
-        super(element, BaseURI);
+    public SignatureProperty(Element element, String baseURI) throws XMLSecurityException {
+        super(element, baseURI);
     }
 
     /**

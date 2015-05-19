@@ -49,11 +49,11 @@ public class RetrievalMethod extends SignatureElementProxy implements KeyInfoCon
      * Constructor RetrievalMethod
      *
      * @param element
-     * @param BaseURI
+     * @param baseURI
      * @throws XMLSecurityException
      */
-    public RetrievalMethod(Element element, String BaseURI) throws XMLSecurityException {
-        super(element, BaseURI);
+    public RetrievalMethod(Element element, String baseURI) throws XMLSecurityException {
+        super(element, baseURI);
     }
 
     /**

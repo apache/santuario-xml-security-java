@@ -45,17 +45,17 @@ public class X509CertificateResolver extends KeyResolverSpi {
      * Method engineResolvePublicKey
      * @inheritDoc
      * @param element
-     * @param BaseURI
+     * @param baseURI
      * @param storage
      *
      * @throws KeyResolverException
      */
     public PublicKey engineLookupAndResolvePublicKey(
-        Element element, String BaseURI, StorageResolver storage
+        Element element, String baseURI, StorageResolver storage
     ) throws KeyResolverException {
 
         X509Certificate cert = 
-            this.engineLookupResolveX509Certificate(element, BaseURI, storage);
+            this.engineLookupResolveX509Certificate(element, baseURI, storage);
 
         if (cert != null) {
             return cert.getPublicKey();
@@ -68,13 +68,13 @@ public class X509CertificateResolver extends KeyResolverSpi {
      * Method engineResolveX509Certificate
      * @inheritDoc
      * @param element
-     * @param BaseURI
+     * @param baseURI
      * @param storage
      *
      * @throws KeyResolverException
      */
     public X509Certificate engineLookupResolveX509Certificate(
-        Element element, String BaseURI, StorageResolver storage
+        Element element, String baseURI, StorageResolver storage
     ) throws KeyResolverException {
 
         try {
@@ -84,14 +84,14 @@ public class X509CertificateResolver extends KeyResolverSpi {
                 Element el =
                     XMLUtils.selectDsNode(element.getFirstChild(), Constants._TAG_X509DATA, 0);
                 if (el != null) {
-                    return engineLookupResolveX509Certificate(el, BaseURI, storage);
+                    return engineLookupResolveX509Certificate(el, baseURI, storage);
                 }        	 
                 return null;            
             }
 
             // populate Object array
             for (int i = 0; i < els.length; i++) {
-                XMLX509Certificate xmlCert = new XMLX509Certificate(els[i], BaseURI);
+                XMLX509Certificate xmlCert = new XMLX509Certificate(els[i], baseURI);
                 X509Certificate cert = xmlCert.getX509Certificate();
                 if (cert != null) {
                     return cert;
@@ -110,11 +110,11 @@ public class X509CertificateResolver extends KeyResolverSpi {
      * Method engineResolveSecretKey
      * @inheritDoc
      * @param element
-     * @param BaseURI
+     * @param baseURI
      * @param storage
      */
     public javax.crypto.SecretKey engineLookupAndResolveSecretKey(
-        Element element, String BaseURI, StorageResolver storage
+        Element element, String baseURI, StorageResolver storage
     ) {
         return null;
     }

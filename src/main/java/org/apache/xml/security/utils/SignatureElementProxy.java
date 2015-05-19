@@ -51,11 +51,11 @@ public abstract class SignatureElementProxy extends ElementProxy {
      * Constructor SignatureElementProxy
      *
      * @param element
-     * @param BaseURI
+     * @param baseURI
      * @throws XMLSecurityException
      */
-    public SignatureElementProxy(Element element, String BaseURI) throws XMLSecurityException {
-        super(element, BaseURI);
+    public SignatureElementProxy(Element element, String baseURI) throws XMLSecurityException {
+        super(element, baseURI);
 
     }
 

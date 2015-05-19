@@ -75,7 +75,8 @@ public class XMLSecurityEventReader implements XMLEventReader {
             return this.xmlSecEvent;
         }
         try {
-            return this.xmlSecEvent = xmlSecEventIterator.next();
+            this.xmlSecEvent = xmlSecEventIterator.next();
+            return this.xmlSecEvent;
         } catch (NoSuchElementException e) {
             return null;
         }

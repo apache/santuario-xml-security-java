@@ -40,11 +40,11 @@ public class XMLX509Digest extends Signature11ElementProxy implements XMLX509Dat
      * Constructor XMLX509Digest
      *
      * @param element
-     * @param BaseURI
+     * @param baseURI
      * @throws XMLSecurityException
      */
-    public XMLX509Digest(Element element, String BaseURI) throws XMLSecurityException {
-        super(element, BaseURI);
+    public XMLX509Digest(Element element, String baseURI) throws XMLSecurityException {
+        super(element, baseURI);
     }
     
     /**

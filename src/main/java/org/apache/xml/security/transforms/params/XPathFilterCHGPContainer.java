@@ -144,12 +144,12 @@ public class XPathFilterCHGPContainer extends ElementProxy implements TransformP
      * Constructor XPathFilterCHGPContainer
      *
      * @param element
-     * @param BaseURI
+     * @param baseURI
      * @throws XMLSecurityException
      */
-    private XPathFilterCHGPContainer(Element element, String BaseURI)
+    private XPathFilterCHGPContainer(Element element, String baseURI)
         throws XMLSecurityException {
-        super(element, BaseURI);
+        super(element, baseURI);
     }
 
     /**
@@ -174,15 +174,15 @@ public class XPathFilterCHGPContainer extends ElementProxy implements TransformP
      * Creates a XPathFilterCHGPContainer from an existing Element; needed for verification.
      *
      * @param element
-     * @param BaseURI
+     * @param baseURI
      *
      * @throws XMLSecurityException
      * @return the created object.
      */
     public static XPathFilterCHGPContainer getInstance(
-        Element element, String BaseURI
+        Element element, String baseURI
     ) throws XMLSecurityException {
-        return new XPathFilterCHGPContainer(element, BaseURI);
+        return new XPathFilterCHGPContainer(element, baseURI);
     }
 
     /**
