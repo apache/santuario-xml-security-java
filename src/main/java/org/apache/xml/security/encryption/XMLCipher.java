@@ -3645,8 +3645,12 @@ public class XMLCipher {
                     new javax.xml.transform.stream.StreamSource(
                             new java.io.ByteArrayInputStream(xml.getBytes("UTF-8"))), domResult);
 
-            final boolean result = "http://www.w3.org/2000/xmlns/".equals(
+            boolean result = false;
+            if (domResult.getNode().getFirstChild().getFirstChild().hasAttributes()
+                && domResult.getNode().getFirstChild().getFirstChild().getAttributes().getLength() >= 1) {
+                result = "http://www.w3.org/2000/xmlns/".equals(
                     domResult.getNode().getFirstChild().getFirstChild().getAttributes().item(1).getNamespaceURI());
+            }
             log.debug("Have functional IdentityTransformer: " + result);
             return result;
 
