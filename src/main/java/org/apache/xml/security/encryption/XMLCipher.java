@@ -1774,13 +1774,13 @@ public class XMLCipher {
         }
 
         EncryptedData encryptedData = factory.newEncryptedData(element);
+        String encMethodAlgorithm = encryptedData.getEncryptionMethod().getAlgorithm();
 
         if (key == null) {
             KeyInfo ki = encryptedData.getKeyInfo();
             if (ki != null) {
                 try {
                     // Add an EncryptedKey resolver
-                    String encMethodAlgorithm = encryptedData.getEncryptionMethod().getAlgorithm();
                     EncryptedKeyResolver resolver = new EncryptedKeyResolver(encMethodAlgorithm, kek);
                     if (internalKeyResolvers != null) {
                         int size = internalKeyResolvers.size();
@@ -1813,7 +1813,7 @@ public class XMLCipher {
 
         // Now create the working cipher
         String jceAlgorithm = 
-            JCEMapper.translateURItoJCEID(encryptedData.getEncryptionMethod().getAlgorithm());
+            JCEMapper.translateURItoJCEID(encMethodAlgorithm);
         if (log.isDebugEnabled()) {
             log.debug("JCE Algorithm = " + jceAlgorithm);
         }
@@ -1839,8 +1839,8 @@ public class XMLCipher {
         // This should probably be put into the JCE mapper.
 
         int ivLen = c.getBlockSize();
-        String alg = encryptedData.getEncryptionMethod().getAlgorithm();
-        if (AES_128_GCM.equals(alg) || AES_192_GCM.equals(alg) || AES_256_GCM.equals(alg)) {
+        if (AES_128_GCM.equals(encMethodAlgorithm) || AES_192_GCM.equals(encMethodAlgorithm) 
+            || AES_256_GCM.equals(encMethodAlgorithm)) {
             ivLen = 12;
         }
         byte[] ivBytes = new byte[ivLen];
@@ -1851,7 +1851,12 @@ public class XMLCipher {
         // necessary bytes into a dedicated array.
 
         System.arraycopy(encryptedBytes, 0, ivBytes, 0, ivLen);
-        AlgorithmParameterSpec paramSpec = constructBlockCipherParameters(algorithm, ivBytes);
+        
+        String blockCipherAlg = algorithm;
+        if (blockCipherAlg == null) {
+            blockCipherAlg = encMethodAlgorithm;
+        }
+        AlgorithmParameterSpec paramSpec = constructBlockCipherParameters(blockCipherAlg, ivBytes);
 
         try {
             c.init(cipherMode, key, paramSpec);
