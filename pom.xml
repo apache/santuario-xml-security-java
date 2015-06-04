@@ -324,21 +324,6 @@
 
     <profiles>
         <profile>
-            <id>jdk16</id>
-            <activation>
-                <jdk>[1.6,)</jdk>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <dependencies>
-                <dependency>
-                    <groupId>org.bouncycastle</groupId>
-                    <artifactId>bcprov-jdk15on</artifactId>
-                    <version>${bcprov.version}</version>
-                    <scope>test</scope>
-                </dependency>
-            </dependencies>
-        </profile>
-        <profile>
             <id>release</id>
             <activation>
                 <property>
@@ -406,7 +391,7 @@
 
     <properties>
         <xml.apis.version>1.4.01</xml.apis.version>
-        <oldxmlsec.version>1.5.7</oldxmlsec.version>
+        <oldxmlsec.version>1.5.8</oldxmlsec.version>
         <slf4j.version>1.7.12</slf4j.version>
         <xalan.version>2.7.2</xalan.version>
         <xerces.version>2.11.0</xerces.version>
@@ -495,6 +480,12 @@
             <version>${xml.apis.version}</version>
             <scope>provided</scope>
             <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15on</artifactId>
+            <version>${bcprov.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
