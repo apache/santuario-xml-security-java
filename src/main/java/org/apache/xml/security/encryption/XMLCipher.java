@@ -1764,13 +1764,13 @@ public class XMLCipher {
         }
 
         EncryptedData encryptedData = factory.newEncryptedData(element);
+        String encMethodAlgorithm = encryptedData.getEncryptionMethod().getAlgorithm();
 
         if (key == null) {
             KeyInfo ki = encryptedData.getKeyInfo();
             if (ki != null) {
                 try {
                     // Add an EncryptedKey resolver
-                    String encMethodAlgorithm = encryptedData.getEncryptionMethod().getAlgorithm();
                     EncryptedKeyResolver resolver = new EncryptedKeyResolver(encMethodAlgorithm, kek);
                     if (internalKeyResolvers != null) {
                         int size = internalKeyResolvers.size();
@@ -1803,7 +1803,7 @@ public class XMLCipher {
 
         // Now create the working cipher
         String jceAlgorithm = 
-            JCEMapper.translateURItoJCEID(encryptedData.getEncryptionMethod().getAlgorithm());
+            JCEMapper.translateURItoJCEID(encMethodAlgorithm);
         if (log.isDebugEnabled()) {
             log.debug("JCE Algorithm = " + jceAlgorithm);
         }
@@ -1823,7 +1823,7 @@ public class XMLCipher {
             throw new XMLEncryptionException(nspae);
         }
 
-        int ivLen = JCEMapper.getIVLengthFromURI(encryptedData.getEncryptionMethod().getAlgorithm()) / 8;
+        int ivLen = JCEMapper.getIVLengthFromURI(encMethodAlgorithm) / 8;
         byte[] ivBytes = new byte[ivLen];
 
         // You may be able to pass the entire piece in to IvParameterSpec
@@ -1832,7 +1832,12 @@ public class XMLCipher {
         // necessary bytes into a dedicated array.
 
         System.arraycopy(encryptedBytes, 0, ivBytes, 0, ivLen);
-        AlgorithmParameterSpec paramSpec = constructBlockCipherParameters(algorithm, ivBytes);
+        
+        String blockCipherAlg = algorithm;
+        if (blockCipherAlg == null) {
+            blockCipherAlg = encMethodAlgorithm;
+        }
+        AlgorithmParameterSpec paramSpec = constructBlockCipherParameters(blockCipherAlg, ivBytes);
 
         try {
             c.init(cipherMode, key, paramSpec);

@@ -21,12 +21,15 @@ package org.apache.xml.security.test.dom.encryption;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.lang.reflect.Constructor;
 import java.security.Key;
 import java.security.KeyPairGenerator;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
+import java.security.Provider;
 import java.security.PublicKey;
+import java.security.Security;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -78,8 +81,9 @@ public class XMLCipherTest extends org.junit.Assert {
     private boolean haveISOPadding;
     private boolean haveKeyWraps;
     private String tstBase64EncodedString;
+    private boolean bcInstalled;
 
-    public XMLCipherTest() {
+    public XMLCipherTest() throws Exception {
         basedir = System.getProperty("basedir",".");
         documentName = System.getProperty("org.apache.xml.enc.test.doc",
                                           basedir + "/pom.xml");
@@ -110,6 +114,26 @@ public class XMLCipherTest extends org.junit.Assert {
 
         haveKeyWraps = 
             (JCEMapper.translateURItoJCEID(EncryptionConstants.ALGO_ID_KEYWRAP_AES128) != null);
+        
+        //
+        // If the BouncyCastle provider is not installed, then try to load it 
+        // via reflection. 
+        //
+        if (Security.getProvider("BC") == null) {
+            Constructor<?> cons = null;
+            try {
+                Class<?> c = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
+                cons = c.getConstructor(new Class[] {});
+            } catch (Exception e) {
+                //ignore
+            }
+            if (cons != null) {
+                Provider provider = (java.security.Provider)cons.newInstance();
+                Security.insertProviderAt(provider, 2);
+                bcInstalled = true;
+            }
+        }
+        
     }
 
     /**
@@ -863,6 +887,30 @@ public class XMLCipherTest extends org.junit.Assert {
                 keyCipher.loadEncryptedKey(document, (Element) ekList.item(i));
             assertNotNull(ek.getRecipient());
         }
+    }
+
+    @org.junit.Test
+    public void testEecryptToByteArray() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
+        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        keygen.init(128);
+        Key key = keygen.generateKey();
+
+        Document document = document();
+
+        XMLCipher cipher = XMLCipher.getInstance(XMLCipher.AES_128_GCM);
+        cipher.init(XMLCipher.ENCRYPT_MODE, key);
+        cipher.getEncryptedData();
+
+        Document encrypted = cipher.doFinal(document, document);
+
+        XMLCipher xmlCipher = XMLCipher.getInstance();
+        xmlCipher.init(XMLCipher.DECRYPT_MODE, key);
+        Element encryptedData = (Element) encrypted.getElementsByTagNameNS(EncryptionConstants.EncryptionSpecNS, EncryptionConstants._TAG_ENCRYPTEDDATA).item(0);
+
+        xmlCipher.decryptToByteArray(encryptedData);
     }
 
     private String toString (Node n) throws Exception {
