@@ -1142,6 +1142,9 @@ public class XMLCipher {
         if (serializer instanceof AbstractSerializer) {
             ((AbstractSerializer)serializer).setSecureValidation(secureValidation);
         }
+        if (element != null && element.getParentNode() == null) {
+            throw new XMLEncryptionException("empty", "The element can't be serialized as it has no parent");
+        }
 
         byte[] serializedOctets = null;
         if (serializedData == null) {
@@ -1696,6 +1699,10 @@ public class XMLCipher {
         }
         if (serializer instanceof AbstractSerializer) {
             ((AbstractSerializer)serializer).setSecureValidation(secureValidation);
+        }
+        
+        if (element != null && element.getParentNode() == null) {
+            throw new XMLEncryptionException("empty", "The element can't be serialized as it has no parent");
         }
 
         if (cipherMode != DECRYPT_MODE) {
