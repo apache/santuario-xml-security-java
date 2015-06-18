@@ -31,19 +31,30 @@ import org.xml.sax.SAXParseException;
 public class IgnoreAllErrorHandler implements ErrorHandler {
 
     /** {@link org.apache.commons.logging} logging facility */
-    private static org.apache.commons.logging.Log log =
+    private static final org.apache.commons.logging.Log log =
         org.apache.commons.logging.LogFactory.getLog(IgnoreAllErrorHandler.class);
 
     /** Field throwExceptions */
     private static final boolean warnOnExceptions =
-        System.getProperty("org.apache.xml.security.test.warn.on.exceptions", "false").equals("true");
+        getProperty("org.apache.xml.security.test.warn.on.exceptions");
 
     /** Field throwExceptions           */
     private static final boolean throwExceptions = 
-        System.getProperty("org.apache.xml.security.test.throw.exceptions", "false").equals("true");
+        getProperty("org.apache.xml.security.test.throw.exceptions");
 
+    private static boolean getProperty(final String name) {
+        return java.security.AccessController.doPrivileged(
+                new java.security.PrivilegedAction<Boolean>() {
+
+                    @Override
+                    public Boolean run() {
+                        return Boolean.getBoolean(name);
+                    }
+                });
+    }
 
     /** @inheritDoc */
+    @Override
     public void warning(SAXParseException ex) throws SAXException {
         if (IgnoreAllErrorHandler.warnOnExceptions) {
             log.warn("", ex);
@@ -55,6 +66,7 @@ public class IgnoreAllErrorHandler implements ErrorHandler {
 
 
     /** @inheritDoc */
+    @Override
     public void error(SAXParseException ex) throws SAXException {
         if (IgnoreAllErrorHandler.warnOnExceptions) {
             log.error("", ex);
@@ -66,6 +78,7 @@ public class IgnoreAllErrorHandler implements ErrorHandler {
 
 
     /** @inheritDoc */
+    @Override
     public void fatalError(SAXParseException ex) throws SAXException {
         if (IgnoreAllErrorHandler.warnOnExceptions) {
             log.warn("", ex);
