@@ -163,6 +163,13 @@ public class XalanXPathAPI implements XPathAPI {
 
     private static synchronized void fixupFunctionTable() {
         installed = false;
+        if (new FunctionTable().functionAvailable("here")) {
+            if (log.isDebugEnabled()) {
+                log.debug("Here function already registered");
+            }
+            installed = true;
+            return;
+        }
         if (log.isDebugEnabled()) {
             log.debug("Registering Here function");
         }
