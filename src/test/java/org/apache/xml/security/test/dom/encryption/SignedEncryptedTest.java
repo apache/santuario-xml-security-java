@@ -28,7 +28,6 @@ import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -70,25 +69,6 @@ public class SignedEncryptedTest extends Assert {
     @Before
     public void setUp() throws Exception {
         org.apache.xml.security.Init.init();
-    }
-
-    /**
-     * This test uses the oracle jdk "built-in" identity-transformer to
-     * insert the decrypted content into the original document.
-     *
-     * @throws Exception
-     */
-    @Ignore
-    @Test
-    public void decryptUsingSunTransformer() throws Exception {
-        try {
-            Class<?> tf = getClass().getClassLoader().loadClass(
-                    "com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl");
-            secureAndVerify((TransformerFactory) tf.newInstance(), false);
-        } catch (ClassNotFoundException e) {
-            System.out.println(
-                    "com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl not found, skipping test");
-        }
     }
 
     /**

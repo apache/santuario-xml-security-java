@@ -22,7 +22,6 @@ import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 import org.apache.xml.security.stax.ext.stax.XMLSecEventFactory;
 import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
 
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -43,14 +42,7 @@ public class XMLSecEventAllocator implements XMLEventAllocator {
     private XMLSecStartElement parentXmlSecStartElement;
 
     public XMLSecEventAllocator() throws Exception {
-        XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
-        if (xmlInputFactory.getClass().getName().equals("com.sun.xml.internal.stream.XMLInputFactoryImpl")) {
-            xmlEventAllocator = (XMLEventAllocator) Class.forName("com.sun.xml.internal.stream.events.XMLEventAllocatorImpl").newInstance();
-        } else if (xmlInputFactory.getClass().getName().equals("com.ctc.wstx.stax.WstxInputFactory")) {
-            xmlEventAllocator = (XMLEventAllocator) Class.forName("com.ctc.wstx.evt.DefaultEventAllocator").getMethod("getDefaultInstance").invoke(null);
-        } else {
-            throw new Exception("Unknown XMLEventAllocator");
-        }
+        xmlEventAllocator = com.ctc.wstx.evt.DefaultEventAllocator.getDefaultInstance();
     }
 
     @Override
