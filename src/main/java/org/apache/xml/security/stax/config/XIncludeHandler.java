@@ -28,6 +28,7 @@ import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
+import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
@@ -42,6 +43,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import javax.xml.xpath.XPathFactoryConfigurationException;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -251,6 +253,11 @@ public class XIncludeHandler extends DefaultHandler {
         xPointerSchemeIndex += xPointerSchemeString.length();
         int xPointerSchemeEndIndex = this.findBalancedEndIndex(xpointer, xPointerSchemeIndex, '(', ')');
         XPathFactory xPathFactory = XPathFactory.newInstance();
+        try {
+            xPathFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
+        } catch (XPathFactoryConfigurationException ex) {
+            throw new SAXException(ex);
+        }
         XPath xPath = xPathFactory.newXPath();
 
         int xmlnsSchemeIndex = xpointer.indexOf(xmlnsSchemeString);
