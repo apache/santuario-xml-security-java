@@ -42,7 +42,9 @@ public class LocalHttpCacheURIDereferencer implements URIDereferencer {
     private final Map<String, File> uriMap;
 
     public LocalHttpCacheURIDereferencer() {
-        ud = XMLSignatureFactory.getInstance().getURIDereferencer();
+        XMLSignatureFactory xmlSignatureFactory = 
+            XMLSignatureFactory.getInstance("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
+        ud = xmlSignatureFactory.getURIDereferencer();
         String base = BASEDIR == null ? "./": BASEDIR;
         File dir = new File(base + FS + "src/test/resources" + FS + "javax" +
             FS + "xml" + FS + "crypto" + FS + "dsig");
