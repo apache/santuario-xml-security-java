@@ -139,6 +139,11 @@ public class XMLEncryption11Test extends org.junit.Assert {
         }
     }
 
+    @org.junit.AfterClass
+    public static void cleanup() throws Exception {
+        Security.removeProvider("org.bouncycastle.jce.provider.BouncyCastleProvider");
+    }
+
     /**
      * rsa-oaep-mgf1p, Digest:SHA256, MGF:SHA1, PSource: None
      */

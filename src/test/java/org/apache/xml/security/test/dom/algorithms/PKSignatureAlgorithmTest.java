@@ -82,6 +82,11 @@ public class PKSignatureAlgorithmTest extends org.junit.Assert {
         
         ecKeyPair = KeyPairGenerator.getInstance("EC").genKeyPair();
     }
+
+    @org.junit.AfterClass
+    public static void cleanup() throws Exception {
+        Security.removeProvider("org.bouncycastle.jce.provider.BouncyCastleProvider");
+    }
     
     @org.junit.Test
     public void testRSA_MD5() throws Exception {

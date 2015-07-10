@@ -298,7 +298,6 @@
                     <configuration>
                         <reportFormat>brief</reportFormat>
                         <useFile>false</useFile>
-                        <forkMode>pertest</forkMode>
                         <childDelegation>false</childDelegation>
                         <includes>
                             <include>**/*Test.java</include>

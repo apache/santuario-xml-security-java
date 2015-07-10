@@ -82,6 +82,11 @@ public class KeyWrapEncryptionAlgorithmTest extends org.junit.Assert {
         
         rsaKeyPair = KeyPairGenerator.getInstance("RSA").genKeyPair();
     }
+
+    @org.junit.AfterClass
+    public static void cleanup() throws Exception {
+        Security.removeProvider("org.bouncycastle.jce.provider.BouncyCastleProvider");
+    }
     
     @org.junit.Test
     public void testAES128KW() throws Exception {

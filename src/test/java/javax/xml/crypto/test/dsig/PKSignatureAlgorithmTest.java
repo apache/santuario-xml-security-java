@@ -147,6 +147,11 @@ public class PKSignatureAlgorithmTest extends org.junit.Assert {
                                 (kifac.newKeyValue(ecKeyPair.getPublic())));
     }
 
+    @org.junit.AfterClass
+    public static void cleanup() throws Exception {
+        Security.removeProvider("org.bouncycastle.jce.provider.BouncyCastleProvider");
+    }
+
     @org.junit.Test
     public void testRSA_SHA1() throws Exception {
         test_create_signature_enveloping(rsaSha1, sha1, rsaki,

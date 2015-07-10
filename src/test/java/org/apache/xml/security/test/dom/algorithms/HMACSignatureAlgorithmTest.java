@@ -74,6 +74,11 @@ public class HMACSignatureAlgorithmTest extends org.junit.Assert {
             }
         }
     }
+
+    @org.junit.AfterClass
+    public static void cleanup() throws Exception {
+        Security.removeProvider("org.bouncycastle.jce.provider.BouncyCastleProvider");
+    }
     
     @org.junit.Test
     public void testHMACSHA1() throws Exception {

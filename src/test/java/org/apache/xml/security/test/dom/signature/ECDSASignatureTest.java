@@ -90,6 +90,11 @@ public class ECDSASignatureTest extends org.junit.Assert {
         db = XMLUtils.createDocumentBuilder(false);
         org.apache.xml.security.Init.init();
     }
+
+    @org.junit.AfterClass
+    public static void cleanup() throws Exception {
+        Security.removeProvider("org.bouncycastle.jce.provider.BouncyCastleProvider");
+    }
     
     @org.junit.Test
     public void testOne() throws Exception {
