@@ -39,7 +39,6 @@ import javax.xml.crypto.test.KeySelectors;
  */
 public class Baltimore23Test extends org.junit.Assert {
 
-    private SignatureValidator validator;
     private File dir;
     private final URIDereferencer ud;
 
@@ -55,7 +54,6 @@ public class Baltimore23Test extends org.junit.Assert {
         dir = new File(base + fs + "src/test/resources" + fs 
             + "ie" + fs + "baltimore" + fs + "merlin-examples",
             "merlin-xmldsig-twenty-three");
-        validator = new SignatureValidator(dir);
         ud = new LocalHttpCacheURIDereferencer();
     }
 
@@ -63,6 +61,7 @@ public class Baltimore23Test extends org.junit.Assert {
     public void test_signature_enveloped_dsa() throws Exception {
         String file = "signature-enveloped-dsa.xml";
 
+        SignatureValidator validator = new SignatureValidator(dir);
         boolean coreValidity = validator.validate
             (file, new KeySelectors.KeyValueKeySelector());
         assertTrue("Signature failed core validation", coreValidity);
@@ -72,6 +71,7 @@ public class Baltimore23Test extends org.junit.Assert {
     public void test_signature_enveloping_b64_dsa() throws Exception {
         String file = "signature-enveloping-b64-dsa.xml";
      
+        SignatureValidator validator = new SignatureValidator(dir);
         boolean coreValidity = validator.validate
             (file, new KeySelectors.KeyValueKeySelector());
         assertTrue("Signature failed core validation", coreValidity);
@@ -81,6 +81,7 @@ public class Baltimore23Test extends org.junit.Assert {
     public void test_signature_enveloping_dsa() throws Exception {
         String file = "signature-enveloping-dsa.xml";
        
+        SignatureValidator validator = new SignatureValidator(dir);
         boolean coreValidity = validator.validate
             (file, new KeySelectors.KeyValueKeySelector());
         assertTrue("Signature failed core validation", coreValidity);
@@ -90,6 +91,7 @@ public class Baltimore23Test extends org.junit.Assert {
     public void test_signature_external_b64_dsa() throws Exception {
         String file = "signature-external-b64-dsa.xml";
        
+        SignatureValidator validator = new SignatureValidator(dir);
         boolean coreValidity = validator.validate
             (file, new KeySelectors.KeyValueKeySelector(), ud);
         assertTrue("Signature failed core validation", coreValidity);
@@ -99,6 +101,7 @@ public class Baltimore23Test extends org.junit.Assert {
     public void test_signature_external_dsa() throws Exception {
         String file = "signature-external-dsa.xml";
         
+        SignatureValidator validator = new SignatureValidator(dir);
         boolean coreValidity = validator.validate
             (file, new KeySelectors.KeyValueKeySelector(), ud);
         assertTrue("Signature failed core validation", coreValidity);
@@ -108,6 +111,7 @@ public class Baltimore23Test extends org.junit.Assert {
     public void test_signature_enveloping_rsa() throws Exception {
         String file = "signature-enveloping-rsa.xml";
        
+        SignatureValidator validator = new SignatureValidator(dir);
         boolean coreValidity = validator.validate
             (file, new KeySelectors.KeyValueKeySelector());
         assertTrue("Signature failed core validation", coreValidity);
@@ -119,6 +123,7 @@ public class Baltimore23Test extends org.junit.Assert {
         
         KeySelector ks = new KeySelectors.SecretKeySelector
             ("secret".getBytes("ASCII") );
+        SignatureValidator validator = new SignatureValidator(dir);
         boolean coreValidity = validator.validate(file, ks);
         assertTrue("Signature failed core validation", coreValidity);
     }
@@ -130,6 +135,7 @@ public class Baltimore23Test extends org.junit.Assert {
         KeySelector ks = new KeySelectors.SecretKeySelector
             ("secret".getBytes("ASCII") );
         try {
+            SignatureValidator validator = new SignatureValidator(dir);
             validator.validate(file, ks);
             fail("Expected HMACOutputLength exception");
         } catch (XMLSignatureException xse) {
@@ -142,6 +148,7 @@ public class Baltimore23Test extends org.junit.Assert {
     public void test_signature_keyname() throws Exception {
         String file = "signature-keyname.xml";
         
+        SignatureValidator validator = new SignatureValidator(dir);
         boolean coreValidity = validator.validate
             (file, new KeySelectors.CollectionKeySelector(dir), ud);
         assertTrue("Signature failed core validation", coreValidity);
@@ -151,6 +158,7 @@ public class Baltimore23Test extends org.junit.Assert {
     public void test_signature_retrievalmethod_rawx509crt() throws Exception {
         String file = "signature-retrievalmethod-rawx509crt.xml";
         
+        SignatureValidator validator = new SignatureValidator(dir);
         boolean coreValidity = validator.validate
             (file, new KeySelectors.CollectionKeySelector(dir), ud);
         assertTrue("Signature failed core validation", coreValidity);
@@ -160,6 +168,7 @@ public class Baltimore23Test extends org.junit.Assert {
     public void test_signature_x509_crt_crl() throws Exception {
         String file = "signature-x509-crt-crl.xml";
         
+        SignatureValidator validator = new SignatureValidator(dir);
         boolean coreValidity = validator.validate
             (file, new KeySelectors.RawX509KeySelector(), ud);
         assertTrue("Signature failed core validation", coreValidity);
@@ -169,6 +178,7 @@ public class Baltimore23Test extends org.junit.Assert {
     public void test_signature_x509_crt() throws Exception {
         String file = "signature-x509-crt.xml";
        
+        SignatureValidator validator = new SignatureValidator(dir);
         boolean coreValidity = validator.validate
             (file, new KeySelectors.RawX509KeySelector(), ud);
         assertTrue("Signature failed core validation", coreValidity);
@@ -178,6 +188,7 @@ public class Baltimore23Test extends org.junit.Assert {
     public void test_signature_x509_is() throws Exception {
         String file = "signature-x509-is.xml";
         
+        SignatureValidator validator = new SignatureValidator(dir);
         boolean coreValidity = validator.validate
             (file, new KeySelectors.CollectionKeySelector(dir), ud);
         assertTrue("Signature failed core validation", coreValidity);
@@ -187,6 +198,7 @@ public class Baltimore23Test extends org.junit.Assert {
     public void test_signature_x509_ski() throws Exception {
         String file = "signature-x509-ski.xml";
         
+        SignatureValidator validator = new SignatureValidator(dir);
         boolean coreValidity = validator.validate
             (file, new KeySelectors.CollectionKeySelector(dir), ud);
         assertTrue("Signature failed core validation", coreValidity);
@@ -196,6 +208,7 @@ public class Baltimore23Test extends org.junit.Assert {
     public void test_signature_x509_sn() throws Exception {
         String file = "signature-x509-sn.xml";
         
+        SignatureValidator validator = new SignatureValidator(dir);
         boolean coreValidity = validator.validate
             (file, new KeySelectors.CollectionKeySelector(dir), ud);
         assertTrue("Signature failed core validation", coreValidity);
@@ -213,6 +226,7 @@ public class Baltimore23Test extends org.junit.Assert {
         KeyStore ks = KeyStore.getInstance("JKS");
         ks.load(new FileInputStream(keystore), "changeit".toCharArray());
 
+        SignatureValidator validator = new SignatureValidator(dir);
         boolean cv = validator.validate(file, new X509KeySelector(ks, false), ud);
         assertTrue("Signature failed core validation", cv);
     }

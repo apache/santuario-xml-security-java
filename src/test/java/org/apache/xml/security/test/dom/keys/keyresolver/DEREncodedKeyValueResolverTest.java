@@ -78,6 +78,11 @@ public class DEREncodedKeyValueResolverTest extends Assert {
         }
     }
 
+    @org.junit.AfterClass
+    public static void cleanup() throws Exception {
+        Security.removeProvider("org.bouncycastle.jce.provider.BouncyCastleProvider");
+    }
+
     @org.junit.Test
     public void testRSAPublicKey() throws Exception {
         Document doc = loadXML("DEREncodedKeyValue-RSA.xml");

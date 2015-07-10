@@ -80,6 +80,11 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         ecKeyPair = KeyPairGenerator.getInstance("EC").genKeyPair();
     }
 
+    @org.junit.AfterClass
+    public static void cleanup() throws Exception {
+        Security.removeProvider("org.bouncycastle.jce.provider.BouncyCastleProvider");
+    }
+
     @Test
     public void testRSA_SHA1() throws Exception {
         // Set up the Configuration

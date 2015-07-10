@@ -77,6 +77,11 @@ public class DEREncodedKeyValueTest extends Assert {
         dsaKeyControl = loadPublicKey("dsa.key", "DSA");
     }
 
+    @org.junit.AfterClass
+    public static void cleanup() throws Exception {
+        Security.removeProvider("org.bouncycastle.jce.provider.BouncyCastleProvider");
+    }
+
     @org.junit.Test
     public void testSchema() throws Exception {
         DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(documentBuilder.newDocument(), rsaKeyControl);

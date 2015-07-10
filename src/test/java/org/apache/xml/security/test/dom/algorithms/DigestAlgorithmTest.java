@@ -60,6 +60,11 @@ public class DigestAlgorithmTest extends org.junit.Assert {
         }
     }
 
+    @org.junit.AfterClass
+    public static void cleanup() throws Exception {
+        Security.removeProvider("org.bouncycastle.jce.provider.BouncyCastleProvider");
+    }
+
     @org.junit.Test
     public void testSHA1() throws Exception {
         Document doc = XMLUtils.createDocumentBuilder(false).newDocument();

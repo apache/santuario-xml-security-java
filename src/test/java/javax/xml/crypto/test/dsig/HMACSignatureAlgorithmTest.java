@@ -104,6 +104,11 @@ public class HMACSignatureAlgorithmTest extends org.junit.Assert {
         sks = new KeySelectors.SecretKeySelector("testkey".getBytes("ASCII"));
     }
 
+    @org.junit.AfterClass
+    public static void cleanup() throws Exception {
+        Security.removeProvider("org.bouncycastle.jce.provider.BouncyCastleProvider");
+    }
+
     @org.junit.Test
     public void testHMACSHA1() throws Exception {
         test_create_signature_enveloping(hmacSha1, sha1, null,

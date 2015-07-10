@@ -118,6 +118,11 @@ public class SignatureDigestMethodTest extends org.junit.Assert {
         kvks = new KeySelectors.KeyValueKeySelector();
     }
 
+    @org.junit.AfterClass
+    public static void cleanup() throws Exception {
+        Security.removeProvider("org.bouncycastle.jce.provider.BouncyCastleProvider");
+    }
+
     @org.junit.Test
     public void testSHA1() throws Exception {
         test_create_signature_enveloping(rsaSha1, sha1, rsaki,

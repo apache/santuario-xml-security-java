@@ -76,6 +76,11 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         }
     }
 
+    @org.junit.AfterClass
+    public static void cleanup() throws Exception {
+        Security.removeProvider("org.bouncycastle.jce.provider.BouncyCastleProvider");
+    }
+
     @Test
     public void testSHA1() throws Exception {
         // Set up the Configuration

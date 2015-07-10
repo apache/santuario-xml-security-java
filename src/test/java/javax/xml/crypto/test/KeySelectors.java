@@ -25,6 +25,7 @@ import java.io.*;
 import java.security.*;
 import java.security.cert.*;
 import java.util.*;
+
 import javax.xml.crypto.*;
 import javax.xml.crypto.dsig.keyinfo.*;
 import javax.crypto.SecretKey;
@@ -170,31 +171,38 @@ public class KeySelectors {
      * matching public key.
      */
     public static class CollectionKeySelector extends KeySelector {
-        private CertificateFactory certFac;
-        private File certDir;
-        private List<X509Certificate> certs;
+        private final CertificateFactory certFac;
+        private final File certDir;
+        private final List<X509Certificate> certs = new ArrayList<X509Certificate>();
         private static final int MATCH_SUBJECT = 0;
         private static final int MATCH_ISSUER = 1;
         private static final int MATCH_SERIAL = 2;
         private static final int MATCH_SUBJECT_KEY_ID = 3;
         private static final int MATCH_CERTIFICATE = 4;
         
-        public CollectionKeySelector(File dir) {
+        public CollectionKeySelector(File dir) throws CertificateException {
             certDir = dir;
-            try {
-                certFac = CertificateFactory.getInstance("X509");
-            } catch (CertificateException ex) {
-                // not going to happen
-            }
-            certs = new Vector<X509Certificate>();
+            certFac = CertificateFactory.getInstance("X509");
             File[] files = new File(certDir, "certs").listFiles();
             if (files != null) {
                 for (File file : files) {
+                    FileInputStream fis = null;
                     try {
-                        certs.add((X509Certificate)certFac.generateCertificate
-                                  (new FileInputStream(file)));
+                        fis = new FileInputStream(file);
+                        X509Certificate cert = (X509Certificate)certFac.generateCertificate(fis);
+                        if (cert != null) {
+                            certs.add(cert);
+                        }
                     } catch (Exception ex) {
                         // ignore non-cert files
+                    } finally {
+                        if (fis != null) {
+                            try {
+                                fis.close();
+                            } catch (IOException e) {
+                                // ignore
+                            }
+                        }
                     }
                 }
             }
@@ -203,7 +211,7 @@ public class KeySelectors {
         public List<X509Certificate> match(
             int matchType, Object value, List<X509Certificate> pool
         ) {
-            List<X509Certificate> matchResult = new Vector<X509Certificate>();
+            List<X509Certificate> matchResult = new ArrayList<X509Certificate>();
             
             for (X509Certificate c : pool) {
                 

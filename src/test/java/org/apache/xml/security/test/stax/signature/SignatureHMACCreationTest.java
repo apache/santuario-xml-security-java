@@ -71,6 +71,11 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         }
     }
 
+    @org.junit.AfterClass
+    public static void cleanup() throws Exception {
+        Security.removeProvider("org.bouncycastle.jce.provider.BouncyCastleProvider");
+    }
+
     @Test
     public void testHMACSHA1() throws Exception {
         // Set up the Configuration

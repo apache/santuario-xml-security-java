@@ -23,9 +23,10 @@ package javax.xml.crypto.test.dsig;
 
 import java.io.File;
 import java.security.Security;
+import java.security.cert.CertificateException;
+
 import javax.xml.crypto.KeySelector;
 import javax.xml.crypto.URIDereferencer;
-
 import javax.xml.crypto.test.KeySelectors;
 
 /**
@@ -36,7 +37,6 @@ import javax.xml.crypto.test.KeySelectors;
  */
 public class Baltimore18Test extends org.junit.Assert {
 
-    private SignatureValidator validator;
     private File dir;
     private KeySelector cks;
     private URIDereferencer ud;
@@ -46,14 +46,13 @@ public class Baltimore18Test extends org.junit.Assert {
             (new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI(), 1);
     }
 
-    public Baltimore18Test() {
+    public Baltimore18Test() throws CertificateException {
         String base = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
         
         String fs = System.getProperty("file.separator");
         dir = new File(base + fs + "src/test/resources" + fs + "ie" +
             fs + "baltimore" + fs + "merlin-examples",
             "merlin-xmldsig-eighteen");
-        validator = new SignatureValidator(dir);
         cks = new KeySelectors.CollectionKeySelector(dir);
         ud = new LocalHttpCacheURIDereferencer();
     }
@@ -62,6 +61,7 @@ public class Baltimore18Test extends org.junit.Assert {
     public void testSignatureKeyname() throws Exception {
         String file = "signature-keyname.xml";
         
+        SignatureValidator validator = new SignatureValidator(dir);
         boolean coreValidity = validator.validate(file, cks, ud);
         assertTrue("Signature failed core validation", coreValidity);
     }
@@ -70,6 +70,7 @@ public class Baltimore18Test extends org.junit.Assert {
     public void testSignatureRetrievalmethodRawx509crt() throws Exception {
         String file = "signature-retrievalmethod-rawx509crt.xml";
 
+        SignatureValidator validator = new SignatureValidator(dir);
         boolean coreValidity = validator.validate(file, cks, ud);
         assertTrue("Signature failed core validation", coreValidity);
     }
@@ -78,6 +79,7 @@ public class Baltimore18Test extends org.junit.Assert {
     public void testSignatureX509CrtCrl() throws Exception {
         String file = "signature-x509-crt-crl.xml";
 
+        SignatureValidator validator = new SignatureValidator(dir);
         boolean coreValidity = validator.validate(file, cks, ud);
         assertTrue("Signature failed core validation", coreValidity);
     }
@@ -86,6 +88,7 @@ public class Baltimore18Test extends org.junit.Assert {
     public void testSignatureX509Crt() throws Exception {
         String file = "signature-x509-crt.xml";
 
+        SignatureValidator validator = new SignatureValidator(dir);
         boolean coreValidity = validator.validate(file, cks, ud);
         assertTrue("Signature failed core validation", coreValidity);
     }
@@ -94,6 +97,7 @@ public class Baltimore18Test extends org.junit.Assert {
     public void testSignatureX509Is() throws Exception {
         String file = "signature-x509-is.xml";
 
+        SignatureValidator validator = new SignatureValidator(dir);
         boolean coreValidity = validator.validate(file, cks, ud);
         assertTrue("Signature failed core validation", coreValidity);
     }
@@ -102,6 +106,7 @@ public class Baltimore18Test extends org.junit.Assert {
     public void testSignatureX509Ski() throws Exception {
         String file = "signature-x509-ski.xml";
 
+        SignatureValidator validator = new SignatureValidator(dir);
         boolean coreValidity = validator.validate(file, cks, ud);
         assertTrue("Signature failed core validation", coreValidity);
     }
@@ -110,6 +115,7 @@ public class Baltimore18Test extends org.junit.Assert {
     public void testSignatureX509Sn() throws Exception {
         String file = "signature-x509-sn.xml";
 
+        SignatureValidator validator = new SignatureValidator(dir);
         boolean coreValidity = validator.validate(file, cks, ud);
         assertTrue("Signature failed core validation", coreValidity);
     }

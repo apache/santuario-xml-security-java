@@ -136,6 +136,11 @@ public class XMLCipherTest extends org.junit.Assert {
         
     }
 
+    @org.junit.AfterClass
+    public static void cleanup() throws Exception {
+        Security.removeProvider("org.bouncycastle.jce.provider.BouncyCastleProvider");
+    }
+
     /**
      * Test encryption using a generated AES 128 bit key that is
      * encrypted using a AES 192 bit key.  Then reverse using the KEK

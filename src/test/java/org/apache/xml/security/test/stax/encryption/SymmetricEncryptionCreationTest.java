@@ -87,6 +87,11 @@ public class SymmetricEncryptionCreationTest extends org.junit.Assert {
         }
     }
 
+    @org.junit.AfterClass
+    public static void cleanup() throws Exception {
+        Security.removeProvider("org.bouncycastle.jce.provider.BouncyCastleProvider");
+    }
+
     @Test
     public void testAES128() throws Exception {
         // Set up the Configuration
