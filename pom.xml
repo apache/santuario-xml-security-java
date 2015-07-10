@@ -117,7 +117,7 @@
                     <sourceEncoding>utf-8</sourceEncoding>
                     <failOnViolation>true</failOnViolation>
                     <verbose>true</verbose>
-                    <targetJdk>1.6</targetJdk>
+                    <targetJdk>${targetJdk}</targetJdk>
                 </configuration>
                 <executions>
                     <execution>
@@ -135,8 +135,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.3</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>${targetJdk}</source>
+                    <target>${targetJdk}</target>
                 </configuration>
             </plugin>
             
@@ -270,6 +270,54 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>2.10.3</version>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>animal-sniffer-maven-plugin</artifactId>
+                <version>1.13</version>
+                <configuration>
+                    <signature>
+                        <groupId>org.codehaus.mojo.signature</groupId>
+                        <artifactId>java16</artifactId>
+                        <version>1.0</version>
+                   </signature>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>check-java-compatibility</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>enforce-bytecode-version</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <enforceBytecodeVersion>
+                                    <maxJdkVersion>${targetJdk}</maxJdkVersion>
+                                </enforceBytecodeVersion>
+                            </rules>
+                            <fail>true</fail>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>extra-enforcer-rules</artifactId>
+                        <version>1.0-beta-3</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
 
         </plugins>
 
@@ -402,6 +450,8 @@
         <woodstox.core.asl.version>4.4.1</woodstox.core.asl.version>
         <jetty.version>8.1.17.v20150415</jetty.version>
         <xmlsec.jaxb.context.class />
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <targetJdk>1.6</targetJdk>
     </properties>
     
     <dependencies>
