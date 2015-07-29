@@ -79,7 +79,7 @@ public class CreateInteropXMLDSig11Test extends org.junit.Assert {
 
         db = XMLUtils.createDocumentBuilder(false);
         // create common objects
-        fac = XMLSignatureFactory.getInstance();
+        fac = XMLSignatureFactory.getInstance("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
         KeyInfoFactory kifac = fac.getKeyInfoFactory();
         withoutComments = fac.newCanonicalizationMethod
             (CanonicalizationMethod.INCLUSIVE, (C14NMethodParameterSpec) null);
