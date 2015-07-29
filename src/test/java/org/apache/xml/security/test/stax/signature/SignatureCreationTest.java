@@ -19,8 +19,10 @@
 package org.apache.xml.security.test.stax.signature;
 
 import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.stax.ext.*;
 import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
+import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.Assert;
@@ -36,6 +38,9 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -395,6 +400,83 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+    }
+    
+    @Test
+    public void testMultipleSignatures() throws Exception {
+        // Set up the Configuration
+        XMLSecurityProperties properties = new XMLSecurityProperties();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
+        actions.add(XMLSecurityConstants.SIGNATURE);
+        properties.setActions(actions);
+        
+        // Set the key up
+        KeyStore keyStore = KeyStore.getInstance("jks");
+        keyStore.load(
+            this.getClass().getClassLoader().getResource("transmitter.jks").openStream(), 
+            "default".toCharArray()
+        );
+        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        properties.setSignatureKey(key);
+        X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
+        properties.setSignatureCerts(new X509Certificate[]{cert});
+        
+        SecurePart securePart = 
+               new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Content);
+        properties.addSignaturePart(securePart);
+        
+        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
+        
+        InputStream sourceDocument = 
+                this.getClass().getClassLoader().getResourceAsStream(
+                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
+        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        
+        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
+        xmlStreamWriter.close();
+        
+        // Now do second signature
+        sourceDocument = new ByteArrayInputStream(baos.toByteArray());
+        outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        baos = new ByteArrayOutputStream();
+        xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
+        
+        xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        
+        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
+        xmlStreamWriter.close();
+        
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
+        Document document = 
+            XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
+        
+        // Verify using DOM
+        XPathFactory xpf = XPathFactory.newInstance();
+        XPath xpath = xpf.newXPath();
+        xpath.setNamespaceContext(new DSNamespaceContext());
+
+        String expression = "//dsig:Signature";
+        NodeList sigElements =
+                (NodeList) xpath.evaluate(expression, document, XPathConstants.NODESET);
+        Assert.assertTrue(sigElements.getLength() == 2);
+
+        for (SecurePart secPart : properties.getSignatureSecureParts()) {
+            if (secPart.getName() == null) {
+                continue;
+            }
+            expression = "//*[local-name()='" + secPart.getName().getLocalPart() + "']";
+            Element signedElement =
+                    (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
+            Assert.assertNotNull(signedElement);
+            signedElement.setIdAttributeNS(null, "Id", true);
+        }
+
+        for (int i = 0; i < sigElements.getLength(); i++) {
+            XMLSignature signature = new XMLSignature((Element)sigElements.item(i), "");
+            Assert.assertTrue(signature.checkSignatureValue(cert));
+        }
     }
     
     @Test
