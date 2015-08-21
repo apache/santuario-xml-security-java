@@ -917,6 +917,75 @@ public class XMLCipherTest extends org.junit.Assert {
 
         xmlCipher.decryptToByteArray(encryptedData);
     }
+    
+    @org.junit.Test
+    public void testMultipleKEKs() throws Exception {
+
+        Document d = document(); // source
+        Document ed = null;
+        Document dd = null;
+        Element e = (Element) d.getElementsByTagName(element()).item(index());
+        Element ee = null;
+
+        String source = null;
+        String target = null;
+
+        if (haveISOPadding && haveKeyWraps) {
+            source = toString(d);
+
+            // Set up Key Encryption Key no. 1
+            KeyGenerator keygen = KeyGenerator.getInstance("AES");
+            keygen.init(192);
+            Key kek1 = keygen.generateKey();
+            
+            // Set up Key Encryption Key no. 2
+            Key kek2 = keygen.generateKey();
+
+            // Generate a traffic key
+            keygen = KeyGenerator.getInstance("AES");
+            keygen.init(128);
+            Key key = keygen.generateKey();
+
+            cipher = XMLCipher.getInstance(XMLCipher.AES_192_KeyWrap);
+            cipher.init(XMLCipher.WRAP_MODE, kek1);
+            EncryptedKey encryptedKey1 = cipher.encryptKey(d, key);
+            
+            cipher.init(XMLCipher.WRAP_MODE, kek2);
+            EncryptedKey encryptedKey2 = cipher.encryptKey(d, key);
+
+            // encrypt
+            cipher = XMLCipher.getInstance(XMLCipher.AES_128);
+            cipher.init(XMLCipher.ENCRYPT_MODE, key);
+            EncryptedData builder = cipher.getEncryptedData();
+
+            KeyInfo builderKeyInfo = builder.getKeyInfo();
+            if (builderKeyInfo == null) {
+                builderKeyInfo = new KeyInfo(d);
+                builder.setKeyInfo(builderKeyInfo);
+            }
+
+            builderKeyInfo.add(encryptedKey1);
+            builderKeyInfo.add(encryptedKey2);
+
+            ed = cipher.doFinal(d, e);
+            
+            //decrypt
+            key = null;
+            ee = (Element) ed.getElementsByTagName("xenc:EncryptedData").item(0);
+            cipher = XMLCipher.getInstance(XMLCipher.AES_128);
+            cipher.init(XMLCipher.DECRYPT_MODE, null);
+            cipher.setKEK(kek2);
+            dd = cipher.doFinal(ed, ee);
+
+            target = toString(dd);
+            assertEquals(source, target);
+        } else {
+            log.warn(
+                "Test testAES128ElementAES192KWCipherUsingKEK skipped as "
+                + "necessary algorithms not available"
+            );
+        }
+    }
 
     private String toString (Node n) throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
