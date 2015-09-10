@@ -92,6 +92,7 @@ public class XMLSignatureTest extends org.junit.Assert {
         ud = new LocalHttpCacheURIDereferencer();
     }
 
+    @SuppressWarnings("rawtypes")
     @org.junit.Test
     public void testConstructor() throws Exception {
         XMLSignature sig = null;
@@ -118,11 +119,9 @@ public class XMLSignatureTest extends org.junit.Assert {
         }
         try {
             // use raw List type to test for invalid entries
-            List invalidObjects = new Vector();
+            List invalidObjects = new ArrayList();
             addEntryToRawList(invalidObjects, "wrongType");
-            @SuppressWarnings("unchecked")
-            XMLSignature sig2 = fac.newXMLSignature(defSi, defKi, 
-                     invalidObjects, id, sigValueId);
+            fac.newXMLSignature(defSi, defKi, invalidObjects, id, sigValueId);
             fail("Should throw a CCE for invalid objects");
         } catch (ClassCastException cce) {
         } catch (Exception ex) {
@@ -410,7 +409,9 @@ public class XMLSignatureTest extends org.junit.Assert {
         return fac.newSignedInfo(cm, sm, refs);
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({
+     "unchecked", "rawtypes"
+    })
     private static void addEntryToRawList(List list, Object entry) {
         list.add(entry);
     }

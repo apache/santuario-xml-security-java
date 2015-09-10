@@ -62,6 +62,9 @@ public class ClassLoaderTest extends org.junit.Assert {
         Method m2 = c2.getMethod("dsig", (Class[]) null);
         m1.invoke(o1, (Object[]) null);
         m2.invoke(o2, (Object[]) null);
+        
+        uc1.close();
+        uc2.close();
     }
 
     @org.junit.Test
@@ -107,6 +110,8 @@ public class ClassLoaderTest extends org.junit.Assert {
         if (log.isDebugEnabled()) {
             log.debug("Elapsed: " + elapsed);
         }
+        
+        uc1.close();
     }
 
     @org.junit.Test
@@ -132,6 +137,9 @@ public class ClassLoaderTest extends org.junit.Assert {
         Method m2 = c2.getMethod("dsig", (Class[]) null);
         m1.invoke(o1, (Object[]) null);
         m2.invoke(o2, (Object[]) null);
+        
+        uc1.close();
+        uc2.close();
     }
     
 }

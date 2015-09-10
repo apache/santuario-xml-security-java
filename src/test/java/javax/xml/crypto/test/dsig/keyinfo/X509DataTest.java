@@ -43,10 +43,9 @@ public class X509DataTest extends org.junit.Assert {
     }
 
     @org.junit.Test
-    @SuppressWarnings("unchecked")
     public void testgetTypes() {
         X509Data x509 = fac.newX509Data(Collections.singletonList("cn=foo"));
-        List<Object> li = x509.getContent();
+        List<?> li = x509.getContent();
         assertNotNull(li);
         if (!li.isEmpty()) {
             Object[] content = li.toArray();
@@ -58,18 +57,6 @@ public class X509DataTest extends org.junit.Assert {
                     !(content[j] instanceof XMLStructure)) {
                     fail("X509 element has the wrong type");
                 }
-            }
-        } else {
-            li.add("any string");
-            li.add(new byte[5]);
-            //@@@@@li.add(X509Certificate);
-            //@@@@@li.add(X509CRL);
-            //@@@@@li.add(XMLStructure);
-            try {
-                li.add(new Object());
-                fail("Added X509 element of wrong type");
-            } catch (ClassCastException ex) {
-                // expected
             }
         }
     }

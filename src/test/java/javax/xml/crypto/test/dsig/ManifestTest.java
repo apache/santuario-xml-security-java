@@ -43,11 +43,12 @@ public class ManifestTest extends org.junit.Assert {
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
     }
 
+    @SuppressWarnings("rawtypes")
     @org.junit.Test
     public void testConstructor() throws Exception {
         Manifest man = null;
         String id = "manifest_id";
-        List<Reference> refs = new Vector<Reference>();
+        List<Reference> refs = new ArrayList<Reference>();
         // test XMLSignatureFactory.newManifest(List references)
         // and  XMLSignatureFactory.newManifest(List references, 
         //                                       String id)
@@ -112,11 +113,10 @@ public class ManifestTest extends org.junit.Assert {
         }
         
         // use raw List type to test for invalid Reference entries
-        List invalidRefs = new Vector();
+        List invalidRefs = new ArrayList();
         addEntryToRawList(invalidRefs, "references");
         try {
-            @SuppressWarnings("unchecked")
-            Manifest man2 = fac.newManifest(invalidRefs);
+            fac.newManifest(invalidRefs);
             fail("Should throw a CCE for references containing " + 
                  "non-Reference objects");
         } catch (ClassCastException cce) {
@@ -126,8 +126,7 @@ public class ManifestTest extends org.junit.Assert {
         }
         
         try {
-            @SuppressWarnings("unchecked")
-            Manifest man2 = fac.newManifest(invalidRefs, id);
+            fac.newManifest(invalidRefs, id);
             fail("Should throw a CCE for references containing " + 
                  "non-Reference objects");
         } catch (ClassCastException cce) {
@@ -139,7 +138,7 @@ public class ManifestTest extends org.junit.Assert {
     
     @org.junit.Test
     public void testisFeatureSupported() throws Exception {
-        List<Reference> refs = new Vector<Reference>();
+        List<Reference> refs = new ArrayList<Reference>();
         refs.add(VALID_REF);
 
         Manifest man = fac.newManifest(refs);
@@ -154,7 +153,7 @@ public class ManifestTest extends org.junit.Assert {
 
     @org.junit.Test
     public void testgetReferences() throws Exception {
-        List<Reference> refs = new Vector<Reference>();
+        List<Reference> refs = new ArrayList<Reference>();
         refs.add(VALID_REF);	
         Manifest man = fac.newManifest(refs);
         @SuppressWarnings("unchecked")
@@ -172,7 +171,9 @@ public class ManifestTest extends org.junit.Assert {
         }
     }
     
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({
+     "unchecked", "rawtypes"
+    })
     private static void addEntryToRawList(List list, Object entry) {
         list.add(entry);
     }

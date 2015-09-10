@@ -43,6 +43,7 @@ public class XMLObjectTest extends org.junit.Assert {
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
     }
     
+    @SuppressWarnings("rawtypes")
     @org.junit.Test
     public void testConstructor() {
         // test XMLSignatureFactory.newXMLObject(List, String, String, String) 
@@ -51,17 +52,16 @@ public class XMLObjectTest extends org.junit.Assert {
         obj = factory.newXMLObject(null, null, null, null); 
         assertNotNull(obj);
 
-        List<XMLStructure> list = new Vector<XMLStructure>();
+        List<XMLStructure> list = new ArrayList<XMLStructure>();
         obj = factory.newXMLObject(list, null, null, null); 
         assertNotNull(obj);
         
         String strEntry = "wrong type";
         // use raw List type to test for invalid XMLStructure entries
-        List invalidList = new Vector();
+        List invalidList = new ArrayList();
         addEntryToRawList(invalidList, strEntry);
         try {
-            @SuppressWarnings("unchecked")
-            XMLObject obj2 = factory.newXMLObject(invalidList, null, null, null); 
+            factory.newXMLObject(invalidList, null, null, null); 
             fail("Should raise a CCE for content containing " +
                  "invalid, i.e. non-XMLStructure, entries"); 
         } catch (ClassCastException cce) {
@@ -89,7 +89,7 @@ public class XMLObjectTest extends org.junit.Assert {
 
     @org.junit.Test
     public void testisFeatureSupported() {
-        List<XMLStructure> list = new Vector<XMLStructure>();
+        List<XMLStructure> list = new ArrayList<XMLStructure>();
         list.add(new TestUtils.MyOwnXMLStructure());
         XMLObject obj = factory.newXMLObject(list, id, mimeType, encoding);
         try {
@@ -100,7 +100,9 @@ public class XMLObjectTest extends org.junit.Assert {
         assertTrue(!obj.isFeatureSupported("not supported"));
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({
+     "unchecked", "rawtypes"
+    })
     private static void addEntryToRawList(List list, Object entry) {
         list.add(entry);
     }

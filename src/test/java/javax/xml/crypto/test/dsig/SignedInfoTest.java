@@ -49,12 +49,13 @@ public class SignedInfoTest extends org.junit.Assert {
             (CanonicalizationMethod.INCLUSIVE_WITH_COMMENTS, 
              (C14NMethodParameterSpec) null);
         sm = fac.newSignatureMethod(SignatureMethod.DSA_SHA1, null);
-        references = new Vector<Reference>();
+        references = new ArrayList<Reference>();
         references.add(fac.newReference
                        ("http://www.sun.com/index.html", 
                         fac.newDigestMethod(DigestMethod.SHA1, null)));
     }
 
+    @SuppressWarnings("rawtypes")
     @org.junit.Test
     public void testConstructor() {
         // test XMLSignatureFactory.newSignedInfo(
@@ -83,7 +84,7 @@ public class SignedInfoTest extends org.junit.Assert {
             }
         }
 
-        List<Reference> empty = new Vector<Reference>();
+        List<Reference> empty = new ArrayList<Reference>();
         try {
             si = fac.newSignedInfo(cm, sm, empty);
             fail("Should throw an IAE for empty references");
@@ -94,11 +95,10 @@ public class SignedInfoTest extends org.junit.Assert {
         }
         
         // use raw List type to test for invalid Reference entries
-        List invalidRefs = new Vector();
+        List invalidRefs = new ArrayList();
         addEntryToRawList(invalidRefs, "String");
         try {
-            @SuppressWarnings("unchecked")
-            SignedInfo si2 = fac.newSignedInfo(cm, sm, invalidRefs);
+            fac.newSignedInfo(cm, sm, invalidRefs);
             fail("Should throw an CCE for illegal references");
         } catch(ClassCastException cce) {
         } catch(Exception ex) {
@@ -131,7 +131,9 @@ public class SignedInfoTest extends org.junit.Assert {
         assertEquals(si.getId(), "id");
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({
+     "unchecked", "rawtypes"
+    })
     private static void addEntryToRawList(List list, Object entry) {
         list.add(entry);
     }

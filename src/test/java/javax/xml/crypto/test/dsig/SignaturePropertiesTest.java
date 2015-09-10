@@ -43,6 +43,7 @@ public class SignaturePropertiesTest extends org.junit.Assert {
              "propTarget", "propId");
     }
     
+    @SuppressWarnings("rawtypes")
     @org.junit.Test
     public void testConstructor() {
         // test XMLSignatureFactory.newSignatureProperties(List, String) 
@@ -56,7 +57,7 @@ public class SignaturePropertiesTest extends org.junit.Assert {
             fail("Should raise a NPE for null content instead of " + ex);
         }
         
-        List<SignatureProperty> list = new Vector<SignatureProperty>();
+        List<SignatureProperty> list = new ArrayList<SignatureProperty>();
         try {
             props = factory.newSignatureProperties(list, id); 
             fail("Should raise an IAE for empty content"); 
@@ -67,11 +68,10 @@ public class SignaturePropertiesTest extends org.junit.Assert {
         
         String strEntry = "wrong type";
         // use raw List type to test for invalid SignatureProperty types
-        List invalidList = new Vector();
+        List invalidList = new ArrayList();
         addEntryToRawList(invalidList, strEntry);
         try {
-            @SuppressWarnings("unchecked")
-            SignatureProperties props2 = factory.newSignatureProperties(invalidList, id); 
+            factory.newSignatureProperties(invalidList, id); 
             fail("Should raise a CCE for content containing " +
                  "invalid, i.e. non-SignatureProperty, entries"); 
         } catch (ClassCastException cce) {
@@ -98,7 +98,7 @@ public class SignaturePropertiesTest extends org.junit.Assert {
 
     @org.junit.Test
     public void testisFeatureSupported() {
-        List<SignatureProperty> list = new Vector<SignatureProperty>();
+        List<SignatureProperty> list = new ArrayList<SignatureProperty>();
         list.add(prop);
         SignatureProperties props = factory.newSignatureProperties(list, id);
         try {
@@ -109,7 +109,9 @@ public class SignaturePropertiesTest extends org.junit.Assert {
         assertTrue(!props.isFeatureSupported("not supported"));
     }
     
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({
+     "unchecked", "rawtypes"
+    })
     private static void addEntryToRawList(List list, Object entry) {
         list.add(entry);
     }

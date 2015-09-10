@@ -78,6 +78,9 @@ public class CreateInteropXFilter2Test extends org.junit.Assert {
         validatingKey = signingCert.getPublicKey();
     }
 
+    @SuppressWarnings({
+     "rawtypes", "unchecked"
+    })
     @org.junit.Test
     public void test_create_sign_spec() throws Exception {
         List<Reference> refs = new ArrayList<Reference>(2);
@@ -114,7 +117,7 @@ public class CreateInteropXFilter2Test extends org.junit.Assert {
         // create KeyInfo
         List<XMLStructure> kits = new ArrayList<XMLStructure>(2);
         kits.add(kifac.newKeyValue(validatingKey));
-        List<Object> xds = new ArrayList<Object>(2);
+        List xds = new ArrayList(2);
         xds.add("CN=Sean Mullan, DC=sun, DC=com");
         xds.add(signingCert);
         kits.add(kifac.newX509Data(xds));

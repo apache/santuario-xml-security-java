@@ -307,7 +307,7 @@ public class TestUtils {
         
         public Data getDereferencedData() {
             return derefData;
-        }
+        }       
         
         public InputStream getDigestInputStream() {
             return dis;

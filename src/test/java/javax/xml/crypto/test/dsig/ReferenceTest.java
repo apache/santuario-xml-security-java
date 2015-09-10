@@ -64,6 +64,7 @@ public class ReferenceTest extends org.junit.Assert {
         dmSHA1 = fac.newDigestMethod(DigestMethod.SHA1, null); 
     }
 
+    @SuppressWarnings("rawtypes")
     @org.junit.Test
     public void testConstructor() throws Exception {
         Reference ref;
@@ -117,13 +118,13 @@ public class ReferenceTest extends org.junit.Assert {
             assertEquals(uri, ref.getURI());
             assertEquals(id, ref.getId());
             assertEquals(type, ref.getType());        
-        assertEquals(ref.getTransforms(), Collections.EMPTY_LIST);
+            assertEquals(ref.getTransforms(), Collections.EMPTY_LIST);
             
         } catch(Exception ex) {
             fail("Unexpected Exception: " + ex);
         }
         
-        List<Transform> transforms = new Vector<Transform>();
+        List<Transform> transforms = new ArrayList<Transform>();
         try {
             // try empty transforms list
             ref = fac.newReference(uri, dmSHA1, transforms, 
@@ -133,12 +134,11 @@ public class ReferenceTest extends org.junit.Assert {
         } catch(Exception ex) {
             fail("Unexpected Exception: " + ex);
         }
-        List invalidTransforms = new Vector();
+        List invalidTransforms = new ArrayList();
         addEntryToRawList(invalidTransforms, new Object());
         try {
             // try a transforms list with an invalid object
-            @SuppressWarnings("unchecked")
-            Reference ref2 = fac.newReference(uri, dmSHA1, invalidTransforms, 
+            fac.newReference(uri, dmSHA1, invalidTransforms, 
                                    type, id);
         } catch (ClassCastException cce) {
         } catch (Exception ex) {
@@ -151,8 +151,7 @@ public class ReferenceTest extends org.junit.Assert {
         addEntryToRawList(invalidTransforms, Transform.BASE64);
         try {
             // try a transforms list with a String object
-            @SuppressWarnings("unchecked")
-            Reference ref2 = fac.newReference(uri, dmSHA1, invalidTransforms, 
+            fac.newReference(uri, dmSHA1, invalidTransforms, 
                                    type, id);
             fail("Should throw a CCE for illegal transforms");
         } catch (ClassCastException cce) {
@@ -286,7 +285,9 @@ public class ReferenceTest extends org.junit.Assert {
         return Arrays.equals(md.digest(), ref.getDigestValue());
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({
+     "rawtypes", "unchecked"
+    })
     private static void addEntryToRawList(List list, Object entry) {
         list.add(entry);
     }

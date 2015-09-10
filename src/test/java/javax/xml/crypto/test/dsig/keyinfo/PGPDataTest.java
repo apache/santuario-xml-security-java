@@ -21,10 +21,9 @@
  */
 package javax.xml.crypto.test.dsig.keyinfo;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.Vector;
 import javax.xml.crypto.*;
 import javax.xml.crypto.dsig.keyinfo.*;
 
@@ -51,6 +50,7 @@ public class PGPDataTest extends org.junit.Assert {
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
     }
 
+    @SuppressWarnings("rawtypes")
     @org.junit.Test
     public void testgetExternalElements() {
         PGPData[] pds = {
@@ -58,7 +58,7 @@ public class PGPDataTest extends org.junit.Assert {
             fac.newPGPData(values[0], values[1], null),
             fac.newPGPData(values[1], null)
         };
-        for (int i=0; i<pds.length; i++) {
+        for (int i = 0; i<pds.length; i++) {
             @SuppressWarnings("unchecked")
             List<XMLStructure> li = pds[i].getExternalElements();
             assertNotNull(li);
@@ -73,10 +73,9 @@ public class PGPDataTest extends org.junit.Assert {
         }
         try {
             // use raw List type to test for invalid entries
-            List invalidData = new Vector();
+            List invalidData = new ArrayList();
             addEntryToRawList(invalidData, new Object());
-            @SuppressWarnings("unchecked")
-            PGPData pd = fac.newPGPData(values[0], invalidData);
+            fac.newPGPData(values[0], invalidData);
             fail("Added PGP element of wrong type");
         } catch (ClassCastException ex) {
             // expected
@@ -140,7 +139,9 @@ public class PGPDataTest extends org.junit.Assert {
         }
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({
+     "unchecked", "rawtypes"
+    })
     private static void addEntryToRawList(List list, Object entry) {
         list.add(entry);
     }

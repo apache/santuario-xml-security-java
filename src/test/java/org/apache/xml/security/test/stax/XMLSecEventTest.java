@@ -21,7 +21,6 @@ package org.apache.xml.security.test.stax;
 import org.apache.xml.security.stax.ext.stax.*;
 import org.apache.xml.security.stax.impl.XMLSecurityEventReader;
 import org.apache.xml.security.stax.impl.stax.*;
-import org.codehaus.stax2.ri.evt.CharactersEventImpl;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -30,9 +29,7 @@ import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.events.XMLEvent;
-import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.io.Writer;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
