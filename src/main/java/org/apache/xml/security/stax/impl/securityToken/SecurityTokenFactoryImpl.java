@@ -200,7 +200,10 @@ public class SecurityTokenFactoryImpl extends SecurityTokenFactory {
                         XMLSecurityConstants.TAG_dsig_X509SKI
                 );
         if (skiBytes != null) {
-            if (securityProperties.getSignatureVerificationKey() == null) {
+            if (SecurityTokenConstants.KeyUsage_Signature_Verification.equals(keyUsage)
+                && securityProperties.getSignatureVerificationKey() == null
+                || SecurityTokenConstants.KeyUsage_Decryption.equals(keyUsage)
+                && securityProperties.getDecryptionKey() == null) {
                 throw new XMLSecurityException("stax.noKey", new Object[] {keyUsage});            
             }
             X509SKISecurityToken token =
@@ -219,7 +222,10 @@ public class SecurityTokenFactoryImpl extends SecurityTokenFactory {
                         XMLSecurityConstants.TAG_dsig_X509SubjectName
                 );
         if (subjectName != null) {
-            if (securityProperties.getSignatureVerificationKey() == null) {
+            if (SecurityTokenConstants.KeyUsage_Signature_Verification.equals(keyUsage)
+                && securityProperties.getSignatureVerificationKey() == null
+                || SecurityTokenConstants.KeyUsage_Decryption.equals(keyUsage)
+                && securityProperties.getDecryptionKey() == null) {
                 throw new XMLSecurityException("stax.noKey", new Object[] {keyUsage});
             }
             String normalizedSubjectName =
