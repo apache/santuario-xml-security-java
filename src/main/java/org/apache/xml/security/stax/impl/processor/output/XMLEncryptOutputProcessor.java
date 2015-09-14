@@ -282,24 +282,26 @@ public class XMLEncryptOutputProcessor extends AbstractEncryptOutputProcessor {
                             return;
                         }
 
-                        createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_KeyInfo, true, null);
-
-                        if (keyIdentifier == null || SecurityTokenConstants.KeyIdentifier_IssuerSerial.equals(keyIdentifier)) {
-                            XMLSecurityUtils.createX509IssuerSerialStructure(this, outputProcessorChain, x509Certificates);
-                        } else if (SecurityTokenConstants.KeyIdentifier_KeyValue.equals(keyIdentifier)) {
-                            XMLSecurityUtils.createKeyValueTokenStructure(this, outputProcessorChain, x509Certificates);
-                        } else if (SecurityTokenConstants.KeyIdentifier_SkiKeyIdentifier.equals(keyIdentifier)) {
-                            XMLSecurityUtils.createX509SubjectKeyIdentifierStructure(this, outputProcessorChain, x509Certificates);
-                        } else if (SecurityTokenConstants.KeyIdentifier_X509KeyIdentifier.equals(keyIdentifier)) {
-                            XMLSecurityUtils.createX509CertificateStructure(this, outputProcessorChain, x509Certificates);
-                        } else if (SecurityTokenConstants.KeyIdentifier_X509SubjectName.equals(keyIdentifier)) {
-                            XMLSecurityUtils.createX509SubjectNameStructure(this, outputProcessorChain, x509Certificates);
-                        } else {
-                            throw new XMLSecurityException("stax.unsupportedToken", 
-                                                           new Object[] {keyIdentifier});
+                        if (!SecurityTokenConstants.KeyIdentifier_NoKeyInfo.equals(keyIdentifier)) {
+                            createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_KeyInfo, true, null);
+    
+                            if (keyIdentifier == null || SecurityTokenConstants.KeyIdentifier_IssuerSerial.equals(keyIdentifier)) {
+                                XMLSecurityUtils.createX509IssuerSerialStructure(this, outputProcessorChain, x509Certificates);
+                            } else if (SecurityTokenConstants.KeyIdentifier_KeyValue.equals(keyIdentifier)) {
+                                XMLSecurityUtils.createKeyValueTokenStructure(this, outputProcessorChain, x509Certificates);
+                            } else if (SecurityTokenConstants.KeyIdentifier_SkiKeyIdentifier.equals(keyIdentifier)) {
+                                XMLSecurityUtils.createX509SubjectKeyIdentifierStructure(this, outputProcessorChain, x509Certificates);
+                            } else if (SecurityTokenConstants.KeyIdentifier_X509KeyIdentifier.equals(keyIdentifier)) {
+                                XMLSecurityUtils.createX509CertificateStructure(this, outputProcessorChain, x509Certificates);
+                            } else if (SecurityTokenConstants.KeyIdentifier_X509SubjectName.equals(keyIdentifier)) {
+                                XMLSecurityUtils.createX509SubjectNameStructure(this, outputProcessorChain, x509Certificates);
+                            } else {
+                                throw new XMLSecurityException("stax.unsupportedToken", 
+                                                               new Object[] {keyIdentifier});
+                            }
+                            
+                            createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_KeyInfo);
                         }
-                        
-                        createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_KeyInfo);
                     }
                 };
         processor.getAfterProcessors().add(XMLEncryptOutputProcessor.class.getName());

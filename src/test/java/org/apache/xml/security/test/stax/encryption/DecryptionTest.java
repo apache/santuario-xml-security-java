@@ -1686,4 +1686,64 @@ public class DecryptionTest extends org.junit.Assert {
         Assert.assertEquals(nodeList.getLength(), 1);
     }
     
+    @Test
+    public void testNoKeyInfo() throws Exception {
+        // Read in plaintext document
+        InputStream sourceDocument = 
+                this.getClass().getClassLoader().getResourceAsStream(
+                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
+        
+        // Set up the Key
+        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        keygen.init(128);
+        SecretKey key = keygen.generateKey();
+        
+        // Set the key up
+        KeyStore keyStore = KeyStore.getInstance("JCEKS");
+        keyStore.load(
+            this.getClass().getClassLoader().getResource("test.jceks").openStream(), 
+            "secret".toCharArray()
+        );
+        PrivateKey priv = (PrivateKey)keyStore.getKey("rsakey", "secret".toCharArray());
+        X509Certificate cert = (X509Certificate)keyStore.getCertificate("rsakey");
+        
+        // Encrypt using DOM
+        List<String> localNames = new ArrayList<String>();
+        localNames.add("PaymentInfo");
+        
+        encryptUsingDOM(
+            XMLCipher.AES_128, key, XMLCipher.RSA_OAEP,
+            cert.getPublicKey(), false, document, localNames, true
+        );
+        
+        // Check the CreditCard encrypted ok
+        NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
+        Assert.assertEquals(nodeList.getLength(), 0);
+        
+        // XMLUtils.outputDOM(document, System.out);
+        
+        // Convert Document to a Stream Reader
+        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        transformer.transform(new DOMSource(document), new StreamResult(baos));
+        final XMLStreamReader xmlStreamReader = 
+                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
+        
+        // Decrypt
+        XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setDecryptionKey(priv);
+        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        XMLStreamReader securityStreamReader = 
+                inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
+         
+        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+         
+        // Check the CreditCard decrypted ok
+        nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
+        Assert.assertEquals(nodeList.getLength(), 1);
+    }
+    
 }
