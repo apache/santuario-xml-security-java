@@ -50,6 +50,9 @@ public class InteropXMLDSig11Test extends org.junit.Assert {
         } catch (NoSuchAlgorithmException nsae) {
             ecSupport = false;
         }
+        if ("IBM Corporation".equals(System.getProperty("java.vendor"))) {
+            ecSupport = false;
+        }
         String fs = File.separator;
         String base = System.getProperty("basedir") == null
             ? "./": System.getProperty("basedir");

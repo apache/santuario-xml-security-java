@@ -37,7 +37,7 @@ public class SecureXSLTTest extends org.junit.Assert {
     }
 
     @org.junit.Test
-    public void test() throws Exception {
+    public void testSignature1() throws Exception {
 
         String fs = System.getProperty("file.separator");
         String base = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
@@ -45,49 +45,59 @@ public class SecureXSLTTest extends org.junit.Assert {
         File baseDir = new File(base + fs + "src/test/resources" 
             + fs + "javax" + fs + "xml" + fs + "crypto", "dsig");
 
-        String[] signatures =
-            { "signature1.xml", "signature2.xml", "signature3.xml" };
+        testSignature(new File(baseDir, "signature1.xml"));
+    }
+    
+    public void testSignature2() throws Exception {
+
+        String fs = System.getProperty("file.separator");
+        String base = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
+        
+        File baseDir = new File(base + fs + "src/test/resources" 
+            + fs + "javax" + fs + "xml" + fs + "crypto", "dsig");
+
+        testSignature(new File(baseDir, "signature2.xml"));
+    }
+    
+    public void testSignature3() throws Exception {
+
+        String fs = System.getProperty("file.separator");
+        String base = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
+        
+        File baseDir = new File(base + fs + "src/test/resources" 
+            + fs + "javax" + fs + "xml" + fs + "crypto", "dsig");
+
+        testSignature(new File(baseDir, "signature3.xml"));
+    }
+    
+    private void testSignature(File signatureFile) throws Exception {
 
         XMLSignatureFactory fac = XMLSignatureFactory.getInstance("DOM");
         File f = new File("doc.xml");
-        for (int i = 0; i < signatures.length; i++) {
-            String signature = signatures[i];
-            // System.out.println("Validating " + signature);
-            Document doc = XMLUtils.createDocumentBuilder(false).parse
-                (new FileInputStream(new File(baseDir, signature)));
+        
+        Document doc = 
+            XMLUtils.createDocumentBuilder(false).parse(new FileInputStream(signatureFile));
 
-            NodeList nl =
-                doc.getElementsByTagNameNS(XMLSignature.XMLNS, "Signature");
-            if (nl.getLength() == 0) {
-                throw new Exception("Cannot find Signature element");
-            }
+        NodeList nl =
+            doc.getElementsByTagNameNS(XMLSignature.XMLNS, "Signature");
+        if (nl.getLength() == 0) {
+            throw new Exception("Cannot find Signature element");
+        }
 
-            DOMValidateContext valContext = new DOMValidateContext
-                (new KeySelectors.KeyValueKeySelector(), nl.item(0));
-            // enable reference caching in your validation context 
-            valContext.setProperty
-                ("javax.xml.crypto.dsig.cacheReference", Boolean.TRUE);
+        DOMValidateContext valContext = new DOMValidateContext
+            (new KeySelectors.KeyValueKeySelector(), nl.item(0));
+        // enable reference caching in your validation context 
+        valContext.setProperty("javax.xml.crypto.dsig.cacheReference", Boolean.TRUE);
 
-            // make sure file is not left over from previous run
-            f.delete();
-
+        try {
             XMLSignature sig = fac.unmarshalXMLSignature(valContext);
-            try {
-                if (sig.validate(valContext)) {
-                    System.err.println("Signature UNEXPECTEDLY passed validation");
-                }
-                sig.getSignedInfo().getReferences().get(0);
-            } catch (XMLSignatureException xse) {
-                // this is good, but still make sure attack was not successful
-                // by falling through and checking if file was created
-                // xse.printStackTrace();
-            }
+            assertFalse(sig.validate(valContext));
+            sig.getSignedInfo().getReferences().get(0);
+        } finally {
             if (f.exists()) {
                 f.delete(); // cleanup file. comment out when debugging
-                throw new Exception
-                    ("Test FAILED: doc.xml was successfully created");
+                throw new Exception("Test FAILED: doc.xml was successfully created");
             }
         }
-        // System.out.println("Test PASSED");
     }
 }

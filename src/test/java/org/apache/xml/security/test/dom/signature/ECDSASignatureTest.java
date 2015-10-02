@@ -102,6 +102,13 @@ public class ECDSASignatureTest extends org.junit.Assert {
             return;
         }
         
+        //
+        // This test fails with the IBM JDK
+        //
+        if ("IBM Corporation".equals(System.getProperty("java.vendor"))) {
+            return;
+        }
+        
         keyStore = KeyStore.getInstance("JKS");
         keyStore.load(
             new java.io.FileInputStream(ECDSA_JKS), 

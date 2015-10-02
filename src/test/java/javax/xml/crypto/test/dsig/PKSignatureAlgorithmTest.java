@@ -143,8 +143,12 @@ public class PKSignatureAlgorithmTest extends org.junit.Assert {
         KeyInfoFactory kifac = fac.getKeyInfoFactory();
         rsaki = kifac.newKeyInfo(Collections.singletonList
                                  (kifac.newKeyValue(rsaKeyPair.getPublic())));
-        ecki = kifac.newKeyInfo(Collections.singletonList
+        
+        boolean isIBM = "IBM Corporation".equals(System.getProperty("java.vendor"));
+        if (!isIBM) {
+            ecki = kifac.newKeyInfo(Collections.singletonList
                                 (kifac.newKeyValue(ecKeyPair.getPublic())));
+        }
     }
 
     @org.junit.AfterClass
@@ -220,42 +224,42 @@ public class PKSignatureAlgorithmTest extends org.junit.Assert {
     
     @org.junit.Test
     public void testECDSA_SHA1() throws Exception {
-        org.junit.Assume.assumeTrue(ecAlgParamsSupport);
+        org.junit.Assume.assumeTrue(ecAlgParamsSupport && ecki != null);
         test_create_signature_enveloping(ecdsaSha1, sha1, ecki,
                                          ecKeyPair.getPrivate(), kvks);
     }
     
     @org.junit.Test
     public void testECDSA_SHA224() throws Exception {
-        org.junit.Assume.assumeTrue(ecAlgParamsSupport);
+        org.junit.Assume.assumeTrue(ecAlgParamsSupport && ecki != null);
         test_create_signature_enveloping(ecdsaSha224, sha1, ecki,
                                          ecKeyPair.getPrivate(), kvks);
     }
     
     @org.junit.Test
     public void testECDSA_SHA256() throws Exception {
-        org.junit.Assume.assumeTrue(ecAlgParamsSupport);
+        org.junit.Assume.assumeTrue(ecAlgParamsSupport && ecki != null);
         test_create_signature_enveloping(ecdsaSha256, sha1, ecki,
                                          ecKeyPair.getPrivate(), kvks);
     }
     
     @org.junit.Test
     public void testECDSA_SHA384() throws Exception {
-        org.junit.Assume.assumeTrue(ecAlgParamsSupport);
+        org.junit.Assume.assumeTrue(ecAlgParamsSupport && ecki != null);
         test_create_signature_enveloping(ecdsaSha384, sha1, ecki,
                                          ecKeyPair.getPrivate(), kvks);
     }
     
     @org.junit.Test
     public void testECDSA_SHA512() throws Exception {
-        org.junit.Assume.assumeTrue(ecAlgParamsSupport);
+        org.junit.Assume.assumeTrue(ecAlgParamsSupport && ecki != null);
         test_create_signature_enveloping(ecdsaSha512, sha1, ecki,
                                          ecKeyPair.getPrivate(), kvks);
     }
     
     @org.junit.Test
     public void testECDSA_RIPEMD160() throws Exception {
-        org.junit.Assume.assumeTrue(ecAlgParamsSupport);
+        org.junit.Assume.assumeTrue(ecAlgParamsSupport && ecki != null);
         test_create_signature_enveloping(ecdsaRipemd160, sha1, ecki,
                                          ecKeyPair.getPrivate(), kvks);
     }

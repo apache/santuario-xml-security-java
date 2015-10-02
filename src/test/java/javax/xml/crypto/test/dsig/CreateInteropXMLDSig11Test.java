@@ -73,6 +73,9 @@ public class CreateInteropXMLDSig11Test extends org.junit.Assert {
             // EC not supported on this platform
             ecSupport = false;
         }
+        if ("IBM Corporation".equals(System.getProperty("java.vendor"))) {
+            ecSupport = false;
+        }
         KeyPairGenerator rsakpg = KeyPairGenerator.getInstance("RSA");
         rsakpg.initialize(2048);
         rsa2048 = rsakpg.generateKeyPair();

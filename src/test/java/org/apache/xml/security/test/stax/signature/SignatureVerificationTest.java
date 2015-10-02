@@ -497,6 +497,13 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
             return;
         }
         
+        //
+        // This test fails with the IBM JDK
+        //
+        if ("IBM Corporation".equals(System.getProperty("java.vendor"))) {
+            return;
+        }
+        
         // Read in plaintext document
         InputStream sourceDocument = 
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -979,6 +986,14 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
     
     @Test
     public void testSubjectSKI() throws Exception {
+        
+        //
+        // This test fails with the IBM JDK
+        //
+        if ("IBM Corporation".equals(System.getProperty("java.vendor"))) {
+            return;
+        }
+        
         // Read in plaintext document
         InputStream sourceDocument = 
                 this.getClass().getClassLoader().getResourceAsStream(

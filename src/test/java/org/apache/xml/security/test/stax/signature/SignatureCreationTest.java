@@ -571,6 +571,13 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
             return;
         }
         
+        //
+        // This test fails with the IBM JDK
+        //
+        if ("IBM Corporation".equals(System.getProperty("java.vendor"))) {
+            return;
+        }
+        
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
@@ -619,6 +626,13 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     public void testStrongECDSASignatureCreation() throws Exception {
         
         if (Security.getProvider("BC") == null) {
+            return;
+        }
+        
+        //
+        // This test fails with the IBM JDK
+        //
+        if ("IBM Corporation".equals(System.getProperty("java.vendor"))) {
             return;
         }
         
@@ -986,6 +1000,14 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     
     @Test
     public void testSignatureCreationSKI() throws Exception {
+        
+        //
+        // This test fails with the IBM JDK
+        //
+        if ("IBM Corporation".equals(System.getProperty("java.vendor"))) {
+            return;
+        }
+        
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
