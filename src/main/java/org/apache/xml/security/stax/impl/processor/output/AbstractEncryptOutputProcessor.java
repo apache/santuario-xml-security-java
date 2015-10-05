@@ -20,6 +20,7 @@ package org.apache.xml.security.stax.impl.processor.output;
 
 import org.apache.commons.codec.binary.Base64OutputStream;
 import org.apache.xml.security.algorithms.JCEMapper;
+import org.apache.xml.security.encryption.XMLCipherUtil;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.config.JCEAlgorithmMapper;
 import org.apache.xml.security.stax.ext.AbstractOutputProcessor;
@@ -34,7 +35,6 @@ import org.apache.xml.security.stax.impl.util.TrimmerOutputStream;
 import javax.crypto.Cipher;
 import javax.crypto.CipherOutputStream;
 import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.IvParameterSpec;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLStreamConstants;
@@ -44,6 +44,7 @@ import java.io.OutputStream;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.spec.AlgorithmParameterSpec;
 import java.util.*;
 
 /**
@@ -158,8 +159,9 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
 
                 int ivLen = JCEMapper.getIVLengthFromURI(encryptionSymAlgorithm) / 8;
                 byte[] iv = XMLSecurityConstants.generateBytes(ivLen);
-                IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
-                symmetricCipher.init(Cipher.ENCRYPT_MODE, encryptionPartDef.getSymmetricKey(), ivParameterSpec);
+                AlgorithmParameterSpec parameterSpec = 
+                    XMLCipherUtil.constructBlockCipherParameters(encryptionSymAlgorithm, iv, this.getClass());
+                symmetricCipher.init(Cipher.ENCRYPT_MODE, encryptionPartDef.getSymmetricKey(), parameterSpec);
 
                 characterEventGeneratorOutputStream = new CharacterEventGeneratorOutputStream();
                 Base64OutputStream base64EncoderStream =
