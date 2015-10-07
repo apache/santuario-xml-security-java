@@ -56,7 +56,7 @@ import java.util.List;
  */
 public class XMLEncryptOutputProcessor extends AbstractEncryptOutputProcessor {
 
-    private static final transient Logger logger = LoggerFactory.getLogger(XMLEncryptOutputProcessor.class);
+    private static final transient Logger log = LoggerFactory.getLogger(XMLEncryptOutputProcessor.class);
 
     public XMLEncryptOutputProcessor() throws XMLSecurityException {
         super();
@@ -71,7 +71,7 @@ public class XMLEncryptOutputProcessor extends AbstractEncryptOutputProcessor {
             if (getActiveInternalEncryptionOutputProcessor() == null) {
                 SecurePart securePart = securePartMatches(xmlSecStartElement, outputProcessorChain, XMLSecurityConstants.ENCRYPTION_PARTS);
                 if (securePart != null) {
-                    logger.debug("Matched encryptionPart for encryption");
+                    log.debug("Matched encryptionPart for encryption");
                     String tokenId = outputProcessorChain.getSecurityContext().get(
                             XMLSecurityConstants.PROP_USE_THIS_TOKEN_ID_FOR_ENCRYPTION);
                     SecurityTokenProvider<OutboundSecurityToken> securityTokenProvider =

@@ -457,7 +457,7 @@ public class X509Data extends SignatureElementProxy implements KeyInfoContent {
      **/
     public Element itemUnknownElement(int i) {
         if (log.isDebugEnabled()) {
-            log.debug("itemUnknownElement not implemented:" + i);
+            log.debug("itemUnknownElement not implemented: " + i);
         }
         return null;
     }

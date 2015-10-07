@@ -57,7 +57,7 @@ import java.util.*;
  */
 public abstract class AbstractSignatureReferenceVerifyInputProcessor extends AbstractInputProcessor {
 
-    private static final transient Logger logger = LoggerFactory.getLogger(AbstractSignatureReferenceVerifyInputProcessor.class);
+    private static final transient Logger log = LoggerFactory.getLogger(AbstractSignatureReferenceVerifyInputProcessor.class);
 
     protected static final Integer maximumAllowedReferencesPerManifest =
             Integer.valueOf(ConfigurationProperties.getProperty("MaximumAllowedReferencesPerManifest"));
@@ -259,7 +259,7 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
             try {
                 bufferedInputStream.close();
             } catch (IOException e) {
-                logger.warn("Could not close external resource input stream, ignored.");
+                log.warn("Could not close external resource input stream, ignored.");
             }
         }
     }
@@ -368,9 +368,9 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
     }
 
     protected void compareDigest(byte[] calculatedDigest, ReferenceType referenceType) throws XMLSecurityException {
-        if (logger.isDebugEnabled()) {
-            logger.debug("Calculated Digest: " + new String(Base64.encodeBase64(calculatedDigest)));
-            logger.debug("Stored Digest: " + new String(Base64.encodeBase64(referenceType.getDigestValue())));
+        if (log.isDebugEnabled()) {
+            log.debug("Calculated Digest: " + new String(Base64.encodeBase64(calculatedDigest)));
+            log.debug("Stored Digest: " + new String(Base64.encodeBase64(referenceType.getDigestValue())));
         }
 
         if (!MessageDigest.isEqual(referenceType.getDigestValue(), calculatedDigest)) {

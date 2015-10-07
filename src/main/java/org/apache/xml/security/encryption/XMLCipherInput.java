@@ -45,7 +45,7 @@ import org.apache.xml.security.utils.Base64;
  */
 public class XMLCipherInput {
 
-    private static org.slf4j.Logger logger = 
+    private static org.slf4j.Logger log = 
         org.slf4j.LoggerFactory.getLogger(XMLCipherInput.class);
 
     /** The data we are working with */
@@ -115,8 +115,8 @@ public class XMLCipherInput {
 
         if (cipherData.getDataType() == CipherData.REFERENCE_TYPE) {
             // Fun time!
-            if (logger.isDebugEnabled()) {
-                logger.debug("Found a reference type CipherData");
+            if (log.isDebugEnabled()) {
+                log.debug("Found a reference type CipherData");
             }
             CipherReference cr = cipherData.getCipherReference();
 
@@ -135,20 +135,20 @@ public class XMLCipherInput {
             } 
 
             if (input != null) {
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Managed to resolve URI \"" + cr.getURI() + "\"");
+                if (log.isDebugEnabled()) {
+                    log.debug("Managed to resolve URI \"" + cr.getURI() + "\"");
                 }
             } else {
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Failed to resolve URI \"" + cr.getURI() + "\"");
+                if (log.isDebugEnabled()) {
+                    log.debug("Failed to resolve URI \"" + cr.getURI() + "\"");
                 }
             }
 
             // Lets see if there are any transforms
             Transforms transforms = cr.getTransforms();
             if (transforms != null) {
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Have transforms in cipher reference");
+                if (log.isDebugEnabled()) {
+                    log.debug("Have transforms in cipher reference");
                 }
                 try {
                     org.apache.xml.security.transforms.Transforms dsTransforms =
@@ -175,8 +175,8 @@ public class XMLCipherInput {
             throw new XMLEncryptionException("CipherData.getDataType() returned unexpected value");
         }
 
-        if (logger.isDebugEnabled()) {
-            logger.debug("Encrypted octets:\n" + base64EncodedEncryptedOctets);
+        if (log.isDebugEnabled()) {
+            log.debug("Encrypted octets:\n" + base64EncodedEncryptedOctets);
         }
 
         try {

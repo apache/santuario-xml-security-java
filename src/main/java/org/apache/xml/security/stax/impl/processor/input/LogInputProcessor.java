@@ -33,7 +33,7 @@ import java.io.StringWriter;
  */
 public class LogInputProcessor extends AbstractInputProcessor {
 
-    private static final transient Logger logger = LoggerFactory.getLogger(LogInputProcessor.class);
+    private static final transient Logger log = LoggerFactory.getLogger(LogInputProcessor.class);
 
     public LogInputProcessor(XMLSecurityProperties securityProperties) {
         super(securityProperties);
@@ -52,7 +52,7 @@ public class LogInputProcessor extends AbstractInputProcessor {
         XMLSecEvent xmlSecEvent = inputProcessorChain.processEvent();
         StringWriter stringWriter = new StringWriter();
         xmlSecEvent.writeAsEncodedUnicode(stringWriter);
-        logger.trace(stringWriter.toString());
+        log.trace(stringWriter.toString());
         return xmlSecEvent;
     }
 }

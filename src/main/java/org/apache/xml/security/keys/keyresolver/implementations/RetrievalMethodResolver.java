@@ -99,9 +99,9 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
              // which points to this element
              if (XMLUtils.elementIsInSignatureSpace(e, Constants._TAG_RETRIEVALMETHOD)) {
                  if (secureValidation) {
-                     String error = "Error: It is forbidden to have one RetrievalMethod "
-                         + "point to another with secure validation";
                      if (log.isDebugEnabled()) {
+                         String error = "Error: It is forbidden to have one RetrievalMethod "
+                             + "point to another with secure validation";
                          log.debug(error);
                      }
                      return null;
@@ -169,9 +169,9 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
             // which points to this element
             if (XMLUtils.elementIsInSignatureSpace(e, Constants._TAG_RETRIEVALMETHOD)) {
                 if (secureValidation) {
-                    String error = "Error: It is forbidden to have one RetrievalMethod "
-                        + "point to another with secure validation";
                     if (log.isDebugEnabled()) {
+                        String error = "Error: It is forbidden to have one RetrievalMethod "
+                            + "point to another with secure validation";
                         log.debug(error);
                     }
                     return null;

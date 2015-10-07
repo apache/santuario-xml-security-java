@@ -1454,7 +1454,7 @@ public class XMLCipher {
             log.debug("Decrypting key from previously loaded EncryptedKey...");
         }
 
-        if (cipherMode != UNWRAP_MODE && log.isDebugEnabled()) {
+        if (cipherMode != UNWRAP_MODE) {
             throw new XMLEncryptionException("empty", "XMLCipher unexpectedly not in UNWRAP_MODE...");
         }
 
@@ -3663,7 +3663,9 @@ public class XMLCipher {
                 result = "http://www.w3.org/2000/xmlns/".equals(
                     domResult.getNode().getFirstChild().getFirstChild().getAttributes().item(1).getNamespaceURI());
             }
-            log.debug("Have functional IdentityTransformer: " + result);
+            if (log.isDebugEnabled()) {
+                log.debug("Have functional IdentityTransformer: " + result);
+            }
             return result;
 
         } catch (Exception e) {

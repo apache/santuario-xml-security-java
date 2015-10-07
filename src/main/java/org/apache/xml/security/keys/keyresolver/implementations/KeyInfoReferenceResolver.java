@@ -188,7 +188,9 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
         }
 
         if (referentElement == null) {
-            log.debug("De-reference of KeyInfoReference URI returned null: " + uriAttr.getValue());
+            if (log.isDebugEnabled()) {
+                log.debug("De-reference of KeyInfoReference URI returned null: " + uriAttr.getValue());
+            }
             return null;
         }
 
