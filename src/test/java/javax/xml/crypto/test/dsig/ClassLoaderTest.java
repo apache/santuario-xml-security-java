@@ -39,6 +39,7 @@ public class ClassLoaderTest extends org.junit.Assert {
     private static org.slf4j.Logger log = 
         org.slf4j.LoggerFactory.getLogger(ClassLoaderTest.class);
 
+    @SuppressWarnings("resource")
     @org.junit.Test
     public void testMultipleLoaders() throws Exception {
 
@@ -62,11 +63,9 @@ public class ClassLoaderTest extends org.junit.Assert {
         Method m2 = c2.getMethod("dsig", (Class[]) null);
         m1.invoke(o1, (Object[]) null);
         m2.invoke(o2, (Object[]) null);
-        
-        uc1.close();
-        uc2.close();
     }
 
+    @SuppressWarnings("resource")
     @org.junit.Test
     public void testProviderMultipleLoaders() throws Exception {
         String baseDir = System.getProperty("basedir");
@@ -110,10 +109,9 @@ public class ClassLoaderTest extends org.junit.Assert {
         if (log.isDebugEnabled()) {
             log.debug("Elapsed: " + elapsed);
         }
-        
-        uc1.close();
     }
 
+    @SuppressWarnings("resource")
     @org.junit.Test
     public void testProviderMultipleLoadersTwo() throws Exception {
 
@@ -137,9 +135,6 @@ public class ClassLoaderTest extends org.junit.Assert {
         Method m2 = c2.getMethod("dsig", (Class[]) null);
         m1.invoke(o1, (Object[]) null);
         m2.invoke(o2, (Object[]) null);
-        
-        uc1.close();
-        uc2.close();
     }
     
 }
