@@ -22,6 +22,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Constructor;
 import java.security.Key;
 import java.security.KeyStore;
 import java.security.PrivateKey;
@@ -87,9 +88,23 @@ public class XMLEncryption11Test extends org.junit.Assert {
     @Before
     public void setUp() throws Exception {
 
-        Class<?> c = this.getClass().getClassLoader().loadClass("org.bouncycastle.jce.provider.BouncyCastleProvider");
-        if (null == Security.getProvider("BC")) {
-            Security.addProvider((Provider) c.newInstance());
+        //
+        // If the BouncyCastle provider is not installed, then try to load it 
+        // via reflection. If it is not available, then skip this test as it is
+        // required for GCM algorithm support
+        //
+        if (Security.getProvider("BC") == null) {
+            Constructor<?> cons = null;
+            try {
+                Class<?> c = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
+                cons = c.getConstructor(new Class[] {});
+            } catch (Exception e) {
+                //ignore
+            }
+            if (cons != null) {
+                Provider provider = (java.security.Provider)cons.newInstance();
+                Security.insertProviderAt(provider, 2);
+            }
         }
 
         org.apache.xml.security.Init.init();

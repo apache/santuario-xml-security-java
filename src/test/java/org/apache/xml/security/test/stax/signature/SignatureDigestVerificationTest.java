@@ -54,6 +54,7 @@ import org.w3c.dom.Document;
  */
 public class SignatureDigestVerificationTest extends AbstractSignatureVerificationTest {
 
+    private boolean bcInstalled;
     private XMLInputFactory xmlInputFactory;
     private TransformerFactory transformerFactory = TransformerFactory.newInstance();
     
@@ -78,12 +79,10 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
             } catch (Exception e) {
                 //ignore
             }
-            if (cons == null) {
-                // BouncyCastle is not available so just return
-                return;
-            } else {
+            if (cons != null) {
                 Provider provider = (java.security.Provider)cons.newInstance();
                 Security.insertProviderAt(provider, 2);
+                bcInstalled = true;
             }
         }
     }
@@ -340,6 +339,9 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
     
     @Test
     public void testRIPEMD160() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -389,6 +391,9 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
     
     @Test
     public void testWhirlpool() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -438,6 +443,9 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
     
     @Test
     public void testSHA3_224() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -487,6 +495,9 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
 
     @Test
     public void testSHA3_256() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -536,6 +547,9 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
     
     @Test
     public void testSHA3_384() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -585,6 +599,9 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
     
     @Test
     public void testSHA3_512() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(

@@ -53,6 +53,7 @@ import org.w3c.dom.NodeList;
 public class KeyWrapEncryptionAlgorithmTest extends org.junit.Assert {
 
     private KeyPair rsaKeyPair;
+    private boolean bcInstalled;
     
     static {
         org.apache.xml.security.Init.init();
@@ -71,12 +72,10 @@ public class KeyWrapEncryptionAlgorithmTest extends org.junit.Assert {
             } catch (Exception e) {
                 //ignore
             }
-            if (cons == null) {
-                // BouncyCastle is not available so just return
-                return;
-            } else {
+            if (cons != null) {
                 Provider provider = (java.security.Provider)cons.newInstance();
                 Security.insertProviderAt(provider, 2);
+                bcInstalled = true;
             }
         }
         
@@ -222,13 +221,11 @@ public class KeyWrapEncryptionAlgorithmTest extends org.junit.Assert {
         
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("DESede");
-        keygen.init(192);
         SecretKey key = keygen.generateKey();
         
         // Set up the Key Wrapping Key
         XMLCipher cipher = XMLCipher.getInstance(XMLCipher.TRIPLEDES_KeyWrap);
         keygen = KeyGenerator.getInstance("DESede");
-        keygen.init(192);
         SecretKey keyWrappingKey = keygen.generateKey();
         cipher.init(XMLCipher.WRAP_MODE, keyWrappingKey);
         EncryptedKey encryptedKey = cipher.encryptKey(document, key);
@@ -263,7 +260,6 @@ public class KeyWrapEncryptionAlgorithmTest extends org.junit.Assert {
         
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("DESede");
-        keygen.init(192);
         SecretKey key = keygen.generateKey();
         
         // Set up the Key Wrapping Key
@@ -301,7 +297,6 @@ public class KeyWrapEncryptionAlgorithmTest extends org.junit.Assert {
         
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("DESede");
-        keygen.init(192);
         SecretKey key = keygen.generateKey();
         
         // Set up the Key Wrapping Key
@@ -339,7 +334,6 @@ public class KeyWrapEncryptionAlgorithmTest extends org.junit.Assert {
         
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("DESede");
-        keygen.init(192);
         SecretKey key = keygen.generateKey();
         
         // Set up the Key Wrapping Key
@@ -368,6 +362,9 @@ public class KeyWrapEncryptionAlgorithmTest extends org.junit.Assert {
     
     @org.junit.Test
     public void testCamellia128KW() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         // Read in plaintext document
         InputStream sourceDocument = 
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -409,6 +406,9 @@ public class KeyWrapEncryptionAlgorithmTest extends org.junit.Assert {
     
     @org.junit.Test
     public void testCamellia192KW() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         // Read in plaintext document
         InputStream sourceDocument = 
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -450,6 +450,9 @@ public class KeyWrapEncryptionAlgorithmTest extends org.junit.Assert {
     
     @org.junit.Test
     public void testCamellia256KW() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         // Read in plaintext document
         InputStream sourceDocument = 
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -491,6 +494,9 @@ public class KeyWrapEncryptionAlgorithmTest extends org.junit.Assert {
     
     @org.junit.Test
     public void testSEED128KW() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         // Read in plaintext document
         InputStream sourceDocument = 
                 this.getClass().getClassLoader().getResourceAsStream(

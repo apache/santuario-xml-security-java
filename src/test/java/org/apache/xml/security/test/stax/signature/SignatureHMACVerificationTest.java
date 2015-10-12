@@ -52,6 +52,7 @@ import org.w3c.dom.Document;
  */
 public class SignatureHMACVerificationTest extends AbstractSignatureVerificationTest {
 
+    private boolean bcInstalled;
     private XMLInputFactory xmlInputFactory;
     private TransformerFactory transformerFactory = TransformerFactory.newInstance();
     
@@ -76,12 +77,10 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
             } catch (Exception e) {
                 //ignore
             }
-            if (cons == null) {
-                // BouncyCastle is not available so just return
-                return;
-            } else {
+            if (cons != null) {
                 Provider provider = (java.security.Provider)cons.newInstance();
                 Security.insertProviderAt(provider, 2);
+                bcInstalled = true;
             }
         }
     }
@@ -308,6 +307,9 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
     
     @Test
     public void testRIPEMD160() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(

@@ -63,6 +63,7 @@ public class KeyWrapEncryptionCreationTest extends org.junit.Assert {
 
     private XMLInputFactory xmlInputFactory;
     private KeyPair rsaKeyPair;
+    private boolean bcInstalled;
 
     @Before
     public void setUp() throws Exception {
@@ -83,12 +84,10 @@ public class KeyWrapEncryptionCreationTest extends org.junit.Assert {
             } catch (Exception e) {
                 //ignore
             }
-            if (cons == null) {
-                // BouncyCastle is not available so just return
-                return;
-            } else {
+            if (cons != null) {
                 Provider provider = (java.security.Provider)cons.newInstance();
                 Security.insertProviderAt(provider, 2);
+                bcInstalled = true;
             }
         }
         
@@ -308,7 +307,6 @@ public class KeyWrapEncryptionCreationTest extends org.junit.Assert {
         
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("DESede");
-        keygen.init(192);
         SecretKey key = keygen.generateKey();
         properties.setEncryptionKey(key);
         String algorithm = "http://www.w3.org/2001/04/xmlenc#tripledes-cbc";
@@ -316,7 +314,6 @@ public class KeyWrapEncryptionCreationTest extends org.junit.Assert {
         
         // Set up the Key Wrapping Key
         keygen = KeyGenerator.getInstance("DESede");
-        keygen.init(192);
         SecretKey keyWrappingKey = keygen.generateKey();
         String wrappingAlgorithm = "http://www.w3.org/2001/04/xmlenc#kw-tripledes";
         properties.setEncryptionKeyTransportAlgorithm(wrappingAlgorithm);
@@ -374,7 +371,6 @@ public class KeyWrapEncryptionCreationTest extends org.junit.Assert {
         
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("DESede");
-        keygen.init(192);
         SecretKey key = keygen.generateKey();
         properties.setEncryptionKey(key);
         String algorithm = "http://www.w3.org/2001/04/xmlenc#tripledes-cbc";
@@ -438,7 +434,6 @@ public class KeyWrapEncryptionCreationTest extends org.junit.Assert {
         
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("DESede");
-        keygen.init(192);
         SecretKey key = keygen.generateKey();
         properties.setEncryptionKey(key);
         String algorithm = "http://www.w3.org/2001/04/xmlenc#tripledes-cbc";
@@ -502,7 +497,6 @@ public class KeyWrapEncryptionCreationTest extends org.junit.Assert {
         
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("DESede");
-        keygen.init(192);
         SecretKey key = keygen.generateKey();
         properties.setEncryptionKey(key);
         String algorithm = "http://www.w3.org/2001/04/xmlenc#tripledes-cbc";
@@ -558,6 +552,9 @@ public class KeyWrapEncryptionCreationTest extends org.junit.Assert {
     
     @Test
     public void testCamellia128KW() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
@@ -624,6 +621,9 @@ public class KeyWrapEncryptionCreationTest extends org.junit.Assert {
     
     @Test
     public void testCamellia192KW() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
@@ -690,6 +690,9 @@ public class KeyWrapEncryptionCreationTest extends org.junit.Assert {
     
     @Test
     public void testCamellia256KW() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
@@ -756,6 +759,9 @@ public class KeyWrapEncryptionCreationTest extends org.junit.Assert {
     
     @Test
     public void testSEED128KW() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();

@@ -91,10 +91,7 @@ public class XMLEncryption11Test extends org.junit.Assert {
             } catch (Exception e) {
                 //ignore
             }
-            if (cons == null) {
-                // BouncyCastle is not available so just return
-                return;
-            } else {
+            if (cons != null) {
                 Provider provider = (java.security.Provider)cons.newInstance();
                 Security.insertProviderAt(provider, 2);
             }

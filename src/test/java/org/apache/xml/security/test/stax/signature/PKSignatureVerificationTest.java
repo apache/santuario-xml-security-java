@@ -52,6 +52,7 @@ import org.w3c.dom.Document;
  */
 public class PKSignatureVerificationTest extends AbstractSignatureVerificationTest {
 
+    private boolean bcInstalled;
     private XMLInputFactory xmlInputFactory;
     private TransformerFactory transformerFactory = TransformerFactory.newInstance();
     private KeyPair rsaKeyPair, ecKeyPair;
@@ -77,12 +78,10 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
             } catch (Exception e) {
                 //ignore
             }
-            if (cons == null) {
-                // BouncyCastle is not available so just return
-                return;
-            } else {
+            if (cons != null) {
                 Provider provider = (java.security.Provider)cons.newInstance();
                 Security.insertProviderAt(provider, 2);
+                bcInstalled = true;
             }
         }
         
@@ -252,6 +251,9 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
     
     @Test
     public void testRSA_RIPEMD160() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -290,6 +292,9 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
     
     @Test
     public void testRSA_SHA1_MGF1() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -328,6 +333,9 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
     
     @Test
     public void testRSA_SHA224_MGF1() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -366,6 +374,9 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
     
     @Test
     public void testRSA_SHA256_MGF1() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -404,6 +415,9 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
     
     @Test
     public void testRSA_SHA384_MGF1() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -442,6 +456,9 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
     
     @Test
     public void testRSA_SHA512_MGF1() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -670,6 +687,9 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
     
     @Test
     public void testECDSA_RIPEMD160() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(

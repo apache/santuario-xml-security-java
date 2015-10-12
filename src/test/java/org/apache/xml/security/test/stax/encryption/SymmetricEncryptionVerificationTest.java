@@ -66,6 +66,7 @@ import org.w3c.dom.NodeList;
  */
 public class SymmetricEncryptionVerificationTest extends org.junit.Assert {
 
+    private boolean bcInstalled;
     private XMLInputFactory xmlInputFactory;
     private TransformerFactory transformerFactory = TransformerFactory.newInstance();
     
@@ -88,12 +89,10 @@ public class SymmetricEncryptionVerificationTest extends org.junit.Assert {
             } catch (Exception e) {
                 //ignore
             }
-            if (cons == null) {
-                // BouncyCastle is not available so just return
-                return;
-            } else {
+            if (cons != null) {
                 Provider provider = (java.security.Provider)cons.newInstance();
                 Security.insertProviderAt(provider, 2);
+                bcInstalled = true;
             }
         }
     }
@@ -414,7 +413,6 @@ public class SymmetricEncryptionVerificationTest extends org.junit.Assert {
         
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("DESede");
-        keygen.init(192);
         SecretKey key = keygen.generateKey();
         
         // Encrypt using DOM
@@ -455,6 +453,9 @@ public class SymmetricEncryptionVerificationTest extends org.junit.Assert {
     
     @Test
     public void testSEED_128() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         // Read in plaintext document
         InputStream sourceDocument = 
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -505,6 +506,9 @@ public class SymmetricEncryptionVerificationTest extends org.junit.Assert {
     
     @Test
     public void testCAMELLIA_128() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         // Read in plaintext document
         InputStream sourceDocument = 
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -555,6 +559,9 @@ public class SymmetricEncryptionVerificationTest extends org.junit.Assert {
     
     @Test
     public void testCAMELLIA_192() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         // Read in plaintext document
         InputStream sourceDocument = 
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -605,6 +612,9 @@ public class SymmetricEncryptionVerificationTest extends org.junit.Assert {
     
     @Test
     public void testCAMELLIA_256() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         // Read in plaintext document
         InputStream sourceDocument = 
                 this.getClass().getClassLoader().getResourceAsStream(

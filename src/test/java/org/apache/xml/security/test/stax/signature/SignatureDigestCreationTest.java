@@ -52,6 +52,7 @@ import org.junit.Test;
  * A set of test-cases for Signature creation with various digest algorithms
  */
 public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
+    private boolean bcInstalled;
     
     public SignatureDigestCreationTest() throws Exception {
         //
@@ -66,12 +67,10 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
             } catch (Exception e) {
                 //ignore
             }
-            if (cons == null) {
-                // BouncyCastle is not available so just return
-                return;
-            } else {
+            if (cons != null) {
                 Provider provider = (java.security.Provider)cons.newInstance();
                 Security.insertProviderAt(provider, 2);
+                bcInstalled = true;
             }
         }
     }
@@ -348,6 +347,9 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
     
     @Test
     public void testRIPEMD160() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
@@ -401,6 +403,9 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
     
     @Test
     public void testWhirlpool() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
@@ -454,6 +459,9 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
     
     @Test
     public void testSHA3_224() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
@@ -507,6 +515,9 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
     
     @Test
     public void testSHA3_256() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
@@ -560,6 +571,9 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
     
     @Test
     public void testSHA3_384() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
@@ -613,6 +627,9 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
     
     @Test
     public void testSHA3_512() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();

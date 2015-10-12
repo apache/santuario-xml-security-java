@@ -49,6 +49,7 @@ import org.w3c.dom.NodeList;
 public class PKSignatureAlgorithmTest extends org.junit.Assert {
     
     private KeyPair rsaKeyPair, ecKeyPair;
+    private boolean bcInstalled;
 
     static {
         org.apache.xml.security.Init.init();
@@ -67,12 +68,10 @@ public class PKSignatureAlgorithmTest extends org.junit.Assert {
             } catch (Exception e) {
                 //ignore
             }
-            if (cons == null) {
-                // BouncyCastle is not available so just return
-                return;
-            } else {
+            if (cons != null) {
                 Provider provider = (java.security.Provider)cons.newInstance();
                 Security.insertProviderAt(provider, 2);
+                bcInstalled = true;
             }
         }
         
@@ -192,6 +191,9 @@ public class PKSignatureAlgorithmTest extends org.junit.Assert {
     
     @org.junit.Test
     public void testRSA_RIPEMD160() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         // Read in plaintext document
         InputStream sourceDocument = 
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -209,6 +211,9 @@ public class PKSignatureAlgorithmTest extends org.junit.Assert {
     
     @org.junit.Test
     public void testRSA_SHA1_MGF1() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         // Read in plaintext document
         InputStream sourceDocument = 
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -226,6 +231,9 @@ public class PKSignatureAlgorithmTest extends org.junit.Assert {
     
     @org.junit.Test
     public void testRSA_SHA224_MGF1() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         // Read in plaintext document
         InputStream sourceDocument = 
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -243,6 +251,9 @@ public class PKSignatureAlgorithmTest extends org.junit.Assert {
     
     @org.junit.Test
     public void testRSA_SHA256_MGF1() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         // Read in plaintext document
         InputStream sourceDocument = 
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -260,6 +271,9 @@ public class PKSignatureAlgorithmTest extends org.junit.Assert {
     
     @org.junit.Test
     public void testRSA_SHA384_MGF1() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         // Read in plaintext document
         InputStream sourceDocument = 
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -277,6 +291,9 @@ public class PKSignatureAlgorithmTest extends org.junit.Assert {
     
     @org.junit.Test
     public void testRSA_SHA512_MGF1() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         // Read in plaintext document
         InputStream sourceDocument = 
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -379,6 +396,9 @@ public class PKSignatureAlgorithmTest extends org.junit.Assert {
     
     @org.junit.Test
     public void testECDSA_RIPEMD160() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         // Read in plaintext document
         InputStream sourceDocument = 
                 this.getClass().getClassLoader().getResourceAsStream(

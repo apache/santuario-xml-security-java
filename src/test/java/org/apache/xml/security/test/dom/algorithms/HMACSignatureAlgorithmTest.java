@@ -52,6 +52,8 @@ public class HMACSignatureAlgorithmTest extends org.junit.Assert {
         org.apache.xml.security.Init.init();
     }
     
+    private boolean bcInstalled;
+    
     public HMACSignatureAlgorithmTest() throws Exception {
         //
         // If the BouncyCastle provider is not installed, then try to load it 
@@ -65,12 +67,10 @@ public class HMACSignatureAlgorithmTest extends org.junit.Assert {
             } catch (Exception e) {
                 //ignore
             }
-            if (cons == null) {
-                // BouncyCastle is not available so just return
-                return;
-            } else {
+            if (cons != null) {
                 Provider provider = (java.security.Provider)cons.newInstance();
                 Security.insertProviderAt(provider, 2);
+                bcInstalled = true;
             }
         }
     }
@@ -208,6 +208,9 @@ public class HMACSignatureAlgorithmTest extends org.junit.Assert {
     
     @org.junit.Test
     public void testHMACRIPEMD160() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         // Read in plaintext document
         InputStream sourceDocument = 
                 this.getClass().getClassLoader().getResourceAsStream(

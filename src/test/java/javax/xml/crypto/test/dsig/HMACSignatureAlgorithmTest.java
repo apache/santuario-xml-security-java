@@ -57,6 +57,7 @@ public class HMACSignatureAlgorithmTest extends org.junit.Assert {
     private SignatureMethod hmacSha1, hmacSha224, hmacSha256, hmacSha384, hmacSha512, ripemd160;
     private XMLSignatureFactory fac;
     private DocumentBuilder db;
+    private boolean bcInstalled;
 
     static {
         Security.insertProviderAt
@@ -76,12 +77,10 @@ public class HMACSignatureAlgorithmTest extends org.junit.Assert {
             } catch (Exception e) {
                 //ignore
             }
-            if (cons == null) {
-                // BouncyCastle is not available so just return
-                return;
-            } else {
+            if (cons != null) {
                 Provider provider = (java.security.Provider)cons.newInstance();
                 Security.insertProviderAt(provider, 2);
+                bcInstalled = true;
             }
         }
         
@@ -141,6 +140,9 @@ public class HMACSignatureAlgorithmTest extends org.junit.Assert {
   
     @org.junit.Test
     public void testHMACRIPEMD160() throws Exception {
+        if (!bcInstalled) {
+            return;
+        }
         test_create_signature_enveloping(ripemd160, sha1, null,
                                          TestUtils.getSecretKey("testkey".getBytes("ASCII")), sks);
     }
