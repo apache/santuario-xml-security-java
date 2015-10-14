@@ -448,18 +448,18 @@ public class XMLSecurityStreamReader implements XMLStreamReader {
         switch (xmlSecEvent.getEventType()) {
             case ENTITY_REFERENCE:
                 ((EntityReference) xmlSecEvent).getDeclaration().getReplacementText().getChars(sourceStart, sourceStart + length, target, targetStart);
-                return sourceStart + length;
+                return length;
             case DTD:
                 ((DTD) xmlSecEvent).getDocumentTypeDeclaration().getChars(sourceStart, sourceStart + length, target, targetStart);
-                return sourceStart + length;
+                return length;
             case COMMENT:
                 ((Comment) xmlSecEvent).getText().getChars(sourceStart, sourceStart + length, target, targetStart);
-                return sourceStart + length;
+                return length;
             case CDATA:
             case SPACE:
             case CHARACTERS:
                 xmlSecEvent.asCharacters().getData().getChars(sourceStart, sourceStart + length, target, targetStart);
-                return sourceStart + length;
+                return length;
             default:
                 throw new IllegalStateException("Current state not TEXT");
         }
