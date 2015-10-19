@@ -76,11 +76,13 @@ public class CertsInFilesystemDirectoryResolver extends StorageResolverSpi {
         List<String> al = new ArrayList<String>();
         String[] names = certDir.list();
 
-        for (int i = 0; i < names.length; i++) {
-            String currentFileName = names[i];
-
-            if (currentFileName.endsWith(".crt")) {
-                al.add(names[i]);
+        if (names != null) {
+            for (int i = 0; i < names.length; i++) {
+                String currentFileName = names[i];
+    
+                if (currentFileName.endsWith(".crt")) {
+                    al.add(names[i]);
+                }
             }
         }
 
@@ -90,10 +92,6 @@ public class CertsInFilesystemDirectoryResolver extends StorageResolverSpi {
             cf = CertificateFactory.getInstance("X.509");
         } catch (CertificateException ex) {
             throw new StorageResolverException(ex);
-        }
-
-        if (cf == null) {
-            throw new StorageResolverException("empty", new Object[] {"No CertificateFactory available"});
         }
 
         for (int i = 0; i < al.size(); i++) {
@@ -159,10 +157,10 @@ public class CertsInFilesystemDirectoryResolver extends StorageResolverSpi {
     private static class FilesystemIterator implements Iterator<Certificate> {
 
         /** Field certs */
-        List<X509Certificate> certs = null;
+        private List<X509Certificate> certs = null;
 
         /** Field i */
-        int i;
+        private int i;
 
         /**
          * Constructor FilesystemIterator
