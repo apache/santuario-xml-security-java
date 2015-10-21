@@ -337,7 +337,7 @@ public final class DOMUtils {
         @Override
         public Iterator<Node> iterator() {
             return new Iterator<Node>() {
-                int index = 0;
+                private int index;
 
                 @Override
                 public void remove() {

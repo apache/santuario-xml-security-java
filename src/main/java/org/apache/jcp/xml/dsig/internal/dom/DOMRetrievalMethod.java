@@ -139,7 +139,7 @@ public final class DOMRetrievalMethod extends DOMStructure
         boolean secVal = Utils.secureValidation(context);
 
         // get Transforms, if specified
-        List<Transform> transforms = new ArrayList<Transform>();
+        List<Transform> newTransforms = new ArrayList<Transform>();
         Element transformsElem = DOMUtils.getFirstChildElement(rmElem);
 
         if (transformsElem != null) {
@@ -158,9 +158,9 @@ public final class DOMRetrievalMethod extends DOMStructure
                     throw new MarshalException("Invalid element name: " +
                                                name + ", expected Transform");
                 }
-                transforms.add
+                newTransforms.add
                     (new DOMTransform(transformElem, context, provider));
-                if (secVal && transforms.size() > DOMReference.MAXIMUM_TRANSFORM_COUNT) {
+                if (secVal && newTransforms.size() > DOMReference.MAXIMUM_TRANSFORM_COUNT) {
                     String error = "A maxiumum of " + DOMReference.MAXIMUM_TRANSFORM_COUNT + " " 
                         + "transforms per Reference are allowed with secure validation";
                     throw new MarshalException(error);
@@ -168,10 +168,10 @@ public final class DOMRetrievalMethod extends DOMStructure
                 transformElem = DOMUtils.getNextSiblingElement(transformElem);
             }
         }
-        if (transforms.isEmpty()) {
+        if (newTransforms.isEmpty()) {
             this.transforms = Collections.emptyList();
         } else {
-            this.transforms = Collections.unmodifiableList(transforms);
+            this.transforms = Collections.unmodifiableList(newTransforms);
         }
     }
 

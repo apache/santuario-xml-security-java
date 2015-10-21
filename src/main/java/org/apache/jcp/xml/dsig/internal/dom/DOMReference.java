@@ -196,13 +196,13 @@ public final class DOMReference extends DOMStructure
 
         // unmarshal Transforms, if specified
         Element nextSibling = DOMUtils.getFirstChildElement(refElem);
-        List<Transform> transforms = new ArrayList<Transform>(5);
+        List<Transform> newTransforms = new ArrayList<Transform>(MAXIMUM_TRANSFORM_COUNT);
         if (nextSibling.getLocalName().equals("Transforms")
             && XMLSignature.XMLNS.equals(nextSibling.getNamespaceURI())) {
             Element transformElem = DOMUtils.getFirstChildElement(nextSibling,
                                                                   "Transform",
                                                                   XMLSignature.XMLNS);
-            transforms.add(new DOMTransform(transformElem, context, provider));
+            newTransforms.add(new DOMTransform(transformElem, context, provider));
             transformElem = DOMUtils.getNextSiblingElement(transformElem);
             while (transformElem != null) {
                 String localName = transformElem.getLocalName();
@@ -212,9 +212,9 @@ public final class DOMReference extends DOMStructure
                         "Invalid element name: " + localName +
                         ", expected Transform");
                 }
-                transforms.add
+                newTransforms.add
                     (new DOMTransform(transformElem, context, provider));
-                if (secVal && transforms.size() > MAXIMUM_TRANSFORM_COUNT) {
+                if (secVal && newTransforms.size() > MAXIMUM_TRANSFORM_COUNT) {
                     String error = "A maxiumum of " + MAXIMUM_TRANSFORM_COUNT + " " 
                         + "transforms per Reference are allowed with secure validation";
                     throw new MarshalException(error);
@@ -262,7 +262,7 @@ public final class DOMReference extends DOMStructure
         this.type = DOMUtils.getAttributeValue(refElem, "Type");
         this.here = refElem.getAttributeNodeNS(null, "URI");
         this.refElem = refElem;
-        this.transforms = transforms;
+        this.transforms = newTransforms;
         this.allTransforms = transforms;
         this.appliedTransformData = null;
         this.provider = provider;

@@ -438,7 +438,7 @@ public abstract class DOMKeyValue<K extends PublicKey> extends BaseStructure imp
                 throw new MarshalException("ECKeyValue not supported",
                                            pae.getException());
             }
-            ECParameterSpec ecParams = null;
+            ECParameterSpec ellipticParams = null;
             Element curElem = DOMUtils.getFirstChildElement(kvtElem);
             if (curElem == null) {
                 throw new MarshalException("KeyValue must contain at least one type");
@@ -455,7 +455,7 @@ public abstract class DOMKeyValue<K extends PublicKey> extends BaseStructure imp
                 if (uri.startsWith("urn:oid:")) {
                     String oid = uri.substring("urn:oid:".length());
                     try {
-                        ecParams = getECParameterSpec(oid);
+                        ellipticParams = getECParameterSpec(oid);
                     } catch (GeneralSecurityException gse) {
                         throw new MarshalException(gse);
                     }
@@ -469,7 +469,7 @@ public abstract class DOMKeyValue<K extends PublicKey> extends BaseStructure imp
             ECPoint ecPoint = null;
             try {
                 Object[] args = new Object[] { Base64.decode(curElem),
-                                               ecParams.getCurve() };
+                                               ellipticParams.getCurve() };
                 ecPoint = (ECPoint)decodePoint.invoke(null, args);
             } catch (Base64DecodingException bde) {
                 throw new MarshalException("Invalid EC PublicKey", bde);
@@ -480,9 +480,9 @@ public abstract class DOMKeyValue<K extends PublicKey> extends BaseStructure imp
             }
 /*
                 ecPoint = sun.security.ec.ECParameters.decodePoint(
-                    Base64.decode(curElem), ecParams.getCurve());
+                    Base64.decode(curElem), ellipticParams.getCurve());
 */
-            ECPublicKeySpec spec = new ECPublicKeySpec(ecPoint, ecParams);
+            ECPublicKeySpec spec = new ECPublicKeySpec(ecPoint, ellipticParams);
             return (ECPublicKey) generatePublicKey(eckf, spec);
         }
 

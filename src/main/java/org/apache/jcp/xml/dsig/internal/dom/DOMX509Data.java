@@ -94,7 +94,7 @@ public final class DOMX509Data extends BaseStructure implements X509Data {
      */
     public DOMX509Data(Element xdElem) throws MarshalException {
         // get all children nodes
-        List<Object> content = new ArrayList<Object>();
+        List<Object> newContent = new ArrayList<Object>();
         Node firstChild = xdElem.getFirstChild();
         while (firstChild != null) {
             if (firstChild.getNodeType() == Node.ELEMENT_NODE) {
@@ -102,26 +102,26 @@ public final class DOMX509Data extends BaseStructure implements X509Data {
                 String localName = childElem.getLocalName();
                 String namespace = childElem.getNamespaceURI();
                 if (localName.equals("X509Certificate") && XMLSignature.XMLNS.equals(namespace)) {
-                    content.add(unmarshalX509Certificate(childElem));
+                    newContent.add(unmarshalX509Certificate(childElem));
                 } else if (localName.equals("X509IssuerSerial") && XMLSignature.XMLNS.equals(namespace)) {
-                    content.add(new DOMX509IssuerSerial(childElem));
+                    newContent.add(new DOMX509IssuerSerial(childElem));
                 } else if (localName.equals("X509SubjectName") && XMLSignature.XMLNS.equals(namespace)) {
-                    content.add(childElem.getFirstChild().getNodeValue());
+                    newContent.add(childElem.getFirstChild().getNodeValue());
                 } else if (localName.equals("X509SKI") && XMLSignature.XMLNS.equals(namespace)) {
                     try {
-                        content.add(Base64.decode(childElem));
+                        newContent.add(Base64.decode(childElem));
                     } catch (Base64DecodingException bde) {
                         throw new MarshalException("cannot decode X509SKI", bde);
                     }
                 } else if (localName.equals("X509CRL") && XMLSignature.XMLNS.equals(namespace)) {
-                    content.add(unmarshalX509CRL(childElem));
+                    newContent.add(unmarshalX509CRL(childElem));
                 } else {
-                    content.add(new javax.xml.crypto.dom.DOMStructure(childElem));
+                    newContent.add(new javax.xml.crypto.dom.DOMStructure(childElem));
                 }
             }
             firstChild = firstChild.getNextSibling();
         }
-        this.content = Collections.unmodifiableList(content);
+        this.content = Collections.unmodifiableList(newContent);
     }
 
     @Override

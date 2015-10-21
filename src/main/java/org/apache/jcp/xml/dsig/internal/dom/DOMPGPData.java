@@ -141,8 +141,8 @@ public final class DOMPGPData extends BaseStructure implements PGPData {
      */
     public DOMPGPData(Element pdElem) throws MarshalException {
         // get all children nodes
-        byte[] keyId = null;
-        byte[] keyPacket = null;
+        byte[] pgpKeyId = null;
+        byte[] pgpKeyPacket = null;
         
         List<XMLStructure> other = new ArrayList<XMLStructure>();
         Node firstChild = pdElem.getFirstChild();
@@ -153,9 +153,9 @@ public final class DOMPGPData extends BaseStructure implements PGPData {
                 String namespace = childElem.getNamespaceURI();
                 try {
                     if (localName.equals("PGPKeyID") && XMLSignature.XMLNS.equals(namespace)) {
-                        keyId = Base64.decode(childElem);
+                        pgpKeyId = Base64.decode(childElem);
                     } else if (localName.equals("PGPKeyPacket") && XMLSignature.XMLNS.equals(namespace)) {
-                        keyPacket = Base64.decode(childElem);
+                        pgpKeyPacket = Base64.decode(childElem);
                     } else {
                         other.add
                             (new javax.xml.crypto.dom.DOMStructure(childElem));
@@ -166,8 +166,8 @@ public final class DOMPGPData extends BaseStructure implements PGPData {
             }
             firstChild = firstChild.getNextSibling();
         }
-        this.keyId = keyId;
-        this.keyPacket = keyPacket;
+        this.keyId = pgpKeyId;
+        this.keyPacket = pgpKeyPacket;
         this.externalElements = Collections.unmodifiableList(other);
     }
 

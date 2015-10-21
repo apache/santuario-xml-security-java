@@ -101,7 +101,7 @@ public final class DOMXMLObject extends BaseStructure implements XMLObject {
         }
         this.mimeType = DOMUtils.getAttributeValue(objElem, "MimeType");
 
-        List<XMLStructure> content = new ArrayList<XMLStructure>();
+        List<XMLStructure> newContent = new ArrayList<XMLStructure>();
         Node firstChild = objElem.getFirstChild();
         while (firstChild != null) {
             if (firstChild.getNodeType() == Node.ELEMENT_NODE) {
@@ -109,17 +109,17 @@ public final class DOMXMLObject extends BaseStructure implements XMLObject {
                 String tag = childElem.getLocalName();
                 String namespace = childElem.getNamespaceURI();
                 if (tag.equals("Manifest") && XMLSignature.XMLNS.equals(namespace)) {
-                    content.add(new DOMManifest(childElem, context, provider));
+                    newContent.add(new DOMManifest(childElem, context, provider));
                 } else if (tag.equals("SignatureProperties") && XMLSignature.XMLNS.equals(namespace)) {
-                    content.add(new DOMSignatureProperties(childElem));
+                    newContent.add(new DOMSignatureProperties(childElem));
                 } else if (tag.equals("X509Data") && XMLSignature.XMLNS.equals(namespace)) {
-                    content.add(new DOMX509Data(childElem));
+                    newContent.add(new DOMX509Data(childElem));
                 } else {
                     //@@@FIXME: check for other dsig structures
-                    content.add(new javax.xml.crypto.dom.DOMStructure(firstChild));
+                    newContent.add(new javax.xml.crypto.dom.DOMStructure(firstChild));
                 }
             } else {
-                content.add(new javax.xml.crypto.dom.DOMStructure(firstChild));
+                newContent.add(new javax.xml.crypto.dom.DOMStructure(firstChild));
             }
             firstChild = firstChild.getNextSibling();
         }
@@ -130,14 +130,14 @@ public final class DOMXMLObject extends BaseStructure implements XMLObject {
         for (int idx = 0 ; idx < nnm.getLength() ; idx++) {
             Node nsDecl = nnm.item(idx);
             if (DOMUtils.isNamespace(nsDecl)) {
-                content.add(new javax.xml.crypto.dom.DOMStructure(nsDecl));
+                newContent.add(new javax.xml.crypto.dom.DOMStructure(nsDecl));
             }
         }
         
-        if (content.isEmpty()) {
+        if (newContent.isEmpty()) {
             this.content = Collections.emptyList();
         } else {
-            this.content = Collections.unmodifiableList(content);
+            this.content = Collections.unmodifiableList(newContent);
         }
     }
 

@@ -113,11 +113,11 @@ public class DOMSubTreeData implements NodeSetData {
          * @return a set of nodes (minus any comment nodes)
          */
         private List<Node> dereferenceSameDocumentURI(Node node) {
-            List<Node> nodeSet = new ArrayList<Node>();
+            List<Node> nodes = new ArrayList<Node>();
             if (node != null) {
-                nodeSetMinusCommentNodes(node, nodeSet, null);
+                nodeSetMinusCommentNodes(node, nodes, null);
             }
-            return nodeSet;
+            return nodes;
         }
 
         /**

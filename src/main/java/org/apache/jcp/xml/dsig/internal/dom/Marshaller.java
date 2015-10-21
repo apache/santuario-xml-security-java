@@ -46,6 +46,10 @@ import org.w3c.dom.Node;
  * Defines the individual marshallers for each of the different javax.xml.crypto structures.
  */
 class Marshaller {
+    
+    private Marshaller() {
+        // complete
+    }
 
     public static List<XmlWriter.ToMarshal<? extends XMLStructure>> getMarshallers() {
         return MARSHALLERS;

@@ -95,16 +95,16 @@ public final class DOMSignatureProperty extends BaseStructure
         }
         id = DOMUtils.getIdAttributeValue(propElem, "Id");
 
-        List<XMLStructure> content = new ArrayList<XMLStructure>();
+        List<XMLStructure> newContent = new ArrayList<XMLStructure>();
         Node firstChild = propElem.getFirstChild();
         while (firstChild != null) {
-            content.add(new javax.xml.crypto.dom.DOMStructure(firstChild));
+            newContent.add(new javax.xml.crypto.dom.DOMStructure(firstChild));
             firstChild = firstChild.getNextSibling();
         }
-        if (content.isEmpty()) {
+        if (newContent.isEmpty()) {
             throw new MarshalException("content cannot be empty");
         } else {
-            this.content = Collections.unmodifiableList(content);
+            this.content = Collections.unmodifiableList(newContent);
         }
     }
 

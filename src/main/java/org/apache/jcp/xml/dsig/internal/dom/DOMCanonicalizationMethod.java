@@ -123,13 +123,23 @@ public class DOMCanonicalizationMethod extends DOMTransform
 
         return result;
     }
-
+    
     private static boolean isC14Nalg(String alg) {
+        return isInclusiveC14Nalg(alg) || isExclusiveC14Nalg(alg) || isC14N11alg(alg);
+    }
+
+    private static boolean isInclusiveC14Nalg(String alg) {
         return alg.equals(CanonicalizationMethod.INCLUSIVE) 
-            || alg.equals(CanonicalizationMethod.INCLUSIVE_WITH_COMMENTS) 
-            || alg.equals(CanonicalizationMethod.EXCLUSIVE) 
-            || alg.equals(CanonicalizationMethod.EXCLUSIVE_WITH_COMMENTS) 
-            || alg.equals(DOMCanonicalXMLC14N11Method.C14N_11) 
+            || alg.equals(CanonicalizationMethod.INCLUSIVE_WITH_COMMENTS);
+    } 
+    
+    private static boolean isExclusiveC14Nalg(String alg) {
+        return alg.equals(CanonicalizationMethod.EXCLUSIVE) 
+            || alg.equals(CanonicalizationMethod.EXCLUSIVE_WITH_COMMENTS);
+    } 
+    
+    private static boolean isC14N11alg(String alg) {
+        return alg.equals(DOMCanonicalXMLC14N11Method.C14N_11) 
             || alg.equals(DOMCanonicalXMLC14N11Method.C14N_11_WITH_COMMENTS);
     } 
 }

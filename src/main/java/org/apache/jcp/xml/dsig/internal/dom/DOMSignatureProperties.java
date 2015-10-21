@@ -87,7 +87,7 @@ public final class DOMSignatureProperties extends BaseStructure
         // unmarshal attributes
         id = DOMUtils.getIdAttributeValue(propsElem, "Id");
 
-        List<SignatureProperty> properties = new ArrayList<SignatureProperty>();
+        List<SignatureProperty> newProperties = new ArrayList<SignatureProperty>();
         Node firstChild = propsElem.getFirstChild();
         while (firstChild != null) {
             if (firstChild.getNodeType() == Node.ELEMENT_NODE) {
@@ -97,14 +97,14 @@ public final class DOMSignatureProperties extends BaseStructure
                     throw new MarshalException("Invalid element name: " + namespace + ":" + name +
                                                ", expected SignatureProperty");
                 }
-                properties.add(new DOMSignatureProperty((Element)firstChild));
+                newProperties.add(new DOMSignatureProperty((Element)firstChild));
             }
             firstChild = firstChild.getNextSibling();
         }
-        if (properties.isEmpty()) {
+        if (newProperties.isEmpty()) {
             throw new MarshalException("properties cannot be empty");
         } else {
-            this.properties = Collections.unmodifiableList(properties);
+            this.properties = Collections.unmodifiableList(newProperties);
         }
     }
 

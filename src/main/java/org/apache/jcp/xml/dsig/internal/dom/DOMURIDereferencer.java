@@ -41,7 +41,7 @@ import javax.xml.crypto.dom.*;
  *
  * @author Sean Mullan
  */
-public class DOMURIDereferencer implements URIDereferencer {
+public final class DOMURIDereferencer implements URIDereferencer {
 
     static final URIDereferencer INSTANCE = new DOMURIDereferencer();
 

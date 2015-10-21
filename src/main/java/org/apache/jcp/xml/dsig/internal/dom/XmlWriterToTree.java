@@ -37,11 +37,21 @@ import org.w3c.dom.Text;
  * Manifestation of XmlWriter interface designed to write to a tree.
  */
 public class XmlWriterToTree implements XmlWriter {
+    
+    private Document factory;
+    
+    private Element createdElement;
+    
+    private Node nextSibling;
+    
+    private Node currentNode;
+
+    private List<XmlWriter.ToMarshal<? extends XMLStructure>> m_marshallers;
 
     public XmlWriterToTree(List<XmlWriter.ToMarshal<? extends XMLStructure>> marshallers, Node parent) {
         m_marshallers = marshallers;
-        m_factory = parent instanceof Document ? (Document)parent : parent.getOwnerDocument();
-        m_currentNode = parent;
+        factory = parent instanceof Document ? (Document)parent : parent.getOwnerDocument();
+        currentNode = parent;
     }
     
     /**
@@ -49,8 +59,8 @@ public class XmlWriterToTree implements XmlWriter {
      * @param newParent
      */
     public void resetToNewParent(Node newParent) {
-        m_currentNode = newParent;
-        m_createdElement = null;
+        currentNode = newParent;
+        createdElement = null;
     }
     
     /**
@@ -58,7 +68,7 @@ public class XmlWriterToTree implements XmlWriter {
      * @return the root element created with this writer.
      */
     public Element getCreatedElement() {
-        return m_createdElement;
+        return createdElement;
     }
     
     /**
@@ -72,29 +82,29 @@ public class XmlWriterToTree implements XmlWriter {
      */
     public XmlWriterToTree(List<XmlWriter.ToMarshal<? extends XMLStructure>> marshallers, Node parent, Node nextSibling) {
         this(marshallers, parent);
-        m_nextSibling = nextSibling;
+        this.nextSibling = nextSibling;
     }
     
     @Override
     public void writeStartElement(String prefix, String localName, String namespaceURI) {
-        Element newElem = m_factory.createElementNS(namespaceURI, DOMUtils.getQNameString(prefix, localName));
-        if (m_nextSibling != null) {
-            newElem = (Element)m_nextSibling.getParentNode().insertBefore(newElem, m_nextSibling);
+        Element newElem = factory.createElementNS(namespaceURI, DOMUtils.getQNameString(prefix, localName));
+        if (nextSibling != null) {
+            newElem = (Element)nextSibling.getParentNode().insertBefore(newElem, nextSibling);
         }
         else {
-            newElem = (Element)m_currentNode.appendChild(newElem);
+            newElem = (Element)currentNode.appendChild(newElem);
         }
-        m_nextSibling = null;
-        m_currentNode = newElem;
+        nextSibling = null;
+        currentNode = newElem;
         
-        if (m_createdElement == null) {
-            m_createdElement = newElem;
+        if (createdElement == null) {
+            createdElement = newElem;
         }
     }
 
     @Override
     public void writeEndElement() {
-        m_currentNode = m_currentNode.getParentNode();
+        currentNode = currentNode.getParentNode();
     }
 
     
@@ -117,15 +127,15 @@ public class XmlWriterToTree implements XmlWriter {
 
     @Override
     public void writeCharacters(String text) {
-        Text textNode = m_factory.createTextNode(text);
-        m_currentNode.appendChild(textNode);
+        Text textNode = factory.createTextNode(text);
+        currentNode.appendChild(textNode);
     }
     
 
     @Override
     public void writeComment(String text) {
-        Comment commentNode = m_factory.createComment(text);
-        m_currentNode.appendChild(commentNode);
+        Comment commentNode = factory.createComment(text);
+        currentNode.appendChild(commentNode);
     }
 
     @Override
@@ -133,14 +143,14 @@ public class XmlWriterToTree implements XmlWriter {
 
         Attr result = null;
         if (value != null) {
-            result = m_factory.createAttributeNS(namespaceURI, DOMUtils.getQNameString(prefix, localName));
+            result = factory.createAttributeNS(namespaceURI, DOMUtils.getQNameString(prefix, localName));
             result.setTextContent(value);
-            if (! (m_currentNode instanceof Element)) {
+            if (! (currentNode instanceof Element)) {
                 throw new IllegalStateException(
                         "Attempting to add an attribute to something other than an element node. Node is "
-                                + m_currentNode.toString());
+                                + currentNode.toString());
             }
-            ( (Element)m_currentNode).setAttributeNodeNS(result);
+            ( (Element)currentNode).setAttributeNodeNS(result);
         }
         return result;
     }
@@ -151,18 +161,18 @@ public class XmlWriterToTree implements XmlWriter {
             return;
         }
         Attr newAttr = writeAttribute(prefix, namespaceURI, localName, value);
-        ( (Element)m_currentNode).setIdAttributeNode(newAttr, true);
+        ( (Element)currentNode).setIdAttributeNode(newAttr, true);
     }
 
 
     @Override
     public String getCurrentLocalName() {
-        return m_currentNode.getLocalName();
+        return currentNode.getLocalName();
     }
 
     @Override
     public XMLStructure getCurrentNodeAsStructure() {
-        return new DOMStructure(m_currentNode);
+        return new DOMStructure(currentNode);
     }
 
     @Override
@@ -180,14 +190,5 @@ public class XmlWriterToTree implements XmlWriter {
         throw new IllegalArgumentException("Unable to marshal unexpected object of class " + toMarshal.getClass().toString());
     }
 
-    private Document m_factory;
-    
-    private Element m_createdElement;
-    
-    private Node m_nextSibling;
-    
-    private Node m_currentNode;
-
-    private List<XmlWriter.ToMarshal<? extends XMLStructure>> m_marshallers;
     
 }
