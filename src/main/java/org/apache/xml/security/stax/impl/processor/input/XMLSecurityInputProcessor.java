@@ -43,10 +43,20 @@ public class XMLSecurityInputProcessor extends AbstractInputProcessor {
     private InternalBufferProcessor internalBufferProcessor;
     private boolean signatureElementFound = false;
     private boolean encryptedDataElementFound = false;
+    private boolean decryptOnly = false;
 
     public XMLSecurityInputProcessor(XMLSecurityProperties securityProperties) {
         super(securityProperties);
         setPhase(XMLSecurityConstants.Phase.POSTPROCESSING);
+
+        // For decrypt only mode we misuse the actions that are normally only used for outbound processing.
+        // In decrypt only mode we can save a lot of memory because we don't have to buffer anything and
+        // can process the document sequentially.
+        // for backward compatibility:
+        // If no actions are set (default behaviour) we do signature and decryption processing
+        // If the only action is XMLSecurityConstants.ENCRYPT then we only do decryption and skip signature processing
+        decryptOnly = securityProperties.getActions().size() == 1 &&
+                securityProperties.getActions().contains(XMLSecurityConstants.ENCRYPT);
     }
 
     @Override
@@ -60,7 +70,7 @@ public class XMLSecurityInputProcessor extends AbstractInputProcessor {
             throws XMLStreamException, XMLSecurityException {
 
         //add the buffer processor (for signature) when this processor is called for the first time
-        if (internalBufferProcessor == null) {
+        if (!decryptOnly && internalBufferProcessor == null) {
             internalBufferProcessor = new InternalBufferProcessor(getSecurityProperties());
             inputProcessorChain.addProcessor(internalBufferProcessor);
         }
@@ -70,7 +80,7 @@ public class XMLSecurityInputProcessor extends AbstractInputProcessor {
             case XMLStreamConstants.START_ELEMENT:
                 final XMLSecStartElement xmlSecStartElement = xmlSecEvent.asStartElement();
 
-                if (xmlSecStartElement.getName().equals(XMLSecurityConstants.TAG_dsig_Signature)) {
+                if (!decryptOnly && xmlSecStartElement.getName().equals(XMLSecurityConstants.TAG_dsig_Signature)) {
                     signatureElementFound = true;
                     startIndexForProcessor = internalBufferProcessor.getXmlSecEventList().size() - 1;
                 } else if (xmlSecStartElement.getName().equals(XMLSecurityConstants.TAG_xenc_EncryptedData)) {
@@ -83,9 +93,11 @@ public class XMLSecurityInputProcessor extends AbstractInputProcessor {
                     decryptInputProcessor.addBeforeProcessor(XMLSecurityInputProcessor.InternalBufferProcessor.class.getName());
                     inputProcessorChain.addProcessor(decryptInputProcessor);
 
-                    final ArrayDeque<XMLSecEvent> xmlSecEventList = internalBufferProcessor.getXmlSecEventList();
-                    //remove the last event (EncryptedData)
-                    xmlSecEventList.pollFirst();
+                    if (!decryptOnly) {
+                        final ArrayDeque<XMLSecEvent> xmlSecEventList = internalBufferProcessor.getXmlSecEventList();
+                        //remove the last event (EncryptedData)
+                        xmlSecEventList.pollFirst();
+                    }
 
                     // temporary processor to return the EncryptedData element for the DecryptionProcessor
                     AbstractInputProcessor abstractInputProcessor = new AbstractInputProcessor(getSecurityProperties()) {
@@ -111,7 +123,7 @@ public class XMLSecurityInputProcessor extends AbstractInputProcessor {
                     xmlSecEvent = inputProcessorChain.processEvent();
 
                     //check if the decrypted element is a Signature element
-                    if (xmlSecEvent.isStartElement() &&
+                    if (!decryptOnly && xmlSecEvent.isStartElement() &&
                             xmlSecEvent.asStartElement().getName().equals(XMLSecurityConstants.TAG_dsig_Signature)) {
                         signatureElementFound = true;
                         startIndexForProcessor = internalBufferProcessor.getXmlSecEventList().size() - 1;
