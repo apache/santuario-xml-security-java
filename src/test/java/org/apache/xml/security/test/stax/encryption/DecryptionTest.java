@@ -1753,5 +1753,180 @@ public class DecryptionTest extends org.junit.Assert {
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 1);
     }
-    
+
+    @Test
+    public void testDecryptElementValidationInDecryptOnlyMode() throws Exception {
+        // Read in plaintext document
+        InputStream sourceDocument =
+                this.getClass().getClassLoader().getResourceAsStream(
+                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
+
+        // Set up the Key
+        SecretKey secretKey = generateSecretKey();
+
+        // Encrypt using DOM
+        List<String> localNames = new ArrayList<String>();
+        localNames.add("PaymentInfo");
+        encryptUsingDOM(
+                "http://www.w3.org/2001/04/xmlenc#tripledes-cbc", secretKey, null, null, document,
+                localNames, false
+        );
+
+        // Check the CreditCard encrypted ok
+        NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
+        Assert.assertEquals(nodeList.getLength(), 0);
+
+        // XMLUtils.outputDOM(document, System.out);
+
+        // Convert Document to a Stream Reader
+        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        transformer.transform(new DOMSource(document), new StreamResult(baos));
+        final XMLStreamReader xmlStreamReader =
+                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
+
+        // Decrypt
+        XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setDecryptionKey(secretKey);
+        properties.addAction(XMLSecurityConstants.ENCRYPT);
+        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        XMLStreamReader securityStreamReader =
+                inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
+
+        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+
+        // XMLUtils.outputDOM(document, System.out);
+
+        // Check the CreditCard decrypted ok
+        nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
+        Assert.assertEquals(nodeList.getLength(), 1);
+
+        // Check the SecurityEvents
+        checkEncryptedElementSecurityEvents(securityEventListener);
+        checkEncryptionToken(securityEventListener, null, secretKey,
+                SecurityTokenConstants.KeyIdentifier_NoKeyInfo , "");
+        checkEncryptionMethod(
+                securityEventListener, "http://www.w3.org/2001/04/xmlenc#tripledes-cbc", null);
+    }
+
+
+    @Test
+    public void testDecryptContentValidationInDecryptOnlyMode() throws Exception {
+        // Read in plaintext document
+        InputStream sourceDocument =
+                this.getClass().getClassLoader().getResourceAsStream(
+                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
+
+        // Set up the Key
+        SecretKey secretKey = generateSecretKey();
+
+        // Encrypt using DOM
+        List<String> localNames = new ArrayList<String>();
+        localNames.add("PaymentInfo");
+        encryptUsingDOM(
+                "http://www.w3.org/2001/04/xmlenc#tripledes-cbc", secretKey, null, null, document,
+                localNames, true
+        );
+
+        // Check the CreditCard encrypted ok
+        NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
+        Assert.assertEquals(nodeList.getLength(), 0);
+
+        // XMLUtils.outputDOM(document, System.out);
+
+        // Convert Document to a Stream Reader
+        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        transformer.transform(new DOMSource(document), new StreamResult(baos));
+        final XMLStreamReader xmlStreamReader =
+                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
+
+        // Decrypt
+        XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setDecryptionKey(secretKey);
+        properties.addAction(XMLSecurityConstants.ENCRYPT);
+        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        XMLStreamReader securityStreamReader =
+                inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
+
+        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+
+        // Check the CreditCard decrypted ok
+        nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
+        Assert.assertEquals(nodeList.getLength(), 1);
+
+        // Check the SecurityEvents
+        checkEncryptedContentSecurityEvents(securityEventListener);
+        checkEncryptionToken(securityEventListener, null, secretKey,
+                SecurityTokenConstants.KeyIdentifier_NoKeyInfo, "");
+        checkEncryptionMethod(
+                securityEventListener, "http://www.w3.org/2001/04/xmlenc#tripledes-cbc", null);
+    }
+
+    @Test
+    public void testDecryptWholeDocumentInDecryptOnlyMode() throws Exception {
+        // Read in plaintext document
+        InputStream sourceDocument =
+                this.getClass().getClassLoader().getResourceAsStream(
+                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
+
+        // Set up the Key
+        SecretKey secretKey = generateSecretKey();
+
+        // Encrypt using DOM
+        List<String> localNames = new ArrayList<String>();
+        localNames.add("PurchaseOrder");
+        encryptUsingDOM(
+                "http://www.w3.org/2001/04/xmlenc#tripledes-cbc", secretKey, null, null, document,
+                localNames, false
+        );
+
+        // Check the CreditCard encrypted ok
+        NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PurchaseOrder");
+        Assert.assertEquals(nodeList.getLength(), 0);
+
+        // XMLUtils.outputDOM(document, System.out);
+
+        // Convert Document to a Stream Reader
+        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        transformer.transform(new DOMSource(document), new StreamResult(baos));
+        final XMLStreamReader xmlStreamReader =
+                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
+
+        // Decrypt
+        XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setDecryptionKey(secretKey);
+        properties.addAction(XMLSecurityConstants.ENCRYPT);
+        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        XMLStreamReader securityStreamReader =
+                inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
+
+        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+
+        // Check the CreditCard decrypted ok
+        nodeList = document.getElementsByTagNameNS("urn:example:po", "PurchaseOrder");
+        Assert.assertEquals(nodeList.getLength(), 1);
+
+        // Check the SecurityEvents
+        EncryptedElementSecurityEvent encryptedElementEvent =
+                (EncryptedElementSecurityEvent) securityEventListener.getSecurityEvent(SecurityEventConstants.EncryptedElement);
+        assertNotNull(encryptedElementEvent);
+        assertEquals(encryptedElementEvent.getElementPath().size(), 1);
+        assertEquals("{urn:example:po}PurchaseOrder", encryptedElementEvent.getElementPath().get(0).toString());
+        assertTrue(encryptedElementEvent.isEncrypted());
+        checkEncryptionToken(securityEventListener, null, secretKey,
+                SecurityTokenConstants.KeyIdentifier_NoKeyInfo , "");
+        checkEncryptionMethod(
+                securityEventListener, "http://www.w3.org/2001/04/xmlenc#tripledes-cbc", null);
+    }
 }
