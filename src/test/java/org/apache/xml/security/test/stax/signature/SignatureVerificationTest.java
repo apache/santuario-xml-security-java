@@ -244,7 +244,6 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
     }
     
     @Test
-    @org.junit.Ignore
     public void testMultipleSignatures() throws Exception {
         // Read in plaintext document
         InputStream sourceDocument = 
@@ -297,7 +296,11 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         XMLStreamReader securityStreamReader = 
             inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        try {
+            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        } catch (XMLStreamException ex) {
+            Assert.assertEquals("Multiple signatures are not supported.", ex.getCause().getMessage());
+        }
     }
     
     @Test

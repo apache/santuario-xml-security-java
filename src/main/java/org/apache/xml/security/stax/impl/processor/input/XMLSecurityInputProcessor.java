@@ -81,6 +81,9 @@ public class XMLSecurityInputProcessor extends AbstractInputProcessor {
                 final XMLSecStartElement xmlSecStartElement = xmlSecEvent.asStartElement();
 
                 if (!decryptOnly && xmlSecStartElement.getName().equals(XMLSecurityConstants.TAG_dsig_Signature)) {
+                    if (signatureElementFound) {
+                        throw new XMLSecurityException("stax.multipleSignaturesNotSupported");
+                    }
                     signatureElementFound = true;
                     startIndexForProcessor = internalBufferProcessor.getXmlSecEventList().size() - 1;
                 } else if (xmlSecStartElement.getName().equals(XMLSecurityConstants.TAG_xenc_EncryptedData)) {
@@ -122,11 +125,15 @@ public class XMLSecurityInputProcessor extends AbstractInputProcessor {
                     inputProcessorChain.reset();
                     xmlSecEvent = inputProcessorChain.processEvent();
 
+                    // no need to catch a possible signature element here because the decrypt processor
+                    // is installed before this processor and therefore the decrypted signature element will
+                    // flow as normal through this processor.
+                    // for safety we do a check if this really true
                     //check if the decrypted element is a Signature element
                     if (!decryptOnly && xmlSecEvent.isStartElement() &&
-                            xmlSecEvent.asStartElement().getName().equals(XMLSecurityConstants.TAG_dsig_Signature)) {
-                        signatureElementFound = true;
-                        startIndexForProcessor = internalBufferProcessor.getXmlSecEventList().size() - 1;
+                            xmlSecEvent.asStartElement().getName().equals(XMLSecurityConstants.TAG_dsig_Signature) &&
+                            !signatureElementFound) {
+                        throw new XMLSecurityException("Internal error");
                     }
                 }
                 break;
