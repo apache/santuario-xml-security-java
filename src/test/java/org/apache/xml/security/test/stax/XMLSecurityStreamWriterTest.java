@@ -184,6 +184,20 @@ public class XMLSecurityStreamWriterTest extends org.junit.Assert {
         XMLAssert.assertXMLEqual(stdStringWriter.toString(), securityStringWriter.toString());
     }
 
+    // @see https://issues.apache.org/jira/browse/SANTUARIO-433
+    @Test
+    public void testNullPrefix() throws Exception {
+        StringWriter securityStringWriter = new StringWriter();
+        OutboundSecurityContextImpl securityContext = new OutboundSecurityContextImpl();
+        OutputProcessorChainImpl outputProcessorChain = new OutputProcessorChainImpl(securityContext);
+        outputProcessorChain.addProcessor(new EventWriterProcessor(securityStringWriter));
+        XMLSecurityStreamWriter xmlSecurityStreamWriter = new XMLSecurityStreamWriter(outputProcessorChain);
+
+        xmlSecurityStreamWriter.writeStartElement(null, "element", "http://element.ns");
+        xmlSecurityStreamWriter.writeDefaultNamespace("http://element.ns");
+        xmlSecurityStreamWriter.writeStartElement("childElement");
+    }
+
     class EventWriterProcessor implements OutputProcessor {
 
         private XMLEventWriter xmlEventWriter;
