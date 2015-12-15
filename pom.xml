@@ -111,12 +111,13 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
-                <version>3.4</version>
+                <version>3.5</version>
                 <configuration>
                     <linkXRef>false</linkXRef>
-                    <sourceEncoding>utf-8</sourceEncoding>
+                    <sourceEncoding>UTF-8</sourceEncoding>
                     <failOnViolation>true</failOnViolation>
                     <verbose>true</verbose>
+                    <!--<includeTests>true</includeTests>-->
                     <targetJdk>${targetJdk}</targetJdk>
                 </configuration>
                 <executions>
