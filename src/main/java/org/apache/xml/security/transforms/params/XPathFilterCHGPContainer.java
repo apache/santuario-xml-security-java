@@ -35,7 +35,7 @@ import org.w3c.dom.Node;
  */
 public class XPathFilterCHGPContainer extends ElementProxy implements TransformParam {
 
-    public static final String TRANSFORM_XPATHFILTERCHGP = 
+    public static final String TRANSFORM_XPATHFILTERCHGP =
         "http://www.nue.et-inf.uni-siegen.de/~geuer-pollmann/#xpathFilter";
 
     /** Field _ATT_FILTER_VALUE_INTERSECT */
@@ -109,13 +109,13 @@ public class XPathFilterCHGPContainer extends ElementProxy implements TransformP
 
             excludeButSearchElem.appendChild(
                 createText(indentXPathText(excludeButSearch)));
-            
+
             addReturnToSelf();
             appendSelf(excludeButSearchElem);
         }
 
         if (exclude != null && exclude.trim().length() > 0) {
-            Element excludeElem = 
+            Element excludeElem =
                 ElementProxy.createElementForFamily(
                    doc, this.getBaseNamespace(), XPathFilterCHGPContainer._TAG_EXCLUDE);
 
@@ -136,7 +136,7 @@ public class XPathFilterCHGPContainer extends ElementProxy implements TransformP
     static String indentXPathText(String xp) {
         if (xp.length() > 2 && !Character.isWhitespace(xp.charAt(0))) {
             return "\n" + xp + "\n";
-        } 
+        }
         return xp;
     }
 
@@ -196,7 +196,7 @@ public class XPathFilterCHGPContainer extends ElementProxy implements TransformP
             return "";
         }
 
-        Element xElem = 
+        Element xElem =
             XMLUtils.selectNode(
                 getElement().getFirstChild(), this.getBaseNamespace(), type, 0
             );

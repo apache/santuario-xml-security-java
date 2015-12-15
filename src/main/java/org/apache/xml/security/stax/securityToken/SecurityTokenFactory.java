@@ -39,7 +39,7 @@ public abstract class SecurityTokenFactory {
         if (securityTokenFactory == null) {
             String stf = ConfigurationProperties.getProperty("securityTokenFactory");
             if (stf == null) {
-                throw new XMLSecurityException("algorithm.ClassDoesNotExist", 
+                throw new XMLSecurityException("algorithm.ClassDoesNotExist",
                                                new Object[] {"null"});
             }
             Class<?> callingClass = ConfigurationProperties.getCallingClass();

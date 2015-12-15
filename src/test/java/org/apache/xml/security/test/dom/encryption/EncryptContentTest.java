@@ -54,7 +54,7 @@ public class EncryptContentTest extends org.junit.Assert {
         "    <serial>Y10</serial>\n" +
         "  </user>\n" +
         "</users>\n";
-    
+
     private static final String MULTIPLE_USER_DATA =
         "<users>\n" +
         "  <user>\n" +
@@ -87,7 +87,7 @@ public class EncryptContentTest extends org.junit.Assert {
         // 3DES encryption
 
         haveISOPadding = false;
-        String algorithmId = 
+        String algorithmId =
             JCEMapper.translateURItoJCEID(
                 org.apache.xml.security.utils.EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128
             );
@@ -128,20 +128,20 @@ public class EncryptContentTest extends org.junit.Assert {
         while (child != null && child.getNodeType() != Node.ELEMENT_NODE) {
             child = child.getNextSibling();
         }
-        
+
         // child should be EncryptedData, if not throw exception
         Element childElem = (Element) child;
         if (!childElem.getLocalName().equals("EncryptedData")) {
             // t.transform(new DOMSource(doc), new StreamResult(System.out));
             throw new Exception("Element content not replaced");
         }
-        
+
         // there shouldn't be any more children elements
         Node sibling = childElem.getNextSibling();
         while (sibling != null && sibling.getNodeType() != Node.ELEMENT_NODE) {
             sibling = sibling.getNextSibling();
         }
-        
+
         if (sibling != null) {
             // t.transform(new DOMSource(doc), new StreamResult(System.out));
             throw new Exception("Sibling element content not replaced");
@@ -149,7 +149,7 @@ public class EncryptContentTest extends org.junit.Assert {
 
         // t.transform(new DOMSource(doc), new StreamResult(System.out));
     }
-    
+
     /**
      * See SANTUARIO-301:
      * https://issues.apache.org/jira/browse/SANTUARIO-301
@@ -172,7 +172,7 @@ public class EncryptContentTest extends org.junit.Assert {
 
         EncryptedData encryptedData = dataCipher.getEncryptedData();
         encryptedData.setKeyInfo(keyInfo);
-        
+
         for (int i = 0; i < dataToEncrypt.getLength(); i++) {
             dataCipher.doFinal(doc,(Element) dataToEncrypt.item(i), true);
         }
@@ -180,5 +180,5 @@ public class EncryptContentTest extends org.junit.Assert {
         NodeList keyInfoList = doc.getElementsByTagNameNS(Constants.SignatureSpecNS, "KeyInfo");
         assertEquals(keyInfoList.getLength(), 2);
     }
-    
+
 }

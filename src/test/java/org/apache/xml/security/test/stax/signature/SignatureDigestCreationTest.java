@@ -53,10 +53,10 @@ import org.junit.Test;
  */
 public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
     private boolean bcInstalled;
-    
+
     public SignatureDigestCreationTest() throws Exception {
         //
-        // If the BouncyCastle provider is not installed, then try to load it 
+        // If the BouncyCastle provider is not installed, then try to load it
         // via reflection.
         //
         if (Security.getProvider("BC") == null) {
@@ -98,7 +98,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         properties.setSignatureKey(key);
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setSignatureCerts(new X509Certificate[]{cert});
-        
+
         String digestAlgorithm = "http://www.w3.org/2000/09/xmldsig#sha1";
 
         SecurePart securePart = new SecurePart(
@@ -132,7 +132,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
     }
-    
+
     @Test
     public void testSHA224() throws Exception {
         // Set up the Configuration
@@ -151,7 +151,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         properties.setSignatureKey(key);
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setSignatureCerts(new X509Certificate[]{cert});
-        
+
         String digestAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#sha224";
 
         SecurePart securePart = new SecurePart(
@@ -185,7 +185,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
     }
-    
+
     @Test
     public void testSHA256() throws Exception {
         // Set up the Configuration
@@ -204,7 +204,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         properties.setSignatureKey(key);
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setSignatureCerts(new X509Certificate[]{cert});
-        
+
         String digestAlgorithm = "http://www.w3.org/2001/04/xmlenc#sha256";
 
         SecurePart securePart = new SecurePart(
@@ -238,7 +238,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
     }
-    
+
     @Test
     public void testSHA384() throws Exception {
         // Set up the Configuration
@@ -257,7 +257,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         properties.setSignatureKey(key);
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setSignatureCerts(new X509Certificate[]{cert});
-        
+
         String digestAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#sha384";
 
         SecurePart securePart = new SecurePart(
@@ -291,7 +291,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
     }
-    
+
     @Test
     public void testSHA512() throws Exception {
         // Set up the Configuration
@@ -310,7 +310,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         properties.setSignatureKey(key);
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setSignatureCerts(new X509Certificate[]{cert});
-        
+
         String digestAlgorithm = "http://www.w3.org/2001/04/xmlenc#sha512";
 
         SecurePart securePart = new SecurePart(
@@ -344,7 +344,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
     }
-    
+
     @Test
     public void testRIPEMD160() throws Exception {
         if (!bcInstalled) {
@@ -366,7 +366,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         properties.setSignatureKey(key);
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setSignatureCerts(new X509Certificate[]{cert});
-        
+
         String digestAlgorithm = "http://www.w3.org/2001/04/xmlenc#ripemd160";
 
         SecurePart securePart = new SecurePart(
@@ -400,7 +400,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
     }
-    
+
     @Test
     public void testWhirlpool() throws Exception {
         if (!bcInstalled) {
@@ -422,7 +422,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         properties.setSignatureKey(key);
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setSignatureCerts(new X509Certificate[]{cert});
-        
+
         String digestAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#whirlpool";
 
         SecurePart securePart = new SecurePart(
@@ -456,7 +456,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
     }
-    
+
     @Test
     public void testSHA3_224() throws Exception {
         if (!bcInstalled) {
@@ -478,7 +478,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         properties.setSignatureKey(key);
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setSignatureCerts(new X509Certificate[]{cert});
-        
+
         String digestAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha3-224";
 
         SecurePart securePart = new SecurePart(
@@ -512,7 +512,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
     }
-    
+
     @Test
     public void testSHA3_256() throws Exception {
         if (!bcInstalled) {
@@ -534,7 +534,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         properties.setSignatureKey(key);
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setSignatureCerts(new X509Certificate[]{cert});
-        
+
         String digestAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha3-256";
 
         SecurePart securePart = new SecurePart(
@@ -568,7 +568,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
     }
-    
+
     @Test
     public void testSHA3_384() throws Exception {
         if (!bcInstalled) {
@@ -590,7 +590,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         properties.setSignatureKey(key);
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setSignatureCerts(new X509Certificate[]{cert});
-        
+
         String digestAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha3-384";
 
         SecurePart securePart = new SecurePart(
@@ -624,7 +624,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
     }
-    
+
     @Test
     public void testSHA3_512() throws Exception {
         if (!bcInstalled) {
@@ -646,7 +646,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         properties.setSignatureKey(key);
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setSignatureCerts(new X509Certificate[]{cert});
-        
+
         String digestAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha3-512";
 
         SecurePart securePart = new SecurePart(
@@ -680,5 +680,5 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
     }
-    
+
 }

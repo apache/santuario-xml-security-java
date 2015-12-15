@@ -47,7 +47,7 @@ package org.apache.xml.security.encryption;
  * @author Axl Mattheus
  */
 public interface EncryptedKey extends EncryptedType {
-    
+
     /**
      * Returns a hint as to which recipient this encrypted key value is intended for.
      *

@@ -84,24 +84,24 @@ public final class DOMManifest extends BaseStructure implements Manifest {
         throws MarshalException
     {
         this.id = DOMUtils.getIdAttributeValue(manElem, "Id");
-        
+
         boolean secVal = Utils.secureValidation(context);
-        
+
         Element refElem = DOMUtils.getFirstChildElement(manElem, "Reference", XMLSignature.XMLNS);
         List<Reference> refs = new ArrayList<Reference>();
         refs.add(new DOMReference(refElem, context, provider));
-        
+
         refElem = DOMUtils.getNextSiblingElement(refElem);
         while (refElem != null) {
             String localName = refElem.getLocalName();
             String namespace = refElem.getNamespaceURI();
-            if (!localName.equals("Reference") || !XMLSignature.XMLNS.equals(namespace)) {        
+            if (!localName.equals("Reference") || !XMLSignature.XMLNS.equals(namespace)) {
                 throw new MarshalException("Invalid element name: " +
                                            namespace + ":" + localName + ", expected Reference");
             }
             refs.add(new DOMReference(refElem, context, provider));
             if (secVal && refs.size() > DOMSignedInfo.MAXIMUM_REFERENCE_COUNT) {
-                String error = "A maxiumum of " + DOMSignedInfo.MAXIMUM_REFERENCE_COUNT + " " 
+                String error = "A maxiumum of " + DOMSignedInfo.MAXIMUM_REFERENCE_COUNT + " "
                     + "references per Manifest are allowed with secure validation";
                 throw new MarshalException(error);
             }
@@ -114,12 +114,12 @@ public final class DOMManifest extends BaseStructure implements Manifest {
     public String getId() {
         return id;
     }
-    
+
     @SuppressWarnings("unchecked")
     public static List<Reference> getManifestReferences(Manifest mf) {
         return mf.getReferences();
     }
-    
+
     @Override
     public List<Reference> getReferences() {
         return references;

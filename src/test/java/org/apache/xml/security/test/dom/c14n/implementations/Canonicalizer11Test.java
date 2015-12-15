@@ -45,7 +45,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- * Unit test for 
+ * Unit test for
  * {@link org.apache.xml.security.c14n.implementations.Canonicalizer11}
  */
 public class Canonicalizer11Test extends org.junit.Assert {
@@ -56,10 +56,10 @@ public class Canonicalizer11Test extends org.junit.Assert {
     static {
         org.apache.xml.security.Init.init();
     }
-    
+
     /** Field prefix */
     private String prefix;
-    
+
     public Canonicalizer11Test() {
         prefix = "src/test/resources/org/apache/xml/security/c14n/";
         String basedir = System.getProperty("basedir");
@@ -78,7 +78,7 @@ public class Canonicalizer11Test extends org.junit.Assert {
      * @throws ParserConfigurationException
      * @throws SAXException
      * @throws TransformerException
-     * @throws XPathExpressionException 
+     * @throws XPathExpressionException
      */
     @org.junit.Test
     public void test31withCommentsSubtree()
@@ -98,7 +98,7 @@ public class Canonicalizer11Test extends org.junit.Assert {
         assertTrue(descri,
                    c14nAndCompare(fileIn, fileRef, fileOut, c14nURI, validating, xpath));
     }
-    
+
     /**
      * 3.2 Whitespace in Document Content
      *
@@ -110,7 +110,7 @@ public class Canonicalizer11Test extends org.junit.Assert {
      * @throws SAXException
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-WhitespaceInContent">the example from the spec</A>
      * @throws TransformerException
-     * @throws XPathExpressionException 
+     * @throws XPathExpressionException
      */
     @org.junit.Test
     public void test32subtree()
@@ -140,7 +140,7 @@ public class Canonicalizer11Test extends org.junit.Assert {
      * @throws SAXException
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-SETags">the example from the spec</A>
      * @throws TransformerException
-     * @throws XPathExpressionException 
+     * @throws XPathExpressionException
      */
     @org.junit.Test
     public void test33subtree()
@@ -171,7 +171,7 @@ public class Canonicalizer11Test extends org.junit.Assert {
      * @see #test34validatingParser
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-Chars">the example from the spec</A>
      * @throws TransformerException
-     * @throws XPathExpressionException 
+     * @throws XPathExpressionException
      */
     @org.junit.Test
     public void test34()
@@ -202,7 +202,7 @@ public class Canonicalizer11Test extends org.junit.Assert {
      * @throws SAXException
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-Entities">the example from the spec</A>
      * @throws TransformerException
-     * @throws XPathExpressionException 
+     * @throws XPathExpressionException
      */
     @org.junit.Test
     public void test35subtree()
@@ -220,7 +220,7 @@ public class Canonicalizer11Test extends org.junit.Assert {
         assertTrue(descri,
                    c14nAndCompare(fileIn, fileRef, fileOut, c14nURI, validating, xpath));
     }
-    
+
     /**
      * 3.6 UTF-8 Encoding
      *
@@ -232,7 +232,7 @@ public class Canonicalizer11Test extends org.junit.Assert {
      * @throws SAXException
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-UTF8">the example from the spec</A>
      * @throws TransformerException
-     * @throws XPathExpressionException 
+     * @throws XPathExpressionException
      */
     @org.junit.Test
     public void test36subtree()
@@ -250,7 +250,7 @@ public class Canonicalizer11Test extends org.junit.Assert {
         assertTrue(descri,
                    c14nAndCompare(fileIn, fileRef, fileOut, c14nURI, validating, xpath));
     }
-    
+
     /**
      * 3.7 Document Subsets
      *
@@ -262,7 +262,7 @@ public class Canonicalizer11Test extends org.junit.Assert {
      * @throws SAXException
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-DocSubsets">the example from the spec</A>
      * @throws TransformerException
-     * @throws XPathExpressionException 
+     * @throws XPathExpressionException
      */
     @org.junit.Test
     public void test37()
@@ -289,7 +289,7 @@ public class Canonicalizer11Test extends org.junit.Assert {
         assertTrue(descri,
                    c14nAndCompare(fileIn, fileRef, fileOut, c14nURI, validating, xpath, namespace));
     }
-    
+
     /**
      * 3.8 Document Subsets and XML Attributes
      *
@@ -300,7 +300,7 @@ public class Canonicalizer11Test extends org.junit.Assert {
      * @throws ParserConfigurationException
      * @throws SAXException
      * @throws TransformerException
-     * @throws XPathExpressionException 
+     * @throws XPathExpressionException
      */
     @org.junit.Test
     public void test38()
@@ -329,25 +329,25 @@ public class Canonicalizer11Test extends org.junit.Assert {
     }
 
     private boolean c14nAndCompare(
-                                   String fileIn, 
-                                   String fileRef, 
-                                   String fileOut, 
-                                   String c14nURI, 
+                                   String fileIn,
+                                   String fileRef,
+                                   String fileOut,
+                                   String c14nURI,
                                    boolean validating,
                                    String xpath
                                ) throws IOException, FileNotFoundException, SAXException,
                                    ParserConfigurationException, CanonicalizationException,
                                    InvalidCanonicalizerException, TransformerException, XPathExpressionException {
         Map<String, String> namespace = new HashMap<String, String>();
-        return c14nAndCompare(fileIn, fileRef, fileOut, 
+        return c14nAndCompare(fileIn, fileRef, fileOut,
             c14nURI, validating, xpath, namespace);
     }
-    
+
     private boolean c14nAndCompare(
-        String fileIn, 
-        String fileRef, 
-        String fileOut, 
-        String c14nURI, 
+        String fileIn,
+        String fileRef,
+        String fileOut,
+        String c14nURI,
         boolean validating,
         String xpath,
         Map<String, String> namespaces
@@ -374,7 +374,7 @@ public class Canonicalizer11Test extends org.junit.Assert {
             c14nBytes = c14n.canonicalizeSubtree(doc);
         } else {
             NodeList nl = null;
-            
+
             XPathFactory xpf = XPathFactory.newInstance();
             XPath xPath = xpf.newXPath();
             DSNamespaceContext namespaceContext =
@@ -393,7 +393,7 @@ public class Canonicalizer11Test extends org.junit.Assert {
         // if everything is OK, result is true; we do a binary compare, byte by byte
         boolean result = java.security.MessageDigest.isEqual(refBytes, c14nBytes);
 
-        if (!result) {    	  
+        if (!result) {    	
             File f = new File(fileOut);
             if (!f.exists()) {
                 File parent = new File(f.getParent());

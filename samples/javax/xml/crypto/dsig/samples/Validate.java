@@ -33,9 +33,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
 /**
- * This is a simple example of validating an XML 
+ * This is a simple example of validating an XML
  * Signature using the JSR 105 API. It assumes the key needed to
- * validate the signature is contained in a KeyValue KeyInfo. 
+ * validate the signature is contained in a KeyValue KeyInfo.
  */
 public class Validate {
 
@@ -54,14 +54,14 @@ public class Validate {
             dbf.newDocumentBuilder().parse(new FileInputStream(args[0]));
 
         // Find Signature element
-        NodeList nl = 
+        NodeList nl =
             doc.getElementsByTagNameNS(XMLSignature.XMLNS, "Signature");
         if (nl.getLength() == 0) {
             throw new Exception("Cannot find Signature element");
         }
 
-        // Create a DOM XMLSignatureFactory that will be used to unmarshal the 
-        // document containing the XMLSignature 
+        // Create a DOM XMLSignatureFactory that will be used to unmarshal the
+        // document containing the XMLSignature
         String providerName = System.getProperty
             ("jsr105Provider", "org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI");
         XMLSignatureFactory fac = XMLSignatureFactory.getInstance("DOM",
@@ -71,22 +71,22 @@ public class Validate {
         // and document context
         DOMValidateContext valContext = new DOMValidateContext
             (new KeyValueKeySelector(), nl.item(0));
-        
+
         // unmarshal the XMLSignature
         XMLSignature signature = fac.unmarshalXMLSignature(valContext);
 
         // Validate the XMLSignature (generated above)
-        boolean coreValidity = signature.validate(valContext); 
+        boolean coreValidity = signature.validate(valContext);
 
         // Check core validation status
         if (coreValidity == false) {
-            System.err.println("Signature failed core validation"); 
+            System.err.println("Signature failed core validation");
             boolean sv = signature.getSignatureValue().validate(valContext);
             System.out.println("signature validation status: " + sv);
             // check the validation status of each Reference
             Iterator i = signature.getSignedInfo().getReferences().iterator();
             for (int j = 0; i.hasNext(); j++) {
-                boolean refValid = 
+                boolean refValid =
                     ((Reference) i.next()).validate(valContext);
                 System.out.println("ref[" + j + "] validity status: " + refValid);
             }

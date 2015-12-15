@@ -36,13 +36,13 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Element;
 
 /**
- * The <code>EncryptedKeyResolver</code> is not a generic resolver.  It can 
- * only be for specific instantiations, as the key being unwrapped will 
- * always be of a particular type and will always have been wrapped by 
+ * The <code>EncryptedKeyResolver</code> is not a generic resolver.  It can
+ * only be for specific instantiations, as the key being unwrapped will
+ * always be of a particular type and will always have been wrapped by
  * another key which needs to be recursively resolved.
  *
  * The <code>EncryptedKeyResolver</code> can therefore only be instantiated
- * with an algorithm.  It can also be instantiated with a key (the KEK) or 
+ * with an algorithm.  It can also be instantiated with a key (the KEK) or
  * will search the static KeyResolvers to find the appropriate key.
  *
  * @author Berin Lautenbach
@@ -116,7 +116,7 @@ public class EncryptedKeyResolver extends KeyResolverSpi {
         }
 
         SecretKey key = null;
-        boolean isEncryptedKey = 
+        boolean isEncryptedKey =
             XMLUtils.elementIsInEncryptionSpace(element, EncryptionConstants._TAG_ENCRYPTEDKEY);
         if (isEncryptedKey) {
             if (log.isDebugEnabled()) {

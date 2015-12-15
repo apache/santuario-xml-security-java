@@ -37,17 +37,17 @@ public class KeyStoreResolverTest extends org.junit.Assert {
 
     @org.junit.Test
     public void testKeyStoreResolver() throws Exception {
-        
+
         //
         // This test fails with the IBM JDK
         //
         if ("IBM Corporation".equals(System.getProperty("java.vendor"))) {
             return;
         }
-        
-        FileInputStream f = 
-            new FileInputStream(BASEDIR + SEP + "src/test/resources" + SEP + "org" + SEP + "apache" 
-                                + SEP + "xml" + SEP + "security" + SEP + "samples" 
+
+        FileInputStream f =
+            new FileInputStream(BASEDIR + SEP + "src/test/resources" + SEP + "org" + SEP + "apache"
+                                + SEP + "xml" + SEP + "security" + SEP + "samples"
                                 + SEP + "input" + SEP + "keystore2.jks");
 
         KeyStore ks = KeyStore.getInstance("JCEKS");

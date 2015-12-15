@@ -30,14 +30,14 @@ import org.xml.sax.InputSource;
  * This package is responsible for retrieving test vectors for our unit tests.
  *
  * @author Christian Geuer-Pollmann
- * $todo$ Currently, the test vectors are in the file system under the data/ directory. 
+ * $todo$ Currently, the test vectors are in the file system under the data/ directory.
  * It is planned to put them all into a single jar/zip which is deployed with the library.
  */
 public class TestVectorResolver implements EntityResolver {
 
     static org.slf4j.Logger log =
         org.slf4j.LoggerFactory.getLogger(TestVectorResolver.class);
-    
+
     /** Field alreadyInitialized */
     static boolean alreadyInitialized = false;
 
@@ -46,7 +46,7 @@ public class TestVectorResolver implements EntityResolver {
 
     /** Field vectors */
     static java.util.Map<String, byte[]> vectors = null;
-    
+
     static {
         org.apache.xml.security.Init.init();
         TestVectorResolver.init();
@@ -57,7 +57,7 @@ public class TestVectorResolver implements EntityResolver {
 
     /** Field _firstEntitySystemId */
     String _firstEntitySystemIdDirectory = null;
-    
+
     /**
      * Method init
      *
@@ -72,7 +72,7 @@ public class TestVectorResolver implements EntityResolver {
             TestVectorResolver.vectors = new java.util.HashMap<String, byte[]>(30);
 
             try {
-                zis = 
+                zis =
                     new java.util.zip.ZipInputStream(
                          Class.forName(thisClass).getResourceAsStream(testVectorFile)
                      );

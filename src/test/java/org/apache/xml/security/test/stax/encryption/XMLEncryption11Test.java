@@ -89,7 +89,7 @@ public class XMLEncryption11Test extends org.junit.Assert {
     public void setUp() throws Exception {
 
         //
-        // If the BouncyCastle provider is not installed, then try to load it 
+        // If the BouncyCastle provider is not installed, then try to load it
         // via reflection. If it is not available, then skip this test as it is
         // required for GCM algorithm support
         //

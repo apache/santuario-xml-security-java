@@ -93,7 +93,7 @@ public class CanonSubTree {
         xpath.setNamespaceContext(new DSNamespaceContext());
 
         String expression = "//ds:SignedInfo[1]";
-        Element signedInfo = 
+        Element signedInfo =
             (Element) xpath.evaluate(expression, doc, XPathConstants.NODE);
         byte outputBytes[] = c14n.canonicalizeSubtree(signedInfo);
 

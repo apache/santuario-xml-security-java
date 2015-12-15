@@ -40,24 +40,24 @@ public class SignaturePropertyTest extends org.junit.Assert {
         factory = XMLSignatureFactory.getInstance
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
     }
-    
+
     @SuppressWarnings("rawtypes")
     @org.junit.Test
     public void testConstructor() {
-        // test XMLSignatureFactory.newSignatureProperty(List, String, String) 
+        // test XMLSignatureFactory.newSignatureProperty(List, String, String)
         SignatureProperty prop;
 
         try {
-            prop = factory.newSignatureProperty(null, target, id); 
-            fail("Should raise a NPE for null content"); 
+            prop = factory.newSignatureProperty(null, target, id);
+            fail("Should raise a NPE for null content");
         } catch (NullPointerException npe) {
         } catch (Exception ex) {
             fail("Should raise a NPE for null content instead of " + ex);
         }
         List<XMLStructure> list = new ArrayList<XMLStructure>();
         try {
-            prop = factory.newSignatureProperty(list, target, id); 
-            fail("Should raise an IAE for empty content"); 
+            prop = factory.newSignatureProperty(list, target, id);
+            fail("Should raise an IAE for empty content");
         } catch (IllegalArgumentException iae) {
         } catch (Exception ex) {
             fail("Should raise an IAE for empty content instead of " + ex);
@@ -67,9 +67,9 @@ public class SignaturePropertyTest extends org.junit.Assert {
         List invalidList = new ArrayList();
         addEntryToRawList(invalidList, strEntry);
         try {
-            factory.newSignatureProperty(invalidList, target, id); 
+            factory.newSignatureProperty(invalidList, target, id);
             fail("Should raise a CCE for content containing " +
-                 "invalid, i.e. non-XMLStructure, entries"); 
+                 "invalid, i.e. non-XMLStructure, entries");
         } catch (ClassCastException cce) {
         } catch (Exception ex) {
             fail("Should raise a CCE for content with invalid entries " +
@@ -78,7 +78,7 @@ public class SignaturePropertyTest extends org.junit.Assert {
         list.add(new TestUtils.MyOwnXMLStructure());
         try {
             prop = factory.newSignatureProperty(list, null, id);
-            fail("Should raise a NPE for null target"); 
+            fail("Should raise a NPE for null target");
         } catch (NullPointerException npe) {
         } catch (Exception ex) {
             fail("Should raise a NPE for null target instead of " + ex);
@@ -106,13 +106,13 @@ public class SignaturePropertyTest extends org.junit.Assert {
         SignatureProperty prop = factory.newSignatureProperty
             (list, target, id);
         try {
-            prop.isFeatureSupported(null); 
-            fail("Should raise a NPE for null feature"); 
+            prop.isFeatureSupported(null);
+            fail("Should raise a NPE for null feature");
         } catch (NullPointerException npe) {}
 
         assertTrue(!prop.isFeatureSupported("not supported"));
     }
-    
+
     @SuppressWarnings({
      "unchecked", "rawtypes"
     })

@@ -57,9 +57,9 @@ import org.xml.sax.SAXException;
 public abstract class CanonicalizerBase extends CanonicalizerSpi {
     public static final String XML = "xml";
     public static final String XMLNS = "xmlns";
-    
+
     protected static final AttrCompare COMPARE = new AttrCompare();
-    
+
     // Make sure you clone the following mutable arrays before passing to
     // potentially untrusted objects such as OutputStreams.
     private static final byte[] END_PI = {'?','>'};
@@ -75,18 +75,18 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
     private static final byte[] END_TAG = {'<','/'};
     private static final byte[] AMP = {'&','a','m','p',';'};
     private static final byte[] EQUALS_STR = {'=','\"'};
-    
+
     protected static final int NODE_BEFORE_DOCUMENT_ELEMENT = -1;
     protected static final int NODE_NOT_BEFORE_OR_AFTER_DOCUMENT_ELEMENT = 0;
     protected static final int NODE_AFTER_DOCUMENT_ELEMENT = 1;
-    
+
     private List<NodeFilter> nodeFilter;
 
-    private boolean includeComments;  
+    private boolean includeComments;
     private Set<Node> xpathNodeSet;
 
     /**
-     * The node to be skipped/excluded from the DOM tree 
+     * The node to be skipped/excluded from the DOM tree
      * in subtree canonicalizations.
      */
     private Node excludeNode;
@@ -116,7 +116,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
         throws CanonicalizationException {
         return engineCanonicalizeSubTree(rootNode, (Node)null);
     }
-    
+
     /**
      * Method engineCanonicalizeXPathNodeSet
      * @inheritDoc
@@ -165,7 +165,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
             throw new CanonicalizationException(ex);
         }
     }
-    
+
     /**
      * @param writer The writer to set.
      */
@@ -175,7 +175,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
 
     /**
      * Canonicalizes a Subtree node.
-     * 
+     *
      * @param rootNode
      *            the root of the subtree to canonicalize
      * @param excludeNode
@@ -193,13 +193,13 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
                 //Fills the nssymbtable with the definitions of the parent of the root subnode
                 getParentNameSpaces((Element)rootNode, ns);
                 nodeLevel = NODE_NOT_BEFORE_OR_AFTER_DOCUMENT_ELEMENT;
-            }         
+            }
             this.canonicalizeSubTree(rootNode, ns, rootNode, nodeLevel);
             this.writer.flush();
             if (this.writer instanceof ByteArrayOutputStream) {
                 byte[] result = ((ByteArrayOutputStream)this.writer).toByteArray();
                 if (reset) {
-                    ((ByteArrayOutputStream)this.writer).reset();        
+                    ((ByteArrayOutputStream)this.writer).reset();
                 } else {
                     this.writer.close();
                 }
@@ -207,7 +207,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
             } else if (this.writer instanceof UnsyncByteArrayOutputStream) {
                 byte[] result = ((UnsyncByteArrayOutputStream)this.writer).toByteArray();
                 if (reset) {
-                    ((UnsyncByteArrayOutputStream)this.writer).reset();        
+                    ((UnsyncByteArrayOutputStream)this.writer).reset();
                 } else {
                     this.writer.close();
                 }
@@ -221,16 +221,16 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
             throw new CanonicalizationException(ex);
         } catch (IOException ex) {
             throw new CanonicalizationException(ex);
-        } 
+        }
     }
 
 
     /**
      * Method canonicalizeSubTree, this function is a recursive one.
-     *    
+     *
      * @param currentNode
-     * @param ns 
-     * @param endnode 
+     * @param ns
+     * @param endnode
      * @throws CanonicalizationException
      * @throws IOException
      */
@@ -242,7 +242,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
         }
         Node sibling = null;
         Node parentNode = null;    	
-        final OutputStream writer = this.writer;    
+        final OutputStream writer = this.writer;
         final Node excludeNode = this.excludeNode;
         final boolean includeComments = this.includeComments;
         Map<String, byte[]> cache = new HashMap<String, byte[]>();
@@ -253,7 +253,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
             case Node.NOTATION_NODE :
             case Node.ATTRIBUTE_NODE :
                 // illegal node type during traversal
-                throw new CanonicalizationException("empty", 
+                throw new CanonicalizationException("empty",
                                                     new Object[]{"illegal node type during traversal"});
 
             case Node.DOCUMENT_FRAGMENT_NODE :
@@ -281,7 +281,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
                 documentLevel = NODE_NOT_BEFORE_OR_AFTER_DOCUMENT_ELEMENT;
                 if (currentNode == excludeNode) {
                     break;
-                }      
+                }
                 Element currentElement = (Element)currentNode;
                 //Add a level to the nssymbtable. So latter can be pop-back.
                 ns.outputNodePush();
@@ -297,11 +297,11 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
                         outputAttrToWriter(attr.getNodeName(), attr.getNodeValue(), writer, cache);
                     }
                 }
-                writer.write('>');        
-                sibling = currentNode.getFirstChild(); 
+                writer.write('>');
+                sibling = currentNode.getFirstChild();
                 if (sibling == null) {
                     writer.write(END_TAG.clone());
-                    UtfHelpper.writeStringToUtf8(name, writer);        
+                    UtfHelpper.writeStringToUtf8(name, writer);
                     writer.write('>');
                     //We finished with this level, pop to the previous definitions.
                     ns.outputNodePop();
@@ -312,14 +312,14 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
                     parentNode = currentElement;
                 }
                 break;
-                
+
             case Node.DOCUMENT_TYPE_NODE :
             default :
                 break;
             }
             while (sibling == null && parentNode != null) {    		      		      			
                 writer.write(END_TAG.clone());
-                UtfHelpper.writeByte(((Element)parentNode).getTagName(), writer, cache);        
+                UtfHelpper.writeByte(((Element)parentNode).getTagName(), writer, cache);
                 writer.write('>');
                 //We finished with this level, pop to the previous definitions.
                 ns.outputNodePop();
@@ -332,19 +332,19 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
                     documentLevel = NODE_AFTER_DOCUMENT_ELEMENT;
                     parentNode = null;
                 }    			
-            }      
+            }
             if (sibling == null) {
                 return;
             }
-            currentNode = sibling;      
+            currentNode = sibling;
             sibling = currentNode.getNextSibling();
         } while(true);
     }
 
 
     private byte[] engineCanonicalizeXPathNodeSetInternal(Node doc)
-        throws CanonicalizationException {   
-        try { 
+        throws CanonicalizationException {
+        try {
             this.canonicalizeXPathNodeSet(doc, doc);
             this.writer.flush();
             if (this.writer instanceof ByteArrayOutputStream) {
@@ -358,7 +358,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
             } else if (this.writer instanceof UnsyncByteArrayOutputStream) {
                 byte[] result = ((UnsyncByteArrayOutputStream)this.writer).toByteArray();
                 if (reset) {
-                    ((UnsyncByteArrayOutputStream)this.writer).reset();        
+                    ((UnsyncByteArrayOutputStream)this.writer).reset();
                 } else {
                     this.writer.close();
                 }
@@ -371,11 +371,11 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
             throw new CanonicalizationException(ex);
         } catch (IOException ex) {
             throw new CanonicalizationException(ex);
-        } 
+        }
     }
 
     /**
-     * Canonicalizes all the nodes included in the currentNode and contained in the 
+     * Canonicalizes all the nodes included in the currentNode and contained in the
      * xpathNodeSet field.
      *
      * @param currentNode
@@ -388,7 +388,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
         if (isVisibleInt(currentNode) == -1) {
             return;
         }
-        boolean currentNodeIsVisible = false;	  
+        boolean currentNodeIsVisible = false;	
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         if (currentNode != null && Node.ELEMENT_NODE == currentNode.getNodeType()) {
             getParentNameSpaces((Element)currentNode, ns);
@@ -475,12 +475,12 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
                 if (currentNodeIsVisible) {
                     writer.write('>');
                 }
-                sibling = currentNode.getFirstChild(); 
+                sibling = currentNode.getFirstChild();
 
                 if (sibling == null) {
                     if (currentNodeIsVisible) {
                         writer.write(END_TAG.clone());
-                        UtfHelpper.writeByte(name, writer, cache);        
+                        UtfHelpper.writeByte(name, writer, cache);
                         writer.write('>');
                         //We finished with this level, pop to the previous definitions.
                         ns.outputNodePop();
@@ -494,15 +494,15 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
                     parentNode = currentElement;
                 }			
                 break;
-                
+
             case Node.DOCUMENT_TYPE_NODE :
             default :
                 break;
             }
-            while (sibling == null && parentNode != null) {    
+            while (sibling == null && parentNode != null) {
                 if (isVisible(parentNode)) {
                     writer.write(END_TAG.clone());
-                    UtfHelpper.writeByte(((Element)parentNode).getTagName(), writer, cache);        
+                    UtfHelpper.writeByte(((Element)parentNode).getTagName(), writer, cache);
                     writer.write('>');
                     //We finished with this level, pop to the previous definitions.
                     ns.outputNodePop();
@@ -513,20 +513,20 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
                     return;
                 }
                 sibling = parentNode.getNextSibling();
-                parentNode = parentNode.getParentNode();   
+                parentNode = parentNode.getParentNode();
                 if (parentNode == null || Node.ELEMENT_NODE != parentNode.getNodeType()) {
                     parentNode = null;
                     documentLevel = NODE_AFTER_DOCUMENT_ELEMENT;
                 }    			
-            }      
+            }
             if (sibling == null) {
                 return;
             }
-            currentNode = sibling;      
-            sibling = currentNode.getNextSibling();  
+            currentNode = sibling;
+            sibling = currentNode.getNextSibling();
         } while(true);
     }
-    
+
     protected int isVisibleDO(Node currentNode, int level) {
         if (nodeFilter != null) {
             Iterator<NodeFilter> it = nodeFilter.iterator();
@@ -542,7 +542,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
         }
         return 1;
     }
-    
+
     protected int isVisibleInt(Node currentNode) {
         if (nodeFilter != null) {
             Iterator<NodeFilter> it = nodeFilter.iterator();
@@ -584,7 +584,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
             Attr attribute = (Attr) attrs.item(i);
             String NName = attribute.getLocalName();
             String NValue = attribute.getNodeValue();
-            
+
             if (Constants.NamespaceSpecNS.equals(attribute.getNamespaceURI())
                 && (!XML.equals(NName) || !Constants.XML_LANG_SPACE_SpecNS.equals(NValue))) {
                 ns.addMapping(NName, NValue, attribute);
@@ -636,9 +636,9 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
                     XMLNS, "", getNullNode(nsprefix.getOwnerDocument()));
         }
     }
-    
+
     /**
-     * Obtain the attributes to output for this node in XPathNodeSet c14n. 
+     * Obtain the attributes to output for this node in XPathNodeSet c14n.
      *
      * @param element
      * @param ns
@@ -659,7 +659,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
     abstract Iterator<Attr> handleAttributesSubtree(Element element, NameSpaceSymbTable ns)
         throws CanonicalizationException;
 
-    abstract void circumventBugIfNeeded(XMLSignatureInput input) 
+    abstract void circumventBugIfNeeded(XMLSignatureInput input)
         throws CanonicalizationException, ParserConfigurationException, IOException, SAXException;
 
     /**
@@ -678,11 +678,11 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
      *
      * @param name
      * @param value
-     * @param writer 
+     * @param writer
      * @throws IOException
      */
     protected static final void outputAttrToWriter(
-        final String name, final String value, 
+        final String name, final String value,
         final OutputStream writer, final Map<String, byte[]> cache
     ) throws IOException {
         writer.write(' ');
@@ -691,7 +691,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
         byte[] toWrite;
         final int length = value.length();
         int i = 0;
-        while (i < length) {        
+        while (i < length) {
             int c = value.codePointAt(i);
             i += Character.charCount(c);
 
@@ -744,7 +744,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
      */
     protected void outputPItoWriter(
         ProcessingInstruction currentPI, OutputStream writer, int position
-    ) throws IOException {   	  
+    ) throws IOException {   	
         if (position == NODE_AFTER_DOCUMENT_ELEMENT) {
             writer.write('\n');
         }
@@ -763,7 +763,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
                     writer.write(c);
                 } else {
                     UtfHelpper.writeCodePointToUtf8(c, writer);
-                }     
+                }
             }
         }
 
@@ -800,14 +800,14 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
      */
     protected void outputCommentToWriter(
         Comment currentComment, OutputStream writer, int position
-    ) throws IOException {   	  
+    ) throws IOException {   	
         if (position == NODE_AFTER_DOCUMENT_ELEMENT) {
             writer.write('\n');
         }
         writer.write(BEGIN_COMM.clone());
 
         final String data = currentComment.getData();
-        final int length = data.length();      
+        final int length = data.length();
 
         for (int i = 0; i < length; ) {
             int c = data.codePointAt(i);
@@ -819,8 +819,8 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
                     writer.write(c);
                 } else {
                     UtfHelpper.writeCodePointToUtf8(c, writer);
-                }    
-            }      
+                }
+            }
         }
 
         writer.write(END_COMM.clone());
@@ -887,6 +887,6 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
             }
         }
         return nullNode;
-    } 
+    }
 
 }

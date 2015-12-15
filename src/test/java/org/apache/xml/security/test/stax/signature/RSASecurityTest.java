@@ -47,16 +47,16 @@ import org.w3c.dom.Document;
  * <CODE>data/com/rsasecurity/bdournaee/</CODE>.
  */
 public class RSASecurityTest extends AbstractSignatureVerificationTest {
-    
+
     private XMLInputFactory xmlInputFactory;
     private TransformerFactory transformerFactory = TransformerFactory.newInstance();
-    
+
     @Before
     public void setUp() throws Exception {
         Init.init(RSASecurityTest.class.getClassLoader().getResource("security-config.xml").toURI(),
                 this.getClass());
         org.apache.xml.security.Init.init();
-        
+
         xmlInputFactory = XMLInputFactory.newInstance();
         xmlInputFactory.setEventAllocator(new XMLSecEventAllocator());
     }
@@ -64,67 +64,67 @@ public class RSASecurityTest extends AbstractSignatureVerificationTest {
     @Test
     public void test_enveloping() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "com/rsasecurity/bdournaee/certj201_enveloping.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // XMLUtils.outputDOM(document, System.out);
-        
+
         // Convert Document to a Stream Reader
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        final XMLStreamReader xmlStreamReader = 
+        final XMLStreamReader xmlStreamReader =
                 xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
-  
+
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
         InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
         TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader = 
+        XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
-        
+
         // Check the SecurityEvents
         checkSignatureToken(securityEventListener, null, null,
                             SecurityTokenConstants.KeyIdentifier_KeyValue);
     }
-    
+
     // See SANTUARIO-320
     @Test
     public void test_enveloped() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "com/rsasecurity/bdournaee/certj201_enveloped.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // XMLUtils.outputDOM(document, System.out);
-        
+
         // Convert Document to a Stream Reader
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        final XMLStreamReader xmlStreamReader = 
+        final XMLStreamReader xmlStreamReader =
                 xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
-  
+
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
         InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
         TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader = 
+        XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
-        
+
         // Check the SecurityEvents
         checkSignatureToken(securityEventListener, null, null,
                             SecurityTokenConstants.KeyIdentifier_KeyValue);
     }
-    
-    
+
+
 }

@@ -48,9 +48,9 @@ import org.xml.sax.SAXException;
  * implementation of "Canonical XML". A big "thank you" to Ren?? for this.
  * <BR />
  * <i>THIS </i> implementation is a complete rewrite of the algorithm.
- * 
+ *
  * @author Christian Geuer-Pollmann <geuerp@apache.org>
- * @version $Revision$ 
+ * @version $Revision$
  * @see <a href="http://www.w3.org/TR/2002/REC-xml-exc-c14n-20020718/ Exclusive#">
  *          XML Canonicalization, Version 1.0</a>
  */
@@ -65,12 +65,12 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
       */
     private SortedSet<String> inclusiveNSSet;
     private boolean propagateDefaultNamespace = false;
-    
+
     private final SortedSet<Attr> result = new TreeSet<Attr>(COMPARE);
 
     /**
      * Constructor Canonicalizer20010315Excl
-     * 
+     *
      * @param includeComments
      */
     public Canonicalizer20010315Excl(boolean includeComments) {
@@ -81,7 +81,7 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
      * Method engineCanonicalizeSubTree
      * @inheritDoc
      * @param rootNode
-     * 
+     *
      * @throws CanonicalizationException
      */
     public byte[] engineCanonicalizeSubTree(Node rootNode)
@@ -94,7 +94,7 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
      *  @inheritDoc
      * @param rootNode
      * @param inclusiveNamespaces
-     * 
+     *
      * @throws CanonicalizationException
      */
     public byte[] engineCanonicalizeSubTree(
@@ -120,10 +120,10 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
     }
 
     /**
-     * Method engineCanonicalizeSubTree  
+     * Method engineCanonicalizeSubTree
      * @param rootNode
-     * @param inclusiveNamespaces   
-     * @param excl A element to exclude from the c14n process. 
+     * @param inclusiveNamespaces
+     * @param excl A element to exclude from the c14n process.
      * @return the rootNode c14n.
      * @throws CanonicalizationException
      */
@@ -135,7 +135,7 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
     }
 
     /**
-     * 
+     *
      * @param rootNode
      * @param inclusiveNamespaces
      * @return the rootNode c14n.
@@ -147,7 +147,7 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
         inclusiveNSSet = InclusiveNamespaces.prefixStr2Set(inclusiveNamespaces);
         return super.engineCanonicalize(rootNode);
     }
- 
+
     /**
      * Method engineCanonicalizeXPathNodeSet
      * @inheritDoc
@@ -161,21 +161,21 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
         inclusiveNSSet = InclusiveNamespaces.prefixStr2Set(inclusiveNamespaces);
         return super.engineCanonicalizeXPathNodeSet(xpathNodeSet);
     }
-    
+
     @Override
     protected Iterator<Attr> handleAttributesSubtree(Element element, NameSpaceSymbTable ns)
         throws CanonicalizationException {
         // result will contain the attrs which have to be output
-        final SortedSet<Attr> result = this.result;       
+        final SortedSet<Attr> result = this.result;
         result.clear();
-    
-        // The prefix visibly utilized (in the attribute or in the name) in 
+
+        // The prefix visibly utilized (in the attribute or in the name) in
         // the element
         SortedSet<String> visiblyUtilized = new TreeSet<String>();
         if (inclusiveNSSet != null && !inclusiveNSSet.isEmpty()) {
             visiblyUtilized.addAll(inclusiveNSSet);
         }
-    
+
         if (element.hasAttributes()) {
             NamedNodeMap attrs = element.getAttributes();
             int attrsLength = attrs.getLength();
@@ -183,19 +183,19 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
                 Attr attribute = (Attr) attrs.item(i);
                 String NName = attribute.getLocalName();
                 String NNodeValue = attribute.getNodeValue();
-                
+
                 if (!XMLNS_URI.equals(attribute.getNamespaceURI())) {
                     // Not a namespace definition.
-                    // The Element is output element, add the prefix (if used) to 
+                    // The Element is output element, add the prefix (if used) to
                     // visiblyUtilized
                     String prefix = attribute.getPrefix();
                     if (prefix != null && !(prefix.equals(XML) || prefix.equals(XMLNS))) {
                         visiblyUtilized.add(prefix);
-                    }                                   
+                    }
                     // Add to the result.
                     result.add(attribute);
                 } else if (!(XML.equals(NName) && XML_LANG_URI.equals(NNodeValue))
-                    && ns.addMapping(NName, NNodeValue, attribute) 
+                    && ns.addMapping(NName, NNodeValue, attribute)
                     && C14nHelper.namespaceIsRelative(NNodeValue)) {
                     // The default mapping for xml must not be output.
                     // New definition check if it is relative.
@@ -221,17 +221,17 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
             prefix = XMLNS;
         }
         visiblyUtilized.add(prefix);
-    
+
         for (String s : visiblyUtilized) {
             Attr key = ns.getMapping(s);
             if (key != null) {
                 result.add(key);
             }
         }
-    
-        return result.iterator();               
+
+        return result.iterator();
     }
-        
+
     /**
      * @inheritDoc
      * @param element
@@ -241,10 +241,10 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
     protected final Iterator<Attr> handleAttributes(Element element, NameSpaceSymbTable ns)
         throws CanonicalizationException {
         // result will contain the attrs which have to be output
-        final SortedSet<Attr> result = this.result;       
+        final SortedSet<Attr> result = this.result;
         result.clear();
 
-        // The prefix visibly utilized (in the attribute or in the name) in 
+        // The prefix visibly utilized (in the attribute or in the name) in
         // the element
         Set<String> visiblyUtilized = null;
         // It's the output selected.
@@ -257,17 +257,17 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
         }
 
         if (element.hasAttributes()) {
-            NamedNodeMap attrs = element.getAttributes();           
+            NamedNodeMap attrs = element.getAttributes();
             int attrsLength = attrs.getLength();
             for (int i = 0; i < attrsLength; i++) {
                 Attr attribute = (Attr) attrs.item(i);
-                
+
                 String NName = attribute.getLocalName();
                 String NNodeValue = attribute.getNodeValue();
-    
+
                 if (!XMLNS_URI.equals(attribute.getNamespaceURI())) {
                     if (isVisible(attribute) && isOutputElement) {
-                        // The Element is output element, add the prefix (if used) 
+                        // The Element is output element, add the prefix (if used)
                         // to visibyUtilized
                         String prefix = attribute.getPrefix();
                         if (prefix != null && !(prefix.equals(XML) || prefix.equals(XMLNS))) {
@@ -279,8 +279,8 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
                 } else if (isOutputElement && !isVisible(attribute) && !XMLNS.equals(NName)) {
                     ns.removeMappingIfNotRender(NName);
                 } else {
-                    if (!isOutputElement && isVisible(attribute) 
-                        && inclusiveNSSet.contains(NName) 
+                    if (!isOutputElement && isVisible(attribute)
+                        && inclusiveNSSet.contains(NName)
                         && !ns.removeMappingIfRender(NName)) {
                         Node n = ns.addMappingAndRender(NName, NNodeValue, attribute);
                         if (n != null) {
@@ -306,11 +306,11 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
             }
         }
 
-        if (isOutputElement) {	               
-            // The element is visible, handle the xmlns definition    
+        if (isOutputElement) {	
+            // The element is visible, handle the xmlns definition
             Attr xmlns = element.getAttributeNodeNS(XMLNS_URI, XMLNS);
             if (xmlns != null && !isVisible(xmlns)) {
-                // There is a definition but the xmlns is not selected by the 
+                // There is a definition but the xmlns is not selected by the
                 // xpath. then xmlns=""
                 ns.addMapping(XMLNS, "", getNullNode(xmlns.getOwnerDocument()));
             }
@@ -323,20 +323,20 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
                 prefix = XMLNS;
             }
             visiblyUtilized.add(prefix);
-        
+
             for (String s : visiblyUtilized) {
                 Attr key = ns.getMapping(s);
                 if (key != null) {
                     result.add(key);
                 }
             }
-        } 
+        }
 
-        return result.iterator(); 
+        return result.iterator();
     }
 
-    protected void circumventBugIfNeeded(XMLSignatureInput input) 
-        throws CanonicalizationException, ParserConfigurationException, 
+    protected void circumventBugIfNeeded(XMLSignatureInput input)
+        throws CanonicalizationException, ParserConfigurationException,
                IOException, SAXException {
         if (!input.isNeedsToBeExpanded() || inclusiveNSSet.isEmpty() || inclusiveNSSet.isEmpty()) {
             return;

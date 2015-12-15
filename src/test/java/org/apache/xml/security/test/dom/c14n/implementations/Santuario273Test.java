@@ -34,7 +34,7 @@ import org.w3c.dom.Node;
 
 /**
  * This is a test for Santuario-273:
- * 
+ *
  * https://issues.apache.org/jira/browse/SANTUARIO-273
  * "xml:base attribute not processed correctly in C14N11 canonicalization"
  */
@@ -60,7 +60,7 @@ public class Santuario273Test extends org.junit.Assert {
         + "  </KeyInfo>\n"
         + "</Signature>\n"
         ;
-    
+
     public static final String expectedResult = "<SignedInfo xmlns=\"http://www.w3.org/2000/09/xmldsig#\" xml:base=\"http://www.acme.com/resources/subresources/\">\n"
         + "    <CanonicalizationMethod Algorithm=\"http://www.w3.org/TR/2001/REC-xml-c14n-20010315\"></CanonicalizationMethod>\n"
         + "    <SignatureMethod Algorithm=\"http://www.w3.org/2000/09/xmldsig#rsa-sha1\"></SignatureMethod>\n"
@@ -69,7 +69,7 @@ public class Santuario273Test extends org.junit.Assert {
         + "      <DigestValue>60NvZvtdTB+7UnlLp/H24p7h4bs=</DigestValue>\n"
         + "    </Reference>\n"
         + "  </SignedInfo>";
-    
+
     static {
         Init.init();
     }
@@ -82,7 +82,7 @@ public class Santuario273Test extends org.junit.Assert {
         byte inputBytes[] = input.getBytes();
         Document doc =
             documentBuilder.parse(new ByteArrayInputStream(inputBytes));
-        
+
         Canonicalizer c14n =
             Canonicalizer.getInstance(Canonicalizer.ALGO_ID_C14N11_OMIT_COMMENTS);
 
@@ -90,7 +90,7 @@ public class Santuario273Test extends org.junit.Assert {
         XPath xPath = xpf.newXPath();
         xPath.setNamespaceContext(new DSNamespaceContext());
 
-        Node signedInfo = 
+        Node signedInfo =
             (Node) xPath.evaluate("//ds:SignedInfo[1]", doc, XPathConstants.NODE);
         byte[] output = c14n.canonicalizeSubtree(signedInfo);
 

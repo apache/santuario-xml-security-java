@@ -53,17 +53,17 @@ public class ECDSASignatureTest extends org.junit.Assert {
 
     private static final String BASEDIR = System.getProperty("basedir");
     private static final String SEP = System.getProperty("file.separator");
-    private static final String ECDSA_JKS = 
+    private static final String ECDSA_JKS =
         "src/test/resources/org/apache/xml/security/samples/input/ecdsa.jks";
     private static final String ECDSA_JKS_PASSWORD = "security";
-    
+
     private KeyStore keyStore;
-    
+
     private javax.xml.parsers.DocumentBuilder db;
 
     public ECDSASignatureTest() throws Exception {
         //
-        // If the BouncyCastle provider is not installed, then try to load it 
+        // If the BouncyCastle provider is not installed, then try to load it
         // via reflection. If it is not available, then skip this test as it is
         // required for elliptic curves
         //
@@ -86,7 +86,7 @@ public class ECDSASignatureTest extends org.junit.Assert {
 
         //String id = "http://apache.org/xml/properties/dom/document-class-name";
         //dbf.setAttribute(id, IndexedDocument.class.getName());
-        
+
         db = XMLUtils.createDocumentBuilder(false);
         org.apache.xml.security.Init.init();
     }
@@ -95,27 +95,27 @@ public class ECDSASignatureTest extends org.junit.Assert {
     public static void cleanup() throws Exception {
         Security.removeProvider("org.bouncycastle.jce.provider.BouncyCastleProvider");
     }
-    
+
     @org.junit.Test
     public void testOne() throws Exception {
         if (Security.getProvider("BC") == null) {
             return;
         }
-        
+
         //
         // This test fails with the IBM JDK
         //
         if ("IBM Corporation".equals(System.getProperty("java.vendor"))) {
             return;
         }
-        
+
         keyStore = KeyStore.getInstance("JKS");
         keyStore.load(
-            new java.io.FileInputStream(ECDSA_JKS), 
+            new java.io.FileInputStream(ECDSA_JKS),
             ECDSA_JKS_PASSWORD.toCharArray()
         );
-        
-        doVerify(doSign()); 
+
+        doVerify(doSign());
         doVerify(doSign());
     }
 
@@ -126,11 +126,11 @@ public class ECDSASignatureTest extends org.junit.Assert {
         if (Security.getProvider("BC") == null) {
             return;
         }
-        
-        File file = 
+
+        File file =
             makeDataFile("src/test/resources/org/apache/xml/security/samples/input/ecdsaSignature.xml");
         InputStream is = new FileInputStream(file);
-        
+
         doVerify(is);
     }
 
@@ -143,12 +143,12 @@ public class ECDSASignatureTest extends org.junit.Assert {
 
         File file = makeDataFile("src/test/resources/at/buergerkarte/testresp.xml");
         InputStream is = new FileInputStream(file);
-        
+
         doVerify(is);
     }
-    
+
     private byte[] doSign() throws Exception {
-        PrivateKey privateKey = 
+        PrivateKey privateKey =
             (PrivateKey)keyStore.getKey("ECDSA", ECDSA_JKS_PASSWORD.toCharArray());
         org.w3c.dom.Document doc = db.newDocument();
         doc.appendChild(doc.createComment(" Comment before "));
@@ -157,15 +157,15 @@ public class ECDSASignatureTest extends org.junit.Assert {
         doc.appendChild(root);
         root.appendChild(doc.createTextNode("Some simple text\n"));
 
-        Element canonElem = 
+        Element canonElem =
             XMLUtils.createElementInSignatureSpace(doc, Constants._TAG_CANONICALIZATIONMETHOD);
         canonElem.setAttributeNS(
             null, Constants._ATT_ALGORITHM, Canonicalizer.ALGO_ID_C14N_EXCL_OMIT_COMMENTS
         );
 
-        SignatureAlgorithm signatureAlgorithm = 
+        SignatureAlgorithm signatureAlgorithm =
             new SignatureAlgorithm(doc, XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA1);
-        XMLSignature sig = 
+        XMLSignature sig =
             new XMLSignature(doc, null, signatureAlgorithm.getElement(), canonElem);
 
         root.appendChild(sig.getElement());
@@ -188,16 +188,16 @@ public class ECDSASignatureTest extends org.junit.Assert {
     private void doVerify(byte[] signedXml) throws Exception {
         doVerify(new ByteArrayInputStream(signedXml));
     }
-    
+
     private void doVerify(InputStream is) throws Exception {
         org.w3c.dom.Document doc = this.db.parse(is);
-        
+
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();
         xpath.setNamespaceContext(new DSNamespaceContext());
 
         String expression = "//ds:Signature[1]";
-        Element sigElement = 
+        Element sigElement =
             (Element) xpath.evaluate(expression, doc, XPathConstants.NODE);
         XMLSignature signature = new XMLSignature(sigElement, "");
 
@@ -214,7 +214,7 @@ public class ECDSASignatureTest extends org.junit.Assert {
         }
         assertTrue(signature.checkSignatureValue(cert) );
     }
-    
+
     private File makeDataFile(String relPath) {
         if (BASEDIR != null && !"".equals(BASEDIR)) {
             return new File(BASEDIR + SEP + relPath);
@@ -222,35 +222,35 @@ public class ECDSASignatureTest extends org.junit.Assert {
             return new File(relPath);
         }
     }
-     
+
     /**
      * DO NOT DELETE THIS COMMENTED OUT METHOD!
-     * 
-     * The reason this method is commented out is to avoid introducing explicit 
+     *
+     * The reason this method is commented out is to avoid introducing explicit
      * BouncyCastle dependencies.
-     * 
+     *
      * Create an X.509 Certificate and associated private key using the Elliptic Curve
-     * DSA algorithm, and store in a KeyStore. This method was used to generate the 
-     * keystore used for this test 
+     * DSA algorithm, and store in a KeyStore. This method was used to generate the
+     * keystore used for this test
      * ("src/test/resources/org/apache/xml/security/samples/input/ecdsa.jks").
     private static void setUpKeyAndCertificate() throws Exception {
-        java.security.spec.ECGenParameterSpec ecGenParameterSpec = 
+        java.security.spec.ECGenParameterSpec ecGenParameterSpec =
             new java.security.spec.ECGenParameterSpec("B-409");
-        
-        java.security.KeyPairGenerator kpg = 
+
+        java.security.KeyPairGenerator kpg =
             java.security.KeyPairGenerator.getInstance("ECDH");
 
         kpg.initialize(ecGenParameterSpec, new java.security.SecureRandom());
 
         java.security.KeyPair kp = kpg.generateKeyPair();
-        
-        org.bouncycastle.x509.X509V3CertificateGenerator certGen = 
+
+        org.bouncycastle.x509.X509V3CertificateGenerator certGen =
             new org.bouncycastle.x509.X509V3CertificateGenerator();
 
         long now = System.currentTimeMillis();
         certGen.setSerialNumber(java.math.BigInteger.valueOf(now));
 
-        org.bouncycastle.jce.X509Principal subject = 
+        org.bouncycastle.jce.X509Principal subject =
             new org.bouncycastle.jce.X509Principal(
                 "CN=XML ECDSA Signature Test,DC=apache,DC=org"
             );
@@ -268,17 +268,17 @@ public class ECDSASignatureTest extends org.junit.Assert {
         certGen.setPublicKey(kp.getPublic());
         certGen.setSignatureAlgorithm("SHA1withECDSA");
         certGen.addExtension(
-            org.bouncycastle.asn1.x509.X509Extensions.BasicConstraints, 
-            true, 
+            org.bouncycastle.asn1.x509.X509Extensions.BasicConstraints,
+            true,
             new org.bouncycastle.asn1.x509.BasicConstraints(false)
         );
         certGen.addExtension(
-            org.bouncycastle.asn1.x509.X509Extensions.KeyUsage, 
-            true, 
+            org.bouncycastle.asn1.x509.X509Extensions.KeyUsage,
+            true,
             new org.bouncycastle.asn1.x509.KeyUsage(
-                org.bouncycastle.asn1.x509.KeyUsage.digitalSignature | 
-                org.bouncycastle.asn1.x509.KeyUsage.keyEncipherment | 
-                org.bouncycastle.asn1.x509.KeyUsage.keyCertSign | 
+                org.bouncycastle.asn1.x509.KeyUsage.digitalSignature |
+                org.bouncycastle.asn1.x509.KeyUsage.keyEncipherment |
+                org.bouncycastle.asn1.x509.KeyUsage.keyCertSign |
                 org.bouncycastle.asn1.x509.KeyUsage.cRLSign
             )
         );
@@ -288,7 +288,7 @@ public class ECDSASignatureTest extends org.junit.Assert {
         KeyStore keyStore = KeyStore.getInstance("JKS");
         keyStore.load(null, ECDSA_JKS_PASSWORD.toCharArray());
         keyStore.setKeyEntry(
-            "ECDSA", kp.getPrivate(), 
+            "ECDSA", kp.getPrivate(),
             ECDSA_JKS_PASSWORD.toCharArray(), new java.security.cert.Certificate[]{x509}
         );
         keyStore.store(

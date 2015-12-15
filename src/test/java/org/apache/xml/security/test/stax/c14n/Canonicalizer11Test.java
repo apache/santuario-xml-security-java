@@ -63,10 +63,10 @@ public class Canonicalizer11Test extends org.junit.Assert {
     @Test
     public void test31withCommentsSubtree() throws Exception {
 
-        URL fileIn = 
+        URL fileIn =
             this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/in/31_input.xml");
-        URL fileRef = 
+        URL fileRef =
             this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/in/31_c14n-comments.xml");
 
@@ -81,10 +81,10 @@ public class Canonicalizer11Test extends org.junit.Assert {
     @Test
     public void test31subtree() throws Exception {
 
-        URL fileIn = 
+        URL fileIn =
             this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/in/31_input.xml");
-        URL fileRef = 
+        URL fileRef =
             this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/in/31_c14n.xml");
 
@@ -99,10 +99,10 @@ public class Canonicalizer11Test extends org.junit.Assert {
     @Test
     public void test32subtree() throws Exception {
 
-        URL fileIn = 
+        URL fileIn =
             this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/in/32_input.xml");
-        URL fileRef = 
+        URL fileRef =
             this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/in/32_c14n.xml");
 
@@ -117,10 +117,10 @@ public class Canonicalizer11Test extends org.junit.Assert {
     @Test
     public void test33subtree() throws Exception {
 
-        URL fileIn = 
+        URL fileIn =
             this.getClass().getClassLoader().getResource(
                  "org/apache/xml/security/c14n/in/33_input.xml");
-        URL fileRef = 
+        URL fileRef =
             this.getClass().getClassLoader().getResource(
                  "org/apache/xml/security/c14n/in/33_c14n.xml");
 
@@ -135,10 +135,10 @@ public class Canonicalizer11Test extends org.junit.Assert {
     @Test
     public void test34() throws Exception {
 
-        URL fileIn = 
+        URL fileIn =
             this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/in/34_input.xml");
-        URL fileRef = 
+        URL fileRef =
             this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/in/34_c14n.xml");
 
@@ -161,10 +161,10 @@ public class Canonicalizer11Test extends org.junit.Assert {
     @Test
     public void test34subtree() throws Exception {
 
-        URL fileIn = 
+        URL fileIn =
             this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/in/34_input_validatingParser.xml");
-        URL fileRef = 
+        URL fileRef =
             this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/in/34_c14n_validatingParser.xml");
 
@@ -179,10 +179,10 @@ public class Canonicalizer11Test extends org.junit.Assert {
     @Test
     public void test35subtree() throws Exception {
 
-        URL fileIn = 
+        URL fileIn =
             this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/in/35_input.xml");
-        URL fileRef = 
+        URL fileRef =
             this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/in/35_c14n.xml");
 
@@ -197,10 +197,10 @@ public class Canonicalizer11Test extends org.junit.Assert {
     @Test
     public void test36subtree() throws Exception {
 
-        URL fileIn = 
+        URL fileIn =
             this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/in/36_input.xml");
-        URL fileRef = 
+        URL fileRef =
             this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/in/36_c14n.xml");
 
@@ -240,7 +240,7 @@ public class Canonicalizer11Test extends org.junit.Assert {
             xmlSecEvent = (XMLSecEvent) xmlSecEventReader.nextEvent();
         }
 
-        byte[] reference = 
+        byte[] reference =
             getBytesFromResource(this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/in/38_c14n.xml"));
         boolean equals = java.security.MessageDigest.isEqual(reference, baos.toByteArray());
@@ -316,7 +316,7 @@ public class Canonicalizer11Test extends org.junit.Assert {
     @Test
     public void testRelativeNSbehaviour() throws Exception {
 
-        URL fileIn = 
+        URL fileIn =
             this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/in/relative-ns-behaviour.xml");
 

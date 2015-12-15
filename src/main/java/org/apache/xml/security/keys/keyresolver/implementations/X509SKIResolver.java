@@ -52,7 +52,7 @@ public class X509SKIResolver extends KeyResolverSpi {
         Element element, String baseURI, StorageResolver storage
     ) throws KeyResolverException {
 
-        X509Certificate cert = 
+        X509Certificate cert =
             this.engineLookupResolveX509Certificate(element, baseURI, storage);
 
         if (cert != null) {
@@ -76,7 +76,7 @@ public class X509SKIResolver extends KeyResolverSpi {
     ) throws KeyResolverException {
         if (log.isDebugEnabled()) {
             log.debug("Can I resolve " + element.getTagName() + "?");
-        }	      
+        }	
         if (!XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_X509DATA)) {
             if (log.isDebugEnabled()) {
                 log.debug("I can't");
@@ -95,7 +95,7 @@ public class X509SKIResolver extends KeyResolverSpi {
             }
             return null;
         }
-        try {         
+        try {
             if (storage == null) {
                 Object exArgs[] = { Constants._TAG_X509SKI };
                 KeyResolverException ex =

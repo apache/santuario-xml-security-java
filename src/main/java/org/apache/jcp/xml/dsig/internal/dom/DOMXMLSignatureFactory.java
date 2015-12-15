@@ -77,8 +77,8 @@ public final class DOMXMLSignatureFactory extends XMLSignatureFactory {
 
     @Override
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public Reference newReference(String uri, DigestMethod dm, 
-        List appliedTransforms, Data result, List transforms, String type, 
+    public Reference newReference(String uri, DigestMethod dm,
+        List appliedTransforms, Data result, List transforms, String type,
         String id) {
         if (appliedTransforms == null) {
             throw new NullPointerException("appliedTransforms cannot be null");

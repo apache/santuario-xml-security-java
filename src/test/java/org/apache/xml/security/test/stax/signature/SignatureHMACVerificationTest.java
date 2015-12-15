@@ -55,18 +55,18 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
     private boolean bcInstalled;
     private XMLInputFactory xmlInputFactory;
     private TransformerFactory transformerFactory = TransformerFactory.newInstance();
-    
+
     @Before
     public void setUp() throws Exception {
         Init.init(SignatureHMACVerificationTest.class.getClassLoader().getResource("security-config.xml").toURI(),
                 this.getClass());
         org.apache.xml.security.Init.init();
-        
+
         xmlInputFactory = XMLInputFactory.newInstance();
         xmlInputFactory.setEventAllocator(new XMLSecEventAllocator());
-        
+
         //
-        // If the BouncyCastle provider is not installed, then try to load it 
+        // If the BouncyCastle provider is not installed, then try to load it
         // via reflection.
         //
         if (Security.getProvider("BC") == null) {
@@ -89,7 +89,7 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
     public static void cleanup() throws Exception {
         Security.removeProvider("org.bouncycastle.jce.provider.BouncyCastleProvider");
     }
-    
+
     @Test
     public void testHMACSHA1() throws Exception {
         // Read in plaintext document
@@ -107,14 +107,14 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         // Sign using DOM
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         signUsingDOM(
                 signatureAlgorithm, document, localNames, key,
                 "http://www.w3.org/2001/10/xml-exc-c14n#", "http://www.w3.org/2000/09/xmldsig#sha1"
         );
-        
+
         // XMLUtils.outputDOM(document, System.out);
-        
+
         // Convert Document to a Stream Reader
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -132,7 +132,7 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
 
         StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
-    
+
     @Test
     public void testHMACSHA_224() throws Exception {
         // Read in plaintext document
@@ -150,14 +150,14 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         // Sign using DOM
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         signUsingDOM(
                 signatureAlgorithm, document, localNames, key,
                 "http://www.w3.org/2001/10/xml-exc-c14n#", "http://www.w3.org/2000/09/xmldsig#sha1"
         );
-        
+
         // XMLUtils.outputDOM(document, System.out);
-        
+
         // Convert Document to a Stream Reader
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -175,7 +175,7 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
 
         StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
-    
+
     @Test
     public void testHMACSHA_256() throws Exception {
         // Read in plaintext document
@@ -193,14 +193,14 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         // Sign using DOM
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         signUsingDOM(
                 signatureAlgorithm, document, localNames, key,
                 "http://www.w3.org/2001/10/xml-exc-c14n#", "http://www.w3.org/2000/09/xmldsig#sha1"
         );
-        
+
         // XMLUtils.outputDOM(document, System.out);
-        
+
         // Convert Document to a Stream Reader
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -218,7 +218,7 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
 
         StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
-    
+
     @Test
     public void testHMACSHA_384() throws Exception {
         // Read in plaintext document
@@ -236,14 +236,14 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         // Sign using DOM
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         signUsingDOM(
                 signatureAlgorithm, document, localNames, key,
                 "http://www.w3.org/2001/10/xml-exc-c14n#", "http://www.w3.org/2000/09/xmldsig#sha1"
         );
-        
+
         // XMLUtils.outputDOM(document, System.out);
-        
+
         // Convert Document to a Stream Reader
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -279,14 +279,14 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         // Sign using DOM
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         signUsingDOM(
                 signatureAlgorithm, document, localNames, key,
                 "http://www.w3.org/2001/10/xml-exc-c14n#", "http://www.w3.org/2000/09/xmldsig#sha1"
         );
-        
+
         // XMLUtils.outputDOM(document, System.out);
-        
+
         // Convert Document to a Stream Reader
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -304,7 +304,7 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
 
         StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
-    
+
     @Test
     public void testRIPEMD160() throws Exception {
         if (!bcInstalled) {
@@ -325,14 +325,14 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         // Sign using DOM
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         signUsingDOM(
                 signatureAlgorithm, document, localNames, key,
                 "http://www.w3.org/2001/10/xml-exc-c14n#", "http://www.w3.org/2000/09/xmldsig#sha1"
         );
-        
+
         // XMLUtils.outputDOM(document, System.out);
-        
+
         // Convert Document to a Stream Reader
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -350,5 +350,5 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
 
         StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
-    
+
 }

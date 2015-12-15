@@ -42,20 +42,20 @@ public class TransformC14N11_WithComments extends TransformSpi {
     protected XMLSignatureInput enginePerformTransform(
         XMLSignatureInput input, OutputStream os, Transform transform
     ) throws CanonicalizationException {
-      
+
         Canonicalizer11_WithComments c14n = new Canonicalizer11_WithComments();
         c14n.setSecureValidation(secureValidation);
         if (os != null) {
             c14n.setWriter(os);
         }
-        
+
         byte[] result = null;
-        result = c14n.engineCanonicalize(input);         		         	         
+        result = c14n.engineCanonicalize(input);         		         	
         XMLSignatureInput output = new XMLSignatureInput(result);
         output.setSecureValidation(secureValidation);
         if (os != null) {
             output.setOutputStream(os);
         }
-        return output;      
+        return output;
     }
 }

@@ -33,11 +33,11 @@ import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Node;
 
 /**
- * Converts <code>String</code>s into <code>Node</code>s and visa versa. This requires Xalan to 
+ * Converts <code>String</code>s into <code>Node</code>s and visa versa. This requires Xalan to
  * work properly.
  */
 public class TransformSerializer extends AbstractSerializer {
-    
+
     private TransformerFactory transformerFactory;
 
     /**
@@ -50,7 +50,7 @@ public class TransformSerializer extends AbstractSerializer {
         byte[] fragment = createContext(source, ctx);
         return deserialize(ctx, new StreamSource(new ByteArrayInputStream(fragment)));
     }
-    
+
     /**
      * @param source
      * @param ctx
@@ -61,7 +61,7 @@ public class TransformSerializer extends AbstractSerializer {
         String fragment = createContext(source, ctx);
         return deserialize(ctx, new StreamSource(new StringReader(fragment)));
     }
-    
+
     /**
      * @param ctx
      * @param source
@@ -76,13 +76,13 @@ public class TransformSerializer extends AbstractSerializer {
             } else {
                 contextDocument = ctx.getOwnerDocument();
             }
-            
+
             if (transformerFactory == null) {
                 transformerFactory = TransformerFactory.newInstance();
                 transformerFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
             }
             Transformer transformer = transformerFactory.newTransformer();
-            
+
             DOMResult res = new DOMResult();
 
             Node placeholder = contextDocument.createDocumentFragment();
@@ -104,7 +104,7 @@ public class TransformSerializer extends AbstractSerializer {
                 docfrag.appendChild(child);
                 child = dummyChild.getFirstChild();
             }
-            
+
             return docfrag;
         } catch (Exception e) {
             throw new XMLEncryptionException(e);

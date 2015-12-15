@@ -26,7 +26,7 @@ import org.w3c.dom.Attr;
 
 /**
  * This interface is used to construct XML via a sequence of API calls.
- * 
+ *
  * <p>This is written to be similar to javax.xml.stream.XMLStreamWriter, but
  * has slightly different requirements. Specifically, we need to be able to create
  * an "ID" type attribute, and get the current node.
@@ -42,49 +42,49 @@ public interface XmlWriter {
      */
     abstract static class ToMarshal<CLZ extends XMLStructure> { //NOPMD
         public final Class<CLZ> clazzToMatch;
-        
+
         public ToMarshal(Class<CLZ> clazzToMatch) {
             this.clazzToMatch = clazzToMatch;
         }
-        
-        public abstract void marshalObject(XmlWriter xwriter, CLZ toMarshal, String dsPrefix, 
+
+        public abstract void marshalObject(XmlWriter xwriter, CLZ toMarshal, String dsPrefix,
                 XMLCryptoContext context) throws MarshalException;
     }
 
     /**
-     * 
+     *
      * @param prefix    What prefix to use?
      * @param localName What local name to use?
      * @param namespaceURI  What namespace URI?
-     * 
+     *
      * See also {@link javax.xml.stream.XMLStreamWriter#writeStartElement(String, String, String)}
      */
     void writeStartElement(String prefix, String localName, String namespaceURI);
-    
+
     /**
      * See also {@link javax.xml.stream.XMLStreamWriter#writeEndElement()}
      */
     void writeEndElement();
-    
+
     /**
      * Convenience method that writes both a start and end tag, with text contents as
      * provided.
-     * 
+     *
      * @param prefix
      * @param localName
      * @param namespaceURI
      * @param value
      */
     void writeTextElement(String prefix, String localName, String namespaceURI, String value);
-    
+
     void writeNamespace(String prefix, String namespaceURI);
-    
+
     void writeCharacters(String text);
-    
+
     void writeComment(String text);
-    
+
     Attr writeAttribute(String prefix, String namespaceURI, String localName, String value);
-    
+
     void writeIdAttribute(String prefix, String namespaceURI, String localName, String value);
 
     /**
@@ -94,11 +94,11 @@ public interface XmlWriter {
     String getCurrentLocalName();
 
     XMLStructure getCurrentNodeAsStructure();
-    
+
     /**
      * This method marshals a structure, and relies on implementation specific details for how
      * an instance of a particular class maps to the method that actually does the marshaling.
-     * 
+     *
      * @param toMarshal The object to be marshaled.
      * @param dsPrefix  The digital signature prefix.
      * @param context   The context for marshaling.

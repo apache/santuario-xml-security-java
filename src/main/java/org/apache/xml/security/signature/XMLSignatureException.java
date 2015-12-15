@@ -29,7 +29,7 @@ import org.apache.xml.security.exceptions.XMLSecurityException;
 public class XMLSignatureException extends XMLSecurityException {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
 
@@ -40,7 +40,7 @@ public class XMLSignatureException extends XMLSecurityException {
     public XMLSignatureException() {
         super();
     }
-    
+
     public XMLSignatureException(Exception ex) {
         super(ex);
     }

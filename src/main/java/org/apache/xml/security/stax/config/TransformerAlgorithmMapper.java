@@ -53,13 +53,13 @@ public class TransformerAlgorithmMapper {
         for (int i = 0; i < algorithms.size(); i++) {
             TransformAlgorithmType algorithmType = algorithms.get(i);
             if (algorithmType.getINOUT() == null) {
-                algorithmsClassMapInOut.put(algorithmType.getURI(), 
+                algorithmsClassMapInOut.put(algorithmType.getURI(),
                         ClassLoaderUtils.loadClass(algorithmType.getJAVACLASS(), callingClass));
             } else if ("IN".equals(algorithmType.getINOUT().value())) {
-                algorithmsClassMapIn.put(algorithmType.getURI(), 
+                algorithmsClassMapIn.put(algorithmType.getURI(),
                         ClassLoaderUtils.loadClass(algorithmType.getJAVACLASS(), callingClass));
             } else if ("OUT".equals(algorithmType.getINOUT().value())) {
-                algorithmsClassMapOut.put(algorithmType.getURI(), 
+                algorithmsClassMapOut.put(algorithmType.getURI(),
                         ClassLoaderUtils.loadClass(algorithmType.getJAVACLASS(), callingClass));
             } else {
                 throw new IllegalArgumentException("INOUT parameter " + algorithmType.getINOUT().value() + " unsupported");
@@ -83,7 +83,7 @@ public class TransformerAlgorithmMapper {
             clazz = algorithmsClassMapInOut.get(algoURI);
         }
         if (clazz == null) {
-            throw new XMLSecurityException("signature.Transform.UnknownTransform", 
+            throw new XMLSecurityException("signature.Transform.UnknownTransform",
                                            new Object[] {algoURI});
         }
         return clazz;

@@ -53,7 +53,7 @@ public final class DOMKeyInfo extends BaseStructure implements KeyInfo {
     public static List<XMLStructure> getContent(KeyInfo ki) {
         return ki.getContent();
     }
-    
+
     /**
      * Creates a <code>DOMKeyInfo</code>.
      *
@@ -155,7 +155,7 @@ public final class DOMKeyInfo extends BaseStructure implements KeyInfo {
         Node pNode = parent.getNode();
         String dsPrefix = DOMUtils.getSignaturePrefix(context);
 
-        XmlWriterToTree xwriter = new XmlWriterToTree(Marshaller.getMarshallers(), pNode);        
+        XmlWriterToTree xwriter = new XmlWriterToTree(Marshaller.getMarshallers(), pNode);
         marshalInternal(xwriter, this, dsPrefix, context, true);
     }
 
@@ -171,7 +171,7 @@ public final class DOMKeyInfo extends BaseStructure implements KeyInfo {
         if (declareNamespace) {
             xwriter.writeNamespace(dsPrefix, XMLSignature.XMLNS);
         }
-        
+
         xwriter.writeIdAttribute("", "", "Id", ki.getId());
         // create and append KeyInfoType elements
         List<XMLStructure> keyInfoTypes = getContent(ki);

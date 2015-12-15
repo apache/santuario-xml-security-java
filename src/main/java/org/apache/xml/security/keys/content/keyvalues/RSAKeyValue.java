@@ -97,7 +97,7 @@ public class RSAKeyValue extends SignatureElementProxy implements KeyValueConten
                 new RSAPublicKeySpec(
                     this.getBigIntegerFromChildElement(
                         Constants._TAG_MODULUS, Constants.SignatureSpecNS
-                    ), 
+                    ),
                     this.getBigIntegerFromChildElement(
                         Constants._TAG_EXPONENT, Constants.SignatureSpecNS
                     )

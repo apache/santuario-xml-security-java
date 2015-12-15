@@ -89,7 +89,7 @@ public abstract class SignatureAlgorithmSpi {
     protected abstract void engineInitSign(Key signingKey) throws XMLSignatureException;
 
     /**
-     * Proxy method for {@link java.security.Signature#initSign(java.security.PrivateKey, 
+     * Proxy method for {@link java.security.Signature#initSign(java.security.PrivateKey,
      * java.security.SecureRandom)}
      * which is executed on the internal {@link java.security.Signature} object.
      *
@@ -97,7 +97,7 @@ public abstract class SignatureAlgorithmSpi {
      * @param secureRandom
      * @throws XMLSignatureException if this method is called on a MAC
      */
-    protected abstract void engineInitSign(Key signingKey, SecureRandom secureRandom) 
+    protected abstract void engineInitSign(Key signingKey, SecureRandom secureRandom)
         throws XMLSignatureException;
 
     /**

@@ -46,9 +46,9 @@ public class ReferenceTest extends org.junit.Assert {
     private String uri = "http://www.ietf.org/rfc/rfc3275.txt";
 
     private static final String[] CRYPTO_ALGS = { "RSA", "DSA" };
-    private static final String[] SIG_ALGS = { 
-        SignatureMethod.RSA_SHA1, 
-        SignatureMethod.DSA_SHA1 
+    private static final String[] SIG_ALGS = {
+        SignatureMethod.RSA_SHA1,
+        SignatureMethod.DSA_SHA1
     };
 
     static {
@@ -61,29 +61,29 @@ public class ReferenceTest extends org.junit.Assert {
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
         kifac = KeyInfoFactory.getInstance
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
-        dmSHA1 = fac.newDigestMethod(DigestMethod.SHA1, null); 
+        dmSHA1 = fac.newDigestMethod(DigestMethod.SHA1, null);
     }
 
     @SuppressWarnings("rawtypes")
     @org.junit.Test
     public void testConstructor() throws Exception {
         Reference ref;
-        // test XMLSignatureFactory.newReference(String uri, 
+        // test XMLSignatureFactory.newReference(String uri,
         //     DigestMethod dm) for generating Reference objects
         ref = fac.newReference(null, dmSHA1);
         assertNotNull(ref);
         ref = fac.newReference(uri, dmSHA1);
         assertNotNull(ref);
-        
+
         try {
             ref = fac.newReference("illegal!@#$%" + uri, dmSHA1);
             fail("Should throw a IAE for non-RFC2396-compliant uri");
         } catch (IllegalArgumentException iae) {
         } catch (Exception ex) {
-            fail("Should throw a IAE instead of " + ex + 
+            fail("Should throw a IAE instead of " + ex +
                  " for non-RFC2396-compliant uri");
         }
-        
+
         try {
             ref = fac.newReference(uri, null);
             fail("Should throw a NPE for null dm");
@@ -92,10 +92,10 @@ public class ReferenceTest extends org.junit.Assert {
             fail("Should throw a NPE instead of " + ex + " for null dm");
         }
 
-        // test XMLSignatureFactory.newReference(String uri, 
+        // test XMLSignatureFactory.newReference(String uri,
         //    DigestMethod dm, List transforms, String type, String id)
         // for generating Reference objects
-        try {   
+        try {
             ref = fac.newReference(null, dmSHA1, null, null, null);
             assertEquals(ref.getDigestMethod(), dmSHA1);
         } catch(Exception ex) {
@@ -109,7 +109,7 @@ public class ReferenceTest extends org.junit.Assert {
         } catch(Exception ex) {
             fail("Should throw a NPE instead of " + ex + " for null dm");
         }
-        
+
         String id  = "id";
         String type = "type";
         try {
@@ -117,19 +117,19 @@ public class ReferenceTest extends org.junit.Assert {
             assertNotNull(ref.getDigestMethod());
             assertEquals(uri, ref.getURI());
             assertEquals(id, ref.getId());
-            assertEquals(type, ref.getType());        
+            assertEquals(type, ref.getType());
             assertEquals(ref.getTransforms(), Collections.EMPTY_LIST);
-            
+
         } catch(Exception ex) {
             fail("Unexpected Exception: " + ex);
         }
-        
+
         List<Transform> transforms = new ArrayList<Transform>();
         try {
             // try empty transforms list
-            ref = fac.newReference(uri, dmSHA1, transforms, 
+            ref = fac.newReference(uri, dmSHA1, transforms,
                                    type, id);
-            assertTrue(Arrays.equals(transforms.toArray(), 
+            assertTrue(Arrays.equals(transforms.toArray(),
                                      ref.getTransforms().toArray()));
         } catch(Exception ex) {
             fail("Unexpected Exception: " + ex);
@@ -138,52 +138,52 @@ public class ReferenceTest extends org.junit.Assert {
         addEntryToRawList(invalidTransforms, new Object());
         try {
             // try a transforms list with an invalid object
-            fac.newReference(uri, dmSHA1, invalidTransforms, 
+            fac.newReference(uri, dmSHA1, invalidTransforms,
                                    type, id);
         } catch (ClassCastException cce) {
         } catch (Exception ex) {
             fail("Should throw a ClassCastException instead of " + ex);
         }
-        
-        // Test with various composition of Transform list 
-        // 1. String only 
+
+        // Test with various composition of Transform list
+        // 1. String only
         invalidTransforms.clear();
         addEntryToRawList(invalidTransforms, Transform.BASE64);
         try {
             // try a transforms list with a String object
-            fac.newReference(uri, dmSHA1, invalidTransforms, 
+            fac.newReference(uri, dmSHA1, invalidTransforms,
                                    type, id);
             fail("Should throw a CCE for illegal transforms");
         } catch (ClassCastException cce) {
         } catch(Exception ex) {
-            fail("Should throw a CCE instead of " + ex + 
+            fail("Should throw a CCE instead of " + ex +
                  " for illegal transforms");
         }
-        
+
         // 2. Transform only
         transforms.clear();
         Transform c14nWithComments = fac.newTransform
-            (CanonicalizationMethod.INCLUSIVE_WITH_COMMENTS, 
+            (CanonicalizationMethod.INCLUSIVE_WITH_COMMENTS,
              (TransformParameterSpec) null);
         transforms.add(c14nWithComments);
         try {
             // try a transforms list with a Transform object
             ref = fac.newReference(uri, dmSHA1, transforms, type, id);
-            assertTrue(Arrays.equals(transforms.toArray(), 
+            assertTrue(Arrays.equals(transforms.toArray(),
                                      ref.getTransforms().toArray()));
         } catch (Exception ex) {
             fail("Unexpected Exception: " + ex);
         }
     }
-    
+
     @org.junit.Test
     public void testisFeatureSupported() throws Exception {
         Reference ref = fac.newReference(null, dmSHA1, null, null, null);
         try {
-            ref.isFeatureSupported(null); 
-            fail("Should raise a NPE for null feature"); 
+            ref.isFeatureSupported(null);
+            fail("Should raise a NPE for null feature");
         } catch (NullPointerException npe) {}
-            
+
         assertTrue(!ref.isFeatureSupported("not supported"));
     }
 
@@ -202,7 +202,7 @@ public class ReferenceTest extends org.junit.Assert {
         String type = "http://www.w3.org/2000/09/xmldsig#Object";
         byte[] in = new byte[200];
         Random rand = new Random();
-        
+
         // Test XMLSignContext
         XMLSignContext signContext;
         XMLValidateContext validateContext;
@@ -211,7 +211,7 @@ public class ReferenceTest extends org.junit.Assert {
             URIDereferencer dereferrer =
                 new TestUtils.OctetStreamURIDereferencer(in);
             Document doc = TestUtils.newDocument();
-            signContext = new 
+            signContext = new
                 DOMSignContext(TestUtils.getPrivateKey(CRYPTO_ALGS[i]), doc);
             signContext.setURIDereferencer(dereferrer);
             if (cache) {
@@ -221,7 +221,7 @@ public class ReferenceTest extends org.junit.Assert {
             ref = fac.newReference(null, dmSHA1, null, type, null);
             XMLSignature sig = fac.newXMLSignature(fac.newSignedInfo
                 (fac.newCanonicalizationMethod
-                 (CanonicalizationMethod.INCLUSIVE_WITH_COMMENTS, 
+                 (CanonicalizationMethod.INCLUSIVE_WITH_COMMENTS,
                   (C14NMethodParameterSpec) null),
                 fac.newSignatureMethod(SIG_ALGS[i], null),
                 Collections.singletonList(ref)),
@@ -239,7 +239,7 @@ public class ReferenceTest extends org.junit.Assert {
                     assertTrue(digestInputEqual(ref));
                 }
                 validateContext = new DOMValidateContext
-                    (TestUtils.getPublicKey(CRYPTO_ALGS[i]), 
+                    (TestUtils.getPublicKey(CRYPTO_ALGS[i]),
                     doc.getDocumentElement());
                 validateContext.setURIDereferencer(dereferrer);
 
@@ -249,7 +249,7 @@ public class ReferenceTest extends org.junit.Assert {
                 }
                 boolean result = sig.validate(validateContext);
                 assertTrue(result);
-     
+
                 @SuppressWarnings("unchecked")
                 Iterator<Reference> iter = sig.getSignedInfo().getReferences().iterator();
                 while (iter.hasNext()) {
@@ -269,7 +269,7 @@ public class ReferenceTest extends org.junit.Assert {
                     assertTrue(valid);
                 }
             } catch (XMLSignatureException xse) {
-                fail("Unexpected Exception: " + xse); 
+                fail("Unexpected Exception: " + xse);
             }
         }
     }

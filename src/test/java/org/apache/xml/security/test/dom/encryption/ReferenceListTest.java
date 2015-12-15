@@ -54,7 +54,7 @@ public class ReferenceListTest extends org.junit.Assert {
         dataRefList.add(dataRef1);
         Reference dataRef2 = dataRefList.newDataReference("#id2");
         dataRefList.add(dataRef2);
-        
+
         assertEquals("#id1", dataRef1.getURI());
 
         ReferenceList keyRefList = dataCipher.createReferenceList(ReferenceList.KEY_REFERENCE);
@@ -62,7 +62,7 @@ public class ReferenceListTest extends org.junit.Assert {
         keyRefList.add(keyRef10);
         Reference keyRef20 = keyRefList.newKeyReference("#id20");
         keyRefList.add(keyRef20);
-        
+
         assertEquals("#id10", keyRef10.getURI());
 
         // See SANTUARIO-302
@@ -79,7 +79,7 @@ public class ReferenceListTest extends org.junit.Assert {
         assertEquals(EncryptionConstants._TAG_DATAREFERENCE, dataRef2Element.getLocalName());
         assertEquals("#id2", dataRef2Element.getAttribute("URI"));
         assertNull(dataRef2Element.getNextSibling());
-        
+
         Element keyRefListElement = dataCipher.martial(doc, keyRefList);
         assertEquals(EncryptionConstants.EncryptionSpecNS, keyRefListElement.getNamespaceURI());
         assertEquals(EncryptionConstants._TAG_REFERENCELIST, keyRefListElement.getLocalName());
@@ -103,7 +103,7 @@ public class ReferenceListTest extends org.junit.Assert {
         assertEquals(EncryptionConstants._TAG_DATAREFERENCE, ref.getType());
         assertEquals("#id2", ref.getURI());
         assertTrue(!iter.hasNext());
-        
+
         iter = keyRefList.getReferences();
         ref = iter.next();
         assertEquals(EncryptionConstants._TAG_KEYREFERENCE, ref.getType());

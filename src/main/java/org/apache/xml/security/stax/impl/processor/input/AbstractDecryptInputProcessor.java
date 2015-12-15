@@ -88,7 +88,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
         references = null;
         processedReferences = null;
     }
-    
+
     public AbstractDecryptInputProcessor(KeyInfoType keyInfoType, ReferenceList referenceList,
                                          XMLSecurityProperties securityProperties) throws XMLSecurityException {
         super(securityProperties);
@@ -184,11 +184,11 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                     if (processedReferences.contains(referenceType)) {
                         throw new XMLSecurityException("signature.Verification.MultipleIDs");
                     }
-    
+
                     processedReferences.add(referenceType);
                 }
                 tmpXmlEventList.clear();
-                
+
                 //the following logic reads the encryptedData structure and doesn't pass them further
                 //through the chain
                 InputProcessorChain subInputProcessorChain = inputProcessorChain.createSubChain(this);
@@ -206,7 +206,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                 final String algorithmURI = encryptedDataType.getEncryptionMethod().getAlgorithm();
                 final int ivLength = JCEAlgorithmMapper.getIVLengthFromURI(algorithmURI) / 8;
                 Cipher symCipher = getCipher(algorithmURI);
-                
+
                 if (encryptedDataType.getCipherData().getCipherReference() != null) {
                     handleCipherReference(inputProcessorChain, encryptedDataType, symCipher, inboundSecurityToken);
                     subInputProcessorChain.reset();
@@ -218,7 +218,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                 //create a new Thread for streaming decryption
                 DecryptionThread decryptionThread =
                         new DecryptionThread(subInputProcessorChain, isSecurityHeaderEvent);
-                Key decryptionKey = 
+                Key decryptionKey =
                     inboundSecurityToken.getSecretKey(algorithmURI, XMLSecurityConstants.Enc, encryptedDataType.getId());
                 decryptionKey = XMLSecurityUtils.prepareSecretKey(algorithmURI, decryptionKey.getEncoded());
                 decryptionThread.setSecretKey(decryptionKey);
@@ -378,7 +378,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
             String jceName = JCEAlgorithmMapper.translateURItoJCEID(algorithmURI);
             String jceProvider = JCEAlgorithmMapper.getJCEProviderFromURI(algorithmURI);
             if (jceName == null) {
-                throw new XMLSecurityException("algorithms.NoSuchMap", 
+                throw new XMLSecurityException("algorithms.NoSuchMap",
                                                new Object[] {algorithmURI});
             }
             if (jceProvider != null) {
@@ -407,18 +407,18 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
         }
 
         if (keyInfoType != null) {
-            final EncryptedKeyType encryptedKeyType = 
+            final EncryptedKeyType encryptedKeyType =
                     XMLSecurityUtils.getQNameType(keyInfoType.getContent(), XMLSecurityConstants.TAG_xenc_EncryptedKey);
             if (encryptedKeyType != null) {
                 XMLEncryptedKeyInputHandler handler = new XMLEncryptedKeyInputHandler();
                 handler.handle(inputProcessorChain, encryptedKeyType, xmlSecStartElement, getSecurityProperties());
-                
+
                 SecurityTokenProvider<? extends InboundSecurityToken> securityTokenProvider =
                         inputProcessorChain.getSecurityContext().getSecurityTokenProvider(encryptedKeyType.getId());
                 return securityTokenProvider.getSecurityToken();
             }
         }
-        
+
         //retrieve the securityToken which must be used for decryption
         return SecurityTokenFactory.getInstance().getSecurityToken(
                 keyInfoType, SecurityTokenConstants.KeyUsage_Decryption,
@@ -445,7 +445,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
 
             xmlSecEvents.push(encryptedDataXMLSecEvent);
             if (++count >= maximumAllowedEncryptedDataEvents) {
-                throw new XMLSecurityException("stax.xmlStructureSizeExceeded", 
+                throw new XMLSecurityException("stax.xmlStructureSizeExceeded",
                                                new Object[] {maximumAllowedEncryptedDataEvents});
             }
 
@@ -798,7 +798,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
 
                     switch (xmlSecEvent.getEventType()) {
                         case XMLStreamConstants.END_ELEMENT:
-                            //this must be the CipherValue EndElement.                            
+                            //this must be the CipherValue EndElement.
                             break exitLoop;
                         case XMLStreamConstants.CHARACTERS:
                             final char[] data = xmlSecEvent.asCharacters().getText();

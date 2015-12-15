@@ -143,7 +143,7 @@ public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHand
                                 inboundSecurityContext
                         );
                         this.wrappingSecurityToken.addWrappedToken(wrappedSecurityToken);
-                        
+
                         return this.wrappingSecurityToken;
                     }
 
@@ -161,7 +161,7 @@ public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHand
                         String jceName = JCEAlgorithmMapper.translateURItoJCEID(algorithmURI);
                         String jceProvider = JCEAlgorithmMapper.getJCEProviderFromURI(algorithmURI);
                         if (jceName == null) {
-                            throw new XMLSecurityException("algorithms.NoSuchMap", 
+                            throw new XMLSecurityException("algorithms.NoSuchMap",
                                                            new Object[] {algorithmURI});
                         }
 
@@ -193,7 +193,7 @@ public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHand
                                     algorithmSuiteSecurityEvent.setAlgorithmUsage(XMLSecurityConstants.EncDig);
                                     algorithmSuiteSecurityEvent.setCorrelationID(correlationID);
                                     inboundSecurityContext.registerSecurityEvent(algorithmSuiteSecurityEvent);
-                                    
+
                                     jceDigestAlgorithm = JCEAlgorithmMapper.translateURItoJCEID(digestMethodType.getAlgorithm());
                                 }
 
@@ -232,11 +232,11 @@ public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHand
                             throw new XMLSecurityException(e);
                         }
 
-                        byte[] sha1Bytes = 
+                        byte[] sha1Bytes =
                             generateDigest(encryptedKeyType.getCipherData().getCipherValue());
                         String sha1Identifier = Base64.encode(sha1Bytes);
                         super.setSha1Identifier(sha1Identifier);
-                        
+
                         try {
                             Key key = cipher.unwrap(encryptedKeyType.getCipherData().getCipherValue(),
                                     jceName,
@@ -279,7 +279,7 @@ public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHand
             handleReferenceList(inputProcessorChain, encryptedKeyType, securityProperties);
         }
     }
-    
+
     private byte[] generateDigest(byte[] inputBytes) throws XMLSecurityException {
         try {
             return MessageDigest.getInstance("SHA-1").digest(inputBytes);

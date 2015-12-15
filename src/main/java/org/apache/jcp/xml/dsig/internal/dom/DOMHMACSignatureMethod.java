@@ -53,7 +53,7 @@ public abstract class DOMHMACSignatureMethod extends AbstractDOMSignatureMethod 
         org.slf4j.LoggerFactory.getLogger(DOMHMACSignatureMethod.class);
 
     // see RFC 4051 for these algorithm definitions
-    static final String HMAC_SHA224 = 
+    static final String HMAC_SHA224 =
         "http://www.w3.org/2001/04/xmldsig-more#hmac-sha224";
     static final String HMAC_SHA256 =
         "http://www.w3.org/2001/04/xmldsig-more#hmac-sha256";
@@ -239,7 +239,7 @@ public abstract class DOMHMACSignatureMethod extends AbstractDOMSignatureMethod 
             return 160;
         }
     }
-    
+
     static final class SHA224 extends DOMHMACSignatureMethod {
         SHA224(AlgorithmParameterSpec params)
             throws InvalidAlgorithmParameterException {
@@ -327,7 +327,7 @@ public abstract class DOMHMACSignatureMethod extends AbstractDOMSignatureMethod 
             return 512;
         }
     }
-    
+
     static final class RIPEMD160 extends DOMHMACSignatureMethod {
         RIPEMD160(AlgorithmParameterSpec params)
             throws InvalidAlgorithmParameterException {

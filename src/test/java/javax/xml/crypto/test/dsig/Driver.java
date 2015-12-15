@@ -26,8 +26,8 @@ import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
  * Used by ClassLoaderTest
  */
 public class Driver {
-    
-    private static org.slf4j.Logger log = 
+
+    private static org.slf4j.Logger log =
         org.slf4j.LoggerFactory.getLogger(Driver.class);
 
     public void dsig() throws Exception {

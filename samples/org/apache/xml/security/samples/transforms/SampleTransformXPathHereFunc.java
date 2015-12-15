@@ -70,7 +70,7 @@ public class SampleTransformXPathHereFunc {
             + "   </Signature>"
             + "</Document>"
             ;
-        
+
         org.apache.xml.security.Init.init();
         javax.xml.parsers.DocumentBuilderFactory dbf =
             javax.xml.parsers.DocumentBuilderFactory.newInstance();
@@ -80,15 +80,15 @@ public class SampleTransformXPathHereFunc {
         javax.xml.parsers.DocumentBuilder db = dbf.newDocumentBuilder();
         org.w3c.dom.Document doc =
             db.parse(new java.io.ByteArrayInputStream(inputStr.getBytes()));
-        
+
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();
         xpath.setNamespaceContext(new DSNamespaceContext());
 
         String expression = "/Document/ds:Signature[1]/ds:SignedInfo/ds:Reference[1]/ds:Transforms";
-        Element transformsElem = 
+        Element transformsElem =
             (Element) xpath.evaluate(expression, doc, XPathConstants.NODE);
-        
+
         Transforms transforms = new Transforms(transformsElem, "memory://");
         XMLSignatureInput input = new XMLSignatureInput((Node) doc);
 
@@ -98,5 +98,5 @@ public class SampleTransformXPathHereFunc {
 
         System.out.println(new String(result.getBytes()));
     }
-    
+
 }

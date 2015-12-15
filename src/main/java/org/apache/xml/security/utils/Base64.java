@@ -32,7 +32,7 @@ import org.w3c.dom.Text;
 
 /**
  * Implementation of MIME's Base64 encoding and decoding conversions.
- * Optimized code. (raw version taken from oreilly.jonathan.util, 
+ * Optimized code. (raw version taken from oreilly.jonathan.util,
  * and currently org.apache.xerces.ds.util.Base64)
  *
  * @author Raul Benito(Of the xerces copy, and little adaptations).
@@ -45,7 +45,7 @@ public class Base64 {
 
     /** Field BASE64DEFAULTLENGTH */
     public static final int BASE64DEFAULTLENGTH = 76;
-    
+
     private static final int BASELENGTH = 255;
     private static final int LOOKUPLENGTH = 64;
     private static final int TWENTYFOURBITGROUP = 24;
@@ -53,7 +53,7 @@ public class Base64 {
     private static final int SIXTEENBIT = 16;
     private static final int FOURBYTE = 4;
     private static final int SIGN = -128;
-    private static final char PAD = '=';   
+    private static final char PAD = '=';
     private static final byte [] base64Alphabet = new byte[BASELENGTH];
     private static final char [] lookUpBase64Alphabet = new char[LOOKUPLENGTH];
 
@@ -201,7 +201,7 @@ public class Base64 {
      * @return the biginteger obtained from the node
      * @throws Base64DecodingException
      */
-    public static final BigInteger decodeBigIntegerFromElement(Element element) 
+    public static final BigInteger decodeBigIntegerFromElement(Element element)
         throws Base64DecodingException {
         return new BigInteger(1, Base64.decode(element));
     }
@@ -292,12 +292,12 @@ public class Base64 {
      * @throws Base64DecodingException
      *
      */
-    public static final byte[] decode(byte[] base64) throws Base64DecodingException  {   	   
+    public static final byte[] decode(byte[] base64) throws Base64DecodingException  {   	
         return decodeInternal(base64, -1);
     }
 
     /**
-     * Encode a byte array and fold lines at the standard 76th character unless 
+     * Encode a byte array and fold lines at the standard 76th character unless
      * ignore line breaks property is set.
      *
      * @param binaryData <code>byte[]<code> to be base64 encoded
@@ -305,7 +305,7 @@ public class Base64 {
      */
     public static final String encode(byte[] binaryData) {
         return XMLUtils.ignoreLineBreaks()
-            ? encode(binaryData, Integer.MAX_VALUE) 
+            ? encode(binaryData, Integer.MAX_VALUE)
             : encode(binaryData, BASE64DEFAULTLENGTH);
     }
 
@@ -409,8 +409,8 @@ public class Base64 {
                 encodedData[encodedIndex++] = lookUpBase64Alphabet[b3 & 0x3f];
 
                 i++;
-            }           
-            encodedData[encodedIndex++] = 0xa;           
+            }
+            encodedData[encodedIndex++] = 0xa;
         }
 
         for (; i < numberTriplets; i++) {
@@ -425,8 +425,8 @@ public class Base64 {
 
             byte val2 = ((b2 & SIGN) == 0) ? (byte)(b2 >> 4) : (byte)((b2) >> 4 ^ 0xf0);
             byte val3 = ((b3 & SIGN) == 0) ? (byte)(b3 >> 6) : (byte)((b3) >> 6 ^ 0xfc);
-    
-    
+
+
             encodedData[encodedIndex++] = lookUpBase64Alphabet[val1];
             encodedData[encodedIndex++] = lookUpBase64Alphabet[val2 | (k << 4)];
             encodedData[encodedIndex++] = lookUpBase64Alphabet[(l << 2) | val3];
@@ -450,7 +450,7 @@ public class Base64 {
 
             byte val1 = ((b1 & SIGN) == 0) ? (byte)(b1 >> 2) : (byte)((b1) >> 2 ^ 0xc0);
             byte val2 = ((b2 & SIGN) == 0) ? (byte)(b2 >> 4) : (byte)((b2) >> 4 ^ 0xf0);
-    
+
             encodedData[encodedIndex++] = lookUpBase64Alphabet[val1];
             encodedData[encodedIndex++] = lookUpBase64Alphabet[val2 | (k << 4)];
             encodedData[encodedIndex++] = lookUpBase64Alphabet[l << 2];
@@ -491,7 +491,7 @@ public class Base64 {
         return newSize;
     }
 
-    protected static final byte[] decodeInternal(byte[] base64Data, int len) 
+    protected static final byte[] decodeInternal(byte[] base64Data, int len)
         throws Base64DecodingException {
         // remove white spaces
         if (len == -1) {
@@ -537,15 +537,15 @@ public class Base64 {
                 if ((b2 & 0xf) != 0) { //last 4 bits should be zero
                     throw new Base64DecodingException("decoding.general");
                 }
-                decodedData = new byte[encodedIndex + 1];                
-                decodedData[encodedIndex]   = (byte)(b1 << 2 | b2 >> 4) ;                
-            } else if (!isPad(d3) && isPad(d4)) {               //One PAD  e.g. 3cQ[Pad]                
+                decodedData = new byte[encodedIndex + 1];
+                decodedData[encodedIndex]   = (byte)(b1 << 2 | b2 >> 4) ;
+            } else if (!isPad(d3) && isPad(d4)) {               //One PAD  e.g. 3cQ[Pad]
                 if ((b3 & 0x3) != 0) { //last 2 bits should be zero
                     throw new Base64DecodingException("decoding.general");
                 }
-                decodedData = new byte[encodedIndex + 2];                
+                decodedData = new byte[encodedIndex + 2];
                 decodedData[encodedIndex++] = (byte)(b1 << 2 | b2 >> 4);
-                decodedData[encodedIndex] = (byte)(((b2 & 0xf) << 4) |((b3 >> 2) & 0xf));                
+                decodedData[encodedIndex] = (byte)(((b2 & 0xf) << 4) |((b3 >> 2) & 0xf));
             } else {
                 //an error  like "3c[Pad]r", "3cdX", "3cXd", "3cXX" where X is non data
                 throw new Base64DecodingException("decoding.general");
@@ -567,14 +567,14 @@ public class Base64 {
             b4 = base64Alphabet[base64Data[dataIndex++]];
 
             if (b1 == -1 || b2 == -1 || b3 == -1 || b4 == -1) {
-                //if found "no data" just return null   
+                //if found "no data" just return null
                 throw new Base64DecodingException("decoding.general");
             }
 
             decodedData[encodedIndex++] = (byte)(b1 << 2 | b2 >> 4) ;
             decodedData[encodedIndex++] = (byte)(((b2 & 0xf) << 4) |((b3 >> 2) & 0xf));
             decodedData[encodedIndex++] = (byte)(b3 << 6 | b4 );
-        }            
+        }
         return decodedData;
     }
 
@@ -586,7 +586,7 @@ public class Base64 {
      * @throws IOException
      * @throws Base64DecodingException
      */
-    public static final void decode(String base64Data, OutputStream os) 
+    public static final void decode(String base64Data, OutputStream os)
         throws Base64DecodingException, IOException {
         byte[] bytes = new byte[base64Data.length()];
         int len = getBytesInternal(base64Data, bytes);
@@ -601,13 +601,13 @@ public class Base64 {
      * @throws IOException
      * @throws Base64DecodingException
      */
-    public static final void decode(byte[] base64Data, OutputStream os) 
-        throws Base64DecodingException, IOException {	    
+    public static final void decode(byte[] base64Data, OutputStream os)
+        throws Base64DecodingException, IOException {	
         decode(base64Data, os, -1);
     }
 
-    protected static final void decode(byte[] base64Data, OutputStream os, int len) 
-        throws Base64DecodingException, IOException {	    
+    protected static final void decode(byte[] base64Data, OutputStream os, int len)
+        throws Base64DecodingException, IOException {	
         // remove white spaces
         if (len == -1) {
             len = removeWhiteSpace(base64Data);
@@ -628,7 +628,7 @@ public class Base64 {
         byte b1 = 0, b2 = 0, b3 = 0, b4 = 0;
 
         int i = 0;
-        int dataIndex = 0;    
+        int dataIndex = 0;
 
         //the begin
         for (i = numberQuadruple - 1; i > 0; i--) {
@@ -644,7 +644,7 @@ public class Base64 {
             os.write((byte)(b1 << 2 | b2 >> 4));
             os.write((byte)(((b2 & 0xf) << 4 ) | ((b3 >> 2) & 0xf)));
             os.write((byte)(b3 << 6 | b4));
-        }   
+        }
         b1 = base64Alphabet[base64Data[dataIndex++]];
         b2 = base64Alphabet[base64Data[dataIndex++]];
 
@@ -662,19 +662,19 @@ public class Base64 {
                 if ((b2 & 0xf) != 0) { //last 4 bits should be zero
                     throw new Base64DecodingException("decoding.general");
                 }
-                os.write((byte)(b1 << 2 | b2 >> 4));                
-            } else if (!isPad(d3) && isPad(d4)) {               //One PAD  e.g. 3cQ[Pad]             
+                os.write((byte)(b1 << 2 | b2 >> 4));
+            } else if (!isPad(d3) && isPad(d4)) {               //One PAD  e.g. 3cQ[Pad]
                 if ((b3 & 0x3 ) != 0) { //last 2 bits should be zero
                     throw new Base64DecodingException("decoding.general");
                 }
                 os.write((byte)(b1 << 2 | b2 >> 4));
-                os.write((byte)(((b2 & 0xf) << 4) | ((b3 >> 2) & 0xf)));                
+                os.write((byte)(((b2 & 0xf) << 4) | ((b3 >> 2) & 0xf)));
             } else {
                 //an error  like "3c[Pad]r", "3cdX", "3cXd", "3cXX" where X is non data
                 throw new Base64DecodingException("decoding.general");
             }
         } else {
-            //No PAD e.g 3cQl         
+            //No PAD e.g 3cQl
             os.write((byte)(b1 << 2 | b2 >> 4));
             os.write( (byte)(((b2 & 0xf) << 4) | ((b3 >> 2) & 0xf)));
             os.write((byte)(b3 << 6 | b4));
@@ -689,10 +689,10 @@ public class Base64 {
      * @throws IOException
      * @throws Base64DecodingException
      */
-    public static final void decode(InputStream is, OutputStream os) 
+    public static final void decode(InputStream is, OutputStream os)
         throws Base64DecodingException, IOException {
         //byte decodedData[] = null;
-        byte b1 = 0, b2 = 0, b3 = 0, b4 = 0;    
+        byte b1 = 0, b2 = 0, b3 = 0, b4 = 0;
 
         int index = 0;
         byte[] data = new byte[4];
@@ -708,13 +708,13 @@ public class Base64 {
                 if (index == 3) {
                     data[index++] = (byte)is.read();
                 }
-                break;   
+                break;
             }
 
             if ((data[index++] = readed) == -1) {
                 //if found "no data" just return null
                 throw new Base64DecodingException("decoding.general");
-            } 
+            }
 
             if (index != 4) {
                 continue;
@@ -728,7 +728,7 @@ public class Base64 {
             os.write((byte)(b1 << 2 | b2 >> 4));
             os.write((byte)(((b2 & 0xf) << 4) | ((b3 >> 2) & 0xf)));
             os.write((byte)(b3 << 6 | b4));
-        }       
+        }
 
         byte d1 = data[0], d2 = data[1], d3 = data[2], d4 = data[3];
         b1 = base64Alphabet[d1];
@@ -740,20 +740,20 @@ public class Base64 {
                 if ((b2 & 0xf) != 0) { //last 4 bits should be zero
                     throw new Base64DecodingException("decoding.general");
                 }
-                os.write((byte)(b1 << 2 | b2 >> 4));                
+                os.write((byte)(b1 << 2 | b2 >> 4));
             } else if (!isPad(d3) && isPad(d4)) {               //One PAD  e.g. 3cQ[Pad]
                 b3 = base64Alphabet[d3];
                 if ((b3 & 0x3) != 0) { //last 2 bits should be zero
                     throw new Base64DecodingException("decoding.general");
                 }
                 os.write((byte)(b1 << 2 | b2 >> 4));
-                os.write((byte)(((b2 & 0xf) << 4) | ((b3 >> 2) & 0xf)));                
+                os.write((byte)(((b2 & 0xf) << 4) | ((b3 >> 2) & 0xf)));
             } else {
                 //an error  like "3c[Pad]r", "3cdX", "3cXd", "3cXX" where X is non data
                 throw new Base64DecodingException("decoding.general");
             }
         } else {
-            //No PAD e.g 3cQl         
+            //No PAD e.g 3cQl
             os.write((byte)(b1 << 2 | b2 >> 4));
             os.write((byte)(((b2 & 0xf) << 4) | ((b3 >> 2) & 0xf)));
             os.write((byte)(b3 << 6 | b4));
@@ -762,7 +762,7 @@ public class Base64 {
 
     /**
      * remove WhiteSpace from MIME containing encoded Base64 data.
-     * 
+     *
      * @param data  the byte array of base64 data (with WS)
      * @return      the new length
      */

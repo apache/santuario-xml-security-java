@@ -33,9 +33,9 @@ import javax.xml.crypto.dsig.*;
 public class ManifestTest extends org.junit.Assert {
     private XMLSignatureFactory fac;
 
-    private static Reference VALID_REF = new 
+    private static Reference VALID_REF = new
         TestUtils.MyOwnDOMReference("ref#1", true);
-    private static Reference INVALID_REF = new 
+    private static Reference INVALID_REF = new
         TestUtils.MyOwnDOMReference("ref#2", false);
 
     public ManifestTest() {
@@ -50,7 +50,7 @@ public class ManifestTest extends org.junit.Assert {
         String id = "manifest_id";
         List<Reference> refs = new ArrayList<Reference>();
         // test XMLSignatureFactory.newManifest(List references)
-        // and  XMLSignatureFactory.newManifest(List references, 
+        // and  XMLSignatureFactory.newManifest(List references,
         //                                       String id)
         // for generating Manifest objects
         refs.add(VALID_REF);
@@ -73,25 +73,25 @@ public class ManifestTest extends org.junit.Assert {
             assertTrue(Arrays.equals(man.getReferences().toArray(), refs.toArray()));
             assertEquals(man.getId(), expectedId);
         }
-        
+
         try {
             man = fac.newManifest(null);
             fail("Should throw a NPE for null references");
         } catch (NullPointerException npe) {
         } catch (Exception ex) {
-            fail("Should throw a NPE instead of " + ex + 
+            fail("Should throw a NPE instead of " + ex +
                  " for null references");
         }
-        
+
         try {
             man = fac.newManifest(null, id);
             fail("Should throw a NPE for null references");
         } catch (NullPointerException npe) {
         } catch (Exception ex) {
-            fail("Should throw a NPE instead of " + ex + 
+            fail("Should throw a NPE instead of " + ex +
                  " for null references");
         }
-        
+
         // Clear the references list content
         refs.clear();
         try {
@@ -99,55 +99,55 @@ public class ManifestTest extends org.junit.Assert {
             fail("Should throw a IAE for empty references");
         } catch (IllegalArgumentException iae) {
         } catch (Exception ex) {
-            fail("Should throw a IAE instead of " + ex + 
+            fail("Should throw a IAE instead of " + ex +
                  " for empty references");
         }
-        
+
         try {
             man = fac.newManifest(refs, id);
             fail("Should throw a IAE for empty references");
         } catch (IllegalArgumentException iae) {
         } catch (Exception ex) {
-            fail("Should throw a IAE instead of " + ex + 
+            fail("Should throw a IAE instead of " + ex +
                  " for empty references");
         }
-        
+
         // use raw List type to test for invalid Reference entries
         List invalidRefs = new ArrayList();
         addEntryToRawList(invalidRefs, "references");
         try {
             fac.newManifest(invalidRefs);
-            fail("Should throw a CCE for references containing " + 
+            fail("Should throw a CCE for references containing " +
                  "non-Reference objects");
         } catch (ClassCastException cce) {
         } catch (Exception ex) {
-            fail("Should throw a CCE instead of " + ex + 
+            fail("Should throw a CCE instead of " + ex +
                  " for references containing non-Reference objects");
         }
-        
+
         try {
             fac.newManifest(invalidRefs, id);
-            fail("Should throw a CCE for references containing " + 
+            fail("Should throw a CCE for references containing " +
                  "non-Reference objects");
         } catch (ClassCastException cce) {
         } catch (Exception ex) {
-            fail("Should throw a CCE instead of " + ex + 
+            fail("Should throw a CCE instead of " + ex +
                  " for references containing non-Reference objects");
         }
     }
-    
+
     @org.junit.Test
     public void testisFeatureSupported() throws Exception {
         List<Reference> refs = new ArrayList<Reference>();
         refs.add(VALID_REF);
 
         Manifest man = fac.newManifest(refs);
-        
+
         try {
-            man.isFeatureSupported(null); 
-            fail("Should raise a NPE for null feature"); 
+            man.isFeatureSupported(null);
+            fail("Should raise a NPE for null feature");
         } catch (NullPointerException npe) {}
-            
+
         assertTrue(!man.isFeatureSupported("not supported"));
     }
 
@@ -170,7 +170,7 @@ public class ManifestTest extends org.junit.Assert {
         } catch (UnsupportedOperationException ex) {
         }
     }
-    
+
     @SuppressWarnings({
      "unchecked", "rawtypes"
     })

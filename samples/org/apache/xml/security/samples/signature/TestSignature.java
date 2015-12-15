@@ -98,7 +98,7 @@ public class TestSignature {
                 xpath.setNamespaceContext(new DSNamespaceContext());
 
                 String expression = "//ds:Signature[1]";
-                Element sigElement = 
+                Element sigElement =
                     (Element) xpath.evaluate(expression, doc, XPathConstants.NODE);
 
                 //Creates a XMLSignature from the element and uses the filename as

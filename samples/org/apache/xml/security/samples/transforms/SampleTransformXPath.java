@@ -73,7 +73,7 @@ public class SampleTransformXPath {
             + "   </Signature>"
             + "</Class>" + "\n"
             ;
-        
+
         org.apache.xml.security.Init.init();
         javax.xml.parsers.DocumentBuilderFactory dbf =
             javax.xml.parsers.DocumentBuilderFactory.newInstance();
@@ -95,5 +95,5 @@ public class SampleTransformXPath {
 
         System.out.println(new String(result.getBytes()));
     }
-    
+
 }

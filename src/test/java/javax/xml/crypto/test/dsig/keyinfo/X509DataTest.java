@@ -37,7 +37,7 @@ public class X509DataTest extends org.junit.Assert {
 
     private KeyInfoFactory fac;
 
-    public X509DataTest() throws Exception { 
+    public X509DataTest() throws Exception {
         fac = KeyInfoFactory.getInstance
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
     }
@@ -73,10 +73,10 @@ public class X509DataTest extends org.junit.Assert {
 
         X509Data x509 = fac.newX509Data(Collections.singletonList("cn=foo"));
         try {
-            x509.isFeatureSupported(null); 
-            fail("Should raise a NPE for null feature"); 
+            x509.isFeatureSupported(null);
+            fail("Should raise a NPE for null feature");
         } catch (NullPointerException npe) {}
-        
+
         assertTrue(!x509.isFeatureSupported("not supported"));
     }
 }

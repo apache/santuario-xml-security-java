@@ -28,12 +28,12 @@ public class ResourceResolverContext {
         this.secureValidation = secureValidation;
         this.uriToResolve = attr != null ? attr.getValue() : null;
     }
-    
+
     public final String uriToResolve;
-    
+
     public final boolean secureValidation;
-    
+
     public final String baseUri;
-    
+
     public final Attr attr;
 }

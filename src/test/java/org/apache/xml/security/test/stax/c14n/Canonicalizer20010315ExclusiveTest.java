@@ -87,7 +87,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
             xmlSecEvent = (XMLSecEvent) xmlSecEventReader.nextEvent();
         }
 
-        byte[] reference = 
+        byte[] reference =
             getBytesFromResource(this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/inExcl/example2_2_c14nized_exclusive.xml"));
         boolean equals = java.security.MessageDigest.isEqual(reference, baos.toByteArray());
@@ -114,7 +114,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
                 new QName("http://example.net", "elem2")
         );
 
-        byte[] reference = 
+        byte[] reference =
             getBytesFromResource(this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/inExcl/example2_2_c14nized_exclusive.xml"));
         boolean equals = java.security.MessageDigest.isEqual(reference, baos.toByteArray());
@@ -141,7 +141,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
                 new QName("http://example.net", "elem2")
         );
 
-        byte[] reference = 
+        byte[] reference =
             getBytesFromResource(this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/inExcl/example2_4_c14nized.xml"));
         boolean equals = java.security.MessageDigest.isEqual(reference, baos.toByteArray());
@@ -168,7 +168,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
                 new QName("http://schemas.xmlsoap.org/soap/envelope/", "Body", "env")
         );
 
-        byte[] reference = 
+        byte[] reference =
             getBytesFromResource(this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/inExcl/plain-soap-c14nized.xml"));
         boolean equals = java.security.MessageDigest.isEqual(reference, baos.toByteArray());
@@ -228,7 +228,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
     }
 
     /**
-     * Method test24Aexcl - a testcase for SANTUARIO-263 
+     * Method test24Aexcl - a testcase for SANTUARIO-263
      * "Canonicalizer can't handle dynamical created DOM correctly"
      * https://issues.apache.org/jira/browse/SANTUARIO-263
      */
@@ -243,16 +243,16 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
         test.appendChild(elem2);
         local.appendChild(test);
         doc.appendChild(local);
-        
+
         TransformerFactory tf = TransformerFactory.newInstance();
         Transformer t = tf.newTransformer();
         StringWriter stringWriter = new StringWriter();
         StreamResult streamResult = new StreamResult(stringWriter);
         t.transform(new DOMSource(doc), streamResult);
-        
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         List<String> inclusiveNamespaces = new ArrayList<String>();
-        Canonicalizer20010315_ExclWithCommentsTransformer c = 
+        Canonicalizer20010315_ExclWithCommentsTransformer c =
                 new Canonicalizer20010315_ExclWithCommentsTransformer();
         Map<String, Object> transformerProperties = new HashMap<String, Object>();
         transformerProperties.put(Canonicalizer20010315_Excl.INCLUSIVE_NAMESPACES_PREFIX_LIST, inclusiveNamespaces);

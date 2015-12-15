@@ -72,7 +72,7 @@ public final class KeyUtils {
             X509Data x = ki.itemX509Data(i);
 
             os.println("X509Data(" + i + ")=\"" + (x.containsCertificate()
-                ? "Certificate " : "") + (x.containsIssuerSerial() 
+                ? "Certificate " : "") + (x.containsIssuerSerial()
                 ? "IssuerSerial " : "") + "\"");
         }
     }

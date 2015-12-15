@@ -60,14 +60,14 @@ public interface InboundSecurityToken extends SecurityToken {
     PublicKey getPublicKey(String algorithmURI, XMLSecurityConstants.AlgorithmUsage algorithmUsage, String correlationID) throws XMLSecurityException;
 
     void addWrappedToken(InboundSecurityToken securityToken);
-    
+
     /**
      * Verifies the key if applicable
      *
      * @throws XMLSecurityException if the key couldn't be verified or the key isn't valid
      */
     void verify() throws XMLSecurityException;
-    
+
     /**
      * Returns the absolute path to the XMLElement
      *

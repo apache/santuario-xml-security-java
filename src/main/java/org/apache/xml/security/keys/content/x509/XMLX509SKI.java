@@ -113,9 +113,9 @@ public class XMLX509SKI extends SignatureElementProxy implements XMLX509DataCont
         }
 
         /*
-         * Gets the DER-encoded OCTET string for the extension value 
-         * (extnValue) identified by the passed-in oid String. The oid 
-         * string is represented by a set of positive whole numbers 
+         * Gets the DER-encoded OCTET string for the extension value
+         * (extnValue) identified by the passed-in oid String. The oid
+         * string is represented by a set of positive whole numbers
          * separated by periods.
          */
         byte[] extensionValue = cert.getExtensionValue(XMLX509SKI.SKI_OID);
@@ -124,7 +124,7 @@ public class XMLX509SKI extends SignatureElementProxy implements XMLX509DataCont
         }
 
         /**
-         * Strip away first four bytes from the extensionValue 
+         * Strip away first four bytes from the extensionValue
          * The first two bytes are the tag and length of the extensionValue
          * OCTET STRING, and the next two bytes are the tag and length of
          * the ski OCTET STRING.

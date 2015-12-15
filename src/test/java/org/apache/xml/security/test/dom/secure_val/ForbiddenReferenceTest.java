@@ -39,18 +39,18 @@ public class ForbiddenReferenceTest extends InteropTestBase {
     static {
         org.apache.xml.security.Init.init();
     }
-    
+
     public ForbiddenReferenceTest() {
         super();
     }
 
     @org.junit.Test
     public void testLocalFilesystem() throws Exception {
-        boolean success = 
+        boolean success =
             readAndVerifyManifest("src/test/resources/interop/c14n/Y3", "signature.xml", false);
 
         assertTrue(success);
-        
+
         try {
             readAndVerifyManifest("src/test/resources/interop/c14n/Y3", "signature.xml", true);
             fail("Failure expected when secure validation is enabled");
@@ -58,7 +58,7 @@ public class ForbiddenReferenceTest extends InteropTestBase {
             assertTrue(ex.getMessage().contains("The Reference for URI"));
         }
     }
-    
+
     private boolean readAndVerifyManifest(
         String directory, String file, boolean secValidation
     ) throws Exception {
@@ -78,5 +78,5 @@ public class ForbiddenReferenceTest extends InteropTestBase {
         Manifest manifest = new Manifest(manifestElement, f.toURI().toURL().toString(), secValidation);
         return manifest.verifyReferences();
     }
-    
+
 }

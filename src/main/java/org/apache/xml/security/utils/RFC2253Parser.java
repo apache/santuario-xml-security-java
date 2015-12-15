@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.io.StringReader;
 
 public class RFC2253Parser {
-    
+
     /**
      * Method rfc2253toXMLdsig
      *
@@ -58,7 +58,7 @@ public class RFC2253Parser {
     public static String normalize(String dn) {
         return normalize(dn, true);
     }
-    
+
     /**
      * Method normalize
      *
@@ -142,7 +142,7 @@ public class RFC2253Parser {
 
         if (i == -1 || i > 0 && str.charAt(i - 1) == '\\') {
             return str;
-        } 
+        }
         String attrType = normalizeAT(str.substring(0, i));
         // only normalize if value is a String
         String attrValue = null;

@@ -20,7 +20,7 @@
  * Portions copyright 2005 Sun Microsystems, Inc. All rights reserved.
  */
 /*
- * =========================================================================== 
+ * ===========================================================================
  *
  * (C) Copyright IBM Corp. 2003 All Rights Reserved.
  *
@@ -83,7 +83,7 @@ public final class DOMReference extends DOMStructure
 
     private static org.slf4j.Logger log =
         org.slf4j.LoggerFactory.getLogger(DOMReference.class);
-    
+
     private final DigestMethod digestMethod;
     private final String id;
     private final List<Transform> transforms;
@@ -207,7 +207,7 @@ public final class DOMReference extends DOMStructure
             while (transformElem != null) {
                 String localName = transformElem.getLocalName();
                 String namespace = transformElem.getNamespaceURI();
-                if (!localName.equals("Transform") || !XMLSignature.XMLNS.equals(namespace)) {    
+                if (!localName.equals("Transform") || !XMLSignature.XMLNS.equals(namespace)) {
                     throw new MarshalException(
                         "Invalid element name: " + localName +
                         ", expected Transform");
@@ -215,7 +215,7 @@ public final class DOMReference extends DOMStructure
                 newTransforms.add
                     (new DOMTransform(transformElem, context, provider));
                 if (secVal && newTransforms.size() > MAXIMUM_TRANSFORM_COUNT) {
-                    String error = "A maxiumum of " + MAXIMUM_TRANSFORM_COUNT + " " 
+                    String error = "A maxiumum of " + MAXIMUM_TRANSFORM_COUNT + " "
                         + "transforms per Reference are allowed with secure validation";
                     throw new MarshalException(error);
                 }
@@ -223,7 +223,7 @@ public final class DOMReference extends DOMStructure
             }
             nextSibling = DOMUtils.getNextSiblingElement(nextSibling);
         }
-        if (!nextSibling.getLocalName().equals("DigestMethod") 
+        if (!nextSibling.getLocalName().equals("DigestMethod")
             && XMLSignature.XMLNS.equals(nextSibling.getNamespaceURI())) {
             throw new MarshalException("Invalid element name: " +
                                        nextSibling.getLocalName() +
@@ -300,7 +300,7 @@ public final class DOMReference extends DOMStructure
 
     @Override
     public byte[] getCalculatedDigestValue() {
-        return calcDigestValue == null ? null 
+        return calcDigestValue == null ? null
                                         : calcDigestValue.clone();
     }
 
@@ -314,7 +314,7 @@ public final class DOMReference extends DOMStructure
         xwriter.writeStartElement(dsPrefix, "Reference", XMLSignature.XMLNS);
         XMLStructure refStruct = xwriter.getCurrentNodeAsStructure();
         refElem = (Element) ((javax.xml.crypto.dom.DOMStructure) refStruct).getNode();
-        
+
         // set attributes
         xwriter.writeIdAttribute("", "", "Id", id);
         here = xwriter.writeAttribute("", "", "URI", uri);
@@ -505,7 +505,7 @@ public final class DOMReference extends DOMStructure
                 } else {
                     throw new XMLSignatureException("unrecognized Data type");
                 }
-                
+
                 boolean secVal = Utils.secureValidation(context);
                 xi.setSecureValidation(secVal);
                 if (context instanceof XMLSignContext && c14n11

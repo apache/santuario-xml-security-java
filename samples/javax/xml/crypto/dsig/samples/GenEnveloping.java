@@ -38,10 +38,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 /**
- * This is a simple example of generating an Enveloping XML 
- * Signature using the JSR 105 API. The signature in this case references a 
- * local URI that points to an Object element. 
- * The resulting signature will look like (certificate and 
+ * This is a simple example of generating an Enveloping XML
+ * Signature using the JSR 105 API. The signature in this case references a
+ * local URI that points to an Object element.
+ * The resulting signature will look like (certificate and
  * signature values will be different):
  *
  * <pre><code>
@@ -93,7 +93,7 @@ public class GenEnveloping {
     //
     public static void main(String[] args) throws Exception {
 
-        // First, create the DOM XMLSignatureFactory that will be used to 
+        // First, create the DOM XMLSignatureFactory that will be used to
         // generate the XMLSignature
         String providerName = System.getProperty
             ("jsr105Provider", "org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI");
@@ -117,8 +117,8 @@ public class GenEnveloping {
         // Create the SignedInfo
         SignedInfo si = fac.newSignedInfo(
             fac.newCanonicalizationMethod
-                (CanonicalizationMethod.INCLUSIVE_WITH_COMMENTS, 
-                 (C14NMethodParameterSpec) null), 
+                (CanonicalizationMethod.INCLUSIVE_WITH_COMMENTS,
+                 (C14NMethodParameterSpec) null),
             fac.newSignatureMethod(SignatureMethod.DSA_SHA1, null),
             Collections.singletonList(ref));
 
@@ -136,7 +136,7 @@ public class GenEnveloping {
 
         // Create the XMLSignature (but don't sign it yet)
         XMLSignature signature = fac.newXMLSignature(si, ki,
-            Collections.singletonList(obj), null, null); 
+            Collections.singletonList(obj), null, null);
 
         // Create a DOMSignContext and specify the DSA PrivateKey for signing
         // and the document location of the XMLSignature

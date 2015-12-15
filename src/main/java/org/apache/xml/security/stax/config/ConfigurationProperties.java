@@ -53,7 +53,7 @@ public class ConfigurationProperties {
     public static String getProperty(String key) {
         return properties.getProperty(key);
     }
-    
+
     public static Class<?> getCallingClass() {
         return callingClass;
     }

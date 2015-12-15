@@ -57,18 +57,18 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
     private boolean bcInstalled;
     private XMLInputFactory xmlInputFactory;
     private TransformerFactory transformerFactory = TransformerFactory.newInstance();
-    
+
     @Before
     public void setUp() throws Exception {
         Init.init(SignatureDigestVerificationTest.class.getClassLoader().getResource("security-config.xml").toURI(),
                 this.getClass());
         org.apache.xml.security.Init.init();
-        
+
         xmlInputFactory = XMLInputFactory.newInstance();
         xmlInputFactory.setEventAllocator(new XMLSecEventAllocator());
-        
+
         //
-        // If the BouncyCastle provider is not installed, then try to load it 
+        // If the BouncyCastle provider is not installed, then try to load it
         // via reflection.
         //
         if (Security.getProvider("BC") == null) {
@@ -91,7 +91,7 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
     public static void cleanup() throws Exception {
         Security.removeProvider("org.bouncycastle.jce.provider.BouncyCastleProvider");
     }
-    
+
     @Test
     public void testSHA1() throws Exception {
         // Read in plaintext document
@@ -113,14 +113,14 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         // Sign using DOM
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         String digestAlgorithm = "http://www.w3.org/2000/09/xmldsig#sha1";
-        
+
         XMLSignature sig = signUsingDOM(
                 "http://www.w3.org/2000/09/xmldsig#rsa-sha1", document, localNames, key,
                 "http://www.w3.org/2001/10/xml-exc-c14n#", digestAlgorithm
         );
-        
+
         // Add KeyInfo
         sig.addKeyInfo(cert);
 
@@ -162,14 +162,14 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         // Sign using DOM
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         String digestAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#sha224";
-        
+
         XMLSignature sig = signUsingDOM(
                 "http://www.w3.org/2000/09/xmldsig#rsa-sha1", document, localNames, key,
                 "http://www.w3.org/2001/10/xml-exc-c14n#", digestAlgorithm
         );
-        
+
         // Add KeyInfo
         sig.addKeyInfo(cert);
 
@@ -189,7 +189,7 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
 
         StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
-    
+
     @Test
     public void testSHA256() throws Exception {
         // Read in plaintext document
@@ -211,14 +211,14 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         // Sign using DOM
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         String digestAlgorithm = "http://www.w3.org/2001/04/xmlenc#sha256";
-        
+
         XMLSignature sig = signUsingDOM(
                 "http://www.w3.org/2000/09/xmldsig#rsa-sha1", document, localNames, key,
                 "http://www.w3.org/2001/10/xml-exc-c14n#", digestAlgorithm
         );
-        
+
         // Add KeyInfo
         sig.addKeyInfo(cert);
 
@@ -238,7 +238,7 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
 
         StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
-    
+
     @Test
     public void testSHA384() throws Exception {
         // Read in plaintext document
@@ -260,14 +260,14 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         // Sign using DOM
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         String digestAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#sha384";
-        
+
         XMLSignature sig = signUsingDOM(
                 "http://www.w3.org/2000/09/xmldsig#rsa-sha1", document, localNames, key,
                 "http://www.w3.org/2001/10/xml-exc-c14n#", digestAlgorithm
         );
-        
+
         // Add KeyInfo
         sig.addKeyInfo(cert);
 
@@ -287,7 +287,7 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
 
         StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
-    
+
     @Test
     public void testSHA512() throws Exception {
         // Read in plaintext document
@@ -309,14 +309,14 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         // Sign using DOM
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         String digestAlgorithm = "http://www.w3.org/2001/04/xmlenc#sha512";
-        
+
         XMLSignature sig = signUsingDOM(
                 "http://www.w3.org/2000/09/xmldsig#rsa-sha1", document, localNames, key,
                 "http://www.w3.org/2001/10/xml-exc-c14n#", digestAlgorithm
         );
-        
+
         // Add KeyInfo
         sig.addKeyInfo(cert);
 
@@ -336,7 +336,7 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
 
         StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
-    
+
     @Test
     public void testRIPEMD160() throws Exception {
         if (!bcInstalled) {
@@ -361,14 +361,14 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         // Sign using DOM
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         String digestAlgorithm = "http://www.w3.org/2001/04/xmlenc#ripemd160";
-        
+
         XMLSignature sig = signUsingDOM(
                 "http://www.w3.org/2000/09/xmldsig#rsa-sha1", document, localNames, key,
                 "http://www.w3.org/2001/10/xml-exc-c14n#", digestAlgorithm
         );
-        
+
         // Add KeyInfo
         sig.addKeyInfo(cert);
 
@@ -388,7 +388,7 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
 
         StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
-    
+
     @Test
     public void testWhirlpool() throws Exception {
         if (!bcInstalled) {
@@ -413,14 +413,14 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         // Sign using DOM
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         String digestAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#whirlpool";
-        
+
         XMLSignature sig = signUsingDOM(
                 "http://www.w3.org/2000/09/xmldsig#rsa-sha1", document, localNames, key,
                 "http://www.w3.org/2001/10/xml-exc-c14n#", digestAlgorithm
         );
-        
+
         // Add KeyInfo
         sig.addKeyInfo(cert);
 
@@ -440,7 +440,7 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
 
         StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
-    
+
     @Test
     public void testSHA3_224() throws Exception {
         if (!bcInstalled) {
@@ -465,14 +465,14 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         // Sign using DOM
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         String digestAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha3-224";
-        
+
         XMLSignature sig = signUsingDOM(
                 "http://www.w3.org/2000/09/xmldsig#rsa-sha1", document, localNames, key,
                 "http://www.w3.org/2001/10/xml-exc-c14n#", digestAlgorithm
         );
-        
+
         // Add KeyInfo
         sig.addKeyInfo(cert);
 
@@ -517,14 +517,14 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         // Sign using DOM
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         String digestAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha3-256";
-        
+
         XMLSignature sig = signUsingDOM(
                 "http://www.w3.org/2000/09/xmldsig#rsa-sha1", document, localNames, key,
                 "http://www.w3.org/2001/10/xml-exc-c14n#", digestAlgorithm
         );
-        
+
         // Add KeyInfo
         sig.addKeyInfo(cert);
 
@@ -544,7 +544,7 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
 
         StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
-    
+
     @Test
     public void testSHA3_384() throws Exception {
         if (!bcInstalled) {
@@ -569,14 +569,14 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         // Sign using DOM
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         String digestAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha3-384";
-        
+
         XMLSignature sig = signUsingDOM(
                 "http://www.w3.org/2000/09/xmldsig#rsa-sha1", document, localNames, key,
                 "http://www.w3.org/2001/10/xml-exc-c14n#", digestAlgorithm
         );
-        
+
         // Add KeyInfo
         sig.addKeyInfo(cert);
 
@@ -596,7 +596,7 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
 
         StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
-    
+
     @Test
     public void testSHA3_512() throws Exception {
         if (!bcInstalled) {
@@ -621,14 +621,14 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         // Sign using DOM
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         String digestAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha3-512";
-        
+
         XMLSignature sig = signUsingDOM(
                 "http://www.w3.org/2000/09/xmldsig#rsa-sha1", document, localNames, key,
                 "http://www.w3.org/2001/10/xml-exc-c14n#", digestAlgorithm
         );
-        
+
         // Add KeyInfo
         sig.addKeyInfo(cert);
 
@@ -649,5 +649,5 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
 
-    
+
 }

@@ -27,7 +27,7 @@ import java.security.Security;
 import javax.xml.crypto.test.KeySelectors;
 
 /**
- * This is a testcase to validate all "bdournaee" 
+ * This is a testcase to validate all "bdournaee"
  * testcases from RSA
  *
  * @author Sean Mullan
@@ -44,12 +44,12 @@ public class ComRSASecurityTest extends org.junit.Assert {
     public ComRSASecurityTest() {
         String fs = System.getProperty("file.separator");
         String base = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
-        
+
         base += fs + "src/test/resources" + fs + "com";
         validator = new SignatureValidator(new File
             (base, "rsasecurity/bdournaee"));
     }
-    
+
     @org.junit.Test
     public void test_certj201_enveloping() throws Exception {
         String file = "certj201_enveloping.xml";
@@ -58,7 +58,7 @@ public class ComRSASecurityTest extends org.junit.Assert {
             (file, new KeySelectors.KeyValueKeySelector());
         assertTrue("Signature failed core validation", coreValidity);
     }
-    
+
     @org.junit.Test
     public void test_certj201_enveloped() throws Exception {
         String file = "certj201_enveloped.xml";
@@ -67,5 +67,5 @@ public class ComRSASecurityTest extends org.junit.Assert {
             (file, new KeySelectors.KeyValueKeySelector());
         assertTrue("Signature failed core validation", coreValidity);
     }
-    
+
 }

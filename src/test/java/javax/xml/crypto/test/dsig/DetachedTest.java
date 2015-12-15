@@ -35,8 +35,8 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 
 /**
- * This is a simple example of generating and validating a Detached XML 
- * Signature using the JSR 105 API. The resulting signature will look 
+ * This is a simple example of generating and validating a Detached XML
+ * Signature using the JSR 105 API. The resulting signature will look
  * like (key and signature values will be different):
  *
  * <pre><code>
@@ -90,48 +90,48 @@ public class DetachedTest extends org.junit.Assert {
     public DetachedTest() {
         //
     }
-    
+
     @org.junit.Test
     public void test() {
         try {
             //
             // PART 1 : Creating the detached signature
             //
-    
-            // Create a factory that will be used to generate the signature 
+
+            // Create a factory that will be used to generate the signature
             // structures
             XMLSignatureFactory fac = XMLSignatureFactory.getInstance
                 ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
-    
+
             // Create a Reference to an external URI that will be digested
             Reference ref = fac.newReference
-                ("http://www.w3.org/TR/xml-stylesheet", 
+                ("http://www.w3.org/TR/xml-stylesheet",
                 fac.newDigestMethod(DigestMethod.SHA1, null));
-    
+
             // Create a DSA KeyPair
             KeyPairGenerator kpg = KeyPairGenerator.getInstance("DSA");
-            kpg.initialize(1024, 
+            kpg.initialize(1024,
                 new SecureRandom("not so random bytes".getBytes()));
             KeyPair kp = kpg.generateKeyPair();
-    
+
             // Create a KeyValue containing the generated DSA PublicKey
             KeyInfoFactory kif = fac.getKeyInfoFactory();
             KeyValue kv = kif.newKeyValue(kp.getPublic());
-    
+
             // Create a KeyInfo and add the KeyValue to it
             KeyInfo ki = kif.newKeyInfo(Collections.singletonList(kv));
 
             // Create SignedInfo
             SignedInfo si = fac.newSignedInfo(fac.newCanonicalizationMethod(
-                CanonicalizationMethod.INCLUSIVE_WITH_COMMENTS, 
-                (C14NMethodParameterSpec) null), 
-                fac.newSignatureMethod(SignatureMethod.DSA_SHA1, null), 
+                CanonicalizationMethod.INCLUSIVE_WITH_COMMENTS,
+                (C14NMethodParameterSpec) null),
+                fac.newSignatureMethod(SignatureMethod.DSA_SHA1, null),
                 Collections.singletonList(ref));
 
             // Create XMLSignature
             XMLSignature signature = fac.newXMLSignature(si,ki,null,null,null);
-    
-            // Create an XMLSignContext and set the 
+
+            // Create an XMLSignContext and set the
             // DSA PrivateKey for signing
             Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
             DOMSignContext signContext = new DOMSignContext(kp.getPrivate(), doc);
@@ -143,19 +143,19 @@ public class DetachedTest extends org.junit.Assert {
             // Generate (and sign) the XMLSignature
             signature.sign(signContext);
             TestUtils.validateSecurityOrEncryptionElement(doc.getDocumentElement());
-    
+
             //
             // PART 2 : Validating the detached signature
             //
-    
+
             // Create a XMLValidateContext & set the DSAPublicKey for validating
             XMLValidateContext vc = new DOMValidateContext(kp.getPublic(),
                 doc.getDocumentElement());
             vc.setURIDereferencer(ud);
-    
+
             // Validate the Signature (generated above)
-            boolean coreValidity = signature.validate(vc); 
-    
+            boolean coreValidity = signature.validate(vc);
+
             // Check core validation status
             if (coreValidity == false) {
                 // check the validation status of each Reference
@@ -167,7 +167,7 @@ public class DetachedTest extends org.junit.Assert {
                 }
                 fail("Signature failed core validation");
             }
-    
+
             // You can also validate an XML Signature which is in XML format.
             // Unmarshal and validate an XMLSignature from a DOMValidateContext
             signature = fac.unmarshalXMLSignature(vc);

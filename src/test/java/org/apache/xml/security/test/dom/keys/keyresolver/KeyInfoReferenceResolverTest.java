@@ -131,8 +131,8 @@ public class KeyInfoReferenceResolverTest extends Assert {
     // Utility methods
 
     private String getControlFilePath(String fileName) {
-        return BASEDIR + SEP + "src" + SEP + "test" + SEP + "resources" + 
-            SEP + "org" + SEP + "apache" + SEP + "xml" + SEP + "security" + 
+        return BASEDIR + SEP + "src" + SEP + "test" + SEP + "resources" +
+            SEP + "org" + SEP + "apache" + SEP + "xml" + SEP + "security" +
             SEP + "keyresolver" +
             SEP + fileName;
     }

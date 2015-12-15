@@ -81,7 +81,7 @@ public class BaltimoreEncTest extends org.junit.Assert {
      */
     public BaltimoreEncTest() throws Exception {
         // Create the comparison strings
-        String filename = 
+        String filename =
             "src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml";
         String basedir = System.getProperty("basedir");
         if (basedir != null && !"".equals(basedir)) {
@@ -117,7 +117,7 @@ public class BaltimoreEncTest extends org.junit.Assert {
         byte[] pkcs8Bytes = JavaUtils.getBytesFromFile(filename);
         PKCS8EncodedKeySpec pkcs8Spec = new PKCS8EncodedKeySpec(pkcs8Bytes);
 
-        // Create a key factory 
+        // Create a key factory
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         rsaKey = keyFactory.generatePrivate(pkcs8Spec);
 
@@ -130,7 +130,7 @@ public class BaltimoreEncTest extends org.junit.Assert {
         // Check what algorithms are available
 
         haveISOPadding = false;
-        String algorithmId = 
+        String algorithmId =
             JCEMapper.translateURItoJCEID(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128);
 
         if (algorithmId != null) {
@@ -145,7 +145,7 @@ public class BaltimoreEncTest extends org.junit.Assert {
             }
         }
 
-        haveKeyWraps = 
+        haveKeyWraps =
             (JCEMapper.translateURItoJCEID(EncryptionConstants.ALGO_ID_KEYWRAP_AES128) != null);
     }
 
@@ -157,7 +157,7 @@ public class BaltimoreEncTest extends org.junit.Assert {
     @org.junit.Test
     public void test_five_content_3des_cbc() throws Exception {
         if (haveISOPadding) {
-            String filename = 
+            String filename =
                 "src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-content-tripledes-cbc.xml";
 
             Document dd = decryptElement(filename);
@@ -179,7 +179,7 @@ public class BaltimoreEncTest extends org.junit.Assert {
     public void test_five_content_aes256_cbc() throws Exception {
 
         if (haveISOPadding) {
-            String filename = 
+            String filename =
                 "src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-content-aes256-cbc-prop.xml";
 
             Document dd = decryptElement(filename);
@@ -201,7 +201,7 @@ public class BaltimoreEncTest extends org.junit.Assert {
     @org.junit.Test
     public void test_five_content_aes128_cbc_kw_aes192() throws Exception {
         if (haveISOPadding && haveKeyWraps) {
-            String filename = 
+            String filename =
                 "src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-content-aes128-cbc-kw-aes192.xml";
 
             Document dd = decryptElement(filename);
@@ -224,7 +224,7 @@ public class BaltimoreEncTest extends org.junit.Assert {
     public void test_five_content_3des_cbc_kw_aes128() throws Exception {
 
         if (haveISOPadding && haveKeyWraps) {
-            String filename = 
+            String filename =
                 "src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-element-tripledes-cbc-kw-aes128.xml";
 
             Document dd = decryptElement(filename);
@@ -246,7 +246,7 @@ public class BaltimoreEncTest extends org.junit.Assert {
     @org.junit.Test
     public void test_five_content_aes128_cbc_rsa_15() throws Exception {
         if (haveISOPadding) {
-            String filename = 
+            String filename =
                 "src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-element-aes128-cbc-rsa-1_5.xml";
 
             Document dd = decryptElement(filename);
@@ -268,7 +268,7 @@ public class BaltimoreEncTest extends org.junit.Assert {
     @org.junit.Test
     public void test_five_element_aes192_cbc_ref() throws Exception {
         if (haveISOPadding) {
-            String filename = 
+            String filename =
                 "src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-element-aes192-cbc-ref.xml";
 
             Document dd = decryptElement(filename);
@@ -292,7 +292,7 @@ public class BaltimoreEncTest extends org.junit.Assert {
     @org.junit.Test
     public void test_five_data_aes128_cbc() throws Exception {
         if (haveISOPadding) {
-            String filename = 
+            String filename =
                 "src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-data-aes128-cbc.xml";
 
             byte[] decrypt = decryptData(filename);
@@ -314,7 +314,7 @@ public class BaltimoreEncTest extends org.junit.Assert {
     @org.junit.Test
     public void test_five_data_aes256_cbc_3des() throws Exception {
         if (haveISOPadding && haveKeyWraps) {
-            String filename = 
+            String filename =
                 "src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-data-aes256-cbc-kw-tripledes.xml";
 
             byte[] decrypt = decryptData(filename);
@@ -336,7 +336,7 @@ public class BaltimoreEncTest extends org.junit.Assert {
     @org.junit.Test
     public void test_five_data_aes192_cbc_aes256() throws Exception {
         if (haveISOPadding && haveKeyWraps) {
-            String filename = 
+            String filename =
                 "src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-data-aes192-cbc-kw-aes256.xml";
 
             byte[] decrypt = decryptData(filename);
@@ -358,7 +358,7 @@ public class BaltimoreEncTest extends org.junit.Assert {
     @org.junit.Test
     public void test_five_data_3des_cbc_rsa_oaep() throws Exception {
         if (haveISOPadding) {
-            String filename = 
+            String filename =
                 "src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p.xml";
 
             byte[] decrypt = decryptData(filename);
@@ -414,7 +414,7 @@ public class BaltimoreEncTest extends org.junit.Assert {
     /**
      * Method decryptData
      *
-     * Take a file, find an encrypted element decrypt it and return the 
+     * Take a file, find an encrypted element decrypt it and return the
      * resulting byte array
      *
      * @param filename File to decrypt from
@@ -450,7 +450,7 @@ public class BaltimoreEncTest extends org.junit.Assert {
         return cipher.decryptToByteArray(ee);
     }
 
-    /** 
+    /**
      * Method mapKeyName
      *
      * Create a secret key from a key name for merlin-five
@@ -529,7 +529,7 @@ public class BaltimoreEncTest extends org.junit.Assert {
         if (kek != null) {
             XMLCipher cipher = XMLCipher.getInstance();
             cipher.init(XMLCipher.UNWRAP_MODE, kek);
-            key = 
+            key =
                 cipher.decryptKey(
                     encryptedKey, encryptedData.getEncryptionMethod().getAlgorithm()
                 );
@@ -537,7 +537,7 @@ public class BaltimoreEncTest extends org.junit.Assert {
 
         return key;
     }
-    
+
     /**
      * Method countNodes
      *
@@ -561,7 +561,7 @@ public class BaltimoreEncTest extends org.junit.Assert {
 
         return count;
     }
-    
+
     /**
      * Method retrieveCCNumber
      *
@@ -569,12 +569,12 @@ public class BaltimoreEncTest extends org.junit.Assert {
      *
      * @param doc The document to retrieve the card number from
      * @return The retrieved credit card number
-     * @throws XPathExpressionException 
+     * @throws XPathExpressionException
      */
-    private static String retrieveCCNumber(Document doc) 
-        throws javax.xml.transform.TransformerException, 
+    private static String retrieveCCNumber(Document doc)
+        throws javax.xml.transform.TransformerException,
         XPathExpressionException {
-        
+
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();
         Map<String, String> namespace = new HashMap<String, String>();
@@ -583,7 +583,7 @@ public class BaltimoreEncTest extends org.junit.Assert {
         xpath.setNamespaceContext(context);
 
         String expression = "//x:Number/text()";
-        Node ccnumElt = 
+        Node ccnumElt =
             (Node) xpath.evaluate(expression, doc, XPathConstants.NODE);
 
         if (ccnumElt != null) {
@@ -608,7 +608,7 @@ public class BaltimoreEncTest extends org.junit.Assert {
             int myNodeCount = countNodes(d);
 
             assertTrue(
-                "Node count mismatches", 
+                "Node count mismatches",
                 ((myNodeCount > 0) && myNodeCount == nodeCount)
             );
         }

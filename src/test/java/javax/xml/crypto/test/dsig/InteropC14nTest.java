@@ -47,7 +47,7 @@ public class InteropC14nTest extends org.junit.Assert {
         base = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");	
         base = base + fs + "src/test/resources" + fs + "interop";
     }
-    
+
     @org.junit.Test
     public void test_y1_exc_signature() throws Exception {
         validator = new SignatureValidator(new File(base, "c14n/Y1"));
@@ -58,7 +58,7 @@ public class InteropC14nTest extends org.junit.Assert {
         assertTrue("Signature failed core validation", coreValidity);
 
     }
-    
+
     /* COMMENTED OUT since this test requires MD5 support
     public void test_y2_signature_joseph_exc() throws Exception {
         validator = new SignatureValidator(new File(base, "c14n/Y2"));
@@ -69,7 +69,7 @@ public class InteropC14nTest extends org.junit.Assert {
         assertTrue("Signature failed core validation", coreValidity);
     }
     */
-    
+
     @org.junit.Test
     public void test_y3_signature() throws Exception {
         validator = new SignatureValidator(new File(base, "c14n/Y3"));
@@ -83,7 +83,7 @@ public class InteropC14nTest extends org.junit.Assert {
             (file, new KeySelectors.RawX509KeySelector());
         assertTrue("Signature failed core validation#2", coreValidity);
     }
-    
+
     @org.junit.Test
     public void test_y4_signature() throws Exception {
         validator = new SignatureValidator(new File(base, "c14n/Y4"));
@@ -97,7 +97,7 @@ public class InteropC14nTest extends org.junit.Assert {
             (file, new KeySelectors.RawX509KeySelector());
         assertTrue("Signature failed core validation#2", coreValidity);
     }
-    
+
     @org.junit.Test
     @org.junit.Ignore
     public void test_y5_signature() throws Exception {
@@ -112,7 +112,7 @@ public class InteropC14nTest extends org.junit.Assert {
             (file, new KeySelectors.RawX509KeySelector());
         assertTrue("Signature failed core validation#2", coreValidity);
     }
-    
+
     @org.junit.Test
     @org.junit.Ignore
     public void test_y5_signatureCommented() throws Exception {
@@ -127,5 +127,5 @@ public class InteropC14nTest extends org.junit.Assert {
             (file, new KeySelectors.RawX509KeySelector());
         assertTrue("Signature failed core validation#2", coreValidity);
     }
-    
+
 }

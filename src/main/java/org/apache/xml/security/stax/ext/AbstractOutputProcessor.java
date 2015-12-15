@@ -149,7 +149,7 @@ public abstract class AbstractOutputProcessor implements OutputProcessor {
             xmlSecStartElement.addAttribute(xmlSecAttribute);
 
             final QName attributeName = xmlSecAttribute.getName();
-            if (attributeName.getNamespaceURI() != null && !"".equals(attributeName.getNamespaceURI()) 
+            if (attributeName.getNamespaceURI() != null && !"".equals(attributeName.getNamespaceURI())
                 && !declaredNamespaces.contains(xmlSecAttribute.getAttributeNamespace())) {
                 xmlSecStartElement.addNamespace(xmlSecAttribute.getAttributeNamespace());
             }
@@ -260,7 +260,7 @@ public abstract class AbstractOutputProcessor implements OutputProcessor {
         }
         return securePart;
     }
-    
+
     protected void outputDOMElement(Element element, OutputProcessorChain outputProcessorChain)
             throws XMLStreamException, XMLSecurityException {
 

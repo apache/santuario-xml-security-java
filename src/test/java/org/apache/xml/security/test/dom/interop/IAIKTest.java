@@ -38,7 +38,7 @@ public class IAIKTest extends InteropTestBase {
 
     /** Field gregorsDir */
     static String gregorsDir = "src/test/resources/at/iaik/ixsil/";
-    
+
     static {
         String basedir = System.getProperty("basedir");
         if (basedir != null && !"".equals(basedir)) {

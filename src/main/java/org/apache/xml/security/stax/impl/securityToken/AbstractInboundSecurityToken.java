@@ -141,7 +141,7 @@ public abstract class AbstractInboundSecurityToken extends AbstractSecurityToken
             } else if (key instanceof SecretKey) {
                 algorithmSuiteSecurityEvent.setKeyLength(key.getEncoded().length * 8);
             } else {
-                throw new XMLSecurityException("java.security.UnknownKeyType", 
+                throw new XMLSecurityException("java.security.UnknownKeyType",
                                                new Object[] {key.getClass().getName()});
             }
             this.inboundSecurityContext.registerSecurityEvent(algorithmSuiteSecurityEvent);
@@ -175,7 +175,7 @@ public abstract class AbstractInboundSecurityToken extends AbstractSecurityToken
             } else if (publicKey instanceof ECKey) {
                 algorithmSuiteSecurityEvent.setKeyLength(((ECKey) publicKey).getParams().getOrder().bitLength());
             } else {
-                throw new XMLSecurityException("java.security.UnknownKeyType", 
+                throw new XMLSecurityException("java.security.UnknownKeyType",
                                                new Object[] {publicKey.getClass().getName()});
             }
             inboundSecurityContext.registerSecurityEvent(algorithmSuiteSecurityEvent);
@@ -223,5 +223,5 @@ public abstract class AbstractInboundSecurityToken extends AbstractSecurityToken
     public boolean isIncludedInMessage() {
         return includedInMessage;
     }
-    
+
 }

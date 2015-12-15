@@ -31,7 +31,7 @@ import javax.xml.crypto.dsig.dom.DOMValidateContext;
 import javax.xml.crypto.test.KeySelectors;
 
 /**
- * This is a testcase to validate all "phaos-xmldsig-three" 
+ * This is a testcase to validate all "phaos-xmldsig-three"
  * testcases from Phaos
  *
  * @author Sean Mullan
@@ -73,7 +73,7 @@ public class PhaosXMLDSig3Test extends org.junit.Assert {
     public void test_signature_dsa_enveloped() throws Exception {
         String file = "signature-dsa-enveloped.xml";
 
-        boolean coreValidity = 
+        boolean coreValidity =
             validator.validate(file, new KeySelectors.RawX509KeySelector());
         assertTrue("Signature failed core validation", coreValidity);
     }
@@ -82,7 +82,7 @@ public class PhaosXMLDSig3Test extends org.junit.Assert {
     public void test_signature_dsa_enveloping() throws Exception {
         String file = "signature-dsa-enveloping.xml";
 
-        boolean coreValidity = 
+        boolean coreValidity =
             validator.validate(file, new KeySelectors.RawX509KeySelector());
         assertTrue("Signature failed core validation", coreValidity);
     }
@@ -91,13 +91,13 @@ public class PhaosXMLDSig3Test extends org.junit.Assert {
     public void test_signature_dsa_manifest() throws Exception {
         String file = "signature-dsa-manifest.xml";
 
-        boolean coreValidity = 
+        boolean coreValidity =
             validator.validate(file, new KeySelectors.KeyValueKeySelector());
         assertTrue("Signature failed core validation", coreValidity);
     }
 
     @org.junit.Test
-    public void test_signature_hmac_sha1_40_c14n_comments_detached() 
+    public void test_signature_hmac_sha1_40_c14n_comments_detached()
     throws Exception {
         String file = "signature-hmac-sha1-40-c14n-comments-detached.xml";
 
@@ -113,7 +113,7 @@ public class PhaosXMLDSig3Test extends org.junit.Assert {
     }
 
     @org.junit.Test
-    public void test_signature_hmac_sha1_40_exclusive_c14n_comments_detached() 
+    public void test_signature_hmac_sha1_40_exclusive_c14n_comments_detached()
     throws Exception {
         String file = "signature-hmac-sha1-40-exclusive-c14n-comments-detached.xml";
 
@@ -129,7 +129,7 @@ public class PhaosXMLDSig3Test extends org.junit.Assert {
     }
 
     @org.junit.Test
-    public void test_signature_hmac_sha1_exclusive_c14n_comments_detached() 
+    public void test_signature_hmac_sha1_exclusive_c14n_comments_detached()
     throws Exception {
         String file = "signature-hmac-sha1-exclusive-c14n-comments-detached.xml";
 
@@ -140,7 +140,7 @@ public class PhaosXMLDSig3Test extends org.junit.Assert {
     }
 
     @org.junit.Test
-    public void test_signature_hmac_sha1_exclusive_c14n_enveloped() 
+    public void test_signature_hmac_sha1_exclusive_c14n_enveloped()
     throws Exception {
         String file = "signature-hmac-sha1-exclusive-c14n-enveloped.xml";
 
@@ -154,7 +154,7 @@ public class PhaosXMLDSig3Test extends org.junit.Assert {
     public void test_signature_rsa_detached_b64_transform() throws Exception {
         String file = "signature-rsa-detached-b64-transform.xml";
 
-        boolean coreValidity = 
+        boolean coreValidity =
             validator.validate(file, new KeySelectors.KeyValueKeySelector());
         assertTrue("Signature failed core validation", coreValidity);
     }
@@ -163,7 +163,7 @@ public class PhaosXMLDSig3Test extends org.junit.Assert {
     public void test_signature_rsa_detached_xpath_transform() throws Exception {
         String file = "signature-rsa-detached-xpath-transform.xml";
 
-        boolean coreValidity = 
+        boolean coreValidity =
             validator.validate(file, new KeySelectors.KeyValueKeySelector());
         assertTrue("Signature failed core validation", coreValidity);
     }
@@ -173,7 +173,7 @@ public class PhaosXMLDSig3Test extends org.junit.Assert {
         String file = "signature-rsa-detached-xslt-transform-bad-retrieval-method.xml";
 
         try {
-            validator.validate(file, 
+            validator.validate(file,
                                new KeySelectors.CollectionKeySelector(base));
             fail("Should throw XMLSignatureException for using DSA key with " +
             "RSA algorithm");
@@ -184,8 +184,8 @@ public class PhaosXMLDSig3Test extends org.junit.Assert {
     public void test_signature_rsa_detached_xslt_transform_rm() throws Exception {
         String file = "signature-rsa-detached-xslt-transform-retrieval-method.xml";
 
-        boolean coreValidity = 
-            validator.validate(file, 
+        boolean coreValidity =
+            validator.validate(file,
                                new KeySelectors.CollectionKeySelector(base));
         assertTrue("Signature failed core validation", coreValidity);
     }
@@ -194,7 +194,7 @@ public class PhaosXMLDSig3Test extends org.junit.Assert {
     public void test_signature_rsa_detached_xslt_transform() throws Exception {
         String file = "signature-rsa-detached-xslt-transform.xml";
 
-        boolean coreValidity = 
+        boolean coreValidity =
             validator.validate(file, new KeySelectors.KeyValueKeySelector());
         assertTrue("Signature failed core validation", coreValidity);
     }
@@ -215,7 +215,7 @@ public class PhaosXMLDSig3Test extends org.junit.Assert {
     public void test_signature_rsa_enveloped_bad_digest_val() throws Exception {
         String file = "signature-rsa-enveloped-bad-digest-val.xml";
 
-        boolean coreValidity = 
+        boolean coreValidity =
             validator.validate(file, new KeySelectors.RawX509KeySelector());
         assertFalse("Signature should fail core validation", coreValidity);
     }
@@ -233,7 +233,7 @@ public class PhaosXMLDSig3Test extends org.junit.Assert {
     public void test_signature_rsa_enveloping() throws Exception {
         String file = "signature-rsa-enveloping.xml";
 
-        boolean coreValidity = 
+        boolean coreValidity =
             validator.validate(file, new KeySelectors.RawX509KeySelector());
         assertTrue("Signature failed core validation", coreValidity);
     }
@@ -260,7 +260,7 @@ public class PhaosXMLDSig3Test extends org.junit.Assert {
     public void test_signature_rsa_manifest_x509_data_issuer_serial() throws Exception {
         String file = "signature-rsa-manifest-x509-data-issuer-serial.xml";
 
-        boolean coreValidity = validator.validate(file, 
+        boolean coreValidity = validator.validate(file,
                                                   new KeySelectors.CollectionKeySelector(base));
         assertTrue("Signature failed core validation", coreValidity);
     }
@@ -269,7 +269,7 @@ public class PhaosXMLDSig3Test extends org.junit.Assert {
     public void test_signature_rsa_manifest_x509_data_ski() throws Exception {
         String file = "signature-rsa-manifest-x509-data-ski.xml";
 
-        boolean coreValidity = validator.validate(file, 
+        boolean coreValidity = validator.validate(file,
                                                   new KeySelectors.CollectionKeySelector(base));
         assertTrue("Signature failed core validation", coreValidity);
     }
@@ -278,7 +278,7 @@ public class PhaosXMLDSig3Test extends org.junit.Assert {
     public void test_signature_rsa_manifest_x509_data_subject_name() throws Exception {
         String file = "signature-rsa-manifest-x509-data-subject-name.xml";
 
-        boolean coreValidity = validator.validate(file, 
+        boolean coreValidity = validator.validate(file,
                                                   new KeySelectors.CollectionKeySelector(base));
         assertTrue("Signature failed core validation", coreValidity);
     }

@@ -27,7 +27,7 @@ import org.w3c.dom.Element;
 
 /**
  * Provides content model support for the <code>dsig11:KeyInfoReference</code> element.
- * 
+ *
  * @author Brent Putman (putmanb@georgetown.edu)
  */
 public class KeyInfoReference extends Signature11ElementProxy implements KeyInfoContent {

@@ -50,8 +50,8 @@ import org.w3c.dom.Element;
  * @author Frank Cornelis
  */
 public class XmlSecTest extends org.junit.Assert {
-    
-    private static final String BASEDIR = 
+
+    private static final String BASEDIR =
         System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
 
     static org.slf4j.Logger log =
@@ -62,23 +62,23 @@ public class XmlSecTest extends org.junit.Assert {
     public void testCheckXmlSignatureSoftwareStack() throws Exception {
         checkXmlSignatureSoftwareStack(false);
     }
-    
+
     @org.junit.Test
     public void testCheckXmlSignatureSoftwareStackWithCert() throws Exception {
         checkXmlSignatureSoftwareStack(true);
     }
-    
+
     private void checkXmlSignatureSoftwareStack(boolean cert) throws Exception {
         Init.init();
         DocumentBuilder documentBuilder = XMLUtils.createDocumentBuilder(false);
         Document testDocument = documentBuilder.newDocument();
 
-        Element rootElement = 
+        Element rootElement =
             testDocument.createElementNS("urn:namespace", "tns:document");
         rootElement.setAttributeNS
             (Constants.NamespaceSpecNS, "xmlns:tns", "urn:namespace");
         testDocument.appendChild(rootElement);
-        Element childElement = 
+        Element childElement =
             testDocument.createElementNS("urn:childnamespace", "t:child");
         childElement.setAttributeNS
             (Constants.NamespaceSpecNS, "xmlns:t", "urn:childnamespace");
@@ -91,7 +91,7 @@ public class XmlSecTest extends org.junit.Assert {
         if (cert) {
             // get key & self-signed certificate from keystore
             String fs = System.getProperty("file.separator");
-            FileInputStream fis = 
+            FileInputStream fis =
                 new FileInputStream(BASEDIR + fs + "src/test/resources" + fs + "test.jks");
             KeyStore ks = KeyStore.getInstance("JKS");
             ks.load(fis, "changeit".toCharArray());
@@ -104,7 +104,7 @@ public class XmlSecTest extends org.junit.Assert {
             privateKey = keyPair.getPrivate();
         }
 
-        XMLSignature signature = 
+        XMLSignature signature =
             new XMLSignature(
                 testDocument, "", XMLSignature.ALGO_ID_SIGNATURE_DSA,
                 Canonicalizer.ALGO_ID_C14N_WITH_COMMENTS
@@ -133,13 +133,13 @@ public class XmlSecTest extends org.junit.Assert {
         );
 
         signature.sign(privateKey);
-        
+
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xPath = xpf.newXPath();
         xPath.setNamespaceContext(new DSNamespaceContext());
 
         String expression = "//ds:Signature[1]";
-        Element sigElement = 
+        Element sigElement =
             (Element) xPath.evaluate(expression, testDocument, XPathConstants.NODE);
 
         XMLSignature signatureToVerify = new XMLSignature(sigElement, "");
@@ -148,5 +148,5 @@ public class XmlSecTest extends org.junit.Assert {
 
         assertTrue(signResult);
     }
-    
+
 }

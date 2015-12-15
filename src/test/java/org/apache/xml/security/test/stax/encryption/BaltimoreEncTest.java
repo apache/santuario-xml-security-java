@@ -57,19 +57,19 @@ import org.w3c.dom.Node;
 
 /**
  * Interop test for XML Encryption
- * 
+ *
  * @author $Author: coheigea $
  * @version $Revision: 1236690 $ $Date: 2012-01-27 14:07:10 +0000 (Fri, 27 Jan 2012) $
  */
 public class BaltimoreEncTest extends org.junit.Assert {
-    
+
     private static String cardNumber;
     private static int nodeCount = 0;
     private static PrivateKey rsaKey;
 
     private XMLInputFactory xmlInputFactory;
     private TransformerFactory transformerFactory = TransformerFactory.newInstance();
-    
+
     @Before
     public void setUp() throws Exception {
         org.apache.xml.security.Init.init();
@@ -77,7 +77,7 @@ public class BaltimoreEncTest extends org.junit.Assert {
         xmlInputFactory = XMLInputFactory.newInstance();
         xmlInputFactory.setEventAllocator(new XMLSecEventAllocator());
 
-        String filename = 
+        String filename =
                 "src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml";
         String basedir = System.getProperty("basedir");
         if (basedir != null && !"".equals(basedir)) {
@@ -89,10 +89,10 @@ public class BaltimoreEncTest extends org.junit.Assert {
         Document doc = db.parse(new java.io.FileInputStream(f));
 
         cardNumber = retrieveCCNumber(doc);
-        
+
         // Count the nodes in the document as a secondary test
         nodeCount = countNodes(doc);
-        
+
         // rsaKey
         filename = "src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/rsa.p8";
         if (basedir != null && !"".equals(basedir)) {
@@ -102,7 +102,7 @@ public class BaltimoreEncTest extends org.junit.Assert {
         byte[] pkcs8Bytes = JavaUtils.getBytesFromFile(filename);
         PKCS8EncodedKeySpec pkcs8Spec = new PKCS8EncodedKeySpec(pkcs8Bytes);
 
-        // Create a key factory 
+        // Create a key factory
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         rsaKey = keyFactory.generatePrivate(pkcs8Spec);
     }
@@ -110,302 +110,302 @@ public class BaltimoreEncTest extends org.junit.Assert {
     @Test
     public void test_five_content_3des_cbc() throws Exception {
         // Read in document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-content-tripledes-cbc.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // Set up the Key
         byte[] keyBytes = "abcdefghijklmnopqrstuvwx".getBytes("ASCII");
         SecretKey secretKey = new SecretKeySpec(keyBytes, "DESede");
 
         // XMLUtils.outputDOM(document, System.out);
-        
+
         // Convert Document to a Stream Reader
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        final XMLStreamReader xmlStreamReader = 
+        final XMLStreamReader xmlStreamReader =
                 xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
-        
+
         // Decrypt
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(secretKey);
         InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
         TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader = 
+        XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
-         
+
         document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
         checkDecryptedDoc(document, true);
     }
-    
+
     @Test
     public void test_five_content_aes256_cbc() throws Exception {
         // Read in document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-content-aes256-cbc-prop.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // Set up the Key
         byte[] keyBytes = "abcdefghijklmnopqrstuvwxyz012345".getBytes("ASCII");
         SecretKey secretKey = new SecretKeySpec(keyBytes, "AES");
 
         // XMLUtils.outputDOM(document, System.out);
-        
+
         // Convert Document to a Stream Reader
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        final XMLStreamReader xmlStreamReader = 
+        final XMLStreamReader xmlStreamReader =
                 xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
-        
+
         // Decrypt
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(secretKey);
         InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
         TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader = 
+        XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
-         
+
         document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
         checkDecryptedDoc(document, true);
     }
-    
+
     @Test
     public void test_five_content_aes128_cbc_kw_aes192() throws Exception {
         // Read in document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-content-aes128-cbc-kw-aes192.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // Set up the Key
         byte[] keyBytes = "abcdefghijklmnopqrstuvwx".getBytes("ASCII");
         SecretKey secretKey = new SecretKeySpec(keyBytes, "AES");
 
         // XMLUtils.outputDOM(document, System.out);
-        
+
         // Convert Document to a Stream Reader
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        final XMLStreamReader xmlStreamReader = 
+        final XMLStreamReader xmlStreamReader =
                 xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
-        
+
         // Decrypt
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(secretKey);
         InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
         TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader = 
+        XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
-         
+
         document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
         checkDecryptedDoc(document, true);
     }
-    
+
     @Test
     public void test_five_content_3des_cbc_kw_aes128() throws Exception {
         // Read in document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-element-tripledes-cbc-kw-aes128.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // Set up the Key
         byte[] keyBytes = "abcdefghijklmnop".getBytes("ASCII");
         SecretKey secretKey = new SecretKeySpec(keyBytes, "AES");
 
         // XMLUtils.outputDOM(document, System.out);
-        
+
         // Convert Document to a Stream Reader
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        final XMLStreamReader xmlStreamReader = 
+        final XMLStreamReader xmlStreamReader =
                 xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
-        
+
         // Decrypt
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(secretKey);
         InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
         TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader = 
+        XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
-         
+
         document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
         checkDecryptedDoc(document, true);
     }
-    
+
     @Test
     public void test_five_content_aes128_cbc_rsa_15() throws Exception {
         // Read in document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-element-aes128-cbc-rsa-1_5.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // XMLUtils.outputDOM(document, System.out);
-        
+
         // Convert Document to a Stream Reader
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        final XMLStreamReader xmlStreamReader = 
+        final XMLStreamReader xmlStreamReader =
                 xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
-        
+
         // Decrypt
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(rsaKey);
         InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
         TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader = 
+        XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
-         
+
         document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
         checkDecryptedDoc(document, true);
     }
-    
+
     @Test
     public void test_five_data_aes128_cbc() throws Exception {
         // Read in document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-data-aes128-cbc.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // Set up the Key
         byte[] keyBytes = "abcdefghijklmnop".getBytes("ASCII");
         SecretKey secretKey = new SecretKeySpec(keyBytes, "AES");
 
         // XMLUtils.outputDOM(document, System.out);
-        
+
         // Convert Document to a Stream Reader
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        final XMLStreamReader xmlStreamReader = 
+        final XMLStreamReader xmlStreamReader =
                 xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
-        
+
         // Decrypt
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(secretKey);
         InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
         TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader = 
+        XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
-         
+
         document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
-    
+
     @Test
     public void test_five_data_aes256_cbc_3des() throws Exception {
         // Read in document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-data-aes256-cbc-kw-tripledes.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // Set up the Key
         byte[] keyBytes = "abcdefghijklmnopqrstuvwx".getBytes("ASCII");
         SecretKey secretKey = new SecretKeySpec(keyBytes, "DESede");
 
         // XMLUtils.outputDOM(document, System.out);
-        
+
         // Convert Document to a Stream Reader
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        final XMLStreamReader xmlStreamReader = 
+        final XMLStreamReader xmlStreamReader =
                 xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
-        
+
         // Decrypt
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(secretKey);
         InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
         TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader = 
+        XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
-         
+
         document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
-    
+
     @Test
     public void test_five_data_aes192_cbc_aes256() throws Exception {
         // Read in document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-data-aes192-cbc-kw-aes256.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // Set up the Key
         byte[] keyBytes = "abcdefghijklmnopqrstuvwxyz012345".getBytes("ASCII");
         SecretKey secretKey = new SecretKeySpec(keyBytes, "AES");
 
         // XMLUtils.outputDOM(document, System.out);
-        
+
         // Convert Document to a Stream Reader
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        final XMLStreamReader xmlStreamReader = 
+        final XMLStreamReader xmlStreamReader =
                 xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
-        
+
         // Decrypt
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(secretKey);
         InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
         TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader = 
+        XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
-         
+
         document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
-    
+
     @Test
     public void test_five_data_3des_cbc_rsa_oaep() throws Exception {
         // Read in document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // XMLUtils.outputDOM(document, System.out);
-        
+
         // Convert Document to a Stream Reader
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        final XMLStreamReader xmlStreamReader = 
+        final XMLStreamReader xmlStreamReader =
                 xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
-        
+
         // Decrypt
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(rsaKey);
         InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
         TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader = 
+        XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
-         
+
         document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
-    
+
     /*
      * Check we have retrieved a Credit Card number and that it is OK
      * Check that the document has the correct number of nodes
@@ -420,12 +420,12 @@ public class BaltimoreEncTest extends org.junit.Assert {
             int myNodeCount = countNodes(d);
 
             assertTrue(
-                "Node count mismatches", 
+                "Node count mismatches",
                 ((myNodeCount > 0) && myNodeCount == nodeCount)
             );
         }
     }
-    
+
     /**
      * Method retrieveCCNumber
      *
@@ -433,12 +433,12 @@ public class BaltimoreEncTest extends org.junit.Assert {
      *
      * @param doc The document to retrieve the card number from
      * @return The retrieved credit card number
-     * @throws XPathExpressionException 
+     * @throws XPathExpressionException
      */
-    private static String retrieveCCNumber(Document doc) 
-        throws javax.xml.transform.TransformerException, 
+    private static String retrieveCCNumber(Document doc)
+        throws javax.xml.transform.TransformerException,
         XPathExpressionException {
-        
+
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();
         Map<String, String> namespace = new HashMap<String, String>();
@@ -447,7 +447,7 @@ public class BaltimoreEncTest extends org.junit.Assert {
         xpath.setNamespaceContext(context);
 
         String expression =  "//*[local-name()='Number']";
-        Node ccnumElt = 
+        Node ccnumElt =
             (Node) xpath.evaluate(expression, doc, XPathConstants.NODE);
 
         if (ccnumElt != null) {
@@ -456,7 +456,7 @@ public class BaltimoreEncTest extends org.junit.Assert {
 
         return null;
     }
-    
+
     /**
      * Method countNodes
      *
@@ -480,5 +480,5 @@ public class BaltimoreEncTest extends org.junit.Assert {
 
         return count;
     }
-    
+
 }

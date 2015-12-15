@@ -64,7 +64,7 @@ public class ResolverAnonymous extends ResourceResolverSpi {
         return input;
     }
 
-    /**    
+    /**
      * @inheritDoc
      */
     @Override

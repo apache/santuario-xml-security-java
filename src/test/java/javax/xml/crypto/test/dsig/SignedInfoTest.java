@@ -46,12 +46,12 @@ public class SignedInfoTest extends org.junit.Assert {
         fac = XMLSignatureFactory.getInstance
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
         cm = fac.newCanonicalizationMethod
-            (CanonicalizationMethod.INCLUSIVE_WITH_COMMENTS, 
+            (CanonicalizationMethod.INCLUSIVE_WITH_COMMENTS,
              (C14NMethodParameterSpec) null);
         sm = fac.newSignatureMethod(SignatureMethod.DSA_SHA1, null);
         references = new ArrayList<Reference>();
         references.add(fac.newReference
-                       ("http://www.sun.com/index.html", 
+                       ("http://www.sun.com/index.html",
                         fac.newDigestMethod(DigestMethod.SHA1, null)));
     }
 
@@ -59,10 +59,10 @@ public class SignedInfoTest extends org.junit.Assert {
     @org.junit.Test
     public void testConstructor() {
         // test XMLSignatureFactory.newSignedInfo(
-        //	CanonicalizationMethod cm, 
+        //	CanonicalizationMethod cm,
         //      SignatureMethod sm, List references)
         SignedInfo si;
-        
+
         for (int i = 0; i < 3; i++) {
             try {
                 switch (i) {
@@ -90,10 +90,10 @@ public class SignedInfoTest extends org.junit.Assert {
             fail("Should throw an IAE for empty references");
         } catch(IllegalArgumentException iae) {
         } catch(Exception ex) {
-            fail("Should throw an IAE instead of " + ex + 
+            fail("Should throw an IAE instead of " + ex +
                  " for empty references");
         }
-        
+
         // use raw List type to test for invalid Reference entries
         List invalidRefs = new ArrayList();
         addEntryToRawList(invalidRefs, "String");
@@ -102,21 +102,21 @@ public class SignedInfoTest extends org.junit.Assert {
             fail("Should throw an CCE for illegal references");
         } catch(ClassCastException cce) {
         } catch(Exception ex) {
-            fail("Should throw an IAE instead of " + ex + 
+            fail("Should throw an IAE instead of " + ex +
                  " for empty references");
         }
 
         si = fac.newSignedInfo(cm, sm, references);
         assertNotNull(si);
-        assertEquals(si.getCanonicalizationMethod().getAlgorithm(), 
+        assertEquals(si.getCanonicalizationMethod().getAlgorithm(),
                      cm.getAlgorithm());
-        assertEquals(si.getCanonicalizationMethod().getParameterSpec(), 
+        assertEquals(si.getCanonicalizationMethod().getParameterSpec(),
                      cm.getParameterSpec());
-        assertEquals(si.getSignatureMethod().getAlgorithm(), 
+        assertEquals(si.getSignatureMethod().getAlgorithm(),
                      sm.getAlgorithm());
-        assertEquals(si.getSignatureMethod().getParameterSpec(), 
+        assertEquals(si.getSignatureMethod().getParameterSpec(),
                      sm.getParameterSpec());
-        assertTrue(Arrays.equals(si.getReferences().toArray(), 
+        assertTrue(Arrays.equals(si.getReferences().toArray(),
                                  references.toArray()));
         assertNull(si.getId());
 

@@ -33,19 +33,19 @@ import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 
 public class HMACOutputLengthTest extends org.junit.Assert {
-    
+
     static org.slf4j.Logger log =
         org.slf4j.LoggerFactory.getLogger
             (HMACOutputLengthTest.class);
-    
-    private static final String BASEDIR = 
+
+    private static final String BASEDIR =
         System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
     private static final String SEP = System.getProperty("file.separator");
 
     public HMACOutputLengthTest() throws Exception {
         Init.init();
     }
-    
+
     @org.junit.Test
     public void test_signature_enveloping_hmac_sha1_trunclen_0() throws Exception {
         try {
@@ -60,7 +60,7 @@ public class HMACOutputLengthTest extends org.junit.Assert {
             }
         }
     }
-    
+
     @org.junit.Test
     public void test_signature_enveloping_hmac_sha1_trunclen_8() throws Exception {
         try {
@@ -74,13 +74,13 @@ public class HMACOutputLengthTest extends org.junit.Assert {
             }
         }
     }
-    
+
     @org.junit.Test
     public void test_generate_hmac_sha1_40() throws Exception {
         Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
-        XMLSignature sig = 
+        XMLSignature sig =
             new XMLSignature(
-                doc, null, XMLSignature.ALGO_ID_MAC_HMAC_SHA1, 
+                doc, null, XMLSignature.ALGO_ID_MAC_HMAC_SHA1,
                 40, Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS
             );
         try {
@@ -97,8 +97,8 @@ public class HMACOutputLengthTest extends org.junit.Assert {
     }
 
     private boolean validate(String data) throws Exception {
-        File file = 
-            new File(BASEDIR + SEP + "src/test/resources" + SEP + "javax" + SEP + "xml" 
+        File file =
+            new File(BASEDIR + SEP + "src/test/resources" + SEP + "javax" + SEP + "xml"
                      + SEP + "crypto" + SEP + "dsig" + SEP, data);
 
         Document doc = XMLUtils.createDocumentBuilder(false).parse(file);
@@ -121,5 +121,5 @@ public class HMACOutputLengthTest extends org.junit.Assert {
             public String getAlgorithm(){ return "SECRET"; }
         };
     }
-    
+
 }

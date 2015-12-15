@@ -216,7 +216,7 @@ public abstract class ApacheCanonicalizer extends TransformService {
                 boolean secVal = Utils.secureValidation(xc);
                 apacheTransform.setSecureValidation(secVal);
                 if (log.isDebugEnabled()) {
-                    log.debug("Created transform for algorithm: " + getAlgorithm());            
+                    log.debug("Created transform for algorithm: " + getAlgorithm());
                 }
             } catch (Exception ex) {
                 throw new TransformException
@@ -258,7 +258,7 @@ public abstract class ApacheCanonicalizer extends TransformService {
 
         boolean secVal = Utils.secureValidation(xc);
         in.setSecureValidation(secVal);
-        
+
         try {
             in = apacheTransform.performTransform(in, os);
             if (!in.isNodeSet() && !in.isElement()) {

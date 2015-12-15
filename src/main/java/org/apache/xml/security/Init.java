@@ -51,7 +51,7 @@ import org.w3c.dom.Node;
  * of the files of this library. We ensure that this call is only executed once.
  */
 public class Init {
-    
+
     /** The namespace for CONF file **/
     public static final String CONF_NS = "http://www.xmlsecurity.org/NS/#configuration";
 
@@ -60,10 +60,10 @@ public class Init {
 
     /** Field alreadyInitialized */
     private static boolean alreadyInitialized = false;
-    
+
     /**
      * Method isInitialized
-     * @return true if the library is already initialized.     
+     * @return true if the library is already initialized.
      */
     public static final synchronized boolean isInitialized() {
         return Init.alreadyInitialized;
@@ -77,12 +77,12 @@ public class Init {
         if (alreadyInitialized) {
             return;
         }
-        
-        InputStream is = 
+
+        InputStream is =
             AccessController.doPrivileged(
                 new PrivilegedAction<InputStream>() {
                     public InputStream run() {
-                        String cfile = 
+                        String cfile =
                             System.getProperty("org.apache.xml.security.resource.config");
                         if (cfile == null) {
                             return null;
@@ -98,7 +98,7 @@ public class Init {
 
         alreadyInitialized = true;
     }
-    
+
     /**
      * Dynamically initialise the library by registering the default algorithms/implementations
      */
@@ -109,7 +109,7 @@ public class Init {
         // method.
         //
         I18n.init("en", "US");
-        
+
         if (log.isDebugEnabled()) {
             log.debug("Registering default algorithms");
         }
@@ -120,32 +120,32 @@ public class Init {
                     // Bind the default prefixes
                     //
                     ElementProxy.registerDefaultPrefixes();
-            
+
                     //
                     // Set the default Transforms
                     //
                     Transform.registerDefaultAlgorithms();
-            
+
                     //
                     // Set the default signature algorithms
                     //
                     SignatureAlgorithm.registerDefaultAlgorithms();
-            
+
                     //
                     // Set the default JCE algorithms
                     //
                     JCEMapper.registerDefaultAlgorithms();
-            
+
                     //
                     // Set the default c14n algorithms
                     //
                     Canonicalizer.registerDefaultAlgorithms();
-            
+
                     //
                     // Register the default resolvers
                     //
                     ResourceResolver.registerDefaultResolvers();
-            
+
                     //
                     // Register the default key resolvers
                     //
@@ -159,7 +159,7 @@ public class Init {
             log.error(xse.getMessage(), xse);
         }
     }
-    
+
     /**
      * Initialise the library from a configuration file
      */
@@ -194,16 +194,16 @@ public class Init {
                     /* configure internationalization */
                     Attr langAttr = resource.getAttributeNodeNS(null, "defaultLanguageCode");
                     Attr countryAttr = resource.getAttributeNodeNS(null, "defaultCountryCode");
-                    String languageCode = 
+                    String languageCode =
                         (langAttr == null) ? null : langAttr.getNodeValue();
-                    String countryCode = 
+                    String countryCode =
                         (countryAttr == null) ? null : countryAttr.getNodeValue();
                     I18n.init(languageCode, countryCode);
                 }
 
                 if (tag.equals("CanonicalizationMethods")) {
                     Element[] list =
-                        XMLUtils.selectNodes(el.getFirstChild(), CONF_NS, "CanonicalizationMethod");               
+                        XMLUtils.selectNodes(el.getFirstChild(), CONF_NS, "CanonicalizationMethod");
 
                     for (int i = 0; i < list.length; i++) {
                         String uri = list[i].getAttributeNS(null, "URI");
@@ -222,7 +222,7 @@ public class Init {
                 }
 
                 if (tag.equals("TransformAlgorithms")) {
-                    Element[] tranElem = 
+                    Element[] tranElem =
                         XMLUtils.selectNodes(el.getFirstChild(), CONF_NS, "TransformAlgorithm");
 
                     for (int i = 0; i < tranElem.length; i++) {
@@ -247,7 +247,7 @@ public class Init {
                 if ("JCEAlgorithmMappings".equals(tag)) {
                     Node algorithmsNode = ((Element)el).getElementsByTagName("Algorithms").item(0);
                     if (algorithmsNode != null) {
-                        Element[] algorithms = 
+                        Element[] algorithms =
                             XMLUtils.selectNodes(algorithmsNode.getFirstChild(), CONF_NS, "Algorithm");
                         for (int i = 0; i < algorithms.length; i++) {
                             Element element = algorithms[i];
@@ -258,7 +258,7 @@ public class Init {
                 }
 
                 if (tag.equals("SignatureAlgorithms")) {
-                    Element[] sigElems = 
+                    Element[] sigElems =
                         XMLUtils.selectNodes(el.getFirstChild(), CONF_NS, "SignatureAlgorithm");
 
                     for (int i = 0; i < sigElems.length; i++) {
@@ -283,7 +283,7 @@ public class Init {
                 }
 
                 if (tag.equals("ResourceResolvers")) {
-                    Element[]resolverElem = 
+                    Element[]resolverElem =
                         XMLUtils.selectNodes(el.getFirstChild(), CONF_NS, "Resolver");
 
                     for (int i = 0; i < resolverElem.length; i++) {
@@ -307,16 +307,16 @@ public class Init {
                             ResourceResolver.register(javaClass);
                         } catch (Throwable e) {
                             log.warn(
-                                 "Cannot register:" + javaClass 
-                                 + " perhaps some needed jars are not installed", 
+                                 "Cannot register:" + javaClass
+                                 + " perhaps some needed jars are not installed",
                                  e
                              );
                         }
-                    }               
+                    }
                 }
 
                 if (tag.equals("KeyResolver")){
-                    Element[] resolverElem = 
+                    Element[] resolverElem =
                         XMLUtils.selectNodes(el.getFirstChild(), CONF_NS, "Resolver");
                     List<String> classNames = new ArrayList<String>(resolverElem.length);
                     for (int i = 0; i < resolverElem.length; i++) {
@@ -347,7 +347,7 @@ public class Init {
                         log.debug("Now I try to bind prefixes:");
                     }
 
-                    Element[] nl = 
+                    Element[] nl =
                         XMLUtils.selectNodes(el.getFirstChild(), CONF_NS, "PrefixMapping");
 
                     for (int i = 0; i < nl.length; i++) {

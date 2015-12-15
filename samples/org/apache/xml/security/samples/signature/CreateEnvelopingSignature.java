@@ -43,7 +43,7 @@ public class CreateEnvelopingSignature {
     static {
         org.apache.xml.security.Init.init();
     }
-    
+
     /**
      * Method main
      *
@@ -64,7 +64,7 @@ public class CreateEnvelopingSignature {
 
         ks.load(fis, keystorePass.toCharArray());
 
-        PrivateKey privateKey = 
+        PrivateKey privateKey =
             (PrivateKey) ks.getKey(privateKeyAlias, privateKeyPass.toCharArray());
         javax.xml.parsers.DocumentBuilderFactory dbf =
             javax.xml.parsers.DocumentBuilderFactory.newInstance();
@@ -74,7 +74,7 @@ public class CreateEnvelopingSignature {
         javax.xml.parsers.DocumentBuilder db = dbf.newDocumentBuilder();
         org.w3c.dom.Document doc = db.newDocument();
         String BaseURI = signatureFile.toURI().toURL().toString();
-        XMLSignature sig = 
+        XMLSignature sig =
             new XMLSignature(doc, BaseURI, XMLSignature.ALGO_ID_SIGNATURE_DSA);
 
         doc.appendChild(sig.getElement());

@@ -32,13 +32,13 @@ import org.w3c.dom.Node;
 /**
  */
 public class DOMNamespaceContext implements NamespaceContext {
-    
+
     private Map<String, String> namespaceMap = new HashMap<String, String>();
-    
+
     public DOMNamespaceContext(Node contextNode) {
         addNamespaces(contextNode);
     }
-    
+
     public String getNamespaceURI(String arg0) {
         return namespaceMap.get(arg0);
     }
@@ -56,7 +56,7 @@ public class DOMNamespaceContext implements NamespaceContext {
     public Iterator<String> getPrefixes(String arg0) {
         return namespaceMap.keySet().iterator();
     }
-    
+
     private void addNamespaces(Node element) {
         if (element.getParentNode() != null) {
             addNamespaces(element.getParentNode());

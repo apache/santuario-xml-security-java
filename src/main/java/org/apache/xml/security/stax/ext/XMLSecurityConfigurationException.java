@@ -29,7 +29,7 @@ import org.apache.xml.security.exceptions.XMLSecurityException;
 public class XMLSecurityConfigurationException extends XMLSecurityException {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = -214211575738383300L;
 

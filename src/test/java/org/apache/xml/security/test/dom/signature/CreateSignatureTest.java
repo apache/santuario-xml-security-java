@@ -61,17 +61,17 @@ public class CreateSignatureTest extends org.junit.Assert {
     private static final String BASEDIR = System.getProperty("basedir");
     private static final String SEP = System.getProperty("file.separator");
 
-    private KeyPair kp = null;    
+    private KeyPair kp = null;
     private javax.xml.parsers.DocumentBuilder db;
-    
+
     public CreateSignatureTest() throws Exception {
         db = XMLUtils.createDocumentBuilder(false);
         org.apache.xml.security.Init.init();
         kp = KeyPairGenerator.getInstance("RSA").genKeyPair();
     }
-    
+
     /**
-     * Test for bug 36044 - Canonicalizing an empty node-set throws an 
+     * Test for bug 36044 - Canonicalizing an empty node-set throws an
      * ArrayIndexOutOfBoundsException.
      */
     @org.junit.Test
@@ -81,7 +81,7 @@ public class CreateSignatureTest extends org.junit.Assert {
         envelope.appendChild(doc.createTextNode("\n"));
         doc.appendChild(envelope);
 
-        XMLSignature sig = 
+        XMLSignature sig =
             new XMLSignature(doc, null, XMLSignature.ALGO_ID_SIGNATURE_DSA);
         envelope.appendChild(sig.getElement());
 
@@ -111,12 +111,12 @@ public class CreateSignatureTest extends org.junit.Assert {
         KeyStore ks = KeyStore.getInstance("JKS");
         FileInputStream fis = null;
         if (BASEDIR != null && !"".equals(BASEDIR)) {
-            fis = 
-                new FileInputStream(BASEDIR + SEP 
+            fis =
+                new FileInputStream(BASEDIR + SEP
                     + "src/test/resources/org/apache/xml/security/samples/input/keystore.jks"
                 );
         } else {
-            fis = 
+            fis =
                 new FileInputStream("src/test/resources/org/apache/xml/security/samples/input/keystore.jks");
         }
         ks.load(fis, "xmlsecurity".toCharArray());
@@ -126,8 +126,8 @@ public class CreateSignatureTest extends org.junit.Assert {
     }
 
     @org.junit.Test
-    public void testOne() throws Exception {        
-        doVerify(doSign()); 
+    public void testOne() throws Exception {
+        doVerify(doSign());
         doVerify(doSign());
     }
 
@@ -148,7 +148,7 @@ public class CreateSignatureTest extends org.junit.Assert {
             throw e;
         }
     }
-    
+
     @org.junit.Test
     public void testXFilter2Signature() throws Exception {
         Document doc = db.newDocument();
@@ -159,7 +159,7 @@ public class CreateSignatureTest extends org.junit.Assert {
         root.appendChild(doc.createTextNode("Some simple text\n"));
 
         // Sign
-        XMLSignature sig = 
+        XMLSignature sig =
             new XMLSignature(doc, null, XMLSignature.ALGO_ID_SIGNATURE_DSA);
         root.appendChild(sig.getElement());
 
@@ -167,7 +167,7 @@ public class CreateSignatureTest extends org.junit.Assert {
         String filter = "here()/ancestor::ds.Signature/parent::node()/descendant-or-self::*";
         XPath2FilterContainer xpathC = XPath2FilterContainer.newInstanceIntersect(doc, filter);
         xpathC.setXPathNamespaceContext("dsig-xpath", Transforms.TRANSFORM_XPATH2FILTER);
-        
+
         Element node = xpathC.getElement();
         transforms.addTransform(Transforms.TRANSFORM_XPATH2FILTER, node);
         sig.addDocument("", transforms, Constants.ALGO_ID_DIGEST_SHA1);
@@ -175,23 +175,23 @@ public class CreateSignatureTest extends org.junit.Assert {
         KeyStore ks = KeyStore.getInstance("JKS");
         FileInputStream fis = null;
         if (BASEDIR != null && !"".equals(BASEDIR)) {
-            fis = 
-                new FileInputStream(BASEDIR + SEP 
+            fis =
+                new FileInputStream(BASEDIR + SEP
                     + "src/test/resources/org/apache/xml/security/samples/input/keystore.jks"
                 );
         } else {
-            fis = 
+            fis =
                 new FileInputStream("src/test/resources/org/apache/xml/security/samples/input/keystore.jks");
         }
         ks.load(fis, "xmlsecurity".toCharArray());
         PrivateKey privateKey = (PrivateKey) ks.getKey("test", "xmlsecurity".toCharArray());
 
         sig.sign(privateKey);
-        
+
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         XMLUtils.outputDOMc14nWithComments(doc, bos);
         String signedDoc = new String(bos.toByteArray());
-        
+
         // Now Verify
         doc = db.parse(new ByteArrayInputStream(signedDoc.getBytes()));
 
@@ -200,17 +200,17 @@ public class CreateSignatureTest extends org.junit.Assert {
         xpath.setNamespaceContext(new DSNamespaceContext());
 
         String expression = "//ds:Signature[1]";
-        Element sigElement = 
+        Element sigElement =
             (Element) xpath.evaluate(expression, doc, XPathConstants.NODE);
-        
+
         XMLSignature signature = new XMLSignature(sigElement, "");
         assertTrue(signature.checkSignatureValue(ks.getCertificate("test").getPublicKey()));
     }
-    
+
     @org.junit.Test
-    public void testCanonicalizedOctetStream() throws Exception {        
+    public void testCanonicalizedOctetStream() throws Exception {
         String signedXML = doSign();
-        
+
         org.w3c.dom.Document doc = db.parse(new ByteArrayInputStream(signedXML.getBytes()));
 
         XPathFactory xpf = XPathFactory.newInstance();
@@ -218,9 +218,9 @@ public class CreateSignatureTest extends org.junit.Assert {
         xpath.setNamespaceContext(new DSNamespaceContext());
 
         String expression = "//ds:Signature[1]";
-        Element sigElement = 
+        Element sigElement =
             (Element) xpath.evaluate(expression, doc, XPathConstants.NODE);
-        
+
         XMLSignature signature = new XMLSignature(sigElement, "");
         KeyInfo ki = signature.getKeyInfo();
 
@@ -232,16 +232,16 @@ public class CreateSignatureTest extends org.junit.Assert {
         if (pk == null) {
             throw new RuntimeException("No public key");
         }
-        
+
         SignedInfo si = signature.getSignedInfo();
         SignatureAlgorithm sa = si.getSignatureAlgorithm();
         sa.initVerify(pk);
 
         byte[] sigBytes = signature.getSignatureValue();
-        
+
         byte[] canonicalizedBytes = si.getCanonicalizedOctetStream();
         sa.update(canonicalizedBytes, 0, canonicalizedBytes.length);
-        
+
         assertTrue(sa.verify(sigBytes));
         assertTrue(si.verify(false));
     }
@@ -256,15 +256,15 @@ public class CreateSignatureTest extends org.junit.Assert {
         doc.appendChild(root);
         root.appendChild(doc.createTextNode("Some simple text\n"));
 
-        Element canonElem = 
+        Element canonElem =
             XMLUtils.createElementInSignatureSpace(doc, Constants._TAG_CANONICALIZATIONMETHOD);
         canonElem.setAttributeNS(
             null, Constants._ATT_ALGORITHM, Canonicalizer.ALGO_ID_C14N_EXCL_OMIT_COMMENTS
         );
 
-        SignatureAlgorithm signatureAlgorithm = 
+        SignatureAlgorithm signatureAlgorithm =
             new SignatureAlgorithm(doc, XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1);
-        XMLSignature sig = 
+        XMLSignature sig =
             new XMLSignature(doc, null, signatureAlgorithm.getElement(), canonElem);
 
         root.appendChild(sig.getElement());
@@ -287,7 +287,7 @@ public class CreateSignatureTest extends org.junit.Assert {
         KeyStore ks = KeyStore.getInstance("JKS");
         FileInputStream fis = null;
         if (BASEDIR != null && !"".equals(BASEDIR)) {
-            fis = new FileInputStream(BASEDIR + SEP + 
+            fis = new FileInputStream(BASEDIR + SEP +
             "src/test/resources/test.jks");
         } else {
             fis = new FileInputStream("src/test/resources/test.jks");
@@ -302,15 +302,15 @@ public class CreateSignatureTest extends org.junit.Assert {
         doc.appendChild(root);
         root.appendChild(doc.createTextNode("Some simple text\n"));
 
-        Element canonElem = 
+        Element canonElem =
             XMLUtils.createElementInSignatureSpace(doc, Constants._TAG_CANONICALIZATIONMETHOD);
         canonElem.setAttributeNS(
             null, Constants._ATT_ALGORITHM, Canonicalizer.ALGO_ID_C14N_EXCL_OMIT_COMMENTS
         );
 
-        SignatureAlgorithm signatureAlgorithm = 
+        SignatureAlgorithm signatureAlgorithm =
             new SignatureAlgorithm(doc, XMLSignature.ALGO_ID_SIGNATURE_DSA);
-        XMLSignature sig = 
+        XMLSignature sig =
             new XMLSignature(doc, null, signatureAlgorithm.getElement(), canonElem);
 
         root.appendChild(sig.getElement());
@@ -338,9 +338,9 @@ public class CreateSignatureTest extends org.junit.Assert {
         xpath.setNamespaceContext(new DSNamespaceContext());
 
         String expression = "//ds:Signature[1]";
-        Element sigElement = 
+        Element sigElement =
             (Element) xpath.evaluate(expression, doc, XPathConstants.NODE);
-        
+
         XMLSignature signature = new XMLSignature(sigElement, "");
         KeyInfo ki = signature.getKeyInfo();
 
@@ -354,5 +354,5 @@ public class CreateSignatureTest extends org.junit.Assert {
         }
         assertTrue(signature.checkSignatureValue(pk));
     }
-    
+
 }

@@ -21,52 +21,52 @@ package org.apache.xml.security.encryption;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 
 /**
- * 
+ *
  */
 public class XMLEncryptionException extends XMLSecurityException {
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
-    
+
     /**
-     * 
+     *
      *
      */
     public XMLEncryptionException() {
         super();
     }
-    
+
     public XMLEncryptionException(Exception ex) {
         super(ex);
     }
-    
+
     /**
-     * 
+     *
      * @param msgID
      */
     public XMLEncryptionException(String msgID) {
         super(msgID);
     }
-    
+
     /**
-     * 
+     *
      * @param msgID
      * @param exArgs
      */
     public XMLEncryptionException(String msgID, Object ... exArgs) {
         super(msgID, exArgs);
     }
-    
+
     /**
      * @param originalException
      * @param msgID
      */
     public XMLEncryptionException(Exception originalException, String msgID) {
         super(originalException, msgID);
-        
+
     }
-    
+
     /**
      * @param originalException
      * @param msgID

@@ -68,7 +68,7 @@ public class CreateInteropXFilter2Test extends org.junit.Assert {
         // get key & self-signed certificate from keystore
         String fs = System.getProperty("file.separator");
         String base = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
-        
+
         FileInputStream fis = new FileInputStream
             (base + fs + "src/test/resources" + fs + "test.jks");
         ks = KeyStore.getInstance("JKS");
@@ -98,19 +98,19 @@ public class CreateInteropXFilter2Test extends org.junit.Assert {
 
         // create reference 2
         List<Transform> trans2 = new ArrayList<Transform>(2);
-        trans2.add(fac.newTransform(Transform.ENVELOPED, 
+        trans2.add(fac.newTransform(Transform.ENVELOPED,
             (TransformParameterSpec) null));
         XPathFilter2ParameterSpec xp2 = new XPathFilter2ParameterSpec
             (Collections.singletonList
                 (new XPathType(" / ", XPathType.Filter.UNION)));
         trans2.add(fac.newTransform(Transform.XPATH2, xp2));
-        refs.add(fac.newReference("#signature-value", 
+        refs.add(fac.newReference("#signature-value",
             fac.newDigestMethod(DigestMethod.SHA1, null), trans2, null, null));
-                
+
         // create SignedInfo
         SignedInfo si = fac.newSignedInfo(
             fac.newCanonicalizationMethod
-                (CanonicalizationMethod.INCLUSIVE, 
+                (CanonicalizationMethod.INCLUSIVE,
                  (C14NMethodParameterSpec) null),
             fac.newSignatureMethod(SignatureMethod.DSA_SHA1, null), refs);
 

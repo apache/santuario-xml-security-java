@@ -61,7 +61,7 @@ public class DOMTransform extends BaseStructure implements Transform {
     }
 
     /**
-     * Creates a <code>DOMTransform</code> from an element. It unmarshals any 
+     * Creates a <code>DOMTransform</code> from an element. It unmarshals any
      * algorithm-specific input parameters.
      *
      * @param transElem a Transform element

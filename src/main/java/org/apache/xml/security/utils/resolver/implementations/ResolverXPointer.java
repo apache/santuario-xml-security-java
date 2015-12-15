@@ -46,7 +46,7 @@ public class ResolverXPointer extends ResourceResolverSpi {
 
     private static org.slf4j.Logger log =
         org.slf4j.LoggerFactory.getLogger(ResolverXPointer.class);
-    
+
     private static final String XP = "#xpointer(id(";
     private static final int XP_LENGTH = XP.length();
 
@@ -54,7 +54,7 @@ public class ResolverXPointer extends ResourceResolverSpi {
     public boolean engineIsThreadSafe() {
         return true;
     }
-    
+
     /**
      * @inheritDoc
      */
@@ -70,7 +70,7 @@ public class ResolverXPointer extends ResourceResolverSpi {
         } else if (isXPointerId(context.uriToResolve)) {
             String id = getXPointerId(context.uriToResolve);
             resultNode = doc.getElementById(id);
-            
+
             if (context.secureValidation) {
                 Element start = context.attr.getOwnerDocument().getDocumentElement();
                 if (!XMLUtils.protectAgainstWrappingAttack(start, id)) {
@@ -95,9 +95,9 @@ public class ResolverXPointer extends ResourceResolverSpi {
 
         result.setMIMEType("text/xml");
         if (context.baseUri != null && context.baseUri.length() > 0) {
-            result.setSourceURI(context.baseUri.concat(context.uriToResolve));      
+            result.setSourceURI(context.baseUri.concat(context.uriToResolve));
         } else {
-            result.setSourceURI(context.uriToResolve);      
+            result.setSourceURI(context.uriToResolve);
         }
 
         return result;
@@ -142,7 +142,7 @@ public class ResolverXPointer extends ResourceResolverSpi {
             String idPlusDelim = uri.substring(XP_LENGTH, uri.length() - 2);
 
             int idLen = idPlusDelim.length() -1;
-            if (idPlusDelim.charAt(0) == '"' && idPlusDelim.charAt(idLen) == '"' 
+            if (idPlusDelim.charAt(0) == '"' && idPlusDelim.charAt(idLen) == '"'
                 || idPlusDelim.charAt(0) == '\'' && idPlusDelim.charAt(idLen) == '\'') {
                 if (log.isDebugEnabled()) {
                     log.debug("Id = " + idPlusDelim.substring(1, idLen));
@@ -163,9 +163,9 @@ public class ResolverXPointer extends ResourceResolverSpi {
     private static String getXPointerId(String uri) {
         if (uri.startsWith(XP) && uri.endsWith("))")) {
             String idPlusDelim = uri.substring(XP_LENGTH,uri.length() - 2);
-            
+
             int idLen = idPlusDelim.length() -1;
-            if (idPlusDelim.charAt(0) == '"' && idPlusDelim.charAt(idLen) == '"' 
+            if (idPlusDelim.charAt(0) == '"' && idPlusDelim.charAt(idLen) == '"'
                 || idPlusDelim.charAt(0) == '\'' && idPlusDelim.charAt(idLen) == '\'') {
                 return idPlusDelim.substring(1, idLen);
             }

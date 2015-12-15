@@ -60,7 +60,7 @@ public class X509Data extends SignatureElementProxy implements KeyInfoContent {
      */
     public X509Data(Element element, String baseURI) throws XMLSecurityException {
         super(element, baseURI);
-        
+
         Node sibling = getFirstChild();
         while (sibling != null && sibling.getNodeType() != Node.ELEMENT_NODE) {
             sibling = sibling.getNextSibling();
@@ -241,7 +241,7 @@ public class X509Data extends SignatureElementProxy implements KeyInfoContent {
     public void addDigest(byte[] x509CertificateDigestBytes, String algorithmURI) {
         this.add(new XMLX509Digest(getDocument(), x509CertificateDigestBytes, algorithmURI));
     }
-    
+
     /**
      * Method add
      *
@@ -324,7 +324,7 @@ public class X509Data extends SignatureElementProxy implements KeyInfoContent {
     public int lengthUnknownElement() {
         int result = 0;
         Node n = getFirstChild();
-        while (n != null) {         
+        while (n != null) {
             if (n.getNodeType() == Node.ELEMENT_NODE
                 && !n.getNamespaceURI().equals(Constants.SignatureSpecNS)) {
                 result++;
@@ -349,7 +349,7 @@ public class X509Data extends SignatureElementProxy implements KeyInfoContent {
 
         if (e != null) {
             return new XMLX509IssuerSerial(e, this.baseURI);
-        } 
+        }
         return null;
     }
 
@@ -362,7 +362,7 @@ public class X509Data extends SignatureElementProxy implements KeyInfoContent {
      */
     public XMLX509SKI itemSKI(int i) throws XMLSecurityException {
 
-        Element e = 
+        Element e =
             XMLUtils.selectDsNode(
                 getFirstChild(), Constants._TAG_X509SKI, i);
 
@@ -381,13 +381,13 @@ public class X509Data extends SignatureElementProxy implements KeyInfoContent {
      */
     public XMLX509SubjectName itemSubjectName(int i) throws XMLSecurityException {
 
-        Element e = 
+        Element e =
             XMLUtils.selectDsNode(
                 getFirstChild(), Constants._TAG_X509SUBJECTNAME, i);
 
         if (e != null) {
             return new XMLX509SubjectName(e, this.baseURI);
-        } 
+        }
         return null;
     }
 
@@ -400,13 +400,13 @@ public class X509Data extends SignatureElementProxy implements KeyInfoContent {
      */
     public XMLX509Certificate itemCertificate(int i) throws XMLSecurityException {
 
-        Element e = 
+        Element e =
             XMLUtils.selectDsNode(
                 getFirstChild(), Constants._TAG_X509CERTIFICATE, i);
 
         if (e != null) {
             return new XMLX509Certificate(e, this.baseURI);
-        } 
+        }
         return null;
     }
 
@@ -419,13 +419,13 @@ public class X509Data extends SignatureElementProxy implements KeyInfoContent {
      */
     public XMLX509CRL itemCRL(int i) throws XMLSecurityException {
 
-        Element e = 
+        Element e =
             XMLUtils.selectDsNode(
                 getFirstChild(), Constants._TAG_X509CRL, i);
 
         if (e != null) {
             return new XMLX509CRL(e, this.baseURI);
-        } 
+        }
         return null;
     }
 
@@ -438,13 +438,13 @@ public class X509Data extends SignatureElementProxy implements KeyInfoContent {
      */
     public XMLX509Digest itemDigest(int i) throws XMLSecurityException {
 
-        Element e = 
+        Element e =
             XMLUtils.selectDs11Node(
                 getFirstChild(), Constants._TAG_X509DIGEST, i);
 
         if (e != null) {
             return new XMLX509Digest(e, this.baseURI);
-        } 
+        }
         return null;
     }
 

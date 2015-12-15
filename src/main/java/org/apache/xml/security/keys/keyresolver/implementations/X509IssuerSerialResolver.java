@@ -44,7 +44,7 @@ public class X509IssuerSerialResolver extends KeyResolverSpi {
         Element element, String baseURI, StorageResolver storage
     ) throws KeyResolverException {
 
-        X509Certificate cert = 
+        X509Certificate cert =
             this.engineLookupResolveX509Certificate(element, baseURI, storage);
 
         if (cert != null) {

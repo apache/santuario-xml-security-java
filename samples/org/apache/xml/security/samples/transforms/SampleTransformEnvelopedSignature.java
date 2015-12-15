@@ -73,7 +73,7 @@ public class SampleTransformEnvelopedSignature {
             + "   </Signature>" + "\n"
             + "</Document>" + "\n"
             ;
-        
+
         org.apache.xml.security.Init.init();
         javax.xml.parsers.DocumentBuilderFactory dbf =
             javax.xml.parsers.DocumentBuilderFactory.newInstance();
@@ -89,9 +89,9 @@ public class SampleTransformEnvelopedSignature {
         xpath.setNamespaceContext(new DSNamespaceContext());
 
         String expression = "//ds:Signature[@Id='SignatureToBeOmitted']//ds:Transforms";
-        Element transformsElem = 
+        Element transformsElem =
             (Element) xpath.evaluate(expression, doc, XPathConstants.NODE);
-        
+
         Transforms transforms = new Transforms(transformsElem, "memory://");
         XMLSignatureInput input = new XMLSignatureInput((Node) doc);
 
@@ -101,5 +101,5 @@ public class SampleTransformEnvelopedSignature {
 
         System.out.println(new String(result.getBytes()));
     }
-    
+
 }

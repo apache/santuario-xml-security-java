@@ -37,13 +37,13 @@ import org.w3c.dom.Text;
  * Manifestation of XmlWriter interface designed to write to a tree.
  */
 public class XmlWriterToTree implements XmlWriter {
-    
+
     private Document factory;
-    
+
     private Element createdElement;
-    
+
     private Node nextSibling;
-    
+
     private Node currentNode;
 
     private List<XmlWriter.ToMarshal<? extends XMLStructure>> m_marshallers;
@@ -53,7 +53,7 @@ public class XmlWriterToTree implements XmlWriter {
         factory = parent instanceof Document ? (Document)parent : parent.getOwnerDocument();
         currentNode = parent;
     }
-    
+
     /**
      * Reset to a new parent so that the writer can be re-used.
      * @param newParent
@@ -62,7 +62,7 @@ public class XmlWriterToTree implements XmlWriter {
         currentNode = newParent;
         createdElement = null;
     }
-    
+
     /**
      * Get the root element created with this writer.
      * @return the root element created with this writer.
@@ -70,12 +70,12 @@ public class XmlWriterToTree implements XmlWriter {
     public Element getCreatedElement() {
         return createdElement;
     }
-    
+
     /**
      * In cases where the serialization is supposed to precede a specific
      * element, we add an extra parameter to capture that. Only affects the
      * first element insertion (obviously?).
-     * 
+     *
      * @param marshallers
      * @param parent
      * @param nextSibling The first element created will be created *before* this element.
@@ -84,7 +84,7 @@ public class XmlWriterToTree implements XmlWriter {
         this(marshallers, parent);
         this.nextSibling = nextSibling;
     }
-    
+
     @Override
     public void writeStartElement(String prefix, String localName, String namespaceURI) {
         Element newElem = factory.createElementNS(namespaceURI, DOMUtils.getQNameString(prefix, localName));
@@ -96,7 +96,7 @@ public class XmlWriterToTree implements XmlWriter {
         }
         nextSibling = null;
         currentNode = newElem;
-        
+
         if (createdElement == null) {
             createdElement = newElem;
         }
@@ -107,7 +107,7 @@ public class XmlWriterToTree implements XmlWriter {
         currentNode = currentNode.getParentNode();
     }
 
-    
+
     @Override
     public void writeTextElement(String prefix, String localName, String namespaceURI, String value) {
         writeStartElement(prefix, localName, namespaceURI);
@@ -130,7 +130,7 @@ public class XmlWriterToTree implements XmlWriter {
         Text textNode = factory.createTextNode(text);
         currentNode.appendChild(textNode);
     }
-    
+
 
     @Override
     public void writeComment(String text) {
@@ -177,7 +177,7 @@ public class XmlWriterToTree implements XmlWriter {
 
     @Override
     public void marshalStructure(XMLStructure toMarshal, String dsPrefix, XMLCryptoContext context) throws MarshalException {
-        
+
         // look for the first isInstance match, and marshal to that.
         for (int idx = 0 ; idx < m_marshallers.size() ; idx++) {
             @SuppressWarnings("unchecked")
@@ -190,5 +190,5 @@ public class XmlWriterToTree implements XmlWriter {
         throw new IllegalArgumentException("Unable to marshal unexpected object of class " + toMarshal.getClass().toString());
     }
 
-    
+
 }

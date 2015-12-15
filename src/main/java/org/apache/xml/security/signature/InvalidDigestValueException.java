@@ -19,7 +19,7 @@
 package org.apache.xml.security.signature;
 
 /**
- * Raised when the computed hash value doesn't match the given <i>DigestValue</i>.  
+ * Raised when the computed hash value doesn't match the given <i>DigestValue</i>.
  * Additional human readable info is passed to the constructor -- this being the benefit
  * of raising an exception or returning a value.
  *
@@ -28,7 +28,7 @@ package org.apache.xml.security.signature;
 public class InvalidDigestValueException extends XMLSignatureException {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
 

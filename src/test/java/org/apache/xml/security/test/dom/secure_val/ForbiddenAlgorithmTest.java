@@ -39,18 +39,18 @@ public class ForbiddenAlgorithmTest extends InteropTestBase {
     static {
         org.apache.xml.security.Init.init();
     }
-    
+
     public ForbiddenAlgorithmTest() {
         super();
     }
 
     @org.junit.Test
     public void testMD5Digest() throws Exception {
-        boolean success = 
+        boolean success =
             readAndVerifySignature("src/test/resources/interop/c14n/Y2", "signature-joseph-exc.xml", false);
 
         assertTrue(success);
-        
+
         try {
             readAndVerifySignature("src/test/resources/interop/c14n/Y2", "signature-joseph-exc.xml", true);
             fail("Failure expected when secure validation is enabled");
@@ -78,5 +78,5 @@ public class ForbiddenAlgorithmTest extends InteropTestBase {
         XMLSignature signature = new XMLSignature(sigElement, f.toURI().toURL().toString(), secValidation);
         return signature.checkSignatureValue(signature.getKeyInfo().getPublicKey());
     }
-    
+
 }

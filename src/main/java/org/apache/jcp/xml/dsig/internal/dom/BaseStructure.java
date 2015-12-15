@@ -26,7 +26,7 @@ public abstract class BaseStructure implements XMLStructure {
 
     /**
      * Just return the text of the immediate child of a node.
-     * 
+     *
      * @param node
      * @return the text of a Node
      */

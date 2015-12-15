@@ -45,7 +45,7 @@ public class ResourceResolverMapper {
         resourceResolvers = new ArrayList<ResourceResolverLookup>(handlerList.size() + 1);
         for (int i = 0; i < handlerList.size(); i++) {
             ResolverType uriResolverType = handlerList.get(i);
-            resourceResolvers.add((ResourceResolverLookup) 
+            resourceResolvers.add((ResourceResolverLookup)
                     ClassLoaderUtils.loadClass(uriResolverType.getJAVACLASS(), callingClass).newInstance());
         }
     }

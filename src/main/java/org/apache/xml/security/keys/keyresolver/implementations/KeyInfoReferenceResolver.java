@@ -43,9 +43,9 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 /**
- * KeyResolverSpi implementation which resolves public keys, private keys, secret keys, and X.509 certificates from a 
+ * KeyResolverSpi implementation which resolves public keys, private keys, secret keys, and X.509 certificates from a
  * <code>dsig11:KeyInfoReference</code> element.
- * 
+ *
  * @author Brent Putman (putmanb@georgetown.edu)
  */
 public class KeyInfoReferenceResolver extends KeyResolverSpi {
@@ -164,7 +164,7 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
 
     /**
      * Resolve the KeyInfoReference Element's URI attribute into a KeyInfo instance.
-     * 
+     *
      * @param element
      * @param baseURI
      * @param storage
@@ -203,9 +203,9 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
 
     /**
      * Validate the Element referred to by the KeyInfoReference.
-     * 
+     *
      * @param referentElement
-     * 
+     *
      * @throws XMLSecurityException
      */
     private void validateReference(Element referentElement) throws XMLSecurityException {
@@ -230,12 +230,12 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
 
     /**
      * Resolve the XML signature input represented by the specified URI.
-     * 
+     *
      * @param uri
      * @param baseURI
      * @param secureValidation
-     * @return the XML signature input represented by the specified URI. 
-     * @throws XMLSecurityException 
+     * @return the XML signature input represented by the specified URI.
+     * @throws XMLSecurityException
      */
     private XMLSignatureInput resolveInput(Attr uri, String baseURI, boolean secureValidation)
         throws XMLSecurityException {
@@ -245,7 +245,7 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
 
     /**
      * Resolve the Element effectively represented by the XML signature input source.
-     * 
+     *
      * @param resource
      * @return the Element effectively represented by the XML signature input source.
      * @throws CanonicalizationException
@@ -254,8 +254,8 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
      * @throws SAXException
      * @throws KeyResolverException
      */
-    private Element obtainReferenceElement(XMLSignatureInput resource) 
-        throws CanonicalizationException, ParserConfigurationException, 
+    private Element obtainReferenceElement(XMLSignatureInput resource)
+        throws CanonicalizationException, ParserConfigurationException,
         IOException, SAXException, KeyResolverException {
 
         Element e;

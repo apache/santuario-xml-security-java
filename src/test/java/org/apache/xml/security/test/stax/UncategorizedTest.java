@@ -39,7 +39,7 @@ public class UncategorizedTest extends org.junit.Assert {
 
     @Test
     public void testConfigurationLoadFromUrl() throws Exception {
-        URL url = 
+        URL url =
             this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/in/31_input.xml");
         try {
@@ -49,21 +49,21 @@ public class UncategorizedTest extends org.junit.Assert {
             Assert.assertTrue(e.getMessage().contains("Cannot find the declaration of element 'doc'."));
         }
     }
-    
+
     @Test
     public void testDuplicateActions() throws Exception {
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
-        
+
         // Should work
         XMLSec.getOutboundXMLSec(properties);
-        
+
         // Should throw an error on a duplicate Action
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
-        
+
         try {
             XMLSec.getOutboundXMLSec(properties);
             Assert.fail();

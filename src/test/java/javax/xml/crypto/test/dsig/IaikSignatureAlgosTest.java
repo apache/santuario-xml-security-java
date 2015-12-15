@@ -28,7 +28,7 @@ import javax.xml.crypto.dsig.XMLSignatureException;
 import javax.xml.crypto.test.KeySelectors;
 
 /**
- * This is a testcase to validate all "signatureAlgorithms" 
+ * This is a testcase to validate all "signatureAlgorithms"
  * testcases from IAIK
  *
  * @author Sean Mullan
@@ -50,31 +50,31 @@ public class IaikSignatureAlgosTest extends org.junit.Assert {
         validator = new SignatureValidator(new File
             (base, "signatureAlgorithms/signatures"));
     }
-    
+
     @org.junit.Test
     public void test_dsaSignature() throws Exception {
         String file = "dSASignature.xml";
 
-        boolean coreValidity = validator.validate(file, new 
+        boolean coreValidity = validator.validate(file, new
             KeySelectors.KeyValueKeySelector());
         assertTrue("Signature failed core validation", coreValidity);
     }
-    
+
     @org.junit.Test
     public void test_rsaSignature() throws Exception {
         String file = "rSASignature.xml";
 
-        boolean coreValidity = validator.validate(file, new 
+        boolean coreValidity = validator.validate(file, new
             KeySelectors.KeyValueKeySelector());
         assertTrue("Signature failed core validation", coreValidity);
     }
-    
+
     @org.junit.Test
     public void test_hmacShortSignature() throws Exception {
         String file = "hMACShortSignature.xml";
 
         try {
-            validator.validate(file, new 
+            validator.validate(file, new
                 KeySelectors.SecretKeySelector("secret".getBytes("ASCII")));
             fail("Expected HMACOutputLength Exception");
         } catch (XMLSignatureException xse) {
@@ -82,7 +82,7 @@ public class IaikSignatureAlgosTest extends org.junit.Assert {
             // pass
         }
     }
-    
+
     @org.junit.Test
     public void test_hmacSignature() throws Exception {
         String file = "hMACSignature.xml";
@@ -91,5 +91,5 @@ public class IaikSignatureAlgosTest extends org.junit.Assert {
             KeySelectors.SecretKeySelector("secret".getBytes("ASCII")));
         assertTrue("Signature failed core validation", coreValidity);
     }
-    
+
 }

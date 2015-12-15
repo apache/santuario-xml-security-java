@@ -39,7 +39,7 @@ public class SignatureAlgorithmTest extends org.junit.Assert {
     @org.junit.Test
     public void testSameKeySeveralAlgorithmSigning() throws Exception {
         Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
-        SignatureAlgorithm signatureAlgorithm = 
+        SignatureAlgorithm signatureAlgorithm =
             new SignatureAlgorithm(doc, XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1);
         PrivateKey pk = KeyPairGenerator.getInstance("RSA").genKeyPair().getPrivate();
         signatureAlgorithm.initSign(pk);
@@ -61,5 +61,5 @@ public class SignatureAlgorithmTest extends org.junit.Assert {
         otherSignatureAlgorithm.update((byte)2);
         otherSignatureAlgorithm.sign();
     }
-    
+
 }

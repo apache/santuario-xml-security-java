@@ -37,7 +37,7 @@ import org.w3c.dom.NodeList;
  * @author Rene Kollmorgen <Rene.Kollmorgen@softwareag.com>
  */
 public class ThreeSignerContractVerify {
-    
+
     static {
         org.apache.xml.security.Init.init();
     }
@@ -77,9 +77,9 @@ public class ThreeSignerContractVerify {
             xpath.setNamespaceContext(new DSNamespaceContext());
 
             String expression = "//ds:Signature[1]";
-            NodeList signatureElems = 
+            NodeList signatureElems =
                 (NodeList) xpath.evaluate(expression, doc, XPathConstants.NODESET);
-            
+
             for (int i = 0; i < signatureElems.getLength(); i++) {
                 Element sigElement = (Element) signatureElems.item(i);
                 XMLSignature signature = new XMLSignature(sigElement, BaseURI);
@@ -93,7 +93,7 @@ public class ThreeSignerContractVerify {
                 System.out.println("The signature number " + (i + 1) + " is "
                          + (signature.checkSignatureValue(
                          signature.createSecretKey(
-                         keyValue.getBytes())) 
+                         keyValue.getBytes()))
                          ? "valid (good)" : "invalid !!!!! (bad)"));
             }
         } catch (Exception ex) {

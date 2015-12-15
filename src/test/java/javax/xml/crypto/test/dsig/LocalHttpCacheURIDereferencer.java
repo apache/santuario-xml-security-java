@@ -32,7 +32,7 @@ import javax.xml.crypto.dsig.XMLSignatureFactory;
 
 /**
  * This URIDereferencer implementation retrieves http references used in
- * test signatures from local disk in order to avoid network requests. 
+ * test signatures from local disk in order to avoid network requests.
  */
 public class LocalHttpCacheURIDereferencer implements URIDereferencer {
 
@@ -42,7 +42,7 @@ public class LocalHttpCacheURIDereferencer implements URIDereferencer {
     private final Map<String, File> uriMap;
 
     public LocalHttpCacheURIDereferencer() {
-        XMLSignatureFactory xmlSignatureFactory = 
+        XMLSignatureFactory xmlSignatureFactory =
             XMLSignatureFactory.getInstance("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
         ud = xmlSignatureFactory.getURIDereferencer();
         String base = BASEDIR == null ? "./": BASEDIR;
@@ -56,7 +56,7 @@ public class LocalHttpCacheURIDereferencer implements URIDereferencer {
         uriMap.put("http://www.ietf.org/rfc/rfc3161.txt",
                    new File(dir, "rfc3161.txt"));
     }
- 
+
     public Data dereference(URIReference uriReference, XMLCryptoContext context)
         throws URIReferenceException {
         String uri = uriReference.getURI();

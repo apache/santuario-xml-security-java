@@ -25,7 +25,7 @@ import org.apache.xml.security.stax.securityEvent.SecurityEventConstants.Event;
  * @version $Revision: 1350961 $ $Date: 2012-06-16 17:51:00 +0100 (Sat, 16 Jun 2012) $
  */
 public abstract class SecurityEvent {
-    
+
     private final Event securityEventType;
     private String correlationID;
 

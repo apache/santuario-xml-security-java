@@ -51,7 +51,7 @@ public class TransformXPath extends TransformSpi {
 
     /** Field implementedTransformURI */
     public static final String implementedTransformURI = Transforms.TRANSFORM_XPATH;
-    
+
     /**
      * Method engineGetURI
      *
@@ -100,7 +100,7 @@ public class TransformXPath extends TransformSpi {
                     DOMException.HIERARCHY_REQUEST_ERR, "Text must be in ds:Xpath"
                 );
             }
-            
+
             XPathFactory xpathFactory = XPathFactory.newInstance();
             XPathAPI xpathAPIInstance = xpathFactory.newXPathAPI();
             input.addNodeFilter(new XPathNodeFilter(xpathElement, xpathnode, str, xpathAPIInstance));
@@ -120,12 +120,12 @@ public class TransformXPath extends TransformSpi {
     }
 
     static class XPathNodeFilter implements NodeFilter {
-        
+
         XPathAPI xPathAPI;
-        Node xpathnode; 
+        Node xpathnode;
         Element xpathElement;
         String str;
-        
+
         XPathNodeFilter(Element xpathElement, Node xpathnode, String str, XPathAPI xPathAPI) {
             this.xpathnode = xpathnode;
             this.str = str;
@@ -151,10 +151,10 @@ public class TransformXPath extends TransformSpi {
                 throw new XMLSecurityRuntimeException("signature.Transform.nodeAndType",eArgs, e);
             }
         }
-        
+
         public int isNodeIncludeDO(Node n, int level) {
             return isNodeInclude(n);
         }
-        
+
     }
 }

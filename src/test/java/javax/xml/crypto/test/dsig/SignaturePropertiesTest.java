@@ -42,45 +42,45 @@ public class SignaturePropertiesTest extends org.junit.Assert {
             (Collections.singletonList(new TestUtils.MyOwnXMLStructure()),
              "propTarget", "propId");
     }
-    
+
     @SuppressWarnings("rawtypes")
     @org.junit.Test
     public void testConstructor() {
-        // test XMLSignatureFactory.newSignatureProperties(List, String) 
+        // test XMLSignatureFactory.newSignatureProperties(List, String)
         SignatureProperties props;
 
         try {
-            props = factory.newSignatureProperties(null, id); 
-            fail("Should raise a NPE for null content"); 
+            props = factory.newSignatureProperties(null, id);
+            fail("Should raise a NPE for null content");
         } catch (NullPointerException npe) {
         } catch (Exception ex) {
             fail("Should raise a NPE for null content instead of " + ex);
         }
-        
+
         List<SignatureProperty> list = new ArrayList<SignatureProperty>();
         try {
-            props = factory.newSignatureProperties(list, id); 
-            fail("Should raise an IAE for empty content"); 
+            props = factory.newSignatureProperties(list, id);
+            fail("Should raise an IAE for empty content");
         } catch (IllegalArgumentException iae) {
         } catch (Exception ex) {
             fail("Should raise an IAE for empty content instead of " + ex);
         }
-        
+
         String strEntry = "wrong type";
         // use raw List type to test for invalid SignatureProperty types
         List invalidList = new ArrayList();
         addEntryToRawList(invalidList, strEntry);
         try {
-            factory.newSignatureProperties(invalidList, id); 
+            factory.newSignatureProperties(invalidList, id);
             fail("Should raise a CCE for content containing " +
-                 "invalid, i.e. non-SignatureProperty, entries"); 
+                 "invalid, i.e. non-SignatureProperty, entries");
         } catch (ClassCastException cce) {
             // cce.printStackTrace();
         } catch (Exception ex) {
             fail("Should raise a CCE for content with invalid entries " +
                  "instead of " + ex);
         }
-        
+
         list.add(prop);
         props = factory.newSignatureProperties(list, id);
         assertNotNull(props);
@@ -102,13 +102,13 @@ public class SignaturePropertiesTest extends org.junit.Assert {
         list.add(prop);
         SignatureProperties props = factory.newSignatureProperties(list, id);
         try {
-            props.isFeatureSupported(null); 
-            fail("Should raise a NPE for null feature"); 
+            props.isFeatureSupported(null);
+            fail("Should raise a NPE for null feature");
         } catch (NullPointerException npe) {}
 
         assertTrue(!props.isFeatureSupported("not supported"));
     }
-    
+
     @SuppressWarnings({
      "unchecked", "rawtypes"
     })

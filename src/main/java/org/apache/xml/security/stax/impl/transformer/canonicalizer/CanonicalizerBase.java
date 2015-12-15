@@ -240,7 +240,7 @@ public abstract class CanonicalizerBase extends TransformIdentity {
     public void transform(final XMLSecEvent xmlSecEvent) throws XMLStreamException {
         try {
             OutputStream outputStream = getOutputStream();
-            
+
             switch (xmlSecEvent.getEventType()) {
                 case XMLStreamConstants.START_ELEMENT:
 

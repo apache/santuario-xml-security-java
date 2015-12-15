@@ -32,26 +32,26 @@ import org.w3c.dom.Node;
 
 /**
  * Test case contributed by Matthias Germann for testing that bug 43239 is
- * fixed: "No installed provider supports this key" when checking a RSA 
+ * fixed: "No installed provider supports this key" when checking a RSA
  * signature against a DSA key before RSA key.
  */
 public class InvalidKeyTest extends org.junit.Assert {
 
-    private static final String BASEDIR = 
+    private static final String BASEDIR =
         System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
     private static final String SEP = System.getProperty("file.separator");
-    
+
     static {
         Init.init();
     }
 
     @org.junit.Test
     public void test() throws Exception {
-        FileInputStream input = new FileInputStream(BASEDIR + SEP + 
+        FileInputStream input = new FileInputStream(BASEDIR + SEP +
             "src/test/resources/org/apache/xml/security/samples/input/truststore.jks");
         KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
         trustStore.load(input, "testpw".toCharArray());
-        
+
         try {
             validate(trustStore.getCertificate("bedag-test").getPublicKey());
             throw new Exception("Failure expected on a DSA key");
@@ -60,13 +60,13 @@ public class InvalidKeyTest extends org.junit.Assert {
         }
         validate(trustStore.getCertificate("a70-garaio-frontend-u").getPublicKey());
     }
-    
+
     private void validate(PublicKey pk) throws Exception {
         FileInputStream is = new FileInputStream(BASEDIR + SEP +
             "src/test/resources/org/apache/xml/security/samples/input/test-assertion.xml");
-            
+
         Document e = XMLUtils.createDocumentBuilder(false).parse(is);
-            
+
         Node assertion = e.getFirstChild();
         while (!(assertion instanceof Element)) {
             assertion = assertion.getNextSibling();
@@ -75,13 +75,13 @@ public class InvalidKeyTest extends org.junit.Assert {
         if (attr != null) {
             ((Element)assertion).setIdAttributeNode(attr, true);
         }
-        
+
         Element n = (Element)assertion.getLastChild();
-            
+
         XMLSignature si = new XMLSignature(n, "");
         si.checkSignatureValue(pk);
 
         // System.out.println("VALIDATION OK" );
     }
-    
+
 }

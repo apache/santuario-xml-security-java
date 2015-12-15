@@ -34,7 +34,7 @@ import org.w3c.dom.Element;
  * validating the signature. Structured formats for defining DSA (REQUIRED)
  * and RSA (RECOMMENDED) public keys are defined in Signature Algorithms
  * (section 6.4). The KeyValue element may include externally defined public
- * keys values represented as PCDATA or element types from an external 
+ * keys values represented as PCDATA or element types from an external
  * namespace.
  *
  * @author $Author$
@@ -125,7 +125,7 @@ public class KeyValue extends SignatureElementProxy implements KeyInfoContent {
      * @throws XMLSecurityException
      */
     public PublicKey getPublicKey() throws XMLSecurityException {
-        Element rsa = 
+        Element rsa =
             XMLUtils.selectDsNode(
                 getFirstChild(), Constants._TAG_RSAKEYVALUE, 0);
 
@@ -134,7 +134,7 @@ public class KeyValue extends SignatureElementProxy implements KeyInfoContent {
             return kv.getPublicKey();
         }
 
-        Element dsa = 
+        Element dsa =
             XMLUtils.selectDsNode(
                 getFirstChild(), Constants._TAG_DSAKEYVALUE, 0);
 

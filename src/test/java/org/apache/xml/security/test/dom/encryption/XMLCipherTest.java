@@ -68,7 +68,7 @@ public class XMLCipherTest extends org.junit.Assert {
 
     private static org.slf4j.Logger log =
         org.slf4j.LoggerFactory.getLogger(XMLCipherTest.class);
-    
+
     static {
         org.apache.xml.security.Init.init();
     }
@@ -90,14 +90,14 @@ public class XMLCipherTest extends org.junit.Assert {
         elementName = System.getProperty("org.apache.xml.enc.test.elem", "project");
         elementIndex = System.getProperty("org.apache.xml.enc.test.idx", "0");
 
-        tstBase64EncodedString = 
+        tstBase64EncodedString =
             "YmNkZWZnaGlqa2xtbm9wcRrPXjQ1hvhDFT+EdesMAPE4F6vlT+y0HPXe0+nAGLQ8";
 
         // Determine if we have ISO 10126 Padding - needed for Bulk AES or
         // 3DES encryption
 
         haveISOPadding = false;
-        String algorithmId = 
+        String algorithmId =
             JCEMapper.translateURItoJCEID(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128);
 
         if (algorithmId != null) {
@@ -112,12 +112,12 @@ public class XMLCipherTest extends org.junit.Assert {
             }
         }
 
-        haveKeyWraps = 
+        haveKeyWraps =
             (JCEMapper.translateURItoJCEID(EncryptionConstants.ALGO_ID_KEYWRAP_AES128) != null);
-        
+
         //
-        // If the BouncyCastle provider is not installed, then try to load it 
-        // via reflection. 
+        // If the BouncyCastle provider is not installed, then try to load it
+        // via reflection.
         //
         if (Security.getProvider("BC") == null) {
             Constructor<?> cons = null;
@@ -133,7 +133,7 @@ public class XMLCipherTest extends org.junit.Assert {
                 bcInstalled = true;
             }
         }
-        
+
     }
 
     @org.junit.AfterClass
@@ -279,7 +279,7 @@ public class XMLCipherTest extends org.junit.Assert {
 
     /**
      * Test encryption using a generated AES 192 bit key that is
-     * encrypted using a 3DES key.  Then reverse by decrypting 
+     * encrypted using a 3DES key.  Then reverse by decrypting
      * EncryptedKey by hand
      */
     @org.junit.Test
@@ -585,7 +585,7 @@ public class XMLCipherTest extends org.junit.Assert {
             );
         }
     }
-    
+
     @org.junit.Test
     public void testEncryptionProperties() throws Exception {
         Document d = document(); // source
@@ -609,7 +609,7 @@ public class XMLCipherTest extends org.junit.Assert {
             // encrypt
             cipher = XMLCipher.getInstance(XMLCipher.TRIPLEDES);
             cipher.init(XMLCipher.ENCRYPT_MODE, key);
-            
+
             // Add EncryptionProperties
             Element elem = d.createElement("CustomInformation");
             elem.setTextContent("Some text content");
@@ -621,10 +621,10 @@ public class XMLCipherTest extends org.junit.Assert {
             ep.setTarget("http://localhost/");
             ep.setAttribute("xml:lang", "en");
             eps.addEncryptionProperty(ep);
-            
+
             EncryptedData encData = cipher.getEncryptedData();
             encData.setEncryptionProperties(eps);
-            
+
             ed = cipher.doFinal(d, e);
             // XMLUtils.outputDOM(ed, System.out);
 
@@ -661,7 +661,7 @@ public class XMLCipherTest extends org.junit.Assert {
             // Create the XMLCipher object
             cipher = XMLCipher.getInstance();
 
-            EncryptedData ed = 
+            EncryptedData ed =
                 cipher.createEncryptedData(CipherData.REFERENCE_TYPE,
                                            "#CipherTextId");
             EncryptionMethod em =
@@ -679,7 +679,7 @@ public class XMLCipherTest extends org.junit.Assert {
             XPathContainer xpc = new XPathContainer(d);
             xpc.setXPath("self::text()[parent::CipherText[@Id=\"CipherTextId\"]]");
             dsTransforms.addTransform(
-                org.apache.xml.security.transforms.Transforms.TRANSFORM_XPATH, 
+                org.apache.xml.security.transforms.Transforms.TRANSFORM_XPATH,
                 xpc.getElementPlusReturns()
             );
 
@@ -708,7 +708,7 @@ public class XMLCipherTest extends org.junit.Assert {
             byte[] decryptBytes = cipherDecrypt.decryptToByteArray(ee);
 
             assertEquals("A test encrypted secret",
-                        new String(decryptBytes, "ASCII")); 
+                        new String(decryptBytes, "ASCII"));
         } else {
             log.warn(
                 "Test testSameDocumentCipherReference skipped as "
@@ -740,7 +740,7 @@ public class XMLCipherTest extends org.junit.Assert {
             XMLCipher dataCipher = XMLCipher.getInstance(XMLCipher.TRIPLEDES);
             dataCipher.init(XMLCipher.ENCRYPT_MODE, secretKey);
             dataCipher.doFinal(doc, elem);
-            
+
             Element encrElem = (Element)doc.getDocumentElement().getFirstChild();
             assertEquals("EncryptedData", encrElem.getLocalName());
 
@@ -764,7 +764,7 @@ public class XMLCipherTest extends org.junit.Assert {
             dataCipher = XMLCipher.getInstance(XMLCipher.TRIPLEDES);
             dataCipher.init(XMLCipher.ENCRYPT_MODE, secretKey);
             dataCipher.doFinal(doc, elem);
-            
+
             encrElem = (Element)doc.getDocumentElement().getFirstChild();
             assertEquals("EncryptedData", encrElem.getLocalName());
 
@@ -779,7 +779,7 @@ public class XMLCipherTest extends org.junit.Assert {
             attr = (Attr)decrElem.getAttributes().item(0);
             assertEquals("xmlns", attr.getName());
             assertEquals("", attr.getValue());
-            
+
             // Test comments and PIs are not treated specially when serializing element content.
             // Other c14n algorithms add a newline after comments and PIs, when they are before or after the document element.
             final String DATA3 = "<root><!--comment1--><?pi1 target1?><elem/><!--comment2--><?pi2 target2?></root>";
@@ -789,7 +789,7 @@ public class XMLCipherTest extends org.junit.Assert {
             dataCipher = XMLCipher.getInstance(XMLCipher.TRIPLEDES);
             dataCipher.init(XMLCipher.ENCRYPT_MODE, secretKey);
             dataCipher.doFinal(doc, elem, true);
-            
+
             encrElem = (Element)elem.getFirstChild();
             assertEquals("EncryptedData", encrElem.getLocalName());
             assertNull(encrElem.getNextSibling());
@@ -850,7 +850,7 @@ public class XMLCipherTest extends org.junit.Assert {
         String before = baos.toString("UTF-8");
 
         byte[] serialized = baos.toByteArray();
-        EncryptedData encryptedData = 
+        EncryptedData encryptedData =
             cipher.encryptData(
                 d, EncryptionConstants.TYPE_ELEMENT, new ByteArrayInputStream(serialized)
             );
@@ -870,7 +870,7 @@ public class XMLCipherTest extends org.junit.Assert {
 
     @org.junit.Test
     public void testEncryptedKeyWithRecipient() throws Exception {
-        String filename = 
+        String filename =
             "src/test/resources/org/apache/xml/security/encryption/encryptedKey.xml";
         if (basedir != null && !"".equals(basedir)) {
             filename = basedir + "/" + filename;
@@ -878,17 +878,17 @@ public class XMLCipherTest extends org.junit.Assert {
         File f = new File(filename);
 
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(f); 
+        Document document = builder.parse(f);
 
         XMLCipher keyCipher = XMLCipher.getInstance();
         keyCipher.init(XMLCipher.UNWRAP_MODE, null);
 
-        NodeList ekList = 
+        NodeList ekList =
             document.getElementsByTagNameNS(
                 EncryptionConstants.EncryptionSpecNS, EncryptionConstants._TAG_ENCRYPTEDKEY
             );
         for (int i = 0; i < ekList.getLength(); i++) {
-            EncryptedKey ek = 
+            EncryptedKey ek =
                 keyCipher.loadEncryptedKey(document, (Element) ekList.item(i));
             assertNotNull(ek.getRecipient());
         }
@@ -917,7 +917,7 @@ public class XMLCipherTest extends org.junit.Assert {
 
         xmlCipher.decryptToByteArray(encryptedData);
     }
-    
+
     @org.junit.Test
     public void testMultipleKEKs() throws Exception {
 
@@ -937,7 +937,7 @@ public class XMLCipherTest extends org.junit.Assert {
             KeyGenerator keygen = KeyGenerator.getInstance("AES");
             keygen.init(192);
             Key kek1 = keygen.generateKey();
-            
+
             // Set up Key Encryption Key no. 2
             Key kek2 = keygen.generateKey();
 
@@ -949,7 +949,7 @@ public class XMLCipherTest extends org.junit.Assert {
             cipher = XMLCipher.getInstance(XMLCipher.AES_192_KeyWrap);
             cipher.init(XMLCipher.WRAP_MODE, kek1);
             EncryptedKey encryptedKey1 = cipher.encryptKey(d, key);
-            
+
             cipher.init(XMLCipher.WRAP_MODE, kek2);
             EncryptedKey encryptedKey2 = cipher.encryptKey(d, key);
 
@@ -968,7 +968,7 @@ public class XMLCipherTest extends org.junit.Assert {
             builderKeyInfo.add(encryptedKey2);
 
             ed = cipher.doFinal(d, e);
-            
+
             //decrypt
             key = null;
             ee = (Element) ed.getElementsByTagName("xenc:EncryptedData").item(0);
@@ -1029,5 +1029,5 @@ public class XMLCipherTest extends org.junit.Assert {
 
         return (result);
     }
-    
+
 }

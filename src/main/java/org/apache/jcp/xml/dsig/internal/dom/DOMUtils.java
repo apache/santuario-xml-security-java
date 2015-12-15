@@ -63,10 +63,10 @@ public final class DOMUtils {
 
     /**
      * Create a QName string from a prefix and local name.
-     * 
+     *
      * @param prefix    The prefix, if any. Can be either null or empty.
      * @param localName The local name.
-     * 
+     *
      * @return The string for the qName, for example, "xsd:element".
      */
     public static String getQNameString(String prefix, String localName) {
@@ -75,7 +75,7 @@ public final class DOMUtils {
 
         return qName;
     }
-    
+
     /**
      * Creates an element in the specified namespace, with the specified tag
      * and namespace prefix.
@@ -158,10 +158,10 @@ public final class DOMUtils {
     {
         return verifyElement(getFirstChildElement(node), localName);
     }
-    
+
     /**
      * Returns the first child element of the specified node and checks that
-     * the local name is equal to {@code localName} and the namespace is equal to 
+     * the local name is equal to {@code localName} and the namespace is equal to
      * {@code namespaceURI}
      *
      * @param node the node
@@ -189,7 +189,7 @@ public final class DOMUtils {
         }
         return elem;
     }
-    
+
     private static Element verifyElement(Element elem, String localName, String namespaceURI)
         throws MarshalException
     {
@@ -200,7 +200,7 @@ public final class DOMUtils {
         String namespace = elem.getNamespaceURI();
         if (!name.equals(localName) || namespace == null && namespaceURI != null
             || namespace != null && !namespace.equals(namespaceURI)) {
-            throw new MarshalException("Invalid element name: " + 
+            throw new MarshalException("Invalid element name: " +
                 namespace + ":" + name + ", expected " + namespaceURI + ":" + localName);
         }
         return elem;
@@ -272,7 +272,7 @@ public final class DOMUtils {
         throws MarshalException
     {
         return verifyElement(getNextSiblingElement(node), localName, namespaceURI);
-    } 
+    }
 
     /**
      * Returns the attribute value for the attribute with the specified name.
@@ -295,7 +295,7 @@ public final class DOMUtils {
 
     /**
      * Returns the attribute value for the attribute with the specified name.
-     * Returns null if there is no such attribute, or 
+     * Returns null if there is no such attribute, or
      * the empty string if the attribute value is empty.
      *
      * <p>This works around a limitation of the DOM
@@ -316,7 +316,7 @@ public final class DOMUtils {
     }
 
     /**
-     * Returns a Set of <code>Node</code>s, backed by the specified 
+     * Returns a Set of <code>Node</code>s, backed by the specified
      * <code>NodeList</code>.
      *
      * @param nl the NodeList
@@ -488,7 +488,7 @@ public final class DOMUtils {
     private static boolean paramsEqual(XPathFilterParameterSpec spec1,
                                        XPathFilterParameterSpec spec2)
     {
-        return spec1.getXPath().equals(spec2.getXPath()) && 
+        return spec1.getXPath().equals(spec2.getXPath()) &&
                 spec1.getNamespaceMap().equals(spec2.getNamespaceMap());
     }
 

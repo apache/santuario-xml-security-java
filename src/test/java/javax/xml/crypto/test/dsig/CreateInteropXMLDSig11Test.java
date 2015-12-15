@@ -281,7 +281,7 @@ public class CreateInteropXMLDSig11Test extends org.junit.Assert {
                                          TestUtils.getSecretKey
                                          ("testkey".getBytes("ASCII")), sks);
     }
-    
+
     private void test_create_signature_enveloping(
         SignatureMethod sm, DigestMethod dm, KeyInfo ki, Key signingKey, KeySelector ks
     ) throws Exception {

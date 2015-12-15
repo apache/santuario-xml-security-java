@@ -20,7 +20,7 @@
  * Portions copyright 2005 Sun Microsystems, Inc. All rights reserved.
  */
 /*
- * =========================================================================== 
+ * ===========================================================================
  *
  * (C) Copyright IBM Corp. 2003 All Rights Reserved.
  *
@@ -147,7 +147,7 @@ public final class DOMRetrievalMethod extends DOMStructure
             String namespace = transformsElem.getNamespaceURI();
             if (!localName.equals("Transforms") || !XMLSignature.XMLNS.equals(namespace)) {
                 throw new MarshalException("Invalid element name: " +
-                                           namespace + ":" + localName + ", expected Transforms");            
+                                           namespace + ":" + localName + ", expected Transforms");
             }
             Element transformElem =
                 DOMUtils.getFirstChildElement(transformsElem, "Transform", XMLSignature.XMLNS);
@@ -161,7 +161,7 @@ public final class DOMRetrievalMethod extends DOMStructure
                 newTransforms.add
                     (new DOMTransform(transformElem, context, provider));
                 if (secVal && newTransforms.size() > DOMReference.MAXIMUM_TRANSFORM_COUNT) {
-                    String error = "A maxiumum of " + DOMReference.MAXIMUM_TRANSFORM_COUNT + " " 
+                    String error = "A maxiumum of " + DOMReference.MAXIMUM_TRANSFORM_COUNT + " "
                         + "transforms per Reference are allowed with secure validation";
                     throw new MarshalException(error);
                 }
@@ -274,7 +274,7 @@ public final class DOMRetrievalMethod extends DOMStructure
             Document doc = db.parse(new ByteArrayInputStream
                 (data.getXMLSignatureInput().getBytes()));
             Element kiElem = doc.getDocumentElement();
-            if (kiElem.getLocalName().equals("X509Data") 
+            if (kiElem.getLocalName().equals("X509Data")
                 && XMLSignature.XMLNS.equals(kiElem.getNamespaceURI())) {
                 return new DOMX509Data(kiElem);
             } else {

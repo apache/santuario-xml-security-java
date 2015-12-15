@@ -39,7 +39,7 @@ import org.apache.xml.security.exceptions.XMLSecurityException;
  * @version $Revision$ $Date$
  */
 public class XMLSecurityConstants {
-    
+
     public static final DatatypeFactory datatypeFactory;
     public static final XMLOutputFactory xmlOutputFactory;
     public static final XMLOutputFactory xmlOutputFactoryNonRepairingNs;
@@ -70,11 +70,11 @@ public class XMLSecurityConstants {
 
     protected XMLSecurityConstants() {
     }
-    
+
     /**
      * Generate bytes of the given length using the SHA1PRNG algorithm. The SecureRandom
      * instance that backs this method is cached for efficiency.
-     * 
+     *
      * @return a byte array of the given length
      * @throws WSSecurityException
      */
@@ -99,7 +99,7 @@ public class XMLSecurityConstants {
     public static Schema getJaxbSchemas() {
         return XMLSecurityConstants.schema;
     }
-    
+
     public static Unmarshaller getJaxbUnmarshaller(boolean disableSchemaValidation) throws JAXBException {
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
         if (!disableSchemaValidation) {
@@ -128,7 +128,7 @@ public class XMLSecurityConstants {
     public static final String NS_DSIG_MORE ="http://www.w3.org/2001/04/xmldsig-more#";
     public static final String NS_DSIG11 = "http://www.w3.org/2009/xmldsig11#";
     public static final String NS_WSSE11 = "http://docs.oasis-open.org/wss/oasis-wss-wssecurity-secext-1.1.xsd";
-            
+
     public static final String PREFIX_XENC = "xenc";
     public static final String PREFIX_XENC11 = "xenc11";
     public static final QName TAG_xenc_EncryptedKey = new QName(NS_XMLENC, "EncryptedKey", PREFIX_XENC);
@@ -211,7 +211,7 @@ public class XMLSecurityConstants {
     public static final String NS_XMLDSIG_HMACSHA1 = NS_DSIG + "hmac-sha1";
     public static final String NS_XMLDSIG_RSASHA1 = NS_DSIG + "rsa-sha1";
     public static final String NS_XMLDSIG_MANIFEST = NS_DSIG + "Manifest";
-    
+
     public static final String NS_XMLDSIG_HMACSHA256 = NS_DSIG_MORE + "hmac-sha256";
     public static final String NS_XMLDSIG_HMACSHA384 = NS_DSIG_MORE + "hmac-sha384";
     public static final String NS_XMLDSIG_HMACSHA512 = NS_DSIG_MORE + "hmac-sha512";
@@ -235,7 +235,7 @@ public class XMLSecurityConstants {
     public static final String NS_MGF1_SHA256 = NS_XMLENC11 + "mgf1sha256";
     public static final String NS_MGF1_SHA384 = NS_XMLENC11 + "mgf1sha384";
     public static final String NS_MGF1_SHA512 = NS_XMLENC11 + "mgf1sha512";
-    
+
     public static final String NS_XENC_SHA256 = NS_XMLENC + "sha256";
     public static final String NS_XENC_SHA512 = NS_XMLENC + "sha512";
 

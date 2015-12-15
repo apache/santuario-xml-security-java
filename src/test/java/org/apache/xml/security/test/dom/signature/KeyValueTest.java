@@ -40,7 +40,7 @@ public class KeyValueTest extends org.junit.Assert {
     private static final String SEP = System.getProperty("file.separator");
 
     private DocumentBuilder db;
-    
+
     static {
         Init.init();
     }
@@ -52,7 +52,7 @@ public class KeyValueTest extends org.junit.Assert {
     @org.junit.Test
     public void testDSAPublicKey() throws Exception {
         File f = null;
-        String filename = 
+        String filename =
             "src/test/resources/ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-enveloping-dsa.xml";
         if (BASEDIR != null && !"".equals(BASEDIR)) {
             f = new File(BASEDIR + SEP + filename);
@@ -68,5 +68,5 @@ public class KeyValueTest extends org.junit.Assert {
         PublicKey pk = kv.getPublicKey();
         assertNotNull(pk);
     }
-    
+
 }

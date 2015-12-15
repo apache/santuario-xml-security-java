@@ -47,7 +47,7 @@ import org.w3c.dom.Element;
  * @author Axl Mattheus
  */
 public interface EncryptionProperty {
-    
+
     /**
      * Returns the <code>EncryptedType</code> being described.
      *

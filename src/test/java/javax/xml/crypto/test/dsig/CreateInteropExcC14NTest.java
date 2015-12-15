@@ -66,7 +66,7 @@ public class CreateInteropExcC14NTest extends org.junit.Assert {
 
         // get key & self-signed certificate from keystore
         String base = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
-        
+
         String fs = System.getProperty("file.separator");
         FileInputStream fis = new FileInputStream
             (base + fs + "src/test/resources" + fs + "test.jks");
@@ -83,10 +83,10 @@ public class CreateInteropExcC14NTest extends org.junit.Assert {
 
         // create reference 1
         refs.add(fac.newReference
-            ("#xpointer(id('to-be-signed'))", 
+            ("#xpointer(id('to-be-signed'))",
              fac.newDigestMethod(DigestMethod.SHA1, null),
              Collections.singletonList
-                (fac.newTransform(CanonicalizationMethod.EXCLUSIVE, 
+                (fac.newTransform(CanonicalizationMethod.EXCLUSIVE,
                  (TransformParameterSpec) null)),
              null, null));
 
@@ -96,7 +96,7 @@ public class CreateInteropExcC14NTest extends org.junit.Assert {
         prefixList.add("#default");
         ExcC14NParameterSpec params = new ExcC14NParameterSpec(prefixList);
         refs.add(fac.newReference
-            ("#xpointer(id('to-be-signed'))", 
+            ("#xpointer(id('to-be-signed'))",
              fac.newDigestMethod(DigestMethod.SHA1, null),
              Collections.singletonList
                 (fac.newTransform(CanonicalizationMethod.EXCLUSIVE, params)),
@@ -104,10 +104,10 @@ public class CreateInteropExcC14NTest extends org.junit.Assert {
 
         // create reference 3
         refs.add(fac.newReference
-            ("#xpointer(id('to-be-signed'))", 
+            ("#xpointer(id('to-be-signed'))",
              fac.newDigestMethod(DigestMethod.SHA1, null),
              Collections.singletonList(fac.newTransform
-                (CanonicalizationMethod.EXCLUSIVE_WITH_COMMENTS, 
+                (CanonicalizationMethod.EXCLUSIVE_WITH_COMMENTS,
                  (TransformParameterSpec) null)),
              null, null));
 
@@ -117,17 +117,17 @@ public class CreateInteropExcC14NTest extends org.junit.Assert {
         prefixList.add("#default");
         params = new ExcC14NParameterSpec(prefixList);
         refs.add(fac.newReference
-            ("#xpointer(id('to-be-signed'))", 
+            ("#xpointer(id('to-be-signed'))",
              fac.newDigestMethod(DigestMethod.SHA1, null),
              Collections.singletonList(fac.newTransform
-                (CanonicalizationMethod.EXCLUSIVE_WITH_COMMENTS, 
+                (CanonicalizationMethod.EXCLUSIVE_WITH_COMMENTS,
                  params)),
              null, null));
 
         // create SignedInfo
         SignedInfo si = fac.newSignedInfo(
             fac.newCanonicalizationMethod
-                (CanonicalizationMethod.EXCLUSIVE, 
+                (CanonicalizationMethod.EXCLUSIVE,
                  (C14NMethodParameterSpec) null),
             fac.newSignatureMethod(SignatureMethod.DSA_SHA1, null), refs);
 
@@ -159,7 +159,7 @@ public class CreateInteropExcC14NTest extends org.junit.Assert {
 
         sig.sign(dsc);
         TestUtils.validateSecurityOrEncryptionElement(foo.getLastChild());
-        
+
         DOMValidateContext dvc = new DOMValidateContext
             (new KeySelectors.KeyValueKeySelector(), foo.getLastChild());
         XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);

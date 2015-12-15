@@ -41,7 +41,7 @@ import org.w3c.dom.Element;
  * @author $Author$
  */
 public class VerifySignature {
-    
+
     static {
         org.apache.xml.security.Init.init();
     }
@@ -120,9 +120,9 @@ public class VerifySignature {
             xpath.setNamespaceContext(new DSNamespaceContext());
 
             String expression = "//ds:Signature[1]";
-            Element sigElement = 
+            Element sigElement =
                 (Element) xpath.evaluate(expression, doc, XPathConstants.NODE);
-            XMLSignature signature = 
+            XMLSignature signature =
                 new XMLSignature(sigElement, f.toURI().toURL().toString());
 
             signature.addResourceResolver(new OfflineResolver());

@@ -56,7 +56,7 @@ public class SignaturePropertiesSample {
 
         doc.appendChild(sig.getElement());
 
-        SignatureProperty prop1 = 
+        SignatureProperty prop1 =
             new SignatureProperty(doc, "http://www.xmlsecurity.org/#target", "prop1");
 
         prop1.getElement().appendChild(doc.createTextNode("\n   some data for this property\n"));
@@ -89,5 +89,5 @@ public class SignaturePropertiesSample {
         System.out.println(new String(sig.getSignedInfo().item(0).getTransformsOutput().getBytes()));
         System.out.println("---------------------------------------");
     }
-    
+
 }

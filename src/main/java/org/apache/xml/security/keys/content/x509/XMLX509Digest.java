@@ -31,7 +31,7 @@ import org.w3c.dom.Element;
 
 /**
  * Provides content model support for the <code>dsig11:X509Digest</code> element.
- * 
+ *
  * @author Brent Putman (putmanb@georgetown.edu)
  */
 public class XMLX509Digest extends Signature11ElementProxy implements XMLX509DataContent {
@@ -46,7 +46,7 @@ public class XMLX509Digest extends Signature11ElementProxy implements XMLX509Dat
     public XMLX509Digest(Element element, String baseURI) throws XMLSecurityException {
         super(element, baseURI);
     }
-    
+
     /**
      * Constructor XMLX509Digest
      *
@@ -73,7 +73,7 @@ public class XMLX509Digest extends Signature11ElementProxy implements XMLX509Dat
         this.addBase64Text(getDigestBytesFromCert(x509certificate, algorithmURI));
         setLocalAttribute(Constants._ATT_ALGORITHM, algorithmURI);
     }
-    
+
     /**
      * Method getAlgorithmAttr
      *
@@ -117,7 +117,7 @@ public class XMLX509Digest extends Signature11ElementProxy implements XMLX509Dat
                 Object exArgs[] = { algorithmURI };
                 throw new XMLSecurityException("XMLX509Digest.UnknownDigestAlgorithm", exArgs);
         }
-        
+
         try {
                         MessageDigest md = MessageDigest.getInstance(jcaDigestAlgorithm);
                         return md.digest(cert.getEncoded());
@@ -125,7 +125,7 @@ public class XMLX509Digest extends Signature11ElementProxy implements XMLX509Dat
                 Object exArgs[] = { jcaDigestAlgorithm };
                         throw new XMLSecurityException("XMLX509Digest.FailedDigest", exArgs);
                 }
-        
+
     }
 
     /** @inheritDoc */

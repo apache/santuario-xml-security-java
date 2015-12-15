@@ -46,21 +46,21 @@ import org.xml.sax.SAXException;
  * </PRE>
  */
 public abstract class KeyResolverSpi {
-    
+
     /** Field properties */
     protected java.util.Map<String, String> properties = null;
 
     protected boolean globalResolver = false;
-    
+
     protected boolean secureValidation;
-    
+
     /**
      * Set whether secure validation is enabled or not. The default is false.
      */
     public void setSecureValidation(boolean secureValidation) {
         this.secureValidation = secureValidation;
     }
-    
+
     /**
      * This method returns whether the KeyResolverSpi is able to perform the requested action.
      *
@@ -80,7 +80,7 @@ public abstract class KeyResolverSpi {
      * @param baseURI
      * @param storage
      * @return resolved public key from the registered from the element.
-     * 
+     *
      * @throws KeyResolverException
      */
     public PublicKey engineResolvePublicKey(
@@ -96,7 +96,7 @@ public abstract class KeyResolverSpi {
      * @param baseURI
      * @param storage
      * @return resolved public key from the registered from the element.
-     * 
+     *
      * @throws KeyResolverException
      */
     public PublicKey engineLookupAndResolvePublicKey(
@@ -110,10 +110,10 @@ public abstract class KeyResolverSpi {
     }
 
     private KeyResolverSpi cloneIfNeeded() throws KeyResolverException {
-        KeyResolverSpi tmp = this;    
+        KeyResolverSpi tmp = this;
         if (globalResolver) {
             try {
-                tmp = getClass().newInstance();    	    
+                tmp = getClass().newInstance();    	
             } catch (InstantiationException e) {
                 throw new KeyResolverException(e, "");
             } catch (IllegalAccessException e) {
@@ -222,7 +222,7 @@ public abstract class KeyResolverSpi {
      * @param key
      * @param value
      */
-    public void engineSetProperty(String key, String value) {     
+    public void engineSetProperty(String key, String value) {
         if (properties == null) {
             properties = new HashMap<String, String>();
         }
@@ -256,17 +256,17 @@ public abstract class KeyResolverSpi {
 
         return properties.get(propertyToTest) != null;
     }
-    
+
     public void setGlobalResolver(boolean globalResolver) {
         this.globalResolver = globalResolver;
     }
 
-    
+
     /**
      * Parses a byte array and returns the parsed Element.
      *
      * @param bytes
-     * @return the Document Element after parsing bytes 
+     * @return the Document Element after parsing bytes
      * @throws KeyResolverException if something goes wrong
      */
     protected static Element getDocFromBytes(byte[] bytes, boolean secureValidation) throws KeyResolverException {

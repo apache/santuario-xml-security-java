@@ -40,7 +40,7 @@ import javax.crypto.SecretKey;
 public class KeySelectors {
 
     /**
-     * KeySelector which would always return the secret key specified in its 
+     * KeySelector which would always return the secret key specified in its
      * constructor.
      */
     public static class SecretKeySelector extends KeySelector {
@@ -51,15 +51,15 @@ public class KeySelectors {
         public SecretKeySelector(SecretKey key) {
             this.key = key;
         }
-    
-        public KeySelectorResult select(KeyInfo ki, 
+
+        public KeySelectorResult select(KeyInfo ki,
                                         KeySelector.Purpose purpose,
-                                        AlgorithmMethod method, 
-                                        XMLCryptoContext context) 
+                                        AlgorithmMethod method,
+                                        XMLCryptoContext context)
             throws KeySelectorException {
             return new SimpleKSResult(key);
         }
-        
+
         private SecretKey wrapBytes(final byte[] bytes) {
             return new SecretKey() {
                 private static final long serialVersionUID = 3457835482691931082L;
@@ -67,11 +67,11 @@ public class KeySelectors {
                     public String getFormat() {
                         return "RAW";
                     }
-                    
+
                     public String getAlgorithm() {
                         return "Secret key";
                     }
-                    
+
                     public byte[] getEncoded() {
                         return bytes.clone();
                     }
@@ -80,21 +80,21 @@ public class KeySelectors {
     }
 
     /**
-     * KeySelector which would retrieve the X509Certificate out of the 
+     * KeySelector which would retrieve the X509Certificate out of the
      * KeyInfo element and return the public key.
      * NOTE: If there is an X509CRL in the KeyInfo element, then revoked
      * certificate will be ignored.
      */
     public static class RawX509KeySelector extends KeySelector {
-     
-        public KeySelectorResult select(KeyInfo keyInfo, 
-                                        KeySelector.Purpose purpose, 
-                                        AlgorithmMethod method, 
-                                        XMLCryptoContext context) 
+
+        public KeySelectorResult select(KeyInfo keyInfo,
+                                        KeySelector.Purpose purpose,
+                                        AlgorithmMethod method,
+                                        XMLCryptoContext context)
             throws KeySelectorException {
             if (keyInfo == null) {
                 throw new KeySelectorException("Null KeyInfo object!");
-            } 
+            }
             // search for X509Data in keyinfo
             @SuppressWarnings("unchecked")
             Iterator<XMLStructure> iter = keyInfo.getContent().iterator();
@@ -116,8 +116,8 @@ public class KeySelectors {
                         Object o = xi.next();
                         // skip non-X509Certificate entries
                         if (o instanceof X509Certificate) {
-                            if ((purpose != KeySelector.Purpose.VERIFY) && 
-                                (crl != null) && 
+                            if ((purpose != KeySelector.Purpose.VERIFY) &&
+                                (crl != null) &&
                                 crl.isRevoked((X509Certificate)o)) {
                                 continue;
                             } else {
@@ -133,23 +133,23 @@ public class KeySelectors {
     }
 
     /**
-     * KeySelector which would retrieve the public key out of the 
+     * KeySelector which would retrieve the public key out of the
      * KeyValue element and return it.
      * NOTE: If the key algorithm doesn't match signature algorithm,
      * then the public key will be ignored.
      */
     public static class KeyValueKeySelector extends KeySelector {
-        public KeySelectorResult select(KeyInfo keyInfo, 
-                                        KeySelector.Purpose purpose, 
-                                        AlgorithmMethod method, 
-                                        XMLCryptoContext context) 
+        public KeySelectorResult select(KeyInfo keyInfo,
+                                        KeySelector.Purpose purpose,
+                                        AlgorithmMethod method,
+                                        XMLCryptoContext context)
             throws KeySelectorException {
             if (keyInfo == null) {
                 throw new KeySelectorException("Null KeyInfo object!");
             }
             @SuppressWarnings("unchecked")
             List<XMLStructure> list = keyInfo.getContent();
-            
+
             for (XMLStructure xmlStructure : list) {
                 if (xmlStructure instanceof KeyValue) {
                     PublicKey pk = null;
@@ -167,7 +167,7 @@ public class KeySelectors {
 
     /**
      * KeySelector which would perform special lookup as documented
-     * by the ie/baltimore/merlin-examples testcases and return the 
+     * by the ie/baltimore/merlin-examples testcases and return the
      * matching public key.
      */
     public static class CollectionKeySelector extends KeySelector {
@@ -179,7 +179,7 @@ public class KeySelectors {
         private static final int MATCH_SERIAL = 2;
         private static final int MATCH_SUBJECT_KEY_ID = 3;
         private static final int MATCH_CERTIFICATE = 4;
-        
+
         public CollectionKeySelector(File dir) throws CertificateException {
             certDir = dir;
             certFac = CertificateFactory.getInstance("X509");
@@ -207,14 +207,14 @@ public class KeySelectors {
                 }
             }
         }
-        
+
         public List<X509Certificate> match(
             int matchType, Object value, List<X509Certificate> pool
         ) {
             List<X509Certificate> matchResult = new ArrayList<X509Certificate>();
-            
+
             for (X509Certificate c : pool) {
-                
+
                 switch (matchType) {
                 case MATCH_SUBJECT:
                     Principal p1 = new javax.security.auth.x500.X500Principal((String)value);
@@ -232,7 +232,7 @@ public class KeySelectors {
                     if (c.getSerialNumber().equals(value)) {
                         matchResult.add(c);
                     }
-                    
+
                     break;
                 case MATCH_SUBJECT_KEY_ID:
                     byte[] extension = c.getExtensionValue("2.5.29.14");
@@ -254,11 +254,11 @@ public class KeySelectors {
             }
             return matchResult;
         }
-        
-        public KeySelectorResult select(KeyInfo keyInfo, 
-                                        KeySelector.Purpose purpose, 
-                                        AlgorithmMethod method, 
-                                        XMLCryptoContext context) 
+
+        public KeySelectorResult select(KeyInfo keyInfo,
+                                        KeySelector.Purpose purpose,
+                                        AlgorithmMethod method,
+                                        XMLCryptoContext context)
             throws KeySelectorException {
             if (keyInfo == null) {
                 throw new KeySelectorException("Null KeyInfo object!");
@@ -272,11 +272,11 @@ public class KeySelectors {
                         String name = ((KeyName)xmlStructure).getName();
                         PublicKey pk = null;
                         try {
-                            // Lookup the public key using the key name 'Xxx', 
+                            // Lookup the public key using the key name 'Xxx',
                             // i.e. the public key is in "certs/xxx.crt".
                             File certFile = new File(new File(certDir, "certs"),
                                 name.toLowerCase()+".crt");
-                            X509Certificate cert = (X509Certificate) 
+                            X509Certificate cert = (X509Certificate)
                                 certFac.generateCertificate
                                 (new FileInputStream(certFile));
                             pk = cert.getPublicKey();
@@ -287,7 +287,7 @@ public class KeySelectors {
                             int numOfMatches = (result == null? 0 : result.size());
                             if (numOfMatches != 1) {
                                 throw new KeySelectorException
-                                    ((numOfMatches == 0 ? "No":"More than one") + 
+                                    ((numOfMatches == 0 ? "No":"More than one") +
                                      " match found");
                             }
                             pk = ((X509Certificate)result.get(0)).getPublicKey();
@@ -300,7 +300,7 @@ public class KeySelectors {
                         String type = rm.getType();
                         if (type.equals(X509Data.RAW_X509_CERTIFICATE_TYPE)) {
                             String uri = rm.getURI();
-                            X509Certificate cert = (X509Certificate) 
+                            X509Certificate cert = (X509Certificate)
                                 certFac.generateCertificate
                                 (new FileInputStream(new File(certDir, uri)));
                             return new SimpleKSResult(cert.getPublicKey());
@@ -313,7 +313,7 @@ public class KeySelectors {
                         List<Object> content = ((X509Data)xmlStructure).getContent();
                         int size = content.size();
                         List<X509Certificate> result = null;
-                        // Lookup the public key using the information 
+                        // Lookup the public key using the information
                         // specified in X509Data element, i.e. searching
                         // over the collection of certificate files under
                         // "certs" subdirectory and return those match.
@@ -327,9 +327,9 @@ public class KeySelectors {
                                 result = match(MATCH_CERTIFICATE, obj, certs);
                             } else if (obj instanceof X509IssuerSerial) {
                                 X509IssuerSerial is = (X509IssuerSerial) obj;
-                                result = match(MATCH_SERIAL, 
+                                result = match(MATCH_SERIAL,
                                                is.getSerialNumber(), certs);
-                                result = match(MATCH_ISSUER, 
+                                result = match(MATCH_ISSUER,
                                                is.getIssuerName(), result);
                             } else {
                                 throw new KeySelectorException("Unsupported X509Data: " + obj);
@@ -338,7 +338,7 @@ public class KeySelectors {
                         int numOfMatches = (result == null ? 0 : result.size());
                         if (numOfMatches != 1) {
                             throw new KeySelectorException
-                                ((numOfMatches==0?"No":"More than one") + 
+                                ((numOfMatches==0?"No":"More than one") +
                                  " match found");
                         }
                         return new SimpleKSResult(((X509Certificate)
@@ -351,12 +351,12 @@ public class KeySelectors {
             throw new KeySelectorException("No matching key found!");
         }
     }
-    
+
     public static class ByteUtil {
-        
+
         private static String mapping = "0123456789ABCDEF";
         private static int numBytesPerRow = 6;
-        
+
         private static String getHex(byte value) {
             int low = value & 0x0f;
             int high = ((value >> 4) & 0x0f);
@@ -388,12 +388,12 @@ public class KeySelectors {
             return buf.toString();
         }
     }
-    
+
     private static class SimpleKSResult implements KeySelectorResult {
         private final Key key;
-        
+
         SimpleKSResult(Key key) { this.key = key; }
-        
+
         public Key getKey() { return key; }
     }
 }

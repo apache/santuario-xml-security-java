@@ -29,7 +29,7 @@ import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
 public class DigesterOutputStream extends ByteArrayOutputStream {
     private static final org.slf4j.Logger log =
         org.slf4j.LoggerFactory.getLogger(DigesterOutputStream.class);
-    
+
     final MessageDigestAlgorithm mda;
 
     /**
@@ -63,9 +63,9 @@ public class DigesterOutputStream extends ByteArrayOutputStream {
     }
 
     /**
-     * @return the digest value 
+     * @return the digest value
      */
     public byte[] getDigestValue() {
-        return mda.digest();   
+        return mda.digest();
     }
 }

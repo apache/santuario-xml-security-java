@@ -44,7 +44,7 @@ public class SecretKeyResolver extends KeyResolverSpi
     private char[] password;
 
     /**
-     * Constructor. 
+     * Constructor.
      */
     public SecretKeyResolver(KeyStore keyStore, char[] password) {
         this.keyStore = keyStore;

@@ -35,7 +35,7 @@ import javax.xml.crypto.dsig.spec.TransformParameterSpec;
  * @author Sean Mullan
  */
 public final class DOMBase64Transform extends ApacheTransform {
- 
+
     @Override
     public void init(TransformParameterSpec params)
         throws InvalidAlgorithmParameterException {

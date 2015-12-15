@@ -34,9 +34,9 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Element;
 
 /**
- * KeyResolverSpi implementation which resolves public keys from a 
+ * KeyResolverSpi implementation which resolves public keys from a
  * <code>dsig11:DEREncodedKeyValue</code> element.
- * 
+ *
  * @author Brent Putman (putmanb@georgetown.edu)
  */
 public class DEREncodedKeyValueResolver extends KeyResolverSpi {

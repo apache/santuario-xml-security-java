@@ -39,10 +39,10 @@ package org.apache.xml.security.encryption;
  * @author Axl Mattheus
  */
 public interface CipherData {
-    
+
     /** VALUE_TYPE ASN */
     int VALUE_TYPE = 0x00000001;
-    
+
     /** REFERENCE_TYPE ASN */
     int REFERENCE_TYPE = 0x00000002;
 

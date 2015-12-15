@@ -61,9 +61,9 @@ public class XMLSignatureInputHandler extends AbstractSignatureInputHandler {
                 new XMLSignatureReferenceVerifyInputProcessor(
                         inputProcessorChain, signatureType, inboundSecurityToken, securityProperties));
     }
-    
+
     public class XMLSignatureVerifier extends SignatureVerifier {
-        
+
         public XMLSignatureVerifier(SignatureType signatureType, InboundSecurityContext inboundSecurityContext,
                                     XMLSecurityProperties securityProperties) throws XMLSecurityException {
             super(signatureType, inboundSecurityContext, securityProperties);

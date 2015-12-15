@@ -52,7 +52,7 @@ public class X509SubjectNameResolver extends KeyResolverSpi {
         Element element, String baseURI, StorageResolver storage
     ) throws KeyResolverException {
 
-        X509Certificate cert = 
+        X509Certificate cert =
             this.engineLookupResolveX509Certificate(element, baseURI, storage);
 
         if (cert != null) {
@@ -77,16 +77,16 @@ public class X509SubjectNameResolver extends KeyResolverSpi {
         if (log.isDebugEnabled()) {
             log.debug("Can I resolve " + element.getTagName() + "?");
         }
-        Element[] x509childNodes = null;	   
+        Element[] x509childNodes = null;	
         XMLX509SubjectName x509childObject[] = null;
 
-        if (!XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_X509DATA)) {     
-            if (log.isDebugEnabled()) { 
+        if (!XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_X509DATA)) {
+            if (log.isDebugEnabled()) {
                 log.debug("I can't");
             }
             return null;
         }
-        x509childNodes = 
+        x509childNodes =
             XMLUtils.selectDsNodes(element.getFirstChild(), Constants._TAG_X509SUBJECTNAME);
 
         if (!(x509childNodes != null && x509childNodes.length > 0)) {

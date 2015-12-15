@@ -61,10 +61,10 @@ public class CreatePhaosXMLDSig3Test extends org.junit.Assert {
     @org.junit.Test
     public void test_create_hmac_sha1_exclusive_c14n_comments_detached() throws Exception {
         test_create_hmac_sha1_exclusive_c14n_comments_detached(false);
-    } 
+    }
 
     @org.junit.Test
-    public void test_create_hmac_sha1_40_exclusive_c14n_comments_detached() 
+    public void test_create_hmac_sha1_40_exclusive_c14n_comments_detached()
         throws Exception {
         try {
             test_create_hmac_sha1_exclusive_c14n_comments_detached(true);
@@ -73,9 +73,9 @@ public class CreatePhaosXMLDSig3Test extends org.junit.Assert {
             System.out.println(xse.getMessage());
             // pass
         }
-    } 
+    }
 
-    private void test_create_hmac_sha1_exclusive_c14n_comments_detached(boolean fortyBit) 
+    private void test_create_hmac_sha1_exclusive_c14n_comments_detached(boolean fortyBit)
         throws Exception {
 
         // create reference
@@ -88,12 +88,12 @@ public class CreatePhaosXMLDSig3Test extends org.junit.Assert {
         if (fortyBit) {
             spec = new HMACParameterSpec(40);
         }
-            
+
         SignedInfo si = fac.newSignedInfo(
             fac.newCanonicalizationMethod
-                (CanonicalizationMethod.EXCLUSIVE_WITH_COMMENTS, 
+                (CanonicalizationMethod.EXCLUSIVE_WITH_COMMENTS,
                  (C14NMethodParameterSpec) null),
-            fac.newSignatureMethod(SignatureMethod.HMAC_SHA1, spec), 
+            fac.newSignatureMethod(SignatureMethod.HMAC_SHA1, spec),
             Collections.singletonList(ref));
 
         // create XMLSignature
@@ -128,15 +128,15 @@ public class CreatePhaosXMLDSig3Test extends org.junit.Assert {
         // create reference
         Reference ref = fac.newReference("",
             fac.newDigestMethod(DigestMethod.SHA1, null),
-            Collections.singletonList(fac.newTransform(Transform.ENVELOPED, 
+            Collections.singletonList(fac.newTransform(Transform.ENVELOPED,
             (TransformParameterSpec) null)),
             null, null);
 
         // create SignedInfo
         SignedInfo si = fac.newSignedInfo(
-            fac.newCanonicalizationMethod(CanonicalizationMethod.EXCLUSIVE, 
+            fac.newCanonicalizationMethod(CanonicalizationMethod.EXCLUSIVE,
                 (C14NMethodParameterSpec) null),
-            fac.newSignatureMethod(SignatureMethod.HMAC_SHA1, null), 
+            fac.newSignatureMethod(SignatureMethod.HMAC_SHA1, null),
             Collections.singletonList(ref));
 
         // create XMLSignature

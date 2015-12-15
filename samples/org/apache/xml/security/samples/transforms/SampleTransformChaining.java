@@ -81,7 +81,7 @@ public class SampleTransformChaining {
             + "   </Signature>"
             + "</Class>" + "\n"
             ;
-        
+
         org.apache.xml.security.Init.init();
         javax.xml.parsers.DocumentBuilderFactory dbf =
             javax.xml.parsers.DocumentBuilderFactory.newInstance();
@@ -97,9 +97,9 @@ public class SampleTransformChaining {
         xpath.setNamespaceContext(new DSNamespaceContext());
 
         String expression = "//ds:Transforms[1]";
-        Element transformsElement = 
+        Element transformsElement =
             (Element) xpath.evaluate(expression, doc, XPathConstants.NODE);
-        
+
         Transforms transforms = new Transforms(transformsElement, "memory://");
         XMLSignatureInput input = new XMLSignatureInput(doc);
 
@@ -109,5 +109,5 @@ public class SampleTransformChaining {
         // output result
         System.out.println(new String(result.getBytes()));
     }
-    
+
 }

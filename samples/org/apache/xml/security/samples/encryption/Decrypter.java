@@ -80,7 +80,7 @@ public class Decrypter {
         SecretKeyFactory skf =
              SecretKeyFactory.getInstance(jceAlgorithmName);
         SecretKey key = skf.generateSecret(keySpec);
-         
+
         System.out.println(
             "Key encryption key loaded from " + kekFile.toURI().toURL().toString()
         );

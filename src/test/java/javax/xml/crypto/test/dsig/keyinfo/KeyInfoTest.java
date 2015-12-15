@@ -41,7 +41,7 @@ public class KeyInfoTest extends org.junit.Assert {
 
     private KeyInfoFactory fac;
 
-    public KeyInfoTest() throws Exception { 
+    public KeyInfoTest() throws Exception {
         fac = KeyInfoFactory.getInstance
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
     }
@@ -82,8 +82,8 @@ public class KeyInfoTest extends org.junit.Assert {
             (Collections.singletonList(fac.newKeyName("foo")), id);
         assertEquals(id, ki.getId());
         try {
-            ki = fac.newKeyInfo(null, id); 
-            fail("Should raise a NullPointerException"); 
+            ki = fac.newKeyInfo(null, id);
+            fail("Should raise a NullPointerException");
         } catch (NullPointerException npe) {}
         // test newKeyInfo(List)
         ki = fac.newKeyInfo(Collections.singletonList(fac.newKeyName("foo")));
@@ -94,8 +94,8 @@ public class KeyInfoTest extends org.junit.Assert {
         KeyInfo ki = fac.newKeyInfo
             (Collections.singletonList(fac.newKeyName("foo")), "keyid");
         try {
-            ki.isFeatureSupported(null); 
-            fail("Should raise a NPE for null feature"); 
+            ki.isFeatureSupported(null);
+            fail("Should raise a NPE for null feature");
         } catch (NullPointerException npe) {}
 
         assertTrue(!ki.isFeatureSupported("not supported"));

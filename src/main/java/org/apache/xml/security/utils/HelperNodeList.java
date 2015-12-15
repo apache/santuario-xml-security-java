@@ -35,7 +35,7 @@ public class HelperNodeList implements NodeList {
     boolean allNodesMustHaveSameParent = false;
 
     /**
-     * 
+     *
      */
     public HelperNodeList() {
         this(false);

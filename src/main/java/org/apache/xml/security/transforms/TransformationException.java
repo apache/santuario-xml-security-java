@@ -26,7 +26,7 @@ import org.apache.xml.security.exceptions.XMLSecurityException;
  */
 public class TransformationException extends XMLSecurityException {
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
 
@@ -37,7 +37,7 @@ public class TransformationException extends XMLSecurityException {
     public TransformationException() {
         super();
     }
-    
+
     public TransformationException(Exception ex) {
         super(ex);
     }

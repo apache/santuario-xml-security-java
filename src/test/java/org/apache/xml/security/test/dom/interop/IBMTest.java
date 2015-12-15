@@ -51,11 +51,11 @@ public class IBMTest extends InteropTestBase {
 
     /** Field kentsDir           */
     static final String kentsDir = "data/com/ibm/xss4j-20030127/";
-    
+
     static {
         org.apache.xml.security.Init.init();
     }
-    
+
     private boolean runTests = false;
 
     /**
@@ -330,5 +330,5 @@ public class IBMTest extends InteropTestBase {
     public void _not_active_test_enveloping_exclusive_soaped() throws Exception {
         // exclusive c14n not supported yet
     }
-    
+
 }

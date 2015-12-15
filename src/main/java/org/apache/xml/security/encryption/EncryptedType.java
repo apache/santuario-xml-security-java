@@ -46,7 +46,7 @@ import org.apache.xml.security.keys.KeyInfo;
  * @author Axl Mattheus
  */
 public interface EncryptedType {
-    
+
     /**
      * Returns a <code>String</code> providing for the standard method of
      * assigning an id to the element within the document context.

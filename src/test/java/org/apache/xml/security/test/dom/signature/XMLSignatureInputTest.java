@@ -78,7 +78,7 @@ public class XMLSignatureInputTest extends org.junit.Assert {
     // added one for xmlns:xml since Xalan 2.2.D11
     static final int _nodeSetInput3Nodes = 11; // was 10
     static final int _nodeSetInput3NodesWithComments = _nodeSetInput3Nodes + 1;
-    
+
     static {
         org.apache.xml.security.Init.init();
     }

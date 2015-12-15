@@ -41,13 +41,13 @@ import org.apache.xml.security.stax.impl.util.IDGenerator;
  * An OutputProcessor for XML Signature.
  */
 public class XMLSignatureOutputProcessor extends AbstractSignatureOutputProcessor {
-    
+
     private static final transient Logger log = LoggerFactory.getLogger(XMLSignatureOutputProcessor.class);
 
     public XMLSignatureOutputProcessor() throws XMLSecurityException {
         super();
     }
-    
+
     @Override
     public void init(OutputProcessorChain outputProcessorChain) throws XMLSecurityException {
         super.init(outputProcessorChain);

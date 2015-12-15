@@ -98,8 +98,8 @@ public class XPath2FilterContainer04 extends ElementProxy implements TransformPa
 
         String filterStr = getLocalAttribute(XPath2FilterContainer04._ATT_FILTER);
 
-        if (!filterStr.equals(XPath2FilterContainer04._ATT_FILTER_VALUE_INTERSECT) 
-            && !filterStr.equals(XPath2FilterContainer04._ATT_FILTER_VALUE_SUBTRACT) 
+        if (!filterStr.equals(XPath2FilterContainer04._ATT_FILTER_VALUE_INTERSECT)
+            && !filterStr.equals(XPath2FilterContainer04._ATT_FILTER_VALUE_SUBTRACT)
             && !filterStr.equals(XPath2FilterContainer04._ATT_FILTER_VALUE_UNION)) {
             Object exArgs[] = { XPath2FilterContainer04._ATT_FILTER, filterStr,
                                 XPath2FilterContainer04._ATT_FILTER_VALUE_INTERSECT

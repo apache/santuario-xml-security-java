@@ -41,7 +41,7 @@ import org.w3c.dom.Node;
  * @author Sean Mullan
  */
 public final class DOMXMLObject extends BaseStructure implements XMLObject {
- 
+
     private final String id;
     private final String mimeType;
     private final String encoding;
@@ -123,7 +123,7 @@ public final class DOMXMLObject extends BaseStructure implements XMLObject {
             }
             firstChild = firstChild.getNextSibling();
         }
-                
+
         // Here we capture namespace declarations, so that when they're marshalled back
         // out, we can make copies of them. Note that attributes are NOT captured.
         NamedNodeMap nnm = objElem.getAttributes();
@@ -133,7 +133,7 @@ public final class DOMXMLObject extends BaseStructure implements XMLObject {
                 newContent.add(new javax.xml.crypto.dom.DOMStructure(nsDecl));
             }
         }
-        
+
         if (newContent.isEmpty()) {
             this.content = Collections.emptyList();
         } else {
@@ -178,7 +178,7 @@ public final class DOMXMLObject extends BaseStructure implements XMLObject {
         }
         xwriter.writeEndElement(); // "Object"
     }
-            
+
     @SuppressWarnings("unchecked")
     public static List<XMLStructure> getXmlObjectContent(XMLObject xo) {
         return xo.getContent();
@@ -204,7 +204,7 @@ public final class DOMXMLObject extends BaseStructure implements XMLObject {
             mimeType == null ? oxo.getMimeType() == null
                               : mimeType.equals(oxo.getMimeType());
 
-        return idsEqual && encodingsEqual && mimeTypesEqual && 
+        return idsEqual && encodingsEqual && mimeTypesEqual &&
                 equalsContent(getXmlObjectContent(oxo));
     }
 

@@ -22,7 +22,7 @@ import java.io.InputStream;
 
 /**
  * A specialized {@link InputStream } for reading the contents of a byte array.
- * 
+ *
  * @see UnsynchronizedByteArrayOutputStream
  */
 public class UnsynchronizedByteArrayInputStream extends InputStream {
@@ -51,7 +51,7 @@ public class UnsynchronizedByteArrayInputStream extends InputStream {
     /**
      * Constructs a new {@code ByteArrayInputStream} on the byte array
      * {@code buf}.
-     * 
+     *
      * @param buf
      *            the byte array to stream over.
      */
@@ -65,7 +65,7 @@ public class UnsynchronizedByteArrayInputStream extends InputStream {
      * Constructs a new {@code ByteArrayInputStream} on the byte array
      * {@code buf} with the initial position set to {@code offset} and the
      * number of bytes available set to {@code offset} + {@code length}.
-     * 
+     *
      * @param buf
      *            the byte array to stream over.
      * @param offset
@@ -84,7 +84,7 @@ public class UnsynchronizedByteArrayInputStream extends InputStream {
      * Returns the number of bytes that are available before this stream will
      * block. This method returns the number of bytes yet to be read from the
      * source byte array.
-     * 
+     *
      * @return the number of bytes available before blocking.
      */
     @Override
@@ -94,7 +94,7 @@ public class UnsynchronizedByteArrayInputStream extends InputStream {
 
     /**
      * Closes this stream and frees resources associated with this stream.
-     * 
+     *
      * @throws IOException
      *             if an I/O error occurs while closing this stream.
      */
@@ -107,7 +107,7 @@ public class UnsynchronizedByteArrayInputStream extends InputStream {
      * Sets a mark position in this ByteArrayInputStream. The parameter
      * {@code readlimit} is ignored. Sending {@code reset()} will reposition the
      * stream back to the marked position.
-     * 
+     *
      * @param readlimit
      *            ignored.
      * @see #markSupported()
@@ -122,7 +122,7 @@ public class UnsynchronizedByteArrayInputStream extends InputStream {
      * Indicates whether this stream supports the {@code mark()} and
      * {@code reset()} methods. Returns {@code true} since this class supports
      * these methods.
-     * 
+     *
      * @return always {@code true}.
      * @see #mark(int)
      * @see #reset()
@@ -136,7 +136,7 @@ public class UnsynchronizedByteArrayInputStream extends InputStream {
      * Reads a single byte from the source byte array and returns it as an
      * integer in the range from 0 to 255. Returns -1 if the end of the source
      * array has been reached.
-     * 
+     *
      * @return the byte read or -1 if the end of this stream has been reached.
      */
     @Override
@@ -148,7 +148,7 @@ public class UnsynchronizedByteArrayInputStream extends InputStream {
      * Reads at most {@code len} bytes from this stream and stores
      * them in byte array {@code b} starting at {@code offset}. This
      * implementation reads bytes from the source byte array.
-     * 
+     *
      * @param b
      *            the byte array in which to store the bytes read.
      * @param offset
@@ -206,7 +206,7 @@ public class UnsynchronizedByteArrayInputStream extends InputStream {
      * {@code read()}s will not return these bytes unless {@code reset()} is
      * used. This implementation skips {@code count} number of bytes in the
      * target stream. It does nothing and returns 0 if {@code n} is negative.
-     * 
+     *
      * @param n
      *            the number of bytes to skip.
      * @return the number of bytes actually skipped.

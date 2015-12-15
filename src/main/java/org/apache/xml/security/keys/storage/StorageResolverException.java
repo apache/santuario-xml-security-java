@@ -24,7 +24,7 @@ import org.apache.xml.security.exceptions.XMLSecurityException;
 public class StorageResolverException extends XMLSecurityException {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
 
@@ -35,7 +35,7 @@ public class StorageResolverException extends XMLSecurityException {
     public StorageResolverException() {
         super();
     }
-    
+
     public StorageResolverException(Exception ex) {
         super(ex);
     }

@@ -39,14 +39,14 @@ public class KeySelectorTest extends org.junit.Assert {
 
     private class MyOwnKey implements Key {
         private static final long serialVersionUID = -3288147894137347920L;
-        
+
         private String algo;
         private byte[] val;
         MyOwnKey(String algorithm, byte[] value) {
             algo = algorithm;
             val = value.clone();
         }
-        
+
         public String getAlgorithm() {
             return algo;
         }
@@ -74,9 +74,9 @@ public class KeySelectorTest extends org.junit.Assert {
         // X509IssuerSerial objects, etc?
         XMLSignatureFactory dsigFac = XMLSignatureFactory.getInstance
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
-        SignatureMethod sm1 = 
+        SignatureMethod sm1 =
             dsigFac.newSignatureMethod(SignatureMethod.DSA_SHA1, null);
-        SignatureMethod sm2 = 
+        SignatureMethod sm2 =
             dsigFac.newSignatureMethod(SignatureMethod.RSA_SHA1, null);
 
         assertTrue(compareKey(key, selector1.select
@@ -84,7 +84,7 @@ public class KeySelectorTest extends org.junit.Assert {
         assertTrue(compareKey(key, selector1.select
             (info, KeySelector.Purpose.VERIFY, sm2, null).getKey()));
     }
-    
+
     private static boolean compareKey(Object answer, Key key) {
         boolean result = false;
         if (answer instanceof MyOwnKey) {

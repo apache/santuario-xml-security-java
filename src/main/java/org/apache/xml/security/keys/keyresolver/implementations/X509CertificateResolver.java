@@ -54,7 +54,7 @@ public class X509CertificateResolver extends KeyResolverSpi {
         Element element, String baseURI, StorageResolver storage
     ) throws KeyResolverException {
 
-        X509Certificate cert = 
+        X509Certificate cert =
             this.engineLookupResolveX509Certificate(element, baseURI, storage);
 
         if (cert != null) {
@@ -78,15 +78,15 @@ public class X509CertificateResolver extends KeyResolverSpi {
     ) throws KeyResolverException {
 
         try {
-            Element[] els = 
+            Element[] els =
                 XMLUtils.selectDsNodes(element.getFirstChild(), Constants._TAG_X509CERTIFICATE);
-            if (els == null || els.length == 0) {  
+            if (els == null || els.length == 0) {
                 Element el =
                     XMLUtils.selectDsNode(element.getFirstChild(), Constants._TAG_X509DATA, 0);
                 if (el != null) {
                     return engineLookupResolveX509Certificate(el, baseURI, storage);
-                }        	 
-                return null;            
+                }        	
+                return null;
             }
 
             // populate Object array

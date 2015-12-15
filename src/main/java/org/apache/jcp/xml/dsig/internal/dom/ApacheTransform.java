@@ -60,7 +60,7 @@ public abstract class ApacheTransform extends TransformService {
     protected Document ownerDoc;
     protected Element transformElem;
     protected TransformParameterSpec params;
-    
+
     @Override
     public final AlgorithmParameterSpec getParameterSpec() {
         return params;

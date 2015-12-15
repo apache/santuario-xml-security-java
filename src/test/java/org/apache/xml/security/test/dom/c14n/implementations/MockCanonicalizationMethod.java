@@ -41,7 +41,7 @@ public class MockCanonicalizationMethod extends CanonicalizerSpi {
         return _impl.engineCanonicalizeSubTree(rootNode);
     }
 
-    public byte[] engineCanonicalizeSubTree(Node rootNode, String inclusiveNamespaces) 
+    public byte[] engineCanonicalizeSubTree(Node rootNode, String inclusiveNamespaces)
         throws CanonicalizationException {
         return _impl.engineCanonicalizeSubTree(rootNode, inclusiveNamespaces);
     }
@@ -56,7 +56,7 @@ public class MockCanonicalizationMethod extends CanonicalizerSpi {
         return _impl.engineCanonicalizeXPathNodeSet(xpathNodeSet);
     }
 
-    public byte[] engineCanonicalizeXPathNodeSet(Set<Node> xpathNodeSet, String inclusiveNamespaces) 
+    public byte[] engineCanonicalizeXPathNodeSet(Set<Node> xpathNodeSet, String inclusiveNamespaces)
         throws CanonicalizationException {
         return _impl.engineCanonicalizeXPathNodeSet(xpathNodeSet, inclusiveNamespaces);
     }

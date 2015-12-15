@@ -85,16 +85,16 @@ import org.xml.sax.SAXException;
  * @author Valerie Peng
  */
 public class TestUtils {
-    
-    private static final String DSA_Y = 
+
+    private static final String DSA_Y =
         "07066284216756577193658833512863439617178933165631848358445549382240081120085333137303066923542492834619027404463194956043802393462371310375123430985057160";
-    private static final String DSA_P = 
+    private static final String DSA_P =
         "013232376895198612407547930718267435757728527029623408872245156039757713029036368719146452186041204237350521785240337048752071462798273003935646236777459223";
-    private static final String DSA_Q = 
+    private static final String DSA_Q =
         "0857393771208094202104259627990318636601332086981";
-    private static final String DSA_G = 
+    private static final String DSA_G =
         "05421644057436475141609648488325705128047428394380474376834667300766108262613900542681289080713724597310673074119355136085795982097390670890367185141189796";
-    private static final String DSA_X = 
+    private static final String DSA_X =
         "0527140396812450214498055937934275626078768840117";
     private static final String DSA_2048_Y =
         "15119007057343785981993995134621348945077524760182795513668325877793414638620983617627033248732235626178802906346261435991040697338468329634416089753032362617771631199351767336660070462291411472735835843440140283101463231807789628656218830720378705090795271104661936237385140354825159080766174663596286149653433914842868551355716015585570827642835307073681358328172009941968323702291677280809277843998510864653406122348712345584706761165794179850728091522094227603562280855104749858249588234915206290448353957550635709520273178475097150818955098638774564910092913714625772708285992586894795017709678223469405896699928";
@@ -106,14 +106,14 @@ public class TestUtils {
         "2859278237642201956931085611015389087970918161297522023542900348087718063098423976428252369340967506010054236052095950169272612831491902295835660747775572934757474194739347115870723217560530672532404847508798651915566434553729839971841903983916294692452760249019857108409189016993380919900231322610083060784269299257074905043636029708121288037909739559605347853174853410208334242027740275688698461842637641566056165699733710043802697192696426360843173620679214131951400148855611740858610821913573088059404459364892373027492936037789337011875710759208498486908611261954026964574111219599568903257472567764789616958430";
     private static final String DSA_2048_X =
         "14562787764977288900757387442281559936279834964901963465277698843172";
-    private static final String RSA_MOD = 
+    private static final String RSA_MOD =
         "010800185049102889923150759252557522305032794699952150943573164381936603255999071981574575044810461362008102247767482738822150129277490998033971789476107463";
     private static final String RSA_PUB = "065537";
-    private static final String RSA_PRIV = 
+    private static final String RSA_PRIV =
         "0161169735844219697954459962296126719476357984292128166117072108359155865913405986839960884870654387514883422519600695753920562880636800379454345804879553";
 
     private TestUtils() {}
-    
+
     public static PublicKey getPublicKey(String algo)
         throws InvalidKeySpecException, NoSuchAlgorithmException {
         if (algo.equalsIgnoreCase("DSA")) {
@@ -122,26 +122,26 @@ public class TestUtils {
             return getPublicKey("RSA", 512);
         } else throw new RuntimeException("Unsupported key algorithm " + algo);
     }
-        
+
     public static PublicKey getPublicKey(String algo, int keysize)
         throws InvalidKeySpecException, NoSuchAlgorithmException {
         KeyFactory kf = KeyFactory.getInstance(algo);
         KeySpec kspec;
         if (algo.equalsIgnoreCase("DSA")) {
             if (keysize == 1024) {
-                kspec = new DSAPublicKeySpec(new BigInteger(DSA_Y), 
-                                             new BigInteger(DSA_P), 
-                                             new BigInteger(DSA_Q), 
+                kspec = new DSAPublicKeySpec(new BigInteger(DSA_Y),
+                                             new BigInteger(DSA_P),
+                                             new BigInteger(DSA_Q),
                                              new BigInteger(DSA_G));
             } else if (keysize == 2048) {
-                kspec = new DSAPublicKeySpec(new BigInteger(DSA_2048_Y), 
-                                             new BigInteger(DSA_2048_P), 
-                                             new BigInteger(DSA_2048_Q), 
+                kspec = new DSAPublicKeySpec(new BigInteger(DSA_2048_Y),
+                                             new BigInteger(DSA_2048_P),
+                                             new BigInteger(DSA_2048_Q),
                                              new BigInteger(DSA_2048_G));
             } else throw new RuntimeException("Unsupported keysize:" + keysize);
         } else if (algo.equalsIgnoreCase("RSA")) {
             if (keysize == 512) {
-                kspec = new RSAPublicKeySpec(new BigInteger(RSA_MOD), 
+                kspec = new RSAPublicKeySpec(new BigInteger(RSA_MOD),
                                              new BigInteger(RSA_PUB));
             } else throw new RuntimeException("Unsupported keysize:" + keysize);
         } else throw new RuntimeException("Unsupported key algorithm " + algo);
@@ -155,7 +155,7 @@ public class TestUtils {
         DOMSource source = new DOMSource(toValidate);
         validator.validate(source);
     }
-    
+
     public static PrivateKey getPrivateKey(String algo)
         throws InvalidKeySpecException, NoSuchAlgorithmException {
         if (algo.equalsIgnoreCase("DSA")) {
@@ -165,18 +165,18 @@ public class TestUtils {
         } else throw new RuntimeException("Unsupported key algorithm " + algo);
     }
 
-    public static PrivateKey getPrivateKey(String algo, int keysize) 
+    public static PrivateKey getPrivateKey(String algo, int keysize)
         throws InvalidKeySpecException, NoSuchAlgorithmException {
         KeyFactory kf = KeyFactory.getInstance(algo);
         KeySpec kspec;
         if (algo.equalsIgnoreCase("DSA")) {
             if (keysize == 1024) {
                 kspec = new DSAPrivateKeySpec
-                    (new BigInteger(DSA_X), new BigInteger(DSA_P), 
+                    (new BigInteger(DSA_X), new BigInteger(DSA_P),
                      new BigInteger(DSA_Q), new BigInteger(DSA_G));
             } else if (keysize == 2048) {
                 kspec = new DSAPrivateKeySpec
-                    (new BigInteger(DSA_2048_X), new BigInteger(DSA_2048_P), 
+                    (new BigInteger(DSA_2048_X), new BigInteger(DSA_2048_P),
                      new BigInteger(DSA_2048_Q), new BigInteger(DSA_2048_G));
             } else throw new RuntimeException("Unsupported keysize:" + keysize);
         } else if (algo.equalsIgnoreCase("RSA")) {
@@ -191,13 +191,13 @@ public class TestUtils {
     public static SecretKey getSecretKey(final byte[] secret) {
         return new SecretKey() {
             private static final long serialVersionUID = 5629454124145851381L;
-            
+
             public String getFormat()	{ return "RAW"; }
             public byte[] getEncoded()	{ return secret; }
             public String getAlgorithm(){ return "SECRET"; }
         };
     }
-    
+
     public static Document newDocument() {
         try {
             DocumentBuilder docBuilder = XMLUtils.createDocumentBuilder(false);
@@ -208,16 +208,16 @@ public class TestUtils {
     }
 
     public static class MyOwnC14nParameterSpec implements C14NMethodParameterSpec {}
-    
-    public static class MyOwnDigestMethodParameterSpec 
+
+    public static class MyOwnDigestMethodParameterSpec
         implements DigestMethodParameterSpec {}
-    
-    public static class MyOwnSignatureMethodParameterSpec 
+
+    public static class MyOwnSignatureMethodParameterSpec
         implements SignatureMethodParameterSpec {}
 
-    public static XMLValidateContext getXMLValidateContext(String type, 
-                                                       File input, 
-                                                       String tag) 
+    public static XMLValidateContext getXMLValidateContext(String type,
+                                                       File input,
+                                                       String tag)
         throws Exception {
         if (type.equalsIgnoreCase("dom")) {
             DocumentBuilder docBuilder = XMLUtils.createDocumentBuilder(false, false);
@@ -232,12 +232,12 @@ public class TestUtils {
                     (TestUtils.getPublicKey("RSA", 512), list.item(0));
             }
         } else {
-            throw new Exception("Unsupported XMLValidateContext type: " + 
+            throw new Exception("Unsupported XMLValidateContext type: " +
                                 type);
         }
     }
 
-    public static class MyOwnDOMReference extends DOMStructure 
+    public static class MyOwnDOMReference extends DOMStructure
         implements Reference {
         private String id;
         private boolean status;
@@ -251,13 +251,13 @@ public class TestUtils {
                 MD = MessageDigest.getInstance("SHA");
                 XMLSignatureFactory factory = XMLSignatureFactory.getInstance
                     ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
-                DIG_METHOD = 
+                DIG_METHOD =
                     factory.newDigestMethod(DigestMethod.SHA1, null);
             } catch (Exception ex) {
                 // should never be thrown
             }
         }
-        
+
         public MyOwnDOMReference(String id, boolean status) {
             super(newDocument());
             this.id = id;
@@ -275,48 +275,48 @@ public class TestUtils {
             }
             return digest;
         }
-        
+
         public byte[] getCalculatedDigestValue() {
             return null;
         }
-        
+
         public DigestMethod getDigestMethod() { return DIG_METHOD; }
-        
+
         public String getId() {
             return id;
         }
-        
+
         public String getType() {
             return null;
         }
-        
+
         public String getURI() {
             return null;
         }
-        
+
         public List<Transform> getTransforms() {
             return Collections.emptyList();
         }
-        
-        public boolean validate(XMLValidateContext vCtx) 
+
+        public boolean validate(XMLValidateContext vCtx)
             throws XMLSignatureException {
             this.dis = new ByteArrayInputStream(id.getBytes());
             this.derefData = new OctetStreamData(this.dis);
             return status;
         }
-        
+
         public Data getDereferencedData() {
             return derefData;
-        }       
-        
+        }
+
         public InputStream getDigestInputStream() {
             return dis;
         }
     }
 
     public static class MyOwnXMLStructure implements XMLStructure {
-        
-        public boolean isFeatureSupported(String feature) 
+
+        public boolean isFeatureSupported(String feature)
             throws NullPointerException {
             if (feature == null) throw new NullPointerException();
             return false;
@@ -324,21 +324,21 @@ public class TestUtils {
     }
 
     public static class OctetStreamURIDereferencer implements URIDereferencer {
-        
+
         private byte[] data = null;
-        
+
         public OctetStreamURIDereferencer(byte[] in) {
             data = (byte[]) in.clone();
         }
-        
+
         public Data dereference(URIReference ref, XMLCryptoContext ctxt) {
             return new OctetStreamData(new ByteArrayInputStream(data));
         }
-        
+
         public byte[] getData() {
             return data;
         }
-        
+
         public boolean equals(Object obj) {
             if (obj instanceof OctetStreamURIDereferencer) {
                 return Arrays.equals
@@ -347,20 +347,20 @@ public class TestUtils {
                 return false;
             }
         }
-        
+
         public int hashCode() {
             return 5678;
         }
     }
 
     public static class NodeSetURIDereferencer implements URIDereferencer {
-        
+
         private Node data = null;
-        
+
         public NodeSetURIDereferencer(Node node) {
             data = node;
         }
-        
+
         public Data dereference(URIReference ref, XMLCryptoContext ctxt) {
             return new NodeSetData() {
                 public Iterator<Node> iterator() {
@@ -378,5 +378,5 @@ public class TestUtils {
         trans.setOutputProperty(OutputKeys.INDENT, "yes");
         trans.transform(source, result);
     }
-    
+
 }

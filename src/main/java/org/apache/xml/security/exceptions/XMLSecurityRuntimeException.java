@@ -56,7 +56,7 @@ import org.apache.xml.security.utils.I18n;
  * @author Christian Geuer-Pollmann
  */
 public class XMLSecurityRuntimeException extends RuntimeException {
-    
+
     private static final long serialVersionUID = 1L;
 
     /** Field msgID */
@@ -141,8 +141,8 @@ public class XMLSecurityRuntimeException extends RuntimeException {
     public String getMsgID() {
         if (msgID == null) {
             return "Missing message ID";
-        } 
-        return msgID;      
+        }
+        return msgID;
     }
 
     /** @inheritDoc */
@@ -174,5 +174,5 @@ public class XMLSecurityRuntimeException extends RuntimeException {
         }
         return null;
     }
-    
+
 }

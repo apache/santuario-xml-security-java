@@ -103,8 +103,8 @@ public class XPath2FilterContainer extends ElementProxy implements TransformPara
 
         String filterStr = getLocalAttribute(XPath2FilterContainer._ATT_FILTER);
 
-        if (!filterStr.equals(XPath2FilterContainer._ATT_FILTER_VALUE_INTERSECT) 
-            && !filterStr.equals(XPath2FilterContainer._ATT_FILTER_VALUE_SUBTRACT) 
+        if (!filterStr.equals(XPath2FilterContainer._ATT_FILTER_VALUE_INTERSECT)
+            && !filterStr.equals(XPath2FilterContainer._ATT_FILTER_VALUE_SUBTRACT)
             && !filterStr.equals(XPath2FilterContainer._ATT_FILTER_VALUE_UNION)) {
             Object exArgs[] = { XPath2FilterContainer._ATT_FILTER, filterStr,
                                 XPath2FilterContainer._ATT_FILTER_VALUE_INTERSECT
@@ -171,8 +171,8 @@ public class XPath2FilterContainer extends ElementProxy implements TransformPara
             String type = params[i][0];
             String xpath = params[i][1];
 
-            if (!(type.equals(XPath2FilterContainer._ATT_FILTER_VALUE_INTERSECT) 
-                || type.equals(XPath2FilterContainer._ATT_FILTER_VALUE_SUBTRACT) 
+            if (!(type.equals(XPath2FilterContainer._ATT_FILTER_VALUE_INTERSECT)
+                || type.equals(XPath2FilterContainer._ATT_FILTER_VALUE_SUBTRACT)
                 || type.equals(XPath2FilterContainer._ATT_FILTER_VALUE_UNION))) {
                 throw new IllegalArgumentException("The type(" + i + ")=\"" + type
                                                    + "\" is illegal");

@@ -35,7 +35,7 @@ public class X509IssuerSerialTest extends org.junit.Assert {
     private KeyInfoFactory fac;
     private String name;
 
-    public X509IssuerSerialTest() throws Exception { 
+    public X509IssuerSerialTest() throws Exception {
         fac = KeyInfoFactory.getInstance
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
         name = "CN = Wolfgang";
@@ -72,7 +72,7 @@ public class X509IssuerSerialTest extends org.junit.Assert {
         try {
             fac.newX509IssuerSerial(badName,BigInteger.ONE);
             fail("Should raise an IllegalArgumentException when issuer " +
-                "distinguished name does not conform to RFC 2253"); 
+                "distinguished name does not conform to RFC 2253");
         } catch (IllegalArgumentException e) {
             // success
         }
@@ -80,13 +80,13 @@ public class X509IssuerSerialTest extends org.junit.Assert {
 
     @org.junit.Test
     public void testisFeatureSupported() {
-        
+
         X509IssuerSerial x509is = fac.newX509IssuerSerial(name, BigInteger.ONE);
         try {
-            x509is.isFeatureSupported(null); 
-            fail("Should raise a NPE for null feature"); 
+            x509is.isFeatureSupported(null);
+            fail("Should raise a NPE for null feature");
         } catch (NullPointerException npe) {}
-        
+
         assertTrue(!x509is.isFeatureSupported("not supported"));
     }
 }

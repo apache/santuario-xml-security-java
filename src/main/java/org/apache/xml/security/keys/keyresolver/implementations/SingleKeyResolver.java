@@ -99,7 +99,7 @@ public class SingleKeyResolver extends KeyResolverSpi {
             log.debug("Can I resolve " + element.getTagName() + "?");
         }
 
-        if (publicKey != null 
+        if (publicKey != null
             && XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_KEYNAME)) {
             String name = element.getFirstChild().getNodeValue();
             if (keyName.equals(name)) {

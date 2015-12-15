@@ -66,7 +66,7 @@ public class HMACSignatureAlgorithmTest extends org.junit.Assert {
 
     public HMACSignatureAlgorithmTest() throws Exception {
         //
-        // If the BouncyCastle provider is not installed, then try to load it 
+        // If the BouncyCastle provider is not installed, then try to load it
         // via reflection.
         //
         if (Security.getProvider("BC") == null) {
@@ -83,23 +83,23 @@ public class HMACSignatureAlgorithmTest extends org.junit.Assert {
                 bcInstalled = true;
             }
         }
-        
+
         db = XMLUtils.createDocumentBuilder(false);
         // create common objects
         fac = XMLSignatureFactory.getInstance("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
         withoutComments = fac.newCanonicalizationMethod
             (CanonicalizationMethod.INCLUSIVE, (C14NMethodParameterSpec) null);
-        
+
         // Digest Methods
         sha1 = fac.newDigestMethod(DigestMethod.SHA1, null);
-        
+
         hmacSha1 = fac.newSignatureMethod("http://www.w3.org/2000/09/xmldsig#hmac-sha1", null);
         hmacSha224 = fac.newSignatureMethod("http://www.w3.org/2001/04/xmldsig-more#hmac-sha224", null);
         hmacSha256 = fac.newSignatureMethod("http://www.w3.org/2001/04/xmldsig-more#hmac-sha256", null);
         hmacSha384 = fac.newSignatureMethod("http://www.w3.org/2001/04/xmldsig-more#hmac-sha384", null);
         hmacSha512 = fac.newSignatureMethod("http://www.w3.org/2001/04/xmldsig-more#hmac-sha512", null);
         ripemd160 = fac.newSignatureMethod("http://www.w3.org/2001/04/xmldsig-more#hmac-ripemd160", null);
-        
+
         sks = new KeySelectors.SecretKeySelector("testkey".getBytes("ASCII"));
     }
 
@@ -113,31 +113,31 @@ public class HMACSignatureAlgorithmTest extends org.junit.Assert {
         test_create_signature_enveloping(hmacSha1, sha1, null,
                                          TestUtils.getSecretKey("testkey".getBytes("ASCII")), sks);
     }
-  
+
     @org.junit.Test
     public void testHMACSHA_224() throws Exception {
         test_create_signature_enveloping(hmacSha224, sha1, null,
                                          TestUtils.getSecretKey("testkey".getBytes("ASCII")), sks);
     }
-    
+
     @org.junit.Test
     public void testHMACSHA_256() throws Exception {
         test_create_signature_enveloping(hmacSha256, sha1, null,
                                          TestUtils.getSecretKey("testkey".getBytes("ASCII")), sks);
     }
-    
+
     @org.junit.Test
     public void testHMACSHA_384() throws Exception {
         test_create_signature_enveloping(hmacSha384, sha1, null,
                                          TestUtils.getSecretKey("testkey".getBytes("ASCII")), sks);
     }
-    
+
     @org.junit.Test
     public void testHMACSHA_512() throws Exception {
         test_create_signature_enveloping(hmacSha512, sha1, null,
                                          TestUtils.getSecretKey("testkey".getBytes("ASCII")), sks);
     }
-  
+
     @org.junit.Test
     public void testHMACRIPEMD160() throws Exception {
         if (!bcInstalled) {
@@ -146,7 +146,7 @@ public class HMACSignatureAlgorithmTest extends org.junit.Assert {
         test_create_signature_enveloping(ripemd160, sha1, null,
                                          TestUtils.getSecretKey("testkey".getBytes("ASCII")), sks);
     }
-    
+
     private void test_create_signature_enveloping(
         SignatureMethod sm, DigestMethod dm, KeyInfo ki, Key signingKey, KeySelector ks
     ) throws Exception {
@@ -176,7 +176,7 @@ public class HMACSignatureAlgorithmTest extends org.junit.Assert {
 
         sig.sign(dsc);
         TestUtils.validateSecurityOrEncryptionElement(doc.getDocumentElement());
-        
+
         // XMLUtils.outputDOM(doc.getDocumentElement(), System.out);
 
         DOMValidateContext dvc = new DOMValidateContext

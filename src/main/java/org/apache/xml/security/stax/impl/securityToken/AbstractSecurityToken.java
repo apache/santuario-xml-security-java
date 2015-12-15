@@ -44,10 +44,10 @@ public abstract class AbstractSecurityToken implements SecurityToken {
     private X509Certificate[] x509Certificates;
     private boolean asymmetric = false;
     private String sha1Identifier;
-    
+
     protected final Map<String, Key> keyTable = new Hashtable<String, Key>();
     protected final List<SecurityTokenConstants.TokenUsage> tokenUsages = new ArrayList<SecurityTokenConstants.TokenUsage>();
-    
+
     public AbstractSecurityToken(String id) {
         if (id == null || id.isEmpty()) {
             throw new IllegalArgumentException("No id specified");
@@ -61,7 +61,7 @@ public abstract class AbstractSecurityToken implements SecurityToken {
     public String getId() {
         return this.id;
     }
-    
+
     protected void setAsymmetric(boolean asymmetric) {
         this.asymmetric = asymmetric;
     }
@@ -113,7 +113,7 @@ public abstract class AbstractSecurityToken implements SecurityToken {
     public X509Certificate[] getX509Certificates() throws XMLSecurityException {
         return x509Certificates;
     }
-    
+
     @Override
     public void addTokenUsage(TokenUsage tokenUsage) throws XMLSecurityException {
         tokenUsages.add(tokenUsage);

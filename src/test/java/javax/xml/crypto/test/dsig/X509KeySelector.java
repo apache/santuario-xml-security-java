@@ -48,8 +48,8 @@ import org.apache.jcp.xml.dsig.internal.dom.DOMRetrievalMethod;
  *
  * <p>This <code>KeySelector</code> uses the specified <code>KeyStore</code>
  * to find a trusted <code>X509Certificate</code> that matches information
- * specified in the {@link KeyInfo} passed to the {@link #select} method. 
- * The public key from the first match is returned. If no match, 
+ * specified in the {@link KeyInfo} passed to the {@link #select} method.
+ * The public key from the first match is returned. If no match,
  * <code>null</code> is returned. See the <code>select</code> method for more
  * information.
  *
@@ -69,14 +69,14 @@ public class X509KeySelector extends KeySelector {
      *
      * @param keyStore the keystore
      * @throws KeyStoreException if the keystore has not been initialized
-     * @throws NullPointerException if <code>keyStore</code> is 
+     * @throws NullPointerException if <code>keyStore</code> is
      *    <code>null</code>
      */
     public X509KeySelector(KeyStore keyStore) throws KeyStoreException {
         this(keyStore, true);
     }
 
-    public X509KeySelector(KeyStore keyStore, boolean trusted) 
+    public X509KeySelector(KeyStore keyStore, boolean trusted)
         throws KeyStoreException {
         if (keyStore == null) {
             throw new NullPointerException("keyStore is null");
@@ -92,22 +92,22 @@ public class X509KeySelector extends KeySelector {
      *
      * <p>This method compares data contained in {@link KeyInfo} entries
      * with information stored in the <code>KeyStore</code>. The implementation
-     * iterates over the KeyInfo types and returns the first {@link PublicKey} 
-     * of an X509Certificate in the keystore that is compatible with the 
-     * specified AlgorithmMethod according to the following rules for each 
+     * iterates over the KeyInfo types and returns the first {@link PublicKey}
+     * of an X509Certificate in the keystore that is compatible with the
+     * specified AlgorithmMethod according to the following rules for each
      * keyinfo type:
      *
      * X509Data X509Certificate: if it contains a <code>KeyUsage</code>
-     *   extension that asserts the <code>digitalSignature</code> bit and 
+     *   extension that asserts the <code>digitalSignature</code> bit and
      *   matches an <code>X509Certificate</code> in the <code>KeyStore</code>.
-     * X509Data X509IssuerSerial: if the serial number and issuer DN match an 
+     * X509Data X509IssuerSerial: if the serial number and issuer DN match an
      *    <code>X509Certificate</code> in the <code>KeyStore</code>.
-     * X509Data X509SubjectName: if the subject DN matches an 
+     * X509Data X509SubjectName: if the subject DN matches an
      *    <code>X509Certificate</code> in the <code>KeyStore</code>.
-     * X509Data X509SKI: if the subject key identifier matches an 
+     * X509Data X509SKI: if the subject key identifier matches an
      *    <code>X509Certificate</code> in the <code>KeyStore</code>.
      * KeyName: if the keyname matches an alias in the <code>KeyStore</code>.
-     * RetrievalMethod: supports rawX509Certificate and X509Data types. If 
+     * RetrievalMethod: supports rawX509Certificate and X509Data types. If
      *    rawX509Certificate type, it must match an <code>X509Certificate</code>
      *    in the <code>KeyStore</code>.
      *
@@ -128,7 +128,7 @@ public class X509KeySelector extends KeySelector {
      * @throws ClassCastException if the data type of <code>method</code>
      *    is not supported by this key selector
      */
-    public KeySelectorResult select(KeyInfo keyInfo, 
+    public KeySelectorResult select(KeyInfo keyInfo,
         KeySelector.Purpose purpose, AlgorithmMethod method,
         XMLCryptoContext context) throws KeySelectorException {
 
@@ -167,11 +167,11 @@ public class X509KeySelector extends KeySelector {
                         KeySelectorResult ksr = null;
                         if (rm.getType().equals
                             (X509Data.RAW_X509_CERTIFICATE_TYPE)) {
-                            OctetStreamData data = (OctetStreamData) 
+                            OctetStreamData data = (OctetStreamData)
                                 rm.dereference(context);
-                            CertificateFactory cf = 
+                            CertificateFactory cf =
                                 CertificateFactory.getInstance("X.509");
-                            X509Certificate cert = (X509Certificate) 
+                            X509Certificate cert = (X509Certificate)
                                 cf.generateCertificate(data.getOctetStream());
                             ksr = certSelect(cert, sm);
                         } else if (rm.getType().equals(X509Data.TYPE)) {
@@ -206,7 +206,7 @@ public class X509KeySelector extends KeySelector {
      * @return a KeySelectorResult containing the cert's public key if there
      *   is a match; otherwise null
      */
-    private KeySelectorResult keyStoreSelect(CertSelector cs) 
+    private KeySelectorResult keyStoreSelect(CertSelector cs)
         throws KeyStoreException {
         Enumeration<String> aliases = ks.aliases();
         while (aliases.hasMoreElements()) {
@@ -227,7 +227,7 @@ public class X509KeySelector extends KeySelector {
      * @return a KeySelectorResult containing the cert's public key if there
      *   is a match; otherwise null
      */
-    private KeySelectorResult certSelect(X509Certificate xcert, 
+    private KeySelectorResult certSelect(X509Certificate xcert,
         SignatureMethod sm) throws KeyStoreException {
         // skip non-signer certs
         boolean[] keyUsage = xcert.getKeyUsage();
@@ -287,13 +287,13 @@ public class X509KeySelector extends KeySelector {
 
     /**
      * Searches the specified keystore for a certificate that matches an
-     * entry of the specified X509Data and contains a public key that is 
+     * entry of the specified X509Data and contains a public key that is
      * compatible with the specified SignatureMethod.
      *
      * @return a KeySelectorResult containing the cert's public key if there
      *   is a match; otherwise null
      */
-    private KeySelectorResult x509DataSelect(X509Data xd, SignatureMethod sm) 
+    private KeySelectorResult x509DataSelect(X509Data xd, SignatureMethod sm)
         throws KeyStoreException, KeySelectorException {
 
         // convert signature algorithm to compatible public-key alg OID

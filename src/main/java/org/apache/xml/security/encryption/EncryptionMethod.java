@@ -77,25 +77,25 @@ public interface EncryptionMethod {
      * @param parameters the OAEP parameters.
      */
     void setOAEPparams(byte[] parameters);
-    
+
     /**
      * Set the Digest Algorithm to use
      * @param digestAlgorithm the Digest Algorithm to use
      */
     void setDigestAlgorithm(String digestAlgorithm);
-    
+
     /**
      * Get the Digest Algorithm to use
      * @return the Digest Algorithm to use
      */
     String getDigestAlgorithm();
-    
+
     /**
      * Set the MGF Algorithm to use
      * @param mgfAlgorithm the MGF Algorithm to use
      */
     void setMGFAlgorithm(String mgfAlgorithm);
-    
+
     /**
      * Get the MGF Algorithm to use
      * @return the MGF Algorithm to use

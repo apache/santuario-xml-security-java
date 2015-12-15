@@ -38,7 +38,7 @@ import org.apache.xml.security.utils.Base64;
 
 /**
  * This {@link StorageResolverSpi} makes all raw (binary) {@link X509Certificate}s
- * which reside as files in a single directory available to the 
+ * which reside as files in a single directory available to the
  * {@link org.apache.xml.security.keys.storage.StorageResolver}.
  */
 public class CertsInFilesystemDirectoryResolver extends StorageResolverSpi {
@@ -58,7 +58,7 @@ public class CertsInFilesystemDirectoryResolver extends StorageResolverSpi {
      * @param directoryName
      * @throws StorageResolverException
      */
-    public CertsInFilesystemDirectoryResolver(String directoryName) 
+    public CertsInFilesystemDirectoryResolver(String directoryName)
         throws StorageResolverException {
         this.merlinsCertificatesDir = directoryName;
 
@@ -79,7 +79,7 @@ public class CertsInFilesystemDirectoryResolver extends StorageResolverSpi {
         if (names != null) {
             for (int i = 0; i < names.length; i++) {
                 String currentFileName = names[i];
-    
+
                 if (currentFileName.endsWith(".crt")) {
                     al.add(names[i]);
                 }
@@ -137,7 +137,7 @@ public class CertsInFilesystemDirectoryResolver extends StorageResolverSpi {
                     if (log.isDebugEnabled()) {
                         log.debug("Could not add certificate from file " + filename, ex);
                     }
-                } 
+                }
             }
 
             if (added && log.isDebugEnabled()) {

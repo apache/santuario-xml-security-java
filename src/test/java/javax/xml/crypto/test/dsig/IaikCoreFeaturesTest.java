@@ -30,7 +30,7 @@ import javax.xml.crypto.dsig.XMLSignatureFactory;
 import javax.xml.crypto.test.KeySelectors;
 
 /**
- * This is a testcase to validate all "coreFeatures" 
+ * This is a testcase to validate all "coreFeatures"
  * testcases from IAIK
  *
  * @author Sean Mullan
@@ -53,17 +53,17 @@ public class IaikCoreFeaturesTest extends org.junit.Assert {
         validator = new SignatureValidator(new File
             (base, "coreFeatures/signatures"));
     }
-    
+
     @org.junit.Test
     public void test_anonymousReferenceSignature() throws Exception {
         String file = "anonymousReferenceSignature.xml";
 
         boolean coreValidity = validator.validate
-            (file, new KeySelectors.KeyValueKeySelector(), 
+            (file, new KeySelectors.KeyValueKeySelector(),
              new NullURIDereferencer(base));
         assertTrue("Signature failed core validation", coreValidity);
     }
-    
+
     @org.junit.Test
     public void test_manifestSignature() throws Exception {
         String file = "manifestSignature.xml";
@@ -72,7 +72,7 @@ public class IaikCoreFeaturesTest extends org.junit.Assert {
             (file, new KeySelectors.KeyValueKeySelector());
         assertTrue("Signature failed core validation", coreValidity);
     }
-    
+
     @org.junit.Test
     public void test_signatureTypesSignature() throws Exception {
         String file = "signatureTypesSignature.xml";
@@ -82,7 +82,7 @@ public class IaikCoreFeaturesTest extends org.junit.Assert {
                     new OfflineDereferencer());
         assertTrue("Signature failed core validation", coreValidity);
     }
-    
+
     private static class NullURIDereferencer implements URIDereferencer {
 
         private OctetStreamData osd;
@@ -93,7 +93,7 @@ public class IaikCoreFeaturesTest extends org.junit.Assert {
             osd = new OctetStreamData(new FileInputStream(content));
         }
 
-        public Data dereference(URIReference uriReference, 
+        public Data dereference(URIReference uriReference,
             XMLCryptoContext context) throws URIReferenceException {
 
             if (uriReference.getURI() != null) {
@@ -103,22 +103,22 @@ public class IaikCoreFeaturesTest extends org.junit.Assert {
             return osd;
         }
     }
-    
+
     private static class OfflineDereferencer implements URIDereferencer {
         private String w3cRec;
         private URIDereferencer defaultDereferencer;
 
         OfflineDereferencer() throws Exception {
             String fs = System.getProperty("file.separator");
-            String base = System.getProperty("basedir") == null ? "./" : 
+            String base = System.getProperty("basedir") == null ? "./" :
                 System.getProperty("basedir");
-            w3cRec = base + fs + "src/test/resources" + fs + "org" + fs + "w3c" + fs + "www" + 
+            w3cRec = base + fs + "src/test/resources" + fs + "org" + fs + "w3c" + fs + "www" +
                 fs + "TR" + fs + "2000";
             defaultDereferencer =
                 XMLSignatureFactory.getInstance().getURIDereferencer();
         }
 
-        public Data dereference(URIReference uriReference, 
+        public Data dereference(URIReference uriReference,
                 XMLCryptoContext context) throws URIReferenceException {
 
             try {
@@ -133,5 +133,5 @@ public class IaikCoreFeaturesTest extends org.junit.Assert {
             }
         }
     }
-    
+
 }

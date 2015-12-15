@@ -44,7 +44,7 @@ public class CreateSignature {
     static {
         org.apache.xml.security.Init.init();
     }
-    
+
     /**
      * Method main
      *
@@ -70,7 +70,7 @@ public class CreateSignature {
         ks.load(fis, keystorePass.toCharArray());
 
         //get the private key for signing.
-        PrivateKey privateKey = 
+        PrivateKey privateKey =
             (PrivateKey) ks.getKey(privateKeyAlias, privateKeyPass.toCharArray());
         javax.xml.parsers.DocumentBuilderFactory dbf =
             javax.xml.parsers.DocumentBuilderFactory.newInstance();
@@ -88,7 +88,7 @@ public class CreateSignature {
         //<!-- Comment after -->
         doc.appendChild(doc.createComment(" Comment before "));
 
-        Element root = 
+        Element root =
             doc.createElementNS("http://www.apache.org/ns/#app1", "apache:RootElement");
 
         root.setAttributeNS(null, "attr1", "test1");
@@ -106,7 +106,7 @@ public class CreateSignature {
         String BaseURI = signatureFile.toURI().toURL().toString();
         //Create an XML Signature object from the document, BaseURI and
         //signature algorithm (in this case DSA)
-        XMLSignature sig = 
+        XMLSignature sig =
             new XMLSignature(doc, BaseURI, XMLSignature.ALGO_ID_SIGNATURE_DSA);
 
 

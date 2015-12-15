@@ -45,7 +45,7 @@ import org.apache.xml.security.utils.Base64;
  */
 public class XMLCipherInput {
 
-    private static org.slf4j.Logger log = 
+    private static org.slf4j.Logger log =
         org.slf4j.LoggerFactory.getLogger(XMLCipherInput.class);
 
     /** The data we are working with */
@@ -53,7 +53,7 @@ public class XMLCipherInput {
 
     /** MODES */
     private int mode;
-    
+
     private boolean secureValidation;
 
     /**
@@ -73,7 +73,7 @@ public class XMLCipherInput {
     /**
      * Constructor for processing encrypted octets
      *
-     * @param input The <code>EncryptedType</code> object to read 
+     * @param input The <code>EncryptedType</code> object to read
      * the bytes from.
      * @throws XMLEncryptionException {@link XMLEncryptionException}
      */
@@ -84,7 +84,7 @@ public class XMLCipherInput {
             throw new XMLEncryptionException("CipherData is null");
         }
     }
-    
+
     /**
      * Set whether secure validation is enabled or not. The default is false.
      */
@@ -127,12 +127,12 @@ public class XMLCipherInput {
             XMLSignatureInput input = null;
 
             try {
-                ResourceResolver resolver = 
+                ResourceResolver resolver =
                     ResourceResolver.getInstance(uriAttr, null, secureValidation);
                 input = resolver.resolve(uriAttr, null, secureValidation);
             } catch (ResourceResolverException ex) {
                 throw new XMLEncryptionException(ex);
-            } 
+            }
 
             if (input != null) {
                 if (log.isDebugEnabled()) {

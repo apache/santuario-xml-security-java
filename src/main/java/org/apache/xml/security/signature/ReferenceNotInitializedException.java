@@ -27,7 +27,7 @@ package org.apache.xml.security.signature;
 public class ReferenceNotInitializedException extends XMLSignatureException {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
 
@@ -38,7 +38,7 @@ public class ReferenceNotInitializedException extends XMLSignatureException {
     public ReferenceNotInitializedException() {
         super();
     }
-    
+
     public ReferenceNotInitializedException(Exception ex) {
         super(ex);
     }

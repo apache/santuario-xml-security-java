@@ -35,7 +35,7 @@ import javax.xml.crypto.dsig.keyinfo.*;
 public class PGPDataTest extends org.junit.Assert {
 
     private KeyInfoFactory fac;
-    private byte[][] values = { 
+    private byte[][] values = {
         {
             0x01, 0x02, 0x03, 0x04,
             0x05, 0x06, 0x07, 0x08
@@ -45,7 +45,7 @@ public class PGPDataTest extends org.junit.Assert {
         }
     };
 
-    public PGPDataTest() throws Exception { 
+    public PGPDataTest() throws Exception {
         fac = KeyInfoFactory.getInstance
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
     }
@@ -69,7 +69,7 @@ public class PGPDataTest extends org.junit.Assert {
                         fail("PGP element has the wrong type");
                     }
                 }
-            } 
+            }
         }
         try {
             // use raw List type to test for invalid entries
@@ -110,7 +110,7 @@ public class PGPDataTest extends org.junit.Assert {
         pd = fac.newPGPData(values[0], values[1], null);
         assertTrue(Arrays.equals(values[0], pd.getKeyId()));
         assertTrue(Arrays.equals(values[1], pd.getKeyPacket()));
-            
+
         // test newPGPData(byte[], List)
         pd = fac.newPGPData(values[1], null);
         assertTrue(Arrays.equals(values[1], pd.getKeyPacket()));
@@ -131,10 +131,10 @@ public class PGPDataTest extends org.junit.Assert {
                 pd = fac.newPGPData(values[1], null);
             }
             try {
-                pd.isFeatureSupported(null); 
-                fail("Should raise a NPE for null feature"); 
+                pd.isFeatureSupported(null);
+                fail("Should raise a NPE for null feature");
             } catch (NullPointerException npe) {}
-            
+
             assertTrue(!pd.isFeatureSupported("not supported"));
         }
     }

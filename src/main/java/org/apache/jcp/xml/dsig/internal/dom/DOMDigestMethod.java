@@ -37,7 +37,7 @@ import org.w3c.dom.Element;
  *
  * @author Sean Mullan
  */
-public abstract class DOMDigestMethod extends BaseStructure 
+public abstract class DOMDigestMethod extends BaseStructure
     implements DigestMethod {
 
     static final String SHA224 =
@@ -54,7 +54,7 @@ public abstract class DOMDigestMethod extends BaseStructure
         "http://www.w3.org/2007/05/xmldsig-more#sha3-384"; // see RFC 6931
     static final String SHA3_512 =
         "http://www.w3.org/2007/05/xmldsig-more#sha3-512"; // see RFC 6931
-    
+
     private DigestMethodParameterSpec params;
 
     /**
@@ -254,7 +254,7 @@ public abstract class DOMDigestMethod extends BaseStructure
             return "SHA-1";
         }
     }
-    
+
     static final class SHA224 extends DOMDigestMethod {
         SHA224(AlgorithmParameterSpec params)
             throws InvalidAlgorithmParameterException {
@@ -326,7 +326,7 @@ public abstract class DOMDigestMethod extends BaseStructure
             return "SHA-512";
         }
     }
-    
+
     static final class RIPEMD160 extends DOMDigestMethod {
         RIPEMD160(AlgorithmParameterSpec params)
             throws InvalidAlgorithmParameterException {
@@ -344,7 +344,7 @@ public abstract class DOMDigestMethod extends BaseStructure
             return "RIPEMD160";
         }
     }
-    
+
     static final class WHIRLPOOL extends DOMDigestMethod {
         WHIRLPOOL(AlgorithmParameterSpec params)
             throws InvalidAlgorithmParameterException {
@@ -362,7 +362,7 @@ public abstract class DOMDigestMethod extends BaseStructure
             return "WHIRLPOOL";
         }
     }
-    
+
     static final class SHA3_224 extends DOMDigestMethod {
         SHA3_224(AlgorithmParameterSpec params)
             throws InvalidAlgorithmParameterException {
@@ -380,7 +380,7 @@ public abstract class DOMDigestMethod extends BaseStructure
             return "SHA3-224";
         }
     }
-    
+
     static final class SHA3_256 extends DOMDigestMethod {
         SHA3_256(AlgorithmParameterSpec params)
             throws InvalidAlgorithmParameterException {
@@ -398,7 +398,7 @@ public abstract class DOMDigestMethod extends BaseStructure
             return "SHA3-256";
         }
     }
-    
+
     static final class SHA3_384 extends DOMDigestMethod {
         SHA3_384(AlgorithmParameterSpec params)
             throws InvalidAlgorithmParameterException {
@@ -416,7 +416,7 @@ public abstract class DOMDigestMethod extends BaseStructure
             return "SHA3-384";
         }
     }
-    
+
     static final class SHA3_512 extends DOMDigestMethod {
         SHA3_512(AlgorithmParameterSpec params)
             throws InvalidAlgorithmParameterException {

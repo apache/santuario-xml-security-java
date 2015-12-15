@@ -85,7 +85,7 @@ public class InclusiveNamespaces extends ElementProxy implements TransformParam 
                 sb.append(" ");
             }
         }
-        
+
         setLocalAttribute(InclusiveNamespaces._ATT_EC_PREFIXLIST, sb.toString().trim());
     }
 
@@ -109,7 +109,7 @@ public class InclusiveNamespaces extends ElementProxy implements TransformParam 
     public String getInclusiveNamespaces() {
         return getLocalAttribute(InclusiveNamespaces._ATT_EC_PREFIXLIST);
     }
-    
+
     /**
      * Decodes the <code>inclusiveNamespaces</code> String and returns all
      * selected namespace prefixes as a Set. The <code>#default</code>

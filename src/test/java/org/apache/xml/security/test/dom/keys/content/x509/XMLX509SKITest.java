@@ -71,9 +71,9 @@ public class XMLX509SKITest extends org.junit.Assert {
         xcs.setSubjectKeyIdentifier(encodedSkid);
 
         CertStore cs = CertStore.getInstance(
-            "Collection", 
+            "Collection",
             new CollectionCertStoreParameters(Collections.singleton(cert)));
-        
+
         Collection<?> certs = cs.getCertificates(xcs);
         assertTrue(!certs.isEmpty());
     }

@@ -27,7 +27,7 @@ import java.security.Security;
 import javax.xml.crypto.test.KeySelectors;
 
 /**
- * This is a testcase to validate all "ec-merlin-iaikTests-two" 
+ * This is a testcase to validate all "ec-merlin-iaikTests-two"
  * testcases from Baltimore
  *
  * @author Sean Mullan
@@ -45,7 +45,7 @@ public class BaltimoreIaik2Test extends org.junit.Assert {
     public BaltimoreIaik2Test() {
         String fs = System.getProperty("file.separator");
         String base = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
-        
+
         dir = new File(base + fs + "src/test/resources" + fs +
             "ie" + fs + "baltimore" + fs + "merlin-examples",
             "ec-merlin-iaikTests-two");
@@ -58,6 +58,6 @@ public class BaltimoreIaik2Test extends org.junit.Assert {
         boolean coreValidity = validator.validate
             (file, new KeySelectors.KeyValueKeySelector());
         assertTrue("Signature failed core validation", coreValidity);
-    }    
+    }
 
 }

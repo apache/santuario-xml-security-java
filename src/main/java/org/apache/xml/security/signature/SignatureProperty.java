@@ -38,7 +38,7 @@ public class SignatureProperty extends SignatureElementProxy {
      * Constructs{@link SignatureProperty} using specified <code>target</code> attribute
      *
      * @param doc the {@link Document} in which <code>XMLsignature</code> is placed
-     * @param target the <code>target</code> attribute references the <code>Signature</code> 
+     * @param target the <code>target</code> attribute references the <code>Signature</code>
      * element to which the property applies SignatureProperty
      */
     public SignatureProperty(Document doc, String target) {
@@ -46,7 +46,7 @@ public class SignatureProperty extends SignatureElementProxy {
     }
 
     /**
-     * Constructs {@link SignatureProperty} using sepcified <code>target</code> attribute and 
+     * Constructs {@link SignatureProperty} using sepcified <code>target</code> attribute and
      * <code>id</code> attribute
      *
      * @param doc the {@link Document} in which <code>XMLsignature</code> is placed

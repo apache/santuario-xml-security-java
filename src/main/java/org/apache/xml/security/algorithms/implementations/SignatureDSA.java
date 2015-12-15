@@ -73,7 +73,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
             if (provider == null) {
                 this.signatureAlgorithm = Signature.getInstance(algorithmID);
             } else {
-                this.signatureAlgorithm = 
+                this.signatureAlgorithm =
                     Signature.getInstance(algorithmID, provider);
             }
         } catch (java.security.NoSuchAlgorithmException ex) {

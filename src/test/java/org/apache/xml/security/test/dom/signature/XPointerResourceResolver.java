@@ -40,11 +40,11 @@ import org.w3c.dom.NodeList;
 
 /**
  * An implementation of a resource resolver, which evaluates xpointer expressions.
- * 
+ *
  * @author wglas
  */
 public class XPointerResourceResolver extends ResourceResolverSpi {
-    private static org.slf4j.Logger log = 
+    private static org.slf4j.Logger log =
         org.slf4j.LoggerFactory.getLogger(XPointerResourceResolver.class);
 
     private static final String XP_OPEN = "xpointer(";
@@ -101,7 +101,7 @@ public class XPointerResourceResolver extends ResourceResolverSpi {
     }
 
     @Override
-    public XMLSignatureInput engineResolveURI(ResourceResolverContext context) 
+    public XMLSignatureInput engineResolveURI(ResourceResolverContext context)
         throws ResourceResolverException {
         String v = context.uriToResolve;
 
@@ -121,7 +121,7 @@ public class XPointerResourceResolver extends ResourceResolverSpi {
 
         int i = 0;
         Map<String, String> namespaces = new HashMap<String, String>();
-        
+
         if (parts.length > 1) {
 
             for (; i < parts.length - 1; ++i) {
@@ -140,7 +140,7 @@ public class XPointerResourceResolver extends ResourceResolverSpi {
                 }
 
                 namespaces.put(
-                    mapping.substring(0, pos), 
+                    mapping.substring(0, pos),
                     mapping.substring(pos + 1)
                 );
             }
@@ -162,11 +162,11 @@ public class XPointerResourceResolver extends ResourceResolverSpi {
 
                 XPathFactory xpf = XPathFactory.newInstance();
                 XPath xpath = xpf.newXPath();
-                DSNamespaceContext namespaceContext = 
+                DSNamespaceContext namespaceContext =
                     new DSNamespaceContext(namespaces);
                 xpath.setNamespaceContext(namespaceContext);
 
-                nodes = 
+                nodes =
                     (NodeList) xpath.evaluate(
                         xpathExpr, this.baseNode, XPathConstants.NODESET
                     );
@@ -197,7 +197,7 @@ public class XPointerResourceResolver extends ResourceResolverSpi {
 
             result.setMIMEType("text/xml");
             result.setExcludeComments(true);
-            result.setSourceURI((context.baseUri != null) ? context.baseUri.concat(v) : v);      
+            result.setSourceURI((context.baseUri != null) ? context.baseUri.concat(v) : v);
 
             return result;
         } catch (XPathExpressionException e) {

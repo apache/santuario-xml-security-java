@@ -78,14 +78,14 @@ public class KeyResolverTest extends org.junit.Assert {
      */
     @org.junit.Test
     public void testKeyResolvers() throws Exception {
-        
+
         //
         // This test fails with the IBM JDK
         //
         if ("IBM Corporation".equals(System.getProperty("java.vendor"))) {
             return;
         }
-        
+
         char[] pwd = "secret".toCharArray();
         KeyStore ks = KeyStore.getInstance("JCEKS");
         FileInputStream fis = null;
@@ -184,7 +184,7 @@ public class KeyResolverTest extends org.junit.Assert {
         ki.registerInternalKeyResolver(new SingleKeyResolver(des3KeyName, secretKey));
         assertEquals(secretKey, ki.getSecretKey());
     }
-    
+
     /**
      * Encrypt some data, embedded the data encryption key
      * in the message using the key transport algorithm rsa-1_5.
@@ -194,7 +194,7 @@ public class KeyResolverTest extends org.junit.Assert {
     @org.junit.Test
     public void testResolvePrivateKey() throws Exception {
         // See if AES-128 is available...
-        String algorithmId = 
+        String algorithmId =
             JCEMapper.translateURItoJCEID(
                     org.apache.xml.security.utils.EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128
                 );
@@ -210,11 +210,11 @@ public class KeyResolverTest extends org.junit.Assert {
                 //
             }
         }
-        
+
         if (!haveAES) {
             return;
         }
-        
+
         // Create a sample XML document
         Document document = XMLUtils.createDocumentBuilder(false).newDocument();
 
@@ -238,7 +238,7 @@ public class KeyResolverTest extends org.junit.Assert {
                     "bddfbde83ca9bfa180fe6a5f5eee60661936d728314e809201ef52cd71d9fa3c8ce83f9d30ab5e08" +
                     "1539219e7e45dd6a60be65ac95d2049b8f21", 16),
                 new BigInteger("10001", 16));
-        
+
         RSAPrivateKeySpec privKeySpec = new RSAPrivateKeySpec(
                 new BigInteger(
                     "8710a2bcb2f3fdac177f0ae0461c2dd0ebf72e0d88a5400583a7d8bdabd" +
@@ -250,7 +250,7 @@ public class KeyResolverTest extends org.junit.Assert {
                     "5187cb9a50fa828e5efe51d52f5d112c20bc700b836facadca6e0051afcdfe866841e37d207c0295" +
                     "36ff8674b301e2198b2c56abb0a0313f8ff84c1fcd6fa541aa6e5d9c018fab4784d2940def5dc709" +
                     "ddc714d73b6c23b5d178eaa5933577b8e8ae9", 16));
-        
+
         RSAPublicKey pubKey = (RSAPublicKey) keyFactory.generatePublic(pubKeySpec);
         RSAPrivateKey privKey = (RSAPrivateKey) keyFactory.generatePrivate(privKeySpec);
 
@@ -258,7 +258,7 @@ public class KeyResolverTest extends org.junit.Assert {
         XMLCipher keyCipher = XMLCipher.getInstance(XMLCipher.RSA_v1dot5);
         keyCipher.init(XMLCipher.WRAP_MODE, pubKey);
         EncryptedKey encryptedKey = keyCipher.encryptKey(document, dataEncryptKey);
-        
+
         String keyName = "testResolvePrivateKey";
         KeyInfo kekInfo = new KeyInfo(document);
         kekInfo.addKeyName(keyName);
@@ -282,7 +282,7 @@ public class KeyResolverTest extends org.junit.Assert {
         // First test with an internal KeyResolver
         MyPrivateKeyResolver.pk = privKey;
         MyPrivateKeyResolver.pkName = keyName;
-        
+
         decryptDocument(document, new MyPrivateKeyResolver());
 
         // Now test with a static KeyResolver
@@ -292,7 +292,7 @@ public class KeyResolverTest extends org.junit.Assert {
 
         decryptDocument(document, null);
     }
-    
+
     private void decryptDocument(Document docSource, KeyResolverSpi internalResolver) throws Exception
     {
         Document document = (Document)docSource.cloneNode(true);
@@ -312,12 +312,12 @@ public class KeyResolverTest extends org.junit.Assert {
 
     // A KeyResolver that returns a PrivateKey for a specific KeyName.
     public static class MyPrivateKeyResolver extends KeyResolverSpi {
-        
+
         // We use static variables because KeyResolver.register() demands
         // the use of the default constructor.
         private static PrivateKey pk;
         private static String pkName;
-        
+
         public boolean engineCanResolve(Element element, String BaseURI, StorageResolver storage) {
             return false;
         }
@@ -325,14 +325,14 @@ public class KeyResolverTest extends org.junit.Assert {
         public PrivateKey engineLookupAndResolvePrivateKey(
             Element element, String BaseURI, StorageResolver storage
         ) throws KeyResolverException {
-            if (Constants.SignatureSpecNS.equals(element.getNamespaceURI()) && 
+            if (Constants.SignatureSpecNS.equals(element.getNamespaceURI()) &&
                 Constants._TAG_KEYNAME.equals(element.getLocalName())) {
                 String keyName = element.getFirstChild().getNodeValue();
                 if (pkName.equals(keyName)) {
                     return pk;
                 }
             }
-            
+
             return null;
         }
     }

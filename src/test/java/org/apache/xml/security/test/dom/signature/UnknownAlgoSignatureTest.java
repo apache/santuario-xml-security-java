@@ -61,12 +61,12 @@ public class UnknownAlgoSignatureTest extends org.junit.Assert {
 
     protected static final String KEYSTORE_TYPE = "JKS";
 
-    protected static final String KEYSTORE_FILE = 
+    protected static final String KEYSTORE_FILE =
         "src/test/resources/org/apache/xml/security/samples/input/keystore.jks";
 
     protected static final String CERT_ALIAS = "test";
 
-    protected static final String SIGNATURE_SOURCE_PATH = 
+    protected static final String SIGNATURE_SOURCE_PATH =
         "src/test/resources/org/apache/xml/security/temp/signature";
 
     protected PublicKey publicKey;
@@ -152,13 +152,13 @@ public class UnknownAlgoSignatureTest extends org.junit.Assert {
             file = new File(SIGNATURE_SOURCE_PATH, fileName);
         }
         Document doc = getDocument(file);
-        
+
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();
         xpath.setNamespaceContext(new DSNamespaceContext());
 
         String expression = "//ds:Signature[1]";
-        Element sigElement = 
+        Element sigElement =
             (Element) xpath.evaluate(expression, doc, XPathConstants.NODE);
         return new XMLSignature(sigElement, file.toURI().toURL().toString());
     }
@@ -169,5 +169,5 @@ public class UnknownAlgoSignatureTest extends org.junit.Assert {
         Document doc = db.parse(new FileInputStream(file));
         return doc;
     }
-    
+
 }

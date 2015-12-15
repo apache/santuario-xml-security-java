@@ -49,7 +49,7 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
     /** Field HMACOutputLength */
     private int HMACOutputLength = 0;
     private boolean HMACOutputLengthSet = false;
-    
+
     /**
      * Method engineGetURI
      *
@@ -330,7 +330,7 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
         }
 
         Text hmaclength =
-            XMLUtils.selectDsNodeText(element.getFirstChild(), Constants._TAG_HMACOUTPUTLENGTH, 0);               
+            XMLUtils.selectDsNodeText(element.getFirstChild(), Constants._TAG_HMACOUTPUTLENGTH, 0);
 
         if (hmaclength != null) {
             this.HMACOutputLength = Integer.parseInt(hmaclength.getData());
@@ -350,7 +350,7 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
 
         if (this.HMACOutputLengthSet) {
             Document doc = element.getOwnerDocument();
-            Element HMElem = 
+            Element HMElem =
                 XMLUtils.createElementInSignatureSpace(doc, Constants._TAG_HMACOUTPUTLENGTH);
             Text HMText =
                 doc.createTextNode("" + this.HMACOutputLength);
@@ -389,7 +389,7 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
             return 160;
         }
     }
-    
+
     /**
      * Class IntegrityHmacSHA224
      */

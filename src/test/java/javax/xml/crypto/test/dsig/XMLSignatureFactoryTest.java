@@ -51,7 +51,7 @@ public class XMLSignatureFactoryTest extends org.junit.Assert {
             (new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI(), 1);
     }
 
-    public XMLSignatureFactoryTest() throws Exception { 
+    public XMLSignatureFactoryTest() throws Exception {
         factory = XMLSignatureFactory.getInstance
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
     }
@@ -65,7 +65,7 @@ public class XMLSignatureFactoryTest extends org.junit.Assert {
 
         try {
             XMLSignatureFactory.getInstance(null);
-            fail("Should raise a NPE for null mechanismType"); 
+            fail("Should raise a NPE for null mechanismType");
         } catch (NullPointerException npe) {}
 
         try {
@@ -75,17 +75,17 @@ public class XMLSignatureFactoryTest extends org.junit.Assert {
         } catch (NoSuchProviderException nspe) {
         } catch (NoSuchMechanismException nse) {
             fail("Should raise a NoSuchProviderException instead of " + nse +
-                 " if specified provider is not found"); 
+                 " if specified provider is not found");
         }
 
         try {
             XMLSignatureFactory.getInstance(null);
-            fail("Should raise a NPE for null mechanismType"); 
+            fail("Should raise a NPE for null mechanismType");
         } catch (NullPointerException npe) {}
 
         try {
             XMLSignatureFactory.getInstance("DOM", (Provider) null);
-            fail("Should raise a NPE for null provider"); 
+            fail("Should raise a NPE for null provider");
         } catch (NullPointerException npe) {}
     }
 
@@ -98,8 +98,8 @@ public class XMLSignatureFactoryTest extends org.junit.Assert {
     @org.junit.Test
     public void testisFeatureSupported() {
         try {
-            factory.isFeatureSupported(null); 
-            fail("Should raise a NPE for null feature"); 
+            factory.isFeatureSupported(null);
+            fail("Should raise a NPE for null feature");
         } catch (NullPointerException npe) {}
 
         assertTrue(!factory.isFeatureSupported("not supported"));
@@ -117,7 +117,7 @@ public class XMLSignatureFactoryTest extends org.junit.Assert {
         XMLSignature stuff;
         try {
             stuff = factory.unmarshalXMLSignature((XMLValidateContext) null);
-            fail("Should raise an NPE for null inputs"); 
+            fail("Should raise an NPE for null inputs");
         } catch (NullPointerException ex) {
         } catch (Exception ex) {
             fail("Should throw an NPE instead of " + ex +
@@ -146,11 +146,11 @@ public class XMLSignatureFactoryTest extends org.junit.Assert {
                     public String getNamespacePrefix
                         (String nsURI, String defPrefix) {return null;}
                     });
-            fail("Should throw a CCE for input of wrong type"); 
+            fail("Should throw a CCE for input of wrong type");
         } catch (ClassCastException ex) {
         } catch (Exception ex) {
             fail("Should raise a CCE instead of " + ex +
-                 " for wrong inputs"); 
+                 " for wrong inputs");
         }
 
         DocumentBuilder docBuilder = XMLUtils.createDocumentBuilder(false, false);
@@ -164,9 +164,9 @@ public class XMLSignatureFactoryTest extends org.junit.Assert {
         try {
             stuff = factory.unmarshalXMLSignature
             (new DOMValidateContext(TestUtils.getPublicKey("RSA"), nl.item(0)));
-            fail("Should throw a MarshalException for non-XMLSignature inputs"); 
+            fail("Should throw a MarshalException for non-XMLSignature inputs");
         } catch (MarshalException ex) {}
-        
+
         nl = doc.getElementsByTagName("Signature");
         try {
             stuff = factory.unmarshalXMLSignature

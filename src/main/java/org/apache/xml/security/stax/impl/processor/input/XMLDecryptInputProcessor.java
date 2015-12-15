@@ -39,11 +39,11 @@ import org.apache.xml.security.stax.securityEvent.*;
  * @version $Revision: 1228829 $ $Date: 2012-01-08 11:44:13 +0000 (Sun, 08 Jan 2012) $
  */
 public class XMLDecryptInputProcessor extends AbstractDecryptInputProcessor {
-    
+
     public XMLDecryptInputProcessor(XMLSecurityProperties securityProperties) throws XMLSecurityException {
         super(securityProperties);
     }
-    
+
     @Override
     protected AbstractDecryptedEventReaderInputProcessor newDecryptedEventReaderInputProcessor(
             boolean encryptedHeader, XMLSecStartElement xmlSecStartElement, EncryptedDataType currentEncryptedDataType,
@@ -114,7 +114,7 @@ public class XMLDecryptInputProcessor extends AbstractDecryptInputProcessor {
             //fire a SecurityEvent:
             final DocumentContext documentContext = inputProcessorChain.getDocumentContext();
             List<QName> elementPath = xmlSecStartElement.getElementPath();
-            
+
             EncryptedElementSecurityEvent encryptedElementSecurityEvent =
                     new EncryptedElementSecurityEvent(inboundSecurityToken, true, documentContext.getProtectionOrder());
             encryptedElementSecurityEvent.setElementPath(elementPath);

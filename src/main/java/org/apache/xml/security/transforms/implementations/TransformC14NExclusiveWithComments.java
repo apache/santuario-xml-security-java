@@ -45,7 +45,7 @@ public class TransformC14NExclusiveWithComments extends TransformSpi {
 
     /**
      * Method engineGetURI
-     *@inheritDoc 
+     *@inheritDoc
      *
      */
     protected String engineGetURI() {
@@ -59,7 +59,7 @@ public class TransformC14NExclusiveWithComments extends TransformSpi {
             String inclusiveNamespaces = null;
 
             if (transformObject.length(
-                InclusiveNamespaces.ExclusiveCanonicalizationNamespace, 
+                InclusiveNamespaces.ExclusiveCanonicalizationNamespace,
                 InclusiveNamespaces._TAG_EC_INCLUSIVENAMESPACES) == 1
             ) {
                 Element inclusiveElement =
@@ -70,7 +70,7 @@ public class TransformC14NExclusiveWithComments extends TransformSpi {
                         0
                     );
 
-                inclusiveNamespaces = 
+                inclusiveNamespaces =
                     new InclusiveNamespaces(
                         inclusiveElement, transformObject.getBaseURI()
                     ).getInclusiveNamespaces();
@@ -89,6 +89,6 @@ public class TransformC14NExclusiveWithComments extends TransformSpi {
             return output;
         } catch (XMLSecurityException ex) {
             throw new CanonicalizationException(ex);
-        } 
+        }
     }
 }

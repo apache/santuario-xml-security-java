@@ -29,15 +29,15 @@ import org.xml.sax.SAXException;
 
 /**
  * Base class which all Transform algorithms extend. The common methods that
- * have to be overridden are the 
+ * have to be overridden are the
  * {@link #enginePerformTransform(XMLSignatureInput, Transform)} method.
  *
  * @author Christian Geuer-Pollmann
  */
 public abstract class TransformSpi {
-    
+
     protected boolean secureValidation;
-    
+
     /**
      * The mega method which MUST be implemented by the Transformation Algorithm.
      *
@@ -58,14 +58,14 @@ public abstract class TransformSpi {
         TransformationException, ParserConfigurationException, SAXException {
         throw new UnsupportedOperationException();
     }
-    
+
     /**
      * The mega method which MUST be implemented by the Transformation Algorithm.
-     * In order to be compatible with preexisting Transform implementations, 
+     * In order to be compatible with preexisting Transform implementations,
      * by default this implementation invokes the deprecated, thread-unsafe
-     * methods. Subclasses should override this with a thread-safe 
+     * methods. Subclasses should override this with a thread-safe
      * implementation.
-     * 
+     *
      * @param input {@link XMLSignatureInput} as the input of transformation
      * @param transformObject the Transform object
      * @return {@link XMLSignatureInput} as the result of transformation
@@ -100,7 +100,7 @@ public abstract class TransformSpi {
         TransformationException, ParserConfigurationException, SAXException {
         return enginePerformTransform(input, null);
     }
-    
+
     /**
      * Returns the URI representation of <code>Transformation algorithm</code>
      *

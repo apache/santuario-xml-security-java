@@ -30,7 +30,7 @@ import javax.xml.crypto.URIDereferencer;
 import javax.xml.crypto.test.KeySelectors;
 
 /**
- * This is a testcase to validate all "merlin-xmldsig-eighteen" 
+ * This is a testcase to validate all "merlin-xmldsig-eighteen"
  * testcases from Baltimore
  *
  * @author Sean Mullan
@@ -48,7 +48,7 @@ public class Baltimore18Test extends org.junit.Assert {
 
     public Baltimore18Test() throws CertificateException {
         String base = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
-        
+
         String fs = System.getProperty("file.separator");
         dir = new File(base + fs + "src/test/resources" + fs + "ie" +
             fs + "baltimore" + fs + "merlin-examples",
@@ -56,16 +56,16 @@ public class Baltimore18Test extends org.junit.Assert {
         cks = new KeySelectors.CollectionKeySelector(dir);
         ud = new LocalHttpCacheURIDereferencer();
     }
-    
+
     @org.junit.Test
     public void testSignatureKeyname() throws Exception {
         String file = "signature-keyname.xml";
-        
+
         SignatureValidator validator = new SignatureValidator(dir);
         boolean coreValidity = validator.validate(file, cks, ud);
         assertTrue("Signature failed core validation", coreValidity);
     }
-    
+
     @org.junit.Test
     public void testSignatureRetrievalmethodRawx509crt() throws Exception {
         String file = "signature-retrievalmethod-rawx509crt.xml";
@@ -92,7 +92,7 @@ public class Baltimore18Test extends org.junit.Assert {
         boolean coreValidity = validator.validate(file, cks, ud);
         assertTrue("Signature failed core validation", coreValidity);
     }
-    
+
     @org.junit.Test
     public void testSignatureX509Is() throws Exception {
         String file = "signature-x509-is.xml";
@@ -101,7 +101,7 @@ public class Baltimore18Test extends org.junit.Assert {
         boolean coreValidity = validator.validate(file, cks, ud);
         assertTrue("Signature failed core validation", coreValidity);
     }
-    
+
     @org.junit.Test
     public void testSignatureX509Ski() throws Exception {
         String file = "signature-x509-ski.xml";

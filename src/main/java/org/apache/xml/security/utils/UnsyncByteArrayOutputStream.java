@@ -81,7 +81,7 @@ public class UnsyncByteArrayOutputStream extends OutputStream  {
     public void reset() {
         pos = 0;
     }
-    
+
     private void expandSize(int newPos) {
         int newSize = size;
         while (newPos > newSize) {

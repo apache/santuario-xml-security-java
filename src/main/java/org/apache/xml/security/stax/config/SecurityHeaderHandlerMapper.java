@@ -48,7 +48,7 @@ public class SecurityHeaderHandlerMapper {
         for (int i = 0; i < handlerList.size(); i++) {
             HandlerType handlerType = handlerList.get(i);
             QName qName = new QName(handlerType.getURI(), handlerType.getNAME());
-            handlerClassMap.put(qName, 
+            handlerClassMap.put(qName,
                     ClassLoaderUtils.loadClass(handlerType.getJAVACLASS(), callingClass));
         }
     }

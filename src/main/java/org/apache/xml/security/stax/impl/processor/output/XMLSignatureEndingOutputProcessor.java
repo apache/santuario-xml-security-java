@@ -78,7 +78,7 @@ public class XMLSignatureEndingOutputProcessor extends AbstractSignatureEndingOu
 
         // @see SANTUARIO-405
         // Enhances SANTUARIO-324
-        // Output the signature at a specific position. 
+        // Output the signature at a specific position.
         // By default, this is just after the root element
         int signaturePosition = getSecurityProperties().getSignaturePosition();
         if (signaturePosition < 0) {
@@ -143,7 +143,7 @@ public class XMLSignatureEndingOutputProcessor extends AbstractSignatureEndingOu
             } else if (SecurityTokenConstants.KeyIdentifier_X509SubjectName.equals(keyIdentifier)) {
                 XMLSecurityUtils.createX509SubjectNameStructure(this, outputProcessorChain, x509Certificates);
             } else {
-                throw new XMLSecurityException("stax.unsupportedToken", 
+                throw new XMLSecurityException("stax.unsupportedToken",
                                                new Object[] {keyIdentifier});
             }
         } else if (securityToken.getPublicKey() != null) {

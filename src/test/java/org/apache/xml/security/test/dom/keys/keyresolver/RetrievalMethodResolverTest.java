@@ -30,10 +30,10 @@ import org.w3c.dom.Document;
 
 
 /**
- * Some tests on attacks against the RetrievalMethodResolver. 
+ * Some tests on attacks against the RetrievalMethodResolver.
  */
 public class RetrievalMethodResolverTest extends org.junit.Assert {
-    
+
     private static final String BASEDIR = System.getProperty("basedir");
     private static final String SEP = System.getProperty("file.separator");
 
@@ -51,17 +51,17 @@ public class RetrievalMethodResolverTest extends org.junit.Assert {
         } else {
             fis = new FileInputStream(filename);
         }
-        
+
         DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
         Document doc = db.parse(fis);
-        
+
         KeyInfo keyInfo = new KeyInfo(doc.getDocumentElement(), null);
-        
+
         // Check neither of these give a StackOverflowError.
         keyInfo.getPublicKey();
         keyInfo.getX509Certificate();
     }
-    
+
     @org.junit.Test
     public void testLoopBetweenRetrievalMethods() throws Exception {
         FileInputStream fis = null;
@@ -71,15 +71,15 @@ public class RetrievalMethodResolverTest extends org.junit.Assert {
         } else {
             fis = new FileInputStream(filename);
         }
-        
+
         DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
         Document doc = db.parse(fis);
-        
+
         KeyInfo keyInfo = new KeyInfo(doc.getDocumentElement(), null);
-        
+
         // Check neither of these give a StackOverflowError.
         keyInfo.getPublicKey();
         keyInfo.getX509Certificate();
     }
-    
+
 }

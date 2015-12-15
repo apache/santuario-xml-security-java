@@ -23,7 +23,7 @@ import org.apache.xml.security.exceptions.XMLSecurityException;
 public class ContentHandlerAlreadyRegisteredException extends XMLSecurityException {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
 
@@ -76,5 +76,5 @@ public class ContentHandlerAlreadyRegisteredException extends XMLSecurityExcepti
     ) {
         super(originalException, msgID, exArgs);
     }
-    
+
 }

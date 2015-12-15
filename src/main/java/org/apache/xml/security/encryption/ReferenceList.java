@@ -41,10 +41,10 @@ import java.util.Iterator;
  * @see Reference
  */
 public interface ReferenceList {
-    
+
     /** DATA TAG */
     int DATA_REFERENCE = 0x00000001;
-    
+
     /** KEY TAG */
     int KEY_REFERENCE  = 0x00000002;
 

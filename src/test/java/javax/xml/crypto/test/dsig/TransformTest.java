@@ -60,7 +60,7 @@ public class TransformTest extends org.junit.Assert {
 
     @org.junit.Test
     public void testisFeatureSupported() throws Exception {
-        Transform tm; 
+        Transform tm;
         for (int i = 0; i < TRANSFORM_ALGOS.length; i++) {
             String algo = TRANSFORM_ALGOS[i];
             TransformParameterSpec params = null;
@@ -75,21 +75,21 @@ public class TransformTest extends org.junit.Assert {
             }
             tm = factory.newTransform(algo, params);
             try {
-                tm.isFeatureSupported(null); 
-                fail(TRANSFORM_ALGOS[i] + 
-                     ": Should raise a NPE for null feature"); 
+                tm.isFeatureSupported(null);
+                fail(TRANSFORM_ALGOS[i] +
+                     ": Should raise a NPE for null feature");
             } catch (NullPointerException npe) {}
-            
+
             assertTrue(!tm.isFeatureSupported("not supported"));
         }
     }
 
     @org.junit.Test
     public void testConstructor() throws Exception {
-        // test newTransform(String algorithm, 
+        // test newTransform(String algorithm,
         //                   AlgorithmParameterSpec params)
         // for generating Transform objects
-        Transform tm; 
+        Transform tm;
         for (int i = 0; i < TRANSFORM_ALGOS.length; i++) {
             String algo = TRANSFORM_ALGOS[i];
             TransformParameterSpec params = null;
@@ -108,35 +108,35 @@ public class TransformTest extends org.junit.Assert {
                 assertEquals(tm.getAlgorithm(), algo);
                 assertEquals(tm.getParameterSpec(), params);
             } catch (Exception ex) {
-                fail(TRANSFORM_ALGOS[i] + ": Unexpected exception " + ex); 
+                fail(TRANSFORM_ALGOS[i] + ": Unexpected exception " + ex);
             }
             try {
                 tm = factory.newTransform
                     (algo, new TestUtils.MyOwnC14nParameterSpec());
-                fail(TRANSFORM_ALGOS[i] + 
-                     ": Should raise an IAPE for invalid parameters"); 
+                fail(TRANSFORM_ALGOS[i] +
+                     ": Should raise an IAPE for invalid parameters");
             } catch (InvalidAlgorithmParameterException iape) {
             } catch (Exception ex) {
-                fail(TRANSFORM_ALGOS[i] + 
-                     ": Should raise a IAPE instead of " + ex); 
+                fail(TRANSFORM_ALGOS[i] +
+                     ": Should raise a IAPE instead of " + ex);
             }
         }
 
         try {
-            tm = factory.newTransform(null, (TransformParameterSpec) null); 
-            fail("Should raise a NPE for null algo"); 
+            tm = factory.newTransform(null, (TransformParameterSpec) null);
+            fail("Should raise a NPE for null algo");
         } catch (NullPointerException npe) {
         } catch (Exception ex) {
-            fail("Should raise a NPE instead of " + ex); 
+            fail("Should raise a NPE instead of " + ex);
         }
 
         try {
             tm = factory.newTransform
-                ("non-existent", (TransformParameterSpec) null); 
-            fail("Should raise an NSAE for non-existent algos"); 
+                ("non-existent", (TransformParameterSpec) null);
+            fail("Should raise an NSAE for non-existent algos");
         } catch (NoSuchAlgorithmException nsae) {
         } catch (Exception ex) {
-            fail("Should raise an NSAE instead of " + ex); 
+            fail("Should raise an NSAE instead of " + ex);
         }
     }
 

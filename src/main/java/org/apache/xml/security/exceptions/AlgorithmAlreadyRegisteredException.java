@@ -20,7 +20,7 @@ package org.apache.xml.security.exceptions;
 
 public class AlgorithmAlreadyRegisteredException extends XMLSecurityException {
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
 
@@ -73,5 +73,5 @@ public class AlgorithmAlreadyRegisteredException extends XMLSecurityException {
     ) {
         super(originalException, msgID, exArgs);
     }
-    
+
 }

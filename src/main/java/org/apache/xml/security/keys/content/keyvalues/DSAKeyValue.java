@@ -99,13 +99,13 @@ public class DSAKeyValue extends SignatureElementProxy implements KeyValueConten
                 new DSAPublicKeySpec(
                     this.getBigIntegerFromChildElement(
                         Constants._TAG_Y, Constants.SignatureSpecNS
-                    ), 
+                    ),
                     this.getBigIntegerFromChildElement(
                         Constants._TAG_P, Constants.SignatureSpecNS
-                    ), 
+                    ),
                     this.getBigIntegerFromChildElement(
                         Constants._TAG_Q, Constants.SignatureSpecNS
-                    ), 
+                    ),
                     this.getBigIntegerFromChildElement(
                         Constants._TAG_G, Constants.SignatureSpecNS
                     )

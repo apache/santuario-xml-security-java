@@ -274,7 +274,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
      * @throws TransformerException
      * @throws XMLSecurityException
      * @throws XMLSignatureException
-     * @throws XPathExpressionException 
+     * @throws XPathExpressionException
      */
     @org.junit.Test
     public void test223excl()
@@ -291,7 +291,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
         xpath.setNamespaceContext(new DSNamespaceContext());
 
         String expression = "(//. | //@* | //namespace::*)[ancestor-or-self::p]";
-        NodeList nodes = 
+        NodeList nodes =
             (NodeList) xpath.evaluate(expression, doc, XPathConstants.NODESET);
 
         Canonicalizer20010315Excl c = new Canonicalizer20010315ExclWithComments();
@@ -304,7 +304,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
     }
 
     /**
-     * Tests node-set as input. See bug 37708. 
+     * Tests node-set as input. See bug 37708.
      * Provided by Pete Hendry.
      */
     @org.junit.Test
@@ -336,7 +336,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
             + "</env:Body>";
 
         Document doc = this.db.parse(new InputSource(new StringReader(XML)));
-        Canonicalizer20010315ExclOmitComments c14n = 
+        Canonicalizer20010315ExclOmitComments c14n =
             new Canonicalizer20010315ExclOmitComments();
         Set<Node> nodeSet = new HashSet<Node>();
         XMLUtils.getSet(doc.getDocumentElement().getFirstChild(), nodeSet, null, false);
@@ -344,9 +344,9 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
         byte[] bytes = c14n.engineCanonicalize(input, "env ns0 xsi wsu");
         assertEquals(c14nXML, new String(bytes));
     }
-    
+
     /**
-     * Method test24excl - a testcase for SANTUARIO-263 
+     * Method test24excl - a testcase for SANTUARIO-263
      * "Canonicalizer can't handle dynamical created DOM correctly"
      * https://issues.apache.org/jira/browse/SANTUARIO-263
      */
@@ -356,10 +356,10 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
             this.db.parse(
                 getAbsolutePath(
                     "src/test/resources/org/apache/xml/security/c14n/inExcl/example2_4.xml"));
-        Node root = 
+        Node root =
             doc.getElementsByTagNameNS("http://example.net", "elem2").item(0);
         Canonicalizer20010315Excl c = new Canonicalizer20010315ExclWithComments();
-        byte[] reference = 
+        byte[] reference =
             JavaUtils.getBytesFromFile(getAbsolutePath(
                 "src/test/resources/org/apache/xml/security/c14n/inExcl/example2_4_c14nized.xml"));
         byte[] result = c.engineCanonicalizeSubTree(root);
@@ -369,7 +369,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
     }
 
     /**
-     * Method test24Aexcl - a testcase for SANTUARIO-263 
+     * Method test24Aexcl - a testcase for SANTUARIO-263
      * "Canonicalizer can't handle dynamical created DOM correctly"
      * https://issues.apache.org/jira/browse/SANTUARIO-263
      */
@@ -387,7 +387,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
 
         Node root = doc.getElementsByTagNameNS("http://example.net", "elem2").item(0);
         Canonicalizer20010315Excl c = new Canonicalizer20010315ExclWithComments();
-        byte[] reference = 
+        byte[] reference =
             JavaUtils.getBytesFromFile(getAbsolutePath(
                 "src/test/resources/org/apache/xml/security/c14n/inExcl/example2_4_c14nized.xml"));
         byte[] result = c.engineCanonicalizeSubTree(root);

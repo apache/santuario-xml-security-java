@@ -37,7 +37,7 @@ import org.w3c.dom.Element;
  * An abstract class representing a SignatureMethod. Subclasses implement
  * a specific XML DSig signature algorithm.
  */
-abstract class AbstractDOMSignatureMethod extends BaseStructure 
+abstract class AbstractDOMSignatureMethod extends BaseStructure
     implements SignatureMethod {
 
     // denotes the type of signature algorithm

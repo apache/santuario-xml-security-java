@@ -148,7 +148,7 @@ public class XIncludeHandler extends DefaultHandler {
             } catch (URISyntaxException ex) {
                 throw new SAXException(ex);
             }
-            
+
             if (document == null) {
                 DOMResult domResult = new DOMResult();
                 try {

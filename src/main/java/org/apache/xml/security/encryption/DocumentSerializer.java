@@ -37,7 +37,7 @@ import org.xml.sax.SAXException;
  * Converts <code>String</code>s into <code>Node</code>s and visa versa.
  */
 public class DocumentSerializer extends AbstractSerializer {
-    
+
     /**
      * @param source
      * @param ctx
@@ -48,7 +48,7 @@ public class DocumentSerializer extends AbstractSerializer {
         byte[] fragment = createContext(source, ctx);
         return deserialize(ctx, new InputSource(new ByteArrayInputStream(fragment)));
     }
-    
+
     /**
      * @param source
      * @param ctx
@@ -59,7 +59,7 @@ public class DocumentSerializer extends AbstractSerializer {
         String fragment = createContext(source, ctx);
         return deserialize(ctx, new InputSource(new StringReader(fragment)));
     }
-    
+
     /**
      * @param ctx
      * @param inputSource
@@ -101,5 +101,5 @@ public class DocumentSerializer extends AbstractSerializer {
             }
         }
     }
-    
+
 }

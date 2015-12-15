@@ -47,7 +47,7 @@ public class HereSigner {
     static {
         org.apache.xml.security.Init.init();
     }
-    
+
     /**
      * Method main
      *
@@ -68,7 +68,7 @@ public class HereSigner {
 
         ks.load(fis, keystorePass.toCharArray());
 
-        PrivateKey privateKey = 
+        PrivateKey privateKey =
             (PrivateKey) ks.getKey(privateKeyAlias, privateKeyPass.toCharArray());
         javax.xml.parsers.DocumentBuilderFactory dbf =
             javax.xml.parsers.DocumentBuilderFactory.newInstance();
@@ -80,7 +80,7 @@ public class HereSigner {
 
         String BaseURI = signatureFile.toURI().toURL().toString();
         ElementProxy.setDefaultPrefix(Constants.SignatureSpecNS, "prof");
-        XMLSignature sig = 
+        XMLSignature sig =
             new XMLSignature(doc, BaseURI, XMLSignature.ALGO_ID_SIGNATURE_DSA);
 
         doc.appendChild(sig.getElement());

@@ -32,7 +32,7 @@ import org.w3c.dom.Element;
 
 /**
  * Provides content model support for the <code>dsig11:DEREncodedKeyvalue</code> element.
- * 
+ *
  * @author Brent Putman (putmanb@georgetown.edu)
  */
 public class DEREncodedKeyValue extends Signature11ElementProxy implements KeyInfoContent {
@@ -68,7 +68,7 @@ public class DEREncodedKeyValue extends Signature11ElementProxy implements KeyIn
      * Constructor DEREncodedKeyValue
      *
      * @param doc
-     * @param encodedKey 
+     * @param encodedKey
      */
     public DEREncodedKeyValue(Document doc, byte[] encodedKey) {
         super(doc);

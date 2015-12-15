@@ -29,11 +29,11 @@ import org.apache.xml.security.exceptions.XMLSecurityException;
 public class ResourceResolverException extends XMLSecurityException {
 
     private static final long serialVersionUID = 1L;
-    
+
     private String uri = null;
-    
+
     private String baseURI = null;
-    
+
     /**
      * Constructor ResourceResolverException
      *
@@ -98,7 +98,7 @@ public class ResourceResolverException extends XMLSecurityException {
     }
 
     /**
-     * 
+     *
      * @param uri
      */
     public void setURI(String uri) {
@@ -106,7 +106,7 @@ public class ResourceResolverException extends XMLSecurityException {
     }
 
     /**
-     * 
+     *
      * @return the uri
      */
     public String getURI() {
@@ -114,7 +114,7 @@ public class ResourceResolverException extends XMLSecurityException {
     }
 
     /**
-     * 
+     *
      * @param baseURI
      */
     public void setbaseURI(String baseURI) {
@@ -122,11 +122,11 @@ public class ResourceResolverException extends XMLSecurityException {
     }
 
     /**
-     * 
+     *
      * @return the baseURI
      */
     public String getbaseURI() {
         return this.baseURI;
     }
-    
+
 }

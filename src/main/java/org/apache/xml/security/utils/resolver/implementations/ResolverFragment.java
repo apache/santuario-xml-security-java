@@ -39,17 +39,17 @@ public class ResolverFragment extends ResourceResolverSpi {
 
     private static org.slf4j.Logger log =
         org.slf4j.LoggerFactory.getLogger(ResolverFragment.class);
-    
+
     @Override
     public boolean engineIsThreadSafe() {
         return true;
     }
-    
+
     /**
      * @inheritDoc
      */
     @Override
-    public XMLSignatureInput engineResolveURI(ResourceResolverContext context) 
+    public XMLSignatureInput engineResolveURI(ResourceResolverContext context)
         throws ResourceResolverException {
 
         Document doc = context.attr.getOwnerElement().getOwnerDocument();
@@ -104,9 +104,9 @@ public class ResolverFragment extends ResourceResolverSpi {
 
         result.setMIMEType("text/xml");
         if (context.baseUri != null && context.baseUri.length() > 0) {
-            result.setSourceURI(context.baseUri.concat(context.uriToResolve));      
+            result.setSourceURI(context.baseUri.concat(context.uriToResolve));
         } else {
-            result.setSourceURI(context.uriToResolve);      
+            result.setSourceURI(context.uriToResolve);
         }
         return result;
     }
@@ -123,8 +123,8 @@ public class ResolverFragment extends ResourceResolverSpi {
             }
             return false;
         }
-        
-        if (context.uriToResolve.equals("") || 
+
+        if (context.uriToResolve.equals("") ||
             context.uriToResolve.charAt(0) == '#' && !context.uriToResolve.startsWith("#xpointer(")
         ) {
             if (log.isDebugEnabled()) {

@@ -41,41 +41,41 @@ public class SecureXSLTTest extends org.junit.Assert {
 
         String fs = System.getProperty("file.separator");
         String base = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
-        
-        File baseDir = new File(base + fs + "src/test/resources" 
+
+        File baseDir = new File(base + fs + "src/test/resources"
             + fs + "javax" + fs + "xml" + fs + "crypto", "dsig");
 
         testSignature(new File(baseDir, "signature1.xml"));
     }
-    
+
     public void testSignature2() throws Exception {
 
         String fs = System.getProperty("file.separator");
         String base = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
-        
-        File baseDir = new File(base + fs + "src/test/resources" 
+
+        File baseDir = new File(base + fs + "src/test/resources"
             + fs + "javax" + fs + "xml" + fs + "crypto", "dsig");
 
         testSignature(new File(baseDir, "signature2.xml"));
     }
-    
+
     public void testSignature3() throws Exception {
 
         String fs = System.getProperty("file.separator");
         String base = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
-        
-        File baseDir = new File(base + fs + "src/test/resources" 
+
+        File baseDir = new File(base + fs + "src/test/resources"
             + fs + "javax" + fs + "xml" + fs + "crypto", "dsig");
 
         testSignature(new File(baseDir, "signature3.xml"));
     }
-    
+
     private void testSignature(File signatureFile) throws Exception {
 
         XMLSignatureFactory fac = XMLSignatureFactory.getInstance("DOM");
         File f = new File("doc.xml");
-        
-        Document doc = 
+
+        Document doc =
             XMLUtils.createDocumentBuilder(false).parse(new FileInputStream(signatureFile));
 
         NodeList nl =
@@ -86,7 +86,7 @@ public class SecureXSLTTest extends org.junit.Assert {
 
         DOMValidateContext valContext = new DOMValidateContext
             (new KeySelectors.KeyValueKeySelector(), nl.item(0));
-        // enable reference caching in your validation context 
+        // enable reference caching in your validation context
         valContext.setProperty("javax.xml.crypto.dsig.cacheReference", Boolean.TRUE);
 
         try {

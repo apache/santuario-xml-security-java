@@ -76,14 +76,14 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
     public PublicKey engineLookupAndResolvePublicKey(
            Element element, String baseURI, StorageResolver storage
     ) {
-        if (!XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_RETRIEVALMETHOD)) {      
+        if (!XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_RETRIEVALMETHOD)) {
             return null;
         }
 
         try {
             // Create a retrieval method over the given element
             RetrievalMethod rm = new RetrievalMethod(element, baseURI);
-            String type = rm.getType();		   
+            String type = rm.getType();		
             XMLSignatureInput resource = resolveInput(rm, baseURI, secureValidation);
             if (RetrievalMethod.TYPE_RAWX509.equals(type)) {
                 // a raw certificate, direct parsing is done!
@@ -116,7 +116,7 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
                      return null;
                  }
              }
-            
+
              return resolveKey(e, baseURI, storage);
          } catch (XMLSecurityException ex) {
              if (log.isDebugEnabled()) {
@@ -138,7 +138,7 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
              if (log.isDebugEnabled()) {
                  log.debug("SAXException", e);
              }
-         } 
+         }
          return null;
     }
 
@@ -151,18 +151,18 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
      */
     public X509Certificate engineLookupResolveX509Certificate(
         Element element, String baseURI, StorageResolver storage) {
-        if (!XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_RETRIEVALMETHOD)) {      
+        if (!XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_RETRIEVALMETHOD)) {
              return null;
         }
 
         try {
             RetrievalMethod rm = new RetrievalMethod(element, baseURI);
-            String type = rm.getType();		   
+            String type = rm.getType();		
             XMLSignatureInput resource = resolveInput(rm, baseURI, secureValidation);
             if (RetrievalMethod.TYPE_RAWX509.equals(type)) {
                 return getRawCertificate(resource);
             }
-            
+
             Element e = obtainReferenceElement(resource, secureValidation);
 
             // Check to make sure that the reference is not to another RetrievalMethod
@@ -186,7 +186,7 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
                     return null;
                 }
             }
-            
+
             return resolveCertificate(e, baseURI, storage);
         } catch (XMLSecurityException ex) {
             if (log.isDebugEnabled()) {
@@ -208,17 +208,17 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
             if (log.isDebugEnabled()) {
                 log.debug("SAXException", e);
             }
-        } 
+        }
         return null;
     }
-   
+
     /**
      * Retrieves a x509Certificate from the given information
      * @param e
      * @param baseURI
      * @param storage
      * @return a x509Certificate from the given information
-     * @throws KeyResolverException 
+     * @throws KeyResolverException
      */
     private static X509Certificate resolveCertificate(
         Element e, String baseURI, StorageResolver storage
@@ -228,19 +228,19 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
                 + e.getLocalName() + " Element");
         }
         // An element has been provided
-        if (e != null) { 
+        if (e != null) {
             return KeyResolver.getX509Certificate(e, baseURI, storage);
         }
         return null;
-    } 
-   
+    }
+
     /**
      * Retrieves a PublicKey from the given information
      * @param e
      * @param baseURI
      * @param storage
      * @return a PublicKey from the given information
-     * @throws KeyResolverException 
+     * @throws KeyResolverException
      */
     private static PublicKey resolveKey(
         Element e, String baseURI, StorageResolver storage
@@ -250,14 +250,14 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
                 + e.getLocalName() + " Element");
         }
         // An element has been provided
-        if (e != null) { 
+        if (e != null) {
             return KeyResolver.getPublicKey(e, baseURI, storage);
         }
         return null;
     }
-    
-    private static Element obtainReferenceElement(XMLSignatureInput resource, boolean secureValidation) 
-        throws CanonicalizationException, ParserConfigurationException, 
+
+    private static Element obtainReferenceElement(XMLSignatureInput resource, boolean secureValidation)
+        throws CanonicalizationException, ParserConfigurationException,
         IOException, SAXException, KeyResolverException {
         Element e;
         if (resource.isElement()){
@@ -279,19 +279,19 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
 
     private static X509Certificate getRawCertificate(XMLSignatureInput resource)
         throws CanonicalizationException, IOException, CertificateException {
-        byte inputBytes[] = resource.getBytes();	   
+        byte inputBytes[] = resource.getBytes();	
         // if the resource stores a raw certificate, we have to handle it
-        CertificateFactory certFact = 
+        CertificateFactory certFact =
             CertificateFactory.getInstance(XMLX509Certificate.JCA_CERT_ID);
-        X509Certificate cert = (X509Certificate) 
+        X509Certificate cert = (X509Certificate)
             certFact.generateCertificate(new ByteArrayInputStream(inputBytes));
         return cert;
     }
 
     /**
-     * Resolves the input from the given retrieval method 
+     * Resolves the input from the given retrieval method
      * @return the input from the given retrieval method
-     * @throws XMLSecurityException 
+     * @throws XMLSecurityException
      */
     private static XMLSignatureInput resolveInput(
         RetrievalMethod rm, String baseURI, boolean secureValidation
@@ -306,7 +306,7 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
                 log.debug("We have Transforms");
             }
             resource = transforms.performTransforms(resource);
-        }		  
+        }		
         return resource;
     }
 
@@ -322,7 +322,7 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
     ) {
         return null;
     }
-   
+
     private static Element getDocumentElement(Set<Node> set) {
         Iterator<Node> it = set.iterator();
         Element e = null;
@@ -334,7 +334,7 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
             }
         }
         List<Node> parents = new ArrayList<Node>();
-                
+
         // Obtain all the parents of the elemnt
         while (e != null) {
             parents.add(e);

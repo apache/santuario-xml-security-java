@@ -71,7 +71,7 @@ public class CreateBaltimore23Test extends org.junit.Assert {
     private DigestMethod sha1;
     private KeyInfo dsa, rsa;
     private KeySelector kvks = new KeySelectors.KeyValueKeySelector();
-    private KeySelector sks; 
+    private KeySelector sks;
     private Key signingKey;
     private PublicKey validatingKey;
     private Certificate signingCert;
@@ -105,7 +105,7 @@ public class CreateBaltimore23Test extends org.junit.Assert {
         withoutComments = fac.newCanonicalizationMethod
             (CanonicalizationMethod.INCLUSIVE, (C14NMethodParameterSpec) null);
         withComments = fac.newTransform
-            (CanonicalizationMethod.INCLUSIVE_WITH_COMMENTS, 
+            (CanonicalizationMethod.INCLUSIVE_WITH_COMMENTS,
              (TransformParameterSpec) null);
         dsaSha1 = fac.newSignatureMethod(SignatureMethod.DSA_SHA1, null);
         sha1 = fac.newDigestMethod(DigestMethod.SHA1, null);
@@ -126,8 +126,8 @@ public class CreateBaltimore23Test extends org.junit.Assert {
             (withoutComments, dsaSha1, Collections.singletonList
                 (fac.newReference
                     ("", sha1, Collections.singletonList
-                        (fac.newTransform(Transform.ENVELOPED, 
-                         (TransformParameterSpec) null)), 
+                        (fac.newTransform(Transform.ENVELOPED,
+                         (TransformParameterSpec) null)),
                  null, null)));
 
         // create XMLSignature
@@ -165,7 +165,7 @@ public class CreateBaltimore23Test extends org.junit.Assert {
     }
 
     @org.junit.Test
-    public void test_create_signature_enveloping_hmac_sha1_40() 
+    public void test_create_signature_enveloping_hmac_sha1_40()
         throws Exception {
         SignatureMethod hmacSha1 = fac.newSignatureMethod
             (SignatureMethod.HMAC_SHA1, new HMACParameterSpec(40));
@@ -190,7 +190,7 @@ public class CreateBaltimore23Test extends org.junit.Assert {
 
     @org.junit.Test
     public void test_create_signature_enveloping_rsa() throws Exception {
-        test_create_signature_enveloping(rsaSha1, rsa, 
+        test_create_signature_enveloping(rsaSha1, rsa,
             TestUtils.getPrivateKey("RSA"), kvks, false);
     }
 
@@ -213,7 +213,7 @@ public class CreateBaltimore23Test extends org.junit.Assert {
     }
 
     @org.junit.Test
-    public void test_create_signature_retrievalmethod_rawx509crt() 
+    public void test_create_signature_retrievalmethod_rawx509crt()
         throws Exception {
         KeyInfo rm = kifac.newKeyInfo(Collections.singletonList
             (kifac.newRetrievalMethod
@@ -224,14 +224,14 @@ public class CreateBaltimore23Test extends org.junit.Assert {
 
     @org.junit.Test
     public void test_create_signature_x509_crt_crl() throws Exception {
-        
+
         //
         // This test fails with the IBM JDK
         //
         if ("IBM Corporation".equals(System.getProperty("java.vendor"))) {
             return;
         }
-        
+
         List<Object> xds = new ArrayList<Object>();
         CertificateFactory cf = CertificateFactory.getInstance("X.509");
         xds.add(signingCert);
@@ -239,7 +239,7 @@ public class CreateBaltimore23Test extends org.junit.Assert {
         String base = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
         FileInputStream fis = new FileInputStream(
             base + fs + "src/test/resources" + fs + "ie" + fs +
-             "baltimore" + fs + "merlin-examples" + fs + 
+             "baltimore" + fs + "merlin-examples" + fs +
              "merlin-xmldsig-twenty-three" + fs + "certs" + fs + "crl");
         X509CRL crl = (X509CRL) cf.generateCRL(fis);
         fis.close();
@@ -259,7 +259,7 @@ public class CreateBaltimore23Test extends org.junit.Assert {
         if ("IBM Corporation".equals(System.getProperty("java.vendor"))) {
             return;
         }
-        
+
         KeyInfo crt = kifac.newKeyInfo(Collections.singletonList
             (kifac.newX509Data(Collections.singletonList(signingCert))));
 
@@ -275,7 +275,7 @@ public class CreateBaltimore23Test extends org.junit.Assert {
         if ("IBM Corporation".equals(System.getProperty("java.vendor"))) {
             return;
         }
-            
+
         KeyInfo is = kifac.newKeyInfo(Collections.singletonList
             (kifac.newX509Data(Collections.singletonList
             (kifac.newX509IssuerSerial
@@ -303,7 +303,7 @@ public class CreateBaltimore23Test extends org.junit.Assert {
         if ("IBM Corporation".equals(System.getProperty("java.vendor"))) {
             return;
         }
-        
+
         KeyInfo sn = kifac.newKeyInfo(Collections.singletonList
             (kifac.newX509Data(Collections.singletonList
             ("CN=Sean Mullan,DC=sun,DC=com"))));
@@ -314,35 +314,35 @@ public class CreateBaltimore23Test extends org.junit.Assert {
 
     @org.junit.Test
     public void test_create_signature() throws Exception {
-        
+
         //
         // This test fails with the IBM JDK
         //
         if ("IBM Corporation".equals(System.getProperty("java.vendor"))) {
             return;
         }
-        
+
         // set up reusable objects
-        Transform env = fac.newTransform(Transform.ENVELOPED, 
+        Transform env = fac.newTransform(Transform.ENVELOPED,
             (TransformParameterSpec) null);
 
         // create references
         List<Reference> refs = new ArrayList<Reference>();
-        
+
         // Reference 1
         refs.add(fac.newReference("http://www.w3.org/TR/xml-stylesheet", sha1));
 
         // Reference 2
         refs.add(fac.newReference
-            ("http://www.w3.org/Signature/2002/04/xml-stylesheet.b64", 
+            ("http://www.w3.org/Signature/2002/04/xml-stylesheet.b64",
             sha1, Collections.singletonList
-            (fac.newTransform(Transform.BASE64, 
+            (fac.newTransform(Transform.BASE64,
              (TransformParameterSpec) null)), null, null));
 
         // Reference 3
         refs.add(fac.newReference("#object-1", sha1, Collections.singletonList
-            (fac.newTransform(Transform.XPATH, 
-            new XPathFilterParameterSpec("self::text()"))), 
+            (fac.newTransform(Transform.XPATH,
+            new XPathFilterParameterSpec("self::text()"))),
             XMLObject.TYPE, null));
 
         // Reference 4
@@ -373,7 +373,7 @@ public class CreateBaltimore23Test extends org.junit.Assert {
             ("#manifest-1", sha1, null, Manifest.TYPE, null));
 
         // Reference 7
-        refs.add(fac.newReference("#signature-properties-1", sha1, null, 
+        refs.add(fac.newReference("#signature-properties-1", sha1, null,
             SignatureProperties.TYPE, null));
 
         // Reference 8
@@ -390,7 +390,7 @@ public class CreateBaltimore23Test extends org.junit.Assert {
             sha1, Collections.singletonList(env), null, null));
 
         // Reference 11
-        refs.add(fac.newReference("#xpointer(/)", sha1, transforms, 
+        refs.add(fac.newReference("#xpointer(/)", sha1, transforms,
             null, null));
 
         // Reference 12
@@ -398,15 +398,15 @@ public class CreateBaltimore23Test extends org.junit.Assert {
             (fac.newReference("#object-3", sha1, null, XMLObject.TYPE, null));
 
         // Reference 13
-        refs.add(fac.newReference("#object-3", sha1, 
+        refs.add(fac.newReference("#object-3", sha1,
             Collections.singletonList(withComments), XMLObject.TYPE, null));
 
         // Reference 14
-        refs.add(fac.newReference("#xpointer(id('object-3'))", sha1, null, 
+        refs.add(fac.newReference("#xpointer(id('object-3'))", sha1, null,
             XMLObject.TYPE, null));
 
         // Reference 15
-        refs.add(fac.newReference("#xpointer(id('object-3'))", sha1, 
+        refs.add(fac.newReference("#xpointer(id('object-3'))", sha1,
             Collections.singletonList(withComments), XMLObject.TYPE, null));
 
         // Reference 16
@@ -427,7 +427,7 @@ public class CreateBaltimore23Test extends org.junit.Assert {
         XPathFilterParameterSpec xpf = new XPathFilterParameterSpec(
             "ancestor-or-self::dsig:X509Data",
             Collections.singletonMap("dsig", XMLSignature.XMLNS));
-        RetrievalMethod rm = kifac.newRetrievalMethod("#object-4", 
+        RetrievalMethod rm = kifac.newRetrievalMethod("#object-4",
             X509Data.TYPE, Collections.singletonList(fac.newTransform
             (Transform.XPATH, xpf)));
         KeyInfo ki = kifac.newKeyInfo(Collections.singletonList(rm), null);
@@ -439,12 +439,12 @@ public class CreateBaltimore23Test extends org.junit.Assert {
 
         // Object 1
         objs.add(fac.newXMLObject(Collections.singletonList
-            (new DOMStructure(doc.createTextNode("I am the text."))), 
+            (new DOMStructure(doc.createTextNode("I am the text."))),
             "object-1", "text/plain", null));
 
         // Object 2
         objs.add(fac.newXMLObject(Collections.singletonList
-            (new DOMStructure(doc.createTextNode("SSBhbSB0aGUgdGV4dC4="))), 
+            (new DOMStructure(doc.createTextNode("SSBhbSB0aGUgdGV4dC4="))),
             "object-2", "text/plain", Transform.BASE64));
 
         // Object 3
@@ -496,9 +496,9 @@ public class CreateBaltimore23Test extends org.junit.Assert {
         Document docxslt = db.parse(new ByteArrayInputStream(xslt.getBytes()));
         Node xslElem = docxslt.getDocumentElement();
 
-        manTrans.add(fac.newTransform(Transform.XSLT, 
+        manTrans.add(fac.newTransform(Transform.XSLT,
             new XSLTTransformParameterSpec(new DOMStructure(xslElem))));
-        manTrans.add(fac.newTransform(CanonicalizationMethod.INCLUSIVE, 
+        manTrans.add(fac.newTransform(CanonicalizationMethod.INCLUSIVE,
             (TransformParameterSpec) null));
         // Comment out Manifest Reference 3, for some reason xalan is throwing NPE
         // when Transform is processed.
@@ -514,11 +514,11 @@ public class CreateBaltimore23Test extends org.junit.Assert {
         ip.appendChild(doc.createTextNode("192.168.21.138"));
         sa.appendChild(ip);
         SignatureProperty sp = fac.newSignatureProperty
-            (Collections.singletonList(new DOMStructure(sa)), 
+            (Collections.singletonList(new DOMStructure(sa)),
             "#signature", null);
         SignatureProperties sps = fac.newSignatureProperties
             (Collections.singletonList(sp), "signature-properties-1");
-        objs.add(fac.newXMLObject(Collections.singletonList(sps), null, 
+        objs.add(fac.newXMLObject(Collections.singletonList(sps), null,
             null, null));
 
         // Object 4
@@ -537,19 +537,19 @@ public class CreateBaltimore23Test extends org.junit.Assert {
         // create envelope header
         Element envelope = doc.createElementNS
             ("http://example.org/usps", "Envelope");
-        envelope.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns", 
+        envelope.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns",
             "http://example.org/usps");
-        envelope.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:foo", 
+        envelope.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:foo",
             "http://example.org/foo");
         doc.appendChild(envelope);
-        Element dearSir = doc.createElementNS 
+        Element dearSir = doc.createElementNS
             ("http://example.org/usps", "DearSir");
         dearSir.appendChild(doc.createTextNode("foo"));
         envelope.appendChild(dearSir);
         Element body = doc.createElementNS("http://example.org/usps", "Body");
         body.appendChild(doc.createTextNode("bar"));
         envelope.appendChild(body);
-        Element ys = doc.createElementNS 
+        Element ys = doc.createElementNS
             ("http://example.org/usps", "YoursSincerely");
         envelope.appendChild(ys);
 
@@ -579,7 +579,7 @@ public class CreateBaltimore23Test extends org.junit.Assert {
 
         // DOM L2 does not support the creation of DOCTYPEs, so instead
         // we insert it before the document using a StringWriter
-        //	String docType = 
+        //	String docType =
         //	    "<!DOCTYPE Envelope [\n"
         //  	  + "<!ENTITY dsig 'http://www.w3.org/2000/09/xmldsig#'>\n"
         //          + "<!ENTITY c14n 'http://www.w3.org/TR/2001/REC-xml-c14n-20010315'>\n"
@@ -608,7 +608,7 @@ public class CreateBaltimore23Test extends org.junit.Assert {
         DOMValidateContext dvc = new DOMValidateContext
             (new X509KeySelector(ks), sigElement);
         File f = new File(
-            System.getProperty("dir.test.vector.baltimore") + 
+            System.getProperty("dir.test.vector.baltimore") +
             System.getProperty("file.separator") +
             "merlin-xmldsig-twenty-three" +
             System.getProperty("file.separator"));
@@ -616,11 +616,11 @@ public class CreateBaltimore23Test extends org.junit.Assert {
         dvc.setURIDereferencer(ud);
 
         // register Notaries ID
-        //	Element notariesElem = 
+        //	Element notariesElem =
         //	    (Element) doc.getElementsByTagName("Notaries").item(0);
         //	dvc.setIdAttributeNS(notariesElem, "", "Id");
         //	notariesElem.setIdAttributeNS("", "Id", true);
-            
+
         XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
 
         assertTrue(sig.equals(sig2));
@@ -642,9 +642,9 @@ public class CreateBaltimore23Test extends org.junit.Assert {
         Reference ref;
         if (b64) {
             ref = fac.newReference
-                ("http://www.w3.org/Signature/2002/04/xml-stylesheet.b64", 
+                ("http://www.w3.org/Signature/2002/04/xml-stylesheet.b64",
                 sha1, Collections.singletonList
-                (fac.newTransform(Transform.BASE64, 
+                (fac.newTransform(Transform.BASE64,
                  (TransformParameterSpec) null)), null, null);
         } else {
             ref = fac.newReference
@@ -652,7 +652,7 @@ public class CreateBaltimore23Test extends org.junit.Assert {
         }
 
         // create SignedInfo
-        SignedInfo si = fac.newSignedInfo(withoutComments, sm, 
+        SignedInfo si = fac.newSignedInfo(withoutComments, sm,
             Collections.singletonList(ref));
 
         Document doc = db.newDocument();
@@ -681,9 +681,9 @@ public class CreateBaltimore23Test extends org.junit.Assert {
             base + fs + "src/test/resources" + fs + "ie" + fs +
             "baltimore" + fs + "merlin-examples" + fs +
             "merlin-xmldsig-twenty-three" + fs);
-        dvc.setBaseURI(f.toURI().toString()); 
+        dvc.setBaseURI(f.toURI().toString());
         dvc.setURIDereferencer(ud);
-            
+
         XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
 
         assertTrue(sig.equals(sig2));
@@ -691,27 +691,27 @@ public class CreateBaltimore23Test extends org.junit.Assert {
     }
 
     private void test_create_signature_enveloping
-        (SignatureMethod sm, KeyInfo ki, Key signingKey, KeySelector ks, 
+        (SignatureMethod sm, KeyInfo ki, Key signingKey, KeySelector ks,
         boolean b64) throws Exception {
 
         // create reference
         Reference ref;
         if (b64) {
             ref = fac.newReference("#object", sha1, Collections.singletonList
-                (fac.newTransform(Transform.BASE64, 
+                (fac.newTransform(Transform.BASE64,
                  (TransformParameterSpec) null)), null, null);
         } else {
             ref = fac.newReference("#object", sha1);
         }
 
         // create SignedInfo
-        SignedInfo si = fac.newSignedInfo(withoutComments, sm, 
+        SignedInfo si = fac.newSignedInfo(withoutComments, sm,
             Collections.singletonList(ref));
 
         Document doc = db.newDocument();
         // create Objects
         XMLObject obj = fac.newXMLObject(Collections.singletonList
-            (new DOMStructure(doc.createTextNode("some text"))), 
+            (new DOMStructure(doc.createTextNode("some text"))),
             "object", null, null);
 
         // create XMLSignature

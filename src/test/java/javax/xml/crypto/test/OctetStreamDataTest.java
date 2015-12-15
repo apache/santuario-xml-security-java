@@ -34,16 +34,16 @@ public class OctetStreamDataTest extends org.junit.Assert {
 
     @org.junit.Test
     public void testConstructor() {
-        // test OctetStreamData(InputStream) and 
+        // test OctetStreamData(InputStream) and
         // OctetStreamData(InputStream, String, String)
         OctetStreamData osdata;
         try {
-            osdata = new OctetStreamData(null); 
-            fail("Should raise a NPE for null input stream"); 
+            osdata = new OctetStreamData(null);
+            fail("Should raise a NPE for null input stream");
         } catch (NullPointerException npe) {}	
         try {
             osdata = new OctetStreamData(null, "uri", "mimeType");
-            fail("Should raise a NPE for null input stream"); 
+            fail("Should raise a NPE for null input stream");
         } catch (NullPointerException npe) {}
 
         int len = 300;
@@ -51,12 +51,12 @@ public class OctetStreamDataTest extends org.junit.Assert {
         new Random().nextBytes(in);
         ByteArrayInputStream bais = new ByteArrayInputStream(in);
         try {
-            osdata = new OctetStreamData(bais); 
+            osdata = new OctetStreamData(bais);
             assertNotNull(osdata);
             assertEquals(osdata.getOctetStream(), bais);
             assertNull(osdata.getURI());
             assertNull(osdata.getMimeType());
-        
+
             osdata = new OctetStreamData(bais, null, null);
             assertNotNull(osdata);
             assertEquals(osdata.getOctetStream(), bais);

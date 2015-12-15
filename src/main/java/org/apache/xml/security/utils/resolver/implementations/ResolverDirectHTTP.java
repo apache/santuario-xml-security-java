@@ -61,10 +61,10 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
         org.slf4j.LoggerFactory.getLogger(ResolverDirectHTTP.class);
 
     /** Field properties[] */
-    private static final String properties[] = { 
+    private static final String properties[] = {
                                                  "http.proxy.host", "http.proxy.port",
                                                  "http.proxy.username", "http.proxy.password",
-                                                 "http.basic.username", "http.basic.password" 
+                                                 "http.basic.username", "http.basic.password"
                                                };
 
     /** Field HttpProxyHost */
@@ -89,7 +89,7 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
     public boolean engineIsThreadSafe() {
         return true;
     }
-    
+
     /**
      * @inheritDoc
      */
@@ -246,7 +246,7 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
     }
 
     /**
-     * @inheritDoc 
+     * @inheritDoc
      */
     public String[] engineGetPropertyKeys() {
         return ResolverDirectHTTP.properties.clone();
@@ -259,14 +259,14 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
         } else {
             newUri = new URI(baseURI).resolve(uri);
         }
-        
+
         // if the URI contains a fragment, ignore it
         if (newUri.getFragment() != null) {
-            URI uriNewNoFrag = 
+            URI uriNewNoFrag =
                 new URI(newUri.getScheme(), newUri.getSchemeSpecificPart(), null);
             return uriNewNoFrag;
         }
         return newUri;
     }
-    
+
 }

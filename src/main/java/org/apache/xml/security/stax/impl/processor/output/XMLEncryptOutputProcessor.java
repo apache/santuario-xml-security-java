@@ -177,16 +177,16 @@ public class XMLEncryptOutputProcessor extends AbstractEncryptOutputProcessor {
                         }
 
                         createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_xenc_EncryptionMethod);
-                        
+
                         createKeyInfoStructureForEncryptedKey(outputProcessorChain, keyWrappingToken);
-                        
+
                         createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_xenc_CipherData, false, null);
                         createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_xenc_CipherValue, false, null);
 
                         //encrypt the symmetric session key with the public key from the receiver:
                         String jceid = JCEAlgorithmMapper.translateURItoJCEID(encryptionKeyTransportAlgorithm);
                         if (jceid == null) {
-                            throw new XMLSecurityException("algorithms.NoSuchMap", 
+                            throw new XMLSecurityException("algorithms.NoSuchMap",
                                                            new Object[] {encryptionKeyTransportAlgorithm});
                         }
 
@@ -261,21 +261,21 @@ public class XMLEncryptOutputProcessor extends AbstractEncryptOutputProcessor {
 
                         createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_KeyInfo);
                     }
-                    
+
                     protected void createKeyInfoStructureForEncryptedKey(
                         OutputProcessorChain outputProcessorChain,
                         OutboundSecurityToken securityToken
                     ) throws XMLStreamException, XMLSecurityException {
-                        SecurityTokenConstants.KeyIdentifier keyIdentifier = 
+                        SecurityTokenConstants.KeyIdentifier keyIdentifier =
                             getSecurityProperties().getEncryptionKeyIdentifier();
 
                         X509Certificate[] x509Certificates = securityToken.getX509Certificates();
                         if (x509Certificates == null) {
-                            if (securityToken.getPublicKey() != null 
+                            if (securityToken.getPublicKey() != null
                                 && SecurityTokenConstants.KeyIdentifier_KeyValue.equals(keyIdentifier)) {
                                 createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_KeyInfo, true, null);
-                                
-                                XMLSecurityUtils.createKeyValueTokenStructure(this, outputProcessorChain, 
+
+                                XMLSecurityUtils.createKeyValueTokenStructure(this, outputProcessorChain,
                                                                               securityToken.getPublicKey());
                                 createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_KeyInfo);
                             }
@@ -284,7 +284,7 @@ public class XMLEncryptOutputProcessor extends AbstractEncryptOutputProcessor {
 
                         if (!SecurityTokenConstants.KeyIdentifier_NoKeyInfo.equals(keyIdentifier)) {
                             createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_KeyInfo, true, null);
-    
+
                             if (keyIdentifier == null || SecurityTokenConstants.KeyIdentifier_IssuerSerial.equals(keyIdentifier)) {
                                 XMLSecurityUtils.createX509IssuerSerialStructure(this, outputProcessorChain, x509Certificates);
                             } else if (SecurityTokenConstants.KeyIdentifier_KeyValue.equals(keyIdentifier)) {
@@ -296,10 +296,10 @@ public class XMLEncryptOutputProcessor extends AbstractEncryptOutputProcessor {
                             } else if (SecurityTokenConstants.KeyIdentifier_X509SubjectName.equals(keyIdentifier)) {
                                 XMLSecurityUtils.createX509SubjectNameStructure(this, outputProcessorChain, x509Certificates);
                             } else {
-                                throw new XMLSecurityException("stax.unsupportedToken", 
+                                throw new XMLSecurityException("stax.unsupportedToken",
                                                                new Object[] {keyIdentifier});
                             }
-                            
+
                             createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_KeyInfo);
                         }
                     }

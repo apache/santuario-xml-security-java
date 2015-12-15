@@ -44,7 +44,7 @@ import org.xml.sax.SAXException;
  * @version $Revision: 1354898 $ $Date: 2012-06-28 11:19:02 +0100 (Thu, 28 Jun 2012) $
  */
 public class XMLSec {
-    
+
     static {
         try {
             URL resource = ClassLoaderUtils.getResource("security-config.xml", XMLSec.class);
@@ -52,7 +52,7 @@ public class XMLSec {
                 throw new RuntimeException("security-config.xml not found in classpath");
             }
             Init.init(resource.toURI(), XMLSec.class);
-            
+
             try {
                 XMLSecurityConstants.setJaxbContext(
                         JAXBContext.newInstance(
@@ -60,10 +60,10 @@ public class XMLSec {
                             org.apache.xml.security.binding.xmlenc11.ObjectFactory.class,
                             org.apache.xml.security.binding.xmldsig.ObjectFactory.class,
                             org.apache.xml.security.binding.xmldsig11.ObjectFactory.class,
-                            org.apache.xml.security.binding.excc14n.ObjectFactory.class 
+                            org.apache.xml.security.binding.excc14n.ObjectFactory.class
                         )
                 );
-                
+
                 Schema schema = XMLSecurityUtils.loadXMLSecuritySchemas();
                 XMLSecurityConstants.setJaxbSchemas(schema);
             } catch (JAXBException e) {
@@ -77,7 +77,7 @@ public class XMLSec {
             throw new RuntimeException(e.getMessage(), e);
         }
     }
-    
+
     public static void init() {
         // Do nothing
     }
@@ -132,9 +132,9 @@ public class XMLSec {
         if (securityProperties.getActions() == null || securityProperties.getActions().isEmpty()) {
             throw new XMLSecurityConfigurationException("stax.noOutputAction");
         }
-        
+
         // Check for duplicate actions
-        if (new HashSet<XMLSecurityConstants.Action>(securityProperties.getActions()).size() 
+        if (new HashSet<XMLSecurityConstants.Action>(securityProperties.getActions()).size()
             != securityProperties.getActions().size()) {
             throw new XMLSecurityConfigurationException("stax.duplicateActions");
         }

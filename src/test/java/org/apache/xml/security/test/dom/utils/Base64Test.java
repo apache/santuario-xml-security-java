@@ -33,7 +33,7 @@ public class Base64Test extends org.junit.Assert {
 
     static org.slf4j.Logger log =
         org.slf4j.LoggerFactory.getLogger(Base64Test.class);
-    
+
     static {
         org.apache.xml.security.Init.init();
     }
@@ -57,7 +57,7 @@ public class Base64Test extends org.junit.Assert {
     @org.junit.Test
     public void testWrap1() throws java.io.UnsupportedEncodingException,Exception {
         String inputData = "The quick brown fox jumps over the lazy dog and some extr";
-        String expectedResult = 
+        String expectedResult =
             "VGhlIHF1aWNrIGJyb3duIGZveCBqdW1wcyBvdmVyIHRoZSBsYXp5IGRvZyBhbmQgc29tZSBleHRy";
         String result = Base64.encode(inputData.getBytes("UTF-8"));
         assertEquals("Result of encoding", result, expectedResult);
@@ -73,14 +73,14 @@ public class Base64Test extends org.junit.Assert {
     @org.junit.Test
     public void testWrap2() throws java.io.UnsupportedEncodingException, Exception {
 
-        String inputData = 
+        String inputData =
             "The quick brown fox jumps over the lazy dog and some extra text that will cause a line wrap";
         String expectedResult = null;
         if (XMLUtils.ignoreLineBreaks()) {
-            expectedResult = 
+            expectedResult =
                 "VGhlIHF1aWNrIGJyb3duIGZveCBqdW1wcyBvdmVyIHRoZSBsYXp5IGRvZyBhbmQgc29tZSBleHRyYSB0ZXh0IHRoYXQgd2lsbCBjYXVzZSBhIGxpbmUgd3JhcA==";
         } else {
-            expectedResult = 
+            expectedResult =
                 "VGhlIHF1aWNrIGJyb3duIGZveCBqdW1wcyBvdmVyIHRoZSBsYXp5IGRvZyBhbmQgc29tZSBleHRy\nYSB0ZXh0IHRoYXQgd2lsbCBjYXVzZSBhIGxpbmUgd3JhcA==";
         }
         String result = Base64.encode(inputData.getBytes("UTF-8"));

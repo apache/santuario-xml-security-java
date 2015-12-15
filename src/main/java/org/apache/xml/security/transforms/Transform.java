@@ -70,45 +70,45 @@ public final class Transform extends SignatureElementProxy {
         org.slf4j.LoggerFactory.getLogger(Transform.class);
 
     /** All available Transform classes are registered here */
-    private static Map<String, Class<? extends TransformSpi>> transformSpiHash = 
+    private static Map<String, Class<? extends TransformSpi>> transformSpiHash =
         new ConcurrentHashMap<String, Class<? extends TransformSpi>>();
-    
+
     private final TransformSpi transformSpi;
     private boolean secureValidation;
-    
+
     /**
-     * Generates a Transform object that implements the specified 
+     * Generates a Transform object that implements the specified
      * <code>Transform algorithm</code> URI.
      *
      * @param doc the proxy {@link Document}
-     * @param algorithmURI <code>Transform algorithm</code> URI representation, 
-     * such as specified in 
+     * @param algorithmURI <code>Transform algorithm</code> URI representation,
+     * such as specified in
      * <a href=http://www.w3.org/TR/xmldsig-core/#sec-TransformAlg>Transform algorithm </a>
      * @throws InvalidTransformException
      */
     public Transform(Document doc, String algorithmURI) throws InvalidTransformException {
         this(doc, algorithmURI, (NodeList)null);
     }
-    
+
     /**
-     * Generates a Transform object that implements the specified 
+     * Generates a Transform object that implements the specified
      * <code>Transform algorithm</code> URI.
      *
-     * @param algorithmURI <code>Transform algorithm</code> URI representation, 
-     * such as specified in 
+     * @param algorithmURI <code>Transform algorithm</code> URI representation,
+     * such as specified in
      * <a href=http://www.w3.org/TR/xmldsig-core/#sec-TransformAlg>Transform algorithm </a>
      * @param contextChild the child element of <code>Transform</code> element
      * @param doc the proxy {@link Document}
      * @throws InvalidTransformException
      */
-    public Transform(Document doc, String algorithmURI, Element contextChild) 
+    public Transform(Document doc, String algorithmURI, Element contextChild)
         throws InvalidTransformException {
         super(doc);
         HelperNodeList contextNodes = null;
-        
+
         if (contextChild != null) {
             contextNodes = new HelperNodeList();
-    
+
             XMLUtils.addReturnToElement(doc, contextNodes);
             contextNodes.appendChild(contextChild);
             XMLUtils.addReturnToElement(doc, contextNodes);
@@ -120,7 +120,7 @@ public final class Transform extends SignatureElementProxy {
     /**
      * Constructs {@link Transform}
      *
-     * @param doc the {@link Document} in which <code>Transform</code> will be 
+     * @param doc the {@link Document} in which <code>Transform</code> will be
      * placed
      * @param algorithmURI URI representation of <code>Transform algorithm</code>
      * @param contextNodes the child node list of <code>Transform</code> element
@@ -150,7 +150,7 @@ public final class Transform extends SignatureElementProxy {
             Object exArgs[] = { Constants._ATT_ALGORITHM, Constants._TAG_TRANSFORM };
             throw new TransformationException("xml.WrongContent", exArgs);
         }
-     
+
         Class<? extends TransformSpi> transformSpiClass = transformSpiHash.get(algorithmURI);
         if (transformSpiClass == null) {
             Object exArgs[] = { algorithmURI };
@@ -170,21 +170,21 @@ public final class Transform extends SignatureElementProxy {
             );
         }
     }
-    
+
     /**
      * Registers implementing class of the Transform algorithm with algorithmURI
      *
      * @param algorithmURI algorithmURI URI representation of <code>Transform algorithm</code>
-     * @param implementingClass <code>implementingClass</code> the implementing 
+     * @param implementingClass <code>implementingClass</code> the implementing
      * class of {@link TransformSpi}
-     * @throws AlgorithmAlreadyRegisteredException if specified algorithmURI 
+     * @throws AlgorithmAlreadyRegisteredException if specified algorithmURI
      * is already registered
      * @throws SecurityException if a security manager is installed and the
      *    caller does not have permission to register the transform
      */
     @SuppressWarnings("unchecked")
     public static void register(String algorithmURI, String implementingClass)
-        throws AlgorithmAlreadyRegisteredException, ClassNotFoundException, 
+        throws AlgorithmAlreadyRegisteredException, ClassNotFoundException,
             InvalidTransformException {
         JavaUtils.checkRegisterPermission();
         // are we already registered?
@@ -193,19 +193,19 @@ public final class Transform extends SignatureElementProxy {
             Object exArgs[] = { algorithmURI, transformSpi };
             throw new AlgorithmAlreadyRegisteredException("algorithm.alreadyRegistered", exArgs);
         }
-        Class<? extends TransformSpi> transformSpiClass = 
+        Class<? extends TransformSpi> transformSpiClass =
             (Class<? extends TransformSpi>)
                 ClassLoaderUtils.loadClass(implementingClass, Transform.class);
         transformSpiHash.put(algorithmURI, transformSpiClass);
     }
-    
+
     /**
      * Registers implementing class of the Transform algorithm with algorithmURI
      *
      * @param algorithmURI algorithmURI URI representation of <code>Transform algorithm</code>
-     * @param implementingClass <code>implementingClass</code> the implementing 
+     * @param implementingClass <code>implementingClass</code> the implementing
      * class of {@link TransformSpi}
-     * @throws AlgorithmAlreadyRegisteredException if specified algorithmURI 
+     * @throws AlgorithmAlreadyRegisteredException if specified algorithmURI
      * is already registered
      * @throws SecurityException if a security manager is installed and the
      *    caller does not have permission to register the transform
@@ -260,7 +260,7 @@ public final class Transform extends SignatureElementProxy {
             Transforms.TRANSFORM_XPATH2FILTER, TransformXPath2Filter.class
         );
     }
-    
+
     /**
      * Returns the URI representation of Transformation algorithm
      *
@@ -273,9 +273,9 @@ public final class Transform extends SignatureElementProxy {
     /**
      * Transforms the input, and generates {@link XMLSignatureInput} as output.
      *
-     * @param input input {@link XMLSignatureInput} which can supplied Octet 
+     * @param input input {@link XMLSignatureInput} which can supplied Octet
      * Stream and NodeSet as Input of Transformation
-     * @return the {@link XMLSignatureInput} class as the result of 
+     * @return the {@link XMLSignatureInput} class as the result of
      * transformation
      * @throws CanonicalizationException
      * @throws IOException
@@ -287,14 +287,14 @@ public final class Transform extends SignatureElementProxy {
                InvalidCanonicalizerException, TransformationException {
         return performTransform(input, null);
     }
-   
+
     /**
      * Transforms the input, and generates {@link XMLSignatureInput} as output.
      *
-     * @param input input {@link XMLSignatureInput} which can supplied Octect 
+     * @param input input {@link XMLSignatureInput} which can supplied Octect
      * Stream and NodeSet as Input of Transformation
      * @param os where to output the result of the last transformation
-     * @return the {@link XMLSignatureInput} class as the result of 
+     * @return the {@link XMLSignatureInput} class as the result of
      * transformation
      * @throws CanonicalizationException
      * @throws IOException
@@ -327,7 +327,7 @@ public final class Transform extends SignatureElementProxy {
     public String getBaseLocalName() {
         return Constants._TAG_TRANSFORM;
     }
-    
+
     /**
      * Initialize the transform object.
      */

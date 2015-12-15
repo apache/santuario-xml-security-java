@@ -35,7 +35,7 @@ public class ResourceResolverTest extends org.junit.Assert {
     static org.slf4j.Logger log =
         org.slf4j.LoggerFactory.getLogger
             (ResourceResolverTest.class);
-    
+
     static {
         org.apache.xml.security.Init.init();
     }
@@ -45,20 +45,20 @@ public class ResourceResolverTest extends org.junit.Assert {
      */
     @org.junit.Test
     public void testCustomResolver() throws Exception {
-        String className = 
+        String className =
             "org.apache.xml.security.test.dom.utils.resolver.OfflineResolver";
         ResourceResolver.registerAtStart(className);
         Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
         Attr uriAttr = doc.createAttribute("URI");
         uriAttr.setValue("http://www.apache.org");
-        ResourceResolver res = 
+        ResourceResolver res =
             ResourceResolver.getInstance(uriAttr, "http://www.apache.org", true);
         try {
             uriAttr.setValue("http://xmldsig.pothole.com/xml-stylesheet.txt");
             res.resolve(uriAttr, null, true);
         } catch (Exception e) {
             e.printStackTrace();
-            fail(uriAttr.getValue() 
+            fail(uriAttr.getValue()
                 + " should be resolvable by the OfflineResolver");
         }
         try {

@@ -113,7 +113,7 @@ public abstract class AbstractPerformanceTest {
         fileWriter = new FileWriter(target, true);
         fileWriter.write("</test>");
         fileWriter.close();
-        
+
         fileOutputStream.close();
 
         return target;

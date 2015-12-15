@@ -42,15 +42,15 @@ public class UtfHelperTest extends org.junit.Assert {
 
     @org.junit.Test
     public void testUtf() throws Exception {
-        
+
         //
         // This test fails with the IBM JDK
         //
         if ("IBM Corporation".equals(System.getProperty("java.vendor"))) {
             return;
         }
-        
-        // if system property org.apache.xml.security.c14n.oldUtf8=true, can only validate 
+
+        // if system property org.apache.xml.security.c14n.oldUtf8=true, can only validate
         // 16bit chars against String.getBytes("UTF8");
         int chunk = (Boolean.getBoolean("org.apache.xml.security.c14n.oldUtf8")) ? (1 << 16)
             : (Character.MAX_CODE_POINT + 1);
@@ -85,7 +85,7 @@ public class UtfHelperTest extends org.junit.Assert {
             byte correct[] = str.getBytes("UTF8");
             assertTrue("UtfHelper.getStringInUtf8 false", Arrays.equals(correct, a));
             assertTrue(
-                "UtfHelper.getStringInUtf8 false", 
+                "UtfHelper.getStringInUtf8 false",
                 Arrays.equals(correct, charByCharOs.toByteArray())
             );
             UtfHelpper.writeStringToUtf8(str, strOs);

@@ -44,9 +44,9 @@ public interface OutboundSecurityToken extends SecurityToken {
      * @throws XMLSecurityException if the key can't be loaded
      */
     Key getSecretKey(String algorithmURI) throws XMLSecurityException;
-    
+
     void addWrappedToken(OutboundSecurityToken securityToken);
-    
+
     Element getCustomTokenReference();
 
 }

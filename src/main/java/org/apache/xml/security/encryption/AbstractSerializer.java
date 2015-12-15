@@ -33,18 +33,18 @@ import org.w3c.dom.NodeList;
 
 /**
  * Converts <code>String</code>s into <code>Node</code>s and visa versa.
- * 
+ *
  * An abstract class for common Serializer functionality
  */
 public abstract class AbstractSerializer implements Serializer {
-    
+
     protected Canonicalizer canon;
     protected boolean secureValidation;
-    
+
     public void setCanonicalizer(Canonicalizer canon) {
         this.canon = canon;
     }
-    
+
     /**
      * Returns a <code>String</code> representation of the specified
      * <code>Element</code>.
@@ -89,7 +89,7 @@ public abstract class AbstractSerializer implements Serializer {
      * them to the document fragment.
      * <p/>
      * Refer also to comments about setup of format.
-     * 
+     *
      * @param content the <code>NodeList</code> to serialize.
      * @return the <code>String</code> representation of the serialized
      *   <code>NodeList</code>.
@@ -100,8 +100,8 @@ public abstract class AbstractSerializer implements Serializer {
         canon.setSecureValidation(secureValidation);
         canon.setWriter(baos);
         canon.notReset();
-        for (int i = 0; i < content.getLength(); i++) {                
-            canon.canonicalizeSubtree(content.item(i));                
+        for (int i = 0; i < content.getLength(); i++) {
+            canon.canonicalizeSubtree(content.item(i));
         }
         String ret = baos.toString("UTF-8");
         baos.reset();
@@ -111,7 +111,7 @@ public abstract class AbstractSerializer implements Serializer {
     /**
      * Returns a <code>byte[]</code> representation of the specified
      * <code>NodeList</code>.
-     * 
+     *
      * @param content the <code>NodeList</code> to serialize.
      * @return the <code>byte[]</code> representation of the serialized
      *   <code>NodeList</code>.
@@ -133,13 +133,13 @@ public abstract class AbstractSerializer implements Serializer {
      * @param node
      * @return the canonicalization of the node
      * @throws Exception
-     */ 
+     */
     public String canonSerialize(Node node) throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         canon.setSecureValidation(secureValidation);
-        canon.setWriter(baos);                      
+        canon.setWriter(baos);
         canon.notReset();
-        canon.canonicalizeSubtree(node);                    
+        canon.canonicalizeSubtree(node);
         String ret = baos.toString("UTF-8");
         baos.reset();
         return ret;
@@ -150,7 +150,7 @@ public abstract class AbstractSerializer implements Serializer {
      * @param node
      * @return the (byte[]) canonicalization of the node
      * @throws Exception
-     */ 
+     */
     public byte[] canonSerializeToByteArray(Node node) throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         canon.setSecureValidation(secureValidation);
@@ -219,7 +219,7 @@ public abstract class AbstractSerializer implements Serializer {
             throw new XMLEncryptionException(e);
         }
     }
-    
+
     protected static String createContext(String source, Node ctx) {
         // Create the context to parse the document against
         StringBuilder sb = new StringBuilder();
@@ -260,5 +260,5 @@ public abstract class AbstractSerializer implements Serializer {
     public void setSecureValidation(boolean secureValidation) {
         this.secureValidation = secureValidation;
     }
-    
+
 }

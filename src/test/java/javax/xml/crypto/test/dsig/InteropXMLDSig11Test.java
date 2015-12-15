@@ -202,7 +202,7 @@ public class InteropXMLDSig11Test extends org.junit.Assert {
         assertTrue(file + " failed core validation", coreValidity);
     }
 
-    private void test_xmldsig11(String test, KeySelector ks, String vendor) 
+    private void test_xmldsig11(String test, KeySelector ks, String vendor)
         throws Exception {
         String file = vendor + File.separator + test + ".xml";
         // System.out.println("Validating " + file);

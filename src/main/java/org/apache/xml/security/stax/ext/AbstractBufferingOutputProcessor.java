@@ -66,7 +66,7 @@ public abstract class AbstractBufferingOutputProcessor extends AbstractOutputPro
             throws XMLStreamException, XMLSecurityException {
 
         this.processHeaderEvent(outputProcessorChain);
-        
+
         //loop through the rest of the document
         while (!xmlSecEventDeque.isEmpty()) {
             XMLSecEvent xmlSecEvent = xmlSecEventDeque.pop();

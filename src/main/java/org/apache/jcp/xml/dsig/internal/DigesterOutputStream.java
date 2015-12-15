@@ -42,9 +42,9 @@ import org.apache.xml.security.utils.UnsyncByteArrayOutputStream;
  * @author Sean Mullan
  */
 public class DigesterOutputStream extends OutputStream {
-    private static org.slf4j.Logger log = 
+    private static org.slf4j.Logger log =
         org.slf4j.LoggerFactory.getLogger(DigesterOutputStream.class);
-    
+
     private final boolean buffer;
     private UnsyncByteArrayOutputStream bos;
     private final MessageDigest md;
@@ -113,7 +113,7 @@ public class DigesterOutputStream extends OutputStream {
             return null;
         }
     }
- 
+
     @Override
     public void close() throws IOException {
         if (buffer) {

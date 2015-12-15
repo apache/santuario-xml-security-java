@@ -90,7 +90,7 @@ public class InboundXMLSec {
     public XMLStreamReader processInMessage(XMLStreamReader xmlStreamReader) throws XMLStreamException {
         return processInMessage(xmlStreamReader, null, null);
     }
-    
+
     /**
      * Warning:
      * configure your xmlStreamReader correctly. Otherwise you can create a security hole.
@@ -110,13 +110,13 @@ public class InboundXMLSec {
      * @throws XMLStreamException  thrown when a streaming error occurs
      */
     public XMLStreamReader processInMessage(
-            XMLStreamReader xmlStreamReader, List<SecurityEvent> requestSecurityEvents, 
+            XMLStreamReader xmlStreamReader, List<SecurityEvent> requestSecurityEvents,
             SecurityEventListener securityEventListener) throws XMLStreamException {
-        
+
         if (requestSecurityEvents == null) {
             requestSecurityEvents = Collections.emptyList();
         }
-        
+
         final InboundSecurityContextImpl inboundSecurityContext = new InboundSecurityContextImpl();
         inboundSecurityContext.putList(SecurityEvent.class, requestSecurityEvents);
         inboundSecurityContext.addSecurityEventListener(securityEventListener);
@@ -130,7 +130,7 @@ public class InboundXMLSec {
         if (location != null) {
             documentContext.setBaseURI(location.getSystemId());
         }
-        
+
         InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(inboundSecurityContext, documentContext);
         inputProcessorChain.addProcessor(new XMLEventReaderInputProcessor(securityProperties, xmlStreamReader));
 
@@ -142,9 +142,9 @@ public class InboundXMLSec {
                 inputProcessorChain.addProcessor(inputProcessor);
             }
         }
-        
+
         inputProcessorChain.addProcessor(new XMLSecurityInputProcessor(securityProperties));
-        
+
         if (log.isTraceEnabled()) {
             LogInputProcessor logInputProcessor = new LogInputProcessor(securityProperties);
             logInputProcessor.addAfterProcessor(XMLSecurityInputProcessor.class.getName());

@@ -35,7 +35,7 @@ public class KeyValueTest extends org.junit.Assert {
     private KeyInfoFactory fac;
     private PublicKey keys[] = null;
 
-    public KeyValueTest() throws Exception { 
+    public KeyValueTest() throws Exception {
         fac = KeyInfoFactory.getInstance
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
         // generate PublicKey(s) and XMLStructure(s) for DSA and RSA
@@ -74,18 +74,18 @@ public class KeyValueTest extends org.junit.Assert {
         KeyValue kv = null;
         try {
             kv = fac.newKeyValue(keys[0]);
-            kv.isFeatureSupported(null); 
-            fail("Should raise a NPE for null feature"); 
+            kv.isFeatureSupported(null);
+            fail("Should raise a NPE for null feature");
         } catch (KeyException ke) {
-            fail("Should raise a NPE for null feature"); 
+            fail("Should raise a NPE for null feature");
         } catch (NullPointerException npe) {}
-            
+
         assertTrue(!kv.isFeatureSupported("not supported"));
     }
-    
+
     private PublicKey genPublicKey(String algo, int keysize) throws Exception {
         KeyPairGenerator kpg = KeyPairGenerator.getInstance(algo);
-        kpg.initialize(keysize, new SecureRandom(("Not so random bytes" 
+        kpg.initialize(keysize, new SecureRandom(("Not so random bytes"
             + System.currentTimeMillis() ).getBytes() ));
         KeyPair kp = kpg.generateKeyPair();
         return kp.getPublic();

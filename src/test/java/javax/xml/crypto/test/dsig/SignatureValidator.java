@@ -81,7 +81,7 @@ public class SignatureValidator {
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
         XMLSignature signature = factory.unmarshalXMLSignature(vc);
         boolean coreValidity = signature.validate(vc);
-    
+
         // Check core validation status
         if (coreValidity == false) {
             // check the validation status of each Reference
@@ -98,7 +98,7 @@ public class SignatureValidator {
     public static Element getSignatureElement(Document doc) {
         NodeIterator ni = ((DocumentTraversal)doc).createNodeIterator(
             doc.getDocumentElement(), NodeFilter.SHOW_ELEMENT, null, false);
-        
+
         for (Node n = ni.nextNode(); n != null; n = ni.nextNode() ) {
             if ("Signature".equals(n.getLocalName())) {
                 return (Element) n;

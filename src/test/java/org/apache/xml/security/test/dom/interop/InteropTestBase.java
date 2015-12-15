@@ -60,13 +60,13 @@ public class InteropTestBase extends org.junit.Assert {
         File f = new File(filename);
         javax.xml.parsers.DocumentBuilder db = XMLUtils.createDocumentBuilder(false, false);
         org.w3c.dom.Document doc = db.parse(new java.io.FileInputStream(f));
-        
+
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();
         xpath.setNamespaceContext(new DSNamespaceContext());
 
         String expression = "//ds:Signature[1]";
-        Element sigElement = 
+        Element sigElement =
             (Element) xpath.evaluate(expression, doc, XPathConstants.NODE);
         XMLSignature signature = new XMLSignature(sigElement, f.toURI().toURL().toString());
 
@@ -94,13 +94,13 @@ public class InteropTestBase extends org.junit.Assert {
         File f = new File(filename);
         javax.xml.parsers.DocumentBuilder db = XMLUtils.createDocumentBuilder(false, false);
         org.w3c.dom.Document doc = db.parse(f);
-        
+
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();
         xpath.setNamespaceContext(new DSNamespaceContext());
 
         String expression = "//ds:Signature[1]";
-        Element sigElement = 
+        Element sigElement =
             (Element) xpath.evaluate(expression, doc, XPathConstants.NODE);
         XMLSignature signature = new XMLSignature(sigElement, f.toURI().toURL().toString());
 
@@ -134,12 +134,12 @@ public class InteropTestBase extends org.junit.Assert {
         if (!result) {
             for (int i = 0; i < signature.getSignedInfo().getLength(); i++) {
                 boolean refVerify =
-                    signature.getSignedInfo().getVerificationResult(i);             
+                    signature.getSignedInfo().getVerificationResult(i);
 
                 if (refVerify) {
                     log.debug("Reference " + i + " was OK");
                 } else {
-                    // JavaUtils.writeBytesToFilename(filename + i + ".apache.txt", signature.getSignedInfo().item(i).getContentsAfterTransformation().getBytes());                
+                    // JavaUtils.writeBytesToFilename(filename + i + ".apache.txt", signature.getSignedInfo().item(i).getContentsAfterTransformation().getBytes());
                     log.debug("Reference " + i + " was not OK");
                 }
             }
@@ -149,7 +149,7 @@ public class InteropTestBase extends org.junit.Assert {
 
         return result;
     }
-    
+
     private void checkReferences(XMLSignature xmlSignature) throws Exception {
         SignedInfo signedInfo = xmlSignature.getSignedInfo();
         assertTrue(signedInfo.getLength() > 0);
@@ -158,7 +158,7 @@ public class InteropTestBase extends org.junit.Assert {
             assertNotNull(reference);
             ReferenceData referenceData = reference.getReferenceData();
             assertNotNull(referenceData);
-            
+
             if (referenceData instanceof ReferenceNodeSetData) {
                 Iterator<Node> iter = ((ReferenceNodeSetData)referenceData).iterator();
                 assertTrue(iter.hasNext());
@@ -176,5 +176,5 @@ public class InteropTestBase extends org.junit.Assert {
             }
         }
     }
-    
+
 }

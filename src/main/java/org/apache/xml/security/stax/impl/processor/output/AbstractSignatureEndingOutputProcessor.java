@@ -219,7 +219,7 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
             OutputProcessorChain outputProcessorChain,
             OutboundSecurityToken securityToken,
             boolean useSingleCertificate) throws XMLStreamException, XMLSecurityException;
-    
+
 
     protected static class SignedInfoProcessor extends AbstractOutputProcessor {
 

@@ -155,7 +155,7 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
                         ReferenceType referenceType = referenceTypes.get(i);
 
                         if (processedReferences.contains(referenceType)) {
-                            throw new XMLSecurityException("signature.Verification.MultipleIDs", 
+                            throw new XMLSecurityException("signature.Verification.MultipleIDs",
                                                            new Object[] {referenceType.getURI()});
                         }
                         InternalSignatureReferenceVerifier internalSignatureReferenceVerifier =
@@ -271,7 +271,7 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
         String jceName = JCEAlgorithmMapper.translateURItoJCEID(digestMethodAlgorithm);
         String jceProvider = JCEAlgorithmMapper.getJCEProviderFromURI(digestMethodAlgorithm);
         if (jceName == null) {
-            throw new XMLSecurityException("algorithms.NoSuchMap", 
+            throw new XMLSecurityException("algorithms.NoSuchMap",
                                            new Object[] {digestMethodAlgorithm});
         }
 
@@ -375,7 +375,7 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
 
         if (!MessageDigest.isEqual(referenceType.getDigestValue(), calculatedDigest)) {
             throw new XMLSecurityException(
-                    "signature.Verification.InvalidDigestOrReference", 
+                    "signature.Verification.InvalidDigestOrReference",
                     new Object[] {referenceType.getURI()});
         }
     }

@@ -76,8 +76,8 @@ public class X509DigestResolverTest extends Assert {
     // Utility methods
 
     private String getControlFilePath(String fileName) {
-        return BASEDIR + SEP + "src" + SEP + "test" + SEP + "resources" + 
-            SEP + "org" + SEP + "apache" + SEP + "xml" + SEP + "security" + 
+        return BASEDIR + SEP + "src" + SEP + "test" + SEP + "resources" +
+            SEP + "org" + SEP + "apache" + SEP + "xml" + SEP + "security" +
             SEP + "keys" + SEP + "content" + SEP + "x509" +
             SEP + fileName;
     }

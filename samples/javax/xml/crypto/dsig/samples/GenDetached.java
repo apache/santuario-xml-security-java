@@ -35,8 +35,8 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 
 /**
- * This is a simple example of generating a Detached XML 
- * Signature using the JSR 105 API. The resulting signature will look 
+ * This is a simple example of generating a Detached XML
+ * Signature using the JSR 105 API. The resulting signature will look
  * like (key and signature values will be different):
  *
  * <pre><code>
@@ -89,7 +89,7 @@ public class GenDetached {
     //
     public static void main(String[] args) throws Exception {
 
-        // First, create a DOM XMLSignatureFactory that will be used to 
+        // First, create a DOM XMLSignatureFactory that will be used to
         // generate the XMLSignature and marshal it to DOM.
         String providerName = System.getProperty
             ("jsr105Provider", "org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI");
@@ -98,7 +98,7 @@ public class GenDetached {
 
         // Create a Reference to an external URI that will be digested
         // using the SHA1 digest algorithm
-        Reference ref = 
+        Reference ref =
             fac.newReference(
                 "http://www.w3.org/TR/xml-stylesheet",
                 fac.newDigestMethod(DigestMethod.SHA1, null)
@@ -107,7 +107,7 @@ public class GenDetached {
         // Create the SignedInfo
         SignedInfo si = fac.newSignedInfo(
             fac.newCanonicalizationMethod
-                (CanonicalizationMethod.INCLUSIVE_WITH_COMMENTS, 
+                (CanonicalizationMethod.INCLUSIVE_WITH_COMMENTS,
                  (C14NMethodParameterSpec) null),
             fac.newSignatureMethod(SignatureMethod.DSA_SHA1, null),
             Collections.singletonList(ref));
@@ -132,13 +132,13 @@ public class GenDetached {
         dbf.setNamespaceAware(true); // must be set
         Document doc = dbf.newDocumentBuilder().newDocument();
 
-        // Create a DOMSignContext and set the signing Key to the DSA 
-        // PrivateKey and specify where the XMLSignature should be inserted 
+        // Create a DOMSignContext and set the signing Key to the DSA
+        // PrivateKey and specify where the XMLSignature should be inserted
         // in the target document (in this case, the document root)
         DOMSignContext signContext = new DOMSignContext(kp.getPrivate(), doc);
 
-        // Marshal, generate (and sign) the detached XMLSignature. The DOM 
-        // Document will contain the XML Signature if this method returns 
+        // Marshal, generate (and sign) the detached XMLSignature. The DOM
+        // Document will contain the XML Signature if this method returns
         // successfully.
         signature.sign(signContext);
 
@@ -146,7 +146,7 @@ public class GenDetached {
         OutputStream os;
         if (args.length > 0) {
            os = new FileOutputStream(args[0]);
-        } else { 
+        } else {
            os = System.out;
         }
 

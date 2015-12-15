@@ -41,8 +41,8 @@ public class JSRForbiddenReferenceTest extends org.junit.Assert {
     public JSRForbiddenReferenceTest() {
         String fs = System.getProperty("file.separator");
         String base = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
-        
-        dir = new File(base + fs + "src/test/resources" + fs 
+
+        dir = new File(base + fs + "src/test/resources" + fs
             + "javax" + fs + "xml" + fs + "crypto", "dsig");
         validator = new SignatureValidator(dir);
     }
@@ -52,17 +52,17 @@ public class JSRForbiddenReferenceTest extends org.junit.Assert {
     public void testLocalFilesystem() throws Exception {
         String file = "signature-external-c14n-xmlatrs.xml";
 
-        DOMValidateContext vc = 
+        DOMValidateContext vc =
             validator.getValidateContext(
                 file, new KeySelectors.SecretKeySelector("secret".getBytes("ASCII"))
             );
-        
+
         vc.setProperty("org.apache.jcp.xml.dsig.secureValidation", Boolean.FALSE);
         boolean coreValidity = validator.validate(vc);
         assertTrue("Signature failed core validation", coreValidity);
-        
+
         vc.setProperty("org.apache.jcp.xml.dsig.secureValidation", Boolean.TRUE);
-        
+
         try {
             validator.validate(vc);
             fail("Failure expected when secure validation is enabled");

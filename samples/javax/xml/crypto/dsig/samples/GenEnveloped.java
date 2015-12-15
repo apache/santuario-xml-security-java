@@ -36,8 +36,8 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 
 /**
- * This is a simple example of generating an Enveloped XML 
- * Signature using the JSR 105 API. The resulting signature will look 
+ * This is a simple example of generating an Enveloped XML
+ * Signature using the JSR 105 API. The resulting signature will look
  * like (key and signature values will be different):
  *
  * <pre><code>
@@ -98,7 +98,7 @@ public class GenEnveloped {
     //
     public static void main(String[] args) throws Exception {
 
-        // Create a DOM XMLSignatureFactory that will be used to generate the 
+        // Create a DOM XMLSignatureFactory that will be used to generate the
         // enveloped signature
         String providerName = System.getProperty
             ("jsr105Provider", "org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI");
@@ -112,14 +112,14 @@ public class GenEnveloped {
             ("", fac.newDigestMethod(DigestMethod.SHA1, null),
              Collections.singletonList
               (fac.newTransform
-                (Transform.ENVELOPED, (TransformParameterSpec) null)), 
+                (Transform.ENVELOPED, (TransformParameterSpec) null)),
              null, null);
 
         // Create the SignedInfo
         SignedInfo si = fac.newSignedInfo
             (fac.newCanonicalizationMethod
-             (CanonicalizationMethod.INCLUSIVE_WITH_COMMENTS, 
-              (C14NMethodParameterSpec) null), 
+             (CanonicalizationMethod.INCLUSIVE_WITH_COMMENTS,
+              (C14NMethodParameterSpec) null),
              fac.newSignatureMethod(SignatureMethod.DSA_SHA1, null),
              Collections.singletonList(ref));
 
@@ -138,7 +138,7 @@ public class GenEnveloped {
         // Instantiate the document to be signed
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setNamespaceAware(true);
-        Document doc = 
+        Document doc =
             dbf.newDocumentBuilder().parse(new FileInputStream(args[0]));
 
         // Create a DOMSignContext and specify the DSA PrivateKey and

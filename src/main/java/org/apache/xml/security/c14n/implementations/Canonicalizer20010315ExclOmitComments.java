@@ -23,7 +23,7 @@ import org.apache.xml.security.c14n.Canonicalizer;
 public class Canonicalizer20010315ExclOmitComments extends Canonicalizer20010315Excl {
 
     /**
-     * 
+     *
      */
     public Canonicalizer20010315ExclOmitComments() {
         super(false);

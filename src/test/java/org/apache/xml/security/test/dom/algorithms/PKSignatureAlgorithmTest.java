@@ -47,17 +47,17 @@ import org.w3c.dom.NodeList;
  * A test to make sure that the various Public Key Signature algorithms are working
  */
 public class PKSignatureAlgorithmTest extends org.junit.Assert {
-    
+
     private KeyPair rsaKeyPair, ecKeyPair;
     private boolean bcInstalled;
 
     static {
         org.apache.xml.security.Init.init();
     }
-    
+
     public PKSignatureAlgorithmTest() throws Exception {
         //
-        // If the BouncyCastle provider is not installed, then try to load it 
+        // If the BouncyCastle provider is not installed, then try to load it
         // via reflection.
         //
         if (Security.getProvider("BC") == null) {
@@ -74,11 +74,11 @@ public class PKSignatureAlgorithmTest extends org.junit.Assert {
                 bcInstalled = true;
             }
         }
-        
+
         KeyPairGenerator rsaKpg = KeyPairGenerator.getInstance("RSA");
         rsaKpg.initialize(2048);
         rsaKeyPair = rsaKpg.genKeyPair();
-        
+
         ecKeyPair = KeyPairGenerator.getInstance("EC").genKeyPair();
     }
 
@@ -86,334 +86,334 @@ public class PKSignatureAlgorithmTest extends org.junit.Assert {
     public static void cleanup() throws Exception {
         Security.removeProvider("org.bouncycastle.jce.provider.BouncyCastleProvider");
     }
-    
+
     @org.junit.Test
     public void testRSA_MD5() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         sign(XMLSignature.ALGO_ID_SIGNATURE_NOT_RECOMMENDED_RSA_MD5, document, localNames, rsaKeyPair.getPrivate());
         // XMLUtils.outputDOM(document, System.out);
         verify(document, rsaKeyPair.getPublic(), localNames);
     }
-    
+
     @org.junit.Test
     public void testRSA_SHA1() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         sign(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1, document, localNames, rsaKeyPair.getPrivate());
         // XMLUtils.outputDOM(document, System.out);
         verify(document, rsaKeyPair.getPublic(), localNames);
     }
-    
+
     @org.junit.Test
     public void testRSA_SHA_224() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         sign(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA224, document, localNames, rsaKeyPair.getPrivate());
         // XMLUtils.outputDOM(document, System.out);
         verify(document, rsaKeyPair.getPublic(), localNames);
     }
-    
+
     @org.junit.Test
     public void testRSA_SHA_256() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         sign(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA256, document, localNames, rsaKeyPair.getPrivate());
         // XMLUtils.outputDOM(document, System.out);
         verify(document, rsaKeyPair.getPublic(), localNames);
     }
-    
+
     @org.junit.Test
     public void testRSA_SHA_384() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         sign(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA384, document, localNames, rsaKeyPair.getPrivate());
         // XMLUtils.outputDOM(document, System.out);
         verify(document, rsaKeyPair.getPublic(), localNames);
     }
-    
+
     @org.junit.Test
     public void testRSA_SHA_512() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         sign(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA512, document, localNames, rsaKeyPair.getPrivate());
         // XMLUtils.outputDOM(document, System.out);
         verify(document, rsaKeyPair.getPublic(), localNames);
     }
-    
+
     @org.junit.Test
     public void testRSA_RIPEMD160() throws Exception {
         if (!bcInstalled) {
             return;
         }
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         sign(XMLSignature.ALGO_ID_SIGNATURE_RSA_RIPEMD160, document, localNames, rsaKeyPair.getPrivate());
         // XMLUtils.outputDOM(document, System.out);
         verify(document, rsaKeyPair.getPublic(), localNames);
     }
-    
+
     @org.junit.Test
     public void testRSA_SHA1_MGF1() throws Exception {
         if (!bcInstalled) {
             return;
         }
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         sign(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1_MGF1, document, localNames, rsaKeyPair.getPrivate());
         // XMLUtils.outputDOM(document, System.out);
         verify(document, rsaKeyPair.getPublic(), localNames);
     }
-    
+
     @org.junit.Test
     public void testRSA_SHA224_MGF1() throws Exception {
         if (!bcInstalled) {
             return;
         }
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         sign(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA224_MGF1, document, localNames, rsaKeyPair.getPrivate());
         // XMLUtils.outputDOM(document, System.out);
         verify(document, rsaKeyPair.getPublic(), localNames);
     }
-    
+
     @org.junit.Test
     public void testRSA_SHA256_MGF1() throws Exception {
         if (!bcInstalled) {
             return;
         }
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         sign(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA256_MGF1, document, localNames, rsaKeyPair.getPrivate());
         // XMLUtils.outputDOM(document, System.out);
         verify(document, rsaKeyPair.getPublic(), localNames);
     }
-    
+
     @org.junit.Test
     public void testRSA_SHA384_MGF1() throws Exception {
         if (!bcInstalled) {
             return;
         }
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         sign(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA384_MGF1, document, localNames, rsaKeyPair.getPrivate());
         // XMLUtils.outputDOM(document, System.out);
         verify(document, rsaKeyPair.getPublic(), localNames);
     }
-    
+
     @org.junit.Test
     public void testRSA_SHA512_MGF1() throws Exception {
         if (!bcInstalled) {
             return;
         }
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         sign(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA512_MGF1, document, localNames, rsaKeyPair.getPrivate());
         // XMLUtils.outputDOM(document, System.out);
         verify(document, rsaKeyPair.getPublic(), localNames);
     }
-    
+
     @org.junit.Test
     public void testECDSA_SHA1() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         sign(XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA1, document, localNames, ecKeyPair.getPrivate());
         // XMLUtils.outputDOM(document, System.out);
         verify(document, ecKeyPair.getPublic(), localNames);
     }
-    
+
     @org.junit.Test
     public void testECDSA_SHA_224() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         sign(XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA224, document, localNames, ecKeyPair.getPrivate());
         // XMLUtils.outputDOM(document, System.out);
         verify(document, ecKeyPair.getPublic(), localNames);
     }
-    
+
     @org.junit.Test
     public void testECDSA_SHA_256() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         sign(XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA256, document, localNames, ecKeyPair.getPrivate());
         // XMLUtils.outputDOM(document, System.out);
         verify(document, ecKeyPair.getPublic(), localNames);
     }
-    
+
     @org.junit.Test
     public void testECDSA_SHA_384() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         sign(XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA384, document, localNames, ecKeyPair.getPrivate());
         // XMLUtils.outputDOM(document, System.out);
         verify(document, ecKeyPair.getPublic(), localNames);
     }
-    
+
     @org.junit.Test
     public void testECDSA_SHA_512() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         sign(XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA512, document, localNames, ecKeyPair.getPrivate());
         // XMLUtils.outputDOM(document, System.out);
         verify(document, ecKeyPair.getPublic(), localNames);
     }
-    
+
     @org.junit.Test
     public void testECDSA_RIPEMD160() throws Exception {
         if (!bcInstalled) {
             return;
         }
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         sign(XMLSignature.ALGO_ID_SIGNATURE_ECDSA_RIPEMD160, document, localNames, ecKeyPair.getPrivate());
         // XMLUtils.outputDOM(document, System.out);
         verify(document, ecKeyPair.getPublic(), localNames);
     }
-    
+
     private XMLSignature sign(
         String algorithm,
         Document document,
@@ -457,7 +457,7 @@ public class PKSignatureAlgorithmTest extends org.junit.Assert {
 
         return sig;
     }
-    
+
     private void verify(
         Document document,
         Key key,

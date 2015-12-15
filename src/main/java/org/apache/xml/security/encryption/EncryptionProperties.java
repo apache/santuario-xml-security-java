@@ -42,7 +42,7 @@ import java.util.Iterator;
  * @author Axl Mattheus
  */
 public interface EncryptionProperties {
-    
+
     /**
      * Returns the <code>EncryptionProperties</code>' id.
      *

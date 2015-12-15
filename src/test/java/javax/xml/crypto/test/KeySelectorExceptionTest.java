@@ -39,12 +39,12 @@ public class KeySelectorExceptionTest extends org.junit.Assert {
         KeySelectorException kse = new KeySelectorException();
         assertNull(kse.getMessage());
         assertNull(kse.getCause());
-        
+
         // test KeySelectorException(String)
         kse = new KeySelectorException("test");
         assertEquals("test", kse.getMessage());
         assertNull(kse.getCause());
-        
+
         // test KeySelectorException(String, Throwable)
         IllegalArgumentException iae = new IllegalArgumentException("iae");
         kse = new KeySelectorException("random", iae);
@@ -56,7 +56,7 @@ public class KeySelectorExceptionTest extends org.junit.Assert {
         assertEquals(iae.toString(), kse.getMessage());
         assertTrue(compareThrowable(iae, kse.getCause()));
     }
-        
+
     private static boolean compareThrowable(Throwable t1, Throwable t2) {
         boolean result = false;
         // first compare their toString presentation

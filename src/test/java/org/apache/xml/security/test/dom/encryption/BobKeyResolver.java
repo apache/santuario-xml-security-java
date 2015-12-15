@@ -117,9 +117,9 @@ public class BobKeyResolver extends KeyResolverSpi {
     ) throws KeyResolverException {
         if (engineCanResolve(element, BaseURI, storage)) {
             try {
-                DESedeKeySpec keySpec = 
+                DESedeKeySpec keySpec =
                     new DESedeKeySpec("abcdefghijklmnopqrstuvwx".getBytes("ASCII"));
-                SecretKeyFactory keyFactory = 
+                SecretKeyFactory keyFactory =
                     SecretKeyFactory.getInstance("DESede");
                 SecretKey key = keyFactory.generateSecret(keySpec);
 
@@ -132,6 +132,6 @@ public class BobKeyResolver extends KeyResolverSpi {
 
         return null;
     }
-    
+
 }
 

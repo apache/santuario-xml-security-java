@@ -69,7 +69,7 @@ public class SignatureDigestMethodTest extends org.junit.Assert {
 
     public SignatureDigestMethodTest() throws Exception {
         //
-        // If the BouncyCastle provider is not installed, then try to load it 
+        // If the BouncyCastle provider is not installed, then try to load it
         // via reflection.
         //
         if (Security.getProvider("BC") == null) {
@@ -86,14 +86,14 @@ public class SignatureDigestMethodTest extends org.junit.Assert {
                 bcInstalled = true;
             }
         }
-        
+
         db = XMLUtils.createDocumentBuilder(false);
         // create common objects
         fac = XMLSignatureFactory.getInstance("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
         KeyInfoFactory kifac = fac.getKeyInfoFactory();
         withoutComments = fac.newCanonicalizationMethod
             (CanonicalizationMethod.INCLUSIVE, (C14NMethodParameterSpec) null);
-        
+
         // Digest Methods
         sha1 = fac.newDigestMethod(DigestMethod.SHA1, null);
         sha224 = fac.newDigestMethod("http://www.w3.org/2001/04/xmldsig-more#sha224", null);
@@ -106,14 +106,14 @@ public class SignatureDigestMethodTest extends org.junit.Assert {
         sha3_256 = fac.newDigestMethod("http://www.w3.org/2007/05/xmldsig-more#sha3-256", null);
         sha3_384 = fac.newDigestMethod("http://www.w3.org/2007/05/xmldsig-more#sha3-384", null);
         sha3_512 = fac.newDigestMethod("http://www.w3.org/2007/05/xmldsig-more#sha3-512", null);
-        
+
         rsaSha1 = fac.newSignatureMethod
             ("http://www.w3.org/2000/09/xmldsig#rsa-sha1", null);
-        
+
         rsaki = kifac.newKeyInfo(Collections.singletonList
                                  (kifac.newKeyValue(
                                   TestUtils.getPublicKey("RSA"))));
-        
+
         kvks = new KeySelectors.KeyValueKeySelector();
     }
 
@@ -127,31 +127,31 @@ public class SignatureDigestMethodTest extends org.junit.Assert {
         test_create_signature_enveloping(rsaSha1, sha1, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
-  
+
     @org.junit.Test
     public void testSHA224() throws Exception {
         test_create_signature_enveloping(rsaSha1, sha224, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
-    
+
     @org.junit.Test
     public void testSHA256() throws Exception {
         test_create_signature_enveloping(rsaSha1, sha256, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
-    
+
     @org.junit.Test
     public void testSHA384() throws Exception {
         test_create_signature_enveloping(rsaSha1, sha384, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
-    
+
     @org.junit.Test
     public void testSHA512() throws Exception {
         test_create_signature_enveloping(rsaSha1, sha512, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
-    
+
     @org.junit.Test
     public void testRIPEMD160() throws Exception {
         if (!bcInstalled) {
@@ -160,7 +160,7 @@ public class SignatureDigestMethodTest extends org.junit.Assert {
         test_create_signature_enveloping(rsaSha1, ripemd160, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
-    
+
     @org.junit.Test
     public void testWHIRLPOOL() throws Exception {
         if (!bcInstalled) {
@@ -169,7 +169,7 @@ public class SignatureDigestMethodTest extends org.junit.Assert {
         test_create_signature_enveloping(rsaSha1, whirlpool, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
-    
+
     @org.junit.Test
     public void testSHA3_224() throws Exception {
         if (!bcInstalled) {
@@ -178,7 +178,7 @@ public class SignatureDigestMethodTest extends org.junit.Assert {
         test_create_signature_enveloping(rsaSha1, sha3_224, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
-    
+
     @org.junit.Test
     public void testSHA3_256() throws Exception {
         if (!bcInstalled) {
@@ -187,7 +187,7 @@ public class SignatureDigestMethodTest extends org.junit.Assert {
         test_create_signature_enveloping(rsaSha1, sha3_256, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
-    
+
     @org.junit.Test
     public void testSHA3_384() throws Exception {
         if (!bcInstalled) {
@@ -196,7 +196,7 @@ public class SignatureDigestMethodTest extends org.junit.Assert {
         test_create_signature_enveloping(rsaSha1, sha3_384, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
-    
+
     @org.junit.Test
     public void testSHA3_512() throws Exception {
         if (!bcInstalled) {
@@ -205,7 +205,7 @@ public class SignatureDigestMethodTest extends org.junit.Assert {
         test_create_signature_enveloping(rsaSha1, sha3_512, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
-    
+
     private void test_create_signature_enveloping(
         SignatureMethod sm, DigestMethod dm, KeyInfo ki, Key signingKey, KeySelector ks
     ) throws Exception {
@@ -235,7 +235,7 @@ public class SignatureDigestMethodTest extends org.junit.Assert {
 
         sig.sign(dsc);
         TestUtils.validateSecurityOrEncryptionElement(doc.getDocumentElement());
-        
+
         // XMLUtils.outputDOM(doc.getDocumentElement(), System.out);
 
         DOMValidateContext dvc = new DOMValidateContext

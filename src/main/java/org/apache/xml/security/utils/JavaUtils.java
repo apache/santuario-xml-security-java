@@ -116,7 +116,7 @@ public final class JavaUtils {
     }
 
     /**
-     * This method reads all bytes from the given InputStream till EOF and 
+     * This method reads all bytes from the given InputStream till EOF and
      * returns them as a byte array.
      *
      * @param inputStream

@@ -54,7 +54,7 @@ public class XMLSignatureInput {
      *   A byteArray like with/or without InputStream.
      *   Or a nodeSet like defined either:
      *       * as a collection of nodes
-     *       * or as subnode excluding or not comments and excluding or 
+     *       * or as subnode excluding or not comments and excluding or
      *         not other nodes.
      */
 
@@ -76,10 +76,10 @@ public class XMLSignatureInput {
      */
     private Node excludeNode = null;
     /**
-     * 
+     *
      */
     private boolean excludeComments = false;
-   
+
     private boolean isNodeSet = false;
     /**
      * A cached bytes
@@ -90,16 +90,16 @@ public class XMLSignatureInput {
     /**
      * Some Transforms may require explicit MIME type, charset (IANA registered
      * "character set"), or other such information concerning the data they are
-     * receiving from an earlier Transform or the source data, although no 
-     * Transform algorithm specified in this document needs such explicit 
-     * information. Such data characteristics are provided as parameters to the 
-     * Transform algorithm and should be described in the specification for the 
+     * receiving from an earlier Transform or the source data, although no
+     * Transform algorithm specified in this document needs such explicit
+     * information. Such data characteristics are provided as parameters to the
+     * Transform algorithm and should be described in the specification for the
      * algorithm.
-     */   
+     */
     private String mimeType = null;
 
     /**
-     * Field sourceURI 
+     * Field sourceURI
      */
     private String sourceURI = null;
 
@@ -107,14 +107,14 @@ public class XMLSignatureInput {
      * Node Filter list.
      */
     private List<NodeFilter> nodeFilters = new ArrayList<NodeFilter>();
-   
+
     private boolean needsToBeExpanded = false;
     private OutputStream outputStream = null;
-    
+
     /**
      * Construct a XMLSignatureInput from an octet array.
      * <p>
-     * This is a comfort method, which internally converts the byte[] array into 
+     * This is a comfort method, which internally converts the byte[] array into
      * an InputStream
      * <p>NOTE: no defensive copy</p>
      * @param inputOctets an octet array which including XML document or node
@@ -160,7 +160,7 @@ public class XMLSignatureInput {
     public boolean isNeedsToBeExpanded() {
         return needsToBeExpanded;
     }
-   
+
     /**
      * Set if the structure needs to be expanded.
      * @param needsToBeExpanded true if so.
@@ -170,7 +170,7 @@ public class XMLSignatureInput {
     }
 
     /**
-     * Returns the node set from input which was specified as the parameter of 
+     * Returns the node set from input which was specified as the parameter of
      * {@link XMLSignatureInput} constructor
      *
      * @return the node set
@@ -179,11 +179,11 @@ public class XMLSignatureInput {
      * @throws ParserConfigurationException
      * @throws CanonicalizationException
      */
-    public Set<Node> getNodeSet() throws CanonicalizationException, ParserConfigurationException, 
+    public Set<Node> getNodeSet() throws CanonicalizationException, ParserConfigurationException,
         IOException, SAXException {
         return getNodeSet(false);
     }
-    
+
     /**
      * Get the Input NodeSet.
      * @return the Input NodeSet.
@@ -193,7 +193,7 @@ public class XMLSignatureInput {
     }
 
     /**
-     * Returns the node set from input which was specified as the parameter of 
+     * Returns the node set from input which was specified as the parameter of
      * {@link XMLSignatureInput} constructor
      * @param circumvent
      *
@@ -218,7 +218,7 @@ public class XMLSignatureInput {
         } else if (isOctetStream()) {
             convertToNodes();
             Set<Node> result = new LinkedHashSet<Node>();
-            XMLUtils.getSet(subNode, result, null, false); 
+            XMLUtils.getSet(subNode, result, null, false);
             return result;
         }
 
@@ -226,10 +226,10 @@ public class XMLSignatureInput {
     }
 
     /**
-     * Returns the Octet stream(byte Stream) from input which was specified as 
+     * Returns the Octet stream(byte Stream) from input which was specified as
      * the parameter of {@link XMLSignatureInput} constructor
      *
-     * @return the Octet stream(byte Stream) from input which was specified as 
+     * @return the Octet stream(byte Stream) from input which was specified as
      * the parameter of {@link XMLSignatureInput} constructor
      * @throws IOException
      */
@@ -254,10 +254,10 @@ public class XMLSignatureInput {
     }
 
     /**
-     * Returns the byte array from input which was specified as the parameter of 
+     * Returns the byte array from input which was specified as the parameter of
      * {@link XMLSignatureInput} constructor
      *
-     * @return the byte[] from input which was specified as the parameter of 
+     * @return the byte[] from input which was specified as the parameter of
      * {@link XMLSignatureInput} constructor
      *
      * @throws CanonicalizationException
@@ -268,8 +268,8 @@ public class XMLSignatureInput {
         if (inputBytes != null) {
             return inputBytes;
         }
-        Canonicalizer20010315OmitComments c14nizer = new Canonicalizer20010315OmitComments();                  
-        bytes = c14nizer.engineCanonicalize(this);         
+        Canonicalizer20010315OmitComments c14nizer = new Canonicalizer20010315OmitComments();
+        bytes = c14nizer.engineCanonicalize(this);
         return bytes;
     }
 
@@ -291,7 +291,7 @@ public class XMLSignatureInput {
         return inputOctetStreamProxy == null && subNode != null
             && inputNodeSet == null && !isNodeSet;
     }
-   
+
     /**
      * Determines if the object has been set up with an octet stream
      *
@@ -303,16 +303,16 @@ public class XMLSignatureInput {
     }
 
     /**
-     * Determines if {@link #setOutputStream} has been called with a 
+     * Determines if {@link #setOutputStream} has been called with a
      * non-null OutputStream.
      *
-     * @return true if {@link #setOutputStream} has been called with a 
+     * @return true if {@link #setOutputStream} has been called with a
      * non-null OutputStream
      */
     public boolean isOutputStreamSet() {
         return outputStream != null;
     }
-   
+
     /**
      * Determines if the object has been set up with a ByteArray
      *
@@ -366,7 +366,7 @@ public class XMLSignatureInput {
     public void setSourceURI(String sourceURI) {
         this.sourceURI = sourceURI;
     }
-   
+
     /**
      * Method toString
      * @inheritDoc
@@ -374,11 +374,11 @@ public class XMLSignatureInput {
     public String toString() {
         if (isNodeSet()) {
             return "XMLSignatureInput/NodeSet/" + inputNodeSet.size()
-                   + " nodes/" + getSourceURI();         
-        } 
+                   + " nodes/" + getSourceURI();
+        }
         if (isElement()) {
             return "XMLSignatureInput/Element/" + subNode
-                + " exclude "+ excludeNode + " comments:" 
+                + " exclude "+ excludeNode + " comments:"
                 + excludeComments +"/" + getSourceURI();
         }
         try {
@@ -411,7 +411,7 @@ public class XMLSignatureInput {
      */
     public String getHTMLRepresentation(Set<String> inclusiveNamespaces)
        throws XMLSignatureException {
-        XMLSignatureInputDebugger db = 
+        XMLSignatureInputDebugger db =
             new XMLSignatureInputDebugger(this, inclusiveNamespaces);
         return db.getHTMLRepresentation();
     }
@@ -423,7 +423,7 @@ public class XMLSignatureInput {
     public Node getExcludeNode() {
         return excludeNode;
     }
-    
+
     /**
      * Sets the exclude node of this XMLSignatureInput
      * @param excludeNode The excludeNode to set.
@@ -460,26 +460,26 @@ public class XMLSignatureInput {
      * @throws CanonicalizationException
      */
     public void updateOutputStream(OutputStream diOs)
-        throws CanonicalizationException, IOException {        
+        throws CanonicalizationException, IOException {
         updateOutputStream(diOs, false);
     }
-    
-    public void updateOutputStream(OutputStream diOs, boolean c14n11) 
-        throws CanonicalizationException, IOException {        
+
+    public void updateOutputStream(OutputStream diOs, boolean c14n11)
+        throws CanonicalizationException, IOException {
         if (diOs == outputStream) {
             return;
         }
         if (bytes != null) {
             diOs.write(bytes);
-        } else if (inputOctetStreamProxy == null) {                    
+        } else if (inputOctetStreamProxy == null) {
             CanonicalizerBase c14nizer = null;
             if (c14n11) {
-                c14nizer = new Canonicalizer11_OmitComments();       
+                c14nizer = new Canonicalizer11_OmitComments();
             } else {
-                c14nizer = new Canonicalizer20010315OmitComments();       
+                c14nizer = new Canonicalizer20010315OmitComments();
             }
             c14nizer.setWriter(diOs);
-            c14nizer.engineCanonicalize(this); 
+            c14nizer.engineCanonicalize(this);
         } else {
             byte[] buffer = new byte[4 * 1024];
             int bytesread = 0;
@@ -501,7 +501,7 @@ public class XMLSignatureInput {
         outputStream = os;
     }
 
-    private byte[] getBytesFromInputStream() throws IOException {       
+    private byte[] getBytesFromInputStream() throws IOException {
         if (bytes != null) {
             return bytes;
         }
@@ -515,7 +515,7 @@ public class XMLSignatureInput {
         }
         return bytes;
     }
-        
+
     /**
      * @param filter
      */
@@ -545,11 +545,11 @@ public class XMLSignatureInput {
     public void setNodeSet(boolean b) {
         isNodeSet = b;
     }
-        
-    void convertToNodes() throws CanonicalizationException, 
+
+    void convertToNodes() throws CanonicalizationException,
         ParserConfigurationException, IOException, SAXException {
         DocumentBuilder db = XMLUtils.createDocumentBuilder(false, secureValidation);
-        // select all nodes, also the comments.        
+        // select all nodes, also the comments.
         try {
             db.setErrorHandler(new org.apache.xml.security.utils.IgnoreAllErrorHandler());
 
@@ -583,5 +583,5 @@ public class XMLSignatureInput {
     public void setSecureValidation(boolean secureValidation) {
         this.secureValidation = secureValidation;
     }
-    
+
 }

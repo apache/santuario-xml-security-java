@@ -49,7 +49,7 @@ public class IdResolver {
      * Method getElementById
      *
      * @param doc the document
-     * @param id the value of the ID 
+     * @param id the value of the ID
      * @return the element obtained by the id, or null if it is not found.
      */
     public static Element getElementById(Document doc, String id) {

@@ -89,12 +89,12 @@ public class OutboundXMLSec {
 
         SecurePart signEntireRequestPart = null;
         SecurePart encryptEntireRequestPart = null;
-        
+
         for (XMLSecurityConstants.Action action : securityProperties.getActions()) {
             if (XMLSecurityConstants.SIGNATURE.equals(action)) {
                 XMLSignatureOutputProcessor signatureOutputProcessor = new XMLSignatureOutputProcessor();
                 initializeOutputProcessor(outputProcessorChain, signatureOutputProcessor, action);
-                
+
                 configureSignatureKeys(outboundSecurityContext);
                 List<SecurePart> signatureParts = securityProperties.getSignatureSecureParts();
                 for (int j = 0; j < signatureParts.size(); j++) {
@@ -119,7 +119,7 @@ public class OutboundXMLSec {
             } else if (XMLSecurityConstants.ENCRYPT.equals(action)) {
                 XMLEncryptOutputProcessor encryptOutputProcessor = new XMLEncryptOutputProcessor();
                 initializeOutputProcessor(outputProcessorChain, encryptOutputProcessor, action);
-                
+
                 configureEncryptionKeys(outboundSecurityContext);
                 List<SecurePart> encryptionParts = securityProperties.getEncryptionSecureParts();
                 for (int j = 0; j < encryptionParts.size(); j++) {
@@ -158,7 +158,7 @@ public class OutboundXMLSec {
         XMLSecurityStreamWriter streamWriter = new XMLSecurityStreamWriter(outputProcessorChain);
         streamWriter.setSignEntireRequestPart(signEntireRequestPart);
         streamWriter.setEncryptEntireRequestPart(encryptEntireRequestPart);
-        
+
         return streamWriter;
     }
 
@@ -167,7 +167,7 @@ public class OutboundXMLSec {
         outputProcessor.setAction(action);
         outputProcessor.init(outputProcessorChain);
     }
-    
+
     private void configureSignatureKeys(final OutboundSecurityContextImpl outboundSecurityContext) throws XMLSecurityException {
         Key key = securityProperties.getSignatureKey();
         X509Certificate[] x509Certificates = securityProperties.getSignatureCerts();
@@ -198,10 +198,10 @@ public class OutboundXMLSec {
             }
         };
         outboundSecurityContext.registerSecurityTokenProvider(securityTokenid, securityTokenProvider);
-        
+
         outboundSecurityContext.put(XMLSecurityConstants.PROP_USE_THIS_TOKEN_ID_FOR_SIGNATURE, securityTokenid);
     }
-    
+
     private void configureEncryptionKeys(final OutboundSecurityContextImpl outboundSecurityContext) throws XMLSecurityException {
         // Sort out transport keys / key wrapping keys first.
         Key transportKey = securityProperties.getEncryptionTransportKey();
@@ -213,7 +213,7 @@ public class OutboundXMLSec {
 
         final OutboundSecurityToken transportSecurityToken =
                 new GenericOutboundSecurityToken(IDGenerator.generateID(null), SecurityTokenConstants.DefaultToken, transportKey, transportCerts);
-        
+
         // Now sort out the session key
         Key key = securityProperties.getEncryptionKey();
         if (key == null) {
@@ -221,7 +221,7 @@ public class OutboundXMLSec {
                 throw new XMLSecurityException("stax.encryption.encryptionKeyMissing");
             }
             // If none is configured then generate one
-            String keyAlgorithm = 
+            String keyAlgorithm =
                 JCEAlgorithmMapper.getJCEKeyAlgorithmFromURI(securityProperties.getEncryptionSymAlgorithm());
             KeyGenerator keyGen;
             try {
@@ -232,7 +232,7 @@ public class OutboundXMLSec {
             //the sun JCE provider expects the real key size for 3DES (112 or 168 bit)
             //whereas bouncy castle expects the block size of 128 or 192 bits
             if (keyAlgorithm.contains("AES")) {
-                int keyLength = 
+                int keyLength =
                     JCEAlgorithmMapper.getKeyLengthFromURI(securityProperties.getEncryptionSymAlgorithm());
                 keyGen.init(keyLength);
             }

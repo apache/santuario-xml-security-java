@@ -41,7 +41,7 @@ public class OfflineResolver extends ResourceResolverSpi {
 
     static org.slf4j.Logger log =
         org.slf4j.LoggerFactory.getLogger(OfflineResolver.class);
-    
+
     /** Field _uriMap */
     static Map<String, String> _uriMap = null;
 
@@ -150,7 +150,7 @@ public class OfflineResolver extends ResourceResolverSpi {
         OfflineResolver._uriMap.put(URI, filename);
         OfflineResolver._mimeMap.put(URI, MIME);
     }
-    
+
     private static URI getNewURI(String uri, String baseURI) throws URISyntaxException {
         URI newUri = null;
         if (baseURI == null || "".equals(baseURI)) {
@@ -158,10 +158,10 @@ public class OfflineResolver extends ResourceResolverSpi {
         } else {
             newUri = new URI(baseURI).resolve(uri);
         }
-        
+
         // if the URI contains a fragment, ignore it
         if (newUri.getFragment() != null) {
-            URI uriNewNoFrag = 
+            URI uriNewNoFrag =
                 new URI(newUri.getScheme(), newUri.getSchemeSpecificPart(), null);
             return uriNewNoFrag;
         }

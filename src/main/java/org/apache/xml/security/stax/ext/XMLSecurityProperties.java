@@ -98,7 +98,7 @@ public class XMLSecurityProperties {
         this.signatureKeyIdentifier = xmlSecurityProperties.signatureKeyIdentifier;
         this.useSingleCert = xmlSecurityProperties.useSingleCert;
         this.signatureVerificationKey = xmlSecurityProperties.signatureVerificationKey;
-        this.signaturePosition = xmlSecurityProperties.signaturePosition;        
+        this.signaturePosition = xmlSecurityProperties.signaturePosition;
     }
 
     public SecurityTokenConstants.KeyIdentifier getSignatureKeyIdentifier() {
@@ -127,7 +127,7 @@ public class XMLSecurityProperties {
     public void setSignaturePosition(int signaturePosition) {
         this.signaturePosition = signaturePosition;
     }
-    
+
     /**
      * returns the KeyIdentifierType which will be used in the secured document
      *
@@ -348,7 +348,7 @@ public class XMLSecurityProperties {
     public void setActions(List<XMLSecurityConstants.Action> actions) {
         this.actions = actions;
     }
-    
+
     public void addAction(XMLSecurityConstants.Action action) {
         if (actions == null) {
             actions = new ArrayList<XMLSecurityConstants.Action>();

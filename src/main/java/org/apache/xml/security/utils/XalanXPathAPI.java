@@ -52,15 +52,15 @@ public class XalanXPathAPI implements XPathAPI {
     private XPath xpath = null;
 
     private static FunctionTable funcTable = null;
-    
+
     private static boolean installed;
-    
+
     private XPathContext context;
-    
+
     static {
         fixupFunctionTable();
     }
-    
+
 
     /**
      *  Use an XPath string to select a nodelist.
@@ -84,7 +84,7 @@ public class XalanXPathAPI implements XPathAPI {
         // Return a NodeList.
         return list.nodelist();
     }
-    
+
     /**
      * Evaluate an XPath string and return true if the output is to be included or not.
      *  @param contextNode The node to start searching from.
@@ -97,7 +97,7 @@ public class XalanXPathAPI implements XPathAPI {
         XObject object = eval(contextNode, xpathnode, str, namespaceNode);
         return object.bool();
     }
-    
+
     /**
      * Clear any context information from this object
      */
@@ -106,7 +106,7 @@ public class XalanXPathAPI implements XPathAPI {
         xpath = null;
         context = null;
     }
-    
+
     public static synchronized boolean isInstalled() {
         return installed;
     }
@@ -122,7 +122,7 @@ public class XalanXPathAPI implements XPathAPI {
         // XPath namespaces are resolved from the input context node's document element
         // if it is a root node, or else the current context node (for lack of a better
         // resolution space, given the simplicity of this sample code).
-        Node resolverNode = 
+        Node resolverNode =
             (namespaceNode.getNodeType() == Node.DOCUMENT_NODE)
                 ? ((Document) namespaceNode).getDocumentElement() : namespaceNode;
         PrefixResolverDefault prefixResolver = new PrefixResolverDefault(resolverNode);
@@ -145,7 +145,7 @@ public class XalanXPathAPI implements XPathAPI {
         XPath xpath = null;
         Class<?>[] classes = new Class[]{String.class, SourceLocator.class, PrefixResolver.class, int.class,
                                       ErrorListener.class, FunctionTable.class};
-        Object[] objects = 
+        Object[] objects =
             new Object[]{str, null, prefixResolver, XPath.SELECT, null, funcTable};
         try {
             Constructor<?> constructor = XPath.class.getConstructor(classes);
@@ -209,5 +209,5 @@ public class XalanXPathAPI implements XPathAPI {
             }
         }
     }
-    
+
 }

@@ -46,16 +46,16 @@ import org.w3c.dom.NodeList;
  * A test to make sure that the various Symmetric Encryption algorithms are working
  */
 public class SymmetricEncryptionAlgorithmTest extends org.junit.Assert {
-    
+
     private boolean bcInstalled;
 
     static {
         org.apache.xml.security.Init.init();
     }
-    
+
     public SymmetricEncryptionAlgorithmTest() throws Exception {
         //
-        // If the BouncyCastle provider is not installed, then try to load it 
+        // If the BouncyCastle provider is not installed, then try to load it
         // via reflection.
         //
         if (Security.getProvider("BC") == null) {
@@ -77,381 +77,381 @@ public class SymmetricEncryptionAlgorithmTest extends org.junit.Assert {
     public static void cleanup() throws Exception {
         Security.removeProvider("org.bouncycastle.jce.provider.BouncyCastleProvider");
     }
-    
+
     @org.junit.Test
     public void testAES128() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(128);
         SecretKey key = keygen.generateKey();
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         String encryptionAlgorithm = XMLCipher.AES_128;
-        
+
         encrypt(encryptionAlgorithm, document, localNames, key);
-        
+
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 0);
-        
+
         // XMLUtils.outputDOM(document, System.out);
         document = decrypt(encryptionAlgorithm, document, key, localNames);
-        
+
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 1);
     }
-    
+
     @org.junit.Test
     public void testAES128_GCM() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(128);
         SecretKey key = keygen.generateKey();
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         String encryptionAlgorithm = XMLCipher.AES_128_GCM;
-        
+
         encrypt(encryptionAlgorithm, document, localNames, key);
-        
+
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 0);
-        
+
         // XMLUtils.outputDOM(document, System.out);
         document = decrypt(encryptionAlgorithm, document, key, localNames);
-        
+
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 1);
     }
-    
+
     @org.junit.Test
     public void testAES192() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(192);
         SecretKey key = keygen.generateKey();
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         String encryptionAlgorithm = XMLCipher.AES_192;
-        
+
         encrypt(encryptionAlgorithm, document, localNames, key);
-        
+
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 0);
-        
+
         // XMLUtils.outputDOM(document, System.out);
         document = decrypt(encryptionAlgorithm, document, key, localNames);
-        
+
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 1);
     }
-    
+
     @org.junit.Test
     public void testAES192_GCM() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(192);
         SecretKey key = keygen.generateKey();
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         String encryptionAlgorithm = XMLCipher.AES_192_GCM;
-        
+
         encrypt(encryptionAlgorithm, document, localNames, key);
-        
+
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 0);
-        
+
         // XMLUtils.outputDOM(document, System.out);
         document = decrypt(encryptionAlgorithm, document, key, localNames);
-        
+
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 1);
     }
-    
+
     @org.junit.Test
     public void testAES256() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(256);
         SecretKey key = keygen.generateKey();
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         String encryptionAlgorithm = XMLCipher.AES_256;
-        
+
         encrypt(encryptionAlgorithm, document, localNames, key);
-        
+
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 0);
-        
+
         // XMLUtils.outputDOM(document, System.out);
         document = decrypt(encryptionAlgorithm, document, key, localNames);
-        
+
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 1);
     }
-    
+
     @org.junit.Test
     public void testAES256_GCM() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(256);
         SecretKey key = keygen.generateKey();
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         String encryptionAlgorithm = XMLCipher.AES_256_GCM;
-        
+
         encrypt(encryptionAlgorithm, document, localNames, key);
-        
+
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 0);
-        
+
         // XMLUtils.outputDOM(document, System.out);
         document = decrypt(encryptionAlgorithm, document, key, localNames);
-        
+
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 1);
     }
-    
+
     @org.junit.Test
     public void testTRIPLE_DES() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("DESede");
         SecretKey key = keygen.generateKey();
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         String encryptionAlgorithm = XMLCipher.TRIPLEDES;
-        
+
         encrypt(encryptionAlgorithm, document, localNames, key);
-        
+
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 0);
-        
+
         // XMLUtils.outputDOM(document, System.out);
         document = decrypt(encryptionAlgorithm, document, key, localNames);
-        
+
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 1);
     }
-    
+
     @org.junit.Test
     public void testSEED_128() throws Exception {
         if (!bcInstalled) {
             return;
         }
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("SEED");
         keygen.init(128);
         SecretKey key = keygen.generateKey();
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         String encryptionAlgorithm = XMLCipher.SEED_128;
-        
+
         encrypt(encryptionAlgorithm, document, localNames, key);
-        
+
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 0);
-        
+
         // XMLUtils.outputDOM(document, System.out);
         document = decrypt(encryptionAlgorithm, document, key, localNames);
-        
+
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 1);
     }
-    
+
     @org.junit.Test
     public void testCAMELLIA_128() throws Exception {
         if (!bcInstalled) {
             return;
         }
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("Camellia");
         keygen.init(128);
         SecretKey key = keygen.generateKey();
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         String encryptionAlgorithm = XMLCipher.CAMELLIA_128;
-        
+
         encrypt(encryptionAlgorithm, document, localNames, key);
-        
+
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 0);
-        
+
         // XMLUtils.outputDOM(document, System.out);
         document = decrypt(encryptionAlgorithm, document, key, localNames);
-        
+
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 1);
     }
-    
+
     @org.junit.Test
     public void testCAMELLIA_192() throws Exception {
         if (!bcInstalled) {
             return;
         }
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("Camellia");
         keygen.init(192);
         SecretKey key = keygen.generateKey();
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         String encryptionAlgorithm = XMLCipher.CAMELLIA_192;
-        
+
         encrypt(encryptionAlgorithm, document, localNames, key);
-        
+
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 0);
-        
+
         // XMLUtils.outputDOM(document, System.out);
         document = decrypt(encryptionAlgorithm, document, key, localNames);
-        
+
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 1);
     }
-    
+
     @org.junit.Test
     public void testCAMELLIA_256() throws Exception {
         if (!bcInstalled) {
             return;
         }
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("Camellia");
         keygen.init(256);
         SecretKey key = keygen.generateKey();
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         String encryptionAlgorithm = XMLCipher.CAMELLIA_256;
-        
+
         encrypt(encryptionAlgorithm, document, localNames, key);
-        
+
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 0);
-        
+
         // XMLUtils.outputDOM(document, System.out);
         document = decrypt(encryptionAlgorithm, document, key, localNames);
-        
+
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 1);
     }
-    
+
     private void encrypt(
         String algorithm,
         Document document,
@@ -460,7 +460,7 @@ public class SymmetricEncryptionAlgorithmTest extends org.junit.Assert {
     ) throws Exception {
         XMLCipher cipher = XMLCipher.getInstance(algorithm);
         cipher.init(XMLCipher.ENCRYPT_MODE, encryptingKey);
-        
+
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();
         xpath.setNamespaceContext(new DSNamespaceContext());
@@ -473,14 +473,14 @@ public class SymmetricEncryptionAlgorithmTest extends org.junit.Assert {
 
             document = cipher.doFinal(document, elementToEncrypt, false);
         }
-        
+
         NodeList nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
         Assert.assertTrue(nodeList.getLength() > 0);
     }
-    
+
     private Document decrypt(
         String algorithm,
         Document document,
@@ -489,7 +489,7 @@ public class SymmetricEncryptionAlgorithmTest extends org.junit.Assert {
     ) throws Exception {
         XMLCipher cipher = XMLCipher.getInstance(algorithm);
         cipher.init(XMLCipher.DECRYPT_MODE, key);
-        
+
         NodeList nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()

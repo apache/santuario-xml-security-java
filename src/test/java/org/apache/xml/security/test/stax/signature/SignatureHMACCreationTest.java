@@ -47,12 +47,12 @@ import org.w3c.dom.Document;
  * A set of test-cases for Signature creation with various HMAC algorithms
  */
 public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
-    
+
     private boolean bcInstalled;
-    
+
     public SignatureHMACCreationTest() throws Exception {
         //
-        // If the BouncyCastle provider is not installed, then try to load it 
+        // If the BouncyCastle provider is not installed, then try to load it
         // via reflection.
         //
         if (Security.getProvider("BC") == null) {
@@ -83,15 +83,15 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
-        
+
         // Set the key up
         byte[] hmacKey = "secret".getBytes("ASCII");
         String signatureAlgorithm = "http://www.w3.org/2000/09/xmldsig#hmac-sha1";
         SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
         properties.setSignatureKey(key);
-        
+
         properties.setSignatureAlgorithm(signatureAlgorithm);
-        
+
         SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
@@ -118,7 +118,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         // Verify using DOM
         verifyUsingDOM(document, key, properties.getSignatureSecureParts());
     }
-    
+
     @Test
     public void testHMACSHA_224() throws Exception {
         // Set up the Configuration
@@ -126,15 +126,15 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
-        
+
         // Set the key up
         byte[] hmacKey = "secret".getBytes("ASCII");
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#hmac-sha224";
         SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
         properties.setSignatureKey(key);
-        
+
         properties.setSignatureAlgorithm(signatureAlgorithm);
-        
+
         SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
@@ -161,7 +161,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         // Verify using DOM
         verifyUsingDOM(document, key, properties.getSignatureSecureParts());
     }
-    
+
     @Test
     public void testHMACSHA_256() throws Exception {
         // Set up the Configuration
@@ -169,15 +169,15 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
-        
+
         // Set the key up
         byte[] hmacKey = "secret".getBytes("ASCII");
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#hmac-sha256";
         SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
         properties.setSignatureKey(key);
-        
+
         properties.setSignatureAlgorithm(signatureAlgorithm);
-        
+
         SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
@@ -204,7 +204,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         // Verify using DOM
         verifyUsingDOM(document, key, properties.getSignatureSecureParts());
     }
-    
+
     @Test
     public void testHMACSHA_384() throws Exception {
         // Set up the Configuration
@@ -212,15 +212,15 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
-        
+
         // Set the key up
         byte[] hmacKey = "secret".getBytes("ASCII");
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#hmac-sha384";
         SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
         properties.setSignatureKey(key);
-        
+
         properties.setSignatureAlgorithm(signatureAlgorithm);
-        
+
         SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
@@ -247,7 +247,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         // Verify using DOM
         verifyUsingDOM(document, key, properties.getSignatureSecureParts());
     }
-    
+
     @Test
     public void testHMACSHA_512() throws Exception {
         // Set up the Configuration
@@ -255,15 +255,15 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
-        
+
         // Set the key up
         byte[] hmacKey = "secret".getBytes("ASCII");
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#hmac-sha512";
         SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
         properties.setSignatureKey(key);
-        
+
         properties.setSignatureAlgorithm(signatureAlgorithm);
-        
+
         SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
@@ -290,7 +290,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         // Verify using DOM
         verifyUsingDOM(document, key, properties.getSignatureSecureParts());
     }
-    
+
     @Test
     public void testRIPEMD160() throws Exception {
         if (!bcInstalled) {
@@ -301,15 +301,15 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
-        
+
         // Set the key up
         byte[] hmacKey = "secret".getBytes("ASCII");
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#hmac-ripemd160";
         SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
         properties.setSignatureKey(key);
-        
+
         properties.setSignatureAlgorithm(signatureAlgorithm);
-        
+
         SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
@@ -337,5 +337,5 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         verifyUsingDOM(document, key, properties.getSignatureSecureParts());
     }
 
-    
+
 }

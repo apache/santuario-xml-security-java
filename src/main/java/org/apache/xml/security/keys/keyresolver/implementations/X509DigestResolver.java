@@ -37,9 +37,9 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Element;
 
 /**
- * KeyResolverSpi implementation which resolves public keys and X.509 certificates from a 
+ * KeyResolverSpi implementation which resolves public keys and X.509 certificates from a
  * <code>dsig11:X509Digest</code> element.
- * 
+ *
  * @author Brent Putman (putmanb@georgetown.edu)
  */
 public class X509DigestResolver extends KeyResolverSpi {
@@ -105,14 +105,14 @@ public class X509DigestResolver extends KeyResolverSpi {
 
     /**
      * Resolves from the storage resolver the actual certificate represented by the digest.
-     * 
+     *
      * @param element
      * @param baseURI
      * @param storage
      * @return the certificate represented by the digest.
      * @throws XMLSecurityException
      */
-    private X509Certificate resolveCertificate(Element element, String baseURI, StorageResolver storage) 
+    private X509Certificate resolveCertificate(Element element, String baseURI, StorageResolver storage)
         throws XMLSecurityException {
 
         XMLX509Digest x509Digests[] = null;
@@ -123,7 +123,7 @@ public class X509DigestResolver extends KeyResolverSpi {
             return null;
         }
 
-        try {         
+        try {
             checkStorage(storage);
 
             x509Digests = new XMLX509Digest[x509childNodes.length];
@@ -159,7 +159,7 @@ public class X509DigestResolver extends KeyResolverSpi {
 
     /**
      * Method checkSrorage
-     * 
+     *
      * @param storage
      * @throws KeyResolverException
      */

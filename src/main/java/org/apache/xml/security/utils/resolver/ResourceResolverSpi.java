@@ -39,9 +39,9 @@ public abstract class ResourceResolverSpi {
     /**
      * This is the workhorse method used to resolve resources.
      * @param context Context to use to resolve resources.
-     * 
+     *
      * @return the resource wrapped around a XMLSignatureInput
-     * 
+     *
      * @throws ResourceResolverException
      */
     public abstract XMLSignatureInput engineResolveURI(ResourceResolverContext context)
@@ -74,7 +74,7 @@ public abstract class ResourceResolverSpi {
     }
 
     /**
-     * 
+     *
      * @param newProperties
      */
     public void engineAddProperies(Map<String, String> newProperties) {

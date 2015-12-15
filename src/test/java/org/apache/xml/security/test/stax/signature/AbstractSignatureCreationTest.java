@@ -73,7 +73,7 @@ public class AbstractSignatureCreationTest extends org.junit.Assert {
     ) throws Exception {
         verifyUsingDOM(document, cert, secureParts, null);
     }
-    
+
     /**
      * Verify the document using DOM
      */

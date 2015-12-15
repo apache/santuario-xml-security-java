@@ -38,18 +38,18 @@ import org.apache.xml.security.utils.XMLUtils;
 
 public class TransformXSLTTest extends org.junit.Assert {
 
-    private static final String BASEDIR = 
+    private static final String BASEDIR =
         System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
     private static final String SEP = System.getProperty("file.separator");
-    private static final String SOURCE_PATH = 
+    private static final String SOURCE_PATH =
         "src/test/resources/com/phaos/phaos-xmldsig-three/";
-    private static final String SIGNATURE_FILE = 
+    private static final String SIGNATURE_FILE =
         "signature-rsa-detached-xslt-transform.xml";
     private static final String STYLESHEET_FILE = "document-stylesheet.xml";
 
     static org.slf4j.Logger log =
         org.slf4j.LoggerFactory.getLogger(TransformXSLTTest.class);
-    
+
     static {
         org.apache.xml.security.Init.init();
     }
@@ -77,16 +77,16 @@ public class TransformXSLTTest extends org.junit.Assert {
         xpath.setNamespaceContext(new DSNamespaceContext());
 
         String expression = "//ds:Transform[1]";
-        Element transformEl = 
+        Element transformEl =
             (Element) xpath.evaluate(expression, doc1, XPathConstants.NODE);
 
-        Transform transform = 
+        Transform transform =
             new Transform(doc1, Transforms.TRANSFORM_XSLT, transformEl.getChildNodes());
 
         transform.performTransform(new XMLSignatureInput(doc2));
     }
-    
-    private static Document getDocument(File file) 
+
+    private static Document getDocument(File file)
         throws ParserConfigurationException, SAXException, IOException {
         return XMLUtils.createDocumentBuilder(false).parse(new FileInputStream(file));
     }

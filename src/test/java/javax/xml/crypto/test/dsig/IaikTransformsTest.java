@@ -27,7 +27,7 @@ import java.security.Security;
 import javax.xml.crypto.test.KeySelectors;
 
 /**
- * This is a testcase to validate all "transforms" 
+ * This is a testcase to validate all "transforms"
  * testcases from IAIK
  *
  * @author Sean Mullan
@@ -49,7 +49,7 @@ public class IaikTransformsTest extends org.junit.Assert {
         validator = new SignatureValidator(new File
             (base, "transforms/signatures"));
     }
-    
+
     @org.junit.Test
     public void test_base64DecodeSignature() throws Exception {
         String file = "base64DecodeSignature.xml";
@@ -59,7 +59,7 @@ public class IaikTransformsTest extends org.junit.Assert {
         assertTrue("Signature failed core validation", coreValidity);
 
     }
-    
+
     @org.junit.Test
     public void test_envelopedSignatureSignature() throws Exception {
         String file = "envelopedSignatureSignature.xml";
@@ -68,7 +68,7 @@ public class IaikTransformsTest extends org.junit.Assert {
             (file, new KeySelectors.KeyValueKeySelector());
         assertTrue("Signature failed core validation", coreValidity);
     }
-    
+
     @org.junit.Test
     public void test_c14nSignature() throws Exception {
         String file = "c14nSignature.xml";
@@ -77,7 +77,7 @@ public class IaikTransformsTest extends org.junit.Assert {
             (file, new KeySelectors.KeyValueKeySelector());
         assertTrue("Signature failed core validation", coreValidity);
     }
-    
+
     @org.junit.Test
     public void test_xPathSignature() throws Exception {
         String file = "xPathSignature.xml";
@@ -86,5 +86,5 @@ public class IaikTransformsTest extends org.junit.Assert {
             (file, new KeySelectors.KeyValueKeySelector());
         assertTrue("Signature failed core validation", coreValidity);
     }
-    
+
 }

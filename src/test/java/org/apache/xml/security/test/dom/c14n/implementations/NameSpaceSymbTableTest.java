@@ -35,15 +35,15 @@ public class NameSpaceSymbTableTest extends org.junit.Assert {
             node2 = doc.createAttributeNS("b","c");
         } catch (Exception e) {
             e.printStackTrace();
-        } 
+        }
     }
-    
+
     @org.junit.Test
     public void testNullFirstXmlns() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         assertNull(ns.getMapping("xmlns"));
     }
-    
+
     @org.junit.Test
     public void testXmlnsPut() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
@@ -51,7 +51,7 @@ public class NameSpaceSymbTableTest extends org.junit.Assert {
         ns.addMapping("xmlns", "http://a", node1);
         assertEquals(node1, ns.getMapping("xmlns"));
     }
-    
+
     @org.junit.Test
     public void testXmlnsMap() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
@@ -59,20 +59,20 @@ public class NameSpaceSymbTableTest extends org.junit.Assert {
         ns.addMapping("xmlns", "http://a", node1);
         assertEquals(node1, ns.getMapping("xmlns"));
         ns.pop();
-        assertEquals(null, ns.getMapping("xmlns"));        
+        assertEquals(null, ns.getMapping("xmlns"));
     }
-    
+
     @org.junit.Test
     public void testXmlnsMap2() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
         ns.push();
-        ns.addMapping("xmlns", "http://a", node1);        
+        ns.addMapping("xmlns", "http://a", node1);
         ns.pop();
         ns.pop();
-        assertEquals(null, ns.getMapping("xmlns"));        
+        assertEquals(null, ns.getMapping("xmlns"));
     }
-    
+
     @org.junit.Test
     public void testXmlnsPrefix() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
@@ -81,12 +81,12 @@ public class NameSpaceSymbTableTest extends org.junit.Assert {
         assertEquals(node1, ns.getMapping("xmlns"));
         ns.push();
         ns.addMapping("xmlns", "http://a", node1);
-        assertEquals(null, ns.getMapping("xmlns"));     
+        assertEquals(null, ns.getMapping("xmlns"));
         ns.push();
         ns.addMapping("xmlns", "http://b", node1);
         assertEquals(node1, ns.getMapping("xmlns"));
     }
-    
+
     @org.junit.Test
     public void testXmlnsRemovePrefix() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
@@ -94,10 +94,10 @@ public class NameSpaceSymbTableTest extends org.junit.Assert {
         ns.push();
         ns.addMapping("xmlns", "http://a", node1);
         assertEquals(node1, ns.getMapping("xmlns"));
-        ns.pop();        
-        assertNull(ns.getMapping("xmlns"));             
+        ns.pop();
+        assertNull(ns.getMapping("xmlns"));
     }
-    
+
     @org.junit.Test
     public void testPrefix() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
@@ -115,7 +115,7 @@ public class NameSpaceSymbTableTest extends org.junit.Assert {
         ns.addMapping("a", "http://c",node1);
         assertEquals(node1, ns.getMapping("a"));
     }
-    
+
     @org.junit.Test
     public void testSeveralPrefixes() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
@@ -127,18 +127,18 @@ public class NameSpaceSymbTableTest extends org.junit.Assert {
         ns.push();
         assertNull(ns.getMapping("a"));
     }
-    
+
     @org.junit.Test
     public void testSeveralPrefixes2() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
         ns.addMapping("a", "http://a",node1);
-        ns.push();        
+        ns.push();
         assertEquals(node1, ns.getMapping("a"));
         ns.pop();
-        assertEquals(node1, ns.getMapping("a"));        
+        assertEquals(node1, ns.getMapping("a"));
     }
-    
+
     @org.junit.Test
     public void testGetUnrenderedNodes() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
@@ -152,7 +152,7 @@ public class NameSpaceSymbTableTest extends org.junit.Assert {
         assertNotNull("xmlns=\"\" not rendered", n);
         assertEquals(n, node2);
     }
-    
+
     @org.junit.Test
     public void testUnrederedNodes() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
@@ -174,7 +174,7 @@ public class NameSpaceSymbTableTest extends org.junit.Assert {
         l.clear();
         ns.getUnrenderedNodes(l);
         assertFalse(l.contains(node1));
-        assertFalse(l.contains(node2));   
+        assertFalse(l.contains(node2));
         ns.pop();
         ns.pop();
         l.clear();
@@ -188,13 +188,13 @@ public class NameSpaceSymbTableTest extends org.junit.Assert {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
 
-        ns.addMappingAndRender("generated-command", "http://foo.com/command",node1);        	 
+        ns.addMappingAndRender("generated-command", "http://foo.com/command",node1);        	
         ns.addMappingAndRender("generated-event", "http://foo.com/event",node1);
         ns.addMappingAndRender("command", "http://foo.com/command",node1);
         ns.addMappingAndRender("ui", "http://foo.com/ui", node1);
         ns.addMappingAndRender("event", "http://foo.com/event", node1);
         ns.addMappingAndRender("instruction", "http://foo/instruction", node1);
-        ns.addMappingAndRender("directory", "http://foo.com/io/directory", node1);    		    
+        ns.addMappingAndRender("directory", "http://foo.com/io/directory", node1);    		
         ns.addMappingAndRender("function", "http://foo.com/function", node1);
         ns.addMappingAndRender("xmlns", "http://www.w3.org/1999/xhtml", node1);
         ns.addMappingAndRender("ctrl", "http://foo.com/controls", node1);

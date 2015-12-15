@@ -97,14 +97,14 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
             || asn1Bytes[offset] != 2
             || asn1Bytes[offset + 2 + rLength] != 2) {
             throw new IOException("Invalid ASN.1 format of ECDSA signature");
-        } 
+        }
         byte xmldsigBytes[] = new byte[2*rawLen];
 
         System.arraycopy(asn1Bytes, offset + 2 + rLength - i, xmldsigBytes, rawLen - i, i);
         System.arraycopy(asn1Bytes, offset + 2 + rLength + 2 + sLength - j, xmldsigBytes,
                          2 * rawLen - j, j);
 
-        return xmldsigBytes;      
+        return xmldsigBytes;
     }
 
     /**
@@ -399,7 +399,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
             return XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA224;
         }
     }
-    
+
     /**
      * Class SignatureECDSASHA256
      *
@@ -465,7 +465,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
             return XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA512;
         }
     }
-    
+
     /**
      * Class SignatureECDSARIPEMD160
      */
@@ -485,5 +485,5 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
             return XMLSignature.ALGO_ID_SIGNATURE_ECDSA_RIPEMD160;
         }
     }
-    
+
 }

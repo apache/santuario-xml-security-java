@@ -39,23 +39,23 @@ public class WrappingAttackTest extends InteropTestBase {
     static {
         org.apache.xml.security.Init.init();
     }
-    
+
     public WrappingAttackTest() {
         super();
     }
 
     @org.junit.Test
     public void testWrappingAttack() throws Exception {
-        boolean success = 
+        boolean success =
             readAndVerifySignature(
-                "src/test/resources/at/iaik/ixsil/coreFeatures/signatures", 
+                "src/test/resources/at/iaik/ixsil/coreFeatures/signatures",
                 "manifestSignatureWrapping.xml"
             );
 
         assertTrue(success);
         try {
             readAndVerifySignatureAndSetManifest(
-                "src/test/resources/at/iaik/ixsil/coreFeatures/signatures", 
+                "src/test/resources/at/iaik/ixsil/coreFeatures/signatures",
                 "manifestSignatureWrapping.xml"
             );
             fail("Failure expected when secure validation is enabled");
@@ -83,7 +83,7 @@ public class WrappingAttackTest extends InteropTestBase {
         XMLSignature signature = new XMLSignature(sigElement, f.toURI().toURL().toString());
         return signature.checkSignatureValue(signature.getKeyInfo().getPublicKey());
     }
-    
+
     private boolean readAndVerifySignatureAndSetManifest(
         String directory, String file
     ) throws Exception {
@@ -100,11 +100,11 @@ public class WrappingAttackTest extends InteropTestBase {
         Element sigElement =
             (Element) doc.getElementsByTagNameNS(Constants.SignatureSpecNS,
                                                  Constants._TAG_SIGNATURE).item(0);
-        
+
         Element manifestElement =
             (Element) doc.getElementsByTagName("Manifest").item(0);
         manifestElement.setIdAttribute("Id", true);
-        
+
         XMLSignature signature = new XMLSignature(sigElement, f.toURI().toURL().toString(), true);
         return signature.checkSignatureValue(signature.getKeyInfo().getPublicKey());
     }

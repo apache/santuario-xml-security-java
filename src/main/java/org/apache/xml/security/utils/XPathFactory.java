@@ -20,16 +20,16 @@ package org.apache.xml.security.utils;
 
 
 /**
- * A Factory to return an XPathAPI instance. If Xalan is available it returns XalanXPathAPI. If not, then 
+ * A Factory to return an XPathAPI instance. If Xalan is available it returns XalanXPathAPI. If not, then
  * it returns JDKXPathAPI.
  */
 public abstract class XPathFactory {
 
     private static boolean xalanInstalled;
-    
+
     static {
         try {
-            Class<?> funcTableClass = 
+            Class<?> funcTableClass =
                 ClassLoaderUtils.loadClass("org.apache.xpath.compiler.FunctionTable", XPathFactory.class);
             if (funcTableClass != null) {
                 xalanInstalled = true;
@@ -38,11 +38,11 @@ public abstract class XPathFactory {
             //ignore
         }
     }
-    
+
     protected static synchronized boolean isXalanInstalled() {
         return xalanInstalled;
     }
-    
+
     /**
      * Get a new XPathFactory instance
      */
@@ -54,7 +54,7 @@ public abstract class XPathFactory {
         if (XalanXPathAPI.isInstalled()) {
             return new XalanXPathFactory();
         }
-        // Some problem was encountered in fixing up the Xalan FunctionTable so fall back to the 
+        // Some problem was encountered in fixing up the Xalan FunctionTable so fall back to the
         // JDK implementation
         return new JDKXPathFactory();
     }

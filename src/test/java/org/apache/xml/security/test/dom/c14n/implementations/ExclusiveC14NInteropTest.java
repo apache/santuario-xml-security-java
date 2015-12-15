@@ -41,7 +41,7 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
     static {
         org.apache.xml.security.Init.init();
     }
-    
+
     /**
      *  Constructor ExclusiveC14NInteropTest
      */
@@ -170,5 +170,5 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
             return r;
         }
     }
-    
+
 }

@@ -39,18 +39,18 @@ public class ForbiddenRefCountTest extends InteropTestBase {
     static {
         org.apache.xml.security.Init.init();
     }
-    
+
     public ForbiddenRefCountTest() {
         super();
     }
 
     @org.junit.Test
     public void testReferenceCount() throws Exception {
-        boolean success = 
+        boolean success =
             readAndVerifyManifest("src/test/resources/interop/c14n/Y4", "signature-manifest.xml", false);
 
         assertTrue(success);
-        
+
         try {
             readAndVerifyManifest("src/test/resources/interop/c14n/Y4", "signature-manifest.xml", true);
             fail("Failure expected when secure validation is enabled");
@@ -78,5 +78,5 @@ public class ForbiddenRefCountTest extends InteropTestBase {
         Manifest manifest = new Manifest(manifestElement, f.toURI().toURL().toString(), secValidation);
         return manifest.verifyReferences();
     }
-    
+
 }

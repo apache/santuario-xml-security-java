@@ -271,7 +271,7 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
 
             createSignatureAlgorithm(inboundSecurityToken, signatureType);
         }
-        
+
         protected abstract InboundSecurityToken retrieveSecurityToken(SignatureType signatureType,
                                                  XMLSecurityProperties securityProperties,
                                                  InboundSecurityContext inboundSecurityContext) throws XMLSecurityException;
@@ -292,7 +292,7 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
                         algorithmURI, XMLSecurityConstants.Sym_Sig, signatureType.getId());
                 verifyKey = XMLSecurityUtils.prepareSecretKey(algorithmURI, verifyKey.getEncoded());
             }
-            
+
             try {
                 SignatureAlgorithm signatureAlgorithm =
                         SignatureAlgorithmFactory.getInstance().getSignatureAlgorithm(

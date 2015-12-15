@@ -46,7 +46,7 @@ import org.w3c.dom.Node;
  * Defines the individual marshallers for each of the different javax.xml.crypto structures.
  */
 class Marshaller {
-    
+
     private Marshaller() {
         // complete
     }
@@ -54,10 +54,10 @@ class Marshaller {
     public static List<XmlWriter.ToMarshal<? extends XMLStructure>> getMarshallers() {
         return MARSHALLERS;
     }
-    
+
     /**
      * Marshals a {@link KeyName}.
-     * 
+     *
      * @param xwriter
      * @param keyName
      * @param dsPrefix
@@ -65,10 +65,10 @@ class Marshaller {
     public static void marshalKeyName(XmlWriter xwriter, KeyName keyName, String dsPrefix) {
         xwriter.writeTextElement(dsPrefix, "KeyName", XMLSignature.XMLNS, keyName.getName());
     }
-    
+
     /**
      * Marshals a {@link PGPData}
-     * 
+     *
      * @param xwriter
      * @param pgpData
      * @param dsPrefix
@@ -78,32 +78,32 @@ class Marshaller {
     public static void marshalPGPData(XmlWriter xwriter, PGPData pgpData, String dsPrefix, XMLCryptoContext context)
     throws MarshalException {
         xwriter.writeStartElement(dsPrefix, "PGPData", XMLSignature.XMLNS);
-    
+
         // create and append PGPKeyID element
         byte[] keyId = pgpData.getKeyId();
         if (keyId != null) {
             xwriter.writeTextElement(dsPrefix, "PGPKeyID", XMLSignature.XMLNS, Base64.encode(keyId));
         }
-    
+
         // create and append PGPKeyPacket element
         byte[] keyPacket = pgpData.getKeyPacket();
         if (keyPacket != null) {
             xwriter.writeTextElement(dsPrefix, "XMLSignature.XMLNS", XMLSignature.XMLNS, Base64.encode(keyPacket));
         }
-    
+
         // create and append any elements
         @SuppressWarnings("unchecked")
         List<XMLStructure> externalElements = pgpData.getExternalElements();
         for (XMLStructure externalItem : externalElements) {
             xwriter.marshalStructure(externalItem, dsPrefix, context);
         }
-    
+
         xwriter.writeEndElement(); // "PGPData"
     }
 
     /**
      * Marshals an {@link X509IssuerSerial}
-     * 
+     *
      * @param xwriter
      * @param issuerSerial
      * @param dsPrefix
@@ -112,10 +112,10 @@ class Marshaller {
         xwriter.writeStartElement(dsPrefix, "X509IssuerSerial", XMLSignature.XMLNS);
         xwriter.writeTextElement(dsPrefix, "X509IssuerName", XMLSignature.XMLNS,
                 issuerSerial.getIssuerName());
-    
+
         xwriter.writeTextElement(dsPrefix, "X509SerialNumber", XMLSignature.XMLNS,
                 issuerSerial.getSerialNumber().toString());
-        
+
         xwriter.writeEndElement(); // "X509IssuerSerial"
     }
 
@@ -126,7 +126,7 @@ class Marshaller {
             Marshaller.marshalKeyName(xwriter, toMarshal, dsPrefix);
         }
     };
-    
+
     private static XmlWriter.ToMarshal<KeyInfo> Marshal_KeyInfo = new XmlWriter.ToMarshal<KeyInfo>(KeyInfo.class) {
         @Override
         public void marshalObject(XmlWriter xwriter, KeyInfo toMarshal, String dsPrefix,
@@ -134,7 +134,7 @@ class Marshaller {
             DOMKeyInfo.marshal(xwriter, toMarshal, dsPrefix, context);
         }
     };
-    
+
     private static XmlWriter.ToMarshal<KeyValue> Marshal_KeyValue = new XmlWriter.ToMarshal<KeyValue>(KeyValue.class) {
         @Override
         public void marshalObject(XmlWriter xwriter, KeyValue toMarshal, String dsPrefix,
@@ -146,7 +146,7 @@ class Marshaller {
             dkv.marshal( xwriter, dsPrefix, context);
         }
     };
-    
+
     private static XmlWriter.ToMarshal<X509IssuerSerial> Marshal_X509IssuerSerial =
             new XmlWriter.ToMarshal<X509IssuerSerial>(X509IssuerSerial.class) {
         @Override
@@ -155,7 +155,7 @@ class Marshaller {
             Marshaller.marshalX509IssuerSerial( xwriter, toMarshal, dsPrefix);
         }
     };
-    
+
     private static XmlWriter.ToMarshal<X509Data> Marshal_X509Data =
             new XmlWriter.ToMarshal<X509Data>(X509Data.class) {
         @Override
@@ -164,7 +164,7 @@ class Marshaller {
             DOMX509Data.marshal( xwriter, toMarshal, dsPrefix, context);
         }
     };
-    
+
     private static XmlWriter.ToMarshal<DigestMethod> Marshal_DigestMethod =
             new XmlWriter.ToMarshal<DigestMethod>(DigestMethod.class) {
         @Override
@@ -246,9 +246,9 @@ class Marshaller {
         }
     };
 
-    private static final List<XmlWriter.ToMarshal<? extends XMLStructure>> MARSHALLERS = 
+    private static final List<XmlWriter.ToMarshal<? extends XMLStructure>> MARSHALLERS =
         new ArrayList<XmlWriter.ToMarshal<? extends XMLStructure>>();
-    
+
     static {
         MARSHALLERS.add(Marshal_KeyName);
         MARSHALLERS.add(Marshal_KeyInfo);
@@ -265,10 +265,10 @@ class Marshaller {
         MARSHALLERS.add(Marshal_DOMStructure);
         MARSHALLERS.add(Marshal_JavaXDOMStructure);
     }
-    
+
     private static void marshalGenericNode(XmlWriter xwriter, javax.xml.crypto.dom.DOMStructure xmlStruct) {
         Node node = xmlStruct.getNode();
-        
+
         // if it is a namespace, make a copy.
         if (DOMUtils.isNamespace(node)) {
             xwriter.writeNamespace(node.getLocalName(), node.getTextContent());
@@ -280,7 +280,7 @@ class Marshaller {
             marshalGenericNode(xwriter, node);
         }
     }
-    
+
     private static void marshalGenericNode(XmlWriter xwriter, Node node) {
 
         short nodeType = node.getNodeType();

@@ -28,7 +28,7 @@ import org.apache.xml.security.exceptions.XMLSecurityException;
 public class CanonicalizationException extends XMLSecurityException {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
 
@@ -39,7 +39,7 @@ public class CanonicalizationException extends XMLSecurityException {
     public CanonicalizationException() {
         super();
     }
-    
+
     public CanonicalizationException(Exception ex) {
         super(ex);
     }

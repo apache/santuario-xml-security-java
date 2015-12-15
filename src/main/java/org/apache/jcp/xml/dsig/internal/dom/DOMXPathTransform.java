@@ -43,7 +43,7 @@ import org.w3c.dom.NamedNodeMap;
  * @author Sean Mullan
  */
 public final class DOMXPathTransform extends ApacheTransform {
- 
+
     @Override
     public void init(TransformParameterSpec params)
         throws InvalidAlgorithmParameterException
@@ -106,7 +106,7 @@ public final class DOMXPathTransform extends ApacheTransform {
                                      entry.getKey(),
                                      entry.getValue());
         }
-            
+
         transformElem.appendChild(xpathElem);
     }
 }

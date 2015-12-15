@@ -30,14 +30,14 @@ import org.apache.xml.security.signature.XMLSignatureException;
 public class SignerOutputStream extends ByteArrayOutputStream {
     private static org.slf4j.Logger log =
         org.slf4j.LoggerFactory.getLogger(SignerOutputStream.class);
-    
+
     final SignatureAlgorithm sa;
 
     /**
      * @param sa
      */
     public SignerOutputStream(SignatureAlgorithm sa) {
-        this.sa = sa;       
+        this.sa = sa;
     }
 
     /** @inheritDoc */

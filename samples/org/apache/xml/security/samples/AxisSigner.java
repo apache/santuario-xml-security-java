@@ -61,7 +61,7 @@ public class AxisSigner {
 
         ks.load(fis, keystorePass.toCharArray());
 
-        PrivateKey privateKey = 
+        PrivateKey privateKey =
             (PrivateKey) ks.getKey(privateKeyAlias, privateKeyPass.toCharArray());
         javax.xml.parsers.DocumentBuilderFactory dbf =
             javax.xml.parsers.DocumentBuilderFactory.newInstance();

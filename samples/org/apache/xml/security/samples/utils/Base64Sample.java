@@ -43,7 +43,7 @@ public class Base64Sample {
      * @throws Exception
      */
     public static void main(String[] unused) throws Exception {
-        
+
         org.apache.xml.security.Init.init();
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();

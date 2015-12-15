@@ -51,10 +51,10 @@ public class SignatureMethodTest extends org.junit.Assert {
             String algo = SIG_ALGOS[i];
             sm = factory.newSignatureMethod(algo, null);
             try {
-                sm.isFeatureSupported(null); 
-                fail("Should raise a NPE for null feature"); 
+                sm.isFeatureSupported(null);
+                fail("Should raise a NPE for null feature");
             } catch (NullPointerException npe) {}
-            
+
             assertTrue(!sm.isFeatureSupported("not supported"));
         }
     }
@@ -74,7 +74,7 @@ public class SignatureMethodTest extends org.junit.Assert {
             try {
                 sm = factory.newSignatureMethod
                     (algo, new TestUtils.MyOwnSignatureMethodParameterSpec());
-                fail("Should raise an IAPE for invalid parameters"); 
+                fail("Should raise an IAPE for invalid parameters");
             } catch (InvalidAlgorithmParameterException iape) {
             } catch (Exception ex) {
                 fail("Should raise an IAPE instead of " + ex);
@@ -82,19 +82,19 @@ public class SignatureMethodTest extends org.junit.Assert {
         }
 
         try {
-            sm = factory.newSignatureMethod("non-existent", null); 
-            fail("Should raise an NSAE for non-existent algos"); 
+            sm = factory.newSignatureMethod("non-existent", null);
+            fail("Should raise an NSAE for non-existent algos");
         } catch (NoSuchAlgorithmException nsae) {
             //
         }
 
         try {
-            sm = factory.newSignatureMethod(null, null); 
-            fail("Should raise a NPE for null algo"); 
+            sm = factory.newSignatureMethod(null, null);
+            fail("Should raise a NPE for null algo");
         } catch (NullPointerException npe) {
             //
         }
     }
-    
+
 }
 

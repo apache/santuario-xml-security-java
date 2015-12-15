@@ -69,7 +69,7 @@ public class MultiInputStream extends InputStream {
     public long skip(long n) throws IOException {
         throw new IOException("skip() not supported");
     }
-    
+
     @Override
     public int available() throws IOException {
         if (inputStreamIndex < inputStreamCount) {

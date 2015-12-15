@@ -46,7 +46,7 @@ public class UnsynchronizedByteArrayOutputStream extends OutputStream {
      * Constructs a new {@code ByteArrayOutputStream} with a default size of
      * {@code size} bytes. If more than {@code size} bytes are written to this
      * instance, the underlying byte array will expand.
-     * 
+     *
      * @param size
      *            initial size for the underlying byte array, must be
      *            non-negative.
@@ -83,7 +83,7 @@ public class UnsynchronizedByteArrayOutputStream extends OutputStream {
 
     /**
      * Returns the total number of bytes written to this stream so far.
-     * 
+     *
      * @return the number of bytes written to this stream.
      */
     public int size() {
@@ -94,7 +94,7 @@ public class UnsynchronizedByteArrayOutputStream extends OutputStream {
      * Returns the contents of this ByteArrayOutputStream as a byte array. Any
      * changes made to the receiver after returning will not be reflected in the
      * byte array returned to the caller.
-     * 
+     *
      * @return this stream's current contents as a byte array.
      */
     public byte[] toByteArray() {
@@ -107,7 +107,7 @@ public class UnsynchronizedByteArrayOutputStream extends OutputStream {
      * Returns the contents of this ByteArrayOutputStream as a string. Any
      * changes made to the receiver after returning will not be reflected in the
      * string returned to the caller.
-     * 
+     *
      * @return this stream's current contents as a string.
      */
 
@@ -119,7 +119,7 @@ public class UnsynchronizedByteArrayOutputStream extends OutputStream {
     /**
      * Returns the contents of this ByteArrayOutputStream as a string converted
      * according to the encoding declared in {@code enc}.
-     * 
+     *
      * @param enc
      *            a string representing the encoding to use when translating
      *            this stream to a string.
@@ -134,7 +134,7 @@ public class UnsynchronizedByteArrayOutputStream extends OutputStream {
     /**
      * Writes {@code count} bytes from the byte array {@code buffer} starting at
      * offset {@code index} to this stream.
-     * 
+     *
      * @param buffer
      *            the buffer to be written.
      * @param offset
@@ -168,7 +168,7 @@ public class UnsynchronizedByteArrayOutputStream extends OutputStream {
     /**
      * Writes the specified byte {@code oneByte} to the OutputStream. Only the
      * low order byte of {@code oneByte} is written.
-     * 
+     *
      * @param oneByte
      *            the byte to be written.
      */
@@ -183,7 +183,7 @@ public class UnsynchronizedByteArrayOutputStream extends OutputStream {
     /**
      * Takes the contents of this stream and writes it to the output stream
      * {@code out}.
-     * 
+     *
      * @param out
      *            an OutputStream on which to write the contents of this stream.
      * @throws IOException

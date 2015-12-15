@@ -51,12 +51,12 @@ public class HMACSignatureAlgorithmTest extends org.junit.Assert {
     static {
         org.apache.xml.security.Init.init();
     }
-    
+
     private boolean bcInstalled;
-    
+
     public HMACSignatureAlgorithmTest() throws Exception {
         //
-        // If the BouncyCastle provider is not installed, then try to load it 
+        // If the BouncyCastle provider is not installed, then try to load it
         // via reflection.
         //
         if (Security.getProvider("BC") == null) {
@@ -79,152 +79,152 @@ public class HMACSignatureAlgorithmTest extends org.junit.Assert {
     public static void cleanup() throws Exception {
         Security.removeProvider("org.bouncycastle.jce.provider.BouncyCastleProvider");
     }
-    
+
     @org.junit.Test
     public void testHMACSHA1() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // Set up the Key
         byte[] hmacKey = "secret".getBytes("ASCII");
         SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2000/09/xmldsig#hmac-sha1");
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         sign("http://www.w3.org/2000/09/xmldsig#hmac-sha1", document, localNames, key);
         // XMLUtils.outputDOM(document, System.out);
         verify(document, key, localNames);
     }
-    
+
     @org.junit.Test
     public void testHMACMD5() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // Set up the Key
         byte[] hmacKey = "secret".getBytes("ASCII");
         SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2001/04/xmldsig-more#hmac-md5");
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         sign("http://www.w3.org/2001/04/xmldsig-more#hmac-md5", document, localNames, key);
         // XMLUtils.outputDOM(document, System.out);
         verify(document, key, localNames);
     }
-    
+
     @org.junit.Test
     public void testHMACSHA_224() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // Set up the Key
         byte[] hmacKey = "secret".getBytes("ASCII");
         SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2001/04/xmldsig-more#hmac-sha224");
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         sign("http://www.w3.org/2001/04/xmldsig-more#hmac-sha224", document, localNames, key);
         // XMLUtils.outputDOM(document, System.out);
         verify(document, key, localNames);
     }
-    
+
     @org.junit.Test
     public void testHMACSHA_256() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // Set up the Key
         byte[] hmacKey = "secret".getBytes("ASCII");
         SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2001/04/xmldsig-more#hmac-sha256");
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         sign("http://www.w3.org/2001/04/xmldsig-more#hmac-sha256", document, localNames, key);
         // XMLUtils.outputDOM(document, System.out);
         verify(document, key, localNames);
     }
-    
+
     @org.junit.Test
     public void testHMACSHA_384() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // Set up the Key
         byte[] hmacKey = "secret".getBytes("ASCII");
         SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2001/04/xmldsig-more#hmac-sha384");
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         sign("http://www.w3.org/2001/04/xmldsig-more#hmac-sha384", document, localNames, key);
         // XMLUtils.outputDOM(document, System.out);
         verify(document, key, localNames);
     }
-    
+
     @org.junit.Test
     public void testHMACSHA_512() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // Set up the Key
         byte[] hmacKey = "secret".getBytes("ASCII");
         SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2001/04/xmldsig-more#hmac-sha512");
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         sign("http://www.w3.org/2001/04/xmldsig-more#hmac-sha512", document, localNames, key);
         // XMLUtils.outputDOM(document, System.out);
         verify(document, key, localNames);
     }
-    
+
     @org.junit.Test
     public void testHMACRIPEMD160() throws Exception {
         if (!bcInstalled) {
             return;
         }
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // Set up the Key
         byte[] hmacKey = "secret".getBytes("ASCII");
         SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2001/04/xmldsig-more#hmac-ripemd160");
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         sign("http://www.w3.org/2001/04/xmldsig-more#hmac-ripemd160", document, localNames, key);
         // XMLUtils.outputDOM(document, System.out);
         verify(document, key, localNames);
@@ -273,7 +273,7 @@ public class HMACSignatureAlgorithmTest extends org.junit.Assert {
 
         return sig;
     }
-    
+
     private void verify(
         Document document,
         Key key,

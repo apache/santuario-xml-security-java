@@ -50,7 +50,7 @@ import org.xml.sax.SAXException;
  * <p> This element holds the <code>Reference</code> elements</p>
  */
 public class Manifest extends SignatureElementProxy {
-    
+
     /**
      * The maximum number of references per Manifest, if secure validation is enabled.
      */
@@ -71,7 +71,7 @@ public class Manifest extends SignatureElementProxy {
 
     /** Field perManifestResolvers */
     private List<ResourceResolver> perManifestResolvers = null;
-    
+
     private boolean secureValidation;
 
     /**
@@ -96,7 +96,7 @@ public class Manifest extends SignatureElementProxy {
      */
     public Manifest(Element element, String baseURI) throws XMLSecurityException {
         this(element, baseURI, false);
-        
+
     }
     /**
      * Constructor Manifest
@@ -110,7 +110,7 @@ public class Manifest extends SignatureElementProxy {
         Element element, String baseURI, boolean secureValidation
     ) throws XMLSecurityException {
         super(element, baseURI);
-        
+
         Attr attr = element.getAttributeNodeNS(null, "Id");
         if (attr != null) {
             element.setIdAttributeNode(attr, true);
@@ -118,7 +118,7 @@ public class Manifest extends SignatureElementProxy {
         this.secureValidation = secureValidation;
 
         // check out Reference children
-        this.referencesEl = 
+        this.referencesEl =
             XMLUtils.selectDsNodes(
                 getFirstChild(), Constants._TAG_REFERENCE
             );
@@ -130,10 +130,10 @@ public class Manifest extends SignatureElementProxy {
             throw new DOMException(DOMException.WRONG_DOCUMENT_ERR,
                                    I18n.translate("xml.WrongContent", exArgs));
         }
-        
+
         if (secureValidation && le > MAXIMUM_REFERENCE_COUNT) {
             Object exArgs[] = { le, MAXIMUM_REFERENCE_COUNT };
-            
+
             throw new XMLSecurityException("signature.tooManyReferences", exArgs);
         }
 
@@ -156,9 +156,9 @@ public class Manifest extends SignatureElementProxy {
      * from the supplied values.
      *
      * @param baseURI the URI of the resource where the XML instance was stored
-     * @param referenceURI <code>URI</code> attribute in <code>Reference</code> for specifying 
+     * @param referenceURI <code>URI</code> attribute in <code>Reference</code> for specifying
      * where data is
-     * @param transforms org.apache.xml.security.signature.Transforms object with an ordered 
+     * @param transforms org.apache.xml.security.signature.Transforms object with an ordered
      * list of transformations to be performed.
      * @param digestURI The digest algorithm URI to be used.
      * @param referenceId
@@ -166,11 +166,11 @@ public class Manifest extends SignatureElementProxy {
      * @throws XMLSignatureException
      */
     public void addDocument(
-        String baseURI, String referenceURI, Transforms transforms, 
+        String baseURI, String referenceURI, Transforms transforms,
         String digestURI, String referenceId, String referenceType
     ) throws XMLSignatureException {
         // the this.doc is handed implicitly by the this.getOwnerDocument()
-        Reference ref = 
+        Reference ref =
             new Reference(getDocument(), baseURI, referenceURI, this, transforms, digestURI);
 
         if (referenceId != null) {
@@ -225,8 +225,8 @@ public class Manifest extends SignatureElementProxy {
      */
     public Reference item(int i) throws XMLSecurityException {
         if (this.references.get(i) == null) {
-            // not yet constructed, so _we_ have to            
-            Reference ref = 
+            // not yet constructed, so _we_ have to
+            Reference ref =
                 new Reference(referencesEl[i], this.baseURI, this, secureValidation);
 
             this.references.set(i, ref);
@@ -266,8 +266,8 @@ public class Manifest extends SignatureElementProxy {
      * validations are available by using the {@link #getVerificationResult(int)} method
      *
      * @return true if all References verify, false if one or more do not verify.
-     * @throws MissingResourceFailureException if a {@link Reference} does not verify 
-     * (throws a {@link org.apache.xml.security.signature.ReferenceNotInitializedException} 
+     * @throws MissingResourceFailureException if a {@link Reference} does not verify
+     * (throws a {@link org.apache.xml.security.signature.ReferenceNotInitializedException}
      * because of an uninitialized {@link XMLSignatureInput}
      * @see org.apache.xml.security.signature.Reference#verify
      * @see org.apache.xml.security.signature.SignedInfo#verify()
@@ -291,8 +291,8 @@ public class Manifest extends SignatureElementProxy {
      *
      * @param followManifests
      * @return true if all References verify, false if one or more do not verify.
-     * @throws MissingResourceFailureException if a {@link Reference} does not verify 
-     * (throws a {@link org.apache.xml.security.signature.ReferenceNotInitializedException} 
+     * @throws MissingResourceFailureException if a {@link Reference} does not verify
+     * (throws a {@link org.apache.xml.security.signature.ReferenceNotInitializedException}
      * because of an uninitialized {@link XMLSignatureInput}
      * @see org.apache.xml.security.signature.Reference#verify
      * @see org.apache.xml.security.signature.SignedInfo#verify(boolean)
@@ -302,7 +302,7 @@ public class Manifest extends SignatureElementProxy {
     public boolean verifyReferences(boolean followManifests)
         throws MissingResourceFailureException, XMLSecurityException {
         if (referencesEl == null) {
-            this.referencesEl =  
+            this.referencesEl =
                 XMLUtils.selectDsNodes(
                     getFirstChild(), Constants._TAG_REFERENCE
                 );
@@ -317,7 +317,7 @@ public class Manifest extends SignatureElementProxy {
         }
         if (secureValidation && referencesEl.length > MAXIMUM_REFERENCE_COUNT) {
             Object exArgs[] = { referencesEl.length, MAXIMUM_REFERENCE_COUNT };
-                        
+
             throw new XMLSecurityException("signature.tooManyReferences", exArgs);
         }
 
@@ -359,7 +359,7 @@ public class Manifest extends SignatureElementProxy {
                             Node n = nlIterator.next();
 
                             if (n.getNodeType() == Node.ELEMENT_NODE
-                                && ((Element) n).getNamespaceURI().equals(Constants.SignatureSpecNS) 
+                                && ((Element) n).getNamespaceURI().equals(Constants.SignatureSpecNS)
                                 && ((Element) n).getLocalName().equals(Constants._TAG_MANIFEST)
                             ) {
                                 try {
@@ -465,10 +465,10 @@ public class Manifest extends SignatureElementProxy {
     }
 
     /**
-     * Adds Resource Resolver for retrieving resources at specified <code>URI</code> attribute 
+     * Adds Resource Resolver for retrieving resources at specified <code>URI</code> attribute
      * in <code>reference</code> element
      *
-     * @param resolver {@link ResourceResolver} can provide the implemenatin subclass of 
+     * @param resolver {@link ResourceResolver} can provide the implemenatin subclass of
      * {@link ResourceResolverSpi} for retrieving resource.
      */
     public void addResourceResolver(ResourceResolver resolver) {
@@ -482,10 +482,10 @@ public class Manifest extends SignatureElementProxy {
     }
 
     /**
-     * Adds Resource Resolver for retrieving resources at specified <code>URI</code> attribute 
+     * Adds Resource Resolver for retrieving resources at specified <code>URI</code> attribute
      * in <code>reference</code> element
      *
-     * @param resolverSpi the implementation subclass of {@link ResourceResolverSpi} for 
+     * @param resolverSpi the implementation subclass of {@link ResourceResolverSpi} for
      * retrieving the resource.
      */
     public void addResourceResolver(ResourceResolverSpi resolverSpi) {
@@ -505,7 +505,7 @@ public class Manifest extends SignatureElementProxy {
     public List<ResourceResolver> getPerManifestResolvers() {
         return perManifestResolvers;
     }
-    
+
     /**
      * Get the resolver property map
      * @return the resolver property map
@@ -513,7 +513,7 @@ public class Manifest extends SignatureElementProxy {
     public Map<String, String> getResolverProperties() {
         return resolverProperties;
     }
-    
+
     /**
      * Used to pass parameters like proxy servers etc to the ResourceResolver
      * implementation.

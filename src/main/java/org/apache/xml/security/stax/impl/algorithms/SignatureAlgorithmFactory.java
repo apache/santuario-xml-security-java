@@ -45,7 +45,7 @@ public class SignatureAlgorithmFactory {
     public SignatureAlgorithm getSignatureAlgorithm(String algoURI) throws XMLSecurityException, NoSuchProviderException, NoSuchAlgorithmException {
         String algorithmClass = JCEAlgorithmMapper.getAlgorithmClassFromURI(algoURI);
         if (algorithmClass == null) {
-            throw new XMLSecurityException("algorithms.NoSuchMap", 
+            throw new XMLSecurityException("algorithms.NoSuchMap",
                                            new Object[] {algoURI});
         }
         String jceName = JCEAlgorithmMapper.translateURItoJCEID(algoURI);

@@ -53,54 +53,54 @@ public class Canonicalizer {
     public static final String ENCODING = "UTF8";
 
     /**
-     * XPath Expression for selecting every node and continuous comments joined 
-     * in only one node 
+     * XPath Expression for selecting every node and continuous comments joined
+     * in only one node
      */
-    public static final String XPATH_C14N_WITH_COMMENTS_SINGLE_NODE = 
+    public static final String XPATH_C14N_WITH_COMMENTS_SINGLE_NODE =
         "(.//. | .//@* | .//namespace::*)";
 
     /**
      * The URL defined in XML-SEC Rec for inclusive c14n <b>without</b> comments.
      */
-    public static final String ALGO_ID_C14N_OMIT_COMMENTS = 
+    public static final String ALGO_ID_C14N_OMIT_COMMENTS =
         "http://www.w3.org/TR/2001/REC-xml-c14n-20010315";
     /**
      * The URL defined in XML-SEC Rec for inclusive c14n <b>with</b> comments.
      */
-    public static final String ALGO_ID_C14N_WITH_COMMENTS = 
+    public static final String ALGO_ID_C14N_WITH_COMMENTS =
         ALGO_ID_C14N_OMIT_COMMENTS + "#WithComments";
     /**
      * The URL defined in XML-SEC Rec for exclusive c14n <b>without</b> comments.
      */
-    public static final String ALGO_ID_C14N_EXCL_OMIT_COMMENTS = 
+    public static final String ALGO_ID_C14N_EXCL_OMIT_COMMENTS =
         "http://www.w3.org/2001/10/xml-exc-c14n#";
     /**
      * The URL defined in XML-SEC Rec for exclusive c14n <b>with</b> comments.
      */
-    public static final String ALGO_ID_C14N_EXCL_WITH_COMMENTS = 
+    public static final String ALGO_ID_C14N_EXCL_WITH_COMMENTS =
         ALGO_ID_C14N_EXCL_OMIT_COMMENTS + "WithComments";
     /**
      * The URI for inclusive c14n 1.1 <b>without</b> comments.
      */
-    public static final String ALGO_ID_C14N11_OMIT_COMMENTS = 
+    public static final String ALGO_ID_C14N11_OMIT_COMMENTS =
         "http://www.w3.org/2006/12/xml-c14n11";
     /**
      * The URI for inclusive c14n 1.1 <b>with</b> comments.
      */
-    public static final String ALGO_ID_C14N11_WITH_COMMENTS = 
+    public static final String ALGO_ID_C14N11_WITH_COMMENTS =
         ALGO_ID_C14N11_OMIT_COMMENTS + "#WithComments";
     /**
      * Non-standard algorithm to serialize the physical representation for XML Encryption
      */
-    public static final String ALGO_ID_C14N_PHYSICAL = 
+    public static final String ALGO_ID_C14N_PHYSICAL =
         "http://santuario.apache.org/c14n/physical";
 
-    private static Map<String, Class<? extends CanonicalizerSpi>> canonicalizerHash = 
+    private static Map<String, Class<? extends CanonicalizerSpi>> canonicalizerHash =
         new ConcurrentHashMap<String, Class<? extends CanonicalizerSpi>>();
-    
+
     private final CanonicalizerSpi canonicalizerSpi;
     private boolean secureValidation;
-    
+
     /**
      * Constructor Canonicalizer
      *
@@ -109,7 +109,7 @@ public class Canonicalizer {
      */
     private Canonicalizer(String algorithmURI) throws InvalidCanonicalizerException {
         try {
-            Class<? extends CanonicalizerSpi> implementingClass = 
+            Class<? extends CanonicalizerSpi> implementingClass =
                 canonicalizerHash.get(algorithmURI);
 
             canonicalizerSpi = implementingClass.newInstance();
@@ -148,7 +148,7 @@ public class Canonicalizer {
         throws AlgorithmAlreadyRegisteredException, ClassNotFoundException {
         JavaUtils.checkRegisterPermission();
         // check whether URI is already registered
-        Class<? extends CanonicalizerSpi> registeredClass = 
+        Class<? extends CanonicalizerSpi> registeredClass =
             canonicalizerHash.get(algorithmURI);
 
         if (registeredClass != null)  {
@@ -161,7 +161,7 @@ public class Canonicalizer {
             ClassLoaderUtils.loadClass(implementingClass, Canonicalizer.class)
         );
     }
-    
+
     /**
      * Method register
      *
@@ -184,37 +184,37 @@ public class Canonicalizer {
 
         canonicalizerHash.put(algorithmURI, implementingClass);
     }
-    
+
     /**
      * This method registers the default algorithms.
      */
     public static void registerDefaultAlgorithms() {
         canonicalizerHash.put(
-            Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS, 
+            Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS,
             Canonicalizer20010315OmitComments.class
         );
         canonicalizerHash.put(
-            Canonicalizer.ALGO_ID_C14N_WITH_COMMENTS, 
+            Canonicalizer.ALGO_ID_C14N_WITH_COMMENTS,
             Canonicalizer20010315WithComments.class
         );
         canonicalizerHash.put(
-            Canonicalizer.ALGO_ID_C14N_EXCL_OMIT_COMMENTS, 
+            Canonicalizer.ALGO_ID_C14N_EXCL_OMIT_COMMENTS,
             Canonicalizer20010315ExclOmitComments.class
         );
         canonicalizerHash.put(
-            Canonicalizer.ALGO_ID_C14N_EXCL_WITH_COMMENTS, 
+            Canonicalizer.ALGO_ID_C14N_EXCL_WITH_COMMENTS,
             Canonicalizer20010315ExclWithComments.class
         );
         canonicalizerHash.put(
-            Canonicalizer.ALGO_ID_C14N11_OMIT_COMMENTS, 
+            Canonicalizer.ALGO_ID_C14N11_OMIT_COMMENTS,
             Canonicalizer11_OmitComments.class
         );
         canonicalizerHash.put(
-            Canonicalizer.ALGO_ID_C14N11_WITH_COMMENTS, 
+            Canonicalizer.ALGO_ID_C14N11_WITH_COMMENTS,
             Canonicalizer11_WithComments.class
         );
         canonicalizerHash.put(
-            Canonicalizer.ALGO_ID_C14N_PHYSICAL, 
+            Canonicalizer.ALGO_ID_C14N_PHYSICAL,
             CanonicalizerPhysical.class
         );
     }
@@ -358,9 +358,9 @@ public class Canonicalizer {
         NodeList xpathNodeSet, String inclusiveNamespaces
     ) throws CanonicalizationException {
         canonicalizerSpi.secureValidation = secureValidation;
-        return 
+        return
             canonicalizerSpi.engineCanonicalizeXPathNodeSet(xpathNodeSet, inclusiveNamespaces);
-    } 
+    }
 
     /**
      * Canonicalizes an XPath node set.
@@ -369,7 +369,7 @@ public class Canonicalizer {
      * @return the result of the c14n.
      * @throws CanonicalizationException
      */
-    public byte[] canonicalizeXPathNodeSet(Set<Node> xpathNodeSet) 
+    public byte[] canonicalizeXPathNodeSet(Set<Node> xpathNodeSet)
         throws CanonicalizationException {
         canonicalizerSpi.secureValidation = secureValidation;
         return canonicalizerSpi.engineCanonicalizeXPathNodeSet(xpathNodeSet);
@@ -387,12 +387,12 @@ public class Canonicalizer {
         Set<Node> xpathNodeSet, String inclusiveNamespaces
     ) throws CanonicalizationException {
         canonicalizerSpi.secureValidation = secureValidation;
-        return 
+        return
             canonicalizerSpi.engineCanonicalizeXPathNodeSet(xpathNodeSet, inclusiveNamespaces);
     }
 
     /**
-     * Sets the writer where the canonicalization ends.  ByteArrayOutputStream 
+     * Sets the writer where the canonicalization ends.  ByteArrayOutputStream
      * if none is set.
      * @param os
      */
@@ -423,5 +423,5 @@ public class Canonicalizer {
     public void setSecureValidation(boolean secureValidation) {
         this.secureValidation = secureValidation;
     }
-    
+
 }

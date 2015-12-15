@@ -31,12 +31,12 @@ import org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI;
 
 /**
  * This test uses more than one classloader to load a class (Driver) that
- * invokes the XMLSignature API. It tests that there are not provider class 
+ * invokes the XMLSignature API. It tests that there are not provider class
  * loading issues with more than one classloader (see 6380953).
  */
 public class ClassLoaderTest extends org.junit.Assert {
-    
-    private static org.slf4j.Logger log = 
+
+    private static org.slf4j.Logger log =
         org.slf4j.LoggerFactory.getLogger(ClassLoaderTest.class);
 
     @SuppressWarnings("resource")
@@ -86,8 +86,8 @@ public class ClassLoaderTest extends org.junit.Assert {
                 return null;
             }
         });
-        // get the provider from java.security.Security using URLClassLoader. 
-        // Need to use introspection to invoke methods to avoid using the 
+        // get the provider from java.security.Security using URLClassLoader.
+        // Need to use introspection to invoke methods to avoid using the
         // current class loader
         String factoryName = "javax.xml.crypto.dsig.XMLSignatureFactory";
         Class<?> factoryClass = uc1.loadClass(factoryName);
@@ -96,7 +96,7 @@ public class ClassLoaderTest extends org.junit.Assert {
         Class<?> methodParameterClass = uc1.loadClass
             ("javax.xml.crypto.dsig.spec.C14NMethodParameterSpec");
         Method canonicalizationMethod = factoryClass.getDeclaredMethod
-            ("newCanonicalizationMethod", 
+            ("newCanonicalizationMethod",
                 new Class[]{String.class,methodParameterClass});
         Object factory = factoryMethod.invoke(null, "DOM");
         long start = System.currentTimeMillis();
@@ -136,5 +136,5 @@ public class ClassLoaderTest extends org.junit.Assert {
         m1.invoke(o1, (Object[]) null);
         m2.invoke(o2, (Object[]) null);
     }
-    
+
 }

@@ -35,7 +35,7 @@ public class SampleTransformNone extends TransformSpi {
     /** Field implementedTransformURI */
     public static final String implementedTransformURI =
         "http://www.xmlsecurity.org/NS/Transforms#none";
-    
+
     static {
         org.apache.xml.security.Init.init();
     }

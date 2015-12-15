@@ -50,7 +50,7 @@ public class IAIKInterOp {
 
     /** Field signatureSchemaFile */
     static final String signatureSchemaFile = "samples/data/xmldsig-core-schema.xsd";
-    
+
     static {
         org.apache.xml.security.Init.init();
     }
@@ -160,9 +160,9 @@ public class IAIKInterOp {
             xpath.setNamespaceContext(new DSNamespaceContext());
 
             String expression = "//ds:Signature[1]";
-            Element sigElement = 
+            Element sigElement =
                 (Element) xpath.evaluate(expression, doc, XPathConstants.NODE);
-            
+
             XMLSignature signature = new XMLSignature(sigElement, f.toURI().toURL().toString());
 
             signature.setFollowNestedManifests(false);
@@ -176,7 +176,7 @@ public class IAIKInterOp {
                 if (cert != null) {
                     System.out.println(
                         "The XML signature in file " + f.toURI().toURL().toString() + " is "
-                        + (signature.checkSignatureValue(cert) ? "valid (good)" 
+                        + (signature.checkSignatureValue(cert) ? "valid (good)"
                         : "invalid !!!!! (bad)")
                     );
                 } else {

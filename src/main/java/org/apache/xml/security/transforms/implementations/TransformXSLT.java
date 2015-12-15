@@ -77,7 +77,7 @@ public class TransformXSLT extends TransformSpi {
     ) throws IOException, TransformationException {
         try {
             Element transformElement = transformObject.getElement();
-            
+
             Element xsltElement =
                 XMLUtils.selectNode(transformElement.getFirstChild(), XSLTSpecNS, "stylesheet", 0);
 
@@ -123,7 +123,7 @@ public class TransformXSLT extends TransformSpi {
 
             Transformer transformer = tFactory.newTransformer(stylesheet);
 
-            // Force Xalan to use \n as line separator on all OSes. This 
+            // Force Xalan to use \n as line separator on all OSes. This
             // avoids OS specific signature validation failures due to line
             // separator differences in the transformed output. Unfortunately,
             // this is not a standard JAXP property so will not work with non-Xalan
@@ -144,7 +144,7 @@ public class TransformXSLT extends TransformSpi {
             }
             StreamResult outputTarget = new StreamResult(baos);
 
-            transformer.transform(xmlSource, outputTarget);         
+            transformer.transform(xmlSource, outputTarget);
             XMLSignatureInput output = new XMLSignatureInput((byte[])null);
             output.setSecureValidation(secureValidation);
             output.setOutputStream(baos);

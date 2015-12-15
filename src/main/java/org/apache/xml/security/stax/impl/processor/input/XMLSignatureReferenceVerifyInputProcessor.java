@@ -44,7 +44,7 @@ public class XMLSignatureReferenceVerifyInputProcessor extends AbstractSignature
         super(inputProcessorChain, signatureType, inboundSecurityToken, securityProperties);
         this.addAfterProcessor(XMLSignatureReferenceVerifyInputProcessor.class.getName());
     }
-    
+
     @Override
     protected void processElementPath(
             List<QName> elementPath, InputProcessorChain inputProcessorChain, XMLSecEvent xmlSecEvent,

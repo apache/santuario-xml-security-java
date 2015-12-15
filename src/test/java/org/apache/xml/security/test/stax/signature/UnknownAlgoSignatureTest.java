@@ -56,27 +56,27 @@ public class UnknownAlgoSignatureTest extends org.junit.Assert {
 
     private XMLInputFactory xmlInputFactory;
     private TransformerFactory transformerFactory = TransformerFactory.newInstance();
-    
+
     @Before
     public void setUp() throws Exception {
         Init.init(UnknownAlgoSignatureTest.class.getClassLoader().getResource("security-config.xml").toURI(),
                 this.getClass());
         org.apache.xml.security.Init.init();
-        
+
         xmlInputFactory = XMLInputFactory.newInstance();
         xmlInputFactory.setEventAllocator(new XMLSecEventAllocator());
     }
-    
+
 
     @Test
     public void testGood() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "org/apache/xml/security/temp/signature/signature-good.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // Set up the Key
         KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
@@ -84,16 +84,16 @@ public class UnknownAlgoSignatureTest extends org.junit.Assert {
                 "org/apache/xml/security/samples/input/keystore.jks").openStream(), null
         );
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("test");
-        
+
         // XMLUtils.outputDOM(document, System.out);
-        
+
         // Convert Document to a Stream Reader
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        final XMLStreamReader xmlStreamReader = 
+        final XMLStreamReader xmlStreamReader =
                 xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
-  
+
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(cert.getPublicKey());
@@ -101,19 +101,19 @@ public class UnknownAlgoSignatureTest extends org.junit.Assert {
         XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
 
         document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
-        
+
         // XMLUtils.outputDOM(document, System.out);
     }
-    
+
     @Test
     public void testBadC14nAlgo() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "org/apache/xml/security/temp/signature/signature-bad-c14n-algo.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // Set up the Key
         KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
@@ -121,16 +121,16 @@ public class UnknownAlgoSignatureTest extends org.junit.Assert {
                 "org/apache/xml/security/samples/input/keystore.jks").openStream(), null
         );
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("test");
-        
+
         // XMLUtils.outputDOM(document, System.out);
-        
+
         // Convert Document to a Stream Reader
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        final XMLStreamReader xmlStreamReader = 
+        final XMLStreamReader xmlStreamReader =
                 xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
-  
+
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(cert.getPublicKey());
@@ -144,19 +144,19 @@ public class UnknownAlgoSignatureTest extends org.junit.Assert {
             Assert.assertTrue(ex.getCause() instanceof XMLSecurityException);
             Assert.assertEquals("Unknown transformation. No handler installed for URI http://www.apache.org/bad-c14n-algo", ex.getCause().getMessage());
         }
-        
+
         // XMLUtils.outputDOM(document, System.out);
     }
-    
+
     @Test
     public void testBadSigAlgo() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "org/apache/xml/security/temp/signature/signature-bad-sig-algo.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // Set up the Key
         KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
@@ -164,16 +164,16 @@ public class UnknownAlgoSignatureTest extends org.junit.Assert {
                 "org/apache/xml/security/samples/input/keystore.jks").openStream(), null
         );
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("test");
-        
+
         // XMLUtils.outputDOM(document, System.out);
-        
+
         // Convert Document to a Stream Reader
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        final XMLStreamReader xmlStreamReader = 
+        final XMLStreamReader xmlStreamReader =
                 xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
-  
+
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(cert.getPublicKey());
@@ -188,19 +188,19 @@ public class UnknownAlgoSignatureTest extends org.junit.Assert {
             Assert.assertEquals("The algorithm URI \"http://www.apache.org/bad-sig-algo\" could not be mapped to a JCE algorithm",
                     ex.getCause().getMessage());
         }
-        
+
         // XMLUtils.outputDOM(document, System.out);
     }
-    
+
     @Test
     public void testBadTransformAlgo() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "org/apache/xml/security/temp/signature/signature-bad-transform-algo.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // Set up the Key
         KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
@@ -208,16 +208,16 @@ public class UnknownAlgoSignatureTest extends org.junit.Assert {
                 "org/apache/xml/security/samples/input/keystore.jks").openStream(), null
         );
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("test");
-        
+
         // XMLUtils.outputDOM(document, System.out);
-        
+
         // Convert Document to a Stream Reader
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        final XMLStreamReader xmlStreamReader = 
+        final XMLStreamReader xmlStreamReader =
                 xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
-  
+
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(cert.getPublicKey());
@@ -231,9 +231,9 @@ public class UnknownAlgoSignatureTest extends org.junit.Assert {
             Assert.assertTrue(ex.getCause() instanceof XMLSecurityException);
             Assert.assertEquals("INVALID signature -- core validation failed.", ex.getCause().getMessage());
         }
-        
+
         // XMLUtils.outputDOM(document, System.out);
     }
-    
-    
+
+
 }

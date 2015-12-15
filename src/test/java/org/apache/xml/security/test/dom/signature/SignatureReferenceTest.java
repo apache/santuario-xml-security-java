@@ -48,7 +48,7 @@ import org.apache.xml.security.utils.resolver.implementations.ResolverXPointer;
 public class SignatureReferenceTest extends org.junit.Assert {
     public static final String DS_NS = "http://www.w3.org/2000/09/xmldsig#";
 
-    private static final String BASEDIR = 
+    private static final String BASEDIR =
         System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
     public static final String KEYSTORE_DIRECTORY = BASEDIR + "/src/test/resources/";
     public static final String KEYSTORE_PASSWORD_STRING = "changeit";
@@ -66,7 +66,7 @@ public class SignatureReferenceTest extends org.junit.Assert {
 
         PublicKey pubKey = getPublicKey();
         assertTrue(signature.checkSignatureValue(pubKey));
-        
+
         // Check the reference(s)
         SignedInfo signedInfo = signature.getSignedInfo();
         assertTrue(signedInfo.getLength() == 1);
@@ -74,13 +74,13 @@ public class SignatureReferenceTest extends org.junit.Assert {
         ReferenceData referenceData = reference.getReferenceData();
         assertNotNull(referenceData);
         assertTrue(referenceData instanceof ReferenceNodeSetData);
-        
+
         // Test the cached Element
-        Element referenceElement = 
+        Element referenceElement =
             (Element)((ReferenceNodeSetData)referenceData).iterator().next();
         assertNotNull(referenceElement);
         assertTrue("root".equals(referenceElement.getLocalName()));
-        
+
         Element originalElement =
             (Element) doc.getElementsByTagNameNS("http://ns.example.org/", "root").item(0);
         assertNotNull(originalElement);
@@ -89,7 +89,7 @@ public class SignatureReferenceTest extends org.junit.Assert {
 
     /**
      * Loads the 'localhost' keystore from the test keystore.
-     * 
+     *
      * @return test keystore.
      * @throws Exception
      */

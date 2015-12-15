@@ -38,7 +38,7 @@ public class IgnoreAllErrorHandler implements ErrorHandler {
         getProperty("org.apache.xml.security.test.warn.on.exceptions");
 
     /** Field throwExceptions           */
-    private static final boolean throwExceptions = 
+    private static final boolean throwExceptions =
         getProperty("org.apache.xml.security.test.throw.exceptions");
 
     private static boolean getProperty(final String name) {

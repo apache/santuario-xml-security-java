@@ -31,7 +31,7 @@ import org.apache.xml.security.utils.XMLUtils;
 
 /**
  * This is a test for Santuario-191:
- * 
+ *
  * https://issues.apache.org/jira/browse/SANTUARIO-191
  *
  * An xml:Id attribute is appearing in a child element, contrary to the C14n11 spec.
@@ -53,7 +53,7 @@ public class Santuario191Test extends org.junit.Assert {
       + "</data>";
 
     private DocumentBuilder db;
-    
+
     static {
         org.apache.xml.security.Init.init();
     }
@@ -65,14 +65,14 @@ public class Santuario191Test extends org.junit.Assert {
         //
         db = XMLUtils.createDocumentBuilder(false);
         Document doc = db.parse(new ByteArrayInputStream(INPUT_DATA.getBytes("UTF8")));
-        
+
         //
         // Canonicalize the data
         //
         NodeList dataNodes = doc.getElementsByTagName("data");
         Canonicalizer11 c14ner = new Canonicalizer11_OmitComments();
         byte[] result = c14ner.engineCanonicalizeSubTree(dataNodes.item(0));
-        
+
         //
         // Test against expected result
         //
@@ -80,5 +80,5 @@ public class Santuario191Test extends org.junit.Assert {
         out.write(result);
         assertTrue(EXPECTED_RESULT.equals(out.toString("UTF8")));
     }
-    
+
 }

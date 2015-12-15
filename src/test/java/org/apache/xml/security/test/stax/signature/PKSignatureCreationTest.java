@@ -48,13 +48,13 @@ import org.w3c.dom.Document;
  * A set of test-cases for Signature creation with various PublicKey algorithms
  */
 public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
-    
+
     private boolean bcInstalled;
     private KeyPair rsaKeyPair, ecKeyPair;
-    
+
     public PKSignatureCreationTest() throws Exception {
         //
-        // If the BouncyCastle provider is not installed, then try to load it 
+        // If the BouncyCastle provider is not installed, then try to load it
         // via reflection.
         //
         if (Security.getProvider("BC") == null) {
@@ -71,11 +71,11 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
                 bcInstalled = true;
             }
         }
-        
+
         KeyPairGenerator rsaKpg = KeyPairGenerator.getInstance("RSA");
         rsaKpg.initialize(2048);
         rsaKeyPair = rsaKpg.genKeyPair();
-        
+
         ecKeyPair = KeyPairGenerator.getInstance("EC").genKeyPair();
     }
 
@@ -92,12 +92,12 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyValue);
-        
+
         String signatureAlgorithm = "http://www.w3.org/2000/09/xmldsig#rsa-sha1";
         properties.setSignatureAlgorithm(signatureAlgorithm);
         properties.setSignatureKey(rsaKeyPair.getPrivate());
         properties.setSignatureVerificationKey(rsaKeyPair.getPublic());
-        
+
         SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
@@ -124,7 +124,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         // Verify using DOM
         verifyUsingDOM(document, rsaKeyPair.getPublic(), properties.getSignatureSecureParts());
     }
-    
+
     @Test
     public void testRSA_SHA256() throws Exception {
         // Set up the Configuration
@@ -133,12 +133,12 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyValue);
-        
+
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256";
         properties.setSignatureAlgorithm(signatureAlgorithm);
         properties.setSignatureKey(rsaKeyPair.getPrivate());
         properties.setSignatureVerificationKey(rsaKeyPair.getPublic());
-        
+
         SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
@@ -165,7 +165,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         // Verify using DOM
         verifyUsingDOM(document, rsaKeyPair.getPublic(), properties.getSignatureSecureParts());
     }
-    
+
     @Test
     public void testRSA_SHA384() throws Exception {
         // Set up the Configuration
@@ -174,12 +174,12 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyValue);
-        
+
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha384";
         properties.setSignatureAlgorithm(signatureAlgorithm);
         properties.setSignatureKey(rsaKeyPair.getPrivate());
         properties.setSignatureVerificationKey(rsaKeyPair.getPublic());
-        
+
         SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
@@ -206,7 +206,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         // Verify using DOM
         verifyUsingDOM(document, rsaKeyPair.getPublic(), properties.getSignatureSecureParts());
     }
-    
+
     @Test
     public void testRSA_SHA512() throws Exception {
         // Set up the Configuration
@@ -215,12 +215,12 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyValue);
-        
+
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha512";
         properties.setSignatureAlgorithm(signatureAlgorithm);
         properties.setSignatureKey(rsaKeyPair.getPrivate());
         properties.setSignatureVerificationKey(rsaKeyPair.getPublic());
-        
+
         SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
@@ -247,7 +247,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         // Verify using DOM
         verifyUsingDOM(document, rsaKeyPair.getPublic(), properties.getSignatureSecureParts());
     }
-    
+
     @Test
     public void testRSA_RIPEMD160() throws Exception {
         if (!bcInstalled) {
@@ -259,12 +259,12 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyValue);
-        
+
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-ripemd160";
         properties.setSignatureAlgorithm(signatureAlgorithm);
         properties.setSignatureKey(rsaKeyPair.getPrivate());
         properties.setSignatureVerificationKey(rsaKeyPair.getPublic());
-        
+
         SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
@@ -291,7 +291,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         // Verify using DOM
         verifyUsingDOM(document, rsaKeyPair.getPublic(), properties.getSignatureSecureParts());
     }
-    
+
     @Test
     public void testRSA_SHA1_MGF1() throws Exception {
         if (!bcInstalled) {
@@ -303,12 +303,12 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyValue);
-        
+
         String signatureAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha1-rsa-MGF1";
         properties.setSignatureAlgorithm(signatureAlgorithm);
         properties.setSignatureKey(rsaKeyPair.getPrivate());
         properties.setSignatureVerificationKey(rsaKeyPair.getPublic());
-        
+
         SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
@@ -335,7 +335,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         // Verify using DOM
         verifyUsingDOM(document, rsaKeyPair.getPublic(), properties.getSignatureSecureParts());
     }
-    
+
     @Test
     public void testRSA_SHA224_MGF1() throws Exception {
         if (!bcInstalled) {
@@ -347,12 +347,12 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyValue);
-        
+
         String signatureAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha224-rsa-MGF1";
         properties.setSignatureAlgorithm(signatureAlgorithm);
         properties.setSignatureKey(rsaKeyPair.getPrivate());
         properties.setSignatureVerificationKey(rsaKeyPair.getPublic());
-        
+
         SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
@@ -379,7 +379,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         // Verify using DOM
         verifyUsingDOM(document, rsaKeyPair.getPublic(), properties.getSignatureSecureParts());
     }
-    
+
     @Test
     public void testRSA_SHA256_MGF1() throws Exception {
         if (!bcInstalled) {
@@ -391,12 +391,12 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyValue);
-        
+
         String signatureAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha256-rsa-MGF1";
         properties.setSignatureAlgorithm(signatureAlgorithm);
         properties.setSignatureKey(rsaKeyPair.getPrivate());
         properties.setSignatureVerificationKey(rsaKeyPair.getPublic());
-        
+
         SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
@@ -423,7 +423,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         // Verify using DOM
         verifyUsingDOM(document, rsaKeyPair.getPublic(), properties.getSignatureSecureParts());
     }
-    
+
     @Test
     public void testRSA_SHA384_MGF1() throws Exception {
         if (!bcInstalled) {
@@ -435,12 +435,12 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyValue);
-        
+
         String signatureAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha384-rsa-MGF1";
         properties.setSignatureAlgorithm(signatureAlgorithm);
         properties.setSignatureKey(rsaKeyPair.getPrivate());
         properties.setSignatureVerificationKey(rsaKeyPair.getPublic());
-        
+
         SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
@@ -467,7 +467,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         // Verify using DOM
         verifyUsingDOM(document, rsaKeyPair.getPublic(), properties.getSignatureSecureParts());
     }
-    
+
     @Test
     public void testRSA_SHA512_MGF1() throws Exception {
         if (!bcInstalled) {
@@ -479,12 +479,12 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyValue);
-        
+
         String signatureAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha512-rsa-MGF1";
         properties.setSignatureAlgorithm(signatureAlgorithm);
         properties.setSignatureKey(rsaKeyPair.getPrivate());
         properties.setSignatureVerificationKey(rsaKeyPair.getPublic());
-        
+
         SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
@@ -511,7 +511,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         // Verify using DOM
         verifyUsingDOM(document, rsaKeyPair.getPublic(), properties.getSignatureSecureParts());
     }
-    
+
     @Test
     public void testECDSA_SHA1() throws Exception {
         // Set up the Configuration
@@ -520,12 +520,12 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyValue);
-        
+
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1";
         properties.setSignatureAlgorithm(signatureAlgorithm);
         properties.setSignatureKey(ecKeyPair.getPrivate());
         properties.setSignatureVerificationKey(ecKeyPair.getPublic());
-        
+
         SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
@@ -552,7 +552,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         // Verify using DOM
         verifyUsingDOM(document, ecKeyPair.getPublic(), properties.getSignatureSecureParts());
     }
-    
+
     @Test
     public void testECDSA_SHA224() throws Exception {
         // Set up the Configuration
@@ -561,12 +561,12 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyValue);
-        
+
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha224";
         properties.setSignatureAlgorithm(signatureAlgorithm);
         properties.setSignatureKey(ecKeyPair.getPrivate());
         properties.setSignatureVerificationKey(ecKeyPair.getPublic());
-        
+
         SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
@@ -593,7 +593,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         // Verify using DOM
         verifyUsingDOM(document, ecKeyPair.getPublic(), properties.getSignatureSecureParts());
     }
-    
+
     @Test
     public void testECDSA_SHA256() throws Exception {
         // Set up the Configuration
@@ -602,12 +602,12 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyValue);
-        
+
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256";
         properties.setSignatureAlgorithm(signatureAlgorithm);
         properties.setSignatureKey(ecKeyPair.getPrivate());
         properties.setSignatureVerificationKey(ecKeyPair.getPublic());
-        
+
         SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
@@ -634,7 +634,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         // Verify using DOM
         verifyUsingDOM(document, ecKeyPair.getPublic(), properties.getSignatureSecureParts());
     }
-    
+
     @Test
     public void testECDSA_SHA384() throws Exception {
         // Set up the Configuration
@@ -643,12 +643,12 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyValue);
-        
+
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha384";
         properties.setSignatureAlgorithm(signatureAlgorithm);
         properties.setSignatureKey(ecKeyPair.getPrivate());
         properties.setSignatureVerificationKey(ecKeyPair.getPublic());
-        
+
         SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
@@ -675,7 +675,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         // Verify using DOM
         verifyUsingDOM(document, ecKeyPair.getPublic(), properties.getSignatureSecureParts());
     }
-    
+
     @Test
     public void testECDSA_SHA512() throws Exception {
         // Set up the Configuration
@@ -684,12 +684,12 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyValue);
-        
+
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512";
         properties.setSignatureAlgorithm(signatureAlgorithm);
         properties.setSignatureKey(ecKeyPair.getPrivate());
         properties.setSignatureVerificationKey(ecKeyPair.getPublic());
-        
+
         SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
@@ -716,7 +716,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         // Verify using DOM
         verifyUsingDOM(document, ecKeyPair.getPublic(), properties.getSignatureSecureParts());
     }
-    
+
     @Test
     public void testECDSA_RIPEMD160() throws Exception {
         if (!bcInstalled) {
@@ -728,12 +728,12 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyValue);
-        
+
         String signatureAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#ecdsa-ripemd160";
         properties.setSignatureAlgorithm(signatureAlgorithm);
         properties.setSignatureKey(ecKeyPair.getPrivate());
         properties.setSignatureVerificationKey(ecKeyPair.getPublic());
-        
+
         SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
@@ -760,6 +760,6 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         // Verify using DOM
         verifyUsingDOM(document, ecKeyPair.getPublic(), properties.getSignatureSecureParts());
     }
-    
-    
+
+
 }

@@ -49,14 +49,14 @@ public class CanonicalizationMethodTest extends org.junit.Assert {
         CanonicalizationMethod.EXCLUSIVE
     };
 
-    public CanonicalizationMethodTest() throws Exception { 
+    public CanonicalizationMethodTest() throws Exception {
         factory = XMLSignatureFactory.getInstance
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
     }
 
     @org.junit.Test
     public void testIsFeatureSupported() throws Exception {
-        CanonicalizationMethod cm; 
+        CanonicalizationMethod cm;
         for (int i = 0; i < C14N_ALGOS.length; i++) {
             String algo = C14N_ALGOS[i];
             ExcC14NParameterSpec params = null;
@@ -65,35 +65,35 @@ public class CanonicalizationMethodTest extends org.junit.Assert {
             }
             cm = factory.newCanonicalizationMethod(algo, params);
             try {
-                cm.isFeatureSupported(null); 
-                fail("Should raise a NPE for null feature"); 
+                cm.isFeatureSupported(null);
+                fail("Should raise a NPE for null feature");
             } catch (NullPointerException npe) {}
-            
+
             assertTrue(!cm.isFeatureSupported("not supported"));
         }
     }
 
     @org.junit.Test
     public void testConstructor() throws Exception {
-        // test newAlgorithmMethod(String algorithm, 
+        // test newAlgorithmMethod(String algorithm,
         //                         AlgorithmParameterSpec params)
         // for generating CanonicalizationMethod objects
-        CanonicalizationMethod cm; 
+        CanonicalizationMethod cm;
         for (int i = 0; i < C14N_ALGOS.length; i++) {
             String algo = C14N_ALGOS[i];
-            cm = factory.newCanonicalizationMethod(algo, 
+            cm = factory.newCanonicalizationMethod(algo,
                 (C14NMethodParameterSpec) null);
             assertNotNull(cm);
             assertEquals(cm.getAlgorithm(), algo);
             assertNull(cm.getParameterSpec());
-            
+
             try {
                 cm = factory.newCanonicalizationMethod
                     (algo, new TestUtils.MyOwnC14nParameterSpec());
-                fail("Should raise an IAPE for invalid c14n parameters"); 
+                fail("Should raise an IAPE for invalid c14n parameters");
             } catch (InvalidAlgorithmParameterException iape) {
             } catch (Exception ex) {
-                fail("Should raise a IAPE instead of " + ex); 
+                fail("Should raise a IAPE instead of " + ex);
             }
             if (algo.equals(CanonicalizationMethod.EXCLUSIVE_WITH_COMMENTS) ||
                 algo.equals(CanonicalizationMethod.EXCLUSIVE)) {
@@ -107,22 +107,22 @@ public class CanonicalizationMethodTest extends org.junit.Assert {
         }
 
         try {
-            cm = factory.newCanonicalizationMethod(null, 
-                (C14NMethodParameterSpec) null); 
-            fail("Should raise a NPE for null algo"); 
+            cm = factory.newCanonicalizationMethod(null,
+                (C14NMethodParameterSpec) null);
+            fail("Should raise a NPE for null algo");
         } catch (NullPointerException npe) {
         } catch (Exception ex) {
-            fail("Should raise a NPE instead of " + ex); 
+            fail("Should raise a NPE instead of " + ex);
         }
 
         try {
-            cm = factory.newCanonicalizationMethod("non-existent", 
-                (C14NMethodParameterSpec) null); 
-            fail("Should raise an NSAE for non-existent algos"); 
+            cm = factory.newCanonicalizationMethod("non-existent",
+                (C14NMethodParameterSpec) null);
+            fail("Should raise an NSAE for non-existent algos");
         } catch (NoSuchAlgorithmException nsae) {
         } catch (Exception ex) {
-            fail("Should raise an NSAE instead of " + ex); 
+            fail("Should raise an NSAE instead of " + ex);
         }
     }
-    
+
 }

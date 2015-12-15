@@ -65,7 +65,7 @@ import java.util.*;
  * @version $Revision$ $Date$
  */
 public class XMLSecurityUtils {
-    
+
     private static final int MAX_SYMMETRIC_KEY_SIZE = 1024;
 
     protected XMLSecurityUtils() {
@@ -176,7 +176,7 @@ public class XMLSecurityUtils {
     public static String getQNameAttribute(Map<QName, String> attributes, QName qName) {
         return attributes.get(qName);
     }
-    
+
     public static void createKeyValueTokenStructure(AbstractOutputProcessor abstractOutputProcessor,
                                                     OutputProcessorChain outputProcessorChain, X509Certificate[] x509Certificates)
             throws XMLStreamException, XMLSecurityException {
@@ -184,21 +184,21 @@ public class XMLSecurityUtils {
         if (x509Certificates == null || x509Certificates.length == 0) {
             throw new XMLSecurityException("stax.signature.publicKeyOrCertificateMissing");
         }
-        
+
         X509Certificate x509Certificate = x509Certificates[0];
         PublicKey publicKey = x509Certificate.getPublicKey();
         createKeyValueTokenStructure(abstractOutputProcessor, outputProcessorChain, publicKey);
     }
-    
+
     public static void createKeyValueTokenStructure(AbstractOutputProcessor abstractOutputProcessor,
-                                                    OutputProcessorChain outputProcessorChain, 
+                                                    OutputProcessorChain outputProcessorChain,
                                                     PublicKey publicKey)
             throws XMLStreamException, XMLSecurityException {
 
         if (publicKey == null) {
             throw new XMLSecurityException("stax.signature.publicKeyOrCertificateMissing");
         }
-        
+
         String algorithm = publicKey.getAlgorithm();
 
         abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_KeyValue, true, null);
@@ -249,7 +249,7 @@ public class XMLSecurityUtils {
 
         abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_KeyValue);
     }
-    
+
     public static void createX509SubjectKeyIdentifierStructure(AbstractOutputProcessor abstractOutputProcessor,
             OutputProcessorChain outputProcessorChain,
             X509Certificate[] x509Certificates)
@@ -257,33 +257,33 @@ public class XMLSecurityUtils {
         if (x509Certificates == null || x509Certificates.length == 0) {
             throw new XMLSecurityException("stax.signature.publicKeyOrCertificateMissing");
         }
-        
+
         // SKI can only be used for a V3 certificate
         int version = x509Certificates[0].getVersion();
         if (version != 3) {
             throw new XMLSecurityException("certificate.noSki.lowVersion",
                                            new Object[]{version});
         }
-        
+
         abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509Data, true, null);
 
         abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509SKI, false, null);
         byte[] data = XMLX509SKI.getSKIBytesFromCert(x509Certificates[0]);
         abstractOutputProcessor.createCharactersAndOutputAsEvent(outputProcessorChain, new Base64(76, new byte[]{'\n'}).encodeToString(data));
         abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509SKI);
-        
+
         abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509Data);
     }
-    
+
     public static void createX509CertificateStructure(AbstractOutputProcessor abstractOutputProcessor,
             OutputProcessorChain outputProcessorChain,
             X509Certificate[] x509Certificates)
         throws XMLSecurityException, XMLStreamException {
-        
+
         if (x509Certificates == null || x509Certificates.length == 0) {
             throw new XMLSecurityException("stax.signature.publicKeyOrCertificateMissing");
         }
-        
+
         abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509Data, true, null);
 
         abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509Certificate, false, null);
@@ -295,26 +295,26 @@ public class XMLSecurityUtils {
         }
         abstractOutputProcessor.createCharactersAndOutputAsEvent(outputProcessorChain, new Base64(76, new byte[]{'\n'}).encodeToString(data));
         abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509Certificate);
-        
+
         abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509Data);
     }
-    
+
     public static void createX509SubjectNameStructure(AbstractOutputProcessor abstractOutputProcessor,
             OutputProcessorChain outputProcessorChain,
             X509Certificate[] x509Certificates)
         throws XMLSecurityException, XMLStreamException {
-        
+
         if (x509Certificates == null || x509Certificates.length == 0) {
             throw new XMLSecurityException("stax.signature.publicKeyOrCertificateMissing");
         }
-        
+
         abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509Data, true, null);
 
         abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509SubjectName, false, null);
         String subjectName = x509Certificates[0].getSubjectX500Principal().getName();
         abstractOutputProcessor.createCharactersAndOutputAsEvent(outputProcessorChain, subjectName);
         abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509SubjectName);
-        
+
         abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509Data);
     }
 
@@ -325,7 +325,7 @@ public class XMLSecurityUtils {
         if (x509Certificates == null || x509Certificates.length == 0) {
             throw new XMLSecurityException("stax.signature.publicKeyOrCertificateMissing");
         }
-        
+
         abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509Data, true, null);
         abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509IssuerSerial, false, null);
         abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509IssuerName, false, null);
@@ -359,7 +359,7 @@ public class XMLSecurityUtils {
         } else if (SecurityTokenConstants.EncryptedKeyToken.equals(tokenType)) {
             tokenSecurityEvent = new EncryptedKeyTokenSecurityEvent();
         } else {
-            throw new XMLSecurityException("stax.unsupportedToken", 
+            throw new XMLSecurityException("stax.unsupportedToken",
                                            new Object[]{tokenType});
         }
         tokenSecurityEvent.setSecurityToken(inboundSecurityToken);
@@ -419,7 +419,7 @@ public class XMLSecurityUtils {
             outputStream.write(buf, 0, read);
         }
     }
-    
+
     /**
      * Convert the raw key bytes into a SecretKey object of type symEncAlgo.
      */
@@ -435,13 +435,13 @@ public class XMLSecurityUtils {
         String keyAlgorithm = JCEMapper.getJCEKeyAlgorithmFromURI(symEncAlgo);
         SecretKeySpec keySpec;
         if (size > 0 && !symEncAlgo.endsWith("gcm") && !symEncAlgo.contains("hmac-")) {
-            keySpec = 
+            keySpec =
                 new SecretKeySpec(
                     rawKey, 0, rawKey.length > size ? size : rawKey.length, keyAlgorithm
                 );
         } else if (rawKey.length > MAX_SYMMETRIC_KEY_SIZE) {
             // Prevent a possible attack where a huge secret key is specified
-            keySpec = 
+            keySpec =
                 new SecretKeySpec(
                     rawKey, 0, MAX_SYMMETRIC_KEY_SIZE, keyAlgorithm
                 );
@@ -496,5 +496,5 @@ public class XMLSecurityUtils {
                 );
         return schema;
     }
-    
+
 }

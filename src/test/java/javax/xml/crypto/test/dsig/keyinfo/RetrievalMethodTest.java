@@ -32,7 +32,7 @@ public class RetrievalMethodTest extends org.junit.Assert {
 
     private KeyInfoFactory fac;
 
-    public RetrievalMethodTest() throws Exception { 
+    public RetrievalMethodTest() throws Exception {
         fac = KeyInfoFactory.getInstance
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
     }
@@ -63,14 +63,14 @@ public class RetrievalMethodTest extends org.junit.Assert {
         assertEquals(uri, rm.getURI());
 
         try {
-            rm = fac.newRetrievalMethod(null); 
-            fail("Should raise a NullPointerException"); 
+            rm = fac.newRetrievalMethod(null);
+            fail("Should raise a NullPointerException");
         } catch (NullPointerException npe) {}
 
         // test RetrievalMethod(String, String, Transform[])
         try {
-            rm = fac.newRetrievalMethod(null, null, null); 
-            fail("Should raise a NullPointerException"); 
+            rm = fac.newRetrievalMethod(null, null, null);
+            fail("Should raise a NullPointerException");
         } catch (NullPointerException npe) {}
 
         final String type = "http://www.w3.org/2000/09/xmldsig#X509Data";
@@ -94,10 +94,10 @@ public class RetrievalMethodTest extends org.junit.Assert {
                 break;
             }		
             try {
-                rm.isFeatureSupported(null); 
-                fail("Should raise a NPE for null feature"); 
+                rm.isFeatureSupported(null);
+                fail("Should raise a NPE for null feature");
             } catch (NullPointerException npe) {}
-            
+
             assertTrue(!rm.isFeatureSupported("not supported"));
         }
     }

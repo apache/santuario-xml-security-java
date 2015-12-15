@@ -46,7 +46,7 @@ public final class DOMURIDereferencer implements URIDereferencer {
     static final URIDereferencer INSTANCE = new DOMURIDereferencer();
 
     private DOMURIDereferencer() {
-        // need to call org.apache.xml.security.Init.init() 
+        // need to call org.apache.xml.security.Init.init()
         // before calling any apache security code
         Init.init();
     }

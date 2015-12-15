@@ -36,7 +36,7 @@ public class NoKeyInfoTest extends org.junit.Assert {
 
     private static final String BASEDIR = System.getProperty("basedir");
     private static final String SEP = System.getProperty("file.separator");
-    
+
     static {
         Init.init();
     }
@@ -50,7 +50,7 @@ public class NoKeyInfoTest extends org.junit.Assert {
     @org.junit.Test
     public void testNullKeyInfo() throws Exception {
         File f = null;
-        String filename = 
+        String filename =
             "src/test/resources/ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-enveloping-hmac-sha1.xml";
         if (BASEDIR != null && !"".equals(BASEDIR)) {
             f = new File(BASEDIR + SEP + filename);
@@ -64,5 +64,5 @@ public class NoKeyInfoTest extends org.junit.Assert {
         KeyInfo ki = sig.getKeyInfo();
         assertNull(ki);
     }
-    
+
 }

@@ -120,7 +120,7 @@ public final class DOMKeyInfoFactory extends KeyInfoFactory {
     }
 
     @Override
-    public X509IssuerSerial newX509IssuerSerial(String issuerName, 
+    public X509IssuerSerial newX509IssuerSerial(String issuerName,
         BigInteger serialNumber) {
         return new DOMX509IssuerSerial(issuerName, serialNumber);
     }
@@ -140,7 +140,7 @@ public final class DOMKeyInfoFactory extends KeyInfoFactory {
     }
 
     @Override
-    public KeyInfo unmarshalKeyInfo(XMLStructure xmlStructure) 
+    public KeyInfo unmarshalKeyInfo(XMLStructure xmlStructure)
         throws MarshalException {
         if (xmlStructure == null) {
             throw new NullPointerException("xmlStructure cannot be null");

@@ -226,7 +226,7 @@ public class AttrCompareTest extends org.junit.Assert {
 
         return doc;
     }
-    
+
 }
 
 

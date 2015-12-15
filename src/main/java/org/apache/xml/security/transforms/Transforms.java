@@ -36,11 +36,11 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 /**
- * Holder of the {@link org.apache.xml.security.transforms.Transform} steps to 
+ * Holder of the {@link org.apache.xml.security.transforms.Transform} steps to
  * be performed on the data.
- * The input to the first Transform is the result of dereferencing the 
+ * The input to the first Transform is the result of dereferencing the
  * <code>URI</code> attribute of the <code>Reference</code> element.
- * The output from the last Transform is the input for the 
+ * The output from the last Transform is the input for the
  * <code>DigestMethod algorithm</code>
  *
  * @author Christian Geuer-Pollmann
@@ -50,66 +50,66 @@ import org.w3c.dom.NodeList;
 public class Transforms extends SignatureElementProxy {
 
     /** Canonicalization - Required Canonical XML (omits comments) */
-    public static final String TRANSFORM_C14N_OMIT_COMMENTS 
+    public static final String TRANSFORM_C14N_OMIT_COMMENTS
         = Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS;
-    
+
     /** Canonicalization - Recommended Canonical XML with Comments */
-    public static final String TRANSFORM_C14N_WITH_COMMENTS 
+    public static final String TRANSFORM_C14N_WITH_COMMENTS
         = Canonicalizer.ALGO_ID_C14N_WITH_COMMENTS;
-    
+
     /** Canonicalization - Required Canonical XML 1.1 (omits comments) */
-    public static final String TRANSFORM_C14N11_OMIT_COMMENTS 
+    public static final String TRANSFORM_C14N11_OMIT_COMMENTS
         = Canonicalizer.ALGO_ID_C14N11_OMIT_COMMENTS;
-    
+
     /** Canonicalization - Recommended Canonical XML 1.1 with Comments */
-    public static final String TRANSFORM_C14N11_WITH_COMMENTS 
+    public static final String TRANSFORM_C14N11_WITH_COMMENTS
         = Canonicalizer.ALGO_ID_C14N11_WITH_COMMENTS;
-    
+
     /** Canonicalization - Required Exclusive Canonicalization (omits comments) */
-    public static final String TRANSFORM_C14N_EXCL_OMIT_COMMENTS 
+    public static final String TRANSFORM_C14N_EXCL_OMIT_COMMENTS
         = Canonicalizer.ALGO_ID_C14N_EXCL_OMIT_COMMENTS;
-    
+
     /** Canonicalization - Recommended Exclusive Canonicalization with Comments */
-    public static final String TRANSFORM_C14N_EXCL_WITH_COMMENTS 
+    public static final String TRANSFORM_C14N_EXCL_WITH_COMMENTS
         = Canonicalizer.ALGO_ID_C14N_EXCL_WITH_COMMENTS;
-    
+
     /** Transform - Optional XSLT */
-    public static final String TRANSFORM_XSLT 
+    public static final String TRANSFORM_XSLT
         = "http://www.w3.org/TR/1999/REC-xslt-19991116";
-    
+
     /** Transform - Required base64 decoding */
-    public static final String TRANSFORM_BASE64_DECODE 
+    public static final String TRANSFORM_BASE64_DECODE
         = Constants.SignatureSpecNS + "base64";
-    
+
     /** Transform - Recommended XPath */
-    public static final String TRANSFORM_XPATH 
+    public static final String TRANSFORM_XPATH
         = "http://www.w3.org/TR/1999/REC-xpath-19991116";
-    
+
     /** Transform - Required Enveloped Signature */
-    public static final String TRANSFORM_ENVELOPED_SIGNATURE 
+    public static final String TRANSFORM_ENVELOPED_SIGNATURE
         = Constants.SignatureSpecNS + "enveloped-signature";
-    
+
     /** Transform - XPointer */
-    public static final String TRANSFORM_XPOINTER 
+    public static final String TRANSFORM_XPOINTER
         = "http://www.w3.org/TR/2001/WD-xptr-20010108";
-    
+
     /** Transform - XPath Filter */
-    public static final String TRANSFORM_XPATH2FILTER 
+    public static final String TRANSFORM_XPATH2FILTER
         = "http://www.w3.org/2002/06/xmldsig-filter2";
-    
+
     private static org.slf4j.Logger log =
         org.slf4j.LoggerFactory.getLogger(Transforms.class);
 
     private Element[] transforms;
 
     protected Transforms() { }
-    
+
     private boolean secureValidation;
 
     /**
      * Constructs {@link Transforms}.
      *
-     * @param doc the {@link Document} in which <code>XMLSignature</code> will 
+     * @param doc the {@link Document} in which <code>XMLSignature</code> will
      * be placed
      */
     public Transforms(Document doc) {
@@ -118,7 +118,7 @@ public class Transforms extends SignatureElementProxy {
     }
 
     /**
-     * Constructs {@link Transforms} from {@link Element} which is 
+     * Constructs {@link Transforms} from {@link Element} which is
      * <code>Transforms</code> Element
      *
      * @param element  is <code>Transforms</code> element
@@ -130,7 +130,7 @@ public class Transforms extends SignatureElementProxy {
      * @throws XMLSignatureException
      */
     public Transforms(Element element, String baseURI)
-        throws DOMException, XMLSignatureException, InvalidTransformException, 
+        throws DOMException, XMLSignatureException, InvalidTransformException,
             TransformationException, XMLSecurityException {
         super(element, baseURI);
 
@@ -143,7 +143,7 @@ public class Transforms extends SignatureElementProxy {
             throw new TransformationException("xml.WrongContent", exArgs);
         }
     }
-    
+
     /**
      * Set whether secure validation is enabled or not. The default is false.
      */
@@ -152,10 +152,10 @@ public class Transforms extends SignatureElementProxy {
     }
 
     /**
-     * Adds the <code>Transform</code> with the specified <code>Transform 
+     * Adds the <code>Transform</code> with the specified <code>Transform
      * algorithm URI</code>
      *
-     * @param transformURI the URI form of transform that indicates which 
+     * @param transformURI the URI form of transform that indicates which
      * transformation is applied to data
      * @throws TransformationException
      */
@@ -174,10 +174,10 @@ public class Transforms extends SignatureElementProxy {
     }
 
     /**
-     * Adds the <code>Transform</code> with the specified <code>Transform 
+     * Adds the <code>Transform</code> with the specified <code>Transform
      * algorithm URI</code>
      *
-     * @param transformURI the URI form of transform that indicates which 
+     * @param transformURI the URI form of transform that indicates which
      * transformation is applied to data
      * @param contextElement
      * @throws TransformationException
@@ -198,10 +198,10 @@ public class Transforms extends SignatureElementProxy {
     }
 
     /**
-     * Adds the <code>Transform</code> with the specified <code>Transform 
+     * Adds the <code>Transform</code> with the specified <code>Transform
      * algorithm URI</code>.
      *
-     * @param transformURI the URI form of transform that indicates which 
+     * @param transformURI the URI form of transform that indicates which
      * transformation is applied to data
      * @param contextNodes
      * @throws TransformationException
@@ -234,7 +234,7 @@ public class Transforms extends SignatureElementProxy {
     }
 
     /**
-     * Applies all included <code>Transform</code>s to xmlSignatureInput and 
+     * Applies all included <code>Transform</code>s to xmlSignatureInput and
      * returns the result of these transformations.
      *
      * @param xmlSignatureInput the input for the <code>Transform</code>s
@@ -246,9 +246,9 @@ public class Transforms extends SignatureElementProxy {
     ) throws TransformationException {
         return performTransforms(xmlSignatureInput, null);
     }
-   
+
     /**
-     * Applies all included <code>Transform</code>s to xmlSignatureInput and 
+     * Applies all included <code>Transform</code>s to xmlSignatureInput and
      * returns the result of these transformations.
      *
      * @param xmlSignatureInput the input for the <code>Transform</code>s
@@ -289,7 +289,7 @@ public class Transforms extends SignatureElementProxy {
             throw new TransformationException(ex);
         }
     }
-    
+
     private void checkSecureValidation(Transform transform) throws TransformationException {
         String uri = transform.getURI();
         if (secureValidation && Transforms.TRANSFORM_XSLT.equals(uri)) {

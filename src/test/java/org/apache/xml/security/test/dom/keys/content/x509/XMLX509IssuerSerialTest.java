@@ -39,7 +39,7 @@ public class XMLX509IssuerSerialTest extends org.junit.Assert {
     public void testGetIssuerName() throws Exception {
         // Make sure hex encoded value is not escaped (see ...)
         String issuer = "9.99.999=#abc123";
-        XMLX509IssuerSerial is = 
+        XMLX509IssuerSerial is =
             new XMLX509IssuerSerial(doc, issuer, 0);
         assertEquals(issuer, is.getIssuerName());
         // System.out.println(is.getIssuerName());

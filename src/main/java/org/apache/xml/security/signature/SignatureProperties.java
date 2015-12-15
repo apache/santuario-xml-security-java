@@ -55,12 +55,12 @@ public class SignatureProperties extends SignatureElementProxy {
      */
     public SignatureProperties(Element element, String baseURI) throws XMLSecurityException {
         super(element, baseURI);
-        
+
         Attr attr = element.getAttributeNodeNS(null, "Id");
         if (attr != null) {
             element.setIdAttributeNode(attr, true);
         }
-        
+
         int length = getLength();
         for (int i = 0; i < length; i++) {
             Element propertyElem =
@@ -99,8 +99,8 @@ public class SignatureProperties extends SignatureElementProxy {
 
             if (propertyElem == null) {
                 return null;
-            } 
-            return new SignatureProperty(propertyElem, this.baseURI);               
+            }
+            return new SignatureProperty(propertyElem, this.baseURI);
         } catch (XMLSecurityException ex) {
             throw new XMLSignatureException(ex);
         }

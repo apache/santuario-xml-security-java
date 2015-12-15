@@ -58,7 +58,7 @@ public class TransformXPath2Filter extends TransformSpi {
     /** Field implementedTransformURI */
     public static final String implementedTransformURI =
         Transforms.TRANSFORM_XPATH2FILTER;
-    
+
     /**
      * Method engineGetURI
      *
@@ -96,7 +96,7 @@ public class TransformXPath2Filter extends TransformSpi {
             }
 
             Document inputDoc = null;
-            if (input.getSubNode() != null) {   
+            if (input.getSubNode() != null) {
                 inputDoc = XMLUtils.getOwnerDocument(input.getSubNode());
             } else {
                 inputDoc = XMLUtils.getOwnerDocument(input.getNodeSet());
@@ -104,17 +104,17 @@ public class TransformXPath2Filter extends TransformSpi {
 
             for (int i = 0; i < xpathElements.length; i++) {
                 Element xpathElement = xpathElements[i];
-                
+
                 XPath2FilterContainer xpathContainer =
                     XPath2FilterContainer.newInstance(xpathElement, input.getSourceURI());
 
-                String str = 
+                String str =
                     XMLUtils.getStrFromNode(xpathContainer.getXPathFilterTextNode());
-                
+
                 XPathFactory xpathFactory = XPathFactory.newInstance();
                 XPathAPI xpathAPIInstance = xpathFactory.newXPathAPI();
-                
-                NodeList subtreeRoots = 
+
+                NodeList subtreeRoots =
                     xpathAPIInstance.selectNodeList(
                         inputDoc,
                         xpathContainer.getXPathFilterTextNode(),
@@ -126,7 +126,7 @@ public class TransformXPath2Filter extends TransformSpi {
                     subtractNodes.add(subtreeRoots);
                 } else if (xpathContainer.isUnion()) {
                     unionNodes.add(subtreeRoots);
-                } 
+                }
             }
 
             input.addNodeFilter(
@@ -155,7 +155,7 @@ public class TransformXPath2Filter extends TransformSpi {
 }
 
 class XPath2NodeFilter implements NodeFilter {
-    
+
     boolean hasUnionFilter;
     boolean hasSubtractFilter;
     boolean hasIntersectFilter;
@@ -165,7 +165,7 @@ class XPath2NodeFilter implements NodeFilter {
     int inSubtract = -1;
     int inIntersect = -1;
     int inUnion = -1;
-    
+
     XPath2NodeFilter(List<NodeList> unionNodes, List<NodeList> subtractNodes,
                      List<NodeList> intersectNodes) {
         hasUnionFilter = !unionNodes.isEmpty();
@@ -179,7 +179,7 @@ class XPath2NodeFilter implements NodeFilter {
     /**
      * @see org.apache.xml.security.signature.NodeFilter#isNodeInclude(org.w3c.dom.Node)
      */
-    public int isNodeInclude(Node currentNode) {	 
+    public int isNodeInclude(Node currentNode) {	
         int result = 1;
 
         if (hasSubtractFilter && rooted(currentNode, subtractNodes)) {
@@ -189,10 +189,10 @@ class XPath2NodeFilter implements NodeFilter {
         }
 
         //TODO OPTIMIZE
-        if (result == 1) {     	        
+        if (result == 1) {     	
             return 1;
         }
-        if (hasUnionFilter) { 
+        if (hasUnionFilter) {
             if (rooted(currentNode, unionNodes)) {
                 return 1;
             }
@@ -200,7 +200,7 @@ class XPath2NodeFilter implements NodeFilter {
         }    	
         return result;
     }
-    
+
     public int isNodeIncludeDO(Node n, int level) {
         int result = 1;
         if (hasSubtractFilter) {
@@ -208,27 +208,27 @@ class XPath2NodeFilter implements NodeFilter {
                 if (inList(n, subtractNodes)) {
                     inSubtract = level;
                 } else {
-                    inSubtract = -1;   			   
-                }		   
-            } 
+                    inSubtract = -1;   			
+                }		
+            }
             if (inSubtract != -1){
                 result = -1;
             }
-        } 
-        if (result != -1 && hasIntersectFilter 
-            && (inIntersect == -1 || level <= inIntersect)) { 
+        }
+        if (result != -1 && hasIntersectFilter
+            && (inIntersect == -1 || level <= inIntersect)) {
             if (!inList(n, intersectNodes)) {
                 inIntersect = -1;
                 result = 0;
             } else {
-                inIntersect = level;   			   
-            }		   
+                inIntersect = level;   			
+            }		
         }
 
         if (level <= inUnion) {
             inUnion = -1;
         }
-        if (result == 1) {     	        
+        if (result == 1) {     	
             return 1;
         }
         if (hasUnionFilter) {
@@ -246,8 +246,8 @@ class XPath2NodeFilter implements NodeFilter {
 
     /**
      * Method rooted
-     * @param currentNode 
-     * @param nodeList 
+     * @param currentNode
+     * @param nodeList
      *
      * @return if rooted bye the rootnodes
      */
@@ -268,15 +268,15 @@ class XPath2NodeFilter implements NodeFilter {
 
     /**
      * Method rooted
-     * @param currentNode 
-     * @param nodeList 
+     * @param currentNode
+     * @param nodeList
      *
      * @return if rooted bye the rootnodes
      */
     static boolean inList(Node currentNode, Set<Node> nodeList) {
         return nodeList.contains(currentNode);
     }
-    
+
     private static Set<Node> convertNodeListToSet(List<NodeList> l) {
         Set<Node> result = new HashSet<Node>();
         for (NodeList rootNodes : l) {

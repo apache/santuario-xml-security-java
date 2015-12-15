@@ -23,7 +23,7 @@ import org.apache.xml.security.exceptions.XMLSecurityException;
 public class InvalidKeyResolverException extends XMLSecurityException {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
 

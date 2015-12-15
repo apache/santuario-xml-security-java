@@ -47,7 +47,7 @@ public class TransformBase64DecodeTest extends org.junit.Assert {
     static {
         org.apache.xml.security.Init.init();
     }
-    
+
     @org.junit.Test
     public void test1() throws Exception {
         // base64 encoded
@@ -110,13 +110,13 @@ public class TransformBase64DecodeTest extends org.junit.Assert {
 
         Document doc = db.parse(new ByteArrayInputStream(input.getBytes()));
         //XMLUtils.circumventBug2650(doc);
-        
+
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();
         xpath.setNamespaceContext(new DSNamespaceContext());
 
         String expression = "//ds:Base64";
-        Node base64Node = 
+        Node base64Node =
             (Node) xpath.evaluate(expression, doc, XPathConstants.NODE);
 
         XMLSignatureInput xmlinput = new XMLSignatureInput(base64Node);
@@ -130,7 +130,7 @@ public class TransformBase64DecodeTest extends org.junit.Assert {
         String result = new String(out.getBytes());
 
         assertTrue(
-            "\"" + result + "\"", 
+            "\"" + result + "\"",
             result.equals("The URI of the transform is http://www.w3.org/2000/09/xmldsig#base64")
         );
     }
@@ -146,5 +146,5 @@ public class TransformBase64DecodeTest extends org.junit.Assert {
         }
         return doc;
     }
-    
+
 }

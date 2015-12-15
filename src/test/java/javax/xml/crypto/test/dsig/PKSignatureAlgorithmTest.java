@@ -76,7 +76,7 @@ public class PKSignatureAlgorithmTest extends org.junit.Assert {
 
     public PKSignatureAlgorithmTest() throws Exception {
         //
-        // If the BouncyCastle provider is not installed, then try to load it 
+        // If the BouncyCastle provider is not installed, then try to load it
         // via reflection.
         //
         if (Security.getProvider("BC") == null) {
@@ -101,48 +101,48 @@ public class PKSignatureAlgorithmTest extends org.junit.Assert {
         } catch (NoSuchAlgorithmException nsae) {
             ecAlgParamsSupport = false;
         }
-        
+
         db = XMLUtils.createDocumentBuilder(false);
         // create common objects
         fac = XMLSignatureFactory.getInstance("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
         withoutComments = fac.newCanonicalizationMethod
             (CanonicalizationMethod.INCLUSIVE, (C14NMethodParameterSpec) null);
-        
+
         // Digest Methods
         sha1 = fac.newDigestMethod(DigestMethod.SHA1, null);
-        
+
         rsaSha1 = fac.newSignatureMethod("http://www.w3.org/2000/09/xmldsig#rsa-sha1", null);
         rsaSha224 = fac.newSignatureMethod("http://www.w3.org/2001/04/xmldsig-more#rsa-sha224", null);
         rsaSha256 = fac.newSignatureMethod("http://www.w3.org/2001/04/xmldsig-more#rsa-sha256", null);
         rsaSha384 = fac.newSignatureMethod("http://www.w3.org/2001/04/xmldsig-more#rsa-sha384", null);
         rsaSha512 = fac.newSignatureMethod("http://www.w3.org/2001/04/xmldsig-more#rsa-sha512", null);
         rsaRipemd160 = fac.newSignatureMethod("http://www.w3.org/2001/04/xmldsig-more#rsa-ripemd160", null);
-        
+
         rsaSha1Mgf1 = fac.newSignatureMethod("http://www.w3.org/2007/05/xmldsig-more#sha1-rsa-MGF1", null);
         rsaSha224Mgf1 = fac.newSignatureMethod("http://www.w3.org/2007/05/xmldsig-more#sha224-rsa-MGF1", null);
         rsaSha256Mgf1 = fac.newSignatureMethod("http://www.w3.org/2007/05/xmldsig-more#sha256-rsa-MGF1", null);
         rsaSha384Mgf1 = fac.newSignatureMethod("http://www.w3.org/2007/05/xmldsig-more#sha384-rsa-MGF1", null);
         rsaSha512Mgf1 = fac.newSignatureMethod("http://www.w3.org/2007/05/xmldsig-more#sha512-rsa-MGF1", null);
-        
+
         ecdsaSha1 = fac.newSignatureMethod("http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1", null);
         ecdsaSha224 = fac.newSignatureMethod("http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha224", null);
         ecdsaSha256 = fac.newSignatureMethod("http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256", null);
         ecdsaSha384 = fac.newSignatureMethod("http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha384", null);
         ecdsaSha512 = fac.newSignatureMethod("http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512", null);
         ecdsaRipemd160 = fac.newSignatureMethod("http://www.w3.org/2007/05/xmldsig-more#ecdsa-ripemd160", null);
-        
+
         kvks = new KeySelectors.KeyValueKeySelector();
-        
+
         KeyPairGenerator rsaKpg = KeyPairGenerator.getInstance("RSA");
         rsaKpg.initialize(2048);
         rsaKeyPair = rsaKpg.genKeyPair();
-        
+
         ecKeyPair = KeyPairGenerator.getInstance("EC").genKeyPair();
-        
+
         KeyInfoFactory kifac = fac.getKeyInfoFactory();
         rsaki = kifac.newKeyInfo(Collections.singletonList
                                  (kifac.newKeyValue(rsaKeyPair.getPublic())));
-        
+
         boolean isIBM = "IBM Corporation".equals(System.getProperty("java.vendor"));
         if (!isIBM) {
             ecki = kifac.newKeyInfo(Collections.singletonList
@@ -160,31 +160,31 @@ public class PKSignatureAlgorithmTest extends org.junit.Assert {
         test_create_signature_enveloping(rsaSha1, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
-    
+
     @org.junit.Test
     public void testRSA_SHA_224() throws Exception {
         test_create_signature_enveloping(rsaSha224, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
-    
+
     @org.junit.Test
     public void testRSA_SHA_256() throws Exception {
         test_create_signature_enveloping(rsaSha256, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
-    
+
     @org.junit.Test
     public void testRSA_SHA_384() throws Exception {
         test_create_signature_enveloping(rsaSha384, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
-    
+
     @org.junit.Test
     public void testRSA_SHA_512() throws Exception {
         test_create_signature_enveloping(rsaSha512, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
-    
+
     @org.junit.Test
     public void testRSA_RIPEMD160() throws Exception {
         if (!bcInstalled) {
@@ -193,7 +193,7 @@ public class PKSignatureAlgorithmTest extends org.junit.Assert {
         test_create_signature_enveloping(rsaRipemd160, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
-    
+
     @org.junit.Test
     public void testRSA_SHA1_MGF1() throws Exception {
         if (!bcInstalled) {
@@ -202,7 +202,7 @@ public class PKSignatureAlgorithmTest extends org.junit.Assert {
         test_create_signature_enveloping(rsaSha1Mgf1, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
-    
+
     @org.junit.Test
     public void testRSA_SHA224_MGF1() throws Exception {
         if (!bcInstalled) {
@@ -211,7 +211,7 @@ public class PKSignatureAlgorithmTest extends org.junit.Assert {
         test_create_signature_enveloping(rsaSha224Mgf1, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
-    
+
     @org.junit.Test
     public void testRSA_SHA256_MGF1() throws Exception {
         if (!bcInstalled) {
@@ -220,7 +220,7 @@ public class PKSignatureAlgorithmTest extends org.junit.Assert {
         test_create_signature_enveloping(rsaSha256Mgf1, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
-    
+
     @org.junit.Test
     public void testRSA_SHA384_MGF1() throws Exception {
         if (!bcInstalled) {
@@ -229,7 +229,7 @@ public class PKSignatureAlgorithmTest extends org.junit.Assert {
         test_create_signature_enveloping(rsaSha384Mgf1, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
-    
+
     @org.junit.Test
     public void testRSA_SHA512_MGF1() throws Exception {
         if (!bcInstalled) {
@@ -238,42 +238,42 @@ public class PKSignatureAlgorithmTest extends org.junit.Assert {
         test_create_signature_enveloping(rsaSha512Mgf1, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
-    
+
     @org.junit.Test
     public void testECDSA_SHA1() throws Exception {
         org.junit.Assume.assumeTrue(ecAlgParamsSupport && ecki != null);
         test_create_signature_enveloping(ecdsaSha1, sha1, ecki,
                                          ecKeyPair.getPrivate(), kvks);
     }
-    
+
     @org.junit.Test
     public void testECDSA_SHA224() throws Exception {
         org.junit.Assume.assumeTrue(ecAlgParamsSupport && ecki != null);
         test_create_signature_enveloping(ecdsaSha224, sha1, ecki,
                                          ecKeyPair.getPrivate(), kvks);
     }
-    
+
     @org.junit.Test
     public void testECDSA_SHA256() throws Exception {
         org.junit.Assume.assumeTrue(ecAlgParamsSupport && ecki != null);
         test_create_signature_enveloping(ecdsaSha256, sha1, ecki,
                                          ecKeyPair.getPrivate(), kvks);
     }
-    
+
     @org.junit.Test
     public void testECDSA_SHA384() throws Exception {
         org.junit.Assume.assumeTrue(ecAlgParamsSupport && ecki != null);
         test_create_signature_enveloping(ecdsaSha384, sha1, ecki,
                                          ecKeyPair.getPrivate(), kvks);
     }
-    
+
     @org.junit.Test
     public void testECDSA_SHA512() throws Exception {
         org.junit.Assume.assumeTrue(ecAlgParamsSupport && ecki != null);
         test_create_signature_enveloping(ecdsaSha512, sha1, ecki,
                                          ecKeyPair.getPrivate(), kvks);
     }
-    
+
     @org.junit.Test
     public void testECDSA_RIPEMD160() throws Exception {
         if (!bcInstalled) {
@@ -283,7 +283,7 @@ public class PKSignatureAlgorithmTest extends org.junit.Assert {
         test_create_signature_enveloping(ecdsaRipemd160, sha1, ecki,
                                          ecKeyPair.getPrivate(), kvks);
     }
-  
+
     private void test_create_signature_enveloping(
         SignatureMethod sm, DigestMethod dm, KeyInfo ki, Key signingKey, KeySelector ks
     ) throws Exception {
@@ -313,7 +313,7 @@ public class PKSignatureAlgorithmTest extends org.junit.Assert {
 
         sig.sign(dsc);
         TestUtils.validateSecurityOrEncryptionElement(doc.getDocumentElement());
-        
+
         // XMLUtils.outputDOM(doc.getDocumentElement(), System.out);
 
         DOMValidateContext dvc = new DOMValidateContext

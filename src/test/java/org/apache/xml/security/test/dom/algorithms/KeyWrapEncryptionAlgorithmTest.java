@@ -54,14 +54,14 @@ public class KeyWrapEncryptionAlgorithmTest extends org.junit.Assert {
 
     private KeyPair rsaKeyPair;
     private boolean bcInstalled;
-    
+
     static {
         org.apache.xml.security.Init.init();
     }
-    
+
     public KeyWrapEncryptionAlgorithmTest() throws Exception {
         //
-        // If the BouncyCastle provider is not installed, then try to load it 
+        // If the BouncyCastle provider is not installed, then try to load it
         // via reflection.
         //
         if (Security.getProvider("BC") == null) {
@@ -78,7 +78,7 @@ public class KeyWrapEncryptionAlgorithmTest extends org.junit.Assert {
                 bcInstalled = true;
             }
         }
-        
+
         rsaKeyPair = KeyPairGenerator.getInstance("RSA").genKeyPair();
     }
 
@@ -86,21 +86,21 @@ public class KeyWrapEncryptionAlgorithmTest extends org.junit.Assert {
     public static void cleanup() throws Exception {
         Security.removeProvider("org.bouncycastle.jce.provider.BouncyCastleProvider");
     }
-    
+
     @org.junit.Test
     public void testAES128KW() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(128);
         SecretKey key = keygen.generateKey();
-        
+
         // Set up the Key Wrapping Key
         XMLCipher cipher = XMLCipher.getInstance(XMLCipher.AES_128_KeyWrap);
         keygen = KeyGenerator.getInstance("AES");
@@ -108,40 +108,40 @@ public class KeyWrapEncryptionAlgorithmTest extends org.junit.Assert {
         SecretKey keyWrappingKey = keygen.generateKey();
         cipher.init(XMLCipher.WRAP_MODE, keyWrappingKey);
         EncryptedKey encryptedKey = cipher.encryptKey(document, key);
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         String encryptionAlgorithm = XMLCipher.AES_128;
-        
+
         encrypt(encryptedKey, encryptionAlgorithm, document, localNames, key);
-        
+
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 0);
-        
+
         // XMLUtils.outputDOM(document, System.out);
         document = decrypt(document, keyWrappingKey);
-        
+
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 1);
     }
-    
+
     @org.junit.Test
     public void testAES192KW() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(192);
         SecretKey key = keygen.generateKey();
-        
+
         // Set up the Key Wrapping Key
         XMLCipher cipher = XMLCipher.getInstance(XMLCipher.AES_192_KeyWrap);
         keygen = KeyGenerator.getInstance("AES");
@@ -149,40 +149,40 @@ public class KeyWrapEncryptionAlgorithmTest extends org.junit.Assert {
         SecretKey keyWrappingKey = keygen.generateKey();
         cipher.init(XMLCipher.WRAP_MODE, keyWrappingKey);
         EncryptedKey encryptedKey = cipher.encryptKey(document, key);
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         String encryptionAlgorithm = XMLCipher.AES_192;
-        
+
         encrypt(encryptedKey, encryptionAlgorithm, document, localNames, key);
-        
+
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 0);
-        
+
         // XMLUtils.outputDOM(document, System.out);
         document = decrypt(document, keyWrappingKey);
-        
+
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 1);
     }
-    
+
     @org.junit.Test
     public void testAES256KW() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(256);
         SecretKey key = keygen.generateKey();
-        
+
         // Set up the Key Wrapping Key
         XMLCipher cipher = XMLCipher.getInstance(XMLCipher.AES_256_KeyWrap);
         keygen = KeyGenerator.getInstance("AES");
@@ -190,193 +190,193 @@ public class KeyWrapEncryptionAlgorithmTest extends org.junit.Assert {
         SecretKey keyWrappingKey = keygen.generateKey();
         cipher.init(XMLCipher.WRAP_MODE, keyWrappingKey);
         EncryptedKey encryptedKey = cipher.encryptKey(document, key);
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         String encryptionAlgorithm = XMLCipher.AES_256;
-        
+
         encrypt(encryptedKey, encryptionAlgorithm, document, localNames, key);
-        
+
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 0);
-        
+
         // XMLUtils.outputDOM(document, System.out);
         document = decrypt(document, keyWrappingKey);
-        
+
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 1);
     }
-    
+
     @org.junit.Test
     public void testTripleDESKW() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("DESede");
         SecretKey key = keygen.generateKey();
-        
+
         // Set up the Key Wrapping Key
         XMLCipher cipher = XMLCipher.getInstance(XMLCipher.TRIPLEDES_KeyWrap);
         keygen = KeyGenerator.getInstance("DESede");
         SecretKey keyWrappingKey = keygen.generateKey();
         cipher.init(XMLCipher.WRAP_MODE, keyWrappingKey);
         EncryptedKey encryptedKey = cipher.encryptKey(document, key);
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         String encryptionAlgorithm = XMLCipher.TRIPLEDES;
-        
+
         encrypt(encryptedKey, encryptionAlgorithm, document, localNames, key);
-        
+
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 0);
-        
+
         // XMLUtils.outputDOM(document, System.out);
         document = decrypt(document, keyWrappingKey);
-        
+
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 1);
     }
-    
+
     @org.junit.Test
     public void testRSAv15KW() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("DESede");
         SecretKey key = keygen.generateKey();
-        
+
         // Set up the Key Wrapping Key
         XMLCipher cipher = XMLCipher.getInstance(XMLCipher.RSA_v1dot5);
         cipher.init(XMLCipher.WRAP_MODE, rsaKeyPair.getPublic());
         EncryptedKey encryptedKey = cipher.encryptKey(document, key);
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         String encryptionAlgorithm = XMLCipher.TRIPLEDES;
-        
+
         encrypt(encryptedKey, encryptionAlgorithm, document, localNames, key);
-        
+
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 0);
-        
+
         // XMLUtils.outputDOM(document, System.out);
         document = decrypt(document, rsaKeyPair.getPrivate());
-        
+
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 1);
     }
-    
+
     @org.junit.Test
     public void testRSAOAEPKW() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("DESede");
         SecretKey key = keygen.generateKey();
-        
+
         // Set up the Key Wrapping Key
         XMLCipher cipher = XMLCipher.getInstance(XMLCipher.RSA_OAEP);
         cipher.init(XMLCipher.WRAP_MODE, rsaKeyPair.getPublic());
         EncryptedKey encryptedKey = cipher.encryptKey(document, key);
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         String encryptionAlgorithm = XMLCipher.TRIPLEDES;
-        
+
         encrypt(encryptedKey, encryptionAlgorithm, document, localNames, key);
-        
+
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 0);
-        
+
         // XMLUtils.outputDOM(document, System.out);
         document = decrypt(document, rsaKeyPair.getPrivate());
-        
+
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 1);
     }
-    
+
     @org.junit.Test
     public void testRSAOAEP11KW() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("DESede");
         SecretKey key = keygen.generateKey();
-        
+
         // Set up the Key Wrapping Key
         XMLCipher cipher = XMLCipher.getInstance(XMLCipher.RSA_OAEP_11);
         cipher.init(XMLCipher.WRAP_MODE, rsaKeyPair.getPublic());
         EncryptedKey encryptedKey = cipher.encryptKey(document, key);
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         String encryptionAlgorithm = XMLCipher.TRIPLEDES;
-        
+
         encrypt(encryptedKey, encryptionAlgorithm, document, localNames, key);
-        
+
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 0);
-        
+
         // XMLUtils.outputDOM(document, System.out);
         document = decrypt(document, rsaKeyPair.getPrivate());
-        
+
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 1);
     }
-    
+
     @org.junit.Test
     public void testCamellia128KW() throws Exception {
         if (!bcInstalled) {
             return;
         }
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("Camellia");
         keygen.init(128);
         SecretKey key = keygen.generateKey();
-        
+
         // Set up the Key Wrapping Key
         XMLCipher cipher = XMLCipher.getInstance(XMLCipher.CAMELLIA_128_KeyWrap);
         keygen = KeyGenerator.getInstance("Camellia");
@@ -384,43 +384,43 @@ public class KeyWrapEncryptionAlgorithmTest extends org.junit.Assert {
         SecretKey keyWrappingKey = keygen.generateKey();
         cipher.init(XMLCipher.WRAP_MODE, keyWrappingKey);
         EncryptedKey encryptedKey = cipher.encryptKey(document, key);
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         String encryptionAlgorithm = XMLCipher.CAMELLIA_128;
-        
+
         encrypt(encryptedKey, encryptionAlgorithm, document, localNames, key);
-        
+
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 0);
-        
+
         // XMLUtils.outputDOM(document, System.out);
         document = decrypt(document, keyWrappingKey);
-        
+
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 1);
     }
-    
+
     @org.junit.Test
     public void testCamellia192KW() throws Exception {
         if (!bcInstalled) {
             return;
         }
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("Camellia");
         keygen.init(192);
         SecretKey key = keygen.generateKey();
-        
+
         // Set up the Key Wrapping Key
         XMLCipher cipher = XMLCipher.getInstance(XMLCipher.CAMELLIA_192_KeyWrap);
         keygen = KeyGenerator.getInstance("Camellia");
@@ -428,43 +428,43 @@ public class KeyWrapEncryptionAlgorithmTest extends org.junit.Assert {
         SecretKey keyWrappingKey = keygen.generateKey();
         cipher.init(XMLCipher.WRAP_MODE, keyWrappingKey);
         EncryptedKey encryptedKey = cipher.encryptKey(document, key);
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         String encryptionAlgorithm = XMLCipher.CAMELLIA_192;
-        
+
         encrypt(encryptedKey, encryptionAlgorithm, document, localNames, key);
-        
+
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 0);
-        
+
         // XMLUtils.outputDOM(document, System.out);
         document = decrypt(document, keyWrappingKey);
-        
+
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 1);
     }
-    
+
     @org.junit.Test
     public void testCamellia256KW() throws Exception {
         if (!bcInstalled) {
             return;
         }
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("Camellia");
         keygen.init(256);
         SecretKey key = keygen.generateKey();
-        
+
         // Set up the Key Wrapping Key
         XMLCipher cipher = XMLCipher.getInstance(XMLCipher.CAMELLIA_256_KeyWrap);
         keygen = KeyGenerator.getInstance("Camellia");
@@ -472,43 +472,43 @@ public class KeyWrapEncryptionAlgorithmTest extends org.junit.Assert {
         SecretKey keyWrappingKey = keygen.generateKey();
         cipher.init(XMLCipher.WRAP_MODE, keyWrappingKey);
         EncryptedKey encryptedKey = cipher.encryptKey(document, key);
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         String encryptionAlgorithm = XMLCipher.CAMELLIA_256;
-        
+
         encrypt(encryptedKey, encryptionAlgorithm, document, localNames, key);
-        
+
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 0);
-        
+
         // XMLUtils.outputDOM(document, System.out);
         document = decrypt(document, keyWrappingKey);
-        
+
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 1);
     }
-    
+
     @org.junit.Test
     public void testSEED128KW() throws Exception {
         if (!bcInstalled) {
             return;
         }
         // Read in plaintext document
-        InputStream sourceDocument = 
+        InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
-        
+
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("SEED");
         keygen.init(128);
         SecretKey key = keygen.generateKey();
-        
+
         // Set up the Key Wrapping Key
         XMLCipher cipher = XMLCipher.getInstance(XMLCipher.SEED_128_KeyWrap);
         keygen = KeyGenerator.getInstance("SEED");
@@ -516,26 +516,26 @@ public class KeyWrapEncryptionAlgorithmTest extends org.junit.Assert {
         SecretKey keyWrappingKey = keygen.generateKey();
         cipher.init(XMLCipher.WRAP_MODE, keyWrappingKey);
         EncryptedKey encryptedKey = cipher.encryptKey(document, key);
-        
+
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         String encryptionAlgorithm = XMLCipher.SEED_128;
-        
+
         encrypt(encryptedKey, encryptionAlgorithm, document, localNames, key);
-        
+
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 0);
-        
+
         // XMLUtils.outputDOM(document, System.out);
         document = decrypt(document, keyWrappingKey);
-        
+
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         Assert.assertEquals(nodeList.getLength(), 1);
     }
-    
+
     private void encrypt(
         EncryptedKey encryptedKey,
         String algorithm,
@@ -545,7 +545,7 @@ public class KeyWrapEncryptionAlgorithmTest extends org.junit.Assert {
     ) throws Exception {
         XMLCipher cipher = XMLCipher.getInstance(algorithm);
         cipher.init(XMLCipher.ENCRYPT_MODE, encryptingKey);
-        
+
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();
         xpath.setNamespaceContext(new DSNamespaceContext());
@@ -557,7 +557,7 @@ public class KeyWrapEncryptionAlgorithmTest extends org.junit.Assert {
             builder.setKeyInfo(builderKeyInfo);
         }
         builderKeyInfo.add(encryptedKey);
-        
+
         for (String localName : localNames) {
             String expression = "//*[local-name()='" + localName + "']";
             Element elementToEncrypt =
@@ -566,14 +566,14 @@ public class KeyWrapEncryptionAlgorithmTest extends org.junit.Assert {
 
             document = cipher.doFinal(document, elementToEncrypt, false);
         }
-        
+
         NodeList nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
         Assert.assertTrue(nodeList.getLength() > 0);
     }
-    
+
     private Document decrypt(
         Document document,
         Key keyWrappingKey
@@ -583,7 +583,7 @@ public class KeyWrapEncryptionAlgorithmTest extends org.junit.Assert {
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
         Element ee = (Element)nodeList.item(0);
-        
+
         // Need to pre-load the Encrypted Data so we can get the key info
         XMLCipher cipher = XMLCipher.getInstance();
         cipher.init(XMLCipher.DECRYPT_MODE, null);
@@ -593,14 +593,14 @@ public class KeyWrapEncryptionAlgorithmTest extends org.junit.Assert {
         kwCipher.init(XMLCipher.UNWRAP_MODE, keyWrappingKey);
         KeyInfo ki = encryptedData.getKeyInfo();
         EncryptedKey encryptedKey = ki.itemEncryptedKey(0);
-        Key symmetricKey = 
+        Key symmetricKey =
             kwCipher.decryptKey(
                 encryptedKey, encryptedData.getEncryptionMethod().getAlgorithm()
             );
-        
+
         cipher.init(XMLCipher.DECRYPT_MODE, symmetricKey);
         return cipher.doFinal(document, ee);
     }
-    
+
 
 }

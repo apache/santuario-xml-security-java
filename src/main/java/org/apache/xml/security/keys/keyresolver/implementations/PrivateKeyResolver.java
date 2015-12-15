@@ -56,7 +56,7 @@ public class PrivateKeyResolver extends KeyResolverSpi {
     private char[] password;
 
     /**
-     * Constructor. 
+     * Constructor.
      */
     public PrivateKeyResolver(KeyStore keyStore, char[] password) {
         this.keyStore = keyStore;
@@ -72,7 +72,7 @@ public class PrivateKeyResolver extends KeyResolverSpi {
      * @return whether the KeyResolverSpi is able to perform the requested action.
      */
     public boolean engineCanResolve(Element element, String baseURI, StorageResolver storage) {
-        if (XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_X509DATA) 
+        if (XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_X509DATA)
             || XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_KEYNAME)) {
             return true;
         }
@@ -262,7 +262,7 @@ public class PrivateKeyResolver extends KeyResolverSpi {
 
                 Certificate cert = keyStore.getCertificate(alias);
                 if (cert instanceof X509Certificate) {
-                    XMLX509IssuerSerial certSerial = 
+                    XMLX509IssuerSerial certSerial =
                         new XMLX509IssuerSerial(x509Serial.getDocument(), (X509Certificate) cert);
 
                     if (certSerial.equals(x509Serial)) {
@@ -298,7 +298,7 @@ public class PrivateKeyResolver extends KeyResolverSpi {
 
                 Certificate cert = keyStore.getCertificate(alias);
                 if (cert instanceof X509Certificate) {
-                    XMLX509SubjectName certSN = 
+                    XMLX509SubjectName certSN =
                         new XMLX509SubjectName(x509SubjectName.getDocument(), (X509Certificate) cert);
 
                     if (certSN.equals(x509SubjectName)) {

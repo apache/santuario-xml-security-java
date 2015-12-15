@@ -75,7 +75,7 @@ import org.w3c.dom.Element;
  * @author Axl Mattheus
  */
 public interface AgreementMethod {
-    
+
     /**
      * Returns a <code>byte</code> array.
      * @return a <code>byte</code> array.

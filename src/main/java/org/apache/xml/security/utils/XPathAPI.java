@@ -43,7 +43,7 @@ public interface XPathAPI {
     NodeList selectNodeList(
         Node contextNode, Node xpathnode, String str, Node namespaceNode
     ) throws TransformerException;
-    
+
     /**
      * Evaluate an XPath string and return true if the output is to be included or not.
      *  @param contextNode The node to start searching from.
@@ -53,7 +53,7 @@ public interface XPathAPI {
      */
     boolean evaluate(Node contextNode, Node xpathnode, String str, Node namespaceNode)
         throws TransformerException;
-    
+
     /**
      * Clear any context information from this object
      */

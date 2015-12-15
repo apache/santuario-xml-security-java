@@ -31,13 +31,13 @@ import org.apache.xml.security.keys.storage.StorageResolver;
  */
 public class StorageResolverTest extends org.junit.Assert {
 
-    private static final String BASEDIR = 
+    private static final String BASEDIR =
         System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
     private static final String SEP = System.getProperty("file.separator");
 
     @org.junit.Test
     public void testStorageResolver() throws Exception {
-        
+
         //
         // This test fails with the IBM JDK
         //

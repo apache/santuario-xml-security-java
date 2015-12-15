@@ -52,14 +52,14 @@ public class ValidateSignatureTest extends org.junit.Assert {
     public ValidateSignatureTest() {
         String fs = System.getProperty("file.separator");
         String base = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
-        
-        dir = new File(base + fs + "src/test/resources" + fs 
+
+        dir = new File(base + fs + "src/test/resources" + fs
             + "javax" + fs + "xml" + fs + "crypto", "dsig");
         validator = new SignatureValidator(dir);
     }
 
-    /** 
-     * Validates a signature that references an element with an ID attribute. 
+    /**
+     * Validates a signature that references an element with an ID attribute.
      * The element's ID needs to be registered so that it can be found.
      */
     @org.junit.Test
@@ -79,7 +79,7 @@ public class ValidateSignatureTest extends org.junit.Assert {
     public void test_signature_external_c14n_xmlattrs() throws Exception {
         String file = "signature-external-c14n-xmlatrs.xml";
 
-        boolean coreValidity = validator.validate(file, 
+        boolean coreValidity = validator.validate(file,
             new KeySelectors.SecretKeySelector("secret".getBytes("ASCII")));
         assertTrue("Signature failed core validation", coreValidity);
     }
@@ -91,7 +91,7 @@ public class ValidateSignatureTest extends org.junit.Assert {
     public void test_invalid_signature() throws Exception {
         InvalidURIDereferencer ud = new InvalidURIDereferencer();
 
-        boolean coreValidity = validator.validate("invalid-signature.xml", 
+        boolean coreValidity = validator.validate("invalid-signature.xml",
             new KeySelectors.KeyValueKeySelector(), ud);
         assertFalse("Invalid signature should fail!", coreValidity);
         assertTrue("References validated before signature", ud.dereferenced);
@@ -101,7 +101,7 @@ public class ValidateSignatureTest extends org.junit.Assert {
     public void test_signature_enveloping_hmac_sha1_trunclen_0() throws Exception {
         try {
             validator.validate
-                ("signature-enveloping-hmac-sha1-trunclen-0-attack.xml", 
+                ("signature-enveloping-hmac-sha1-trunclen-0-attack.xml",
                 new KeySelectors.SecretKeySelector("secret".getBytes("ASCII")));
             fail("Expected HMACOutputLength exception");
         } catch (XMLSignatureException xse) {
@@ -112,10 +112,10 @@ public class ValidateSignatureTest extends org.junit.Assert {
 
     @org.junit.Test
     public void test_signature_enveloping_hmac_sha1_trunclen_8() throws Exception {
-   
+
         try {
             validator.validate
-                ("signature-enveloping-hmac-sha1-trunclen-8-attack.xml", 
+                ("signature-enveloping-hmac-sha1-trunclen-8-attack.xml",
                 new KeySelectors.SecretKeySelector("secret".getBytes("ASCII")));
             fail("Expected HMACOutputLength exception");
         } catch (XMLSignatureException xse) {
@@ -129,7 +129,7 @@ public class ValidateSignatureTest extends org.junit.Assert {
     @org.junit.Test
     public void test_signature_exclc14n_xmlnamespace() throws Exception {
         String file = "demo.signed.xml";
-        boolean coreValidity = validator.validate(file, 
+        boolean coreValidity = validator.validate(file,
             new KeySelectors.RawX509KeySelector());
         assertTrue("Signature failed core validation", coreValidity);
     }
@@ -161,5 +161,5 @@ public class ValidateSignatureTest extends org.junit.Assert {
             return ud.dereference(ref, ctx);
         }
     }
-    
+
 }

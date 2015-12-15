@@ -40,7 +40,7 @@ import org.w3c.dom.Document;
  * @author $Author$
  */
 public class HMacSHA1RoundTrip {
-    
+
     static {
         org.apache.xml.security.Init.init();
     }
@@ -65,7 +65,7 @@ public class HMacSHA1RoundTrip {
 
         ks.load(fis, keystorePass.toCharArray());
 
-        PrivateKey privateKey = 
+        PrivateKey privateKey =
             (PrivateKey) ks.getKey(privateKeyAlias, privateKeyPass.toCharArray());
         X509Certificate cert =
             (X509Certificate) ks.getCertificate(certificateAlias);
@@ -120,7 +120,7 @@ public class HMacSHA1RoundTrip {
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document doc = db.newDocument();
 
-        SignatureAlgorithm sa = 
+        SignatureAlgorithm sa =
             new SignatureAlgorithm(doc, "http://www.w3.org/2000/09/xmldsig#hmac-sha1", 33);
 
         byte keybytes[] = "01234567890123456789".getBytes();
@@ -140,7 +140,7 @@ public class HMacSHA1RoundTrip {
         javax.crypto.Mac a;
         SignatureAlgorithm verifier =
             new SignatureAlgorithm(doc.getDocumentElement(), "file:");
-        SecretKey pk = 
+        SecretKey pk =
             new SecretKeySpec("01234567890123456789".getBytes(), verifier.getJCEAlgorithmString());
 
         verifier.initVerify(pk);

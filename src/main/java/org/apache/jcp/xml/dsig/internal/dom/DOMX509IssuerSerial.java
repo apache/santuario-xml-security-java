@@ -108,13 +108,13 @@ public final class DOMX509IssuerSerial extends BaseStructure
         return issuerName.equals(ois.getIssuerName()) &&
                 serialNumber.equals(ois.getSerialNumber());
     }
- 
+
     @Override
     public int hashCode() {
         int result = 17;
         result = 31 * result + issuerName.hashCode();
         result = 31 * result + serialNumber.hashCode();
-        
+
         return result;
     }
 }

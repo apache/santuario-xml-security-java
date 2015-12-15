@@ -29,9 +29,9 @@ import org.apache.xml.security.utils.EncryptionConstants;
 
 public final class XMLCipherUtil {
 
-    private static org.slf4j.Logger log = 
+    private static org.slf4j.Logger log =
         org.slf4j.LoggerFactory.getLogger(XMLCipherUtil.class);
-    
+
     private static final boolean gcmUseIvParameterSpec =
         AccessController.doPrivileged(new PrivilegedAction<Boolean>() {
             public Boolean run() {
@@ -39,11 +39,11 @@ public final class XMLCipherUtil {
                     ("org.apache.xml.security.cipher.gcm.useIvParameterSpec");
             }
         });
-    
+
     /**
      * Build an <code>AlgorithmParameterSpec</code> instance used to initialize a <code>Cipher</code> instance
      * for block cipher encryption and decryption.
-     * 
+     *
      * @param algorithm the XML encryption algorithm URI
      * @param iv the initialization vector
      * @return the newly constructed AlgorithmParameterSpec instance, appropriate for the
@@ -68,29 +68,29 @@ public final class XMLCipherUtil {
             return new IvParameterSpec(iv);
         }
     }
-    
+
     private static AlgorithmParameterSpec constructBlockCipherParametersForGCMAlgorithm(String algorithm, byte[] iv, Class<?> callingClass) {
         if (gcmUseIvParameterSpec) {
-            // This override allows to support Java 1.7+ with (usually older versions of) third-party security 
+            // This override allows to support Java 1.7+ with (usually older versions of) third-party security
             // providers which support or even require GCM via IvParameterSpec rather than GCMParameterSpec,
             // e.g. BouncyCastle <= 1.49 (really <= 1.50 due to a semi-related bug).
             log.debug("Saw AES-GCM block cipher, using IvParameterSpec due to system property override: {}", algorithm);
             return new IvParameterSpec(iv);
         }
-        
+
         log.debug("Saw AES-GCM block cipher, attempting to create GCMParameterSpec: {}", algorithm);
-        
+
         try {
-            // This class only added in Java 1.7. So load reflectively until Santuario starts targeting a minimum of Java 1.7. 
+            // This class only added in Java 1.7. So load reflectively until Santuario starts targeting a minimum of Java 1.7.
             Class<?> gcmSpecClass = ClassLoaderUtils.loadClass("javax.crypto.spec.GCMParameterSpec", callingClass);
-            
+
             // XML Encryption 1.1 mandates a 128-bit Authentication Tag for AES GCM modes.
             AlgorithmParameterSpec gcmSpec = (AlgorithmParameterSpec) gcmSpecClass.getConstructor(int.class, byte[].class)
                     .newInstance(128, iv);
             log.debug("Successfully created GCMParameterSpec");
             return gcmSpec;
         } catch (Exception e) {
-            // This handles the case of Java < 1.7 with a third-party security provider that 
+            // This handles the case of Java < 1.7 with a third-party security provider that
             // supports GCM mode using only an IvParameterSpec, such as BouncyCastle.
             log.debug("Failed to create GCMParameterSpec, falling back to returning IvParameterSpec", e);
             return new IvParameterSpec(iv);

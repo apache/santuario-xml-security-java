@@ -111,7 +111,7 @@ public class XMLSecurityStreamReaderTest extends org.junit.Assert {
         XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
         xmlInputFactory.setProperty(XMLInputFactory.IS_COALESCING, true);
         xmlInputFactory.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, true);
-        XMLStreamReader stdXmlStreamReader = 
+        XMLStreamReader stdXmlStreamReader =
             xmlInputFactory.createXMLStreamReader(this.getClass().getClassLoader().getResourceAsStream(
                 "org/apache/xml/security/c14n/inExcl/plain-soap-1.1.xml"));
 
@@ -249,7 +249,7 @@ public class XMLSecurityStreamReaderTest extends org.junit.Assert {
     }
 
     private String readTestFile() throws Exception {
-        InputStream inputStream = 
+        InputStream inputStream =
             this.getClass().getClassLoader().getResourceAsStream(
                 "org/apache/xml/security/c14n/inExcl/plain-soap-1.1.xml");
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
@@ -270,7 +270,7 @@ public class XMLSecurityStreamReaderTest extends org.junit.Assert {
             XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
             xmlInputFactory.setProperty(XMLInputFactory.IS_COALESCING, true);
             xmlInputFactory.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, true);
-            xmlStreamReader = 
+            xmlStreamReader =
                 xmlInputFactory.createXMLStreamReader(this.getClass().getClassLoader().getResourceAsStream(
                     "org/apache/xml/security/c14n/inExcl/plain-soap-1.1.xml"));
         }

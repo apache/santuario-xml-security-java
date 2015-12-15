@@ -72,18 +72,18 @@ public class TransformEnvelopedSignature extends TransformSpi {
 
         Node signatureElement = transformObject.getElement();
 
-        signatureElement = searchSignatureElement(signatureElement);        
-        input.setExcludeNode(signatureElement);   
+        signatureElement = searchSignatureElement(signatureElement);
+        input.setExcludeNode(signatureElement);
         input.addNodeFilter(new EnvelopedNodeFilter(signatureElement));
         return input;
     }
 
     /**
-     * @param signatureElement    
+     * @param signatureElement
      * @return the node that is the signature
      * @throws TransformationException
      */
-    private static Node searchSignatureElement(Node signatureElement) 
+    private static Node searchSignatureElement(Node signatureElement)
         throws TransformationException {
         boolean found = false;
 
@@ -110,25 +110,25 @@ public class TransformEnvelopedSignature extends TransformSpi {
     }
 
     static class EnvelopedNodeFilter implements NodeFilter {
-        
+
         Node exclude;
-        
+
         EnvelopedNodeFilter(Node n) {
             exclude = n;
         }
-        
+
         public int isNodeIncludeDO(Node n, int level) {
             if (n == exclude) {
                 return -1;
             }
             return 1;
         }
-        
+
         /**
          * @see org.apache.xml.security.signature.NodeFilter#isNodeInclude(org.w3c.dom.Node)
          */
         public int isNodeInclude(Node n) {
-            if (n == exclude || XMLUtils.isDescendantOrSelf(exclude, n)) { 
+            if (n == exclude || XMLUtils.isDescendantOrSelf(exclude, n)) {
                 return -1;
             }
             return 1;

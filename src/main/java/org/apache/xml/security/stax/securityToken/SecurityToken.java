@@ -74,7 +74,7 @@ public interface SecurityToken {
     SecurityToken getKeyWrappingToken() throws XMLSecurityException;
 
     List<? extends SecurityToken> getWrappedTokens() throws XMLSecurityException;
-    
+
     /**
      * Returns the KeyIdentifier
      *
@@ -85,7 +85,7 @@ public interface SecurityToken {
     SecurityTokenConstants.TokenType getTokenType();
 
     List<SecurityTokenConstants.TokenUsage> getTokenUsages();
-    
+
     void addTokenUsage(SecurityTokenConstants.TokenUsage tokenUsage) throws XMLSecurityException;
 
     /**

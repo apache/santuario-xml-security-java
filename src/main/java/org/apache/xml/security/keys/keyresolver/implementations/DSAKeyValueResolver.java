@@ -30,7 +30,7 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Element;
 
 public class DSAKeyValueResolver extends KeyResolverSpi {
-    
+
     private static org.slf4j.Logger log =
         org.slf4j.LoggerFactory.getLogger(DSAKeyValueResolver.class);
 
@@ -50,16 +50,16 @@ public class DSAKeyValueResolver extends KeyResolverSpi {
             return null;
         }
         Element dsaKeyElement = null;
-        boolean isKeyValue = 
+        boolean isKeyValue =
             XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_KEYVALUE);
-        if (isKeyValue) {         	     
+        if (isKeyValue) {         	
             dsaKeyElement =
-                XMLUtils.selectDsNode(element.getFirstChild(), Constants._TAG_DSAKEYVALUE, 0);                    
+                XMLUtils.selectDsNode(element.getFirstChild(), Constants._TAG_DSAKEYVALUE, 0);
         } else if (XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_DSAKEYVALUE)) {
             // this trick is needed to allow the RetrievalMethodResolver to eat a
             // ds:DSAKeyValue directly (without KeyValue)
             dsaKeyElement = element;
-        }	      
+        }	
 
         if (dsaKeyElement == null) {
             return null;

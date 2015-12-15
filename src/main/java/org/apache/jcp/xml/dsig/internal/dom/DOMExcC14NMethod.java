@@ -95,7 +95,7 @@ public final class DOMExcC14NMethod extends ApacheCanonicalizer {
     public List<String> getParameterSpecPrefixList(ExcC14NParameterSpec paramSpec) {
         return paramSpec.getPrefixList();
     }
-    
+
     @Override
     public void marshalParams(XMLStructure parent, XMLCryptoContext context)
         throws MarshalException

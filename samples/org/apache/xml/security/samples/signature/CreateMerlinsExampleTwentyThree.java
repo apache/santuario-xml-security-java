@@ -61,7 +61,7 @@ public class CreateMerlinsExampleTwentyThree {
     static {
         org.apache.xml.security.Init.init();
     }
-    
+
     /**
      * Method main
      *
@@ -84,7 +84,7 @@ public class CreateMerlinsExampleTwentyThree {
 
         ks.load(fis, keystorePass.toCharArray());
 
-        PrivateKey privateKey = 
+        PrivateKey privateKey =
             (PrivateKey) ks.getKey(privateKeyAlias, privateKeyPass.toCharArray());
 
         if (privateKey == null) {

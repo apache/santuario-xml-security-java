@@ -32,7 +32,7 @@ public class KeyNameTest extends org.junit.Assert {
 
     private KeyInfoFactory fac;
 
-    public KeyNameTest() throws Exception { 
+    public KeyNameTest() throws Exception {
         fac = KeyInfoFactory.getInstance
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
     }
@@ -49,8 +49,8 @@ public class KeyNameTest extends org.junit.Assert {
         KeyName kn = fac.newKeyName(name);
         assertEquals(name, kn.getName());
         try {
-            kn = fac.newKeyName(null); 
-            fail("Should raise a NullPointerException"); 
+            kn = fac.newKeyName(null);
+            fail("Should raise a NullPointerException");
         } catch (NullPointerException npe) {}
     }
 
@@ -58,8 +58,8 @@ public class KeyNameTest extends org.junit.Assert {
     public void testisFeatureSupported() {
         KeyName kn = fac.newKeyName("keyName");
         try {
-            kn.isFeatureSupported(null); 
-            fail("Should raise a NPE for null feature"); 
+            kn.isFeatureSupported(null);
+            fail("Should raise a NPE for null feature");
         } catch (NullPointerException npe) {}
 
         assertTrue(!kn.isFeatureSupported("not supported"));

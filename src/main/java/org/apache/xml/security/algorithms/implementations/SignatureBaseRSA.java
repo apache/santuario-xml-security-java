@@ -115,7 +115,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
             try {
                 this.signatureAlgorithm = Signature.getInstance(signatureAlgorithm.getAlgorithm());
             } catch (Exception e) {
-                // this shouldn't occur, but if it does, restore previous 
+                // this shouldn't occur, but if it does, restore previous
                 // Signature
                 if (log.isDebugEnabled()) {
                     log.debug("Exception when reinstantiating Signature:" + e);
@@ -123,7 +123,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
                 this.signatureAlgorithm = sig;
             }
             throw new XMLSignatureException(ex);
-        } 
+        }
     }
 
     /** @inheritDoc */
@@ -254,7 +254,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
             return XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA224;
         }
     }
-    
+
     /**
      * Class SignatureRSASHA256
      */
@@ -354,7 +354,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
             return XMLSignature.ALGO_ID_SIGNATURE_NOT_RECOMMENDED_RSA_MD5;
         }
     }
-    
+
     /**
      * Class SignatureRSASHA1MGF1
      */
@@ -374,7 +374,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
             return XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1_MGF1;
         }
     }
-    
+
     /**
      * Class SignatureRSASHA224MGF1
      */
@@ -394,7 +394,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
             return XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA224_MGF1;
         }
     }
-    
+
     /**
      * Class SignatureRSASHA256MGF1
      */
@@ -414,7 +414,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
             return XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA256_MGF1;
         }
     }
-    
+
     /**
      * Class SignatureRSASHA384MGF1
      */
@@ -434,7 +434,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
             return XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA384_MGF1;
         }
     }
-    
+
     /**
      * Class SignatureRSASHA512MGF1
      */

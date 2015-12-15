@@ -27,7 +27,7 @@ import java.util.Comparator;
  * Compares two attributes based on the C14n specification.
  *
  * <UL>
- * <LI>Namespace nodes have a lesser document order position than attribute 
+ * <LI>Namespace nodes have a lesser document order position than attribute
  *   nodes.
  * <LI> An element's namespace nodes are sorted lexicographically by
  *   local name (the default namespace node, if one exists, has no
@@ -50,7 +50,7 @@ public class AttrCompare implements Comparator<Attr>, Serializable {
      * Compares two attributes based on the C14n specification.
      *
      * <UL>
-     * <LI>Namespace nodes have a lesser document order position than 
+     * <LI>Namespace nodes have a lesser document order position than
      *   attribute nodes.
      * <LI> An element's namespace nodes are sorted lexicographically by
      *   local name (the default namespace node, if one exists, has no
@@ -62,14 +62,14 @@ public class AttrCompare implements Comparator<Attr>, Serializable {
      *
      * @param attr0
      * @param attr1
-     * @return returns a negative integer, zero, or a positive integer as 
+     * @return returns a negative integer, zero, or a positive integer as
      *   obj0 is less than, equal to, or greater than obj1
      *
      */
     public int compare(Attr attr0, Attr attr1) {
-        String namespaceURI0 = attr0.getNamespaceURI();      
+        String namespaceURI0 = attr0.getNamespaceURI();
         String namespaceURI1 = attr1.getNamespaceURI();
-      
+
         boolean isNamespaceAttr0 = XMLNS.equals(namespaceURI0);
         boolean isNamespaceAttr1 = XMLNS.equals(namespaceURI1);
 
@@ -94,7 +94,7 @@ public class AttrCompare implements Comparator<Attr>, Serializable {
         } else if (isNamespaceAttr1) {
             // attr1 is a namespace, attr0 is not
             return ATTR1_BEFORE_ATTR0;
-        } 
+        }
 
         // none is a namespace
         if (namespaceURI0 == null) {
@@ -106,13 +106,13 @@ public class AttrCompare implements Comparator<Attr>, Serializable {
             return ATTR0_BEFORE_ATTR1;
         } else if (namespaceURI1 == null) {
             return ATTR1_BEFORE_ATTR0;
-        } 
+        }
 
         int a = namespaceURI0.compareTo(namespaceURI1);
         if (a != 0) {
             return a;
         }
-      
+
         return attr0.getLocalName().compareTo(attr1.getLocalName());
     }
 }

@@ -48,7 +48,7 @@ public class CreateCollectableSignature {
     /** Field passphrase */
     public static final String passphrase =
         "The super-mega-secret public static passphrase";
-    
+
     static {
         org.apache.xml.security.Init.init();
 
@@ -80,7 +80,7 @@ public class CreateCollectableSignature {
         signedResourceElement.appendChild(doc.createTextNode("Signed Text\n"));
         rootElement.appendChild(signedResourceElement);
 
-        XMLSignature sig = 
+        XMLSignature sig =
             new XMLSignature(doc, BaseURI, XMLSignature.ALGO_ID_MAC_HMAC_SHA1);
 
         signedResourceElement.appendChild(sig.getElement());

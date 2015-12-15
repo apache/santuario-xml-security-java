@@ -56,18 +56,18 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
     private XMLInputFactory xmlInputFactory;
     private TransformerFactory transformerFactory = TransformerFactory.newInstance();
     private KeyPair rsaKeyPair, ecKeyPair;
-    
+
     @Before
     public void setUp() throws Exception {
         Init.init(PKSignatureVerificationTest.class.getClassLoader().getResource("security-config.xml").toURI(),
                 this.getClass());
         org.apache.xml.security.Init.init();
-        
+
         xmlInputFactory = XMLInputFactory.newInstance();
         xmlInputFactory.setEventAllocator(new XMLSecEventAllocator());
-        
+
         //
-        // If the BouncyCastle provider is not installed, then try to load it 
+        // If the BouncyCastle provider is not installed, then try to load it
         // via reflection.
         //
         if (Security.getProvider("BC") == null) {
@@ -84,11 +84,11 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
                 bcInstalled = true;
             }
         }
-        
+
         KeyPairGenerator rsaKpg = KeyPairGenerator.getInstance("RSA");
         rsaKpg.initialize(2048);
         rsaKeyPair = rsaKpg.genKeyPair();
-        
+
         ecKeyPair = KeyPairGenerator.getInstance("EC").genKeyPair();
     }
 
@@ -96,7 +96,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
     public static void cleanup() throws Exception {
         Security.removeProvider("org.bouncycastle.jce.provider.BouncyCastleProvider");
     }
-    
+
     @Test
     public void testRSA_SHA1() throws Exception {
         // Read in plaintext document
@@ -109,14 +109,14 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         String signatureAlgorithm = "http://www.w3.org/2000/09/xmldsig#rsa-sha1";
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         signUsingDOM(
                 signatureAlgorithm, document, localNames, rsaKeyPair.getPrivate(),
                 "http://www.w3.org/2001/10/xml-exc-c14n#", "http://www.w3.org/2000/09/xmldsig#sha1"
         );
-        
+
         // XMLUtils.outputDOM(document, System.out);
-        
+
         // Convert Document to a Stream Reader
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -134,7 +134,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
 
         StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
-    
+
     @Test
     public void testRSA_SHA256() throws Exception {
         // Read in plaintext document
@@ -147,14 +147,14 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256";
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         signUsingDOM(
                 signatureAlgorithm, document, localNames, rsaKeyPair.getPrivate(),
                 "http://www.w3.org/2001/10/xml-exc-c14n#", "http://www.w3.org/2000/09/xmldsig#sha1"
         );
-        
+
         // XMLUtils.outputDOM(document, System.out);
-        
+
         // Convert Document to a Stream Reader
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -172,7 +172,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
 
         StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
-    
+
     @Test
     public void testRSA_SHA384() throws Exception {
         // Read in plaintext document
@@ -185,14 +185,14 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha384";
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         signUsingDOM(
                 signatureAlgorithm, document, localNames, rsaKeyPair.getPrivate(),
                 "http://www.w3.org/2001/10/xml-exc-c14n#", "http://www.w3.org/2000/09/xmldsig#sha1"
         );
-        
+
         // XMLUtils.outputDOM(document, System.out);
-        
+
         // Convert Document to a Stream Reader
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -210,7 +210,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
 
         StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
-    
+
     @Test
     public void testRSA_SHA512() throws Exception {
         // Read in plaintext document
@@ -223,14 +223,14 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha512";
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         signUsingDOM(
                 signatureAlgorithm, document, localNames, rsaKeyPair.getPrivate(),
                 "http://www.w3.org/2001/10/xml-exc-c14n#", "http://www.w3.org/2000/09/xmldsig#sha1"
         );
-        
+
         // XMLUtils.outputDOM(document, System.out);
-        
+
         // Convert Document to a Stream Reader
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -248,7 +248,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
 
         StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
-    
+
     @Test
     public void testRSA_RIPEMD160() throws Exception {
         if (!bcInstalled) {
@@ -264,14 +264,14 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-ripemd160";
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         signUsingDOM(
                 signatureAlgorithm, document, localNames, rsaKeyPair.getPrivate(),
                 "http://www.w3.org/2001/10/xml-exc-c14n#", "http://www.w3.org/2000/09/xmldsig#sha1"
         );
-        
+
         // XMLUtils.outputDOM(document, System.out);
-        
+
         // Convert Document to a Stream Reader
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -289,7 +289,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
 
         StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
-    
+
     @Test
     public void testRSA_SHA1_MGF1() throws Exception {
         if (!bcInstalled) {
@@ -305,14 +305,14 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         String signatureAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha1-rsa-MGF1";
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         signUsingDOM(
                 signatureAlgorithm, document, localNames, rsaKeyPair.getPrivate(),
                 "http://www.w3.org/2001/10/xml-exc-c14n#", "http://www.w3.org/2000/09/xmldsig#sha1"
         );
-        
+
         // XMLUtils.outputDOM(document, System.out);
-        
+
         // Convert Document to a Stream Reader
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -330,7 +330,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
 
         StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
-    
+
     @Test
     public void testRSA_SHA224_MGF1() throws Exception {
         if (!bcInstalled) {
@@ -346,14 +346,14 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         String signatureAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha224-rsa-MGF1";
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         signUsingDOM(
                 signatureAlgorithm, document, localNames, rsaKeyPair.getPrivate(),
                 "http://www.w3.org/2001/10/xml-exc-c14n#", "http://www.w3.org/2000/09/xmldsig#sha1"
         );
-        
+
         // XMLUtils.outputDOM(document, System.out);
-        
+
         // Convert Document to a Stream Reader
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -371,7 +371,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
 
         StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
-    
+
     @Test
     public void testRSA_SHA256_MGF1() throws Exception {
         if (!bcInstalled) {
@@ -387,14 +387,14 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         String signatureAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha256-rsa-MGF1";
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         signUsingDOM(
                 signatureAlgorithm, document, localNames, rsaKeyPair.getPrivate(),
                 "http://www.w3.org/2001/10/xml-exc-c14n#", "http://www.w3.org/2000/09/xmldsig#sha1"
         );
-        
+
         // XMLUtils.outputDOM(document, System.out);
-        
+
         // Convert Document to a Stream Reader
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -412,7 +412,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
 
         StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
-    
+
     @Test
     public void testRSA_SHA384_MGF1() throws Exception {
         if (!bcInstalled) {
@@ -428,14 +428,14 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         String signatureAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha384-rsa-MGF1";
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         signUsingDOM(
                 signatureAlgorithm, document, localNames, rsaKeyPair.getPrivate(),
                 "http://www.w3.org/2001/10/xml-exc-c14n#", "http://www.w3.org/2000/09/xmldsig#sha1"
         );
-        
+
         // XMLUtils.outputDOM(document, System.out);
-        
+
         // Convert Document to a Stream Reader
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -453,7 +453,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
 
         StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
-    
+
     @Test
     public void testRSA_SHA512_MGF1() throws Exception {
         if (!bcInstalled) {
@@ -469,14 +469,14 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         String signatureAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha512-rsa-MGF1";
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         signUsingDOM(
                 signatureAlgorithm, document, localNames, rsaKeyPair.getPrivate(),
                 "http://www.w3.org/2001/10/xml-exc-c14n#", "http://www.w3.org/2000/09/xmldsig#sha1"
         );
-        
+
         // XMLUtils.outputDOM(document, System.out);
-        
+
         // Convert Document to a Stream Reader
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -494,7 +494,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
 
         StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
-    
+
     @Test
     public void testECDSA_SHA1() throws Exception {
         // Read in plaintext document
@@ -507,14 +507,14 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1";
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         signUsingDOM(
                 signatureAlgorithm, document, localNames, ecKeyPair.getPrivate(),
                 "http://www.w3.org/2001/10/xml-exc-c14n#", "http://www.w3.org/2000/09/xmldsig#sha1"
         );
-        
+
         // XMLUtils.outputDOM(document, System.out);
-        
+
         // Convert Document to a Stream Reader
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -532,7 +532,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
 
         StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
-    
+
     @Test
     public void testECDSA_SHA224() throws Exception {
         // Read in plaintext document
@@ -545,14 +545,14 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha224";
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         signUsingDOM(
                 signatureAlgorithm, document, localNames, ecKeyPair.getPrivate(),
                 "http://www.w3.org/2001/10/xml-exc-c14n#", "http://www.w3.org/2000/09/xmldsig#sha1"
         );
-        
+
         // XMLUtils.outputDOM(document, System.out);
-        
+
         // Convert Document to a Stream Reader
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -570,7 +570,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
 
         StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
-    
+
     @Test
     public void testECDSA_SHA256() throws Exception {
         // Read in plaintext document
@@ -583,14 +583,14 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256";
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         signUsingDOM(
                 signatureAlgorithm, document, localNames, ecKeyPair.getPrivate(),
                 "http://www.w3.org/2001/10/xml-exc-c14n#", "http://www.w3.org/2000/09/xmldsig#sha1"
         );
-        
+
         // XMLUtils.outputDOM(document, System.out);
-        
+
         // Convert Document to a Stream Reader
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -608,7 +608,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
 
         StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
-    
+
     @Test
     public void testECDSA_SHA384() throws Exception {
         // Read in plaintext document
@@ -621,14 +621,14 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha384";
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         signUsingDOM(
                 signatureAlgorithm, document, localNames, ecKeyPair.getPrivate(),
                 "http://www.w3.org/2001/10/xml-exc-c14n#", "http://www.w3.org/2000/09/xmldsig#sha1"
         );
-        
+
         // XMLUtils.outputDOM(document, System.out);
-        
+
         // Convert Document to a Stream Reader
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -646,7 +646,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
 
         StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
-    
+
     @Test
     public void testECDSA_SHA512() throws Exception {
         // Read in plaintext document
@@ -659,14 +659,14 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512";
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         signUsingDOM(
                 signatureAlgorithm, document, localNames, ecKeyPair.getPrivate(),
                 "http://www.w3.org/2001/10/xml-exc-c14n#", "http://www.w3.org/2000/09/xmldsig#sha1"
         );
-        
+
         // XMLUtils.outputDOM(document, System.out);
-        
+
         // Convert Document to a Stream Reader
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -684,7 +684,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
 
         StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
-    
+
     @Test
     public void testECDSA_RIPEMD160() throws Exception {
         if (!bcInstalled) {
@@ -700,14 +700,14 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         String signatureAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#ecdsa-ripemd160";
         List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
-        
+
         signUsingDOM(
                 signatureAlgorithm, document, localNames, ecKeyPair.getPrivate(),
                 "http://www.w3.org/2001/10/xml-exc-c14n#", "http://www.w3.org/2000/09/xmldsig#sha1"
         );
-        
+
         // XMLUtils.outputDOM(document, System.out);
-        
+
         // Convert Document to a Stream Reader
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -725,6 +725,6 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
 
         StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
-    
-    
+
+
 }

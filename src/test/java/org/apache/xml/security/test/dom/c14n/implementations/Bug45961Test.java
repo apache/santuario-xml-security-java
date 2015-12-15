@@ -41,7 +41,7 @@ import org.w3c.dom.NodeList;
 public class Bug45961Test extends org.junit.Assert {
 
     private static final String OBJECT_ID = "Object";
-    private static final String MOCK_CANONICALIZATION_METHOD = 
+    private static final String MOCK_CANONICALIZATION_METHOD =
         MockCanonicalizationMethod.MOCK_CANONICALIZATION_METHOD;
     private static final char[] PASSWORD = "changeit".toCharArray();
     private static final String ALIAS = "mullan";
@@ -58,7 +58,7 @@ public class Bug45961Test extends org.junit.Assert {
     @org.junit.Test
     public void testBug() throws Exception {
         Document document = getSignedDocument();
-        NodeList list = 
+        NodeList list =
             document.getElementsByTagNameNS(Constants.SignatureSpecNS, Constants._TAG_SIGNATURE);
         Element element = (Element) list.item(0);
         XMLSignature signature = new XMLSignature(element, null);
@@ -74,7 +74,7 @@ public class Bug45961Test extends org.junit.Assert {
 
     private Document getSignedDocument() throws Exception {
         KeyStore ks = KeyStore.getInstance("JKS");
-        FileInputStream fis = 
+        FileInputStream fis =
             new FileInputStream(getAbsolutePath("src/test/resources/test.jks"));
         ks.load(fis, PASSWORD);
         fis.close();
@@ -123,5 +123,5 @@ public class Bug45961Test extends org.junit.Assert {
         }
         return path;
     }
-    
+
 }

@@ -363,7 +363,7 @@ public class BaltimoreTest extends org.junit.Assert {
                     inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
             StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
-            
+
             // Check the SecurityEvents
             checkSignatureToken(securityEventListener, getPublicKey("DSA", 15),
                     SecurityTokenConstants.KeyIdentifier_KeyValue);
@@ -416,7 +416,7 @@ public class BaltimoreTest extends org.junit.Assert {
                     inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
             StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
-            
+
             // Check the SecurityEvents
             checkSignatureToken(securityEventListener, getPublicKey("DSA", 15),
                     SecurityTokenConstants.KeyIdentifier_KeyValue);
@@ -531,7 +531,7 @@ public class BaltimoreTest extends org.junit.Assert {
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
-        
+
         // Check the SecurityEvents
         checkSignatureToken(securityEventListener, getPublicKey("DSA", 23),
                 SecurityTokenConstants.KeyIdentifier_KeyValue);
@@ -567,7 +567,7 @@ public class BaltimoreTest extends org.junit.Assert {
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
-        
+
         // Check the SecurityEvents
         checkSignatureToken(securityEventListener, getPublicKey("DSA", 23),
                 SecurityTokenConstants.KeyIdentifier_KeyValue);
@@ -680,7 +680,7 @@ public class BaltimoreTest extends org.junit.Assert {
                     inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
             StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
-            
+
             // Check the SecurityEvents
             checkSignatureToken(securityEventListener, getPublicKey("RSA", 23),
                     SecurityTokenConstants.KeyIdentifier_KeyValue);
@@ -733,7 +733,7 @@ public class BaltimoreTest extends org.junit.Assert {
                     inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
             StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
-            
+
             // Check the SecurityEvents
             checkSignatureToken(securityEventListener, getPublicKey("RSA", 23),
                     SecurityTokenConstants.KeyIdentifier_KeyValue);
@@ -791,7 +791,7 @@ public class BaltimoreTest extends org.junit.Assert {
                     inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
             StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
-            
+
             // Check the SecurityEvents
             checkSignatureToken(securityEventListener, cert.getPublicKey(),
                     SecurityTokenConstants.KeyIdentifier_KeyName);
@@ -970,7 +970,7 @@ public class BaltimoreTest extends org.junit.Assert {
                             "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/certs/macha.crt");
 
             Certificate cert = cf.generateCertificate(sourceCert);
-            
+
             // Convert Document to a Stream Reader
             javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -987,7 +987,7 @@ public class BaltimoreTest extends org.junit.Assert {
                     inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
             StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
-            
+
             // Check the SecurityEvents
             checkSignatureToken(securityEventListener, cert.getPublicKey(),
                     SecurityTokenConstants.KeyIdentifier_IssuerSerial);
@@ -1026,7 +1026,7 @@ public class BaltimoreTest extends org.junit.Assert {
             InputStream sourceCert =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/certs/nemain.crt");
-            
+
             Certificate cert = cf.generateCertificate(sourceCert);
 
             // Convert Document to a Stream Reader
@@ -1078,7 +1078,7 @@ public class BaltimoreTest extends org.junit.Assert {
             InputStream sourceCert =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/certs/badb.crt");
-            
+
             Certificate cert = cf.generateCertificate(sourceCert);
 
             // Convert Document to a Stream Reader
@@ -1097,7 +1097,7 @@ public class BaltimoreTest extends org.junit.Assert {
                     inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
             StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
-            
+
             // Check the SecurityEvents
             checkSignatureToken(securityEventListener, cert.getPublicKey(),
                     SecurityTokenConstants.KeyIdentifier_X509SubjectName);
@@ -1132,7 +1132,7 @@ public class BaltimoreTest extends org.junit.Assert {
 
         StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
-    
+
     @Test
     public void test_signature_keyname_18() throws Exception {
 
@@ -1180,7 +1180,7 @@ public class BaltimoreTest extends org.junit.Assert {
                     inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
             StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
-            
+
             // Check the SecurityEvents
             checkSignatureToken(securityEventListener, cert.getPublicKey(),
                     SecurityTokenConstants.KeyIdentifier_KeyName);
@@ -1359,7 +1359,7 @@ public class BaltimoreTest extends org.junit.Assert {
                             "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/certs/macha.crt");
 
             Certificate cert = cf.generateCertificate(sourceCert);
-            
+
             // Convert Document to a Stream Reader
             javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -1376,7 +1376,7 @@ public class BaltimoreTest extends org.junit.Assert {
                     inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
             StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
-            
+
             // Check the SecurityEvents
             checkSignatureToken(securityEventListener, cert.getPublicKey(),
                     SecurityTokenConstants.KeyIdentifier_IssuerSerial);
@@ -1415,7 +1415,7 @@ public class BaltimoreTest extends org.junit.Assert {
             InputStream sourceCert =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/certs/nemain.crt");
-            
+
             Certificate cert = cf.generateCertificate(sourceCert);
 
             // Convert Document to a Stream Reader
@@ -1467,7 +1467,7 @@ public class BaltimoreTest extends org.junit.Assert {
             InputStream sourceCert =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/certs/badb.crt");
-            
+
             Certificate cert = cf.generateCertificate(sourceCert);
 
             // Convert Document to a Stream Reader
@@ -1486,7 +1486,7 @@ public class BaltimoreTest extends org.junit.Assert {
                     inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
             StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
-            
+
             // Check the SecurityEvents
             checkSignatureToken(securityEventListener, cert.getPublicKey(),
                     SecurityTokenConstants.KeyIdentifier_X509SubjectName);

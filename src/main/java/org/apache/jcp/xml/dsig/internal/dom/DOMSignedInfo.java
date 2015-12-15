@@ -54,7 +54,7 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
 
     private static org.slf4j.Logger log =
         org.slf4j.LoggerFactory.getLogger(DOMSignedInfo.class);
-    
+
     /** Signature - NOT Recommended RSAwithMD5 */
     private static final String ALGO_ID_SIGNATURE_NOT_RECOMMENDED_RSA_MD5 =
         Constants.MoreAlgorithmsSpecNS + "rsa-md5";
@@ -177,7 +177,7 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
             }
             refList.add(new DOMReference(refElem, context, provider));
             if (secVal && refList.size() > MAXIMUM_REFERENCE_COUNT) {
-                String error = "A maxiumum of " + MAXIMUM_REFERENCE_COUNT + " " 
+                String error = "A maxiumum of " + MAXIMUM_REFERENCE_COUNT + " "
                     + "references per Manifest are allowed with secure validation";
                 throw new MarshalException(error);
             }
@@ -240,7 +240,7 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
 
         // this whole block should only be done if logging is enabled
         if (log.isDebugEnabled()) {
-            log.debug("Canonicalized SignedInfo:"); 
+            log.debug("Canonicalized SignedInfo:");
             StringBuilder sb = new StringBuilder(signedInfoBytes.length);
             for (int i = 0; i < signedInfoBytes.length; i++) {
                 sb.append((char)signedInfoBytes[i]);
@@ -271,11 +271,11 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
 
         // append Id attribute
         xwriter.writeIdAttribute("", "", "Id", id);
-            
+
         // create and append CanonicalizationMethod element
         DOMCanonicalizationMethod dcm =
             (DOMCanonicalizationMethod)canonicalizationMethod;
-        dcm.marshal(xwriter, dsPrefix, context); 
+        dcm.marshal(xwriter, dsPrefix, context);
 
         // create and append SignatureMethod element
         ((AbstractDOMSignatureMethod)signatureMethod).marshal(xwriter, dsPrefix);
@@ -304,8 +304,8 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
         boolean idEqual = id == null ? osi.getId() == null
                                       : id.equals(osi.getId());
 
-        return canonicalizationMethod.equals(osi.getCanonicalizationMethod()) 
-                && signatureMethod.equals(osi.getSignatureMethod()) && 
+        return canonicalizationMethod.equals(osi.getCanonicalizationMethod())
+                && signatureMethod.equals(osi.getSignatureMethod()) &&
                 references.equals(osi.getReferences()) && idEqual;
     }
 
@@ -313,7 +313,7 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
     public static List<Reference> getSignedInfoReferences(SignedInfo si) {
         return si.getReferences();
     }
-    
+
     @Override
     public int hashCode() {
         int result = 17;

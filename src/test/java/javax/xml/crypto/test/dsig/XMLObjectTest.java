@@ -42,28 +42,28 @@ public class XMLObjectTest extends org.junit.Assert {
         factory = XMLSignatureFactory.getInstance
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
     }
-    
+
     @SuppressWarnings("rawtypes")
     @org.junit.Test
     public void testConstructor() {
-        // test XMLSignatureFactory.newXMLObject(List, String, String, String) 
+        // test XMLSignatureFactory.newXMLObject(List, String, String, String)
         XMLObject obj;
-        
-        obj = factory.newXMLObject(null, null, null, null); 
+
+        obj = factory.newXMLObject(null, null, null, null);
         assertNotNull(obj);
 
         List<XMLStructure> list = new ArrayList<XMLStructure>();
-        obj = factory.newXMLObject(list, null, null, null); 
+        obj = factory.newXMLObject(list, null, null, null);
         assertNotNull(obj);
-        
+
         String strEntry = "wrong type";
         // use raw List type to test for invalid XMLStructure entries
         List invalidList = new ArrayList();
         addEntryToRawList(invalidList, strEntry);
         try {
-            factory.newXMLObject(invalidList, null, null, null); 
+            factory.newXMLObject(invalidList, null, null, null);
             fail("Should raise a CCE for content containing " +
-                 "invalid, i.e. non-XMLStructure, entries"); 
+                 "invalid, i.e. non-XMLStructure, entries");
         } catch (ClassCastException cce) {
         } catch (Exception ex) {
             fail("Should raise a CCE for content with invalid entries " +
@@ -93,8 +93,8 @@ public class XMLObjectTest extends org.junit.Assert {
         list.add(new TestUtils.MyOwnXMLStructure());
         XMLObject obj = factory.newXMLObject(list, id, mimeType, encoding);
         try {
-            obj.isFeatureSupported(null); 
-            fail("Should raise a NPE for null feature"); 
+            obj.isFeatureSupported(null);
+            fail("Should raise a NPE for null feature");
         } catch (NullPointerException npe) {}
 
         assertTrue(!obj.isFeatureSupported("not supported"));

@@ -58,7 +58,7 @@ public class I18n {
      * <CODE>exceptionMessagesResourceBundleBase</CODE>
      *
      * @param message
-     * @param args is an <CODE>Object[]</CODE> array of strings which are inserted into 
+     * @param args is an <CODE>Object[]</CODE> array of strings which are inserted into
      * the String which is retrieved from the <CODE>ResouceBundle</CODE>
      * @return message translated
      */
@@ -94,7 +94,7 @@ public class I18n {
                 return "No message with ID \"" + msgID
                 + "\" found in resource bundle \""
                 + Constants.exceptionMessagesResourceBundleBase + "\"";
-            } 
+            }
             return I18n.NOT_INITIALIZED_MSG;
         }
     }
@@ -118,7 +118,7 @@ public class I18n {
                 + "\". Original Exception was a "
                 + originalException.getClass().getName() + " and message "
                 + originalException.getMessage();
-            } 
+            }
             return I18n.NOT_INITIALIZED_MSG;
         }
     }
@@ -138,11 +138,11 @@ public class I18n {
                 return "No message with ID \"" + msgID
                 + "\" found in resource bundle \""
                 + Constants.exceptionMessagesResourceBundleBase + "\"";
-            } 
+            }
             return I18n.NOT_INITIALIZED_MSG;
         }
     }
-    
+
     /**
      * Method init
      *

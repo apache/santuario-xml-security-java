@@ -49,7 +49,7 @@ public class VerifyMerlinsExamplesFifteen {
 
     /** Field signatureSchemaFile */
     static final String signatureSchemaFile = "samples/data/xmldsig-core-schema.xsd";
-    
+
     static {
         org.apache.xml.security.Init.init();
     }
@@ -158,9 +158,9 @@ public class VerifyMerlinsExamplesFifteen {
         xpath.setNamespaceContext(new DSNamespaceContext());
 
         String expression = "//ds:Signature[1]";
-        Element sigElement = 
+        Element sigElement =
             (Element) xpath.evaluate(expression, doc, XPathConstants.NODE);
-        XMLSignature signature = 
+        XMLSignature signature =
             new XMLSignature(sigElement, f.toURI().toURL().toString());
 
         // signature.addResourceResolver(new OfflineResolver());

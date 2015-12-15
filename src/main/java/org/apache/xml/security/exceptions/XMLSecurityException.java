@@ -57,7 +57,7 @@ import org.apache.xml.security.utils.I18n;
 public class XMLSecurityException extends Exception {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
 
@@ -141,8 +141,8 @@ public class XMLSecurityException extends Exception {
     public String getMsgID() {
         if (msgID == null) {
             return "Missing message ID";
-        } 
-        return msgID;      
+        }
+        return msgID;
     }
 
     /** @inheritDoc */

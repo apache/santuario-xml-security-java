@@ -108,26 +108,26 @@ public class TransformBase64Decode extends TransformSpi {
                 StringBuilder sb = new StringBuilder();
                 traverseElement((Element)el, sb);
                 if (os == null) {
-                    byte[] decodedBytes = Base64.decode(sb.toString());            
+                    byte[] decodedBytes = Base64.decode(sb.toString());
                     XMLSignatureInput output = new XMLSignatureInput(decodedBytes);
                     output.setSecureValidation(secureValidation);
                     return output;
-                } 
+                }
                 Base64.decode(sb.toString(), os);
                 XMLSignatureInput output = new XMLSignatureInput((byte[])null);
                 output.setSecureValidation(secureValidation);
                 output.setOutputStream(os);
                 return output;
             }
-            
+
             if (input.isOctetStream() || input.isNodeSet()) {
                 if (os == null) {
                     byte[] base64Bytes = input.getBytes();
-                    byte[] decodedBytes = Base64.decode(base64Bytes);            
+                    byte[] decodedBytes = Base64.decode(base64Bytes);
                     XMLSignatureInput output = new XMLSignatureInput(decodedBytes);
                     output.setSecureValidation(secureValidation);
                     return output;
-                } 
+                }
                 if (input.isByteArray() || input.isNodeSet()) {
                     Base64.decode(input.getBytes(), os);
                 } else {
@@ -137,12 +137,12 @@ public class TransformBase64Decode extends TransformSpi {
                 output.setSecureValidation(secureValidation);
                 output.setOutputStream(os);
                 return output;
-            } 
+            }
 
             try {
                 //Exceptional case there is current not text case testing this(Before it was a
                 //a common case).
-                Document doc = 
+                Document doc =
                     XMLUtils.createDocumentBuilder(false, secureValidation).parse(input.getOctetStream());
 
                 Element rootNode = doc.getDocumentElement();
@@ -156,7 +156,7 @@ public class TransformBase64Decode extends TransformSpi {
                 throw new TransformationException(e, "c14n.Canonicalizer.Exception");
             } catch (SAXException e) {
                 throw new TransformationException(e, "SAX exception");
-            }      
+            }
         } catch (Base64DecodingException e) {
             throw new TransformationException(e, "Base64Decoding");
         }
@@ -174,5 +174,5 @@ public class TransformBase64Decode extends TransformSpi {
             }
             sibling = sibling.getNextSibling();
         }
-    }  
+    }
 }

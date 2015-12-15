@@ -123,16 +123,16 @@ public class CanonicalizerPhysical extends CanonicalizerBase {
     protected Iterator<Attr> handleAttributesSubtree(Element element, NameSpaceSymbTable ns)
         throws CanonicalizationException {
         if (!element.hasAttributes()) {
-            return null; 
+            return null;
         }
 
         // result will contain all the attrs declared directly on that element
-        final SortedSet<Attr> result = this.result;       
+        final SortedSet<Attr> result = this.result;
         result.clear();
 
         if (element.hasAttributes()) {
             NamedNodeMap attrs = element.getAttributes();
-            int attrsLength = attrs.getLength();      
+            int attrsLength = attrs.getLength();
 
             for (int i = 0; i < attrsLength; i++) {
                 Attr attribute = (Attr) attrs.item(i);
@@ -145,21 +145,21 @@ public class CanonicalizerPhysical extends CanonicalizerBase {
 
     /**
      * Returns the Attr[]s to be output for the given element.
-     * 
+     *
      * @param element
      * @param ns
      * @return the Attr[]s to be output
      * @throws CanonicalizationException
      */
     @Override
-    protected Iterator<Attr> handleAttributes(Element element, NameSpaceSymbTable ns) 
-        throws CanonicalizationException {    
+    protected Iterator<Attr> handleAttributes(Element element, NameSpaceSymbTable ns)
+        throws CanonicalizationException {
 
         /** $todo$ well, should we throw UnsupportedOperationException ? */
         throw new CanonicalizationException("c14n.Canonicalizer.UnsupportedOperation");
     }
 
-    protected void circumventBugIfNeeded(XMLSignatureInput input) 
+    protected void circumventBugIfNeeded(XMLSignatureInput input)
         throws CanonicalizationException, ParserConfigurationException, IOException, SAXException {
         // nothing to do
     }

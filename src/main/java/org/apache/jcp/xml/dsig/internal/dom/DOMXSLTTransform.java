@@ -39,7 +39,7 @@ import javax.xml.crypto.dsig.spec.XSLTTransformParameterSpec;
  * @author Sean Mullan
  */
 public final class DOMXSLTTransform extends ApacheTransform {
- 
+
     @Override
     public void init(TransformParameterSpec params)
         throws InvalidAlgorithmParameterException {

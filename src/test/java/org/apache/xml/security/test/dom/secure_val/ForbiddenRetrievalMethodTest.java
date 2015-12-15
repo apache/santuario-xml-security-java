@@ -28,11 +28,11 @@ import org.w3c.dom.Document;
 
 
 /**
- * This is a test for a Retrieval Method pointing to another Retrieval Method (forbidden under 
+ * This is a test for a Retrieval Method pointing to another Retrieval Method (forbidden under
  * secure validation).
  */
 public class ForbiddenRetrievalMethodTest extends org.junit.Assert {
-    
+
     private static final String BASEDIR = System.getProperty("basedir");
     private static final String SEP = System.getProperty("file.separator");
 
@@ -49,16 +49,16 @@ public class ForbiddenRetrievalMethodTest extends org.junit.Assert {
         } else {
             fis = new FileInputStream(filename);
         }
-        
+
         DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
         Document doc = db.parse(fis);
-        
+
         KeyInfo keyInfo = new KeyInfo(doc.getDocumentElement(), null);
         keyInfo.setSecureValidation(true);
-        
+
         // Check neither of these give a StackOverflowError.
         assertNull(keyInfo.getPublicKey());
         assertNull(keyInfo.getX509Certificate());
     }
-    
+
 }

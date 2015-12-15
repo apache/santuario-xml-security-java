@@ -137,7 +137,7 @@ public final class DOMSignatureProperty extends BaseStructure
         for (XMLStructure property : content) {
             xwriter.marshalStructure(property, dsPrefix, context);
         }
-        
+
         xwriter.writeEndElement(); // "SignatureProperty"
     }
 

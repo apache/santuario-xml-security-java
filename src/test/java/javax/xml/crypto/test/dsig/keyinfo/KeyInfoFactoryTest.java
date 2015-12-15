@@ -38,7 +38,7 @@ public class KeyInfoFactoryTest extends org.junit.Assert {
 
     KeyInfoFactory factory;
 
-    public KeyInfoFactoryTest() throws Exception { 
+    public KeyInfoFactoryTest() throws Exception {
         factory = KeyInfoFactory.getInstance
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
     }
@@ -52,7 +52,7 @@ public class KeyInfoFactoryTest extends org.junit.Assert {
 
         try {
             KeyInfoFactory.getInstance(null);
-            fail("Should raise a NPE for null xmltype"); 
+            fail("Should raise a NPE for null xmltype");
         } catch (NullPointerException npe) {}
     }
 
@@ -61,12 +61,12 @@ public class KeyInfoFactoryTest extends org.junit.Assert {
         assertNotNull(factory);
         assertEquals("DOM", factory.getMechanismType());
     }
-    
+
     @org.junit.Test
     public void testisFeatureSupported() {
         try {
-            factory.isFeatureSupported(null); 
-            fail("Should raise a NPE for null feature"); 
+            factory.isFeatureSupported(null);
+            fail("Should raise a NPE for null feature");
         } catch (NullPointerException npe) {}
 
         assertTrue(!factory.isFeatureSupported("not supported"));
@@ -80,8 +80,8 @@ public class KeyInfoFactoryTest extends org.junit.Assert {
             (Collections.singletonList(factory.newKeyName("foo")), id);
         assertEquals(id, ki.getId());
         try {
-            ki = factory.newKeyInfo(null, id); 
-            fail("Should raise a NPE for null key info types"); 
+            ki = factory.newKeyInfo(null, id);
+            fail("Should raise a NPE for null key info types");
         } catch (NullPointerException npe) {}
     }
 
@@ -91,8 +91,8 @@ public class KeyInfoFactoryTest extends org.junit.Assert {
         KeyName kn = factory.newKeyName(name);
         assertEquals(name, kn.getName());
         try {
-            kn = factory.newKeyName(null); 
-            fail("Should raise a NPE for null key name"); 
+            kn = factory.newKeyName(null);
+            fail("Should raise a NPE for null key name");
         } catch (NullPointerException npe) {}
     }
 
@@ -101,7 +101,7 @@ public class KeyInfoFactoryTest extends org.junit.Assert {
         // test newKeyValue(PublicKey pk)
         PublicKey myPubKey = new PublicKey() {
             private static final long serialVersionUID = 2756606866185189114L;
-            
+
                 public byte[] getEncoded() {
                     return new byte[20];
                 }
@@ -117,20 +117,20 @@ public class KeyInfoFactoryTest extends org.junit.Assert {
             assertEquals(myPubKey, kv.getPublicKey());
             fail("Should throw a KeyException");
         } catch (KeyException ke) { }
-  
+
         try {
             factory.newKeyValue(null);
-            fail("Should raise a NPE for null key"); 
+            fail("Should raise a NPE for null key");
         } catch (KeyException ke) {
-            fail("Should raise a NPE for null key"); 
+            fail("Should raise a NPE for null key");
         } catch (NullPointerException npe) {}
     }
 
     @org.junit.Test
     public void testnewPGPKeyId() {
-        byte[] valid_id = { 
+        byte[] valid_id = {
             0x01, 0x02, 0x03, 0x04,
-            0x05, 0x06, 0x07, 0x08 
+            0x05, 0x06, 0x07, 0x08
         };
         byte[] invalid_id = {
             0x01, 0x02, 0x03, 0x04,
@@ -182,20 +182,20 @@ public class KeyInfoFactoryTest extends org.junit.Assert {
         assertEquals(uri, rm.getURI());
 
         try {
-            rm = factory.newRetrievalMethod(null); 
-            fail("Should raise a NPE for null URI"); 
+            rm = factory.newRetrievalMethod(null);
+            fail("Should raise a NPE for null URI");
         } catch (NullPointerException npe) {}
 
         // test RetrievalMethod(String, String, List)	
         try {
-            rm = factory.newRetrievalMethod(null, null, null); 
-            fail("Should raise a NPE for null URI"); 
+            rm = factory.newRetrievalMethod(null, null, null);
+            fail("Should raise a NPE for null URI");
         } catch (NullPointerException npe) {}
-        
+
         String type = "http://www.w3.org/2000/09/xmldsig#X509Data";
         try {
-            rm = factory.newRetrievalMethod(null, type, null); 
-            fail("Should raise a NPE for null URI"); 
+            rm = factory.newRetrievalMethod(null, type, null);
+            fail("Should raise a NPE for null URI");
         } catch (NullPointerException npe) {}
 
         rm = factory.newRetrievalMethod(uri, type, null);
@@ -206,7 +206,7 @@ public class KeyInfoFactoryTest extends org.junit.Assert {
     @org.junit.Test
     public void testnewX509Data() {
         // test newX509Data(List)
-        X509Data x509 = 
+        X509Data x509 =
             factory.newX509Data(Collections.singletonList("cn=foo"));
         assertNotNull(x509);
     }
@@ -215,36 +215,36 @@ public class KeyInfoFactoryTest extends org.junit.Assert {
     public void testnewX509IssuerSerial() {
         String name = "CN=valeriep";
         // test newX509IssuerSerial(String, BigInteger)
-        X509IssuerSerial x509is = factory.newX509IssuerSerial(name, 
+        X509IssuerSerial x509is = factory.newX509IssuerSerial(name,
                                                               BigInteger.ONE);
         assertEquals(name, x509is.getIssuerName());
         assertEquals(BigInteger.ONE, x509is.getSerialNumber());
         try {
             x509is = factory.newX509IssuerSerial(null, BigInteger.ZERO);
-            fail("Should raise an NPE for null issuer names"); 
+            fail("Should raise an NPE for null issuer names");
         } catch (NullPointerException ex) {
         } catch (IllegalArgumentException ex2) {
             fail("Should throw NPE instead of IAE for null issuer names");
         }
         try {
             x509is = factory.newX509IssuerSerial(name, null);
-            fail("Should raise an NPE for null serial numbers"); 
+            fail("Should raise an NPE for null serial numbers");
         } catch (NullPointerException ex) {
         } catch (IllegalArgumentException ex2) {
             fail("Should throw NPE instead of IAE for null serial numbers");
         }
         try {
             x509is = factory.newX509IssuerSerial(null, null);
-            fail("Should raise an NPE for null issuer names/serial numbers"); 
+            fail("Should raise an NPE for null issuer names/serial numbers");
         } catch (NullPointerException ex) {
         } catch (IllegalArgumentException ex2) {
-            fail("Should throw NPE instead of IAE for null issuer " + 
+            fail("Should throw NPE instead of IAE for null issuer " +
                  "names/serial numbers");
         }
         try {
             x509is = factory.newX509IssuerSerial("valeriep", BigInteger.ZERO);
-            fail("Should throw IAE for invalid issuer names"); 
+            fail("Should throw IAE for invalid issuer names");
         } catch (IllegalArgumentException ex) {}
     }
-    
+
 }

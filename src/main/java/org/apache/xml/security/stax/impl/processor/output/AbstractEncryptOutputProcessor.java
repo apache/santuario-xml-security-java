@@ -97,12 +97,12 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
             if (securePart.isRequired()) {
                 for (int i = 0; encryptionPartDefs != null && i < encryptionPartDefs.size(); i++) {
                     EncryptionPartDef encryptionPartDef = encryptionPartDefs.get(i);
-    
+
                     if (encryptionPartDef.getSecurePart() == securePart) {
                         continue loop;
                     }
                 }
-                throw new XMLSecurityException("stax.encryption.securePartNotFound", 
+                throw new XMLSecurityException("stax.encryption.securePartNotFound",
                                                new Object[] {securePart.getName()});
             }
         }
@@ -152,14 +152,14 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
                 //initialize the cipher
                 String jceAlgorithm = JCEAlgorithmMapper.translateURItoJCEID(encryptionSymAlgorithm);
                 if (jceAlgorithm == null) {
-                    throw new XMLSecurityException("algorithms.NoSuchMap", 
+                    throw new XMLSecurityException("algorithms.NoSuchMap",
                                                    new Object[] {encryptionSymAlgorithm});
                 }
                 Cipher symmetricCipher = Cipher.getInstance(jceAlgorithm);
 
                 int ivLen = JCEMapper.getIVLengthFromURI(encryptionSymAlgorithm) / 8;
                 byte[] iv = XMLSecurityConstants.generateBytes(ivLen);
-                AlgorithmParameterSpec parameterSpec = 
+                AlgorithmParameterSpec parameterSpec =
                     XMLCipherUtil.constructBlockCipherParameters(encryptionSymAlgorithm, iv, this.getClass());
                 symmetricCipher.init(Cipher.ENCRYPT_MODE, encryptionPartDef.getSymmetricKey(), parameterSpec);
 

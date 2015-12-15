@@ -105,7 +105,7 @@ public class GenericOutboundSecurityToken extends AbstractSecurityToken implemen
     public void setTokenType(SecurityTokenConstants.TokenType tokenType) {
         this.tokenType = tokenType;
     }
-    
+
     @Override
     public SecurityTokenConstants.TokenType getTokenType() {
         return tokenType;

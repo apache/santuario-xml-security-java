@@ -40,12 +40,12 @@ public abstract class CanonicalizerSpi {
     /** Reset the writer after a c14n */
     protected boolean reset = false;
     protected boolean secureValidation;
-    
+
     /**
      * Method canonicalize
      *
      * @param inputBytes
-     * @return the c14n bytes. 
+     * @return the c14n bytes.
      *
      * @throws CanonicalizationException
      * @throws java.io.IOException
@@ -53,12 +53,12 @@ public abstract class CanonicalizerSpi {
      * @throws org.xml.sax.SAXException
      */
     public byte[] engineCanonicalize(byte[] inputBytes)
-        throws javax.xml.parsers.ParserConfigurationException, java.io.IOException, 
+        throws javax.xml.parsers.ParserConfigurationException, java.io.IOException,
         org.xml.sax.SAXException, CanonicalizationException {
 
         java.io.InputStream bais = new ByteArrayInputStream(inputBytes);
         InputSource in = new InputSource(bais);
-        
+
         DocumentBuilder db = XMLUtils.createDocumentBuilder(false, secureValidation);
 
         Document document;
@@ -99,7 +99,7 @@ public abstract class CanonicalizerSpi {
         );
     }
 
-    /** 
+    /**
      * Returns the URI of this engine.
      * @return the URI
      */
@@ -168,7 +168,7 @@ public abstract class CanonicalizerSpi {
             throws CanonicalizationException;
 
     /**
-     * Sets the writer where the canonicalization ends. ByteArrayOutputStream if 
+     * Sets the writer where the canonicalization ends. ByteArrayOutputStream if
      * none is set.
      * @param os
      */

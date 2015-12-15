@@ -52,7 +52,7 @@ import org.w3c.dom.Element;
  * @author Rene Kollmorgen <Rene.Kollmorgen@softwareag.com>
  */
 public class ThreeSignerContractSign {
-    
+
     static {
         org.apache.xml.security.Init.init();
 
@@ -176,7 +176,7 @@ public class ThreeSignerContractSign {
         // second signer /////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////
         {
-            XMLSignature secondSigner = 
+            XMLSignature secondSigner =
                 new XMLSignature(doc, BaseURI, XMLSignature.ALGO_ID_MAC_HMAC_SHA1);
 
             secondSigner.setId(id2);

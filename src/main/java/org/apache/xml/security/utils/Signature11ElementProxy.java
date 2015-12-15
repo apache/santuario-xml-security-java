@@ -28,10 +28,10 @@ import org.w3c.dom.Element;
  * @author Brent Putman (putmanb@georgetown.edu)
  */
 public abstract class Signature11ElementProxy extends ElementProxy {
-    
+
     protected Signature11ElementProxy() {
     }
-    
+
     /**
      * Constructor Signature11ElementProxy
      *

@@ -40,26 +40,26 @@ public class JSRForbiddenRefCountTest extends org.junit.Assert {
 
     @org.junit.Test
     public void testReferenceCount() throws Exception {
-        Element signedInfoElement = 
+        Element signedInfoElement =
             getSignedInfoElement("src/test/resources/interop/c14n/Y4", "signature-manifest.xml");
-        
+
         InternalDOMCryptoContext context = new InternalDOMCryptoContext();
         new DOMSignedInfo(signedInfoElement, context, null);
-        
+
         context.setProperty("org.apache.jcp.xml.dsig.secureValidation", Boolean.TRUE);
         try {
             new DOMSignedInfo(signedInfoElement, context, null);
         } catch (MarshalException ex) {
-            String error = 
+            String error =
                 "A maxiumum of 30 references per Manifest are allowed with secure validation";
             assertTrue(ex.getMessage().contains(error));
         }
     }
-    
+
     private static class InternalDOMCryptoContext extends DOMCryptoContext {
         //
     }
-    
+
     private Element getSignedInfoElement(
         String directory, String file
     ) throws Exception {

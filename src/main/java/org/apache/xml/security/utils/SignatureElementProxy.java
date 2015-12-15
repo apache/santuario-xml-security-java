@@ -28,10 +28,10 @@ import org.w3c.dom.Element;
  * @author $Author$
  */
 public abstract class SignatureElementProxy extends ElementProxy {
-    
+
     protected SignatureElementProxy() {
     }
-    
+
     /**
      * Constructor SignatureElementProxy
      *

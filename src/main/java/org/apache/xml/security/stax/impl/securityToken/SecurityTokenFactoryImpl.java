@@ -60,7 +60,7 @@ public class SecurityTokenFactoryImpl extends SecurityTokenFactory {
             if (x509DataType != null) {
                 return getSecurityToken(x509DataType, securityProperties, inboundSecurityContext, keyUsage);
             }
-            
+
             // KeyValue
             final KeyValueType keyValueType
                     = XMLSecurityUtils.getQNameType(keyInfoType.getContent(), XMLSecurityConstants.TAG_dsig_KeyValue);
@@ -109,7 +109,7 @@ public class SecurityTokenFactoryImpl extends SecurityTokenFactory {
         throw new XMLSecurityException("stax.noKey", new Object[] {keyUsage});
     }
 
-    private static InboundSecurityToken getSecurityToken(KeyValueType keyValueType, 
+    private static InboundSecurityToken getSecurityToken(KeyValueType keyValueType,
             XMLSecurityProperties securityProperties,
             InboundSecurityContext inboundSecurityContext,
             SecurityTokenConstants.KeyUsage keyUsage)
@@ -118,7 +118,7 @@ public class SecurityTokenFactoryImpl extends SecurityTokenFactory {
         final RSAKeyValueType rsaKeyValueType =
                 XMLSecurityUtils.getQNameType(keyValueType.getContent(), XMLSecurityConstants.TAG_dsig_RSAKeyValue);
         if (rsaKeyValueType != null) {
-            RsaKeyValueSecurityToken token = 
+            RsaKeyValueSecurityToken token =
                 new RsaKeyValueSecurityToken(rsaKeyValueType, inboundSecurityContext);
             setTokenKey(securityProperties, keyUsage, token);
             return token;
@@ -126,7 +126,7 @@ public class SecurityTokenFactoryImpl extends SecurityTokenFactory {
         final DSAKeyValueType dsaKeyValueType =
                 XMLSecurityUtils.getQNameType(keyValueType.getContent(), XMLSecurityConstants.TAG_dsig_DSAKeyValue);
         if (dsaKeyValueType != null) {
-            DsaKeyValueSecurityToken token = 
+            DsaKeyValueSecurityToken token =
                     new DsaKeyValueSecurityToken(dsaKeyValueType, inboundSecurityContext);
             setTokenKey(securityProperties, keyUsage, token);
             return token;
@@ -134,7 +134,7 @@ public class SecurityTokenFactoryImpl extends SecurityTokenFactory {
         final ECKeyValueType ecKeyValueType =
                 XMLSecurityUtils.getQNameType(keyValueType.getContent(), XMLSecurityConstants.TAG_dsig11_ECKeyValue);
         if (ecKeyValueType != null) {
-            ECKeyValueSecurityToken token = 
+            ECKeyValueSecurityToken token =
                     new ECKeyValueSecurityToken(ecKeyValueType, inboundSecurityContext);
             setTokenKey(securityProperties, keyUsage, token);
             return token;
@@ -204,7 +204,7 @@ public class SecurityTokenFactoryImpl extends SecurityTokenFactory {
                 && securityProperties.getSignatureVerificationKey() == null
                 || SecurityTokenConstants.KeyUsage_Decryption.equals(keyUsage)
                 && securityProperties.getDecryptionKey() == null) {
-                throw new XMLSecurityException("stax.noKey", new Object[] {keyUsage});            
+                throw new XMLSecurityException("stax.noKey", new Object[] {keyUsage});
             }
             X509SKISecurityToken token =
                     new X509SKISecurityToken(
@@ -250,7 +250,7 @@ public class SecurityTokenFactoryImpl extends SecurityTokenFactory {
         } else if (SecurityTokenConstants.KeyUsage_Decryption.equals(keyUsage)) {
             key = securityProperties.getDecryptionKey();
         }
-        if (key instanceof PublicKey 
+        if (key instanceof PublicKey
             && !SecurityTokenConstants.KeyValueToken.equals(token.getTokenType())) {
             token.setPublicKey((PublicKey) key);
         } else {

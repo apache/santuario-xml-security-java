@@ -34,13 +34,13 @@ import org.w3c.dom.NodeList;
  * An implementation for XPath evaluation that uses the JDK API.
  */
 public class JDKXPathAPI implements XPathAPI {
-    
+
     private XPathFactory xpf;
-    
+
     private String xpathStr;
 
     private XPathExpression xpathExpression;
-    
+
     /**
      *  Use an XPath string to select a nodelist.
      *  XPath namespace prefixes are resolved from the namespaceNode.
@@ -80,7 +80,7 @@ public class JDKXPathAPI implements XPathAPI {
             throw new TransformerException(ex);
         }
     }
-    
+
     /**
      * Evaluate an XPath string and return true if the output is to be included or not.
      *  @param contextNode The node to start searching from.
@@ -114,7 +114,7 @@ public class JDKXPathAPI implements XPathAPI {
             throw new TransformerException(ex);
         }
     }
-    
+
     /**
      * Clear any context information from this object
      */

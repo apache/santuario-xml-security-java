@@ -60,15 +60,15 @@ public class AxisVerifier {
         xpath.setNamespaceContext(context);
 
         String expression = "//ds:Signature[1]";
-        Element sigElement = 
+        Element sigElement =
             (Element) xpath.evaluate(expression, doc, XPathConstants.NODE);
-        
+
         expression = "//env:Body[1]";
         context.putPrefix("env", "http://www.w3.org/2001/12/soap-envelope");
-        Element bodyElement = 
+        Element bodyElement =
             (Element) xpath.evaluate(expression, doc, XPathConstants.NODE);
         bodyElement.setIdAttributeNS("http://schemas.xmlsoap.org/soap/security/2000-12", "id", true);
-        
+
         XMLSignature sig = new XMLSignature(sigElement, BaseURI);
         boolean verify = sig.checkSignatureValue(sig.getKeyInfo().getPublicKey());
 

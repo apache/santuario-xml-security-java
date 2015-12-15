@@ -90,5 +90,5 @@ public class DOMValidateContextTest extends org.junit.Assert {
         }
         assertNotNull(domVC.getNode());
     }
-    
+
 }

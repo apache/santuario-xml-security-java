@@ -31,12 +31,12 @@ import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
  * A simple ResourceResolver for requests into the local filesystem.
  */
 public class ResolverLocalFilesystem extends ResourceResolverSpi {
-    
+
     private static final int FILE_URI_LENGTH = "file:/".length();
 
     private static org.slf4j.Logger log =
         org.slf4j.LoggerFactory.getLogger(ResolverLocalFilesystem.class);
-    
+
     @Override
     public boolean engineIsThreadSafe() {
         return true;
@@ -145,10 +145,10 @@ public class ResolverLocalFilesystem extends ResourceResolverSpi {
         } else {
             newUri = new URI(baseURI).resolve(uri);
         }
-        
+
         // if the URI contains a fragment, ignore it
         if (newUri.getFragment() != null) {
-            URI uriNewNoFrag = 
+            URI uriNewNoFrag =
                 new URI(newUri.getScheme(), newUri.getSchemeSpecificPart(), null);
             return uriNewNoFrag;
         }

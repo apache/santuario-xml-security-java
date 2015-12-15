@@ -74,7 +74,7 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
         "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512";
     static final String DSA_SHA256 =
         "http://www.w3.org/2009/xmldsig11#dsa-sha256";
-    
+
     // see RFC 6931 for these algorithm definitions
     static final String ECDSA_RIPEMD160 =
         "http://www.w3.org/2007/05/xmldsig-more#ecdsa-ripemd160";
@@ -211,7 +211,7 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
                 Provider p = (Provider)context.getProperty
                     ("org.jcp.xml.dsig.internal.dom.SignatureProvider");
                 signature = (p == null)
-                    ? Signature.getInstance(getJCAAlgorithm()) 
+                    ? Signature.getInstance(getJCAAlgorithm())
                     : Signature.getInstance(getJCAAlgorithm(), p);
             } catch (NoSuchAlgorithmException nsae) {
                 throw new XMLSignatureException(nsae);
@@ -258,7 +258,7 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
                 Provider p = (Provider)context.getProperty
                     ("org.jcp.xml.dsig.internal.dom.SignatureProvider");
                 signature = (p == null)
-                    ? Signature.getInstance(getJCAAlgorithm()) 
+                    ? Signature.getInstance(getJCAAlgorithm())
                     : Signature.getInstance(getJCAAlgorithm(), p);
             } catch (NoSuchAlgorithmException nsae) {
                 throw new XMLSignatureException(nsae);
@@ -334,7 +334,7 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
             return Type.RSA;
         }
     }
-    
+
     static final class SHA256withRSA extends DOMSignatureMethod {
         SHA256withRSA(AlgorithmParameterSpec params)
             throws InvalidAlgorithmParameterException {
@@ -400,7 +400,7 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
             return Type.RSA;
         }
     }
-    
+
     static final class RIPEMD160withRSA extends DOMSignatureMethod {
         RIPEMD160withRSA(AlgorithmParameterSpec params)
             throws InvalidAlgorithmParameterException {
@@ -422,7 +422,7 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
             return Type.RSA;
         }
     }
-    
+
     static final class SHA1withRSAandMGF1 extends DOMSignatureMethod {
         SHA1withRSAandMGF1(AlgorithmParameterSpec params)
             throws InvalidAlgorithmParameterException {
@@ -532,7 +532,7 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
             return Type.RSA;
         }
     }
-    
+
     static final class RIPEMD160withRSAandMGF1 extends DOMSignatureMethod {
         RIPEMD160withRSAandMGF1(AlgorithmParameterSpec params)
             throws InvalidAlgorithmParameterException {
@@ -554,7 +554,7 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
             return Type.RSA;
         }
     }
-        
+
     static final class SHA1withDSA extends DOMSignatureMethod {
         SHA1withDSA(AlgorithmParameterSpec params)
             throws InvalidAlgorithmParameterException {
@@ -617,7 +617,7 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
             return Type.ECDSA;
         }
     }
-    
+
     static final class SHA224withECDSA extends DOMSignatureMethod {
         SHA224withECDSA(AlgorithmParameterSpec params)
             throws InvalidAlgorithmParameterException {
@@ -705,7 +705,7 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
             return Type.ECDSA;
         }
     }
-    
+
     static final class RIPEMD160withECDSA extends DOMSignatureMethod {
         RIPEMD160withECDSA(AlgorithmParameterSpec params)
             throws InvalidAlgorithmParameterException {

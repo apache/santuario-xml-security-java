@@ -52,8 +52,8 @@ public class DEREncodedKeyValueResolverTest extends Assert {
         documentBuilder = XMLUtils.createDocumentBuilder(false);
 
         //
-        // If the BouncyCastle provider is not installed, then try to load it 
-        // via reflection. 
+        // If the BouncyCastle provider is not installed, then try to load it
+        // via reflection.
         //
         if (Security.getProvider("BC") == null) {
             Constructor<?> cons = null;
@@ -117,8 +117,8 @@ public class DEREncodedKeyValueResolverTest extends Assert {
     // Utility methods
 
     private String getControlFilePath(String fileName) {
-        return BASEDIR + SEP + "src" + SEP + "test" + SEP + "resources" + 
-            SEP + "org" + SEP + "apache" + SEP + "xml" + SEP + "security" + 
+        return BASEDIR + SEP + "src" + SEP + "test" + SEP + "resources" +
+            SEP + "org" + SEP + "apache" + SEP + "xml" + SEP + "security" +
             SEP + "keys" + SEP + "content" +
             SEP + fileName;
     }

@@ -208,12 +208,12 @@ public final class DOMXMLSignature extends DOMStructure
             prefix = "";
         }
         xwriter.writeStartElement(prefix, "Signature", XMLSignature.XMLNS);
-        
+
         xwriter.writeNamespace(prefix, XMLSignature.XMLNS);
- 
+
         // append Id attribute
         xwriter.writeIdAttribute("", "", "Id", id);
-        
+
         // create and append SignedInfo element
         ((DOMSignedInfo) si).marshal(xwriter, prefix, context);
 
@@ -331,7 +331,7 @@ public final class DOMXMLSignature extends DOMStructure
             DOMUtils.getSignaturePrefix(signContext), signContext);
 
         Element sigElem = xwriter.getCreatedElement();
-        
+
         // generate references and signature value
         List<Reference> allReferences = new ArrayList<Reference>();
 
@@ -524,7 +524,7 @@ public final class DOMXMLSignature extends DOMStructure
         }
 
         @Override
-        public boolean validate(XMLValidateContext validateContext) 
+        public boolean validate(XMLValidateContext validateContext)
             throws XMLSignatureException
         {
             if (validateContext == null) {

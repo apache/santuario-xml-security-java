@@ -151,7 +151,7 @@ public class SignatureVerificationReferenceURIResolverTest extends AbstractSigna
 
         File file = new File(BASEDIR +
                 "/target/test-classes/org/apache/xml/security/test/stax/signature/SignatureVerificationReferenceURIResolverTest.class").getCanonicalFile();
-        
+
         ReferenceInfo referenceInfo = new ReferenceInfo(
                 file.toURI().toString(),
                 null,

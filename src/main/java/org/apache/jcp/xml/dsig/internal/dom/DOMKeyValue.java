@@ -91,7 +91,7 @@ public abstract class DOMKeyValue<K extends PublicKey> extends BaseStructure imp
         if (kvtElem == null) {
             throw new MarshalException("KeyValue must contain at least one type");
         }
-        
+
         String namespace = kvtElem.getNamespaceURI();
         if (kvtElem.getLocalName().equals("DSAKeyValue") && XMLSignature.XMLNS.equals(namespace)) {
             return new DSA(kvtElem);
@@ -125,7 +125,7 @@ public abstract class DOMKeyValue<K extends PublicKey> extends BaseStructure imp
     abstract void marshalPublicKey(XmlWriter xwriter, K key, String dsPrefix,
         XMLCryptoContext context) throws MarshalException;
 
-    abstract K unmarshalKeyValue(Element kvtElem) 
+    abstract K unmarshalKeyValue(Element kvtElem)
         throws MarshalException;
 
     private static PublicKey generatePublicKey(KeyFactory kf, KeySpec keyspec) {
@@ -136,7 +136,7 @@ public abstract class DOMKeyValue<K extends PublicKey> extends BaseStructure imp
             return null;
         }
     }
- 
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -158,7 +158,7 @@ public abstract class DOMKeyValue<K extends PublicKey> extends BaseStructure imp
             // no practical way to determine if the keys are equal
             return false;
         }
-        
+
         return true;
     }
 
@@ -176,7 +176,7 @@ public abstract class DOMKeyValue<K extends PublicKey> extends BaseStructure imp
     ) {
         xwriter.writeTextElement(prefix, localName, namespaceURI, Base64.encode(value));
     }
-    
+
     public static void marshal(XmlWriter xwriter, BigInteger bigNum) {
         xwriter.writeCharacters(Base64.encode(bigNum));
     }
@@ -187,10 +187,10 @@ public abstract class DOMKeyValue<K extends PublicKey> extends BaseStructure imp
         if (publicKey != null) {
             result = 31 * result + publicKey.hashCode();
         }
-        
+
         return result;
     }
-    
+
     static final class RSA extends DOMKeyValue<RSAPublicKey> {
         // RSAKeyValue CryptoBinaries
         private KeyFactory rsakf;
@@ -204,10 +204,10 @@ public abstract class DOMKeyValue<K extends PublicKey> extends BaseStructure imp
         }
 
         @Override
-        void marshalPublicKey(XmlWriter xwriter, RSAPublicKey publicKey, String dsPrefix, 
+        void marshalPublicKey(XmlWriter xwriter, RSAPublicKey publicKey, String dsPrefix,
             XMLCryptoContext context) throws MarshalException {
             xwriter.writeStartElement(dsPrefix, "RSAKeyValue", XMLSignature.XMLNS);
-            
+
             writeBase64BigIntegerElement(xwriter, dsPrefix, "Modulus", XMLSignature.XMLNS, publicKey.getModulus());
             writeBase64BigIntegerElement(xwriter, dsPrefix, "Exponent", XMLSignature.XMLNS, publicKey.getPublicExponent());
 
@@ -257,15 +257,15 @@ public abstract class DOMKeyValue<K extends PublicKey> extends BaseStructure imp
             throws MarshalException
         {
             DSAParams params = publicKey.getParams();
-            
+
             xwriter.writeStartElement(dsPrefix, "DSAKeyValue", XMLSignature.XMLNS);
-            
+
             // parameters J, Seed & PgenCounter are not included
             writeBase64BigIntegerElement(xwriter, dsPrefix, "P", XMLSignature.XMLNS, params.getP());
             writeBase64BigIntegerElement(xwriter, dsPrefix, "Q", XMLSignature.XMLNS, params.getQ());
             writeBase64BigIntegerElement(xwriter, dsPrefix, "G", XMLSignature.XMLNS, params.getG());
             writeBase64BigIntegerElement(xwriter, dsPrefix, "Y", XMLSignature.XMLNS, publicKey.getY() );
-            
+
             xwriter.writeEndElement(); // "DSAKeyValue"
         }
 
@@ -293,9 +293,9 @@ public abstract class DOMKeyValue<K extends PublicKey> extends BaseStructure imp
                 curElem = DOMUtils.getNextSiblingElement(curElem, "Q", XMLSignature.XMLNS);
                 q = decode(curElem);
                 curElem = DOMUtils.getNextSiblingElement(curElem);
-            } 
+            }
             BigInteger g = null;
-            if (curElem != null 
+            if (curElem != null
                 && curElem.getLocalName().equals("G") && XMLSignature.XMLNS.equals(curElem.getNamespaceURI())) {
                 g = decode(curElem);
                 curElem = DOMUtils.getNextSiblingElement(curElem, "Y", XMLSignature.XMLNS);
@@ -379,7 +379,7 @@ public abstract class DOMKeyValue<K extends PublicKey> extends BaseStructure imp
         {
             String prefix = DOMUtils.getNSPrefix(context, XMLDSIG_11_XMLNS);
             xwriter.writeStartElement(prefix, "ECKeyValue", XMLDSIG_11_XMLNS);
-            
+
             xwriter.writeStartElement(prefix, "NamedCurve", XMLDSIG_11_XMLNS);
             xwriter.writeNamespace(prefix, XMLDSIG_11_XMLNS);
             try {
@@ -389,7 +389,7 @@ public abstract class DOMKeyValue<K extends PublicKey> extends BaseStructure imp
                 throw new MarshalException(gse);
             }
             xwriter.writeEndElement();
-            
+
             xwriter.writeStartElement(prefix, "PublicKey", XMLDSIG_11_XMLNS);
             String encoded = Base64.encode(ecPublicKey);
             xwriter.writeCharacters(encoded);
@@ -443,8 +443,8 @@ public abstract class DOMKeyValue<K extends PublicKey> extends BaseStructure imp
             if (curElem == null) {
                 throw new MarshalException("KeyValue must contain at least one type");
             }
-            
-            if (curElem.getLocalName().equals("ECParameters") 
+
+            if (curElem.getLocalName().equals("ECParameters")
                 && XMLDSIG_11_XMLNS.equals(curElem.getNamespaceURI())) {
                 throw new UnsupportedOperationException
                     ("ECParameters not supported");

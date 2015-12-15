@@ -49,10 +49,10 @@ public class XMLX509CertificateTest extends org.junit.Assert {
         Document doc = XMLUtils.createDocumentBuilder(false).parse(fis);
         NodeList nl = doc.getElementsByTagNameNS
                 (Constants.SignatureSpecNS, "X509Certificate");
-        XMLX509Certificate xmlCert = 
+        XMLX509Certificate xmlCert =
             new XMLX509Certificate((Element) nl.item(0), "");
         xmlCert.getX509Certificate();
         // System.out.println(cert);
     }
-    
+
 }

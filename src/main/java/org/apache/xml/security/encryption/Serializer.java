@@ -27,12 +27,12 @@ import org.w3c.dom.NodeList;
  * Converts <code>String</code>s into <code>Node</code>s and visa versa.
  */
 public interface Serializer {
-    
+
     /**
      * Set the Canonicalizer object to use.
      */
     void setCanonicalizer(Canonicalizer canon);
-    
+
     /**
      * Returns a <code>byte[]</code> representation of the specified
      * <code>Element</code>.
@@ -47,7 +47,7 @@ public interface Serializer {
     /**
      * Returns a <code>byte[]</code> representation of the specified
      * <code>NodeList</code>.
-     * 
+     *
      * @param content the <code>NodeList</code> to serialize.
      * @return the <code>byte[]</code> representation of the serialized
      *   <code>NodeList</code>.
@@ -60,7 +60,7 @@ public interface Serializer {
      * @param node
      * @return the (byte[]) canonicalization of the node
      * @throws Exception
-     */ 
+     */
     byte[] canonSerializeToByteArray(Node node) throws Exception;
 
     /**

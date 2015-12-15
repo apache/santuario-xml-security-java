@@ -48,7 +48,7 @@ public class XMLSignatureInputDebugger {
     private Writer writer = null;
 
     /** The HTML Prefix* */
-    static final String HTMLPrefix = 
+    static final String HTMLPrefix =
         "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n"
         + "<html>\n"
         + "<head>\n"
@@ -109,7 +109,7 @@ public class XMLSignatureInputDebugger {
 
     /**
      * Constructor XMLSignatureInputDebugger
-     * 
+     *
      * @param xmlSignatureInput the signature to pretty print
      */
     public XMLSignatureInputDebugger(XMLSignatureInput xmlSignatureInput) {
@@ -122,12 +122,12 @@ public class XMLSignatureInputDebugger {
 
     /**
      * Constructor XMLSignatureInputDebugger
-     * 
+     *
      * @param xmlSignatureInput the signatur to pretty print
      * @param inclusiveNamespace
      */
     public XMLSignatureInputDebugger(
-        XMLSignatureInput xmlSignatureInput, 
+        XMLSignatureInput xmlSignatureInput,
         Set<String> inclusiveNamespace
     ) {
         this(xmlSignatureInput);
@@ -136,7 +136,7 @@ public class XMLSignatureInputDebugger {
 
     /**
      * Method getHTMLRepresentation
-     * 
+     *
      * @return The HTML Representation.
      * @throws XMLSignatureException
      */
@@ -167,7 +167,7 @@ public class XMLSignatureInputDebugger {
 
     /**
      * Method canonicalizeXPathNodeSet
-     * 
+     *
      * @param currentNode
      * @throws XMLSignatureException
      * @throws IOException
@@ -187,7 +187,7 @@ public class XMLSignatureInputDebugger {
         case Node.DOCUMENT_NODE:
             this.writer.write(HTMLPrefix);
 
-            for (Node currentChild = currentNode.getFirstChild(); 
+            for (Node currentChild = currentNode.getFirstChild();
                 currentChild != null; currentChild = currentChild.getNextSibling()) {
                 this.canonicalizeXPathNodeSet(currentChild);
             }
@@ -249,16 +249,16 @@ public class XMLSignatureInputDebugger {
 
             outputTextToWriter(currentNode.getNodeValue());
 
-            for (Node nextSibling = currentNode.getNextSibling(); 
+            for (Node nextSibling = currentNode.getNextSibling();
                 nextSibling != null
                 && (nextSibling.getNodeType() == Node.TEXT_NODE
-                    || nextSibling.getNodeType() == Node.CDATA_SECTION_NODE); 
+                    || nextSibling.getNodeType() == Node.CDATA_SECTION_NODE);
                 nextSibling = nextSibling.getNextSibling()) {
                 /*
                  * The XPath data model allows to select only the first of a
                  * sequence of mixed text and CDATA nodes. But we must output
                  * them all, so we must search:
-                 * 
+                 *
                  * @see http://nagoya.apache.org/bugzilla/show_bug.cgi?id=6329
                  */
                 this.outputTextToWriter(nextSibling.getNodeValue());
@@ -331,8 +331,8 @@ public class XMLSignatureInputDebugger {
             this.writer.write(HTMLIncludeOrExcludeSuffix);
 
             // traversal
-            for (Node currentChild = currentNode.getFirstChild(); 
-                currentChild != null; 
+            for (Node currentChild = currentNode.getFirstChild();
+                currentChild != null;
                 currentChild = currentChild.getNextSibling()) {
                 this.canonicalizeXPathNodeSet(currentChild);
             }
@@ -349,7 +349,7 @@ public class XMLSignatureInputDebugger {
 
             this.writer.write(HTMLIncludeOrExcludeSuffix);
             break;
-            
+
         case Node.DOCUMENT_TYPE_NODE:
         default:
             break;
@@ -359,7 +359,7 @@ public class XMLSignatureInputDebugger {
     /**
      * Checks whether a Comment or ProcessingInstruction is before or after the
      * document element. This is needed for prepending or appending "\n"s.
-     * 
+     *
      * @param currentNode
      *            comment or pi to check
      * @return NODE_BEFORE_DOCUMENT_ELEMENT,
@@ -401,7 +401,7 @@ public class XMLSignatureInputDebugger {
 
     /**
      * Normalizes an {@link Attr}ibute value
-     * 
+     *
      * The string value of the node is modified by replacing
      * <UL>
      * <LI>all ampersands (&) with <CODE>&amp;amp;</CODE></LI>
@@ -412,7 +412,7 @@ public class XMLSignatureInputDebugger {
      * uppercase hexadecimal with no leading zeroes (for example, <CODE>#xD</CODE>
      * is represented by the character reference <CODE>&amp;#xD;</CODE>)</LI>
      * </UL>
-     * 
+     *
      * @param name
      * @param value
      * @throws IOException
@@ -464,7 +464,7 @@ public class XMLSignatureInputDebugger {
 
     /**
      * Normalizes a {@link org.w3c.dom.Comment} value
-     * 
+     *
      * @param currentPI
      * @throws IOException
      */
@@ -530,7 +530,7 @@ public class XMLSignatureInputDebugger {
 
     /**
      * Method outputCommentToWriter
-     * 
+     *
      * @param currentComment
      * @throws IOException
      */
@@ -573,7 +573,7 @@ public class XMLSignatureInputDebugger {
 
     /**
      * Method outputTextToWriter
-     * 
+     *
      * @param text
      * @throws IOException
      */

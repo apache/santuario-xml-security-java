@@ -27,12 +27,12 @@ import java.io.OutputStream;
  */
 public class UnsyncBufferedOutputStream extends OutputStream {
     static final int size = 8*1024;
-    
+
     private int pointer = 0;
     private final OutputStream out;
 
     private final byte[] buf;
-    
+
     /**
      * Creates a buffered output stream without synchronization
      * @param out the outputstream to buffer

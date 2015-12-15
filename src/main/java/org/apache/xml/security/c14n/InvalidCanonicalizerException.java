@@ -23,7 +23,7 @@ import org.apache.xml.security.exceptions.XMLSecurityException;
 public class InvalidCanonicalizerException extends XMLSecurityException {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
 

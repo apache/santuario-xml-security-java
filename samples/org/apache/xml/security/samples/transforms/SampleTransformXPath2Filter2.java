@@ -96,8 +96,8 @@ public class SampleTransformXPath2Filter2 {
 
         doc.getDocumentElement().appendChild(sig.getElement());
         sig.getElement().setAttributeNS(
-            Constants.NamespaceSpecNS, 
-            "xmlns:" + ElementProxy.getDefaultPrefix(Transforms.TRANSFORM_XPATH2FILTER), 
+            Constants.NamespaceSpecNS,
+            "xmlns:" + ElementProxy.getDefaultPrefix(Transforms.TRANSFORM_XPATH2FILTER),
             Transforms.TRANSFORM_XPATH2FILTER
         );
         doc.getDocumentElement().appendChild(doc.createTextNode("\n"));
@@ -183,7 +183,7 @@ public class SampleTransformXPath2Filter2 {
         Document doc = db.parse(new FileInputStream(filename));
         NodeList sigs = doc.getElementsByTagNameNS(Constants.SignatureSpecNS, Constants._TAG_SIGNATURE);
 
-        XMLSignature sig = 
+        XMLSignature sig =
             new XMLSignature((Element)sigs.item(0), new File(filename).toURI().toURL().toString());
         boolean check = sig.checkSignatureValue(sig.createSecretKey("secret".getBytes()));
 
@@ -200,5 +200,5 @@ public class SampleTransformXPath2Filter2 {
             "build/1.html", sig.getSignedInfo().item(0).getHTMLRepresentation().getBytes()
         );
     }
-    
+
 }

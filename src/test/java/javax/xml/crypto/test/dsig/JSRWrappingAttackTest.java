@@ -45,8 +45,8 @@ public class JSRWrappingAttackTest extends org.junit.Assert {
     public JSRWrappingAttackTest() {
         String fs = System.getProperty("file.separator");
         String base = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
-        
-        dir = new File(base + fs + "src/test/resources" + fs 
+
+        dir = new File(base + fs + "src/test/resources" + fs
             + "at" + fs + "iaik" + fs + "ixsil" + fs + "coreFeatures", "signatures");
         validator = new SignatureValidator(dir);
     }
@@ -55,26 +55,26 @@ public class JSRWrappingAttackTest extends org.junit.Assert {
     @org.junit.Test
     public void testWrappingAttack() throws Exception {
         String file = "manifestSignatureWrapping.xml";
-        
+
         Document doc = XMLUtils.createDocumentBuilder(false, false).parse(new File(dir, file));
         Element sigElement = SignatureValidator.getSignatureElement(doc);
         if (sigElement == null) {
             throw new Exception("Couldn't find signature Element");
         }
-        DOMValidateContext vc = 
+        DOMValidateContext vc =
             new DOMValidateContext(new KeySelectors.KeyValueKeySelector(), sigElement);
         vc.setBaseURI(dir.toURI().toString());
 
         vc.setProperty("org.apache.jcp.xml.dsig.secureValidation", Boolean.FALSE);
         boolean coreValidity = validator.validate(vc);
         assertTrue("Signature failed core validation", coreValidity);
-        
+
         vc.setProperty("org.apache.jcp.xml.dsig.secureValidation", Boolean.TRUE);
-        
+
         Element manifestElement =
             (Element) doc.getElementsByTagName("Manifest").item(0);
         vc.setIdAttributeNS(manifestElement, null, "Id");
-        
+
         try {
             boolean valid = validator.validate(vc);
             System.out.println("Valid: " + valid);
@@ -83,5 +83,5 @@ public class JSRWrappingAttackTest extends org.junit.Assert {
             assertTrue(ex.getMessage().contains("URIReferenceException"));
         }
     }
-    
+
 }

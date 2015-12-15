@@ -188,7 +188,7 @@ public class SampleTransformXPath2Filter {
         Document doc = db.parse(new FileInputStream(filename));
         NodeList sigs = doc.getElementsByTagNameNS(Constants.SignatureSpecNS, Constants._TAG_SIGNATURE);
 
-        XMLSignature sig = 
+        XMLSignature sig =
             new XMLSignature((Element)sigs.item(0), new File(filename).toURI().toURL().toString());
         boolean check = sig.checkSignatureValue(sig.createSecretKey("secret".getBytes()));
 
@@ -201,5 +201,5 @@ public class SampleTransformXPath2Filter {
         System.out.println(
             "-------------------------------------------------------------");
     }
-    
+
 }

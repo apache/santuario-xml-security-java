@@ -69,7 +69,7 @@ public class XMLSignatureTest extends org.junit.Assert {
         kifac = KeyInfoFactory.getInstance
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
 
-        // set up the corresponding SignatureMethod 
+        // set up the corresponding SignatureMethod
         SIG_METHODS = new SignatureMethod[3];
         SIG_METHODS[0] = fac.newSignatureMethod(SignatureMethod.DSA_SHA1, null);
         SIG_METHODS[1] = fac.newSignatureMethod(SignatureMethod.RSA_SHA1, null);
@@ -113,7 +113,7 @@ public class XMLSignatureTest extends org.junit.Assert {
                 fail("Should throw a NPE for null references");
             } catch (NullPointerException npe) {
             } catch (Exception ex) {
-                fail("Should throw a NPE instead of " + ex + 
+                fail("Should throw a NPE instead of " + ex +
                      " for null references");
             }
         }
@@ -125,7 +125,7 @@ public class XMLSignatureTest extends org.junit.Assert {
             fail("Should throw a CCE for invalid objects");
         } catch (ClassCastException cce) {
         } catch (Exception ex) {
-            fail("Should throw a CCE instead of " + ex + 
+            fail("Should throw a CCE instead of " + ex +
                  " for invalid objects");
         }
         sig = fac.newXMLSignature(defSi, defKi, objs, id, sigValueId);
@@ -144,17 +144,17 @@ public class XMLSignatureTest extends org.junit.Assert {
         assertNull(sig.getSignatureValue().getId());
         assertEquals(sig.getSignedInfo(), defSi);
     }
-    
+
     @org.junit.Test
     public void testisFeatureSupported() throws Exception {
 
         XMLSignature sig = fac.newXMLSignature(defSi, null);
-        
+
         try {
-            sig.isFeatureSupported(null); 
-            fail("Should raise a NPE for null feature"); 
+            sig.isFeatureSupported(null);
+            fail("Should raise a NPE for null feature");
         } catch (NullPointerException npe) {}
-            
+
         assertTrue(!sig.isFeatureSupported("not supported"));
     }
 
@@ -175,7 +175,7 @@ public class XMLSignatureTest extends org.junit.Assert {
                 ki = kifac.newKeyInfo(Collections.singletonList
                     (kifac.newKeyName("testuser")));
             }
-            sig = fac.newXMLSignature(si, ki, objs, id, sigValueId); 
+            sig = fac.newXMLSignature(si, ki, objs, id, sigValueId);
             Document doc = TestUtils.newDocument();
             signContext = new DOMSignContext(SIGN_KEYS[i], doc);
             signContext.setURIDereferencer(ud);
@@ -208,7 +208,7 @@ public class XMLSignatureTest extends org.junit.Assert {
                 ki = kifac.newKeyInfo(Collections.singletonList
                     (kifac.newKeyName("testuser")));
             }
-            sig = fac.newXMLSignature(si, ki, objs, id, sigValueId); 
+            sig = fac.newXMLSignature(si, ki, objs, id, sigValueId);
             Document doc = TestUtils.newDocument();
             signContext = new DOMSignContext(SIGN_KEYS[i], doc);
             signContext.setProperty
@@ -220,7 +220,7 @@ public class XMLSignatureTest extends org.junit.Assert {
                 fail("Should have failed because TestProvider does not " +
                      "support " + SIGN_KEYS[i].getAlgorithm());
             } catch (Exception e) {
-                assertTrue(e.getMessage(), 
+                assertTrue(e.getMessage(),
                     e.getCause() instanceof NoSuchAlgorithmException);
             }
         }
@@ -231,7 +231,7 @@ public class XMLSignatureTest extends org.junit.Assert {
         SignedInfo si = createSignedInfo(SIG_METHODS[1]);
         KeyInfo	ki = kifac.newKeyInfo(Collections.singletonList
                     (kifac.newKeyValue((PublicKey) VALIDATE_KEYS[1])));
-        XMLSignature sig = fac.newXMLSignature(si, ki, objs, id, sigValueId); 
+        XMLSignature sig = fac.newXMLSignature(si, ki, objs, id, sigValueId);
         Document doc = TestUtils.newDocument();
         XMLSignContext signContext = new DOMSignContext(SIGN_KEYS[1], doc);
         signContext.putNamespacePrefix(XMLSignature.XMLNS, "");
@@ -306,7 +306,7 @@ public class XMLSignatureTest extends org.junit.Assert {
     public void testSignTemplateWithObjectNSDefs() throws Exception {
         String base = System.getProperty("basedir") == null ? "./"
                       : System.getProperty("basedir");
- 
+
         File f = new File(base + "/src/test/resources/javax/xml/crypto/dsig/" +
             "signature-enveloping-rsa-template.xml");
 
@@ -386,7 +386,7 @@ public class XMLSignatureTest extends org.junit.Assert {
         SignedInfo si = createSignedInfo(sm);
         KeyInfo ki = kifac.newKeyInfo(Collections.singletonList
             (kifac.newKeyValue((PublicKey)TestUtils.getPublicKey("DSA", 2048))));
-        XMLSignature sig = fac.newXMLSignature(si, ki, objs, id, sigValueId); 
+        XMLSignature sig = fac.newXMLSignature(si, ki, objs, id, sigValueId);
         Document doc = TestUtils.newDocument();
         XMLSignContext signContext =
             new DOMSignContext(TestUtils.getPrivateKey("DSA", 2048), doc);
@@ -401,7 +401,7 @@ public class XMLSignatureTest extends org.junit.Assert {
     private SignedInfo createSignedInfo(SignatureMethod sm) throws Exception {
         // set up the building blocks
         CanonicalizationMethod cm = fac.newCanonicalizationMethod
-            (CanonicalizationMethod.INCLUSIVE_WITH_COMMENTS, 
+            (CanonicalizationMethod.INCLUSIVE_WITH_COMMENTS,
              (C14NMethodParameterSpec) null);
         DigestMethod dm = fac.newDigestMethod(DigestMethod.SHA1, null);
         List<Reference> refs = Collections.singletonList(fac.newReference

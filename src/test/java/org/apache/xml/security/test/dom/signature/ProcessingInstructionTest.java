@@ -53,21 +53,21 @@ public class ProcessingInstructionTest extends org.junit.Assert {
     private static String dir;
 
     public ProcessingInstructionTest() {
-        String base = System.getProperty("basedir") == null 
+        String base = System.getProperty("basedir") == null
             ? "./" : System.getProperty("basedir");
         String fs = System.getProperty("file.separator");
-        dir = base + fs + "src/test/resources" + fs + "org" + fs + "apache" + fs + "xml" + 
+        dir = base + fs + "src/test/resources" + fs + "org" + fs + "apache" + fs + "xml" +
             fs + "security" + fs + "testcases" + fs;
     }
-    
+
     @org.junit.Test
     public void testProcessingInstruction() throws Exception {
         String signatureFileName = dir + "upp_sign.xml";
         DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
         File f = new File(signatureFileName);
         Document doc = db.parse(new java.io.FileInputStream(f));
-        
-        Node obj = 
+
+        Node obj =
             doc.getElementsByTagNameNS("http://uri.etsi.org/01903/v1.3.2#", "QualifyingProperties").item(0);
         while (obj != null) {
             if (obj instanceof Element) {
@@ -84,7 +84,7 @@ public class ProcessingInstructionTest extends org.junit.Assert {
         xpath.setNamespaceContext(new DSNamespaceContext());
 
         String expression = "//ds:Signature[1]";
-        Element sigElement = 
+        Element sigElement =
             (Element) xpath.evaluate(expression, doc, XPathConstants.NODE);
 
         String baseUri = new File(".").toURI().toURL().toString();
@@ -102,24 +102,24 @@ public class ProcessingInstructionTest extends org.junit.Assert {
     private static class FileResolver extends ResourceResolverSpi {
 
         private static FileResolver resolver = null;
-    
+
         public synchronized static ResourceResolverSpi getInstance() {
             if (resolver == null) {
                 resolver = new FileResolver();
             }
             return resolver;
         }
-    
+
         private FileResolver() {
         }
-    
+
         @Override
         public XMLSignatureInput engineResolveURI(ResourceResolverContext context)
             throws ResourceResolverException {
             try {
                 URI uriNew = getNewURI(context.uriToResolve, context.baseUri);
-                
-                FileInputStream inputStream = 
+
+                FileInputStream inputStream =
                     new FileInputStream(dir + "out.xml");
                 XMLSignatureInput result = new XMLSignatureInput(inputStream);
 
@@ -132,7 +132,7 @@ public class ProcessingInstructionTest extends org.junit.Assert {
                 );
             }
         }
-        
+
         @Override
         public boolean engineCanResolveURI(ResourceResolverContext context) {
             if (context.uriToResolve == null || !"out.xml".equals(context.uriToResolve)) {
@@ -140,7 +140,7 @@ public class ProcessingInstructionTest extends org.junit.Assert {
             }
             return true;
         }
-        
+
         private static URI getNewURI(String uri, String baseURI) throws URISyntaxException {
             URI newUri = null;
             if (baseURI == null || "".equals(baseURI)) {
@@ -148,10 +148,10 @@ public class ProcessingInstructionTest extends org.junit.Assert {
             } else {
                 newUri = new URI(baseURI).resolve(uri);
             }
-            
+
             // if the URI contains a fragment, ignore it
             if (newUri.getFragment() != null) {
-                URI uriNewNoFrag = 
+                URI uriNewNoFrag =
                     new URI(newUri.getScheme(), newUri.getSchemeSpecificPart(), null);
                 return uriNewNoFrag;
             }

@@ -57,10 +57,10 @@ public class KeyResolver {
 
     /** Field resolverSpi */
     private final KeyResolverSpi resolverSpi;
-    
+
     /**
      * Constructor.
-     * 
+     *
      * @param keyResolverSpi a KeyResolverSpi instance
      */
     private KeyResolver(KeyResolverSpi keyResolverSpi) {
@@ -83,7 +83,7 @@ public class KeyResolver {
      * @param baseURI
      * @param storage
      * @return The certificate represented by the element.
-     * 
+     *
      * @throws KeyResolverException
      */
     public static final X509Certificate getX509Certificate(
@@ -124,7 +124,7 @@ public class KeyResolver {
      * @param baseURI
      * @param storage
      * @return the public key contained in the element
-     * 
+     *
      * @throws KeyResolverException
      */
     public static final PublicKey getPublicKey(
@@ -162,20 +162,20 @@ public class KeyResolver {
      * This method is used for registering {@link KeyResolverSpi}s which are
      * available to <I>all</I> {@link org.apache.xml.security.keys.KeyInfo} objects. This means that
      * personalized {@link KeyResolverSpi}s should only be registered directly
-     * to the {@link org.apache.xml.security.keys.KeyInfo} using 
+     * to the {@link org.apache.xml.security.keys.KeyInfo} using
      * {@link org.apache.xml.security.keys.KeyInfo#registerInternalKeyResolver}.
-     * Please note that this method will create a new copy of the underlying array, as the 
+     * Please note that this method will create a new copy of the underlying array, as the
      * underlying collection is a CopyOnWriteArrayList.
      *
      * @param className
      * @param globalResolver Whether the KeyResolverSpi is a global resolver or not
-     * @throws InstantiationException 
-     * @throws IllegalAccessException 
-     * @throws ClassNotFoundException 
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws ClassNotFoundException
      * @throws SecurityException if a security manager is installed and the
      *    caller does not have permission to register the key resolver
      */
-    public static void register(String className, boolean globalResolver) 
+    public static void register(String className, boolean globalResolver)
         throws ClassNotFoundException, IllegalAccessException, InstantiationException {
         JavaUtils.checkRegisterPermission();
         KeyResolverSpi keyResolverSpi =
@@ -188,9 +188,9 @@ public class KeyResolver {
      * This method is used for registering {@link KeyResolverSpi}s which are
      * available to <I>all</I> {@link org.apache.xml.security.keys.KeyInfo} objects. This means that
      * personalized {@link KeyResolverSpi}s should only be registered directly
-     * to the {@link org.apache.xml.security.keys.KeyInfo} using 
+     * to the {@link org.apache.xml.security.keys.KeyInfo} using
      * {@link org.apache.xml.security.keys.KeyInfo#registerInternalKeyResolver}.
-     * Please note that this method will create a new copy of the underlying array, as the 
+     * Please note that this method will create a new copy of the underlying array, as the
      * underlying collection is a CopyOnWriteArrayList.
      *
      * @param className
@@ -219,14 +219,14 @@ public class KeyResolver {
             IllegalArgumentException("Invalid KeyResolver class name").initCause(ex);
         }
     }
-    
+
     /**
      * This method is used for registering {@link KeyResolverSpi}s which are
      * available to <I>all</I> {@link org.apache.xml.security.keys.KeyInfo} objects. This means that
      * personalized {@link KeyResolverSpi}s should only be registered directly
-     * to the {@link org.apache.xml.security.keys.KeyInfo} using 
+     * to the {@link org.apache.xml.security.keys.KeyInfo} using
      * {@link org.apache.xml.security.keys.KeyInfo#registerInternalKeyResolver}.
-     * Please note that this method will create a new copy of the underlying array, as the 
+     * Please note that this method will create a new copy of the underlying array, as the
      * underlying collection is a CopyOnWriteArrayList.
      *
      * @param keyResolverSpi a KeyResolverSpi instance to register
@@ -235,7 +235,7 @@ public class KeyResolver {
      *    caller does not have permission to register the key resolver
      */
     public static void register(
-        KeyResolverSpi keyResolverSpi, 
+        KeyResolverSpi keyResolverSpi,
         boolean start
     ) {
         JavaUtils.checkRegisterPermission();
@@ -246,24 +246,24 @@ public class KeyResolver {
             resolverVector.add(resolver);
         }
     }
-    
+
     /**
      * This method is used for registering {@link KeyResolverSpi}s which are
      * available to <I>all</I> {@link org.apache.xml.security.keys.KeyInfo} objects. This means that
      * personalized {@link KeyResolverSpi}s should only be registered directly
-     * to the {@link org.apache.xml.security.keys.KeyInfo} using 
+     * to the {@link org.apache.xml.security.keys.KeyInfo} using
      * {@link org.apache.xml.security.keys.KeyInfo#registerInternalKeyResolver}.
      * The KeyResolverSpi instances are not registered as a global resolver.
-     * 
+     *
      *
      * @param classNames
-     * @throws InstantiationException 
-     * @throws IllegalAccessException 
-     * @throws ClassNotFoundException 
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws ClassNotFoundException
      * @throws SecurityException if a security manager is installed and the
      *    caller does not have permission to register the key resolver
      */
-    public static void registerClassNames(List<String> classNames) 
+    public static void registerClassNames(List<String> classNames)
         throws ClassNotFoundException, IllegalAccessException, InstantiationException {
         JavaUtils.checkRegisterPermission();
         List<KeyResolver> keyResolverList = new ArrayList<KeyResolver>(classNames.size());
@@ -275,12 +275,12 @@ public class KeyResolver {
         }
         resolverVector.addAll(keyResolverList);
     }
-    
+
     /**
      * This method registers the default resolvers.
      */
     public static void registerDefaultResolvers() {
-        
+
         List<KeyResolver> keyResolverList = new ArrayList<KeyResolver>();
         keyResolverList.add(new KeyResolver(new RSAKeyValueResolver()));
         keyResolverList.add(new KeyResolver(new DSAKeyValueResolver()));
@@ -292,7 +292,7 @@ public class KeyResolver {
         keyResolverList.add(new KeyResolver(new DEREncodedKeyValueResolver()));
         keyResolverList.add(new KeyResolver(new KeyInfoReferenceResolver()));
         keyResolverList.add(new KeyResolver(new X509DigestResolver()));
-        
+
         resolverVector.addAll(keyResolverList);
     }
 
@@ -301,9 +301,9 @@ public class KeyResolver {
      *
      * @param element
      * @param baseURI
-     * @param storage 
+     * @param storage
      * @return resolved public key from the registered from the elements
-     * 
+     *
      * @throws KeyResolverException
      */
     public PublicKey resolvePublicKey(
@@ -319,7 +319,7 @@ public class KeyResolver {
      * @param baseURI
      * @param storage
      * @return resolved X509certificate key from the registered from the elements
-     * 
+     *
      * @throws KeyResolverException
      */
     public X509Certificate resolveX509Certificate(

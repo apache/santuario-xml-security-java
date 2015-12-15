@@ -46,7 +46,7 @@ public class VerifyCollectableSignature {
     static {
         org.apache.xml.security.Init.init();
     }
-    
+
     /**
      * Method main
      *
@@ -80,7 +80,7 @@ public class VerifyCollectableSignature {
             xpath.setNamespaceContext(new DSNamespaceContext());
 
             String expression = "//ds:Signature[1]";
-            NodeList signatureElems = 
+            NodeList signatureElems =
                 (NodeList) xpath.evaluate(expression, doc, XPathConstants.NODESET);
 
             for (int i = 0; i < signatureElems.getLength(); i++) {
