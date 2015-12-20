@@ -18,7 +18,9 @@
  */
 package org.apache.xml.security.stax.impl.algorithms;
 
+import org.apache.xml.security.algorithms.implementations.ECDSAUtils;
 import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.utils.JavaUtils;
 
 import java.io.IOException;
 import java.security.*;
@@ -103,7 +105,7 @@ public class PKISignatureAlgorithm implements SignatureAlgorithm {
             if (this.jceName.contains("ECDSA")) {
                 return ECDSAUtils.convertASN1toXMLDSIG(jcebytes);
             } else if (this.jceName.contains("DSA")) {
-                return DSAUtils.convertASN1toXMLDSIG(jcebytes);
+                return JavaUtils.convertDsaASN1toXMLDSIG(jcebytes, 20);
             }
             return jcebytes;
         } catch (SignatureException e) {
@@ -129,7 +131,7 @@ public class PKISignatureAlgorithm implements SignatureAlgorithm {
             if (this.jceName.contains("ECDSA")) {
                 jcebytes = ECDSAUtils.convertXMLDSIGtoASN1(jcebytes);
             } else if (this.jceName.contains("DSA")) {
-                jcebytes = DSAUtils.convertXMLDSIGtoASN1(jcebytes);
+                jcebytes = JavaUtils.convertDsaXMLDSIGtoASN1(jcebytes, 20);
             }
             return this.signature.verify(jcebytes);
         } catch (SignatureException e) {

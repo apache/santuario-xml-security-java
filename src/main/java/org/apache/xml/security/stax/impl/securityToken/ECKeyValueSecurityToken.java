@@ -18,10 +18,10 @@
  */
 package org.apache.xml.security.stax.impl.securityToken;
 
+import org.apache.xml.security.algorithms.implementations.ECDSAUtils;
 import org.apache.xml.security.binding.xmldsig11.ECKeyValueType;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.ext.InboundSecurityContext;
-import org.apache.xml.security.stax.impl.algorithms.ECDSAUtils;
 import org.apache.xml.security.stax.impl.util.IDGenerator;
 import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 

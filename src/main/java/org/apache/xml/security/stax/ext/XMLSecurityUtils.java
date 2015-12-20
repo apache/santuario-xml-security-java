@@ -20,6 +20,7 @@ package org.apache.xml.security.stax.ext;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.xml.security.algorithms.JCEMapper;
+import org.apache.xml.security.algorithms.implementations.ECDSAUtils;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.keys.content.x509.XMLX509SKI;
 import org.apache.xml.security.stax.config.TransformerAlgorithmMapper;
@@ -27,7 +28,6 @@ import org.apache.xml.security.stax.ext.stax.XMLSecAttribute;
 import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 import org.apache.xml.security.stax.ext.stax.XMLSecNamespace;
 import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
-import org.apache.xml.security.stax.impl.algorithms.ECDSAUtils;
 import org.apache.xml.security.stax.impl.util.ConcreteLSInput;
 import org.apache.xml.security.stax.securityEvent.*;
 import org.apache.xml.security.stax.securityToken.InboundSecurityToken;

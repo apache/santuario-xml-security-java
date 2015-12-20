@@ -162,12 +162,11 @@ public final class JavaUtils {
 
         byte rLength = asn1Bytes[3];
         int i;
-        for (i = rLength; i > 0 && asn1Bytes[4 + rLength - i] == 0; i--);
+        for (i = rLength; i > 0 && asn1Bytes[4 + rLength - i] == 0; i--); //NOPMD
 
         byte sLength = asn1Bytes[5 + rLength];
         int j;
-        for (j = sLength;
-             j > 0 && asn1Bytes[6 + rLength + sLength - j] == 0; j--);
+        for (j = sLength; j > 0 && asn1Bytes[6 + rLength + sLength - j] == 0; j--); //NOPMD
 
         if (i > size || asn1Bytes[4 + rLength] != 2 || j > size) {
             throw new IOException("Invalid ASN.1 format of DSA signature");
@@ -203,7 +202,7 @@ public final class JavaUtils {
         }
 
         int i;
-        for (i = size; i > 0 && xmldsigBytes[size - i] == 0; i--);
+        for (i = size; i > 0 && xmldsigBytes[size - i] == 0; i--); //NOPMD
 
         int j = i;
         if (xmldsigBytes[size - i] < 0) {
@@ -211,7 +210,7 @@ public final class JavaUtils {
         }
 
         int k;
-        for (k = size; k > 0 && xmldsigBytes[totalSize - k] == 0; k--);
+        for (k = size; k > 0 && xmldsigBytes[totalSize - k] == 0; k--); //NOPMD
 
         int l = k;
         if (xmldsigBytes[totalSize - k] < 0) {
