@@ -29,7 +29,7 @@ import java.io.ByteArrayOutputStream;
  * @author $Author$
  * @version $Revision$ $Date$
  */
-public class TrimmerOutputStreamTest extends org.junit.Assert {
+public class TrimmerOutputStreamTest extends Assert {
 
     private final String testString = "Within this class we test if the TrimmerOutputStream works correctly under different conditions";
 

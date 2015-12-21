@@ -67,7 +67,7 @@ import org.w3c.dom.NodeList;
  * @author $Author: coheigea $
  * @version $Revision: 1236690 $ $Date: 2012-01-27 14:07:10 +0000 (Fri, 27 Jan 2012) $
  */
-public class EncryptionCreationTest extends org.junit.Assert {
+public class EncryptionCreationTest extends Assert {
 
     private XMLInputFactory xmlInputFactory;
 

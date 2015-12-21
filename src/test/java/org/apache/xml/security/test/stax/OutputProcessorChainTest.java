@@ -37,7 +37,7 @@ import java.util.Set;
  * @author $Author$
  * @version $Revision$ $Date$
  */
-public class OutputProcessorChainTest extends org.junit.Assert {
+public class OutputProcessorChainTest extends Assert {
 
     @Before
     public void setUp() throws Exception {

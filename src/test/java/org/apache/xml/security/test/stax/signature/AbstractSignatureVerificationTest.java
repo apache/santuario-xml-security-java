@@ -53,7 +53,7 @@ import java.util.UUID;
  * @author $Author$
  * @version $Revision$ $Date$
  */
-public class AbstractSignatureVerificationTest extends org.junit.Assert {
+public class AbstractSignatureVerificationTest extends Assert {
 
     protected static String BASEDIR;
 

@@ -48,7 +48,7 @@ import java.util.Map;
  * @author $Author$
  * @version $Revision$ $Date$
  */
-public class TransformIdentityTest extends org.junit.Assert {
+public class TransformIdentityTest extends Assert {
 
     private XMLInputFactory xmlInputFactory;
 

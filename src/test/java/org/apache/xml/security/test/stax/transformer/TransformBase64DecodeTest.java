@@ -47,7 +47,7 @@ import java.util.Map;
  * @author $Author$
  * @version $Revision$ $Date$
  */
-public class TransformBase64DecodeTest extends org.junit.Assert {
+public class TransformBase64DecodeTest extends Assert {
 
     private XMLInputFactory xmlInputFactory;
 

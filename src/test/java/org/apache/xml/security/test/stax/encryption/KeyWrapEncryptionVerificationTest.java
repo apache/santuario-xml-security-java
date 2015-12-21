@@ -65,7 +65,7 @@ import org.w3c.dom.NodeList;
 /**
  * A test to make sure that the various KeyWrap Decryption algorithms are working
  */
-public class KeyWrapEncryptionVerificationTest extends org.junit.Assert {
+public class KeyWrapEncryptionVerificationTest extends Assert {
 
     private boolean bcInstalled;
     private XMLInputFactory xmlInputFactory;
@@ -88,11 +88,11 @@ public class KeyWrapEncryptionVerificationTest extends org.junit.Assert {
             try {
                 Class<?> c = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
                 cons = c.getConstructor(new Class[] {});
-            } catch (Exception e) {
+            } catch (Exception e) {     //NOPMD
                 //ignore
             }
             if (cons != null) {
-                Provider provider = (java.security.Provider)cons.newInstance();
+                Provider provider = (Provider)cons.newInstance();
                 Security.insertProviderAt(provider, 2);
                 bcInstalled = true;
             }

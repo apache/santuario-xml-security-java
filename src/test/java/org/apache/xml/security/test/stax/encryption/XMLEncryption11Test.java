@@ -28,7 +28,6 @@ import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.Provider;
 import java.security.Security;
-import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -78,7 +77,7 @@ import org.w3c.dom.NodeList;
  * @author $Author: $
  * @version $Revision: $ $Date: $
  */
-public class XMLEncryption11Test extends org.junit.Assert {
+public class XMLEncryption11Test extends Assert {
 
     private String cardNumber;
     private int nodeCount = 0;
@@ -98,11 +97,11 @@ public class XMLEncryption11Test extends org.junit.Assert {
             try {
                 Class<?> c = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
                 cons = c.getConstructor(new Class[] {});
-            } catch (Exception e) {
+            } catch (Exception e) {     //NOPMD
                 //ignore
             }
             if (cons != null) {
-                Provider provider = (java.security.Provider)cons.newInstance();
+                Provider provider = (Provider)cons.newInstance();
                 Security.insertProviderAt(provider, 2);
             }
         }
@@ -134,15 +133,13 @@ public class XMLEncryption11Test extends org.junit.Assert {
         KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(this.getClass().getClassLoader().getResourceAsStream(keystore), "passwd".toCharArray());
 
-        Certificate cert = keyStore.getCertificate("importkey");
-
         KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
                 keyStore.getEntry("importkey", new KeyStore.PasswordProtection("passwd".toCharArray()));
         PrivateKey rsaKey = pkEntry.getPrivateKey();
 
         String filename = "org/w3c/www/interop/xmlenc-core-11/cipherText__RSA-2048__aes128-gcm__rsa-oaep-mgf1p.xml";
 
-        Document dd = decryptElement(filename, rsaKey, (X509Certificate) cert);
+        Document dd = decryptElement(filename, rsaKey);
         checkDecryptedDoc(dd, true);
     }
 
@@ -154,8 +151,6 @@ public class XMLEncryption11Test extends org.junit.Assert {
         String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-2048_SHA256WithRSA.jks";
         KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(this.getClass().getClassLoader().getResourceAsStream(keystore), "passwd".toCharArray());
-
-        Certificate cert = keyStore.getCertificate("importkey");
 
         KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
                 keyStore.getEntry("importkey", new KeyStore.PasswordProtection("passwd".toCharArray()));
@@ -179,7 +174,7 @@ public class XMLEncryption11Test extends org.junit.Assert {
         // XMLUtils.outputDOM(ed.getFirstChild(), System.out);
 
         // Perform decryption
-        Document dd = decryptElement(ed, rsaKey, (X509Certificate) cert);
+        Document dd = decryptElement(ed, rsaKey);
         // XMLUtils.outputDOM(dd.getFirstChild(), System.out);
         checkDecryptedDoc(dd, true);
     }
@@ -193,8 +188,6 @@ public class XMLEncryption11Test extends org.junit.Assert {
         KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(this.getClass().getClassLoader().getResourceAsStream(keystore), "passwd".toCharArray());
 
-        Certificate cert = keyStore.getCertificate("importkey");
-
         KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
                 keyStore.getEntry("importkey", new KeyStore.PasswordProtection("passwd".toCharArray()));
         PrivateKey rsaKey = pkEntry.getPrivateKey();
@@ -202,7 +195,7 @@ public class XMLEncryption11Test extends org.junit.Assert {
         // Perform encryption
         String filename = "org/w3c/www/interop/xmlenc-core-11/cipherText__RSA-3072__aes192-gcm__rsa-oaep-mgf1p__Sha256.xml";
 
-        Document dd = decryptElement(filename, rsaKey, (X509Certificate) cert);
+        Document dd = decryptElement(filename, rsaKey);
         checkDecryptedDoc(dd, true);
     }
 
@@ -214,8 +207,6 @@ public class XMLEncryption11Test extends org.junit.Assert {
         String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-3072_SHA256WithRSA.jks";
         KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(this.getClass().getClassLoader().getResourceAsStream(keystore), "passwd".toCharArray());
-
-        Certificate cert = keyStore.getCertificate("importkey");
 
         KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
                 keyStore.getEntry("importkey", new KeyStore.PasswordProtection("passwd".toCharArray()));
@@ -241,7 +232,7 @@ public class XMLEncryption11Test extends org.junit.Assert {
         // XMLUtils.outputDOM(ed.getFirstChild(), System.out);
 
         // Perform decryption
-        Document dd = decryptElement(ed, rsaKey, (X509Certificate) cert);
+        Document dd = decryptElement(ed, rsaKey);
         // XMLUtils.outputDOM(dd.getFirstChild(), System.out);
         checkDecryptedDoc(dd, true);
     }
@@ -255,15 +246,13 @@ public class XMLEncryption11Test extends org.junit.Assert {
         KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(this.getClass().getClassLoader().getResourceAsStream(keystore), "passwd".toCharArray());
 
-        Certificate cert = keyStore.getCertificate("importkey");
-
         KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
                 keyStore.getEntry("importkey", new KeyStore.PasswordProtection("passwd".toCharArray()));
         PrivateKey rsaKey = pkEntry.getPrivateKey();
 
         String filename = "org/w3c/www/interop/xmlenc-core-11/cipherText__RSA-3072__aes256-gcm__rsa-oaep__Sha384-MGF_Sha1.xml";
 
-        Document dd = decryptElement(filename, rsaKey, (X509Certificate) cert);
+        Document dd = decryptElement(filename, rsaKey);
         // XMLUtils.outputDOM(dd.getFirstChild(), System.out);
         checkDecryptedDoc(dd, true);
     }
@@ -276,8 +265,6 @@ public class XMLEncryption11Test extends org.junit.Assert {
         String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-3072_SHA256WithRSA.jks";
         KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(this.getClass().getClassLoader().getResourceAsStream(keystore), "passwd".toCharArray());
-
-        Certificate cert = keyStore.getCertificate("importkey");
 
         KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
                 keyStore.getEntry("importkey", new KeyStore.PasswordProtection("passwd".toCharArray()));
@@ -303,7 +290,7 @@ public class XMLEncryption11Test extends org.junit.Assert {
         // XMLUtils.outputDOM(ed.getFirstChild(), System.out);
 
         // Perform decryption
-        Document dd = decryptElement(ed, rsaKey, (X509Certificate) cert);
+        Document dd = decryptElement(ed, rsaKey);
         // XMLUtils.outputDOM(dd.getFirstChild(), System.out);
         checkDecryptedDoc(dd, true);
     }
@@ -317,15 +304,13 @@ public class XMLEncryption11Test extends org.junit.Assert {
         KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(this.getClass().getClassLoader().getResourceAsStream(keystore), "passwd".toCharArray());
 
-        Certificate cert = keyStore.getCertificate("importkey");
-
         KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
                 keyStore.getEntry("importkey", new KeyStore.PasswordProtection("passwd".toCharArray()));
         PrivateKey rsaKey = pkEntry.getPrivateKey();
 
         String filename = "org/w3c/www/interop/xmlenc-core-11/cipherText__RSA-4096__aes256-gcm__rsa-oaep__Sha512-MGF_Sha1_PSource.xml";
 
-        Document dd = decryptElement(filename, rsaKey, (X509Certificate) cert);
+        Document dd = decryptElement(filename, rsaKey);
         // XMLUtils.outputDOM(dd.getFirstChild(), System.out);
         checkDecryptedDoc(dd, true);
     }
@@ -339,8 +324,6 @@ public class XMLEncryption11Test extends org.junit.Assert {
 
         KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(this.getClass().getClassLoader().getResourceAsStream(keystore), "passwd".toCharArray());
-
-        Certificate cert = keyStore.getCertificate("importkey");
 
         KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
                 keyStore.getEntry("importkey", new KeyStore.PasswordProtection("passwd".toCharArray()));
@@ -366,7 +349,7 @@ public class XMLEncryption11Test extends org.junit.Assert {
         // XMLUtils.outputDOM(ed.getFirstChild(), System.out);
 
         // Perform decryption
-        Document dd = decryptElement(ed, rsaKey, (X509Certificate) cert);
+        Document dd = decryptElement(ed, rsaKey);
         // XMLUtils.outputDOM(dd.getFirstChild(), System.out);
         checkDecryptedDoc(dd, true);
     }
@@ -380,8 +363,6 @@ public class XMLEncryption11Test extends org.junit.Assert {
 
         KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(this.getClass().getClassLoader().getResourceAsStream(keystore), "passwd".toCharArray());
-
-        Certificate cert = keyStore.getCertificate("importkey");
 
         KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
                 keyStore.getEntry("importkey", new KeyStore.PasswordProtection("passwd".toCharArray()));
@@ -407,7 +388,7 @@ public class XMLEncryption11Test extends org.junit.Assert {
         // XMLUtils.outputDOM(ed.getFirstChild(), System.out);
 
         // Perform decryption
-        Document dd = decryptElement(ed, rsaKey, (X509Certificate) cert);
+        Document dd = decryptElement(ed, rsaKey);
         // XMLUtils.outputDOM(dd.getFirstChild(), System.out);
         checkDecryptedDoc(dd, true);
     }
@@ -422,8 +403,6 @@ public class XMLEncryption11Test extends org.junit.Assert {
 
         KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(this.getClass().getClassLoader().getResourceAsStream(keystore), "passwd".toCharArray());
-
-        Certificate cert = keyStore.getCertificate("importkey");
 
         KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
                 keyStore.getEntry("importkey", new KeyStore.PasswordProtection("passwd".toCharArray()));
@@ -456,7 +435,7 @@ public class XMLEncryption11Test extends org.junit.Assert {
 
         // Perform decryption
         try {
-            decryptElementStAX(ed, rsaKey, (X509Certificate) cert);
+            decryptElementStAX(ed, rsaKey);
             Assert.fail("Exception expected");
         } catch (XMLStreamException e) {
             Assert.assertTrue(e.getCause() instanceof IOException);
@@ -472,11 +451,11 @@ public class XMLEncryption11Test extends org.junit.Assert {
      * Take a key, encryption type and a file, find an encrypted element
      * decrypt it and return the resulting document
      */
-    private Document decryptElement(String filename, Key rsaKey, X509Certificate rsaCert) throws Exception {
+    private Document decryptElement(String filename, Key rsaKey) throws Exception {
         DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
         Document doc = db.parse(this.getClass().getClassLoader().getResourceAsStream(filename));
 
-        return decryptElement(doc, rsaKey, rsaCert);
+        return decryptElement(doc, rsaKey);
     }
 
     /**
@@ -485,16 +464,16 @@ public class XMLEncryption11Test extends org.junit.Assert {
      * Take a key, encryption type and a document, find an encrypted element
      * decrypt it and return the resulting document
      */
-    private Document decryptElement(Document doc, Key rsaKey, X509Certificate rsaCert) throws Exception {
+    private Document decryptElement(Document doc, Key rsaKey) throws Exception {
         Document clonedDocument = (Document) doc.cloneNode(true);
-        decryptElementDOM(doc, rsaKey, rsaCert);
-        return decryptElementStAX(clonedDocument, rsaKey, rsaCert);
+        decryptElementDOM(doc, rsaKey);
+        return decryptElementStAX(clonedDocument, rsaKey);
     }
 
     /**
      * Decrypt using StAX API
      */
-    private Document decryptElementStAX(Document doc, Key rsaKey, X509Certificate rsaCert) throws Exception {
+    private Document decryptElementStAX(Document doc, Key rsaKey) throws Exception {
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(rsaKey);
         InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
@@ -512,7 +491,7 @@ public class XMLEncryption11Test extends org.junit.Assert {
     /**
      * Decrypt using DOM API
      */
-    private Document decryptElementDOM(Document doc, Key rsaKey, X509Certificate rsaCert) throws Exception {
+    private Document decryptElementDOM(Document doc, Key rsaKey) throws Exception {
 
         // Create the XMLCipher element
         XMLCipher cipher = XMLCipher.getInstance();
@@ -670,15 +649,14 @@ public class XMLEncryption11Test extends org.junit.Assert {
     private void checkDecryptedDoc(Document d, boolean doNodeCheck) throws Exception {
 
         String cc = retrieveCCNumber(d);
-        assertTrue(cc, ((cc != null) && (cc.equals(cardNumber))));
+        assertTrue(cc, cc != null && cc.equals(cardNumber));
 
         // Test cc numbers
         if (doNodeCheck) {
             int myNodeCount = countNodes(d);
 
             assertTrue(
-                    "Node count mismatches",
-                    ((myNodeCount > 0) && myNodeCount == nodeCount)
+                "Node count mismatches", myNodeCount > 0 && myNodeCount == nodeCount
             );
         }
     }

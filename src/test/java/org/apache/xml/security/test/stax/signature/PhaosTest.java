@@ -55,7 +55,7 @@ import java.net.Proxy;
  * This is a testcase to validate all "phaos-xmldsig-three"
  * testcases from Phaos
  */
-public class PhaosTest extends org.junit.Assert {
+public class PhaosTest extends Assert {
 
     private XMLInputFactory xmlInputFactory;
     private TransformerFactory transformerFactory = TransformerFactory.newInstance();

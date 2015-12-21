@@ -51,7 +51,7 @@ import java.util.Set;
  * @author $Author$
  * @version $Revision$ $Date$
  */
-public class XMLSecurityStreamReaderTest extends org.junit.Assert {
+public class XMLSecurityStreamReaderTest extends Assert {
 
     @Before
     public void setUp() throws Exception {

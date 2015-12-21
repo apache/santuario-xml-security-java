@@ -44,7 +44,7 @@ import java.util.*;
  * @author $Author$
  * @version $Revision$ $Date$
  */
-public class XMLSecurityStreamWriterTest extends org.junit.Assert {
+public class XMLSecurityStreamWriterTest extends Assert {
 
     @Before
     public void setUp() throws Exception {

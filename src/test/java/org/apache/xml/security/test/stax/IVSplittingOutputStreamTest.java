@@ -33,7 +33,7 @@ import java.io.ByteArrayOutputStream;
  * @author $Author$
  * @version $Revision$ $Date$
  */
-public class IVSplittingOutputStreamTest extends org.junit.Assert {
+public class IVSplittingOutputStreamTest extends Assert {
 
     private final String testString = "Within this class we test if the IVSplittingOutputStream works correctly under different conditions";
 

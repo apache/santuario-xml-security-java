@@ -36,7 +36,7 @@ import java.util.Deque;
  * @author $Author$
  * @version $Revision$ $Date$
  */
-public class XMLSecurityEventReaderTest extends org.junit.Assert {
+public class XMLSecurityEventReaderTest extends Assert {
 
     @Test
     public void testConformness() throws Exception {

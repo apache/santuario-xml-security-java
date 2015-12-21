@@ -52,7 +52,7 @@ import org.w3c.dom.Document;
  * org.apache.xml.security.samples.signature.CreateEnvelopingSignature</code>
  * </p>
  */
-public class UnknownAlgoSignatureTest extends org.junit.Assert {
+public class UnknownAlgoSignatureTest extends Assert {
 
     private XMLInputFactory xmlInputFactory;
     private TransformerFactory transformerFactory = TransformerFactory.newInstance();

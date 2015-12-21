@@ -70,7 +70,7 @@ import org.w3c.dom.Document;
  * XML Signature implementation. Thanks to Gregor Karlinger who provided these
  * test vectors. They are located in the directory <CODE>data/at/iaik/ixsil/</CODE>.
  */
-public class IAIKTest extends org.junit.Assert {
+public class IAIKTest extends Assert {
 
     // Define the Keys
     private static final String DSA_Y =
@@ -365,7 +365,7 @@ public class IAIKTest extends org.junit.Assert {
         Key key,
         SecurityTokenConstants.KeyIdentifier keyIdentifier
     ) throws XMLSecurityException {
-        if (SecurityTokenConstants.KeyIdentifier_KeyValue.equals(keyIdentifier)) {
+        if (SecurityTokenConstants.KeyIdentifier_KeyValue.equals(keyIdentifier)) { //NOPMD
 
         } else if (SecurityTokenConstants.KeyIdentifier_NoKeyInfo.equals(keyIdentifier)) {
             DefaultTokenSecurityEvent tokenEvent =

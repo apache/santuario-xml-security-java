@@ -35,7 +35,7 @@ import java.util.List;
  * @author $Author$
  * @version $Revision$ $Date$
  */
-public class UncategorizedTest extends org.junit.Assert {
+public class UncategorizedTest extends Assert {
 
     @Test
     public void testConfigurationLoadFromUrl() throws Exception {

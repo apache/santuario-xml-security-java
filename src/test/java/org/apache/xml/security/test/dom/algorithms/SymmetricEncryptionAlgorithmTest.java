@@ -63,11 +63,11 @@ public class SymmetricEncryptionAlgorithmTest extends org.junit.Assert {
             try {
                 Class<?> c = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
                 cons = c.getConstructor(new Class[] {});
-            } catch (Exception e) {
+            } catch (Exception e) {     //NOPMD
                 //ignore
             }
             if (cons != null) {
-                Provider provider = (java.security.Provider)cons.newInstance();
+                Provider provider = (Provider)cons.newInstance();
                 Security.insertProviderAt(provider, 2);
             }
         }

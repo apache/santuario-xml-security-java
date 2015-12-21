@@ -64,7 +64,7 @@ import org.w3c.dom.NodeList;
 /**
  * A test to make sure that the various Symmetric Encryption algorithms are working
  */
-public class SymmetricEncryptionVerificationTest extends org.junit.Assert {
+public class SymmetricEncryptionVerificationTest extends Assert {
 
     private boolean bcInstalled;
     private XMLInputFactory xmlInputFactory;
@@ -86,11 +86,11 @@ public class SymmetricEncryptionVerificationTest extends org.junit.Assert {
             try {
                 Class<?> c = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
                 cons = c.getConstructor(new Class[] {});
-            } catch (Exception e) {
+            } catch (Exception e) {     //NOPMD
                 //ignore
             }
             if (cons != null) {
-                Provider provider = (java.security.Provider)cons.newInstance();
+                Provider provider = (Provider)cons.newInstance();
                 Security.insertProviderAt(provider, 2);
                 bcInstalled = true;
             }

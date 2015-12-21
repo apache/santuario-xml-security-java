@@ -76,7 +76,7 @@ import org.w3c.dom.Document;
  * from Baltimore using KeyTools XML. These test vectors are located in the directory
  * <CODE>data/ie/baltimore/merlin-examples/</CODE>.
  */
-public class BaltimoreTest extends org.junit.Assert {
+public class BaltimoreTest extends Assert {
 
     // Define the Keys
     private static final String DSA_Y_15 =
@@ -1532,7 +1532,7 @@ public class BaltimoreTest extends org.junit.Assert {
             Key key,
             SecurityTokenConstants.KeyIdentifier keyIdentifier
     ) throws XMLSecurityException {
-        if (SecurityTokenConstants.KeyIdentifier_KeyValue.equals(keyIdentifier)) {
+        if (SecurityTokenConstants.KeyIdentifier_KeyValue.equals(keyIdentifier)) {      //NOPMD
 
         } else if (SecurityTokenConstants.KeyIdentifier_NoKeyInfo.equals(keyIdentifier)) {
             DefaultTokenSecurityEvent tokenEvent =

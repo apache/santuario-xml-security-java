@@ -38,7 +38,7 @@ import java.io.StringWriter;
  * @author $Author$
  * @version $Revision$ $Date$
  */
-public class XMLSecurityEventWriterTest extends org.junit.Assert {
+public class XMLSecurityEventWriterTest extends Assert {
 
     @Test
     public void testConformness() throws Exception {

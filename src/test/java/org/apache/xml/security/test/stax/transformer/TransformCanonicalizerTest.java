@@ -44,7 +44,7 @@ import java.util.Map;
  * @author $Author$
  * @version $Revision$ $Date$
  */
-public class TransformCanonicalizerTest extends org.junit.Assert {
+public class TransformCanonicalizerTest extends Assert {
 
     private XMLInputFactory xmlInputFactory;
 

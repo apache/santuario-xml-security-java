@@ -46,7 +46,7 @@ import java.util.Map;
  * @author $Author$
  * @version $Revision$ $Date$
  */
-public class TransformEnvelopedSignatureTest extends org.junit.Assert {
+public class TransformEnvelopedSignatureTest extends Assert {
 
     private XMLInputFactory xmlInputFactory;
 
