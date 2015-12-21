@@ -99,6 +99,6 @@ public abstract class AbstractInputProcessor implements InputProcessor {
     }
 
     public Attribute getReferenceIDAttribute(XMLSecStartElement xmlSecStartElement) {
-        return xmlSecStartElement.getAttributeByName(XMLSecurityConstants.ATT_NULL_Id);
+        return xmlSecStartElement.getAttributeByName(securityProperties.getIdAttributeNS());
     }
 }

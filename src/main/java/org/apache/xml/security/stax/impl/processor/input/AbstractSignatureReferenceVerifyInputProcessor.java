@@ -187,7 +187,7 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
         List<ReferenceType> referenceTypes = Collections.emptyList();
         for (int i = 0; i < sameDocumentReferences.size(); i++) {
             KeyValue<ResourceResolver, ReferenceType> keyValue = sameDocumentReferences.get(i);
-            if (keyValue.getKey().matches(xmlSecStartElement)) {
+            if (keyValue.getKey().matches(xmlSecStartElement, getSecurityProperties().getIdAttributeNS())) {
                 if (referenceTypes == Collections.<ReferenceType>emptyList()) {
                     referenceTypes = new ArrayList<ReferenceType>();
                 }

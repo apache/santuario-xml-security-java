@@ -23,6 +23,8 @@ import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
 
 import java.io.InputStream;
 
+import javax.xml.namespace.QName;
+
 /**
  * @author $Author$
  * @version $Revision$ $Date$
@@ -31,7 +33,7 @@ public interface ResourceResolver {
 
     boolean isSameDocumentReference();
 
-    boolean matches(XMLSecStartElement xmlSecStartElement);
+    boolean matches(XMLSecStartElement xmlSecStartElement, QName idAttributeNS);
 
     InputStream getInputStreamFromExternalReference() throws XMLSecurityException;
 }

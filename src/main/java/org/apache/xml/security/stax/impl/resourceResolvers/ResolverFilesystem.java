@@ -26,6 +26,8 @@ import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
 import java.io.InputStream;
 import java.net.URI;
 
+import javax.xml.namespace.QName;
+
 /**
  * Resolver for local filesystem resources. Use the standard java security-manager to
  * restrict filesystem accesses.
@@ -68,7 +70,7 @@ public class ResolverFilesystem implements ResourceResolver, ResourceResolverLoo
     }
 
     @Override
-    public boolean matches(XMLSecStartElement xmlSecStartElement) {
+    public boolean matches(XMLSecStartElement xmlSecStartElement, QName idAttributeNS) {
         return false;
     }
 

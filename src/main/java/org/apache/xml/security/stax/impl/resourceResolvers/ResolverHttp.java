@@ -28,6 +28,8 @@ import java.io.InputStream;
 import java.net.*;
 import java.util.regex.Pattern;
 
+import javax.xml.namespace.QName;
+
 /**
  * Resolver for external http[s] resources.
  *
@@ -76,7 +78,7 @@ public class ResolverHttp implements ResourceResolver, ResourceResolverLookup {
     }
 
     @Override
-    public boolean matches(XMLSecStartElement xmlSecStartElement) {
+    public boolean matches(XMLSecStartElement xmlSecStartElement, QName idAttributeNS) {
         return false;
     }
 

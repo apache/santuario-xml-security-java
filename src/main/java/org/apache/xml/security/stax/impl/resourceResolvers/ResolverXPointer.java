@@ -21,9 +21,9 @@ package org.apache.xml.security.stax.impl.resourceResolvers;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.ext.ResourceResolver;
 import org.apache.xml.security.stax.ext.ResourceResolverLookup;
-import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
 
+import javax.xml.namespace.QName;
 import javax.xml.stream.events.Attribute;
 import java.io.InputStream;
 import java.util.regex.Matcher;
@@ -92,7 +92,7 @@ public class ResolverXPointer implements ResourceResolver, ResourceResolverLooku
     }
 
     @Override
-    public boolean matches(XMLSecStartElement xmlSecStartElement) {
+    public boolean matches(XMLSecStartElement xmlSecStartElement, QName idAttributeNS) {
         //when id is null we have #xpointer(/) and then we just return true for the first start-element
         if (id == null) {
             if (!rootNodeOccured) {
@@ -102,7 +102,7 @@ public class ResolverXPointer implements ResourceResolver, ResourceResolverLooku
             return false;
         }
         //case #xpointer(id('ID')):
-        Attribute attribute = xmlSecStartElement.getAttributeByName(XMLSecurityConstants.ATT_NULL_Id);
+        Attribute attribute = xmlSecStartElement.getAttributeByName(idAttributeNS);
         if (attribute != null && attribute.getValue().equals(id)) {
             return true;
         }

@@ -86,12 +86,12 @@ public class XMLSignatureOutputProcessor extends AbstractSignatureOutputProcesso
                         signaturePartDef.setGenerateXPointer(securePart.isGenerateXPointer());
                         signaturePartDef.setSigRefId(IDGenerator.generateID(null));
 
-                        Attribute attribute = xmlSecStartElement.getAttributeByName(XMLSecurityConstants.ATT_NULL_Id);
+                        Attribute attribute = xmlSecStartElement.getAttributeByName(securityProperties.getIdAttributeNS());
                         if (attribute != null) {
                             signaturePartDef.setSigRefId(attribute.getValue());
                         } else {
                             List<XMLSecAttribute> attributeList = new ArrayList<XMLSecAttribute>(1);
-                            attributeList.add(createAttribute(XMLSecurityConstants.ATT_NULL_Id, signaturePartDef.getSigRefId()));
+                            attributeList.add(createAttribute(securityProperties.getIdAttributeNS(), signaturePartDef.getSigRefId()));
                             xmlSecEvent = addAttributes(xmlSecStartElement, attributeList);
                         }
                     } else {

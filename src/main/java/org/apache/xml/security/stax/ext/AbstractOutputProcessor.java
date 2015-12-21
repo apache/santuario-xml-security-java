@@ -252,7 +252,7 @@ public abstract class AbstractOutputProcessor implements OutputProcessor {
         if (secureParts != null) {
             securePart = secureParts.get(xmlSecStartElement.getName());
             if (securePart == null) {
-                Attribute attribute = xmlSecStartElement.getAttributeByName(XMLSecurityConstants.ATT_NULL_Id);
+                Attribute attribute = xmlSecStartElement.getAttributeByName(securityProperties.getIdAttributeNS());
                 if (attribute != null) {
                     securePart = secureParts.get(attribute.getValue());
                 }

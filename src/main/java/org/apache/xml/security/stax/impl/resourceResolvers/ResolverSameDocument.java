@@ -22,6 +22,7 @@ import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.ext.*;
 import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
 
+import javax.xml.namespace.QName;
 import javax.xml.stream.events.Attribute;
 import java.io.InputStream;
 
@@ -69,7 +70,7 @@ public class ResolverSameDocument implements ResourceResolver, ResourceResolverL
     }
 
     @Override
-    public boolean matches(XMLSecStartElement xmlSecStartElement) {
+    public boolean matches(XMLSecStartElement xmlSecStartElement, QName idAttributeNS) {
         if (id.isEmpty()) {
             if (firstElementOccured) {
                 return false;
@@ -77,7 +78,7 @@ public class ResolverSameDocument implements ResourceResolver, ResourceResolverL
             firstElementOccured = true;
             return true;
         } else {
-            Attribute attribute = xmlSecStartElement.getAttributeByName(XMLSecurityConstants.ATT_NULL_Id);
+            Attribute attribute = xmlSecStartElement.getAttributeByName(idAttributeNS);
             if (attribute != null && attribute.getValue().equals(id)) {
                 return true;
             }

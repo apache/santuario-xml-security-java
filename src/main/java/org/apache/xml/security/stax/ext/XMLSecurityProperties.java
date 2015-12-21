@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 
 /**
  * Main configuration class to supply keys etc.
@@ -69,6 +71,8 @@ public class XMLSecurityProperties {
 
     private int signaturePosition = 0;
 
+    private QName idAttributeNS = XMLSecurityConstants.ATT_NULL_Id;
+    
     public XMLSecurityProperties() {
     }
 
@@ -99,6 +103,7 @@ public class XMLSecurityProperties {
         this.useSingleCert = xmlSecurityProperties.useSingleCert;
         this.signatureVerificationKey = xmlSecurityProperties.signatureVerificationKey;
         this.signaturePosition = xmlSecurityProperties.signaturePosition;
+        this.idAttributeNS = xmlSecurityProperties.idAttributeNS;
     }
 
     public SecurityTokenConstants.KeyIdentifier getSignatureKeyIdentifier() {
@@ -128,7 +133,25 @@ public class XMLSecurityProperties {
         this.signaturePosition = signaturePosition;
     }
 
+    /** 
+     * Return the qualified name of the ID attribute used to sign the document.
+     * By default, ID is used.
+     * 
+     * @return the qualified name of the ID attribute
+     */
+    public QName getIdAttributeNS() {
+		return idAttributeNS;
+	}
+
     /**
+     * Sets the qualified name of the ID attribute used to sign the document.
+     * @param idAttributeNS Qualified Name of the ID attribute to use
+     */
+	public void setIdAttributeNS(QName idAttributeNS) {
+		this.idAttributeNS = idAttributeNS;
+	}
+
+	/**
      * returns the KeyIdentifierType which will be used in the secured document
      *
      * @return The KeyIdentifierType
