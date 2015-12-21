@@ -140,18 +140,18 @@ public class XMLSecurityProperties {
      * @return the qualified name of the ID attribute
      */
     public QName getIdAttributeNS() {
-		return idAttributeNS;
-	}
+        return idAttributeNS;
+    }
 
     /**
      * Sets the qualified name of the ID attribute used to sign the document.
      * @param idAttributeNS Qualified Name of the ID attribute to use
      */
-	public void setIdAttributeNS(QName idAttributeNS) {
-		this.idAttributeNS = idAttributeNS;
-	}
+    public void setIdAttributeNS(QName idAttributeNS) {
+        this.idAttributeNS = idAttributeNS;
+    }
 
-	/**
+    /**
      * returns the KeyIdentifierType which will be used in the secured document
      *
      * @return The KeyIdentifierType
