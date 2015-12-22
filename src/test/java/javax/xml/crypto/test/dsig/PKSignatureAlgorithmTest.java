@@ -137,7 +137,9 @@ public class PKSignatureAlgorithmTest extends org.junit.Assert {
         rsaKpg.initialize(2048);
         rsaKeyPair = rsaKpg.genKeyPair();
 
-        ecKeyPair = KeyPairGenerator.getInstance("EC").genKeyPair();
+        KeyPairGenerator ecKpg = KeyPairGenerator.getInstance("EC");
+        ecKpg.initialize(256);
+        ecKeyPair = ecKpg.genKeyPair();
 
         KeyInfoFactory kifac = fac.getKeyInfoFactory();
         rsaki = kifac.newKeyInfo(Collections.singletonList
