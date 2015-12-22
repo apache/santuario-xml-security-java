@@ -87,6 +87,11 @@ public class XmlWriterToTree implements XmlWriter {
 
     @Override
     public void writeStartElement(String prefix, String localName, String namespaceURI) {
+        if ("".equals(namespaceURI)) {
+            // Map global namespace from StAX to DOM
+            namespaceURI = null;
+        }
+
         Element newElem = factory.createElementNS(namespaceURI, DOMUtils.getQNameString(prefix, localName));
         if (nextSibling != null) {
             newElem = (Element)nextSibling.getParentNode().insertBefore(newElem, nextSibling);
@@ -143,6 +148,11 @@ public class XmlWriterToTree implements XmlWriter {
 
         Attr result = null;
         if (value != null) {
+            if ("".equals(namespaceURI)) {
+                // Map global namespace from StAX to DOM
+                namespaceURI = null;
+            }
+
             result = factory.createAttributeNS(namespaceURI, DOMUtils.getQNameString(prefix, localName));
             result.setTextContent(value);
             if (! (currentNode instanceof Element)) {
