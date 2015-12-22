@@ -211,7 +211,7 @@ public class CreateSignatureTest extends org.junit.Assert {
     public void testCanonicalizedOctetStream() throws Exception {
         String signedXML = doSign();
 
-        org.w3c.dom.Document doc = db.parse(new ByteArrayInputStream(signedXML.getBytes()));
+        Document doc = db.parse(new ByteArrayInputStream(signedXML.getBytes()));
 
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();
@@ -249,7 +249,7 @@ public class CreateSignatureTest extends org.junit.Assert {
 
     private String doSign() throws Exception {
         PrivateKey privateKey = kp.getPrivate();
-        org.w3c.dom.Document doc = db.newDocument();
+        Document doc = db.newDocument();
         doc.appendChild(doc.createComment(" Comment before "));
         Element root = doc.createElementNS("", "RootElement");
 
@@ -294,7 +294,7 @@ public class CreateSignatureTest extends org.junit.Assert {
         }
         ks.load(fis, "changeit".toCharArray());
         PrivateKey privateKey = (PrivateKey) ks.getKey("mullan", "changeit".toCharArray());
-        org.w3c.dom.Document doc = db.newDocument();
+        Document doc = db.newDocument();
         X509Certificate signingCert = (X509Certificate) ks.getCertificate("mullan");
         doc.appendChild(doc.createComment(" Comment before "));
         Element root = doc.createElementNS("", "RootElement");
@@ -331,7 +331,7 @@ public class CreateSignatureTest extends org.junit.Assert {
     }
 
     private void doVerify(String signedXML) throws Exception {
-        org.w3c.dom.Document doc = db.parse(new ByteArrayInputStream(signedXML.getBytes()));
+        Document doc = db.parse(new ByteArrayInputStream(signedXML.getBytes()));
 
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();

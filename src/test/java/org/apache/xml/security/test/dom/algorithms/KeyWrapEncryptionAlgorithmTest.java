@@ -50,7 +50,7 @@ import org.w3c.dom.NodeList;
 /**
  * A test to make sure that the various KeyWrap Encryption algorithms are working
  */
-public class KeyWrapEncryptionAlgorithmTest extends org.junit.Assert {
+public class KeyWrapEncryptionAlgorithmTest extends Assert {
 
     private KeyPair rsaKeyPair;
     private boolean bcInstalled;
@@ -73,7 +73,7 @@ public class KeyWrapEncryptionAlgorithmTest extends org.junit.Assert {
                 //ignore
             }
             if (cons != null) {
-                Provider provider = (java.security.Provider)cons.newInstance();
+                Provider provider = (Provider)cons.newInstance();
                 Security.insertProviderAt(provider, 2);
                 bcInstalled = true;
             }

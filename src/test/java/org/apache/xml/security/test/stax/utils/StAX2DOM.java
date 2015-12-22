@@ -35,7 +35,7 @@ public class StAX2DOM {
 
     public static Document readDoc(DocumentBuilder documentBuilder, XMLStreamReader xmlStreamReader) throws XMLStreamException {
         //skip possible text at the beginning of a document and go directly to the root tag
-        while (xmlStreamReader.hasNext() && xmlStreamReader.next() != XMLStreamConstants.START_ELEMENT) {
+        while (xmlStreamReader.hasNext() && xmlStreamReader.next() != XMLStreamConstants.START_ELEMENT) {       //NOPMD
         }
         Document document = documentBuilder.newDocument();
         StAX2DOM.readDocElements(document, document, xmlStreamReader, false, false);

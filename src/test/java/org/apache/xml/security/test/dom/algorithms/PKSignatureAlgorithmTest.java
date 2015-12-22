@@ -46,7 +46,7 @@ import org.w3c.dom.NodeList;
 /**
  * A test to make sure that the various Public Key Signature algorithms are working
  */
-public class PKSignatureAlgorithmTest extends org.junit.Assert {
+public class PKSignatureAlgorithmTest extends Assert {
 
     private KeyPair rsaKeyPair, ecKeyPair;
     private boolean bcInstalled;
@@ -69,7 +69,7 @@ public class PKSignatureAlgorithmTest extends org.junit.Assert {
                 //ignore
             }
             if (cons != null) {
-                Provider provider = (java.security.Provider)cons.newInstance();
+                Provider provider = (Provider)cons.newInstance();
                 Security.insertProviderAt(provider, 2);
                 bcInstalled = true;
             }

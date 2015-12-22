@@ -132,11 +132,11 @@ public class XMLSignatureFactoryTest extends org.junit.Assert {
                         return null;
                     }
                     public String getBaseURI()	{ return null; }
-                    public void setBaseURI(String uri)	{ return; }
+                    public void setBaseURI(String uri)	{ }
                     public KeySelector getKeySelector() { return null; }
-                    public void setKeySelector(KeySelector ks) { return; }
+                    public void setKeySelector(KeySelector ks) { }
                     public URIDereferencer getURIDereferencer() { return null; }
-                    public void setURIDereferencer(URIDereferencer ud) {return;}
+                    public void setURIDereferencer(URIDereferencer ud) {}
                     public Object get(Object key) {return null;}
                     public Object put(Object key, Object value) {return null;}
                     public void setDefaultNamespacePrefix(String defPrefix) {}

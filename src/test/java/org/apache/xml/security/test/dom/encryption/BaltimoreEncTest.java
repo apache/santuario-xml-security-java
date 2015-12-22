@@ -146,7 +146,7 @@ public class BaltimoreEncTest extends org.junit.Assert {
         }
 
         haveKeyWraps =
-            (JCEMapper.translateURItoJCEID(EncryptionConstants.ALGO_ID_KEYWRAP_AES128) != null);
+            JCEMapper.translateURItoJCEID(EncryptionConstants.ALGO_ID_KEYWRAP_AES128) != null;
     }
 
     /**
@@ -498,7 +498,7 @@ public class BaltimoreEncTest extends org.junit.Assert {
         // First check for a known key name
         KeyName keyName = ki.itemKeyName(0);
         if (keyName != null) {
-            return (mapKeyName(keyName.getKeyName()));
+            return mapKeyName(keyName.getKeyName());
         }
 
         // Decrypt any encryptedKey structures
@@ -520,10 +520,8 @@ public class BaltimoreEncTest extends org.junit.Assert {
             XMLX509Certificate xcert = certData.itemCertificate(0);
             X509Certificate cert = xcert.getX509Certificate();
 
-            if (cert != null) {
-                if (cert.getSerialNumber().toString().equals(rsaCertSerialNumber)) {
-                    kek = rsaKey;
-                }
+            if (cert != null && cert.getSerialNumber().toString().equals(rsaCertSerialNumber)) {
+                kek = rsaKey;
             }
         }
         if (kek != null) {
@@ -601,15 +599,14 @@ public class BaltimoreEncTest extends org.junit.Assert {
 
         String cc = retrieveCCNumber(d);
         log.debug("Retrieved Credit Card : " + cc);
-        assertTrue(cc, ((cc!= null) && (cc.equals(cardNumber))));
+        assertTrue(cc, cc!= null && cc.equals(cardNumber));
 
         // Test cc numbers
         if (doNodeCheck) {
             int myNodeCount = countNodes(d);
 
             assertTrue(
-                "Node count mismatches",
-                ((myNodeCount > 0) && myNodeCount == nodeCount)
+                "Node count mismatches", myNodeCount > 0 && myNodeCount == nodeCount
             );
         }
     }

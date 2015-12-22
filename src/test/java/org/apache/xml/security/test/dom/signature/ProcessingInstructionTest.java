@@ -65,7 +65,7 @@ public class ProcessingInstructionTest extends org.junit.Assert {
         String signatureFileName = dir + "upp_sign.xml";
         DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
         File f = new File(signatureFileName);
-        Document doc = db.parse(new java.io.FileInputStream(f));
+        Document doc = db.parse(new FileInputStream(f));
 
         Node obj =
             doc.getElementsByTagNameNS("http://uri.etsi.org/01903/v1.3.2#", "QualifyingProperties").item(0);

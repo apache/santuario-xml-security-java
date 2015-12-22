@@ -112,7 +112,7 @@ public class BobKeyResolver extends KeyResolverSpi {
      *
      * @throws KeyResolverException
      */
-    public javax.crypto.SecretKey engineLookupAndResolveSecretKey(
+    public SecretKey engineLookupAndResolveSecretKey(
         Element element, String BaseURI, StorageResolver storage
     ) throws KeyResolverException {
         if (engineCanResolve(element, BaseURI, storage)) {

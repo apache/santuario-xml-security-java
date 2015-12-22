@@ -33,7 +33,7 @@ public class TestUtils {
      * @return the element.
      */
     public static Element createDSctx(Document doc, String prefix, String namespace) {
-        if ((prefix == null) || (prefix.trim().length() == 0)) {
+        if (prefix == null || prefix.trim().length() == 0) {
             throw new IllegalArgumentException("You must supply a prefix");
         }
 

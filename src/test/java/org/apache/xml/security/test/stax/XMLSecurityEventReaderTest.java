@@ -51,7 +51,7 @@ public class XMLSecurityEventReaderTest extends Assert {
             xmlStreamReader.next();
         }
         while (xmlStreamReader.hasNext());
-        xmlSecEventDeque.push((XMLSecEventFactory.allocate(xmlStreamReader, null)));//EndDocumentEvent
+        xmlSecEventDeque.push(XMLSecEventFactory.allocate(xmlStreamReader, null));//EndDocumentEvent
 
         XMLSecurityEventReader xmlSecurityEventReader = new XMLSecurityEventReader(xmlSecEventDeque, 0);
 
@@ -90,7 +90,7 @@ public class XMLSecurityEventReaderTest extends Assert {
             xmlStreamReader.next();
         }
         while (xmlStreamReader.hasNext());
-        xmlSecEventDeque.push((XMLSecEventFactory.allocate(xmlStreamReader, null)));//EndDocumentEvent
+        xmlSecEventDeque.push(XMLSecEventFactory.allocate(xmlStreamReader, null));//EndDocumentEvent
 
         int skip = 100;
 

@@ -24,7 +24,6 @@ package javax.xml.crypto.test.dsig;
 import javax.xml.crypto.*;
 import javax.xml.crypto.dsig.dom.DOMValidateContext;
 import javax.xml.crypto.dsig.*;
-import java.security.*;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -37,16 +36,9 @@ import javax.crypto.spec.SecretKeySpec;
 public class XMLValidateContextTest extends org.junit.Assert {
 
     private XMLValidateContext defContext;
-    private Key[] KEYS;
     private KeySelector[] KEY_SELECTORS;
 
     public XMLValidateContextTest() throws Exception {
-        // set up the validatingKeys
-        KEYS = new Key[3];
-        KEYS[0] = TestUtils.getPublicKey("DSA");
-        KEYS[1] = TestUtils.getPublicKey("RSA");
-        KEYS[2] = new SecretKeySpec(new byte[16], "HmacSHA1");
-
         // set up the default XMLValidateContext
         SecretKey sk = new SecretKeySpec(new byte[8], "DES");
         defContext = new DOMValidateContext(sk, TestUtils.newDocument());

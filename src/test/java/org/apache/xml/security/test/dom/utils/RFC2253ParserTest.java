@@ -26,7 +26,7 @@ import org.junit.Test;
  * @author $Author$
  * @version $Revision$ $Date$
  */
-public class RFC2253ParserTest extends org.junit.Assert {
+public class RFC2253ParserTest extends Assert {
 
     @Test
     public void testToXML1() throws Exception {

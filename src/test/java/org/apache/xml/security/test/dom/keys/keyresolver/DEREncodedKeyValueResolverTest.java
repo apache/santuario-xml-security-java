@@ -64,7 +64,7 @@ public class DEREncodedKeyValueResolverTest extends Assert {
                 //ignore
             }
             if (cons != null) {
-                Provider provider = (java.security.Provider)cons.newInstance();
+                Provider provider = (Provider)cons.newInstance();
                 Security.insertProviderAt(provider, 1);
                 ecKeyControl = loadPublicKey("ec.key", "EC");
             }

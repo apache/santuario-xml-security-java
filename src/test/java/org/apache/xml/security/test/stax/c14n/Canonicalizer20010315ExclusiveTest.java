@@ -20,7 +20,6 @@ package org.apache.xml.security.test.stax.c14n;
 
 import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer20010315_Excl;
 import org.junit.Before;
-import org.junit.Test;
 import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer20010315_ExclOmitCommentsTransformer;
 import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer20010315_ExclWithCommentsTransformer;
@@ -59,7 +58,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
         this.xmlInputFactory.setEventAllocator(new XMLSecEventAllocator());
     }
 
-    @Test
+    @org.junit.Test
     public void test221excl() throws Exception {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -101,7 +100,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
         assertTrue(equals);
     }
 
-    @Test
+    @org.junit.Test
     public void test222excl() throws Exception {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -128,7 +127,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
         assertTrue(equals);
     }
 
-    @Test
+    @org.junit.Test
     public void test24excl() throws Exception {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -155,7 +154,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
         assertTrue(equals);
     }
 
-    @Test
+    @org.junit.Test
     public void testComplexDocexcl() throws Exception {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -181,7 +180,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
         assertTrue(equals);
     }
 
-    @Test
+    @org.junit.Test
     public void testNodeSet() throws Exception {
 
         final String XML =

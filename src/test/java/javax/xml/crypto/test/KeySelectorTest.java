@@ -88,7 +88,7 @@ public class KeySelectorTest extends org.junit.Assert {
     private static boolean compareKey(Object answer, Key key) {
         boolean result = false;
         if (answer instanceof MyOwnKey) {
-            result = (answer == key);
+            result = answer == key;
         } else if (answer instanceof X509Certificate) {
             result =
                 ((X509Certificate)answer).getPublicKey().equals(key);

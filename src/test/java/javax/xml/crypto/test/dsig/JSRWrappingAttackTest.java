@@ -24,7 +24,6 @@ import java.security.Security;
 import javax.xml.crypto.dsig.XMLSignatureException;
 import javax.xml.crypto.dsig.dom.DOMValidateContext;
 import javax.xml.crypto.test.KeySelectors;
-import javax.xml.crypto.test.dsig.SignatureValidator;
 
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;

@@ -105,7 +105,7 @@ public class KeySelectors {
                     Object[] entries = xd.getContent().toArray();
                     X509CRL crl = null;
                     // Looking for CRL before finding certificates
-                    for (int i = 0; (i < entries.length && crl == null); i++) {
+                    for (int i = 0; i < entries.length && crl == null; i++) {
                         if (entries[i] instanceof X509CRL) {
                             crl = (X509CRL) entries[i];
                         }
@@ -116,8 +116,8 @@ public class KeySelectors {
                         Object o = xi.next();
                         // skip non-X509Certificate entries
                         if (o instanceof X509Certificate) {
-                            if ((purpose != KeySelector.Purpose.VERIFY) &&
-                                (crl != null) &&
+                            if (purpose != KeySelector.Purpose.VERIFY &&
+                                crl != null &&
                                 crl.isRevoked((X509Certificate)o)) {
                                 continue;
                             } else {
@@ -359,7 +359,7 @@ public class KeySelectors {
 
         private static String getHex(byte value) {
             int low = value & 0x0f;
-            int high = ((value >> 4) & 0x0f);
+            int high = (value >> 4) & 0x0f;
             char[] res = new char[2];
             res[0] = mapping.charAt(high);
             res[1] = mapping.charAt(low);

@@ -45,7 +45,7 @@ import org.w3c.dom.NodeList;
 /**
  * A test to make sure that the various Symmetric Encryption algorithms are working
  */
-public class SymmetricEncryptionAlgorithmTest extends org.junit.Assert {
+public class SymmetricEncryptionAlgorithmTest extends Assert {
 
     private boolean bcInstalled;
 
@@ -104,7 +104,7 @@ public class SymmetricEncryptionAlgorithmTest extends org.junit.Assert {
         Assert.assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
-        document = decrypt(encryptionAlgorithm, document, key, localNames);
+        document = decrypt(encryptionAlgorithm, document, key);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -137,7 +137,7 @@ public class SymmetricEncryptionAlgorithmTest extends org.junit.Assert {
         Assert.assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
-        document = decrypt(encryptionAlgorithm, document, key, localNames);
+        document = decrypt(encryptionAlgorithm, document, key);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -170,7 +170,7 @@ public class SymmetricEncryptionAlgorithmTest extends org.junit.Assert {
         Assert.assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
-        document = decrypt(encryptionAlgorithm, document, key, localNames);
+        document = decrypt(encryptionAlgorithm, document, key);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -203,7 +203,7 @@ public class SymmetricEncryptionAlgorithmTest extends org.junit.Assert {
         Assert.assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
-        document = decrypt(encryptionAlgorithm, document, key, localNames);
+        document = decrypt(encryptionAlgorithm, document, key);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -236,7 +236,7 @@ public class SymmetricEncryptionAlgorithmTest extends org.junit.Assert {
         Assert.assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
-        document = decrypt(encryptionAlgorithm, document, key, localNames);
+        document = decrypt(encryptionAlgorithm, document, key);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -269,7 +269,7 @@ public class SymmetricEncryptionAlgorithmTest extends org.junit.Assert {
         Assert.assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
-        document = decrypt(encryptionAlgorithm, document, key, localNames);
+        document = decrypt(encryptionAlgorithm, document, key);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -301,7 +301,7 @@ public class SymmetricEncryptionAlgorithmTest extends org.junit.Assert {
         Assert.assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
-        document = decrypt(encryptionAlgorithm, document, key, localNames);
+        document = decrypt(encryptionAlgorithm, document, key);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -337,7 +337,7 @@ public class SymmetricEncryptionAlgorithmTest extends org.junit.Assert {
         Assert.assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
-        document = decrypt(encryptionAlgorithm, document, key, localNames);
+        document = decrypt(encryptionAlgorithm, document, key);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -373,7 +373,7 @@ public class SymmetricEncryptionAlgorithmTest extends org.junit.Assert {
         Assert.assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
-        document = decrypt(encryptionAlgorithm, document, key, localNames);
+        document = decrypt(encryptionAlgorithm, document, key);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -409,7 +409,7 @@ public class SymmetricEncryptionAlgorithmTest extends org.junit.Assert {
         Assert.assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
-        document = decrypt(encryptionAlgorithm, document, key, localNames);
+        document = decrypt(encryptionAlgorithm, document, key);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -445,7 +445,7 @@ public class SymmetricEncryptionAlgorithmTest extends org.junit.Assert {
         Assert.assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
-        document = decrypt(encryptionAlgorithm, document, key, localNames);
+        document = decrypt(encryptionAlgorithm, document, key);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -484,8 +484,7 @@ public class SymmetricEncryptionAlgorithmTest extends org.junit.Assert {
     private Document decrypt(
         String algorithm,
         Document document,
-        Key key,
-        List<String> localNames
+        Key key
     ) throws Exception {
         XMLCipher cipher = XMLCipher.getInstance(algorithm);
         cipher.init(XMLCipher.DECRYPT_MODE, key);

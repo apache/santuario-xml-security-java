@@ -42,7 +42,7 @@ public class X509DataTest extends org.junit.Assert {
         Init.init();
 
         javax.xml.parsers.DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
-        org.w3c.dom.Document doc = db.newDocument();
+        Document doc = db.newDocument();
         XMLSignature sig = new XMLSignature(doc, "", XMLSignature.ALGO_ID_SIGNATURE_DSA);
         
         doc.appendChild(sig.getElement());

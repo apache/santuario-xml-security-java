@@ -142,12 +142,10 @@ public class SignedEncryptedTest extends Assert {
         document = cipher.doFinal(document, element, true);
 
         XMLCipher deCipher = XMLCipher.getInstance(XMLCipher.AES_128);
-        if (transformerFactory != null) {
-            if (deCipher.getSerializer() instanceof TransformSerializer) {
-                Field f = deCipher.getSerializer().getClass().getDeclaredField("transformerFactory");
-                f.setAccessible(true);
-                f.set(deCipher.getSerializer(), transformerFactory);
-            }
+        if (transformerFactory != null && deCipher.getSerializer() instanceof TransformSerializer) {
+            Field f = deCipher.getSerializer().getClass().getDeclaredField("transformerFactory");
+            f.setAccessible(true);
+            f.set(deCipher.getSerializer(), transformerFactory);
         }
         if (useDocumentSerializer) {
             deCipher.setSerializer(new DocumentSerializer());

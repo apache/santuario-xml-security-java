@@ -88,10 +88,10 @@ public class TestVectorResolver implements EntityResolver {
                                   + "#" + ze.getName() + " " + data.length + " bytes");
                     }
                 }
-            } catch (java.lang.ClassNotFoundException e) {
+            } catch (ClassNotFoundException e) {
                 //
             }
-            catch (java.io.IOException e) {
+            catch (IOException e) {
                 //
             }
         }
@@ -105,7 +105,7 @@ public class TestVectorResolver implements EntityResolver {
      */
     private String getCurrentDir() throws IOException {
 
-        String currentDir = new java.io.File(".").getCanonicalPath();
+        String currentDir = new File(".").getCanonicalPath();
 
         currentDir = currentDir.replace(File.separatorChar, '/');
         currentDir = "file:///" + currentDir + "/";

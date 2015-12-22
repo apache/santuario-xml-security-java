@@ -46,10 +46,11 @@ public final class XmlReaderToWriter {
                 final String namespaceURI = xmlr.getNamespaceURI();
                 if (namespaceURI != null && namespaceURI.length() > 0) {
                     final String prefix = xmlr.getPrefix();
-                    if (prefix != null)
+                    if (prefix != null) {
                         writer.writeStartElement(prefix, localName, namespaceURI);
-                    else
+                    } else {
                         writer.writeStartElement(namespaceURI, localName);
+                    }
                 } else {
                     writer.writeStartElement(localName);
                 }
@@ -68,10 +69,11 @@ public final class XmlReaderToWriter {
 
                     if (attUri != null && attUri.length() > 0) {
                         final String prefix = xmlr.getAttributePrefix(i);
-                        if (prefix != null)
+                        if (prefix != null) {
                             writer.writeAttribute(prefix, attUri, xmlr.getAttributeLocalName(i), xmlr.getAttributeValue(i));
-                        else
+                        } else {
                             writer.writeAttribute(attUri, xmlr.getAttributeLocalName(i), xmlr.getAttributeValue(i));
+                        }
                     } else {
                         writer.writeAttribute(xmlr.getAttributeLocalName(i), xmlr.getAttributeValue(i));
                     }
@@ -103,10 +105,11 @@ public final class XmlReaderToWriter {
                 String encoding = xmlr.getCharacterEncodingScheme();
                 String version = xmlr.getVersion();
 
-                if (encoding != null && version != null)
+                if (encoding != null && version != null) {
                     writer.writeStartDocument(encoding, version);
-                else if (version != null)
+                } else if (version != null) {
                     writer.writeStartDocument(xmlr.getVersion());
+                }
                 break;
             case XMLEvent.END_DOCUMENT:
                 writer.writeEndDocument();

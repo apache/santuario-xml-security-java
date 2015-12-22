@@ -986,8 +986,7 @@ public class Canonicalizer20010315Test extends org.junit.Assert {
 
         DocumentBuilder db = XMLUtils.createDocumentBuilder(true);
 
-        db.setErrorHandler(new org.apache.xml.security.utils
-                           .IgnoreAllErrorHandler());
+        db.setErrorHandler(new IgnoreAllErrorHandler());
 
         Document doc = db.parse(new ByteArrayInputStream(input.getBytes()));
         Canonicalizer c14nizer =

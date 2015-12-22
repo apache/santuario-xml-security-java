@@ -46,7 +46,7 @@ import org.w3c.dom.NodeList;
 /**
  * A test to make sure that the various Signature HMAC algorithms are working
  */
-public class HMACSignatureAlgorithmTest extends org.junit.Assert {
+public class HMACSignatureAlgorithmTest extends Assert {
 
     static {
         org.apache.xml.security.Init.init();
@@ -68,7 +68,7 @@ public class HMACSignatureAlgorithmTest extends org.junit.Assert {
                 //ignore
             }
             if (cons != null) {
-                Provider provider = (java.security.Provider)cons.newInstance();
+                Provider provider = (Provider)cons.newInstance();
                 Security.insertProviderAt(provider, 2);
                 bcInstalled = true;
             }

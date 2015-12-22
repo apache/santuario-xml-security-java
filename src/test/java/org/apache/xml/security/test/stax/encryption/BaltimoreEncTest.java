@@ -413,15 +413,14 @@ public class BaltimoreEncTest extends org.junit.Assert {
     private void checkDecryptedDoc(Document d, boolean doNodeCheck) throws Exception {
 
         String cc = retrieveCCNumber(d);
-        assertTrue(cc, ((cc != null) && (cc.equals(cardNumber))));
+        assertTrue(cc, cc != null && cc.equals(cardNumber));
 
         // Test cc numbers
         if (doNodeCheck) {
             int myNodeCount = countNodes(d);
 
             assertTrue(
-                "Node count mismatches",
-                ((myNodeCount > 0) && myNodeCount == nodeCount)
+                "Node count mismatches", myNodeCount > 0 && myNodeCount == nodeCount
             );
         }
     }

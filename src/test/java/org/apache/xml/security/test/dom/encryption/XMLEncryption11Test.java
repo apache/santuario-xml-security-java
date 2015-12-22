@@ -92,7 +92,7 @@ public class XMLEncryption11Test extends org.junit.Assert {
                 //ignore
             }
             if (cons != null) {
-                Provider provider = (java.security.Provider)cons.newInstance();
+                Provider provider = (Provider)cons.newInstance();
                 Security.insertProviderAt(provider, 2);
             }
         }
@@ -751,15 +751,14 @@ public class XMLEncryption11Test extends org.junit.Assert {
 
         String cc = retrieveCCNumber(d);
         log.debug("Retrieved Credit Card : " + cc);
-        assertTrue(cc, ((cc!= null) && (cc.equals(cardNumber))));
+        assertTrue(cc, cc!= null && cc.equals(cardNumber));
 
         // Test cc numbers
         if (doNodeCheck) {
             int myNodeCount = countNodes(d);
 
             assertTrue(
-                "Node count mismatches",
-                ((myNodeCount > 0) && myNodeCount == nodeCount)
+                "Node count mismatches", myNodeCount > 0 && myNodeCount == nodeCount
             );
         }
     }

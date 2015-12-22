@@ -52,8 +52,8 @@ public class UtfHelperTest extends org.junit.Assert {
 
         // if system property org.apache.xml.security.c14n.oldUtf8=true, can only validate
         // 16bit chars against String.getBytes("UTF8");
-        int chunk = (Boolean.getBoolean("org.apache.xml.security.c14n.oldUtf8")) ? (1 << 16)
-            : (Character.MAX_CODE_POINT + 1);
+        int chunk = Boolean.getBoolean("org.apache.xml.security.c14n.oldUtf8") ? 1 << 16
+            : Character.MAX_CODE_POINT + 1;
         int j = 0;
         ByteArrayOutputStream charByCharOs = new ByteArrayOutputStream();
         ByteArrayOutputStream strOs = new ByteArrayOutputStream();
@@ -61,7 +61,7 @@ public class UtfHelperTest extends org.junit.Assert {
         char chs[] = new char[chunk * 2];
         int pos = 0;
         for (int i = 0; i < chunk; i++) {
-            int ch = (chunk * j) + i;
+            int ch = chunk * j + i;
             int offset = Character.toChars(ch, chs, pos);
             pos += offset;
             if (ch == 0xDBFF) {

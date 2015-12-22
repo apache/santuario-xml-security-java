@@ -21,10 +21,11 @@
  */
 package javax.xml.crypto.test.dsig;
 
-import javax.xml.crypto.*;
 import javax.xml.crypto.dsig.*;
 import javax.xml.crypto.dsig.dom.DOMSignContext;
 import javax.xml.crypto.KeySelector;
+import javax.xml.crypto.URIDereferencer;
+
 import java.security.*;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;

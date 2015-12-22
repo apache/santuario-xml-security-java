@@ -196,7 +196,7 @@ public class AttrCompareTest extends org.junit.Assert {
     ) {
         Attr attr = null;
 
-        if ((NamespaceURI != null) && (NamespaceURI.length() > 0)) {
+        if (NamespaceURI != null && NamespaceURI.length() > 0) {
             attr = doc.createAttributeNS(NamespaceURI, QName);
         } else {
             attr = doc.createAttributeNS(null, QName);

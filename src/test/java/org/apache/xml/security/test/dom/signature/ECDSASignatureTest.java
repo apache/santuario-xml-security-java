@@ -79,7 +79,7 @@ public class ECDSASignatureTest extends org.junit.Assert {
                 // BouncyCastle is not available so just return
                 return;
             } else {
-                Provider provider = (java.security.Provider)cons.newInstance();
+                Provider provider = (Provider)cons.newInstance();
                 Security.insertProviderAt(provider, 1);
             }
         }
@@ -110,10 +110,7 @@ public class ECDSASignatureTest extends org.junit.Assert {
         }
 
         keyStore = KeyStore.getInstance("JKS");
-        keyStore.load(
-            new java.io.FileInputStream(ECDSA_JKS),
-            ECDSA_JKS_PASSWORD.toCharArray()
-        );
+        keyStore.load(new FileInputStream(ECDSA_JKS), ECDSA_JKS_PASSWORD.toCharArray());
 
         doVerify(doSign());
         doVerify(doSign());

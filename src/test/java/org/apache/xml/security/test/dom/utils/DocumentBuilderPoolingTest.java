@@ -115,13 +115,13 @@ public class DocumentBuilderPoolingTest {
                         while (true) {
                             // retrieve some DocumentBuilders...
                             DocumentBuilder documentBuilders[] = new DocumentBuilder[10];
-                            for (int i = 0; i < documentBuilders.length; i++) {
-                                documentBuilders[i] = XMLUtils.createDocumentBuilder(false);
-                                assertNotNull(documentBuilders[i]);
+                            for (int j = 0; j < documentBuilders.length; j++) {
+                                documentBuilders[j] = XMLUtils.createDocumentBuilder(false);
+                                assertNotNull(documentBuilders[j]);
                             }
                             // ...then repool them so that another thread may pickup them again
-                            for (int i = 0; i < documentBuilders.length; i++) {
-                                assertTrue(XMLUtils.repoolDocumentBuilder(documentBuilders[i]));
+                            for (int j = 0; j < documentBuilders.length; j++) {
+                                assertTrue(XMLUtils.repoolDocumentBuilder(documentBuilders[j]));
                             }
                         }
                     } catch (Exception e) {
@@ -167,7 +167,7 @@ public class DocumentBuilderPoolingTest {
             try {
                 assertNull(f.get(1000, TimeUnit.MILLISECONDS));
             } catch (CancellationException ce) {
-                ;//expected since we did cancel it
+                //expected since we did cancel it
             } catch (TimeoutException e) {
                 fail(f + "didn't cancel after timeout?");
             }

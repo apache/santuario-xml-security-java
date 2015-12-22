@@ -120,7 +120,7 @@
                     <sourceEncoding>UTF-8</sourceEncoding>
                     <failOnViolation>true</failOnViolation>
                     <verbose>true</verbose>
-                    <!--<includeTests>true</includeTests>-->
+                    <includeTests>true</includeTests>
                     <targetJdk>${targetJdk}</targetJdk>
                 </configuration>
                 <executions>

@@ -120,7 +120,9 @@ public class TestUtils {
             return getPublicKey("DSA", 1024);
         } else if (algo.equalsIgnoreCase("RSA")) {
             return getPublicKey("RSA", 512);
-        } else throw new RuntimeException("Unsupported key algorithm " + algo);
+        } else {
+            throw new RuntimeException("Unsupported key algorithm " + algo);
+        }
     }
 
     public static PublicKey getPublicKey(String algo, int keysize)
@@ -138,13 +140,19 @@ public class TestUtils {
                                              new BigInteger(DSA_2048_P),
                                              new BigInteger(DSA_2048_Q),
                                              new BigInteger(DSA_2048_G));
-            } else throw new RuntimeException("Unsupported keysize:" + keysize);
+            } else {
+                throw new RuntimeException("Unsupported keysize:" + keysize);
+            }
         } else if (algo.equalsIgnoreCase("RSA")) {
             if (keysize == 512) {
                 kspec = new RSAPublicKeySpec(new BigInteger(RSA_MOD),
                                              new BigInteger(RSA_PUB));
-            } else throw new RuntimeException("Unsupported keysize:" + keysize);
-        } else throw new RuntimeException("Unsupported key algorithm " + algo);
+            } else {
+                throw new RuntimeException("Unsupported keysize:" + keysize);
+            }
+        } else {
+            throw new RuntimeException("Unsupported key algorithm " + algo);
+        }
         return kf.generatePublic(kspec);
     }
 
@@ -162,7 +170,9 @@ public class TestUtils {
             return getPrivateKey("DSA", 1024);
         } else if (algo.equalsIgnoreCase("RSA")) {
             return getPrivateKey("RSA", 512);
-        } else throw new RuntimeException("Unsupported key algorithm " + algo);
+        } else {
+            throw new RuntimeException("Unsupported key algorithm " + algo);
+        }
     }
 
     public static PrivateKey getPrivateKey(String algo, int keysize)
@@ -178,13 +188,19 @@ public class TestUtils {
                 kspec = new DSAPrivateKeySpec
                     (new BigInteger(DSA_2048_X), new BigInteger(DSA_2048_P),
                      new BigInteger(DSA_2048_Q), new BigInteger(DSA_2048_G));
-            } else throw new RuntimeException("Unsupported keysize:" + keysize);
+            } else {
+                throw new RuntimeException("Unsupported keysize:" + keysize);
+            }
         } else if (algo.equalsIgnoreCase("RSA")) {
             if (keysize == 512) {
                 kspec = new RSAPrivateKeySpec
                     (new BigInteger(RSA_MOD), new BigInteger(RSA_PRIV));
-            } else throw new RuntimeException("Unsupported keysize:" + keysize);
-        } else throw new RuntimeException("Unsupported key algorithm " + algo);
+            } else {
+                throw new RuntimeException("Unsupported keysize:" + keysize);
+            }
+        } else {
+            throw new RuntimeException("Unsupported key algorithm " + algo);
+        }
         return kf.generatePrivate(kspec);
     }
 
@@ -232,8 +248,7 @@ public class TestUtils {
                     (TestUtils.getPublicKey("RSA", 512), list.item(0));
             }
         } else {
-            throw new Exception("Unsupported XMLValidateContext type: " +
-                                type);
+            throw new Exception("Unsupported XMLValidateContext type: " + type);
         }
     }
 
@@ -318,7 +333,9 @@ public class TestUtils {
 
         public boolean isFeatureSupported(String feature)
             throws NullPointerException {
-            if (feature == null) throw new NullPointerException();
+            if (feature == null) {
+                throw new NullPointerException();
+            }
             return false;
         }
     }

@@ -31,7 +31,7 @@ import org.junit.Test;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 
-public class ResolverDirectHTTPTest extends org.junit.Assert {
+public class ResolverDirectHTTPTest extends Assert {
 
     //change these properties to match your environment
     private static final String url = "http://www.apache.org";
@@ -44,12 +44,11 @@ public class ResolverDirectHTTPTest extends org.junit.Assert {
 
     @Before
     public void setUp() {
-        org.apache.xml.security.Init.init();
+        Init.init();
     }
 
     @Test
     public void testBug40783() throws Exception {
-        Init.init();
         Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
         Attr uri = doc.createAttribute("id");
         uri.setNodeValue("urn:ddd:uuu");

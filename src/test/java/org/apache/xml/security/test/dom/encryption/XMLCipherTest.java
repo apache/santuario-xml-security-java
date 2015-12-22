@@ -113,7 +113,7 @@ public class XMLCipherTest extends org.junit.Assert {
         }
 
         haveKeyWraps =
-            (JCEMapper.translateURItoJCEID(EncryptionConstants.ALGO_ID_KEYWRAP_AES128) != null);
+            JCEMapper.translateURItoJCEID(EncryptionConstants.ALGO_ID_KEYWRAP_AES128) != null;
 
         //
         // If the BouncyCastle provider is not installed, then try to load it
@@ -128,7 +128,7 @@ public class XMLCipherTest extends org.junit.Assert {
                 //ignore
             }
             if (cons != null) {
-                Provider provider = (java.security.Provider)cons.newInstance();
+                Provider provider = (Provider)cons.newInstance();
                 Security.insertProviderAt(provider, 2);
                 bcInstalled = true;
             }
@@ -1010,11 +1010,11 @@ public class XMLCipherTest extends org.junit.Assert {
             System.exit(-1);
         }
 
-        return (d);
+        return d;
     }
 
     private String element() {
-        return (elementName);
+        return elementName;
     }
 
     private int index() {
@@ -1027,7 +1027,7 @@ public class XMLCipherTest extends org.junit.Assert {
             System.exit(-1);
         }
 
-        return (result);
+        return result;
     }
 
 }

@@ -248,7 +248,7 @@ public class PerformanceMemoryTest extends AbstractPerformanceTest {
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-                memory.add((int) (((getUsedMemory()) - memoryDiff) / 1024.0 / 1024.0));
+                memory.add((int)((getUsedMemory() - memoryDiff) / 1024.0 / 1024.0));
             }
         }
 

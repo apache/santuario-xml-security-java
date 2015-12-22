@@ -338,8 +338,9 @@ public class XMLSignatureTest extends org.junit.Assert {
         // check that Object element retained namespace definitions
         Element objElem = (Element)parent.getFirstChild().getLastChild();
         Attr a = objElem.getAttributeNode("xmlns:test");
-        if (!a.getValue().equals("http://www.example.org/ns"))
+        if (!a.getValue().equals("http://www.example.org/ns")) {
             throw new Exception("Object namespace definition not retained");
+        }
     }
 
     @org.junit.Test
