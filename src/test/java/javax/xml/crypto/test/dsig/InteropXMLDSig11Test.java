@@ -19,7 +19,6 @@
 package javax.xml.crypto.test.dsig;
 
 import java.io.File;
-import java.security.AlgorithmParameters;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.Security;
@@ -48,7 +47,6 @@ public class InteropXMLDSig11Test extends org.junit.Assert {
         // check if EC is supported
         try {
             KeyFactory.getInstance("EC");
-            AlgorithmParameters.getInstance("EC");
         } catch (NoSuchAlgorithmException nsae) {
             ecSupport = false;
         }

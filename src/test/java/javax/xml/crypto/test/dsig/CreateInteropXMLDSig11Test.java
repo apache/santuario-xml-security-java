@@ -69,7 +69,6 @@ public class CreateInteropXMLDSig11Test extends org.junit.Assert {
             p384 = kpg.generateKeyPair();
             kpg.initialize(new ECGenParameterSpec("1.3.132.0.35"));
             p521 = kpg.generateKeyPair();
-            AlgorithmParameters.getInstance("EC");
         } catch (NoSuchAlgorithmException nsae) {
             // EC not supported on this platform
             ecSupport = false;
