@@ -464,12 +464,12 @@
     <properties>
         <xml.apis.version>1.4.01</xml.apis.version>
         <oldxmlsec.version>1.5.8</oldxmlsec.version>
-        <slf4j.version>1.7.13</slf4j.version>
+        <slf4j.version>1.7.14</slf4j.version>
         <xalan.version>2.7.2</xalan.version>
         <xerces.version>2.11.0</xerces.version>
         <junit.version>4.12</junit.version>
         <log4j.version>1.2.17</log4j.version>
-        <bcprov.version>1.53</bcprov.version>
+        <bcprov.version>1.54</bcprov.version>
         <xmlunit.version>1.6</xmlunit.version>
         <commons.codec.version>1.10</commons.codec.version>
         <woodstox.core.asl.version>4.4.1</woodstox.core.asl.version>
