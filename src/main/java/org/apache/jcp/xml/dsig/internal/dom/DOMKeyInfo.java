@@ -24,12 +24,17 @@
  */
 package org.apache.jcp.xml.dsig.internal.dom;
 
-import javax.xml.crypto.*;
-import javax.xml.crypto.dsig.*;
-import javax.xml.crypto.dsig.keyinfo.KeyInfo;
-
 import java.security.Provider;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import javax.xml.crypto.MarshalException;
+import javax.xml.crypto.XMLCryptoContext;
+import javax.xml.crypto.XMLStructure;
+import javax.xml.crypto.dsig.XMLSignature;
+import javax.xml.crypto.dsig.dom.DOMSignContext;
+import javax.xml.crypto.dsig.keyinfo.KeyInfo;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -155,7 +160,12 @@ public final class DOMKeyInfo extends BaseStructure implements KeyInfo {
         Node pNode = parent.getNode();
         String dsPrefix = DOMUtils.getSignaturePrefix(context);
 
-        XmlWriterToTree xwriter = new XmlWriterToTree(Marshaller.getMarshallers(), pNode);
+        Node nextSibling = null;
+        if (context instanceof DOMSignContext) {
+            nextSibling = ((DOMSignContext)context).getNextSibling();
+        }
+
+        XmlWriterToTree xwriter = new XmlWriterToTree(Marshaller.getMarshallers(), pNode, nextSibling);
         marshalInternal(xwriter, this, dsPrefix, context, true);
     }
 

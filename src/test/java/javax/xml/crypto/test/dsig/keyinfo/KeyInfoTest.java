@@ -21,16 +21,20 @@
  */
 package javax.xml.crypto.test.dsig.keyinfo;
 
-import java.util.*;
+import java.security.Key;
+import java.util.Collections;
+import java.util.List;
 
-import javax.xml.crypto.*;
-import javax.xml.crypto.dom.*;
-import javax.xml.crypto.dsig.keyinfo.*;
+import javax.xml.crypto.XMLStructure;
+import javax.xml.crypto.dom.DOMStructure;
+import javax.xml.crypto.dsig.dom.DOMSignContext;
+import javax.xml.crypto.dsig.keyinfo.KeyInfo;
+import javax.xml.crypto.dsig.keyinfo.KeyInfoFactory;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.apache.jcp.xml.dsig.internal.dom.DOMUtils;
 import org.apache.xml.security.utils.XMLUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  * Unit test for javax.xml.crypto.dsig.keyinfo.KeyInfo
@@ -128,5 +132,37 @@ public class KeyInfoTest extends org.junit.Assert {
         if (!knElem.getLocalName().equals("KeyName")) {
             fail("Should be KeyName element: " + knElem.getLocalName());
         }
+
+        // check if key info is inserted before nextSibling
+        doc = XMLUtils.createDocumentBuilder(false).newDocument();
+        elem = doc.createElementNS("http://acme.org", "parent");
+        doc.appendChild(elem);
+        Element nextSib = doc.createElementNS("http://acme.org", "nextSib");
+        elem.appendChild(nextSib);
+
+        Key key = new Key() {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public String getAlgorithm() {
+                return null;
+            }
+
+            @Override
+            public byte[] getEncoded() {
+                return null;
+            }
+
+            @Override
+            public String getFormat() {
+                return null;
+            }
+        };
+
+        DOMSignContext ctx = new DOMSignContext(key, elem, nextSib);
+        parent = new DOMStructure(elem);
+        ki.marshal(parent, ctx);
+        // no need for catching/calling fail() explicitly ... if it fails, it fails ...
+        assertEquals(elem.getFirstChild().getLocalName(), "KeyInfo");
     }
 }
