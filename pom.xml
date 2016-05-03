@@ -365,6 +365,14 @@
                         </systemPropertyVariables>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>clirr-maven-plugin</artifactId>
+                    <version>${clirr.version}</version>
+                    <configuration>
+                        <minSeverity>${minSeverity}</minSeverity>
+                    </configuration>
+                </plugin>
 
             </plugins>
         </pluginManagement>
@@ -477,6 +485,10 @@
         <xmlsec.jaxb.context.class />
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <targetJdk>1.6</targetJdk>
+        <clirr.version>2.7</clirr.version>
+
+        <!-- Allow Clirr severity to be overriden by the command-line option -DminSeverity=level -->
+        <minSeverity>info</minSeverity>
     </properties>
     
     <dependencies>
@@ -577,4 +589,16 @@
         </snapshotRepository>
     </distributionManagement>
 
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>clirr-maven-plugin</artifactId>
+                <version>${clirr.version}</version>
+                <configuration>
+                    <minSeverity>${minSeverity}</minSeverity>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
 </project>
