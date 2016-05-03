@@ -33,6 +33,9 @@ public interface ResourceResolver {
 
     boolean isSameDocumentReference();
 
+    @Deprecated
+    boolean matches(XMLSecStartElement xmlSecStartElement);
+    
     boolean matches(XMLSecStartElement xmlSecStartElement, QName idAttributeNS);
 
     InputStream getInputStreamFromExternalReference() throws XMLSecurityException;

@@ -807,7 +807,7 @@ public final class ECDSAUtils {
         private final String n;
         private final int h;
 
-        ECCurveDefinition(String name, String oid, String field, String a, String b, String x, String y, String n, int h) {
+        public ECCurveDefinition(String name, String oid, String field, String a, String b, String x, String y, String n, int h) {
             this.name = name;
             this.oid = oid;
             this.field = field;

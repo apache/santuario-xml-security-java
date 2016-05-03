@@ -21,6 +21,7 @@ package org.apache.xml.security.stax.impl.resourceResolvers;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.ext.ResourceResolver;
 import org.apache.xml.security.stax.ext.ResourceResolverLookup;
+import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
 
 import java.io.IOException;
@@ -77,6 +78,11 @@ public class ResolverHttp implements ResourceResolver, ResourceResolverLookup {
         return false;
     }
 
+    @Override
+    public boolean matches(XMLSecStartElement xmlSecStartElement) {
+        return this.matches(xmlSecStartElement, XMLSecurityConstants.ATT_NULL_Id);
+    }
+    
     @Override
     public boolean matches(XMLSecStartElement xmlSecStartElement, QName idAttributeNS) {
         return false;
