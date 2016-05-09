@@ -67,6 +67,11 @@ public class InvalidSignatureValueException extends XMLSignatureException {
     public InvalidSignatureValueException(Exception originalException, String msgID) {
         super(originalException, msgID);
     }
+    
+    @Deprecated
+    public InvalidSignatureValueException(String msgID, Exception originalException) {
+        this(originalException, msgID);
+    }
 
     /**
      * Constructor InvalidSignatureValueException
@@ -77,5 +82,10 @@ public class InvalidSignatureValueException extends XMLSignatureException {
      */
     public InvalidSignatureValueException(Exception originalException, String msgID, Object exArgs[]) {
         super(originalException, msgID, exArgs);
+    }
+    
+    @Deprecated
+    public InvalidSignatureValueException(String msgID, Object[] exArgs, Exception originalException) {
+        this(originalException, msgID, exArgs);
     }
 }

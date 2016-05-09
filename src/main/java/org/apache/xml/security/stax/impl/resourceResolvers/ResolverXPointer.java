@@ -97,7 +97,6 @@ public class ResolverXPointer implements ResourceResolver, ResourceResolverLooku
         return this.matches(xmlSecStartElement, XMLSecurityConstants.ATT_NULL_Id);
     }
     
-    @Override
     public boolean matches(XMLSecStartElement xmlSecStartElement, QName idAttributeNS) {
         //when id is null we have #xpointer(/) and then we just return true for the first start-element
         if (id == null) {

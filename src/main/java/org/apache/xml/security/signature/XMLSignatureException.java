@@ -73,6 +73,11 @@ public class XMLSignatureException extends XMLSecurityException {
     public XMLSignatureException(Exception originalException, String msgID) {
         super(originalException, msgID);
     }
+    
+    @Deprecated
+    public XMLSignatureException(String msgID, Exception originalException) {
+        this(originalException, msgID);
+    }
 
     /**
      * Constructor XMLSignatureException
@@ -83,5 +88,10 @@ public class XMLSignatureException extends XMLSecurityException {
      */
     public XMLSignatureException(Exception originalException, String msgID, Object exArgs[]) {
         super(originalException, msgID, exArgs);
+    }
+    
+    @Deprecated
+    public XMLSignatureException(String msgID, Object[] exArgs, Exception originalException) {
+        this(originalException, msgID, exArgs);
     }
 }

@@ -19,11 +19,10 @@
 package org.apache.xml.security.stax.ext;
 
 import org.apache.xml.security.exceptions.XMLSecurityException;
+
 import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
 
 import java.io.InputStream;
-
-import javax.xml.namespace.QName;
 
 /**
  * @author $Author$
@@ -33,10 +32,7 @@ public interface ResourceResolver {
 
     boolean isSameDocumentReference();
 
-    @Deprecated
     boolean matches(XMLSecStartElement xmlSecStartElement);
     
-    boolean matches(XMLSecStartElement xmlSecStartElement, QName idAttributeNS);
-
     InputStream getInputStreamFromExternalReference() throws XMLSecurityException;
 }

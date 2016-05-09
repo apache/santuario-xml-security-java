@@ -63,6 +63,11 @@ public class InvalidKeyResolverException extends XMLSecurityException {
     public InvalidKeyResolverException(Exception originalException, String msgID) {
         super(originalException, msgID);
     }
+    
+    @Deprecated
+    public InvalidKeyResolverException(String msgID, Exception originalException) {
+        this(originalException, msgID);
+    }
 
     /**
      * Constructor InvalidKeyResolverException
@@ -73,5 +78,10 @@ public class InvalidKeyResolverException extends XMLSecurityException {
      */
     public InvalidKeyResolverException(Exception originalException, String msgID, Object exArgs[]) {
         super(originalException, msgID, exArgs);
+    }
+    
+    @Deprecated
+    public InvalidKeyResolverException(String msgID, Object[] exArgs, Exception originalException) {
+        this(originalException, msgID, exArgs);
     }
 }

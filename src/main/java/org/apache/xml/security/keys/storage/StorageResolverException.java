@@ -68,6 +68,11 @@ public class StorageResolverException extends XMLSecurityException {
     public StorageResolverException(Exception originalException, String msgID) {
         super(originalException, msgID);
     }
+    
+    @Deprecated
+    public StorageResolverException(String msgID, Exception originalException) {
+        this(originalException, msgID);
+    }
 
     /**
      * Constructor StorageResolverException
@@ -78,5 +83,10 @@ public class StorageResolverException extends XMLSecurityException {
      */
     public StorageResolverException(Exception originalException, String msgID, Object exArgs[]) {
         super(originalException, msgID, exArgs);
+    }
+    
+    @Deprecated
+    public StorageResolverException(String msgID, Object[] exArgs, Exception originalException) {
+        this(originalException, msgID, exArgs);
     }
 }

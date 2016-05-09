@@ -35,10 +35,13 @@ import org.apache.xml.security.algorithms.SignatureAlgorithmSpi;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
 import org.apache.xml.security.utils.Base64;
+import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.JavaUtils;
 
 public class SignatureDSA extends SignatureAlgorithmSpi {
 
+    public static final String URI = Constants.SignatureSpecNS + "dsa-sha1";
+    
     private static org.slf4j.Logger log =
         org.slf4j.LoggerFactory.getLogger(SignatureDSA.class);
 

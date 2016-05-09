@@ -21,13 +21,10 @@ package org.apache.xml.security.stax.impl.resourceResolvers;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.ext.ResourceResolver;
 import org.apache.xml.security.stax.ext.ResourceResolverLookup;
-import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
 
 import java.io.InputStream;
 import java.net.URI;
-
-import javax.xml.namespace.QName;
 
 /**
  * Resolver for local filesystem resources. Use the standard java security-manager to
@@ -72,11 +69,6 @@ public class ResolverFilesystem implements ResourceResolver, ResourceResolverLoo
 
     @Override
     public boolean matches(XMLSecStartElement xmlSecStartElement) {
-        return this.matches(xmlSecStartElement, XMLSecurityConstants.ATT_NULL_Id);
-    }
-    
-    @Override
-    public boolean matches(XMLSecStartElement xmlSecStartElement, QName idAttributeNS) {
         return false;
     }
 

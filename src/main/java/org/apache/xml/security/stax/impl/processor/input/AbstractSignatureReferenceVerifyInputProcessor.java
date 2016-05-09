@@ -46,6 +46,8 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -187,7 +189,30 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
         List<ReferenceType> referenceTypes = Collections.emptyList();
         for (int i = 0; i < sameDocumentReferences.size(); i++) {
             KeyValue<ResourceResolver, ReferenceType> keyValue = sameDocumentReferences.get(i);
-            if (keyValue.getKey().matches(xmlSecStartElement, getSecurityProperties().getIdAttributeNS())) {
+
+            ResourceResolver resolver = keyValue.getKey();
+            boolean hasIdMatchesMethod = false;
+            try {
+                // A reflection hack to avoid breaking the ResourceResolver interface for SANTUARIO-407.
+                Method m = resolver.getClass().getMethod("matches", XMLSecStartElement.class, QName.class);
+                if (m != null) {
+                    hasIdMatchesMethod = true;
+                    if ((Boolean)m.invoke(resolver, xmlSecStartElement, getSecurityProperties().getIdAttributeNS())) {
+                        if (referenceTypes == Collections.<ReferenceType>emptyList()) {
+                            referenceTypes = new ArrayList<ReferenceType>();
+                        }
+                        referenceTypes.add(keyValue.getValue());
+                    }
+                }
+            } catch (NoSuchMethodException ex) {
+                // No need to report this
+            } catch (InvocationTargetException ex) {
+                // No need to report this
+            } catch (IllegalAccessException ex) {
+                // No need to report this
+            }
+            
+            if (!hasIdMatchesMethod && keyValue.getKey().matches(xmlSecStartElement)) {
                 if (referenceTypes == Collections.<ReferenceType>emptyList()) {
                     referenceTypes = new ArrayList<ReferenceType>();
                 }

@@ -70,6 +70,11 @@ public class TransformationException extends XMLSecurityException {
     public TransformationException(Exception originalException, String msgID) {
         super(originalException, msgID);
     }
+    
+    @Deprecated
+    public TransformationException(String msgID, Exception originalException) {
+        this(originalException, msgID);
+    }
 
     /**
      * Constructor TransformationException
@@ -80,5 +85,10 @@ public class TransformationException extends XMLSecurityException {
      */
     public TransformationException(Exception originalException, String msgID, Object exArgs[]) {
         super(originalException, msgID, exArgs);
+    }
+    
+    @Deprecated
+    public TransformationException(String msgID, Object[] exArgs, Exception originalException) {
+        this(originalException, msgID, exArgs);
     }
 }
