@@ -191,18 +191,17 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
             KeyValue<ResourceResolver, ReferenceType> keyValue = sameDocumentReferences.get(i);
 
             ResourceResolver resolver = keyValue.getKey();
-            boolean hasIdMatchesMethod = false;
+            boolean resourceMatches = false;
             try {
                 // A reflection hack to avoid breaking the ResourceResolver interface for SANTUARIO-407.
                 Method m = resolver.getClass().getMethod("matches", XMLSecStartElement.class, QName.class);
-                if (m != null) {
-                    hasIdMatchesMethod = true;
-                    if ((Boolean)m.invoke(resolver, xmlSecStartElement, getSecurityProperties().getIdAttributeNS())) {
-                        if (referenceTypes == Collections.<ReferenceType>emptyList()) {
-                            referenceTypes = new ArrayList<ReferenceType>();
-                        }
-                        referenceTypes.add(keyValue.getValue());
+                if (m != null 
+                    && (Boolean)m.invoke(resolver, xmlSecStartElement, getSecurityProperties().getIdAttributeNS())) {
+                    if (referenceTypes == Collections.<ReferenceType>emptyList()) {
+                        referenceTypes = new ArrayList<ReferenceType>();
                     }
+                    referenceTypes.add(keyValue.getValue());
+                    resourceMatches = true;
                 }
             } catch (NoSuchMethodException ex) {
                 // No need to report this
@@ -212,7 +211,7 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
                 // No need to report this
             }
             
-            if (!hasIdMatchesMethod && keyValue.getKey().matches(xmlSecStartElement)) {
+            if (!resourceMatches && keyValue.getKey().matches(xmlSecStartElement)) {
                 if (referenceTypes == Collections.<ReferenceType>emptyList()) {
                     referenceTypes = new ArrayList<ReferenceType>();
                 }
