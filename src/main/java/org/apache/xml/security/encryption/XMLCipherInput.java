@@ -182,7 +182,7 @@ public class XMLCipherInput {
         try {
             return Base64.decode(base64EncodedEncryptedOctets);
         } catch (Base64DecodingException bde) {
-            throw new XMLEncryptionException("empty", bde);
+            throw new XMLEncryptionException(bde);
         }
     }
 }

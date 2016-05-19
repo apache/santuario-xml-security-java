@@ -1611,7 +1611,7 @@ public class XMLCipher {
 
     private Cipher constructCipher(String algorithm, String digestAlgorithm, Exception nsae) throws XMLEncryptionException {
         if (!XMLCipher.RSA_OAEP.equals(algorithm)) {
-            throw new XMLEncryptionException("empty", nsae);
+            throw new XMLEncryptionException(nsae);
         }
 
         if (digestAlgorithm == null
@@ -2413,7 +2413,7 @@ public class XMLCipher {
                 }
                 return ki;
             } catch (XMLSecurityException xse) {
-                throw new XMLEncryptionException("Error loading Key Info", xse);
+                throw new XMLEncryptionException(xse, "KeyInfo.error");
             }
         }
 
@@ -2678,9 +2678,7 @@ public class XMLCipher {
             public void setCipherValue(CipherValue value) throws XMLEncryptionException {
 
                 if (cipherType == REFERENCE_TYPE) {
-                    throw new XMLEncryptionException(
-                        "empty", new UnsupportedOperationException(valueMessage)
-                    );
+                    throw new XMLEncryptionException(new UnsupportedOperationException(valueMessage));
                 }
 
                 cipherValue = value;
