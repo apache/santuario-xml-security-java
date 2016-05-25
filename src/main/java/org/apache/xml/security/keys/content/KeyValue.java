@@ -104,6 +104,8 @@ public class KeyValue extends SignatureElementProxy implements KeyInfoContent {
 
             appendSelf(rsa);
             addReturnToSelf();
+        } else {
+            throw new RuntimeException("PublicKey type " + pk + " is not supported");
         }
     }
 
