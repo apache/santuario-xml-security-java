@@ -105,7 +105,9 @@ public class KeyValue extends SignatureElementProxy implements KeyInfoContent {
             appendSelf(rsa);
             addReturnToSelf();
         } else {
-            throw new RuntimeException("PublicKey type " + pk + " is not supported");
+            String error = "The given PublicKey type " + pk + " is not supported. Only DSAPublicKey and "
+                + "RSAPublicKey types are currently supported";
+            throw new IllegalArgumentException(error);
         }
     }
 
