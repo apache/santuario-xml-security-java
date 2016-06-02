@@ -624,11 +624,12 @@ public final class XMLSignature extends SignatureElementProxy {
             SignatureAlgorithm sa = si.getSignatureAlgorithm();
             OutputStream so = null;
             try {
+                // generate digest values for all References in this SignedInfo
+                si.generateDigestValues();
+
                 // initialize SignatureAlgorithm for signing
                 sa.initSign(signingKey);
 
-                // generate digest values for all References in this SignedInfo
-                si.generateDigestValues();
                 so = new UnsyncBufferedOutputStream(new SignerOutputStream(sa));
                 // get the canonicalized bytes from SignedInfo
                 si.signInOctetStream(so);
