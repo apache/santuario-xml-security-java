@@ -81,7 +81,7 @@ public class Base64Test extends org.junit.Assert {
                 "VGhlIHF1aWNrIGJyb3duIGZveCBqdW1wcyBvdmVyIHRoZSBsYXp5IGRvZyBhbmQgc29tZSBleHRyYSB0ZXh0IHRoYXQgd2lsbCBjYXVzZSBhIGxpbmUgd3JhcA==";
         } else {
             expectedResult =
-                "VGhlIHF1aWNrIGJyb3duIGZveCBqdW1wcyBvdmVyIHRoZSBsYXp5IGRvZyBhbmQgc29tZSBleHRy\nYSB0ZXh0IHRoYXQgd2lsbCBjYXVzZSBhIGxpbmUgd3JhcA==";
+                "VGhlIHF1aWNrIGJyb3duIGZveCBqdW1wcyBvdmVyIHRoZSBsYXp5IGRvZyBhbmQgc29tZSBleHRy\r\nYSB0ZXh0IHRoYXQgd2lsbCBjYXVzZSBhIGxpbmUgd3JhcA==";
         }
         String result = Base64.encode(inputData.getBytes("UTF-8"));
         assertEquals("Result of encoding", result, expectedResult);
@@ -94,4 +94,17 @@ public class Base64Test extends org.junit.Assert {
         assertEquals("Result of encoding", result2, inputData);
     }
 
+    @org.junit.Test
+    public void testLineWrap() throws Exception {
+
+        String key = "asfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasfasf";
+
+        String masterKey1 = Base64.encode(key.getBytes());
+        String masterKey2 = 
+            new String( org.apache.commons.codec.binary.Base64.encodeBase64Chunked(key.getBytes())).trim();
+        // System.out.println("K1: " + masterKey1 + "@@" + masterKey1.length());
+        // System.out.println("K2: " + masterKey2 + "@@" + masterKey2.length());
+        assertEquals(masterKey1, masterKey2);
+
+    }
 }

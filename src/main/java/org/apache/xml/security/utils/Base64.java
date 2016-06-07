@@ -381,7 +381,7 @@ public class Base64 {
         int numberLines = (numberQuartet - 1) / quartesPerLine;
         char encodedData[] = null;
 
-        encodedData = new char[numberQuartet * 4 + numberLines];
+        encodedData = new char[numberQuartet * 4 + numberLines * 2];
 
         byte k = 0, l = 0, b1 = 0, b2 = 0, b3 = 0;
         int encodedIndex = 0;
@@ -410,6 +410,7 @@ public class Base64 {
 
                 i++;
             }
+            encodedData[encodedIndex++] = 0xd;
             encodedData[encodedIndex++] = 0xa;
         }
 

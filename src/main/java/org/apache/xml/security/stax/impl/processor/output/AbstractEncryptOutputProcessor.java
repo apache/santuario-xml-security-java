@@ -165,7 +165,7 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
 
                 characterEventGeneratorOutputStream = new CharacterEventGeneratorOutputStream();
                 Base64OutputStream base64EncoderStream =
-                        new Base64OutputStream(characterEventGeneratorOutputStream, true, 0, null);
+                        new Base64OutputStream(characterEventGeneratorOutputStream, true);
                 base64EncoderStream.write(iv);
 
                 OutputStream outputStream = new CipherOutputStream(base64EncoderStream, symmetricCipher);
