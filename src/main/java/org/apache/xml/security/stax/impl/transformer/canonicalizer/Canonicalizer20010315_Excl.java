@@ -111,6 +111,8 @@ public abstract class Canonicalizer20010315_Excl extends CanonicalizerBase {
                 String ns = xmlSecStartElement.getNamespaceURI(prefix);
                 if (ns == null && prefix.isEmpty()) {
                     ns = "";
+                } else if (ns == null) {
+                    continue;
                 }
 
                 final XMLSecNamespace comparableNamespace = XMLSecEventFactory.createXMLSecNamespace(prefix, ns);
