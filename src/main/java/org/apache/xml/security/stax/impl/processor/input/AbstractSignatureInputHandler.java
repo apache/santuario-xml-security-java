@@ -290,7 +290,13 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
             } else {
                 verifyKey = inboundSecurityToken.getSecretKey(
                         algorithmURI, XMLSecurityConstants.Sym_Sig, signatureType.getId());
-                verifyKey = XMLSecurityUtils.prepareSecretKey(algorithmURI, verifyKey.getEncoded());
+                if (verifyKey != null) {
+                    verifyKey = XMLSecurityUtils.prepareSecretKey(algorithmURI, verifyKey.getEncoded());
+                }
+            }
+
+            if (verifyKey == null) {
+                throw new XMLSecurityException("KeyInfo.nokey", new Object[]{"the inbound security token"});
             }
 
             try {
