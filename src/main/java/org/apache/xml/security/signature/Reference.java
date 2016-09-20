@@ -770,8 +770,8 @@ public class Reference extends SignatureElementProxy {
     private byte[] getPreCalculatedDigest(XMLSignatureInput input)
             throws ReferenceNotInitializedException {
         try {
-        log.debug("Verifying element with pre-calculated digest");
-        String preCalculatedDigest = input.getPreCalculatedDigest();
+            log.debug("Verifying element with pre-calculated digest");
+            String preCalculatedDigest = input.getPreCalculatedDigest();
             return Base64.decode(preCalculatedDigest);
         } catch (Base64DecodingException e) {
             log.error("Failed to decode pre-calculated digest in base64: " + e.getMessage());
