@@ -330,7 +330,7 @@ public class JCEMapper {
      * @return the class name that implements this algorithm
      */
     public static String getAlgorithmClassFromURI(String algorithmURI) {
-    	Algorithm algorithm = getAlgorithm(algorithmURI);
+        Algorithm algorithm = getAlgorithm(algorithmURI);
         if (algorithm != null) {
             return algorithm.algorithmClass;
         }
@@ -344,7 +344,7 @@ public class JCEMapper {
      * @return The length of the key used in the algorithm
      */
     public static int getKeyLengthFromURI(String algorithmURI) {
-    	Algorithm algorithm = getAlgorithm(algorithmURI);
+        Algorithm algorithm = getAlgorithm(algorithmURI);
         if (algorithm != null) {
             return algorithm.keyLength;
         }
@@ -352,7 +352,7 @@ public class JCEMapper {
     }
 
     public static int getIVLengthFromURI(String algorithmURI) {
-    	Algorithm algorithm = getAlgorithm(algorithmURI);
+        Algorithm algorithm = getAlgorithm(algorithmURI);
         if (algorithm != null) {
             return algorithm.ivLength;
         }
@@ -366,8 +366,8 @@ public class JCEMapper {
      * @return The KeyAlgorithm for the given URI.
      */
     public static String getJCEKeyAlgorithmFromURI(String algorithmURI) {
-    	Algorithm algorithm = getAlgorithm(algorithmURI);
-    	 if (algorithm != null) {
+        Algorithm algorithm = getAlgorithm(algorithmURI);
+         if (algorithm != null) {
              return algorithm.requiredKey;
          }
         return null;
@@ -380,7 +380,7 @@ public class JCEMapper {
      * @return The JCEProvider for the given URI.
      */
     public static String getJCEProviderFromURI(String algorithmURI) {
-    	Algorithm algorithm = getAlgorithm(algorithmURI);
+        Algorithm algorithm = getAlgorithm(algorithmURI);
         if (algorithm != null) {
             return algorithm.jceProvider;
         }
@@ -393,19 +393,16 @@ public class JCEMapper {
      * @param algorithmURI
      * @return The Algorithm object for the given URI.
      */
-	private static Algorithm getAlgorithm(String algorithmURI) {
+    private static Algorithm getAlgorithm(String algorithmURI) {
         if (log.isDebugEnabled()) {
             log.debug("Request for URI " + algorithmURI);
         }
-		
-		if (algorithmURI != null) {
-            Algorithm algorithm = algorithmsMap.get(algorithmURI);
-            if (algorithm != null) {
-                return algorithm;
-            }
+        
+        if (algorithmURI != null) {
+            return algorithmsMap.get(algorithmURI);
         }
-		return null;
-	}
+        return null;
+    }
     
     /**
      * Gets the default Provider for obtaining the security algorithms
