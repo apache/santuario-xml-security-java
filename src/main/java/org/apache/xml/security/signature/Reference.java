@@ -708,6 +708,10 @@ public class Reference extends SignatureElementProxy {
      */
     private byte[] calculateDigest(boolean validating)
         throws ReferenceNotInitializedException, XMLSignatureException {
+        XMLSignatureInput input = this.getContentsBeforeTransformation();
+        if(input.isPreCalculatedDigest()) {
+            return getPreCalculatedDigest(input);
+        }
         OutputStream os = null;
         try {
             MessageDigestAlgorithm mda = this.getMessageDigestAlgorithm();
@@ -752,6 +756,26 @@ public class Reference extends SignatureElementProxy {
                     throw new ReferenceNotInitializedException(ex);
                 }
             }
+        }
+    }
+
+    /**
+     * Get the pre-calculated digest value from the XMLSignatureInput.
+     *
+     * @param input XMLSignature
+     * @return a pre-calculated digest value.
+     * @throws ReferenceNotInitializedException if there is an error decoding digest value
+     * in Base64. Properly encoded pre-calculated digest value must be set.
+     */
+    private byte[] getPreCalculatedDigest(XMLSignatureInput input)
+            throws ReferenceNotInitializedException {
+        try {
+        log.debug("Verifying element with pre-calculated digest");
+        String preCalculatedDigest = input.getPreCalculatedDigest();
+            return Base64.decode(preCalculatedDigest);
+        } catch (Base64DecodingException e) {
+            log.error("Failed to decode pre-calculated digest in base64: " + e.getMessage());
+            throw new ReferenceNotInitializedException(e);
         }
     }
 

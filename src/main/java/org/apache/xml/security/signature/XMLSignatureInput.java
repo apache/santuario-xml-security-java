@@ -112,6 +112,11 @@ public class XMLSignatureInput {
     private OutputStream outputStream = null;
 
     /**
+     * Pre-calculated digest value of the object in base64.
+     */
+    private String preCalculatedDigest;
+
+    /**
      * Construct a XMLSignatureInput from an octet array.
      * <p>
      * This is a comfort method, which internally converts the byte[] array into
@@ -151,6 +156,15 @@ public class XMLSignatureInput {
      */
     public XMLSignatureInput(Set<Node> inputNodeSet) {
         this.inputNodeSet = inputNodeSet;
+    }
+
+    /**
+     * Construct a <code>XMLSignatureInput</code> from a known digest value in Base64.
+     * This makes it possible to compare the element digest with the provided digest value.
+     * @param preCalculatedDigest digest value in base64.
+     */
+    public XMLSignatureInput(String preCalculatedDigest) {
+        this.preCalculatedDigest = preCalculatedDigest;
     }
 
     /**
@@ -320,6 +334,14 @@ public class XMLSignatureInput {
      */
     public boolean isByteArray() {
         return bytes != null && this.inputNodeSet == null && subNode == null;
+    }
+
+    /**
+     * Determines if the object has been set up with a pre-calculated digest.
+     * @return
+     */
+    public boolean isPreCalculatedDigest() {
+        return preCalculatedDigest != null;
     }
 
     /**
@@ -584,4 +606,7 @@ public class XMLSignatureInput {
         this.secureValidation = secureValidation;
     }
 
+    public String getPreCalculatedDigest() {
+        return preCalculatedDigest;
+    }
 }
