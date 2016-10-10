@@ -141,7 +141,8 @@ public final class C14nHelper {
         if (ctxNode != null) {
             NamedNodeMap attributes = ctxNode.getAttributes();
 
-            for (int i = 0; i < attributes.getLength(); i++) {
+            int length = attributes.getLength();
+            for (int i = 0; i < length; i++) {
                 C14nHelper.assertNotRelativeNS((Attr) attributes.item(i));
             }
         } else {

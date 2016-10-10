@@ -183,7 +183,8 @@ public class XIncludeHandler extends DefaultHandler {
                     transformer.transform(new DOMSource(document, document.getDocumentURI()), saxResult);
                 } else {
                     NodeList nodeList = evaluateXPointer(xpointer, document);
-                    for (int i = 0; i < nodeList.getLength(); i++) {
+                    int length = nodeList.getLength();
+                    for (int i = 0; i < length; i++) {
                         Node node = nodeList.item(i);
                         transformer.transform(new DOMSource(node, document.getDocumentURI()), saxResult);
                     }
@@ -299,7 +300,8 @@ public class XIncludeHandler extends DefaultHandler {
     private int findBalancedEndIndex(String string, int startIndex, char opening, char ending) {
         int endIndex = -1;
         int openPar = 1;
-        for (int i = startIndex; i < string.length(); i++) {
+        int length = string.length();
+        for (int i = startIndex; i < length; i++) {
             char curChar = string.charAt(i);
             if (curChar == opening) {
                 openPar++;

@@ -124,8 +124,8 @@ public abstract class ResourceResolverSpi {
         String[] understood = this.engineGetPropertyKeys();
 
         if (understood != null) {
-            for (int i = 0; i < understood.length; i++) {
-                if (understood[i].equals(propertyToTest)) {
+            for (String str : understood) {
+                if (str.equals(propertyToTest)) {
                     return true;
                 }
             }

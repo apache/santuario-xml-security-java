@@ -2485,7 +2485,8 @@ public class XMLCipher {
                 element.getElementsByTagNameNS(
                     EncryptionConstants.EncryptionSpecNS,
                     EncryptionConstants._TAG_ENCRYPTIONPROPERTY);
-            for (int i = 0; i < encryptionPropertyList.getLength(); i++) {
+            int length = encryptionPropertyList.getLength();
+            for (int i = 0; i < length; i++) {
                 Node n = encryptionPropertyList.item(i);
                 if (null != n) {
                     result.addEncryptionProperty(newEncryptionProperty((Element) n));
@@ -2537,7 +2538,8 @@ public class XMLCipher {
                     element.getElementsByTagNameNS(
                         EncryptionConstants.EncryptionSpecNS,
                         EncryptionConstants._TAG_DATAREFERENCE);
-                for (int i = 0; i < list.getLength() ; i++) {
+                int drLength = list.getLength();
+                for (int i = 0; i < drLength; i++) {
                     String uri = ((Element) list.item(i)).getAttributeNS(null, "URI");
                     result.add(result.newDataReference(uri));
                 }
@@ -2547,7 +2549,8 @@ public class XMLCipher {
                     element.getElementsByTagNameNS(
                         EncryptionConstants.EncryptionSpecNS,
                         EncryptionConstants._TAG_KEYREFERENCE);
-                for (int i = 0; i < list.getLength() ; i++) {
+                int krLength = list.getLength();
+                for (int i = 0; i < krLength; i++) {
                     String uri = ((Element) list.item(i)).getAttributeNS(null, "URI");
                     result.add(result.newKeyReference(uri));
                 }

@@ -170,7 +170,8 @@ public final class XMLUtils {
             Element el = (Element)rootNode;
             if (el.hasAttributes()) {
                 NamedNodeMap nl = el.getAttributes();
-                for (int i = 0;i < nl.getLength(); i++) {
+                int length = nl.getLength();
+                for (int i = 0; i < length; i++) {
                     result.add(nl.item(i));
                 }
             }
@@ -963,7 +964,8 @@ public final class XMLUtils {
 
                 NamedNodeMap attributes = se.getAttributes();
                 if (attributes != null) {
-                    for (int i = 0; i < attributes.getLength(); i++) {
+                    int length = attributes.getLength();
+                    for (int i = 0; i < length; i++) {
                         Attr attr = (Attr)attributes.item(i);
                         if (attr.isId() && id.equals(attr.getValue())) {
                             if (foundElement == null) {
@@ -1026,7 +1028,8 @@ public final class XMLUtils {
 
                 NamedNodeMap attributes = se.getAttributes();
                 if (attributes != null) {
-                    for (int i = 0; i < attributes.getLength(); i++) {
+                    int length = attributes.getLength();
+                    for (int i = 0; i < length; i++) {
                         Attr attr = (Attr)attributes.item(i);
                         if (attr.isId() && id.equals(attr.getValue()) && se != knownElement) {
                             log.debug("Multiple elements with the same 'Id' attribute value!");

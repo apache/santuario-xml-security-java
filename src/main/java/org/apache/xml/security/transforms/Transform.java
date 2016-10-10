@@ -364,7 +364,8 @@ public final class Transform extends SignatureElementProxy {
 
         // give it to the current document
         if (contextNodes != null) {
-            for (int i = 0; i < contextNodes.getLength(); i++) {
+            int length = contextNodes.getLength();
+            for (int i = 0; i < length; i++) {
                 appendSelf(contextNodes.item(i).cloneNode(true));
             }
         }

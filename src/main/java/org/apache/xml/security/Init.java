@@ -205,10 +205,10 @@ public class Init {
                     Element[] list =
                         XMLUtils.selectNodes(el.getFirstChild(), CONF_NS, "CanonicalizationMethod");
 
-                    for (int i = 0; i < list.length; i++) {
-                        String uri = list[i].getAttributeNS(null, "URI");
+                    for (Element element : list) {
+                        String uri = element.getAttributeNS(null, "URI");
                         String javaClass =
-                            list[i].getAttributeNS(null, "JAVACLASS");
+                            element.getAttributeNS(null, "JAVACLASS");
                         try {
                             Canonicalizer.register(uri, javaClass);
                             if (log.isDebugEnabled()) {
@@ -225,10 +225,10 @@ public class Init {
                     Element[] tranElem =
                         XMLUtils.selectNodes(el.getFirstChild(), CONF_NS, "TransformAlgorithm");
 
-                    for (int i = 0; i < tranElem.length; i++) {
-                        String uri = tranElem[i].getAttributeNS(null, "URI");
+                    for (Element element : tranElem) {
+                        String uri = element.getAttributeNS(null, "URI");
                         String javaClass =
-                            tranElem[i].getAttributeNS(null, "JAVACLASS");
+                            element.getAttributeNS(null, "JAVACLASS");
                         try {
                             Transform.register(uri, javaClass);
                             if (log.isDebugEnabled()) {
@@ -249,8 +249,7 @@ public class Init {
                     if (algorithmsNode != null) {
                         Element[] algorithms =
                             XMLUtils.selectNodes(algorithmsNode.getFirstChild(), CONF_NS, "Algorithm");
-                        for (int i = 0; i < algorithms.length; i++) {
-                            Element element = algorithms[i];
+                        for (Element element : algorithms) {
                             String id = element.getAttributeNS(null, "URI");
                             JCEMapper.register(id, new JCEMapper.Algorithm(element));
                         }
@@ -261,10 +260,10 @@ public class Init {
                     Element[] sigElems =
                         XMLUtils.selectNodes(el.getFirstChild(), CONF_NS, "SignatureAlgorithm");
 
-                    for (int i = 0; i < sigElems.length; i++) {
-                        String uri = sigElems[i].getAttributeNS(null, "URI");
+                    for (Element sigElem : sigElems) {
+                        String uri = sigElem.getAttributeNS(null, "URI");
                         String javaClass =
-                            sigElems[i].getAttributeNS(null, "JAVACLASS");
+                            sigElem.getAttributeNS(null, "JAVACLASS");
 
                         /** $todo$ handle registering */
 
@@ -283,14 +282,14 @@ public class Init {
                 }
 
                 if (tag.equals("ResourceResolvers")) {
-                    Element[]resolverElem =
+                    Element[] resolverElem =
                         XMLUtils.selectNodes(el.getFirstChild(), CONF_NS, "Resolver");
 
-                    for (int i = 0; i < resolverElem.length; i++) {
+                    for (Element element : resolverElem) {
                         String javaClass =
-                            resolverElem[i].getAttributeNS(null, "JAVACLASS");
+                            element.getAttributeNS(null, "JAVACLASS");
                         String description =
-                            resolverElem[i].getAttributeNS(null, "DESCRIPTION");
+                            element.getAttributeNS(null, "DESCRIPTION");
 
                         if (description != null && description.length() > 0) {
                             if (log.isDebugEnabled()) {
@@ -319,11 +318,11 @@ public class Init {
                     Element[] resolverElem =
                         XMLUtils.selectNodes(el.getFirstChild(), CONF_NS, "Resolver");
                     List<String> classNames = new ArrayList<String>(resolverElem.length);
-                    for (int i = 0; i < resolverElem.length; i++) {
+                    for (Element element : resolverElem) {
                         String javaClass =
-                            resolverElem[i].getAttributeNS(null, "JAVACLASS");
+                            element.getAttributeNS(null, "JAVACLASS");
                         String description =
-                            resolverElem[i].getAttributeNS(null, "DESCRIPTION");
+                            element.getAttributeNS(null, "DESCRIPTION");
 
                         if (description != null && description.length() > 0) {
                             if (log.isDebugEnabled()) {
@@ -350,9 +349,9 @@ public class Init {
                     Element[] nl =
                         XMLUtils.selectNodes(el.getFirstChild(), CONF_NS, "PrefixMapping");
 
-                    for (int i = 0; i < nl.length; i++) {
-                        String namespace = nl[i].getAttributeNS(null, "namespace");
-                        String prefix = nl[i].getAttributeNS(null, "prefix");
+                    for (Element element : nl) {
+                        String namespace = element.getAttributeNS(null, "namespace");
+                        String prefix = element.getAttributeNS(null, "prefix");
                         if (log.isDebugEnabled()) {
                             log.debug("Now I try to bind " + prefix + " to " + namespace);
                         }
