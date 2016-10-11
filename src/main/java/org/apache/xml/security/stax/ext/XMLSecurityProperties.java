@@ -54,6 +54,7 @@ public class XMLSecurityProperties {
     private Key encryptionKey;
     private Key encryptionTransportKey;
     private SecurityTokenConstants.KeyIdentifier encryptionKeyIdentifier;
+    private String encryptionKeyName;
 
     private Key decryptionKey;
 
@@ -65,6 +66,7 @@ public class XMLSecurityProperties {
     private X509Certificate[] signatureCerts;
     private boolean addExcC14NInclusivePrefixes = false;
     private SecurityTokenConstants.KeyIdentifier signatureKeyIdentifier;
+    private String signatureKeyName;
     private boolean useSingleCert = true;
 
     private Key signatureVerificationKey;
@@ -104,6 +106,8 @@ public class XMLSecurityProperties {
         this.signatureVerificationKey = xmlSecurityProperties.signatureVerificationKey;
         this.signaturePosition = xmlSecurityProperties.signaturePosition;
         this.idAttributeNS = xmlSecurityProperties.idAttributeNS;
+        this.signatureKeyName = xmlSecurityProperties.signatureKeyName;
+        this.encryptionKeyName = xmlSecurityProperties.encryptionKeyName;
     }
 
     public SecurityTokenConstants.KeyIdentifier getSignatureKeyIdentifier() {
@@ -419,5 +423,31 @@ public class XMLSecurityProperties {
 
     public void setDisableSchemaValidation(boolean disableSchemaValidation) {
         this.disableSchemaValidation = disableSchemaValidation;
+    }
+
+    public String getSignatureKeyName() {
+        return signatureKeyName;
+    }
+
+    /**
+     * specifies the contents of the KeyInfo/KeyName element for signing
+     *
+     * @param signatureKeyName set to a String that will be passed as contents of the KeyName element
+     */
+    public void setSignatureKeyName(String signatureKeyName) {
+        this.signatureKeyName = signatureKeyName;
+    }
+
+    public String getEncryptionKeyName() {
+        return encryptionKeyName;
+    }
+
+    /**
+     * specifies the contents of the KeyInfo/KeyName element for encryption
+     *
+     * @param encryptionKeyName set to a String that will be passed as contents of the KeyName element
+     */
+    public void setEncryptionKeyName(String encryptionKeyName) {
+        this.encryptionKeyName = encryptionKeyName;
     }
 }

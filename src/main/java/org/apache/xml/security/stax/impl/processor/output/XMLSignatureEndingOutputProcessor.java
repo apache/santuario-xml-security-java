@@ -142,6 +142,9 @@ public class XMLSignatureEndingOutputProcessor extends AbstractSignatureEndingOu
                 XMLSecurityUtils.createX509CertificateStructure(this, outputProcessorChain, x509Certificates);
             } else if (SecurityTokenConstants.KeyIdentifier_X509SubjectName.equals(keyIdentifier)) {
                 XMLSecurityUtils.createX509SubjectNameStructure(this, outputProcessorChain, x509Certificates);
+            } else if (SecurityTokenConstants.KeyIdentifier_KeyName.equals(keyIdentifier)) {
+                String keyName = getSecurityProperties().getSignatureKeyName();
+                XMLSecurityUtils.createKeyNameTokenStructure(this, outputProcessorChain, keyName);
             } else {
                 throw new XMLSecurityException("stax.unsupportedToken",
                                                new Object[] {keyIdentifier});

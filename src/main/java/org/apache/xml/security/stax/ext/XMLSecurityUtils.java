@@ -497,4 +497,15 @@ public class XMLSecurityUtils {
         return schema;
     }
 
+    public static void createKeyNameTokenStructure(AbstractOutputProcessor abstractOutputProcessor, OutputProcessorChain outputProcessorChain, String keyName)
+            throws XMLStreamException, XMLSecurityException {
+
+        if (keyName == null || keyName.isEmpty()) {
+            throw new XMLSecurityException("stax.signature.keyNameMissing");
+        }
+
+        abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_KeyName, true, null);
+        abstractOutputProcessor.createCharactersAndOutputAsEvent(outputProcessorChain, keyName);
+        abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_KeyName);
+    }
 }
