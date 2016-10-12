@@ -30,6 +30,7 @@ import java.security.Provider;
 import java.security.Security;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,7 +65,6 @@ import org.apache.xml.security.test.stax.signature.TestSecurityEventListener;
 import org.apache.xml.security.test.stax.utils.StAX2DOM;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
-import org.apache.xml.security.utils.Base64;
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.Assert;
 import org.junit.Before;
@@ -345,7 +345,7 @@ public class XMLEncryption11Test extends Assert {
                 "http://www.w3.org/2001/04/xmlenc#sha512",
                 "http://www.w3.org/2009/xmlenc11#mgf1sha1",
                 sessionKey, "http://www.w3.org/2009/xmlenc11#aes256-gcm",
-                Base64.decode("ZHVtbXkxMjM=".getBytes("UTF-8")));
+                Base64.getMimeDecoder().decode("ZHVtbXkxMjM=".getBytes("UTF-8")));
         // XMLUtils.outputDOM(ed.getFirstChild(), System.out);
 
         // Perform decryption
@@ -384,7 +384,7 @@ public class XMLEncryption11Test extends Assert {
                 "http://www.w3.org/2001/04/xmlenc#sha512",
                 "http://www.w3.org/2009/xmlenc11#mgf1sha512",
                 sessionKey, "http://www.w3.org/2009/xmlenc11#aes256-gcm",
-                Base64.decode("ZHVtbXkxMjM=".getBytes("UTF-8")));
+                Base64.getMimeDecoder().decode("ZHVtbXkxMjM=".getBytes("UTF-8")));
         // XMLUtils.outputDOM(ed.getFirstChild(), System.out);
 
         // Perform decryption
@@ -424,7 +424,7 @@ public class XMLEncryption11Test extends Assert {
                 "http://www.w3.org/2001/04/xmlenc#sha512",
                 "http://www.w3.org/2009/xmlenc11#mgf1sha512",
                 sessionKey, "http://www.w3.org/2009/xmlenc11#aes256-gcm",
-                Base64.decode("ZHVtbXkxMjM=".getBytes("UTF-8")));
+                Base64.getMimeDecoder().decode("ZHVtbXkxMjM=".getBytes("UTF-8")));
         // XMLUtils.outputDOM(ed.getFirstChild(), System.out);
 
         NodeList nl = ed.getElementsByTagNameNS("http://www.w3.org/2001/04/xmlenc#", "CipherValue");
@@ -580,7 +580,8 @@ public class XMLEncryption11Test extends Assert {
         if (oaepParams != null) {
             NodeList oaepParamsElements = document.getElementsByTagNameNS(XMLSecurityConstants.NS_XMLENC, "OAEPparams");
             Assert.assertEquals(1, oaepParamsElements.getLength());
-            Assert.assertArrayEquals(oaepParams, Base64.decode((Element) oaepParamsElements.item(0)));
+            String content = XMLUtils.getFullTextChildrenFromElement((Element) oaepParamsElements.item(0));
+            Assert.assertArrayEquals(oaepParams, Base64.getMimeDecoder().decode(content));
         }
         return document;
     }

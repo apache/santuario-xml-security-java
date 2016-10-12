@@ -29,12 +29,12 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Iterator;
 import java.util.List;
 
 import org.apache.xml.security.keys.storage.StorageResolverException;
 import org.apache.xml.security.keys.storage.StorageResolverSpi;
-import org.apache.xml.security.utils.Base64;
 
 /**
  * This {@link StorageResolverSpi} makes all raw (binary) {@link X509Certificate}s
@@ -210,7 +210,7 @@ public class CertsInFilesystemDirectoryResolver extends StorageResolverSpi {
 
             System.out.println();
             System.out.println("Base64(SKI())=                 \""
-                               + Base64.encode(ski) + "\"");
+                               + Base64.getMimeEncoder().encodeToString(ski) + "\"");
             System.out.println("cert.getSerialNumber()=        \""
                                + cert.getSerialNumber().toString() + "\"");
             System.out.println("cert.getSubjectX500Principal().getName()= \""

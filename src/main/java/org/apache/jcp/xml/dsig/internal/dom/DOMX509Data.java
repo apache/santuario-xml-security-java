@@ -35,8 +35,8 @@ import javax.security.auth.x500.X500Principal;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.apache.xml.security.exceptions.Base64DecodingException;
-import org.apache.xml.security.utils.Base64;
+
+import org.apache.xml.security.utils.XMLUtils;
 
 /**
  * DOM-based implementation of X509Data.
@@ -108,11 +108,8 @@ public final class DOMX509Data extends BaseStructure implements X509Data {
                 } else if (localName.equals("X509SubjectName") && XMLSignature.XMLNS.equals(namespace)) {
                     newContent.add(childElem.getFirstChild().getNodeValue());
                 } else if (localName.equals("X509SKI") && XMLSignature.XMLNS.equals(namespace)) {
-                    try {
-                        newContent.add(Base64.decode(childElem));
-                    } catch (Base64DecodingException bde) {
-                        throw new MarshalException("cannot decode X509SKI", bde);
-                    }
+                    String content = XMLUtils.getFullTextChildrenFromElement(childElem);
+                    newContent.add(Base64.getMimeDecoder().decode(content));
                 } else if (localName.equals("X509CRL") && XMLSignature.XMLNS.equals(namespace)) {
                     newContent.add(unmarshalX509CRL(childElem));
                 } else {
@@ -156,7 +153,8 @@ public final class DOMX509Data extends BaseStructure implements X509Data {
 
     private static void marshalSKI(XmlWriter xwriter, byte[] skid, String dsPrefix)
     {
-        xwriter.writeTextElement(dsPrefix, "X509SKI", XMLSignature.XMLNS, Base64.encode(skid));
+        xwriter.writeTextElement(dsPrefix, "X509SKI", XMLSignature.XMLNS, 
+                                 Base64.getMimeEncoder().encodeToString(skid));
     }
 
     private static void marshalSubjectName(XmlWriter xwriter, String name, String dsPrefix)
@@ -169,7 +167,8 @@ public final class DOMX509Data extends BaseStructure implements X509Data {
     {
         try {
             byte[] encoded = cert.getEncoded();
-            xwriter.writeTextElement(dsPrefix, "X509Certificate", XMLSignature.XMLNS, Base64.encode(encoded));
+            xwriter.writeTextElement(dsPrefix, "X509Certificate", XMLSignature.XMLNS, 
+                                     Base64.getMimeEncoder().encodeToString(encoded));
         } catch (CertificateEncodingException e) {
             throw new MarshalException("Error encoding X509Certificate", e);
         }
@@ -180,7 +179,8 @@ public final class DOMX509Data extends BaseStructure implements X509Data {
     {
         try {
             byte[] encoded = crl.getEncoded();
-            xwriter.writeTextElement(dsPrefix, "X509CRL", XMLSignature.XMLNS, Base64.encode(encoded));
+            xwriter.writeTextElement(dsPrefix, "X509CRL", XMLSignature.XMLNS, 
+                                     Base64.getMimeEncoder().encodeToString(encoded));
         } catch (CRLException e) {
             throw new MarshalException("Error encoding X509CRL", e);
         }
@@ -212,11 +212,10 @@ public final class DOMX509Data extends BaseStructure implements X509Data {
             if (cf == null) {
                 cf = CertificateFactory.getInstance("X.509");
             }
-            return new ByteArrayInputStream(Base64.decode(elem));
+            String content = XMLUtils.getFullTextChildrenFromElement(elem);
+            return new ByteArrayInputStream(Base64.getMimeDecoder().decode(content));
         } catch (CertificateException e) {
             throw new MarshalException("Cannot create CertificateFactory", e);
-        } catch (Base64DecodingException bde) {
-            throw new MarshalException("Cannot decode Base64-encoded val", bde);
         }
     }
 

@@ -28,6 +28,7 @@ import java.security.Provider;
 import java.security.Security;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,7 +49,6 @@ import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.keys.content.X509Data;
 import org.apache.xml.security.keys.content.x509.XMLX509Certificate;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
-import org.apache.xml.security.utils.Base64;
 import org.apache.xml.security.utils.EncryptionConstants;
 import org.apache.xml.security.utils.XMLUtils;
 // import org.apache.xml.security.utils.XMLUtils;
@@ -525,7 +525,7 @@ public class XMLEncryption11Test extends org.junit.Assert {
                     "http://www.w3.org/2009/xmlenc11#rsa-oaep",
                     "http://www.w3.org/2001/04/xmlenc#sha512",
                     "http://www.w3.org/2009/xmlenc11#mgf1sha1",
-                    Base64.decode("ZHVtbXkxMjM=".getBytes("UTF-8"))
+                    Base64.getMimeDecoder().decode("ZHVtbXkxMjM=".getBytes("UTF-8"))
                 );
 
             doc =

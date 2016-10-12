@@ -32,8 +32,8 @@ import javax.xml.crypto.dsig.keyinfo.PGPData;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.apache.xml.security.exceptions.Base64DecodingException;
-import org.apache.xml.security.utils.Base64;
+
+import org.apache.xml.security.utils.XMLUtils;
 
 /**
  * DOM-based implementation of PGPData.
@@ -151,17 +151,15 @@ public final class DOMPGPData extends BaseStructure implements PGPData {
                 Element childElem = (Element)firstChild;
                 String localName = childElem.getLocalName();
                 String namespace = childElem.getNamespaceURI();
-                try {
-                    if (localName.equals("PGPKeyID") && XMLSignature.XMLNS.equals(namespace)) {
-                        pgpKeyId = Base64.decode(childElem);
-                    } else if (localName.equals("PGPKeyPacket") && XMLSignature.XMLNS.equals(namespace)) {
-                        pgpKeyPacket = Base64.decode(childElem);
-                    } else {
-                        other.add
-                            (new javax.xml.crypto.dom.DOMStructure(childElem));
-                    }
-                } catch (Base64DecodingException bde) {
-                    throw new MarshalException(bde);
+                if (localName.equals("PGPKeyID") && XMLSignature.XMLNS.equals(namespace)) {
+                    String content = XMLUtils.getFullTextChildrenFromElement(childElem);
+                    pgpKeyId = Base64.getMimeDecoder().decode(content);
+                } else if (localName.equals("PGPKeyPacket") && XMLSignature.XMLNS.equals(namespace)) {
+                    String content = XMLUtils.getFullTextChildrenFromElement(childElem);
+                    pgpKeyPacket = Base64.getMimeDecoder().decode(content);
+                } else {
+                    other.add
+                    (new javax.xml.crypto.dom.DOMStructure(childElem));
                 }
             }
             firstChild = firstChild.getNextSibling();

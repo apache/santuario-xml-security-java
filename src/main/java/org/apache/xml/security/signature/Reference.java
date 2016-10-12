@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.util.Base64;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -30,7 +31,6 @@ import org.apache.xml.security.algorithms.Algorithm;
 import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.InvalidCanonicalizerException;
-import org.apache.xml.security.exceptions.Base64DecodingException;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.reference.ReferenceData;
 import org.apache.xml.security.signature.reference.ReferenceNodeSetData;
@@ -41,7 +41,6 @@ import org.apache.xml.security.transforms.Transform;
 import org.apache.xml.security.transforms.TransformationException;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.transforms.params.InclusiveNamespaces;
-import org.apache.xml.security.utils.Base64;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.DigesterOutputStream;
 import org.apache.xml.security.utils.SignatureElementProxy;
@@ -388,7 +387,7 @@ public class Reference extends SignatureElementProxy {
             n = n.getNextSibling();
         }
 
-        String base64codedValue = Base64.encode(digestValue);
+        String base64codedValue = Base64.getMimeEncoder().encodeToString(digestValue);
         Text t = createText(base64codedValue);
 
         digestValueElement.appendChild(t);
@@ -769,14 +768,9 @@ public class Reference extends SignatureElementProxy {
      */
     private byte[] getPreCalculatedDigest(XMLSignatureInput input)
             throws ReferenceNotInitializedException {
-        try {
-            log.debug("Verifying element with pre-calculated digest");
-            String preCalculatedDigest = input.getPreCalculatedDigest();
-            return Base64.decode(preCalculatedDigest);
-        } catch (Base64DecodingException e) {
-            log.error("Failed to decode pre-calculated digest in base64: " + e.getMessage());
-            throw new ReferenceNotInitializedException(e);
-        }
+        log.debug("Verifying element with pre-calculated digest");
+        String preCalculatedDigest = input.getPreCalculatedDigest();
+        return Base64.getMimeDecoder().decode(preCalculatedDigest);
     }
 
     /**
@@ -786,7 +780,7 @@ public class Reference extends SignatureElementProxy {
      * @throws Base64DecodingException if Reference contains no proper base64 encoded data.
      * @throws XMLSecurityException if the Reference does not contain a DigestValue element
      */
-    public byte[] getDigestValue() throws Base64DecodingException, XMLSecurityException {
+    public byte[] getDigestValue() throws XMLSecurityException {
         if (digestValueElement == null) {
             // The required element is not in the XML!
             Object[] exArgs ={ Constants._TAG_DIGESTVALUE, Constants.SignatureSpecNS };
@@ -794,7 +788,8 @@ public class Reference extends SignatureElementProxy {
                 "signature.Verification.NoSignatureElement", exArgs
             );
         }
-        return Base64.decode(digestValueElement);
+        String content = XMLUtils.getFullTextChildrenFromElement(digestValueElement);
+        return Base64.getMimeDecoder().decode(content);
     }
 
 
@@ -813,8 +808,8 @@ public class Reference extends SignatureElementProxy {
 
         if (!equal) {
             log.warn("Verification failed for URI \"" + this.getURI() + "\"");
-            log.warn("Expected Digest: " + Base64.encode(elemDig));
-            log.warn("Actual Digest: " + Base64.encode(calcDig));
+            log.warn("Expected Digest: " + Base64.getMimeEncoder().encodeToString(elemDig));
+            log.warn("Actual Digest: " + Base64.getMimeEncoder().encodeToString(calcDig));
         } else {
             if (log.isDebugEnabled()) {
                 log.debug("Verification successful for URI \"" + this.getURI() + "\"");

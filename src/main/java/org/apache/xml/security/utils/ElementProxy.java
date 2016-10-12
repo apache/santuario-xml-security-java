@@ -20,9 +20,9 @@ package org.apache.xml.security.utils;
 
 import java.math.BigInteger;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.Base64;
 import java.util.Map;
 
-import org.apache.xml.security.exceptions.Base64DecodingException;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -266,7 +266,14 @@ public abstract class ElementProxy {
         if (bi != null) {
             Element e = XMLUtils.createElementInSignatureSpace(getDocument(), localname);
 
-            Base64.fillElementWithBigInteger(e, bi);
+            byte[] bytes = XMLUtils.getBytes(bi, bi.bitLength());
+            String encodedInt = Base64.getMimeEncoder().encodeToString(bytes);
+            
+            Document doc = e.getOwnerDocument();
+            Text text = doc.createTextNode(encodedInt);
+
+            e.appendChild(text);
+            
             appendSelf(e);
             addReturnToSelf();
         }
@@ -284,9 +291,12 @@ public abstract class ElementProxy {
      */
     public void addBase64Element(byte[] bytes, String localname) {
         if (bytes != null) {
-            Element e = Base64.encodeToElement(getDocument(), localname, bytes);
+            Element el = XMLUtils.createElementInSignatureSpace(getDocument(), localname);
+            Text text = getDocument().createTextNode(Base64.getMimeEncoder().encodeToString(bytes));
 
-            appendSelf(e);
+            el.appendChild(text);
+
+            appendSelf(el);
             if (!XMLUtils.ignoreLineBreaks()) {
                 appendSelf(createText("\n"));
             }
@@ -316,8 +326,8 @@ public abstract class ElementProxy {
     public void addBase64Text(byte[] bytes) {
         if (bytes != null) {
             Text t = XMLUtils.ignoreLineBreaks()
-                ? createText(Base64.encode(bytes))
-                : createText("\n" + Base64.encode(bytes) + "\n");
+                ? createText(Base64.getMimeEncoder().encodeToString(bytes))
+                : createText("\n" + Base64.getMimeEncoder().encodeToString(bytes) + "\n");
             appendSelf(t);
         }
     }
@@ -357,12 +367,12 @@ public abstract class ElementProxy {
      */
     public BigInteger getBigIntegerFromChildElement(
         String localname, String namespace
-    ) throws Base64DecodingException {
-        return Base64.decodeBigIntegerFromString(
+    ) {
+        return new BigInteger(1, Base64.getMimeDecoder().decode(
             XMLUtils.selectNodeText(
                 getFirstChild(), namespace, localname, 0
             ).getNodeValue()
-        );
+        ));
     }
 
     /**
@@ -387,7 +397,7 @@ public abstract class ElementProxy {
      * @throws XMLSecurityException
      */
     public byte[] getBytesFromTextChild() throws XMLSecurityException {
-        return Base64.decode(getTextFromTextChild());
+        return Base64.getMimeDecoder().decode(getTextFromTextChild());
     }
 
     /**

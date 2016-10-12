@@ -24,12 +24,12 @@ import java.security.PublicKey;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.Base64;
 
 import javax.xml.parsers.DocumentBuilder;
 
 import org.apache.xml.security.Init;
 import org.apache.xml.security.keys.KeyInfo;
-import org.apache.xml.security.utils.Base64;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.JavaUtils;
 import org.apache.xml.security.utils.XMLUtils;
@@ -143,7 +143,7 @@ public class KeyInfoReferenceResolverTest extends Assert {
 
     private PublicKey loadPublicKey(String filePath, String algorithm) throws Exception {
         String fileData = new String(JavaUtils.getBytesFromFile(getControlFilePath(filePath)));
-        byte[] keyBytes = Base64.decode(fileData);
+        byte[] keyBytes = Base64.getMimeDecoder().decode(fileData);
         KeyFactory kf = KeyFactory.getInstance(algorithm);
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
         return kf.generatePublic(keySpec);

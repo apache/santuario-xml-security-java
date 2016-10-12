@@ -23,6 +23,7 @@ import java.io.OutputStream;
 import java.security.Key;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
+import java.util.Base64;
 
 import javax.crypto.SecretKey;
 
@@ -30,12 +31,10 @@ import org.apache.xml.security.algorithms.SignatureAlgorithm;
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.c14n.InvalidCanonicalizerException;
-import org.apache.xml.security.exceptions.Base64DecodingException;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.keys.content.X509Data;
 import org.apache.xml.security.transforms.Transforms;
-import org.apache.xml.security.utils.Base64;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.I18n;
 import org.apache.xml.security.utils.SignatureElementProxy;
@@ -485,11 +484,8 @@ public final class XMLSignature extends SignatureElementProxy {
      * @throws XMLSignatureException If there is no content
      */
     public byte[] getSignatureValue() throws XMLSignatureException {
-        try {
-            return Base64.decode(signatureValueElement);
-        } catch (Base64DecodingException ex) {
-            throw new XMLSignatureException(ex, "empty");
-        }
+        String content = XMLUtils.getFullTextChildrenFromElement(signatureValueElement);
+        return Base64.getMimeDecoder().decode(content);
     }
 
     /**
@@ -504,7 +500,7 @@ public final class XMLSignature extends SignatureElementProxy {
             signatureValueElement.removeChild(signatureValueElement.getFirstChild());
         }
 
-        String base64codedValue = Base64.encode(bytes);
+        String base64codedValue = Base64.getMimeEncoder().encodeToString(bytes);
 
         if (base64codedValue.length() > 76 && !XMLUtils.ignoreLineBreaks()) {
             base64codedValue = "\n" + base64codedValue + "\n";

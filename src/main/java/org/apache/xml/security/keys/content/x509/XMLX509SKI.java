@@ -20,9 +20,9 @@ package org.apache.xml.security.keys.content.x509;
 
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
+import java.util.Base64;
 
 import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.utils.Base64;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.SignatureElementProxy;
 import org.w3c.dom.Document;
@@ -134,7 +134,7 @@ public class XMLX509SKI extends SignatureElementProxy implements XMLX509DataCont
         System.arraycopy(extensionValue, 4, skidValue, 0, skidValue.length);
 
         if (log.isDebugEnabled()) {
-            log.debug("Base64 of SKI is " + Base64.encode(skidValue));
+            log.debug("Base64 of SKI is " + Base64.getMimeEncoder().encodeToString(skidValue));
         }
 
         return skidValue;

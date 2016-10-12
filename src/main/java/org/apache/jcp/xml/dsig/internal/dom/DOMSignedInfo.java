@@ -36,7 +36,6 @@ import java.security.Provider;
 import java.util.*;
 
 import org.w3c.dom.Element;
-import org.apache.xml.security.utils.Base64;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.UnsyncBufferedOutputStream;
 
@@ -246,7 +245,7 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
                 sb.append((char)signedInfoBytes[i]);
             }
             log.debug(sb.toString());
-            log.debug("Data to be signed/verified:" + Base64.encode(signedInfoBytes));
+            log.debug("Data to be signed/verified:" + Base64.getMimeEncoder().encodeToString(signedInfoBytes));
         }
 
         this.canonData = new ByteArrayInputStream(signedInfoBytes);
