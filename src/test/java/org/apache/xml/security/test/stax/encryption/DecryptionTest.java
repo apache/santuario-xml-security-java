@@ -180,8 +180,11 @@ public class DecryptionTest extends Assert {
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        final XMLStreamReader xmlStreamReader =
-                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
+        
+        XMLStreamReader xmlStreamReader = null;
+        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
+        }
 
         // Decrypt
         XMLSecurityProperties properties = new XMLSecurityProperties();
@@ -237,9 +240,12 @@ public class DecryptionTest extends Assert {
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        final XMLStreamReader xmlStreamReader =
-                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
 
+        XMLStreamReader xmlStreamReader = null;
+        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
+        }
+        
         // Decrypt
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(secretKey);
@@ -293,9 +299,12 @@ public class DecryptionTest extends Assert {
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        final XMLStreamReader xmlStreamReader =
-                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
 
+        XMLStreamReader xmlStreamReader = null;
+        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
+        }
+        
         // Decrypt
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(secretKey);
@@ -362,9 +371,12 @@ public class DecryptionTest extends Assert {
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        final XMLStreamReader xmlStreamReader =
-                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
 
+        XMLStreamReader xmlStreamReader = null;
+        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
+        }
+        
         // Decrypt
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(kek);
@@ -431,9 +443,12 @@ public class DecryptionTest extends Assert {
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        final XMLStreamReader xmlStreamReader =
-                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
 
+        XMLStreamReader xmlStreamReader = null;
+        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
+        }
+        
         // Decrypt
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(priv);
@@ -496,9 +511,12 @@ public class DecryptionTest extends Assert {
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        final XMLStreamReader xmlStreamReader =
-                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
 
+        XMLStreamReader xmlStreamReader = null;
+        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
+        }
+        
         // Decrypt
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(priv);
@@ -565,9 +583,12 @@ public class DecryptionTest extends Assert {
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        final XMLStreamReader xmlStreamReader =
-                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
 
+        XMLStreamReader xmlStreamReader = null;
+        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
+        }
+        
         // Decrypt
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(kek);
@@ -625,9 +646,12 @@ public class DecryptionTest extends Assert {
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        final XMLStreamReader xmlStreamReader =
-                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
 
+        XMLStreamReader xmlStreamReader = null;
+        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
+        }
+        
         // Decrypt
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(secretKey);
@@ -685,9 +709,12 @@ public class DecryptionTest extends Assert {
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        final XMLStreamReader xmlStreamReader =
-                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
 
+        XMLStreamReader xmlStreamReader = null;
+        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
+        }
+        
         // Decrypt
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(secretKey);
@@ -747,9 +774,12 @@ public class DecryptionTest extends Assert {
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        final XMLStreamReader xmlStreamReader =
-                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
 
+        XMLStreamReader xmlStreamReader = null;
+        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
+        }
+        
         // Decrypt
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(secretKey);
@@ -811,9 +841,12 @@ public class DecryptionTest extends Assert {
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        final XMLStreamReader xmlStreamReader =
-                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
 
+        XMLStreamReader xmlStreamReader = null;
+        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
+        }
+        
         // Decrypt
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(secretKey);
@@ -871,9 +904,12 @@ public class DecryptionTest extends Assert {
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        final XMLStreamReader xmlStreamReader =
-                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
 
+        XMLStreamReader xmlStreamReader = null;
+        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
+        }
+        
         // Decrypt
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(secretKey);
@@ -900,7 +936,10 @@ public class DecryptionTest extends Assert {
         final String DATA1 =
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?><ns:root xmlns:ns=\"ns.com\"><ns:elem xmlns:ns2=\"ns2.com\">11</ns:elem></ns:root>";
         DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
-        Document document = db.parse(new ByteArrayInputStream(DATA1.getBytes("UTF8")));
+        Document document = null;
+        try (InputStream is = new ByteArrayInputStream(DATA1.getBytes("UTF8"))) {
+            document = db.parse(is);
+        }
 
         // Set up the Key
         byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes();
@@ -926,8 +965,10 @@ public class DecryptionTest extends Assert {
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        final XMLStreamReader xmlStreamReader =
-                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
+        XMLStreamReader xmlStreamReader = null;
+        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
+        }
 
         // Decrypt
         XMLSecurityProperties properties = new XMLSecurityProperties();
@@ -963,7 +1004,10 @@ public class DecryptionTest extends Assert {
         final String DATA1 =
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?><ns:root xmlns=\"defns.com\" xmlns:ns=\"ns.com\"><elem xmlns=\"\">11</elem></ns:root>";
         DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
-        Document document = db.parse(new ByteArrayInputStream(DATA1.getBytes("UTF8")));
+        Document document = null;
+        try (InputStream is = new ByteArrayInputStream(DATA1.getBytes("UTF8"))) {
+            document = db.parse(is);
+        }
 
         // Set up the Key
         byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes();
@@ -989,8 +1033,10 @@ public class DecryptionTest extends Assert {
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        final XMLStreamReader xmlStreamReader =
-                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
+        XMLStreamReader xmlStreamReader = null;
+        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
+        }
 
         // Decrypt
         XMLSecurityProperties properties = new XMLSecurityProperties();
@@ -1251,8 +1297,10 @@ public class DecryptionTest extends Assert {
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        final XMLStreamReader xmlStreamReader =
-                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
+        XMLStreamReader xmlStreamReader = null;
+        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
+        }
 
         // Decrypt
         XMLSecurityProperties properties = new XMLSecurityProperties();
@@ -1331,8 +1379,10 @@ public class DecryptionTest extends Assert {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
-        final XMLStreamReader xmlStreamReader =
-                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
+        XMLStreamReader xmlStreamReader = null;
+        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
+        }
 
         // Decrypt
         XMLSecurityProperties properties = new XMLSecurityProperties();
@@ -1391,8 +1441,10 @@ public class DecryptionTest extends Assert {
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        final XMLStreamReader xmlStreamReader =
-                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
+        XMLStreamReader xmlStreamReader = null;
+        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
+        }
 
         // Decrypt
         XMLSecurityProperties properties = new XMLSecurityProperties();
@@ -1461,8 +1513,10 @@ public class DecryptionTest extends Assert {
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        final XMLStreamReader xmlStreamReader =
-                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
+        XMLStreamReader xmlStreamReader = null;
+        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
+        }
 
         // Decrypt
         XMLSecurityProperties properties = new XMLSecurityProperties();
@@ -1530,8 +1584,11 @@ public class DecryptionTest extends Assert {
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        final XMLStreamReader xmlStreamReader =
-                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
+        
+        XMLStreamReader xmlStreamReader = null;
+        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
+        }
 
         // Decrypt
         XMLSecurityProperties properties = new XMLSecurityProperties();
@@ -1599,8 +1656,11 @@ public class DecryptionTest extends Assert {
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        final XMLStreamReader xmlStreamReader =
-                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
+        
+        XMLStreamReader xmlStreamReader = null;
+        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
+        }
 
         // Decrypt
         XMLSecurityProperties properties = new XMLSecurityProperties();
@@ -1676,8 +1736,11 @@ public class DecryptionTest extends Assert {
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        final XMLStreamReader xmlStreamReader =
-                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
+        
+        XMLStreamReader xmlStreamReader = null;
+        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
+        }
 
         // Decrypt
         XMLSecurityProperties properties = new XMLSecurityProperties();
@@ -1736,9 +1799,12 @@ public class DecryptionTest extends Assert {
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        final XMLStreamReader xmlStreamReader =
-                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
-
+        
+        XMLStreamReader xmlStreamReader = null;
+        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
+        }
+        
         // Decrypt
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(priv);
@@ -1784,8 +1850,11 @@ public class DecryptionTest extends Assert {
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        final XMLStreamReader xmlStreamReader =
-                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
+        
+        XMLStreamReader xmlStreamReader = null;
+        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
+        }
 
         // Decrypt
         XMLSecurityProperties properties = new XMLSecurityProperties();
@@ -1843,8 +1912,11 @@ public class DecryptionTest extends Assert {
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        final XMLStreamReader xmlStreamReader =
-                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
+        
+        XMLStreamReader xmlStreamReader = null;
+        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
+        }
 
         // Decrypt
         XMLSecurityProperties properties = new XMLSecurityProperties();
@@ -1899,8 +1971,11 @@ public class DecryptionTest extends Assert {
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        final XMLStreamReader xmlStreamReader =
-                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
+        
+        XMLStreamReader xmlStreamReader = null;
+        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
+        }
 
         // Decrypt
         XMLSecurityProperties properties = new XMLSecurityProperties();

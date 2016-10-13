@@ -77,16 +77,16 @@ public class EmptyNamespaceTest {
 
         transformer.setProperties(properties);
 
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            InputStream stream = new ByteArrayInputStream(message.getBytes("UTF-8"))) {
+            transformer.setOutputStream(outputStream);
 
-        transformer.setOutputStream(outputStream);
-        InputStream stream = new ByteArrayInputStream(message.getBytes("UTF-8"));
-
-        transformer.transform(stream);
-        transformer.doFinal();
-        
-        String result = outputStream.toString();
-        Assert.assertEquals(message, result);
+            transformer.transform(stream);
+            transformer.doFinal();
+            
+            String result = outputStream.toString();
+            Assert.assertEquals(message, result);
+        }
     }
 
     @org.junit.Test
@@ -100,7 +100,10 @@ public class EmptyNamespaceTest {
         documentBuilderFactory.setNamespaceAware(true);
         documentBuilderFactory.setValidating(false);
         final DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        final Document document = documentBuilder.parse(new ByteArrayInputStream(message.getBytes("UTF-8")));
+        Document document = null;
+        try (InputStream is = new ByteArrayInputStream(message.getBytes("UTF-8"))) {
+            document = documentBuilder.parse(is);
+        }
 
         String inclusiveNamespaces = "SOAP-ENV ec ec1 ns0 ns1 ns11 ns2 ns4 ns9";
         byte[] output =

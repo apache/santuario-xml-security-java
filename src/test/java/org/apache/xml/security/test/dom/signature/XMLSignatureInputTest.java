@@ -109,29 +109,32 @@ public class XMLSignatureInputTest extends org.junit.Assert {
 
     @org.junit.Test
     public void testIsInitializedWithOctetStream() throws IOException {
-        InputStream inputStream =
-            new ByteArrayInputStream(_octetStreamTextInput.getBytes());
-        XMLSignatureInput input = new XMLSignatureInput(inputStream);
+        try (InputStream inputStream =
+            new ByteArrayInputStream(_octetStreamTextInput.getBytes())) {
+            XMLSignatureInput input = new XMLSignatureInput(inputStream);
 
-        assertTrue("Input is initialized", input.isInitialized());
+            assertTrue("Input is initialized", input.isInitialized());
+        }
     }
 
     @org.junit.Test
     public void testOctetStreamIsOctetStream() throws IOException {
-        InputStream inputStream =
-            new ByteArrayInputStream(_octetStreamTextInput.getBytes());
-        XMLSignatureInput input = new XMLSignatureInput(inputStream);
+        try (InputStream inputStream =
+            new ByteArrayInputStream(_octetStreamTextInput.getBytes())) {
+            XMLSignatureInput input = new XMLSignatureInput(inputStream);
 
-        assertTrue("Input is octet stream", input.isOctetStream());
+            assertTrue("Input is octet stream", input.isOctetStream());
+        }
     }
 
     @org.junit.Test
     public void testOctetStreamIsNotNodeSet() throws IOException {
-        InputStream inputStream =
-            new ByteArrayInputStream(_octetStreamTextInput.getBytes());
-        XMLSignatureInput input = new XMLSignatureInput(inputStream);
+        try (InputStream inputStream =
+            new ByteArrayInputStream(_octetStreamTextInput.getBytes())) {
+            XMLSignatureInput input = new XMLSignatureInput(inputStream);
 
-        assertTrue("Input is not node set", !input.isNodeSet());
+            assertTrue("Input is not node set", !input.isNodeSet());
+        }
     }
 
 }

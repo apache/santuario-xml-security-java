@@ -21,6 +21,7 @@ package org.apache.xml.security.test.dom.signature;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
@@ -73,7 +74,10 @@ public class X509DataTest extends org.junit.Assert {
     private XMLSignature getSignature(byte[] s) throws Exception {
 
         javax.xml.parsers.DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
-        Document doc = db.parse(new ByteArrayInputStream(s));
+        Document doc = null;
+        try (InputStream is = new ByteArrayInputStream(s)) {
+            doc = db.parse(is);
+        }
         Element el = (Element)doc.getFirstChild();
         return new XMLSignature(el, "");
     }

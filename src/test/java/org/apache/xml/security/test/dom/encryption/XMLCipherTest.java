@@ -21,6 +21,7 @@ package org.apache.xml.security.test.dom.encryption;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.security.Key;
 import java.security.KeyPairGenerator;
@@ -734,7 +735,10 @@ public class XMLCipherTest extends org.junit.Assert {
             // Test inherited namespaces don't add extra attributes
             // Test unused namespaces are preserved
             final String DATA1 = "<ns:root xmlns:ns=\"ns.com\"><ns:elem xmlns:ns2=\"ns2.com\">11</ns:elem></ns:root>";
-            Document doc = db.parse(new ByteArrayInputStream(DATA1.getBytes("UTF8")));
+            Document doc = null;
+            try (InputStream is = new ByteArrayInputStream(DATA1.getBytes("UTF8"))) {
+                doc = db.parse(is);
+            }
             Element elem = (Element)doc.getDocumentElement().getFirstChild();
 
             XMLCipher dataCipher = XMLCipher.getInstance(XMLCipher.TRIPLEDES);
@@ -758,7 +762,9 @@ public class XMLCipherTest extends org.junit.Assert {
 
             // Test default namespace undeclaration is preserved
             final String DATA2 = "<ns:root xmlns=\"defns.com\" xmlns:ns=\"ns.com\"><elem xmlns=\"\">11</elem></ns:root>";
-            doc = db.parse(new ByteArrayInputStream(DATA2.getBytes("UTF8")));
+            try (InputStream is = new ByteArrayInputStream(DATA2.getBytes("UTF8"))) {
+                doc = db.parse(is);
+            }
             elem = (Element)doc.getDocumentElement().getFirstChild();
 
             dataCipher = XMLCipher.getInstance(XMLCipher.TRIPLEDES);
@@ -783,7 +789,9 @@ public class XMLCipherTest extends org.junit.Assert {
             // Test comments and PIs are not treated specially when serializing element content.
             // Other c14n algorithms add a newline after comments and PIs, when they are before or after the document element.
             final String DATA3 = "<root><!--comment1--><?pi1 target1?><elem/><!--comment2--><?pi2 target2?></root>";
-            doc = db.parse(new ByteArrayInputStream(DATA3.getBytes("UTF8")));
+            try (InputStream is = new ByteArrayInputStream(DATA3.getBytes("UTF8"))) {
+                doc = db.parse(is);
+            }
             elem = (Element)doc.getDocumentElement();
 
             dataCipher = XMLCipher.getInstance(XMLCipher.TRIPLEDES);
@@ -850,10 +858,10 @@ public class XMLCipherTest extends org.junit.Assert {
         String before = baos.toString("UTF-8");
 
         byte[] serialized = baos.toByteArray();
-        EncryptedData encryptedData =
-            cipher.encryptData(
-                d, EncryptionConstants.TYPE_ELEMENT, new ByteArrayInputStream(serialized)
-            );
+        EncryptedData encryptedData = null;
+        try (InputStream is = new ByteArrayInputStream(serialized)) {
+            encryptedData = cipher.encryptData(d, EncryptionConstants.TYPE_ELEMENT, is);
+        }
 
         //decrypt
         XMLCipher dcipher = XMLCipher.getInstance(XMLCipher.AES_128);
@@ -865,7 +873,9 @@ public class XMLCipherTest extends org.junit.Assert {
         assertEquals(before, after);
 
         // test with null type
-        encryptedData = cipher.encryptData(d, null, new ByteArrayInputStream(serialized));
+        try (InputStream is = new ByteArrayInputStream(serialized)) {
+            encryptedData = cipher.encryptData(d, null, is);
+        }
     }
 
     @org.junit.Test

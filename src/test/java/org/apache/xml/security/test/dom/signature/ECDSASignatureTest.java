@@ -126,9 +126,9 @@ public class ECDSASignatureTest extends org.junit.Assert {
 
         File file =
             makeDataFile("src/test/resources/org/apache/xml/security/samples/input/ecdsaSignature.xml");
-        InputStream is = new FileInputStream(file);
-
-        doVerify(is);
+        try (InputStream is = new FileInputStream(file)) {
+            doVerify(is);
+        }
     }
 
     @org.junit.Test
@@ -139,9 +139,9 @@ public class ECDSASignatureTest extends org.junit.Assert {
         }
 
         File file = makeDataFile("src/test/resources/at/buergerkarte/testresp.xml");
-        InputStream is = new FileInputStream(file);
-
-        doVerify(is);
+        try (InputStream is = new FileInputStream(file)) {
+            doVerify(is);
+        }
     }
 
     private byte[] doSign() throws Exception {
@@ -183,7 +183,9 @@ public class ECDSASignatureTest extends org.junit.Assert {
     }
 
     private void doVerify(byte[] signedXml) throws Exception {
-        doVerify(new ByteArrayInputStream(signedXml));
+        try (InputStream is = new ByteArrayInputStream(signedXml)) {
+            doVerify(is);
+        }
     }
 
     private void doVerify(InputStream is) throws Exception {

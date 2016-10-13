@@ -21,6 +21,7 @@ package org.apache.xml.security.test.dom.signature;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.KeyStore;
@@ -193,7 +194,9 @@ public class CreateSignatureTest extends org.junit.Assert {
         String signedDoc = new String(bos.toByteArray());
 
         // Now Verify
-        doc = db.parse(new ByteArrayInputStream(signedDoc.getBytes()));
+        try (InputStream is = new ByteArrayInputStream(signedDoc.getBytes())) {
+            doc = db.parse(is);
+        }
 
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();
@@ -211,7 +214,10 @@ public class CreateSignatureTest extends org.junit.Assert {
     public void testCanonicalizedOctetStream() throws Exception {
         String signedXML = doSign();
 
-        Document doc = db.parse(new ByteArrayInputStream(signedXML.getBytes()));
+        Document doc = null;
+        try (InputStream is = new ByteArrayInputStream(signedXML.getBytes())) {
+            doc = db.parse(is);
+        }
 
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();
@@ -331,7 +337,10 @@ public class CreateSignatureTest extends org.junit.Assert {
     }
 
     private void doVerify(String signedXML) throws Exception {
-        Document doc = db.parse(new ByteArrayInputStream(signedXML.getBytes()));
+        Document doc = null;
+        try (InputStream is = new ByteArrayInputStream(signedXML.getBytes())) {
+            doc = db.parse(is);
+        }
 
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();

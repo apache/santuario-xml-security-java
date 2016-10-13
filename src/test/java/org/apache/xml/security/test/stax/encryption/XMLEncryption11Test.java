@@ -556,8 +556,10 @@ public class XMLEncryption11Test extends Assert {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        Document document =
-            XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
+        Document document = null;
+        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
+        }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
         Assert.assertEquals(nodeList.getLength(), 0);
