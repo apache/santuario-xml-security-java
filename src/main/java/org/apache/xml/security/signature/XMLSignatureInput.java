@@ -586,8 +586,10 @@ public class XMLSignatureInput {
             baos.write("</container>".getBytes("UTF-8"));
 
             byte result[] = baos.toByteArray();
-            Document document = db.parse(new ByteArrayInputStream(result));
-            this.subNode = document.getDocumentElement().getFirstChild().getFirstChild();
+            try (InputStream is = new ByteArrayInputStream(result)) {
+                Document document = db.parse(is);
+                this.subNode = document.getDocumentElement().getFirstChild().getFirstChild();
+            }
         } finally {
             XMLUtils.repoolDocumentBuilder(db);
             if (this.inputOctetStreamProxy != null) {

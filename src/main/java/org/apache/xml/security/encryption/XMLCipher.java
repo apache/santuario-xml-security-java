@@ -19,6 +19,7 @@
 package org.apache.xml.security.encryption;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -1715,15 +1716,19 @@ public class XMLCipher {
         }
 
         Node sourceParent = element.getParentNode();
-        Node decryptedNode = serializer.deserialize(octets, sourceParent);
-
-        // The de-serialiser returns a node whose children we need to take on.
-        if (sourceParent != null && Node.DOCUMENT_NODE == sourceParent.getNodeType()) {
-            // If this is a content decryption, this may have problems
-            contextDocument.removeChild(contextDocument.getDocumentElement());
-            contextDocument.appendChild(decryptedNode);
-        } else if (sourceParent != null) {
-            sourceParent.replaceChild(decryptedNode, element);
+        try {
+            Node decryptedNode = serializer.deserialize(octets, sourceParent);
+    
+            // The de-serialiser returns a node whose children we need to take on.
+            if (sourceParent != null && Node.DOCUMENT_NODE == sourceParent.getNodeType()) {
+                // If this is a content decryption, this may have problems
+                contextDocument.removeChild(contextDocument.getDocumentElement());
+                contextDocument.appendChild(decryptedNode);
+            } else if (sourceParent != null) {
+                sourceParent.replaceChild(decryptedNode, element);
+            }
+        } catch (IOException ex) {
+            throw new XMLEncryptionException(ex);
         }
 
         return contextDocument;

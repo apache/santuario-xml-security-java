@@ -20,6 +20,7 @@ package org.apache.xml.security.signature;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 import javax.crypto.SecretKey;
@@ -213,9 +214,8 @@ public class SignedInfo extends Manifest {
                 byte[] c14nizedBytes = c14nizer.canonicalizeSubtree(element);
                 javax.xml.parsers.DocumentBuilder db =
                     XMLUtils.createDocumentBuilder(false, secureValidation);
-                try {
-                    Document newdoc = db.parse(new ByteArrayInputStream(
-                            c14nizedBytes));
+                try (InputStream is = new ByteArrayInputStream(c14nizedBytes)) {
+                    Document newdoc = db.parse(is);
                     Node imported = element.getOwnerDocument().importNode(
                             newdoc.getDocumentElement(), true);
                     element.getParentNode().replaceChild(imported, element);

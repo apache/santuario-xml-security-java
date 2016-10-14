@@ -174,7 +174,7 @@ public abstract class AbstractSerializer implements Serializer {
      * @return the Node resulting from the parse of the source
      * @throws XMLEncryptionException
      */
-    public abstract Node deserialize(byte[] source, Node ctx) throws XMLEncryptionException;
+    public abstract Node deserialize(byte[] source, Node ctx) throws XMLEncryptionException, IOException;
 
     protected static byte[] createContext(byte[] source, Node ctx) throws XMLEncryptionException {
         // Create the context to parse the document against

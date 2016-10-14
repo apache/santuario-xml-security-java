@@ -32,6 +32,7 @@
 package org.apache.jcp.xml.dsig.internal.dom;
 
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.Provider;
@@ -268,11 +269,10 @@ public final class DOMRetrievalMethod extends DOMStructure
     {
         DocumentBuilder db = null;
         boolean secVal = Utils.secureValidation(context);
-        try {
-            ApacheData data = (ApacheData)dereference(context);
+        ApacheData data = (ApacheData)dereference(context);
+        try (InputStream is = new ByteArrayInputStream(data.getXMLSignatureInput().getBytes())) {
             db = XMLUtils.createDocumentBuilder(false, secVal);
-            Document doc = db.parse(new ByteArrayInputStream
-                (data.getXMLSignatureInput().getBytes()));
+            Document doc = db.parse(is);
             Element kiElem = doc.getDocumentElement();
             if (kiElem.getLocalName().equals("X509Data")
                 && XMLSignature.XMLNS.equals(kiElem.getNamespaceURI())) {

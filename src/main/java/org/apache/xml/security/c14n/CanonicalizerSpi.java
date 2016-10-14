@@ -56,16 +56,17 @@ public abstract class CanonicalizerSpi {
         throws javax.xml.parsers.ParserConfigurationException, java.io.IOException,
         org.xml.sax.SAXException, CanonicalizationException {
 
-        java.io.InputStream bais = new ByteArrayInputStream(inputBytes);
-        InputSource in = new InputSource(bais);
+        Document document = null;
+        try (java.io.InputStream bais = new ByteArrayInputStream(inputBytes)) {
+            InputSource in = new InputSource(bais);
 
-        DocumentBuilder db = XMLUtils.createDocumentBuilder(false, secureValidation);
+            DocumentBuilder db = XMLUtils.createDocumentBuilder(false, secureValidation);
 
-        Document document;
-        try {
-            document = db.parse(in);
-        } finally {
-            XMLUtils.repoolDocumentBuilder(db);
+            try {
+                document = db.parse(in);
+            } finally {
+                XMLUtils.repoolDocumentBuilder(db);
+            }
         }
         return this.engineCanonicalizeSubTree(document);
     }
