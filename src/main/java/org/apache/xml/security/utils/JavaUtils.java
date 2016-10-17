@@ -56,11 +56,8 @@ public final class JavaUtils {
 
         byte refBytes[] = null;
 
-        FileInputStream fisRef = null;
-        UnsyncByteArrayOutputStream baos = null;
-        try {
-            fisRef = new FileInputStream(fileName);
-            baos = new UnsyncByteArrayOutputStream();
+        try (FileInputStream fisRef = new FileInputStream(fileName);
+            UnsyncByteArrayOutputStream baos = new UnsyncByteArrayOutputStream()) {
             byte buf[] = new byte[1024];
             int len;
 
@@ -69,13 +66,6 @@ public final class JavaUtils {
             }
 
             refBytes = baos.toByteArray();
-        } finally {
-            if (baos != null) {
-                baos.close();
-            }
-            if (fisRef != null) {
-                fisRef.close();
-            }
         }
 
         return refBytes;
@@ -88,29 +78,18 @@ public final class JavaUtils {
      * @param bytes
      */
     public static void writeBytesToFilename(String filename, byte[] bytes) {
-        FileOutputStream fos = null;
-        try {
-            if (filename != null && bytes != null) {
-                File f = new File(filename);
-
-                fos = new FileOutputStream(f);
-
+        if (filename != null && bytes != null) {
+            File f = new File(filename);
+            try (FileOutputStream fos = new FileOutputStream(f)) {
                 fos.write(bytes);
-                fos.close();
-            } else {
+            } catch (IOException ex) {
                 if (log.isDebugEnabled()) {
-                    log.debug("writeBytesToFilename got null byte[] pointed");
+                    log.debug(ex.getMessage(), ex);
                 }
             }
-        } catch (IOException ex) {
-            if (fos != null) {
-                try {
-                    fos.close();
-                } catch (IOException ioe) {
-                    if (log.isDebugEnabled()) {
-                        log.debug(ioe.getMessage(), ioe);
-                    }
-                }
+        } else {
+            if (log.isDebugEnabled()) {
+                log.debug("writeBytesToFilename got null byte[] pointed");
             }
         }
     }
@@ -126,16 +105,13 @@ public final class JavaUtils {
      * @throws IOException
      */
     public static byte[] getBytesFromStream(InputStream inputStream) throws IOException {
-        UnsyncByteArrayOutputStream baos = new UnsyncByteArrayOutputStream();
-        try {
+        try (UnsyncByteArrayOutputStream baos = new UnsyncByteArrayOutputStream()) {
             byte buf[] = new byte[4 * 1024];
             int len;
             while ((len = inputStream.read(buf)) > 0) {
                 baos.write(buf, 0, len);
             }
             return baos.toByteArray();
-        } finally {
-            baos.close();
         }
     }
 

@@ -1187,13 +1187,14 @@ public class XMLCipher {
             if (serializedData != null) {
                 int numBytes;
                 byte[] buf = new byte[8192];
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                while ((numBytes = serializedData.read(buf)) != -1) {
-                    byte[] data = c.update(buf, 0, numBytes);
-                    baos.write(data);
+                try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+                    while ((numBytes = serializedData.read(buf)) != -1) {
+                        byte[] data = c.update(buf, 0, numBytes);
+                        baos.write(data);
+                    }
+                    baos.write(c.doFinal());
+                    encryptedBytes = baos.toByteArray();
                 }
-                baos.write(c.doFinal());
-                encryptedBytes = baos.toByteArray();
             } else {
                 encryptedBytes = c.doFinal(serializedOctets);
                 if (log.isDebugEnabled()) {

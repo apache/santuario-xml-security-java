@@ -129,27 +129,29 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
 
             String mimeType = urlConnection.getHeaderField("Content-Type");
             inputStream = urlConnection.getInputStream();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            byte buf[] = new byte[4096];
-            int read = 0;
-            int summarized = 0;
+            try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+                byte[] buf = new byte[4096];
+                int read = 0;
+                int summarized = 0;
+    
+                while ((read = inputStream.read(buf)) >= 0) {
+                    baos.write(buf, 0, read);
+                    summarized += read;
+                }
+    
+                if (log.isDebugEnabled()) {
+                    log.debug("Fetched " + summarized + " bytes from URI " + uriNew.toString());
+                }
+                
+                XMLSignatureInput result = new XMLSignatureInput(baos.toByteArray());
+                result.setSecureValidation(context.secureValidation);
 
-            while ((read = inputStream.read(buf)) >= 0) {
-                baos.write(buf, 0, read);
-                summarized += read;
+                result.setSourceURI(uriNew.toString());
+                result.setMIMEType(mimeType);
+
+                return result;
             }
 
-            if (log.isDebugEnabled()) {
-                log.debug("Fetched " + summarized + " bytes from URI " + uriNew.toString());
-            }
-
-            XMLSignatureInput result = new XMLSignatureInput(baos.toByteArray());
-            result.setSecureValidation(context.secureValidation);
-
-            result.setSourceURI(uriNew.toString());
-            result.setMIMEType(mimeType);
-
-            return result;
         } catch (URISyntaxException ex) {
             throw new ResourceResolverException(ex, context.uriToResolve, context.baseUri, "generic.EmptyMessage");
         } catch (MalformedURLException ex) {

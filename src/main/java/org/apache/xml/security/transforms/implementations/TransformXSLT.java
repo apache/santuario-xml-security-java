@@ -109,15 +109,16 @@ public class TransformXSLT extends TransformSpi {
              * so we convert the stylesheet to byte[] and use this as input stream
              */
             {
-                ByteArrayOutputStream os = new ByteArrayOutputStream();
-                Transformer transformer = tFactory.newTransformer();
-                DOMSource source = new DOMSource(xsltElement);
-                StreamResult result = new StreamResult(os);
-
-                transformer.transform(source, result);
-
-                stylesheet =
-                    new StreamSource(new ByteArrayInputStream(os.toByteArray()));
+                try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+                    Transformer transformer = tFactory.newTransformer();
+                    DOMSource source = new DOMSource(xsltElement);
+                    StreamResult result = new StreamResult(os);
+    
+                    transformer.transform(source, result);
+    
+                    stylesheet =
+                        new StreamSource(new ByteArrayInputStream(os.toByteArray()));
+                }
             }
 
             Transformer transformer = tFactory.newTransformer(stylesheet);
@@ -136,12 +137,13 @@ public class TransformXSLT extends TransformSpi {
             try (InputStream is = new ByteArrayInputStream(input.getBytes())) {
                 Source xmlSource = new StreamSource(is);
                 if (baos == null) {
-                    ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
-                    StreamResult outputTarget = new StreamResult(baos1);
-                    transformer.transform(xmlSource, outputTarget);
-                    XMLSignatureInput output = new XMLSignatureInput(baos1.toByteArray());
-                    output.setSecureValidation(secureValidation);
-                    return output;
+                    try (ByteArrayOutputStream baos1 = new ByteArrayOutputStream()) {
+                        StreamResult outputTarget = new StreamResult(baos1);
+                        transformer.transform(xmlSource, outputTarget);
+                        XMLSignatureInput output = new XMLSignatureInput(baos1.toByteArray());
+                        output.setSecureValidation(secureValidation);
+                        return output;
+                    }
                 }
                 StreamResult outputTarget = new StreamResult(baos);
 

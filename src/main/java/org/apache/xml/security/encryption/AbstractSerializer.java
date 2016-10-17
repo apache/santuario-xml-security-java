@@ -96,16 +96,17 @@ public abstract class AbstractSerializer implements Serializer {
      * @throws Exception
      */
     public String serialize(NodeList content) throws Exception {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        canon.setSecureValidation(secureValidation);
-        canon.setWriter(baos);
-        canon.notReset();
-        for (int i = 0; i < content.getLength(); i++) {
-            canon.canonicalizeSubtree(content.item(i));
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            canon.setSecureValidation(secureValidation);
+            canon.setWriter(baos);
+            canon.notReset();
+            for (int i = 0; i < content.getLength(); i++) {
+                canon.canonicalizeSubtree(content.item(i));
+            }
+            String ret = baos.toString("UTF-8");
+            baos.reset();
+            return ret;
         }
-        String ret = baos.toString("UTF-8");
-        baos.reset();
-        return ret;
     }
 
     /**
@@ -118,14 +119,15 @@ public abstract class AbstractSerializer implements Serializer {
      * @throws Exception
      */
     public byte[] serializeToByteArray(NodeList content) throws Exception {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        canon.setSecureValidation(secureValidation);
-        canon.setWriter(baos);
-        canon.notReset();
-        for (int i = 0; i < content.getLength(); i++) {
-            canon.canonicalizeSubtree(content.item(i));
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            canon.setSecureValidation(secureValidation);
+            canon.setWriter(baos);
+            canon.notReset();
+            for (int i = 0; i < content.getLength(); i++) {
+                canon.canonicalizeSubtree(content.item(i));
+            }
+            return baos.toByteArray();
         }
-        return baos.toByteArray();
     }
 
     /**
@@ -135,14 +137,15 @@ public abstract class AbstractSerializer implements Serializer {
      * @throws Exception
      */
     public String canonSerialize(Node node) throws Exception {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        canon.setSecureValidation(secureValidation);
-        canon.setWriter(baos);
-        canon.notReset();
-        canon.canonicalizeSubtree(node);
-        String ret = baos.toString("UTF-8");
-        baos.reset();
-        return ret;
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            canon.setSecureValidation(secureValidation);
+            canon.setWriter(baos);
+            canon.notReset();
+            canon.canonicalizeSubtree(node);
+            String ret = baos.toString("UTF-8");
+            baos.reset();
+            return ret;
+        }
     }
 
     /**
@@ -152,12 +155,13 @@ public abstract class AbstractSerializer implements Serializer {
      * @throws Exception
      */
     public byte[] canonSerializeToByteArray(Node node) throws Exception {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        canon.setSecureValidation(secureValidation);
-        canon.setWriter(baos);
-        canon.notReset();
-        canon.canonicalizeSubtree(node);
-        return baos.toByteArray();
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            canon.setSecureValidation(secureValidation);
+            canon.setWriter(baos);
+            canon.notReset();
+            canon.canonicalizeSubtree(node);
+            return baos.toByteArray();
+        }
     }
 
     /**
@@ -178,8 +182,7 @@ public abstract class AbstractSerializer implements Serializer {
 
     protected static byte[] createContext(byte[] source, Node ctx) throws XMLEncryptionException {
         // Create the context to parse the document against
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        try {
+        try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(byteArrayOutputStream, "UTF-8");
             outputStreamWriter.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?><dummy");
 
