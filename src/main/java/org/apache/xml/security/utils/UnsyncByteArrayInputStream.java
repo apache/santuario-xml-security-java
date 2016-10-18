@@ -15,7 +15,7 @@
  *  limitations under the License.
  */
 
-package org.apache.xml.security.stax.impl.util;
+package org.apache.xml.security.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,9 +23,9 @@ import java.io.InputStream;
 /**
  * A specialized {@link InputStream } for reading the contents of a byte array.
  *
- * @see UnsynchronizedByteArrayOutputStream
+ * @see UnsyncByteArrayOutputStream
  */
-public class UnsynchronizedByteArrayInputStream extends InputStream {
+public class UnsyncByteArrayInputStream extends InputStream {
     /**
      * The {@code byte} array containing the bytes to stream over.
      */
@@ -55,7 +55,7 @@ public class UnsynchronizedByteArrayInputStream extends InputStream {
      * @param buf
      *            the byte array to stream over.
      */
-    public UnsynchronizedByteArrayInputStream(byte buf[]) {
+    public UnsyncByteArrayInputStream(byte buf[]) {
         this.mark = 0;
         this.buf = buf;
         this.count = buf.length;
@@ -73,7 +73,7 @@ public class UnsynchronizedByteArrayInputStream extends InputStream {
      * @param length
      *            the number of bytes available for streaming.
      */
-    public UnsynchronizedByteArrayInputStream(byte buf[], int offset, int length) {
+    public UnsyncByteArrayInputStream(byte buf[], int offset, int length) {
         this.buf = buf;
         pos = offset;
         mark = offset;

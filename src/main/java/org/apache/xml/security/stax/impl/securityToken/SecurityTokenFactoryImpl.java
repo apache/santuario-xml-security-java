@@ -27,8 +27,8 @@ import org.apache.xml.security.stax.securityToken.SecurityTokenConstants.TokenTy
 import org.apache.xml.security.stax.securityToken.InboundSecurityToken;
 import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 import org.apache.xml.security.stax.securityToken.SecurityTokenFactory;
-import org.apache.xml.security.stax.impl.util.UnsynchronizedByteArrayInputStream;
 import org.apache.xml.security.utils.RFC2253Parser;
+import org.apache.xml.security.utils.UnsyncByteArrayInputStream;
 
 import java.io.InputStream;
 import java.security.Key;
@@ -268,7 +268,7 @@ public class SecurityTokenFactoryImpl extends SecurityTokenFactory {
      */
     private static X509Certificate getCertificateFromBytes(byte[] data)
             throws XMLSecurityException {
-        InputStream in = new UnsynchronizedByteArrayInputStream(data);
+        InputStream in = new UnsyncByteArrayInputStream(data);
         try {
             CertificateFactory factory = CertificateFactory.getInstance("X.509");
             return (X509Certificate) factory.generateCertificate(in);

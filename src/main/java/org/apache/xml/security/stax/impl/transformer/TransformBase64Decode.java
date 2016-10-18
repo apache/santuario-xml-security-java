@@ -24,8 +24,8 @@ import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 import org.apache.xml.security.stax.impl.processor.input.XMLEventReaderInputProcessor;
-import org.apache.xml.security.stax.impl.util.UnsynchronizedByteArrayInputStream;
-import org.apache.xml.security.stax.impl.util.UnsynchronizedByteArrayOutputStream;
+import org.apache.xml.security.utils.UnsyncByteArrayInputStream;
+import org.apache.xml.security.utils.UnsyncByteArrayOutputStream;
 
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
@@ -89,13 +89,13 @@ public class TransformBase64Decode extends TransformIdentity {
                             case XMLSecEvent: {
                                 childOutputMethod = new ChildOutputMethod() {
 
-                                    private UnsynchronizedByteArrayOutputStream byteArrayOutputStream;
+                                    private UnsyncByteArrayOutputStream byteArrayOutputStream;
                                     private Base64OutputStream base64OutputStream;
 
                                     @Override
                                     public void transform(Object object) throws XMLStreamException {
                                         if (base64OutputStream == null) {
-                                            byteArrayOutputStream = new UnsynchronizedByteArrayOutputStream();
+                                            byteArrayOutputStream = new UnsyncByteArrayOutputStream();
                                             base64OutputStream = new Base64OutputStream(byteArrayOutputStream, false);
                                         }
                                         try {
@@ -115,7 +115,7 @@ public class TransformBase64Decode extends TransformIdentity {
                                         XMLEventReaderInputProcessor xmlEventReaderInputProcessor
                                                 = new XMLEventReaderInputProcessor(
                                                 null,
-                                                getXmlInputFactory().createXMLStreamReader(new UnsynchronizedByteArrayInputStream(byteArrayOutputStream.toByteArray()))
+                                                getXmlInputFactory().createXMLStreamReader(new UnsyncByteArrayInputStream(byteArrayOutputStream.toByteArray()))
                                         );
 
                                         try {
@@ -135,13 +135,13 @@ public class TransformBase64Decode extends TransformIdentity {
                             case InputStream: {
                                 childOutputMethod = new ChildOutputMethod() {
 
-                                    private UnsynchronizedByteArrayOutputStream byteArrayOutputStream;
+                                    private UnsyncByteArrayOutputStream byteArrayOutputStream;
                                     private Base64OutputStream base64OutputStream;
 
                                     @Override
                                     public void transform(Object object) throws XMLStreamException {
                                         if (base64OutputStream == null) {
-                                            byteArrayOutputStream = new UnsynchronizedByteArrayOutputStream();
+                                            byteArrayOutputStream = new UnsyncByteArrayOutputStream();
                                             base64OutputStream = new Base64OutputStream(byteArrayOutputStream, false);
                                         }
                                         try {
@@ -158,7 +158,7 @@ public class TransformBase64Decode extends TransformIdentity {
                                         } catch (IOException e) {
                                             throw new XMLStreamException(e);
                                         }
-                                        getTransformer().transform(new UnsynchronizedByteArrayInputStream(byteArrayOutputStream.toByteArray()));
+                                        getTransformer().transform(new UnsyncByteArrayInputStream(byteArrayOutputStream.toByteArray()));
                                         getTransformer().doFinal();
                                     }
                                 };

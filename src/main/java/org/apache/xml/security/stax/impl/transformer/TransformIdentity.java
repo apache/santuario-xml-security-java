@@ -24,8 +24,8 @@ import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.stax.ext.XMLSecurityUtils;
 import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 import org.apache.xml.security.stax.impl.processor.input.XMLEventReaderInputProcessor;
-import org.apache.xml.security.stax.impl.util.UnsynchronizedByteArrayInputStream;
-import org.apache.xml.security.stax.impl.util.UnsynchronizedByteArrayOutputStream;
+import org.apache.xml.security.utils.UnsyncByteArrayInputStream;
+import org.apache.xml.security.utils.UnsyncByteArrayOutputStream;
 
 import javax.xml.stream.*;
 import java.io.*;
@@ -144,13 +144,13 @@ public class TransformIdentity implements Transformer {
                     case InputStream: {
                         childOutputMethod = new ChildOutputMethod() {
 
-                            private UnsynchronizedByteArrayOutputStream baos;
+                            private UnsyncByteArrayOutputStream baos;
                             private XMLEventWriter xmlEventWriter;
 
                             @Override
                             public void transform(Object object) throws XMLStreamException {
                                 if (xmlEventWriter == null) {
-                                    baos = new UnsynchronizedByteArrayOutputStream();
+                                    baos = new UnsyncByteArrayOutputStream();
                                     xmlEventWriter = getXmlOutputFactory().createXMLEventWriter(baos);
                                 }
 
@@ -160,7 +160,7 @@ public class TransformIdentity implements Transformer {
                             @Override
                             public void doFinal() throws XMLStreamException {
                                 xmlEventWriter.close();
-                                getTransformer().transform(new UnsynchronizedByteArrayInputStream(baos.toByteArray()));
+                                getTransformer().transform(new UnsyncByteArrayInputStream(baos.toByteArray()));
                                 getTransformer().doFinal();
                             }
                         };

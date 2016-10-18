@@ -1,99 +1,195 @@
-/**
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+/*
+ *  Licensed to the Apache Software Foundation (ASF) under one or more
+ *  contributor license agreements.  See the NOTICE file distributed with
+ *  this work for additional information regarding copyright ownership.
+ *  The ASF licenses this file to You under the Apache License, Version 2.0
+ *  (the "License"); you may not use this file except in compliance with
+ *  the License.  You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
  */
+
 package org.apache.xml.security.utils;
 
+import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 
-/**
- * A simple Unsynced ByteArrayOutputStream
- * @author raul
- *
- */
-public class UnsyncByteArrayOutputStream extends OutputStream  {	
+public class UnsyncByteArrayOutputStream extends OutputStream {
+    /**
+     * The byte array containing the bytes written.
+     */
+    protected byte[] buf;
 
-    private static final int INITIAL_SIZE = 8192;
+    /**
+     * The number of bytes written.
+     */
+    protected int count;
 
-    private byte[] buf;
-    private int size = INITIAL_SIZE;
-    private int pos = 0;
-
+    /**
+     * Constructs a new ByteArrayOutputStream with a default size of 32 bytes.
+     * If more than 32 bytes are written to this instance, the underlying byte
+     * array will expand.
+     */
     public UnsyncByteArrayOutputStream() {
-        buf = new byte[INITIAL_SIZE];
+        super();
+        buf = new byte[32];
     }
 
-    public void write(byte[] arg0) {
-        if ((Integer.MAX_VALUE - pos) < arg0.length) {
-            throw new OutOfMemoryError();
+    /**
+     * Constructs a new {@code ByteArrayOutputStream} with a default size of
+     * {@code size} bytes. If more than {@code size} bytes are written to this
+     * instance, the underlying byte array will expand.
+     *
+     * @param size
+     *            initial size for the underlying byte array, must be
+     *            non-negative.
+     * @throws IllegalArgumentException
+     *             if {@code size} < 0.
+     */
+    public UnsyncByteArrayOutputStream(int size) {
+        super();
+        if (size < 0) {
+            throw new IllegalArgumentException("size must be >= 0");
         }
-        int newPos = pos + arg0.length;
-        if (newPos > size) {
-            expandSize(newPos);
-        }
-        System.arraycopy(arg0, 0, buf, pos, arg0.length);
-        pos = newPos;
+        buf = new byte[size];
     }
 
-    public void write(byte[] arg0, int arg1, int arg2) {
-        if ((Integer.MAX_VALUE - pos) < arg2) {
-            throw new OutOfMemoryError();
+    private void expand(int i) {
+        /* Can the buffer handle @i more bytes, if not expand it */
+        if (count + i <= buf.length) {
+            return;
         }
-        int newPos = pos + arg2;
-        if (newPos > size) {
-            expandSize(newPos);
-        }
-        System.arraycopy(arg0, arg1, buf, pos, arg2);
-        pos = newPos;
+
+        byte[] newbuf = new byte[(count + i) << 1];
+        System.arraycopy(buf, 0, newbuf, 0, count);
+        buf = newbuf;
     }
 
-    public void write(int arg0) {
-        if (Integer.MAX_VALUE - pos == 0) {
-            throw new OutOfMemoryError();
-        }
-        int newPos = pos + 1;
-        if (newPos > size) {
-            expandSize(newPos);
-        }
-        buf[pos++] = (byte)arg0;		
-    }
-
-    public byte[] toByteArray() {
-        byte result[] = new byte[pos];
-        System.arraycopy(buf, 0, result, 0, pos);
-        return result;
-    }
-
+    /**
+     * Resets this stream to the beginning of the underlying byte array. All
+     * subsequent writes will overwrite any bytes previously stored in this
+     * stream.
+     */
     public void reset() {
-        pos = 0;
+        count = 0;
     }
 
-    private void expandSize(int newPos) {
-        int newSize = size;
-        while (newPos > newSize) {
-            newSize = newSize << 1;
-            // Deal with overflow
-            if (newSize < 0) {
-                newSize = Integer.MAX_VALUE;
-            }
+    /**
+     * Returns the total number of bytes written to this stream so far.
+     *
+     * @return the number of bytes written to this stream.
+     */
+    public int size() {
+        return count;
+    }
+
+    /**
+     * Returns the contents of this ByteArrayOutputStream as a byte array. Any
+     * changes made to the receiver after returning will not be reflected in the
+     * byte array returned to the caller.
+     *
+     * @return this stream's current contents as a byte array.
+     */
+    public byte[] toByteArray() {
+        byte[] newArray = new byte[count];
+        System.arraycopy(buf, 0, newArray, 0, count);
+        return newArray;
+    }
+
+    /**
+     * Returns the contents of this ByteArrayOutputStream as a string. Any
+     * changes made to the receiver after returning will not be reflected in the
+     * string returned to the caller.
+     *
+     * @return this stream's current contents as a string.
+     */
+
+    @Override
+    public String toString() {
+        return new String(buf, 0, count);
+    }
+
+    /**
+     * Returns the contents of this ByteArrayOutputStream as a string converted
+     * according to the encoding declared in {@code enc}.
+     *
+     * @param enc
+     *            a string representing the encoding to use when translating
+     *            this stream to a string.
+     * @return this stream's current contents as an encoded string.
+     * @throws UnsupportedEncodingException
+     *             if the provided encoding is not supported.
+     */
+    public String toString(String enc) throws UnsupportedEncodingException {
+        return new String(buf, 0, count, enc);
+    }
+
+    /**
+     * Writes {@code count} bytes from the byte array {@code buffer} starting at
+     * offset {@code index} to this stream.
+     *
+     * @param buffer
+     *            the buffer to be written.
+     * @param offset
+     *            the initial position in {@code buffer} to retrieve bytes.
+     * @param len
+     *            the number of bytes of {@code buffer} to write.
+     * @throws NullPointerException
+     *             if {@code buffer} is {@code null}.
+     * @throws IndexOutOfBoundsException
+     *             if {@code offset < 0} or {@code len < 0}, or if
+     *             {@code offset + len} is greater than the length of
+     *             {@code buffer}.
+     */
+    @Override
+    public void write(byte[] buffer, int offset, int len) {
+        // avoid int overflow
+        if (offset < 0 || offset > buffer.length || len < 0
+                || len > buffer.length - offset) {
+            throw new IndexOutOfBoundsException();
         }
-        byte newBuf[] = new byte[newSize];
-        System.arraycopy(buf, 0, newBuf, 0, pos);
-        buf = newBuf;
-        size = newSize;
+        if (len == 0) {
+            return;
+        }
+
+        /* Expand if necessary */
+        expand(len);
+        System.arraycopy(buffer, offset, buf, this.count, len);
+        this.count += len;
+    }
+
+    /**
+     * Writes the specified byte {@code oneByte} to the OutputStream. Only the
+     * low order byte of {@code oneByte} is written.
+     *
+     * @param oneByte
+     *            the byte to be written.
+     */
+    @Override
+    public void write(int oneByte) {
+        if (count == buf.length) {
+            expand(1);
+        }
+        buf[count++] = (byte) oneByte;
+    }
+
+    /**
+     * Takes the contents of this stream and writes it to the output stream
+     * {@code out}.
+     *
+     * @param out
+     *            an OutputStream on which to write the contents of this stream.
+     * @throws IOException
+     *             if an error occurs while writing to {@code out}.
+     */
+    public void writeTo(OutputStream out) throws IOException {
+        out.write(buf, 0, count);
     }
 }

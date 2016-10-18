@@ -26,6 +26,9 @@ import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.ext.*;
 import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer20010315_Excl;
 import org.apache.xml.security.stax.securityToken.InboundSecurityToken;
+import org.apache.xml.security.utils.UnsyncBufferedOutputStream;
+import org.apache.xml.security.utils.UnsyncByteArrayInputStream;
+import org.apache.xml.security.utils.UnsyncByteArrayOutputStream;
 import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 import org.apache.xml.security.stax.ext.stax.XMLSecEventFactory;
 import org.apache.xml.security.stax.impl.algorithms.SignatureAlgorithm;
@@ -146,7 +149,7 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
 
         Deque<XMLSecEvent> signedInfoDeque = new ArrayDeque<XMLSecEvent>();
 
-        UnsynchronizedByteArrayOutputStream unsynchronizedByteArrayOutputStream = new UnsynchronizedByteArrayOutputStream();
+        UnsyncByteArrayOutputStream unsynchronizedByteArrayOutputStream = new UnsyncByteArrayOutputStream();
         Transformer transformer = XMLSecurityUtils.getTransformer(
                 null,
                 unsynchronizedByteArrayOutputStream,
@@ -193,7 +196,7 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
 
             XMLStreamReader xmlStreamReader = inputProcessorChain.getSecurityContext().
                     <XMLInputFactory>get(XMLSecurityConstants.XMLINPUTFACTORY).
-                    createXMLStreamReader(new UnsynchronizedByteArrayInputStream(unsynchronizedByteArrayOutputStream.toByteArray()));
+                    createXMLStreamReader(new UnsyncByteArrayInputStream(unsynchronizedByteArrayOutputStream.toByteArray()));
 
             while (xmlStreamReader.hasNext()) {
                 XMLSecEvent xmlSecEvent = XMLSecEventFactory.allocate(xmlStreamReader, null);
@@ -305,7 +308,7 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
                                 algorithmURI);
                 signatureAlgorithm.engineInitVerify(verifyKey);
                 signerOutputStream = new SignerOutputStream(signatureAlgorithm);
-                bufferedSignerOutputStream = new UnsynchronizedBufferedOutputStream(signerOutputStream);
+                bufferedSignerOutputStream = new UnsyncBufferedOutputStream(signerOutputStream);
 
                 final CanonicalizationMethodType canonicalizationMethodType =
                         signatureType.getSignedInfo().getCanonicalizationMethod();

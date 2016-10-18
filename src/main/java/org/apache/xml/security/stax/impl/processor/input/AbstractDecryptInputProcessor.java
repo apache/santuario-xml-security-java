@@ -22,6 +22,7 @@ import org.apache.commons.codec.binary.Base64OutputStream;
 import org.apache.xml.security.stax.securityToken.InboundSecurityToken;
 import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 import org.apache.xml.security.stax.securityToken.SecurityTokenProvider;
+import org.apache.xml.security.utils.UnsyncByteArrayInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.xml.security.binding.xmldsig.KeyInfoType;
@@ -347,7 +348,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
         }
 
         stringBuilder.append('>');
-        return new UnsynchronizedByteArrayInputStream(stringBuilder.toString().getBytes("UTF-8"));
+        return new UnsyncByteArrayInputStream(stringBuilder.toString().getBytes("UTF-8"));
     }
 
     private InputStream writeWrapperEndElement() throws IOException {
@@ -358,7 +359,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
         stringBuilder.append(':');
         stringBuilder.append(wrapperElementName.getLocalPart());
         stringBuilder.append('>');
-        return new UnsynchronizedByteArrayInputStream(stringBuilder.toString().getBytes("UTF-8"));
+        return new UnsyncByteArrayInputStream(stringBuilder.toString().getBytes("UTF-8"));
     }
 
     private void forwardToWrapperElement(XMLStreamReader xmlStreamReader) throws XMLStreamException {
