@@ -30,6 +30,7 @@ import org.apache.xml.security.stax.securityToken.SecurityTokenFactory;
 import org.apache.xml.security.utils.RFC2253Parser;
 import org.apache.xml.security.utils.UnsyncByteArrayInputStream;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.security.Key;
 import java.security.PublicKey;
@@ -268,11 +269,10 @@ public class SecurityTokenFactoryImpl extends SecurityTokenFactory {
      */
     private static X509Certificate getCertificateFromBytes(byte[] data)
             throws XMLSecurityException {
-        InputStream in = new UnsyncByteArrayInputStream(data);
-        try {
+        try (InputStream in = new UnsyncByteArrayInputStream(data)) {
             CertificateFactory factory = CertificateFactory.getInstance("X.509");
             return (X509Certificate) factory.generateCertificate(in);
-        } catch (CertificateException e) {
+        } catch (CertificateException | IOException e) {
             throw new XMLSecurityException(e);
         }
     }

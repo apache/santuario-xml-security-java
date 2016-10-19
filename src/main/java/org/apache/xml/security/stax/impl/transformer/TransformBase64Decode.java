@@ -112,19 +112,18 @@ public class TransformBase64Decode extends TransformIdentity {
                                         } catch (IOException e) {
                                             throw new XMLStreamException(e);
                                         }
-                                        XMLEventReaderInputProcessor xmlEventReaderInputProcessor
-                                                = new XMLEventReaderInputProcessor(
-                                                null,
-                                                getXmlInputFactory().createXMLStreamReader(new UnsyncByteArrayInputStream(byteArrayOutputStream.toByteArray()))
-                                        );
 
-                                        try {
+                                        try (InputStream is = new UnsyncByteArrayInputStream(byteArrayOutputStream.toByteArray())) {
+                                            XMLEventReaderInputProcessor xmlEventReaderInputProcessor
+                                                = new XMLEventReaderInputProcessor(null,
+                                                                                   getXmlInputFactory().createXMLStreamReader(is)
+                                                );
                                             XMLSecEvent xmlSecEvent;
                                             do {
                                                 xmlSecEvent = xmlEventReaderInputProcessor.processNextEvent(null);
                                                 getTransformer().transform(xmlSecEvent);
                                             } while (xmlSecEvent.getEventType() != XMLStreamConstants.END_DOCUMENT);
-                                        } catch (XMLSecurityException e) {
+                                        } catch (XMLSecurityException | IOException e) {
                                             throw new XMLStreamException(e);
                                         }
                                         getTransformer().doFinal();
@@ -158,8 +157,12 @@ public class TransformBase64Decode extends TransformIdentity {
                                         } catch (IOException e) {
                                             throw new XMLStreamException(e);
                                         }
-                                        getTransformer().transform(new UnsyncByteArrayInputStream(byteArrayOutputStream.toByteArray()));
-                                        getTransformer().doFinal();
+                                        try (InputStream is = new UnsyncByteArrayInputStream(byteArrayOutputStream.toByteArray())) {
+                                            getTransformer().transform(is);
+                                            getTransformer().doFinal();
+                                        } catch (IOException ex) {
+                                            throw new XMLStreamException(ex);
+                                        }
                                     }
                                 };
                                 break;

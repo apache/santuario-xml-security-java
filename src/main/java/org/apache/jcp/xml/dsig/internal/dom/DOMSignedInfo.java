@@ -216,42 +216,31 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
             throw new NullPointerException("context cannot be null");
         }
 
-        OutputStream os = new UnsyncBufferedOutputStream(bos);
-
         DOMSubTreeData subTree = new DOMSubTreeData(localSiElem, true);
-        try {
+        try (OutputStream os = new UnsyncBufferedOutputStream(bos)) {
             ((DOMCanonicalizationMethod)
                 canonicalizationMethod).canonicalize(subTree, context, os);
+            
+            os.flush();
+            
+            byte[] signedInfoBytes = bos.toByteArray();
+
+            // this whole block should only be done if logging is enabled
+            if (log.isDebugEnabled()) {
+                log.debug("Canonicalized SignedInfo:");
+                StringBuilder sb = new StringBuilder(signedInfoBytes.length);
+                for (int i = 0; i < signedInfoBytes.length; i++) {
+                    sb.append((char)signedInfoBytes[i]);
+                }
+                log.debug(sb.toString());
+                log.debug("Data to be signed/verified:" + Base64.getMimeEncoder().encodeToString(signedInfoBytes));
+            }
+
+            this.canonData = new ByteArrayInputStream(signedInfoBytes);
+
+            os.close();
         } catch (TransformException te) {
             throw new XMLSignatureException(te);
-        }
-
-        try {
-            os.flush();
-        } catch (IOException e) {
-            if (log.isDebugEnabled()) {
-                log.debug(e.getMessage(), e);
-            }
-            // Impossible
-        }
-
-        byte[] signedInfoBytes = bos.toByteArray();
-
-        // this whole block should only be done if logging is enabled
-        if (log.isDebugEnabled()) {
-            log.debug("Canonicalized SignedInfo:");
-            StringBuilder sb = new StringBuilder(signedInfoBytes.length);
-            for (int i = 0; i < signedInfoBytes.length; i++) {
-                sb.append((char)signedInfoBytes[i]);
-            }
-            log.debug(sb.toString());
-            log.debug("Data to be signed/verified:" + Base64.getMimeEncoder().encodeToString(signedInfoBytes));
-        }
-
-        this.canonData = new ByteArrayInputStream(signedInfoBytes);
-
-        try {
-            os.close();
         } catch (IOException e) {
             if (log.isDebugEnabled()) {
                 log.debug(e.getMessage(), e);

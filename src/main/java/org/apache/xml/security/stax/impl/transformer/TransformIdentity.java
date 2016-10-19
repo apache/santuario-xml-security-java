@@ -160,8 +160,12 @@ public class TransformIdentity implements Transformer {
                             @Override
                             public void doFinal() throws XMLStreamException {
                                 xmlEventWriter.close();
-                                getTransformer().transform(new UnsyncByteArrayInputStream(baos.toByteArray()));
-                                getTransformer().doFinal();
+                                try (InputStream is = new UnsyncByteArrayInputStream(baos.toByteArray())) {
+                                    getTransformer().transform(is);
+                                    getTransformer().doFinal();
+                                } catch (IOException ex) {
+                                    throw new XMLStreamException(ex);
+                                }
                             }
                         };
                         break;

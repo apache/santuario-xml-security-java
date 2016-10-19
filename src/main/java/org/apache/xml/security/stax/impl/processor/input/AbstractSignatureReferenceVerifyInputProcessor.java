@@ -260,12 +260,11 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
     protected void verifyExternalReference(InputProcessorChain inputProcessorChain, InputStream inputStream,
                                          ReferenceType referenceType) throws XMLSecurityException, XMLStreamException {
 
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        try {
+        try (BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
             DigestOutputStream digestOutputStream =
                     createMessageDigestOutputStream(referenceType, inputProcessorChain.getSecurityContext());
             UnsyncBufferedOutputStream bufferedDigestOutputStream =
-                    new UnsyncBufferedOutputStream(digestOutputStream);
+                    new UnsyncBufferedOutputStream(digestOutputStream)) {
 
             if (referenceType.getTransforms() != null) {
                 Transformer transformer =
@@ -279,12 +278,6 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
             compareDigest(digestOutputStream.getDigestValue(), referenceType);
         } catch (IOException e) {
             throw new XMLSecurityException(e);
-        } finally {
-            try {
-                bufferedInputStream.close();
-            } catch (IOException e) {
-                log.warn("Could not close external resource input stream, ignored.");
-            }
         }
     }
 

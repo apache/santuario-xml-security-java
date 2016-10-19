@@ -450,10 +450,8 @@ public final class DOMReference extends DOMStructure
         } else {
             dos = new DigesterOutputStream(md);
         }
-        OutputStream os = null;
         Data data = dereferencedData;
-        try {
-            os = new UnsyncBufferedOutputStream(dos);
+        try (OutputStream os = new UnsyncBufferedOutputStream(dos)) {
             for (int i = 0, size = transforms.size(); i < size; i++) {
                 DOMTransform transform = (DOMTransform)transforms.get(i);
                 if (i < size - 1) {
@@ -555,13 +553,6 @@ public final class DOMReference extends DOMStructure
         } catch (org.apache.xml.security.c14n.CanonicalizationException e) {
             throw new XMLSignatureException(e);
         } finally {
-            if (os != null) {
-                try {
-                    os.close();
-                } catch (IOException e) {
-                    throw new XMLSignatureException(e);
-                }
-            }
             if (dos != null) {
                 try {
                     dos.close();

@@ -391,8 +391,12 @@ public abstract class CanonicalizerBase extends TransformIdentity {
     public void doFinal() throws XMLStreamException {
         if (getTransformer() != null) {
             UnsyncByteArrayOutputStream baos = (UnsyncByteArrayOutputStream)getOutputStream();
-            getTransformer().transform(new UnsyncByteArrayInputStream(baos.toByteArray()));
-            getTransformer().doFinal();
+            try (InputStream is = new UnsyncByteArrayInputStream(baos.toByteArray())) {
+                getTransformer().transform(is);
+                getTransformer().doFinal();
+            } catch (IOException ex) {
+                throw new XMLStreamException(ex);
+            }
         }
     }
 

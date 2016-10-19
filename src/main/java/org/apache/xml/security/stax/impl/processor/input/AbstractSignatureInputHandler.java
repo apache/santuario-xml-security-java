@@ -41,6 +41,7 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
@@ -149,23 +150,22 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
 
         Deque<XMLSecEvent> signedInfoDeque = new ArrayDeque<XMLSecEvent>();
 
-        UnsyncByteArrayOutputStream unsynchronizedByteArrayOutputStream = new UnsyncByteArrayOutputStream();
-        Transformer transformer = XMLSecurityUtils.getTransformer(
-                null,
-                unsynchronizedByteArrayOutputStream,
-                null,
-                signatureType.getSignedInfo().getCanonicalizationMethod().getAlgorithm(),
-                XMLSecurityConstants.DIRECTION.IN);
+        try (UnsyncByteArrayOutputStream unsynchronizedByteArrayOutputStream = new UnsyncByteArrayOutputStream()) {
+            Transformer transformer = XMLSecurityUtils.getTransformer(
+                    null,
+                    unsynchronizedByteArrayOutputStream,
+                    null,
+                    signatureType.getSignedInfo().getCanonicalizationMethod().getAlgorithm(),
+                    XMLSecurityConstants.DIRECTION.IN);
+    
+            Iterator<XMLSecEvent> iterator = eventDeque.descendingIterator();
+            //forward to <Signature> Element
+            int i = 0;
+            while (i < index) {
+                iterator.next();
+                i++;
+            }
 
-        Iterator<XMLSecEvent> iterator = eventDeque.descendingIterator();
-        //forward to <Signature> Element
-        int i = 0;
-        while (i < index) {
-            iterator.next();
-            i++;
-        }
-
-        try {
             loop:
             while (iterator.hasNext()) {
                 XMLSecEvent xmlSecEvent = iterator.next();
@@ -194,24 +194,25 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
 
             transformer.doFinal();
 
-            XMLStreamReader xmlStreamReader = inputProcessorChain.getSecurityContext().
-                    <XMLInputFactory>get(XMLSecurityConstants.XMLINPUTFACTORY).
-                    createXMLStreamReader(new UnsyncByteArrayInputStream(unsynchronizedByteArrayOutputStream.toByteArray()));
-
-            while (xmlStreamReader.hasNext()) {
-                XMLSecEvent xmlSecEvent = XMLSecEventFactory.allocate(xmlStreamReader, null);
-                signedInfoDeque.push(xmlSecEvent);
-                xmlStreamReader.next();
+            try (InputStream is = new UnsyncByteArrayInputStream(unsynchronizedByteArrayOutputStream.toByteArray())) {
+                XMLStreamReader xmlStreamReader = inputProcessorChain.getSecurityContext().
+                        <XMLInputFactory>get(XMLSecurityConstants.XMLINPUTFACTORY).
+                        createXMLStreamReader(is);
+    
+                while (xmlStreamReader.hasNext()) {
+                    XMLSecEvent xmlSecEvent = XMLSecEventFactory.allocate(xmlStreamReader, null);
+                    signedInfoDeque.push(xmlSecEvent);
+                    xmlStreamReader.next();
+                }
+    
+                @SuppressWarnings("unchecked")
+                final SignedInfoType signedInfoType =
+                        ((JAXBElement<SignedInfoType>) parseStructure(signedInfoDeque, 0, securityProperties)).getValue();
+                signatureType.setSignedInfo(signedInfoType);
+    
+                return signedInfoDeque;
             }
-
-            @SuppressWarnings("unchecked")
-            final SignedInfoType signedInfoType =
-                    ((JAXBElement<SignedInfoType>) parseStructure(signedInfoDeque, 0, securityProperties)).getValue();
-            signatureType.setSignedInfo(signedInfoType);
-
-            return signedInfoDeque;
-
-        } catch (XMLStreamException e) {
+        } catch (XMLStreamException | IOException e) {
             throw new XMLSecurityException(e);
         }
     }

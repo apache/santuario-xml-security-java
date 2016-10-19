@@ -51,6 +51,7 @@ public class FullyBufferedOutputStream extends FilterOutputStream {
     public void close() throws IOException {
         buf.writeTo(out);
         out.close();
+        buf.close();
     }
 
     @Override
