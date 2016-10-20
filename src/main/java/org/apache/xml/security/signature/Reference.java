@@ -708,16 +708,15 @@ public class Reference extends SignatureElementProxy {
     private byte[] calculateDigest(boolean validating)
         throws ReferenceNotInitializedException, XMLSignatureException {
         XMLSignatureInput input = this.getContentsBeforeTransformation();
-        if(input.isPreCalculatedDigest()) {
+        if (input.isPreCalculatedDigest()) {
             return getPreCalculatedDigest(input);
         }
-        OutputStream os = null;
-        try {
-            MessageDigestAlgorithm mda = this.getMessageDigestAlgorithm();
-
-            mda.reset();
-            DigesterOutputStream diOs = new DigesterOutputStream(mda);
-            os = new UnsyncBufferedOutputStream(diOs);
+        
+        MessageDigestAlgorithm mda = this.getMessageDigestAlgorithm();
+        mda.reset();
+        
+        try (DigesterOutputStream diOs = new DigesterOutputStream(mda);
+            OutputStream os = new UnsyncBufferedOutputStream(diOs)) {
             XMLSignatureInput output = this.dereferenceURIandPerformTransforms(os);
             // if signing and c14n11 property == true explicitly add
             // C14N11 transform if needed
@@ -747,14 +746,6 @@ public class Reference extends SignatureElementProxy {
             throw new ReferenceNotInitializedException(ex);
         } catch (IOException ex) {
             throw new ReferenceNotInitializedException(ex);
-        } finally {
-            if (os != null) {
-                try {
-                    os.close();
-                } catch (IOException ex) {
-                    throw new ReferenceNotInitializedException(ex);
-                }
-            }
         }
     }
 
