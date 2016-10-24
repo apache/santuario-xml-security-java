@@ -614,35 +614,21 @@ public final class XMLSignature extends SignatureElementProxy {
             );
         }
 
-        try {
-            //Create a SignatureAlgorithm object
-            SignedInfo si = this.getSignedInfo();
-            SignatureAlgorithm sa = si.getSignatureAlgorithm();
-            OutputStream so = null;
-            try {
-                // generate digest values for all References in this SignedInfo
-                si.generateDigestValues();
+        //Create a SignatureAlgorithm object
+        SignedInfo si = this.getSignedInfo();
+        SignatureAlgorithm sa = si.getSignatureAlgorithm();
+        try (SignerOutputStream output = new SignerOutputStream(sa);
+            OutputStream so = new UnsyncBufferedOutputStream(output)) {
+            
+            // generate digest values for all References in this SignedInfo
+            si.generateDigestValues();
 
-                // initialize SignatureAlgorithm for signing
-                sa.initSign(signingKey);
+            // initialize SignatureAlgorithm for signing
+            sa.initSign(signingKey);
 
-                so = new UnsyncBufferedOutputStream(new SignerOutputStream(sa));
-                // get the canonicalized bytes from SignedInfo
-                si.signInOctetStream(so);
-            } catch (XMLSecurityException ex) {
-                throw ex;
-            } finally {
-                if (so != null) {
-                    try {
-                        so.close();
-                    } catch (IOException ex) {
-                        if (log.isDebugEnabled()) {
-                            log.debug(ex.getMessage(), ex);
-                        }
-                    }
-                }
-            }
-
+            // get the canonicalized bytes from SignedInfo
+            si.signInOctetStream(so);
+            
             // set them on the SignatureValue element
             this.setSignatureValueElement(sa.sign());
         } catch (XMLSignatureException ex) {
@@ -652,6 +638,8 @@ public final class XMLSignature extends SignatureElementProxy {
         } catch (InvalidCanonicalizerException ex) {
             throw new XMLSignatureException(ex);
         } catch (XMLSecurityException ex) {
+            throw new XMLSignatureException(ex);
+        } catch (IOException ex) {
             throw new XMLSignatureException(ex);
         }
     }
@@ -731,13 +719,12 @@ public final class XMLSignature extends SignatureElementProxy {
                 log.debug("PublicKey = " + pk);
             }
             byte sigBytes[] = null;
-            try {
+            try (SignerOutputStream so = new SignerOutputStream(sa);
+                OutputStream bos = new UnsyncBufferedOutputStream(so)) {
+                
                 sa.initVerify(pk);
 
                 // Get the canonicalized (normalized) SignedInfo
-                SignerOutputStream so = new SignerOutputStream(sa);
-                OutputStream bos = new UnsyncBufferedOutputStream(so);
-
                 si.signInOctetStream(bos);
                 bos.close();
                 // retrieve the byte[] from the stored signature
