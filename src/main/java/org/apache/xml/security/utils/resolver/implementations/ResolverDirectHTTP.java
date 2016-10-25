@@ -96,14 +96,12 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
     @Override
     public XMLSignatureInput engineResolveURI(ResourceResolverContext context)
         throws ResourceResolverException {
-        InputStream inputStream = null;
+        
         try {
-
             // calculate new URI
             URI uriNew = getNewURI(context.uriToResolve, context.baseUri);
             URL url = uriNew.toURL();
-            URLConnection urlConnection;
-            urlConnection = openConnection(url);
+            URLConnection urlConnection = openConnection(url);
 
             // check if Basic authentication is required
             String auth = urlConnection.getHeaderField("WWW-Authenticate");
@@ -128,8 +126,8 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
             }
 
             String mimeType = urlConnection.getHeaderField("Content-Type");
-            inputStream = urlConnection.getInputStream();
-            try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                InputStream inputStream =  urlConnection.getInputStream()) {
                 byte[] buf = new byte[4096];
                 int read = 0;
                 int summarized = 0;
@@ -160,16 +158,6 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
             throw new ResourceResolverException(ex, context.uriToResolve, context.baseUri, "generic.EmptyMessage");
         } catch (IllegalArgumentException e) {
             throw new ResourceResolverException(e, context.uriToResolve, context.baseUri, "generic.EmptyMessage");
-        } finally {
-            if (inputStream != null) {
-                try {
-                    inputStream.close();
-                } catch (IOException e) {
-                    if (log.isDebugEnabled()) {
-                        log.debug(e.getMessage(), e);
-                    }
-                }
-            }
         }
     }
 
