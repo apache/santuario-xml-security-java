@@ -18,39 +18,28 @@
  */
 package org.apache.xml.security.test.dom.keys.keyresolver;
 
-import java.io.FileInputStream;
 import java.lang.reflect.Constructor;
-import java.security.KeyFactory;
 import java.security.Provider;
 import java.security.PublicKey;
 import java.security.Security;
-import java.security.spec.X509EncodedKeySpec;
 
-import javax.xml.parsers.DocumentBuilder;
-
-import org.apache.xml.security.Init;
-import org.apache.xml.security.keys.KeyInfo;
-import org.apache.xml.security.utils.Base64;
-import org.apache.xml.security.utils.JavaUtils;
-import org.apache.xml.security.utils.XMLUtils;
-import org.junit.Assert;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import org.apache.xml.security.Init;
+import org.apache.xml.security.keys.KeyInfo;
+import org.junit.Assert;
+
+import static org.apache.xml.security.test.stax.utils.KeyLoader.loadPublicKey;
+import static org.apache.xml.security.test.stax.utils.KeyLoader.loadXML;
+
 public class DEREncodedKeyValueResolverTest extends Assert {
-
-    private static final String BASEDIR = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
-    private static final String SEP = System.getProperty("file.separator");
-
-    private DocumentBuilder documentBuilder;
 
     private PublicKey rsaKeyControl;
     private PublicKey dsaKeyControl;
     private PublicKey ecKeyControl;
 
     public DEREncodedKeyValueResolverTest() throws Exception {
-        documentBuilder = XMLUtils.createDocumentBuilder(false);
-
         //
         // If the BouncyCastle provider is not installed, then try to load it
         // via reflection.
@@ -113,26 +102,4 @@ public class DEREncodedKeyValueResolverTest extends Assert {
         KeyInfo keyInfo = new KeyInfo(element, "");
         assertEquals(ecKeyControl, keyInfo.getPublicKey());
     }
-
-    // Utility methods
-
-    private String getControlFilePath(String fileName) {
-        return BASEDIR + SEP + "src" + SEP + "test" + SEP + "resources" +
-            SEP + "org" + SEP + "apache" + SEP + "xml" + SEP + "security" +
-            SEP + "keys" + SEP + "content" +
-            SEP + fileName;
-    }
-
-    private Document loadXML(String fileName) throws Exception {
-        return documentBuilder.parse(new FileInputStream(getControlFilePath(fileName)));
-    }
-
-    private PublicKey loadPublicKey(String filePath, String algorithm) throws Exception {
-        String fileData = new String(JavaUtils.getBytesFromFile(getControlFilePath(filePath)));
-        byte[] keyBytes = Base64.decode(fileData);
-        KeyFactory kf = KeyFactory.getInstance(algorithm);
-        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
-        return kf.generatePublic(keySpec);
-    }
-
 }
