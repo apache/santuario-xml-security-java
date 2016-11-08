@@ -37,6 +37,7 @@ import java.security.PublicKey;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.util.Map;
 
 /**
  * Factory to create SecurityToken Objects from keys in XML
@@ -73,9 +74,7 @@ public class SecurityTokenFactoryImpl extends SecurityTokenFactory {
             final String keyName =
                     XMLSecurityUtils.getQNameType(keyInfoType.getContent(), XMLSecurityConstants.TAG_dsig_KeyName);
             if (keyName != null) {
-                KeyNameSecurityToken token =
-                        new KeyNameSecurityToken(keyName, inboundSecurityContext);
-                setTokenKey(securityProperties, keyUsage, token);
+                KeyNameSecurityToken token = getSecurityToken(keyName, securityProperties, inboundSecurityContext, keyUsage);
                 return token;
             }
         }
@@ -83,31 +82,51 @@ public class SecurityTokenFactoryImpl extends SecurityTokenFactory {
         // Use a default key if it exists
         if (SecurityTokenConstants.KeyUsage_Signature_Verification.equals(keyUsage)
                 && securityProperties.getSignatureVerificationKey() != null) {
-            AbstractInboundSecurityToken token =
-                    new AbstractInboundSecurityToken(inboundSecurityContext, IDGenerator.generateID(null),
-                            SecurityTokenConstants.KeyIdentifier_NoKeyInfo, false) {
-                        @Override
-                        public TokenType getTokenType() {
-                            return SecurityTokenConstants.DefaultToken;
-                        }
-                    };
-            setTokenKey(securityProperties, keyUsage, token);
-            return token;
+            return getDefaultSecurityToken(securityProperties, inboundSecurityContext, keyUsage);
         } else if (SecurityTokenConstants.KeyUsage_Decryption.equals(keyUsage)
                 && securityProperties.getDecryptionKey() != null) {
-            AbstractInboundSecurityToken token =
-                    new AbstractInboundSecurityToken(inboundSecurityContext, IDGenerator.generateID(null),
-                            SecurityTokenConstants.KeyIdentifier_NoKeyInfo, false) {
-                        @Override
-                        public TokenType getTokenType() {
-                            return SecurityTokenConstants.DefaultToken;
-                        }
-                    };
-            setTokenKey(securityProperties, keyUsage, token);
-            return token;
+            return getDefaultSecurityToken(securityProperties, inboundSecurityContext, keyUsage);
         }
 
         throw new XMLSecurityException("stax.noKey", new Object[] {keyUsage});
+    }
+
+    private InboundSecurityToken getDefaultSecurityToken(XMLSecurityProperties securityProperties, final InboundSecurityContext inboundSecurityContext, SecurityTokenConstants.KeyUsage keyUsage) {
+        AbstractInboundSecurityToken token =
+                new AbstractInboundSecurityToken(inboundSecurityContext, IDGenerator.generateID(null),
+                        SecurityTokenConstants.KeyIdentifier_NoKeyInfo, false) {
+                    @Override
+                    public TokenType getTokenType() {
+                        return SecurityTokenConstants.DefaultToken;
+                    }
+                };
+        setTokenKey(securityProperties, keyUsage, token);
+        return token;
+    }
+
+    private KeyNameSecurityToken getSecurityToken(String keyName, XMLSecurityProperties securityProperties, InboundSecurityContext inboundSecurityContext,
+            SecurityTokenConstants.KeyUsage keyUsage) throws XMLSecurityException {
+        KeyNameSecurityToken token =
+                new KeyNameSecurityToken(keyName, inboundSecurityContext);
+
+        // This if is here to preserve the current behaviour when the SignatureVerificationKey is set
+        if (SecurityTokenConstants.KeyUsage_Signature_Verification.equals(keyUsage)
+                && securityProperties.getSignatureVerificationKey() == null) {
+            Map<String, Key> keyNameMap = securityProperties.getKeyNameMap();
+            Key key = keyNameMap.get(keyName);
+            if (key == null) {
+                throw new XMLSecurityException("stax.keyNotFoundForName", new Object[] {keyName});
+            }
+
+            if (key instanceof PublicKey) {
+                token.setPublicKey((PublicKey)key);
+            } else {
+                throw new XMLSecurityException("stax.keyTypeNotSupported", new Object[] {key.getClass().getSimpleName()});
+            }
+        }
+
+        setTokenKey(securityProperties, keyUsage, token);
+        return token;
     }
 
     private static InboundSecurityToken getSecurityToken(KeyValueType keyValueType,
