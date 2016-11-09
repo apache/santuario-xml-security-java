@@ -27,6 +27,9 @@ import java.io.OutputStream;
  */
 public class UnsyncByteArrayOutputStream extends OutputStream  {	
 
+    // Maximum array size. Using same value as ArrayList in OpenJDK. 
+    // Integer.MAX_VALUE doesn't work on some VMs, as some header values are reserved
+    private static final int VM_ARRAY_INDEX_MAX_VALUE = Integer.MAX_VALUE - 8;
     private static final int INITIAL_SIZE = 8192;
 
     private byte[] buf;
@@ -38,7 +41,7 @@ public class UnsyncByteArrayOutputStream extends OutputStream  {
     }
 
     public void write(byte[] arg0) {
-        if ((Integer.MAX_VALUE - pos) < arg0.length) {
+        if ((VM_ARRAY_INDEX_MAX_VALUE - pos) < arg0.length) {
             throw new OutOfMemoryError();
         }
         int newPos = pos + arg0.length;
@@ -50,7 +53,7 @@ public class UnsyncByteArrayOutputStream extends OutputStream  {
     }
 
     public void write(byte[] arg0, int arg1, int arg2) {
-        if ((Integer.MAX_VALUE - pos) < arg2) {
+        if ((VM_ARRAY_INDEX_MAX_VALUE - pos) < arg2) {
             throw new OutOfMemoryError();
         }
         int newPos = pos + arg2;
@@ -62,7 +65,7 @@ public class UnsyncByteArrayOutputStream extends OutputStream  {
     }
 
     public void write(int arg0) {
-        if (Integer.MAX_VALUE - pos == 0) {
+        if (VM_ARRAY_INDEX_MAX_VALUE - pos == 0) {
             throw new OutOfMemoryError();
         }
         int newPos = pos + 1;
@@ -81,14 +84,14 @@ public class UnsyncByteArrayOutputStream extends OutputStream  {
     public void reset() {
         pos = 0;
     }
-
+    
     private void expandSize(int newPos) {
         int newSize = size;
         while (newPos > newSize) {
             newSize = newSize << 1;
             // Deal with overflow
             if (newSize < 0) {
-                newSize = Integer.MAX_VALUE;
+                newSize = VM_ARRAY_INDEX_MAX_VALUE;
             }
         }
         byte newBuf[] = new byte[newSize];
