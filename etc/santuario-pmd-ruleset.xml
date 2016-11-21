@@ -26,6 +26,7 @@
 
   <rule ref="rulesets/java/basic.xml">
      <exclude name="AvoidUsingHardCodedIP" />
+     <exclude name="SimplifiedTernary" />
   </rule>
   <rule ref="rulesets/java/unusedcode.xml"/>
   <rule ref="rulesets/java/imports.xml"/>
