@@ -334,8 +334,13 @@ class Marshaller {
                     attr.getLocalName(), attr.getTextContent());
         }
         else {
-            xwriter.writeAttribute(attr.getPrefix(), attr.getNamespaceURI(),
-                    attr.getLocalName(), attr.getTextContent());
+            if (attr.getNamespaceURI() == null && attr.getLocalName() == null) {
+                // Level 1 DOM attribute
+                xwriter.writeAttribute(null, null, attr.getName(), attr.getTextContent());
+            } else {
+                xwriter.writeAttribute(attr.getPrefix(), attr.getNamespaceURI(), attr.getLocalName(),
+                                       attr.getTextContent());
+            }
         }
     }
 
