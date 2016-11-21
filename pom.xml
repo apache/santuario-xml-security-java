@@ -433,7 +433,7 @@
         <xmlunit.version>1.6</xmlunit.version>
         <commons.codec.version>1.10</commons.codec.version>
         <woodstox.core.asl.version>4.4.1</woodstox.core.asl.version>
-        <jetty.version>8.1.22.v20160922</jetty.version>
+        <jetty.version>9.3.9.v20160517</jetty.version>
         <xmlsec.jaxb.context.class />
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <targetJdk>1.8</targetJdk>

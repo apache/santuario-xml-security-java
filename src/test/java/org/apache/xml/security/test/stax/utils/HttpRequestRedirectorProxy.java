@@ -20,7 +20,6 @@ package org.apache.xml.security.test.stax.utils;
 
 import org.apache.xml.security.stax.ext.XMLSecurityUtils;
 import org.eclipse.jetty.http.MimeTypes;
-import org.eclipse.jetty.io.Buffer;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -106,9 +105,9 @@ public class HttpRequestRedirectorProxy {
                 InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(s + "/" + file);
                 if (inputStream != null) {
 
-                    Buffer mime = mimeTypes.getMimeByExtension(req.getPathInfo());
+                    String mime = mimeTypes.getMimeByExtension(req.getPathInfo());
                     if (mime != null) {
-                        resp.setContentType(mime.toString());
+                        resp.setContentType(mime);
                     }
                     XMLSecurityUtils.copy(inputStream, resp.getOutputStream());
                     inputStream.close();
