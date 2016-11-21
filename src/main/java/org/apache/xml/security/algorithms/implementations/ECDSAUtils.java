@@ -769,7 +769,6 @@ public final class ECDSAUtils {
             field = ecFieldFp.getP();
         } else {
             ECFieldF2m ecFieldF2m = (ECFieldF2m) ecField;
-            ecFieldF2m.getReductionPolynomial();
             field = ecFieldF2m.getReductionPolynomial();
         }
 

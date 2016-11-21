@@ -93,13 +93,13 @@ public class TransformXPath extends TransformSpi {
                 throw new TransformationException("xml.WrongContent", exArgs);
             }
             Node xpathnode = xpathElement.getFirstChild();
-            String str = XMLUtils.getStrFromNode(xpathnode);
-            input.setNeedsToBeExpanded(needsCircumvent(str));
             if (xpathnode == null) {
                 throw new DOMException(
                     DOMException.HIERARCHY_REQUEST_ERR, "Text must be in ds:Xpath"
                 );
             }
+            String str = XMLUtils.getStrFromNode(xpathnode);
+            input.setNeedsToBeExpanded(needsCircumvent(str));
 
             XPathFactory xpathFactory = XPathFactory.newInstance();
             XPathAPI xpathAPIInstance = xpathFactory.newXPathAPI();

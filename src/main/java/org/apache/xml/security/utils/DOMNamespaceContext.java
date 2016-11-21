@@ -21,6 +21,7 @@ package org.apache.xml.security.utils;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.xml.namespace.NamespaceContext;
 
@@ -44,10 +45,9 @@ public class DOMNamespaceContext implements NamespaceContext {
     }
 
     public String getPrefix(String arg0) {
-        for (String key : namespaceMap.keySet()) {
-            String value = namespaceMap.get(key);
-            if (value.equals(arg0)) {
-                return key;
+        for (Entry<String, String> entry : namespaceMap.entrySet()) {
+            if (entry.getValue().equals(arg0)) {
+                return entry.getKey();
             }
         }
         return null;

@@ -36,6 +36,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -3399,9 +3400,9 @@ public class XMLCipher {
                 }
 
                 if (!attributeMap.isEmpty()) {
-                    for (String attribute : attributeMap.keySet()) {
+                    for (Entry<String, String> entry : attributeMap.entrySet()) {
                         result.setAttributeNS(Constants.XML_LANG_SPACE_SpecNS,
-                                              attribute, attributeMap.get(attribute));
+                                              entry.getKey(), entry.getValue());
                     }
                 }
 
