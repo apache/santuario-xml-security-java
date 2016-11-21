@@ -172,7 +172,9 @@ public class TransformIdentity implements Transformer {
                     }
                 }
             }
-            childOutputMethod.transform(xmlSecEvent);
+            if (childOutputMethod != null) {
+                childOutputMethod.transform(xmlSecEvent);
+            }
         }
     }
 
@@ -242,7 +244,9 @@ public class TransformIdentity implements Transformer {
                     }
                 }
             }
-            childOutputMethod.transform(inputStream);
+            if (childOutputMethod != null) {
+                childOutputMethod.transform(inputStream);
+            }
         }
     }
 

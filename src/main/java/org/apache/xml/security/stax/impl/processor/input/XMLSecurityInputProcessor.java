@@ -216,7 +216,7 @@ public class XMLSecurityInputProcessor extends AbstractInputProcessor {
     /**
      * Temporary processor to replay the buffered events
      */
-    public class InternalReplayProcessor extends AbstractInputProcessor {
+    public static class InternalReplayProcessor extends AbstractInputProcessor {
 
         private final ArrayDeque<XMLSecEvent> xmlSecEventList;
 

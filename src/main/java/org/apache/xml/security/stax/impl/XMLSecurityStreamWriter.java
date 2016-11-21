@@ -371,7 +371,7 @@ public class XMLSecurityStreamWriter implements XMLStreamWriter {
         this.encryptEntireRequestPart = encryptEntireRequestPart;
     }
 
-    private class Element {
+    private static class Element {
 
         private Element parentElement;
 
@@ -483,7 +483,7 @@ public class XMLSecurityStreamWriter implements XMLStreamWriter {
         }
     }
 
-    private class NSContext implements NamespaceContext {
+    private static class NSContext implements NamespaceContext {
 
         private NamespaceContext parentNamespaceContext;
         private List<String> prefixNsList = Collections.emptyList();
