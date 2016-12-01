@@ -676,10 +676,7 @@ public class Canonicalizer20010315Test extends org.junit.Assert {
         //J+
 
         DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
-        Document doc = null;
-        try (InputStream is = new ByteArrayInputStream(inputStr.getBytes())) {
-            doc = db.parse(is);
-        }
+        Document doc = db.parse(new ByteArrayInputStream(inputStr.getBytes()));
         boolean weCatchedTheRelativeNS = false;
 
         try {
@@ -991,10 +988,7 @@ public class Canonicalizer20010315Test extends org.junit.Assert {
 
         db.setErrorHandler(new IgnoreAllErrorHandler());
 
-        Document doc = null;
-        try (InputStream is = new ByteArrayInputStream(input.getBytes())) {
-            doc = db.parse(is);
-        }
+        Document doc = db.parse(new ByteArrayInputStream(input.getBytes()));
         Canonicalizer c14nizer =
             Canonicalizer.getInstance(Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS);
 
@@ -1117,10 +1111,7 @@ public class Canonicalizer20010315Test extends org.junit.Assert {
         //String ENCODING_UTF8 = "UTF-8";
         String ENCODING_UTF16 = "UTF-16";
         DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
-        Document doc = null;
-        try (InputStream is = new ByteArrayInputStream(input)) {
-            doc = db.parse(is);
-        }
+        Document doc = db.parse(new ByteArrayInputStream(input));
         TransformerFactory tFactory = TransformerFactory.newInstance();
         Transformer transformer = tFactory.newTransformer();
 

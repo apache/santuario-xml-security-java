@@ -224,10 +224,9 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
             log.debug("JCA Algorithm: " + getJCAAlgorithm());
             log.debug("Signature Bytes length: " + sig.length);
         }
+        si.canonicalize(context, new SignerOutputStream(signature));
 
-        try (SignerOutputStream outputStream = new SignerOutputStream(signature)) {
-            si.canonicalize(context, outputStream);
-            
+        try {
             Type type = getAlgorithmType();
             if (type == Type.DSA) {
                 int size = ((DSAKey)key).getParams().getQ().bitLength();
@@ -272,9 +271,9 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
             log.debug("JCA Algorithm: " + getJCAAlgorithm());
         }
 
-        try (SignerOutputStream outputStream = new SignerOutputStream(signature)) {
-            si.canonicalize(context, outputStream);
-            
+        si.canonicalize(context, new SignerOutputStream(signature));
+
+        try {
             Type type = getAlgorithmType();
             if (type == Type.DSA) {
                 int size = ((DSAKey)key).getParams().getQ().bitLength();

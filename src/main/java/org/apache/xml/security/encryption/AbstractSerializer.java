@@ -96,17 +96,16 @@ public abstract class AbstractSerializer implements Serializer {
      * @throws Exception
      */
     public String serialize(NodeList content) throws Exception {
-        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            canon.setSecureValidation(secureValidation);
-            canon.setWriter(baos);
-            canon.notReset();
-            for (int i = 0; i < content.getLength(); i++) {
-                canon.canonicalizeSubtree(content.item(i));
-            }
-            String ret = baos.toString("UTF-8");
-            baos.reset();
-            return ret;
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        canon.setSecureValidation(secureValidation);
+        canon.setWriter(baos);
+        canon.notReset();
+        for (int i = 0; i < content.getLength(); i++) {
+            canon.canonicalizeSubtree(content.item(i));
         }
+        String ret = baos.toString("UTF-8");
+        baos.reset();
+        return ret;
     }
 
     /**
@@ -119,15 +118,14 @@ public abstract class AbstractSerializer implements Serializer {
      * @throws Exception
      */
     public byte[] serializeToByteArray(NodeList content) throws Exception {
-        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            canon.setSecureValidation(secureValidation);
-            canon.setWriter(baos);
-            canon.notReset();
-            for (int i = 0; i < content.getLength(); i++) {
-                canon.canonicalizeSubtree(content.item(i));
-            }
-            return baos.toByteArray();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        canon.setSecureValidation(secureValidation);
+        canon.setWriter(baos);
+        canon.notReset();
+        for (int i = 0; i < content.getLength(); i++) {
+            canon.canonicalizeSubtree(content.item(i));
         }
+        return baos.toByteArray();
     }
 
     /**
@@ -137,15 +135,14 @@ public abstract class AbstractSerializer implements Serializer {
      * @throws Exception
      */
     public String canonSerialize(Node node) throws Exception {
-        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            canon.setSecureValidation(secureValidation);
-            canon.setWriter(baos);
-            canon.notReset();
-            canon.canonicalizeSubtree(node);
-            String ret = baos.toString("UTF-8");
-            baos.reset();
-            return ret;
-        }
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        canon.setSecureValidation(secureValidation);
+        canon.setWriter(baos);
+        canon.notReset();
+        canon.canonicalizeSubtree(node);
+        String ret = baos.toString("UTF-8");
+        baos.reset();
+        return ret;
     }
 
     /**
@@ -155,13 +152,12 @@ public abstract class AbstractSerializer implements Serializer {
      * @throws Exception
      */
     public byte[] canonSerializeToByteArray(Node node) throws Exception {
-        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            canon.setSecureValidation(secureValidation);
-            canon.setWriter(baos);
-            canon.notReset();
-            canon.canonicalizeSubtree(node);
-            return baos.toByteArray();
-        }
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        canon.setSecureValidation(secureValidation);
+        canon.setWriter(baos);
+        canon.notReset();
+        canon.canonicalizeSubtree(node);
+        return baos.toByteArray();
     }
 
     /**
@@ -178,11 +174,12 @@ public abstract class AbstractSerializer implements Serializer {
      * @return the Node resulting from the parse of the source
      * @throws XMLEncryptionException
      */
-    public abstract Node deserialize(byte[] source, Node ctx) throws XMLEncryptionException, IOException;
+    public abstract Node deserialize(byte[] source, Node ctx) throws XMLEncryptionException;
 
     protected static byte[] createContext(byte[] source, Node ctx) throws XMLEncryptionException {
         // Create the context to parse the document against
-        try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        try {
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(byteArrayOutputStream, "UTF-8");
             outputStreamWriter.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?><dummy");
 

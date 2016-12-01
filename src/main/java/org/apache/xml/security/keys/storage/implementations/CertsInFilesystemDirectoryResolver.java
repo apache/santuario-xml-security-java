@@ -29,12 +29,12 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Iterator;
 import java.util.List;
 
 import org.apache.xml.security.keys.storage.StorageResolverException;
 import org.apache.xml.security.keys.storage.StorageResolverSpi;
+import org.apache.xml.security.utils.Base64;
 
 /**
  * This {@link StorageResolverSpi} makes all raw (binary) {@link X509Certificate}s
@@ -100,7 +100,9 @@ public class CertsInFilesystemDirectoryResolver extends StorageResolverSpi {
             boolean added = false;
             String dn = null;
 
-            try (FileInputStream fis = new FileInputStream(file)) {
+            FileInputStream fis = null;
+            try {
+                fis = new FileInputStream(file);
                 X509Certificate cert =
                     (X509Certificate) cf.generateCertificate(fis);
 
@@ -126,9 +128,15 @@ public class CertsInFilesystemDirectoryResolver extends StorageResolverSpi {
                 if (log.isDebugEnabled()) {
                     log.debug("Could not add certificate from file " + filename, ex);
                 }
-            } catch (IOException ex) {
-                if (log.isDebugEnabled()) {
-                    log.debug("Could not add certificate from file " + filename, ex);
+            } finally {
+                try {
+                    if (fis != null) {
+                        fis.close();
+                    }
+                } catch (IOException ex) {
+                    if (log.isDebugEnabled()) {
+                        log.debug("Could not add certificate from file " + filename, ex);
+                    }
                 }
             }
 
@@ -202,7 +210,7 @@ public class CertsInFilesystemDirectoryResolver extends StorageResolverSpi {
 
             System.out.println();
             System.out.println("Base64(SKI())=                 \""
-                               + Base64.getMimeEncoder().encodeToString(ski) + "\"");
+                               + Base64.encode(ski) + "\"");
             System.out.println("cert.getSerialNumber()=        \""
                                + cert.getSerialNumber().toString() + "\"");
             System.out.println("cert.getSubjectX500Principal().getName()= \""

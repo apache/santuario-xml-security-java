@@ -49,10 +49,10 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.security.spec.RSAPublicKeySpec;
 import java.util.Arrays;
-import java.util.Base64;
 
-import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Element;
+import org.apache.xml.security.exceptions.Base64DecodingException;
+import org.apache.xml.security.utils.Base64;
 
 /**
  * DOM-based implementation of KeyValue.
@@ -160,7 +160,7 @@ public abstract class DOMKeyValue<K extends PublicKey> extends BaseStructure imp
     public static BigInteger decode(Element elem) throws MarshalException {
         try {
             String base64str = BaseStructure.textOfNode(elem);
-            return new BigInteger(1, Base64.getMimeDecoder().decode(base64str));
+            return Base64.decodeBigIntegerFromString(base64str);
         } catch (Exception ex) {
             throw new MarshalException(ex);
         }
@@ -169,13 +169,11 @@ public abstract class DOMKeyValue<K extends PublicKey> extends BaseStructure imp
     public static void writeBase64BigIntegerElement(
         XmlWriter xwriter, String prefix, String localName, String namespaceURI, BigInteger value
     ) {
-        byte[] bytes = XMLUtils.getBytes(value, value.bitLength());
-        xwriter.writeTextElement(prefix, localName, namespaceURI, Base64.getMimeEncoder().encodeToString(bytes));
+        xwriter.writeTextElement(prefix, localName, namespaceURI, Base64.encode(value));
     }
 
     public static void marshal(XmlWriter xwriter, BigInteger bigNum) {
-        byte[] bytes = XMLUtils.getBytes(bigNum, bigNum.bitLength());
-        xwriter.writeCharacters(Base64.getMimeEncoder().encodeToString(bytes));
+        xwriter.writeCharacters(Base64.encode(bigNum));
     }
 
     @Override
@@ -474,7 +472,7 @@ public abstract class DOMKeyValue<K extends PublicKey> extends BaseStructure imp
             xwriter.writeEndElement();
 
             xwriter.writeStartElement(prefix, "PublicKey", XMLDSIG_11_XMLNS);
-            String encoded = Base64.getMimeEncoder().encodeToString(ecPublicKey);
+            String encoded = Base64.encode(ecPublicKey);
             xwriter.writeCharacters(encoded);
             xwriter.writeEndElement(); // "PublicKey"
             xwriter.writeEndElement(); // "ECKeyValue"
@@ -522,9 +520,10 @@ public abstract class DOMKeyValue<K extends PublicKey> extends BaseStructure imp
             ECPoint ecPoint = null;
 
             try {
-                String content = XMLUtils.getFullTextChildrenFromElement(curElem);
-                ecPoint = decodePoint(Base64.getMimeDecoder().decode(content),
+                ecPoint = decodePoint(Base64.decode(curElem),
                                       ecParams.getCurve());
+            } catch (Base64DecodingException bde) {
+                throw new MarshalException("Invalid EC PublicKey", bde);
             } catch (IOException ioe) {
                 throw new MarshalException("Invalid EC Point", ioe);
             }

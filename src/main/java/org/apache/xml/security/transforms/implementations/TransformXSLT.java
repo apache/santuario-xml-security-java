@@ -21,7 +21,6 @@ package org.apache.xml.security.transforms.implementations;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 
 import javax.xml.XMLConstants;
@@ -98,6 +97,8 @@ public class TransformXSLT extends TransformSpi {
              * attempt to convert it to octets (apply Canonical XML]) as described
              * in the Reference Processing Model (section 4.3.3.2).
              */
+            Source xmlSource =
+                new StreamSource(new ByteArrayInputStream(input.getBytes()));
             Source stylesheet;
 
             /*
@@ -109,16 +110,15 @@ public class TransformXSLT extends TransformSpi {
              * so we convert the stylesheet to byte[] and use this as input stream
              */
             {
-                try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
-                    Transformer transformer = tFactory.newTransformer();
-                    DOMSource source = new DOMSource(xsltElement);
-                    StreamResult result = new StreamResult(os);
-    
-                    transformer.transform(source, result);
-    
-                    stylesheet =
-                        new StreamSource(new ByteArrayInputStream(os.toByteArray()));
-                }
+                ByteArrayOutputStream os = new ByteArrayOutputStream();
+                Transformer transformer = tFactory.newTransformer();
+                DOMSource source = new DOMSource(xsltElement);
+                StreamResult result = new StreamResult(os);
+
+                transformer.transform(source, result);
+
+                stylesheet =
+                    new StreamSource(new ByteArrayInputStream(os.toByteArray()));
             }
 
             Transformer transformer = tFactory.newTransformer(stylesheet);
@@ -134,21 +134,17 @@ public class TransformXSLT extends TransformSpi {
                 log.warn("Unable to set Xalan line-separator property: " + e.getMessage());
             }
 
-            try (InputStream is = new ByteArrayInputStream(input.getBytes())) {
-                Source xmlSource = new StreamSource(is);
-                if (baos == null) {
-                    try (ByteArrayOutputStream baos1 = new ByteArrayOutputStream()) {
-                        StreamResult outputTarget = new StreamResult(baos1);
-                        transformer.transform(xmlSource, outputTarget);
-                        XMLSignatureInput output = new XMLSignatureInput(baos1.toByteArray());
-                        output.setSecureValidation(secureValidation);
-                        return output;
-                    }
-                }
-                StreamResult outputTarget = new StreamResult(baos);
-
+            if (baos == null) {
+                ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
+                StreamResult outputTarget = new StreamResult(baos1);
                 transformer.transform(xmlSource, outputTarget);
+                XMLSignatureInput output = new XMLSignatureInput(baos1.toByteArray());
+                output.setSecureValidation(secureValidation);
+                return output;
             }
+            StreamResult outputTarget = new StreamResult(baos);
+
+            transformer.transform(xmlSource, outputTarget);
             XMLSignatureInput output = new XMLSignatureInput((byte[])null);
             output.setSecureValidation(secureValidation);
             output.setOutputStream(baos);

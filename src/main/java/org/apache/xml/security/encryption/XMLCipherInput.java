@@ -19,14 +19,15 @@
 package org.apache.xml.security.encryption;
 
 import java.io.IOException;
-import java.util.Base64;
 
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.utils.resolver.ResourceResolver;
 import org.apache.xml.security.utils.resolver.ResourceResolverException;
+import org.apache.xml.security.exceptions.Base64DecodingException;
 import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.transforms.TransformationException;
 import org.w3c.dom.Attr;
+import org.apache.xml.security.utils.Base64;
 
 /**
  * <code>XMLCipherInput</code> is used to wrap input passed into the
@@ -178,6 +179,10 @@ public class XMLCipherInput {
             log.debug("Encrypted octets:\n" + base64EncodedEncryptedOctets);
         }
 
-        return Base64.getMimeDecoder().decode(base64EncodedEncryptedOctets);
+        try {
+            return Base64.decode(base64EncodedEncryptedOctets);
+        } catch (Base64DecodingException bde) {
+            throw new XMLEncryptionException(bde);
+        }
     }
 }

@@ -55,9 +55,7 @@ public class ForbiddenAlgorithmTest extends InteropTestBase {
             readAndVerifySignature("src/test/resources/interop/c14n/Y2", "signature-joseph-exc.xml", true);
             fail("Failure expected when secure validation is enabled");
         } catch (XMLSignatureException ex) {
-            String error = "It is forbidden to use algorithm http://www.w3.org/2001/04/xmldsig-more#md5 "
-                + "when secure validation is enabled";
-            assertTrue(ex.getMessage().equals(error));
+            assertTrue(ex.getMessage().contains("no XMLSignatureInput"));
         }
     }
 

@@ -120,11 +120,8 @@ public class IAIKTest extends Assert {
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        
-        XMLStreamReader xmlStreamReader = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
-        }
+        final XMLStreamReader xmlStreamReader =
+                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
 
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
@@ -192,11 +189,8 @@ public class IAIKTest extends Assert {
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        
-        XMLStreamReader xmlStreamReader = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
-        }
+        final XMLStreamReader xmlStreamReader =
+                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
 
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
@@ -227,11 +221,8 @@ public class IAIKTest extends Assert {
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        
-        XMLStreamReader xmlStreamReader = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
-        }
+        final XMLStreamReader xmlStreamReader =
+                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
 
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
@@ -333,11 +324,8 @@ public class IAIKTest extends Assert {
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        
-        XMLStreamReader xmlStreamReader = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
-        }
+        final XMLStreamReader xmlStreamReader =
+                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
 
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();

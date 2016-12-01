@@ -26,9 +26,6 @@ import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.ext.*;
 import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer20010315_Excl;
 import org.apache.xml.security.stax.securityToken.InboundSecurityToken;
-import org.apache.xml.security.utils.UnsyncBufferedOutputStream;
-import org.apache.xml.security.utils.UnsyncByteArrayInputStream;
-import org.apache.xml.security.utils.UnsyncByteArrayOutputStream;
 import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 import org.apache.xml.security.stax.ext.stax.XMLSecEventFactory;
 import org.apache.xml.security.stax.impl.algorithms.SignatureAlgorithm;
@@ -41,7 +38,6 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
@@ -150,22 +146,23 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
 
         Deque<XMLSecEvent> signedInfoDeque = new ArrayDeque<XMLSecEvent>();
 
-        try (UnsyncByteArrayOutputStream unsynchronizedByteArrayOutputStream = new UnsyncByteArrayOutputStream()) {
-            Transformer transformer = XMLSecurityUtils.getTransformer(
-                    null,
-                    unsynchronizedByteArrayOutputStream,
-                    null,
-                    signatureType.getSignedInfo().getCanonicalizationMethod().getAlgorithm(),
-                    XMLSecurityConstants.DIRECTION.IN);
-    
-            Iterator<XMLSecEvent> iterator = eventDeque.descendingIterator();
-            //forward to <Signature> Element
-            int i = 0;
-            while (i < index) {
-                iterator.next();
-                i++;
-            }
+        UnsynchronizedByteArrayOutputStream unsynchronizedByteArrayOutputStream = new UnsynchronizedByteArrayOutputStream();
+        Transformer transformer = XMLSecurityUtils.getTransformer(
+                null,
+                unsynchronizedByteArrayOutputStream,
+                null,
+                signatureType.getSignedInfo().getCanonicalizationMethod().getAlgorithm(),
+                XMLSecurityConstants.DIRECTION.IN);
 
+        Iterator<XMLSecEvent> iterator = eventDeque.descendingIterator();
+        //forward to <Signature> Element
+        int i = 0;
+        while (i < index) {
+            iterator.next();
+            i++;
+        }
+
+        try {
             loop:
             while (iterator.hasNext()) {
                 XMLSecEvent xmlSecEvent = iterator.next();
@@ -194,25 +191,24 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
 
             transformer.doFinal();
 
-            try (InputStream is = new UnsyncByteArrayInputStream(unsynchronizedByteArrayOutputStream.toByteArray())) {
-                XMLStreamReader xmlStreamReader = inputProcessorChain.getSecurityContext().
-                        <XMLInputFactory>get(XMLSecurityConstants.XMLINPUTFACTORY).
-                        createXMLStreamReader(is);
-    
-                while (xmlStreamReader.hasNext()) {
-                    XMLSecEvent xmlSecEvent = XMLSecEventFactory.allocate(xmlStreamReader, null);
-                    signedInfoDeque.push(xmlSecEvent);
-                    xmlStreamReader.next();
-                }
-    
-                @SuppressWarnings("unchecked")
-                final SignedInfoType signedInfoType =
-                        ((JAXBElement<SignedInfoType>) parseStructure(signedInfoDeque, 0, securityProperties)).getValue();
-                signatureType.setSignedInfo(signedInfoType);
-    
-                return signedInfoDeque;
+            XMLStreamReader xmlStreamReader = inputProcessorChain.getSecurityContext().
+                    <XMLInputFactory>get(XMLSecurityConstants.XMLINPUTFACTORY).
+                    createXMLStreamReader(new UnsynchronizedByteArrayInputStream(unsynchronizedByteArrayOutputStream.toByteArray()));
+
+            while (xmlStreamReader.hasNext()) {
+                XMLSecEvent xmlSecEvent = XMLSecEventFactory.allocate(xmlStreamReader, null);
+                signedInfoDeque.push(xmlSecEvent);
+                xmlStreamReader.next();
             }
-        } catch (XMLStreamException | IOException e) {
+
+            @SuppressWarnings("unchecked")
+            final SignedInfoType signedInfoType =
+                    ((JAXBElement<SignedInfoType>) parseStructure(signedInfoDeque, 0, securityProperties)).getValue();
+            signatureType.setSignedInfo(signedInfoType);
+
+            return signedInfoDeque;
+
+        } catch (XMLStreamException e) {
             throw new XMLSecurityException(e);
         }
     }
@@ -309,7 +305,7 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
                                 algorithmURI);
                 signatureAlgorithm.engineInitVerify(verifyKey);
                 signerOutputStream = new SignerOutputStream(signatureAlgorithm);
-                bufferedSignerOutputStream = new UnsyncBufferedOutputStream(signerOutputStream);
+                bufferedSignerOutputStream = new UnsynchronizedBufferedOutputStream(signerOutputStream);
 
                 final CanonicalizationMethodType canonicalizationMethodType =
                         signatureType.getSignedInfo().getCanonicalizationMethod();

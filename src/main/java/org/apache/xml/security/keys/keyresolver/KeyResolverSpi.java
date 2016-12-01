@@ -20,7 +20,6 @@ package org.apache.xml.security.keys.keyresolver;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
@@ -272,9 +271,9 @@ public abstract class KeyResolverSpi {
      */
     protected static Element getDocFromBytes(byte[] bytes, boolean secureValidation) throws KeyResolverException {
         DocumentBuilder db = null;
-        try (InputStream is = new ByteArrayInputStream(bytes)) {
+        try {
             db = XMLUtils.createDocumentBuilder(false, secureValidation);
-            Document doc = db.parse(is);
+            Document doc = db.parse(new ByteArrayInputStream(bytes));
             return doc.getDocumentElement();
         } catch (SAXException ex) {
             throw new KeyResolverException(ex);

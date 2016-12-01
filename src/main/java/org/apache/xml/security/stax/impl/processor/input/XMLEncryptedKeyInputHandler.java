@@ -36,6 +36,7 @@ import org.apache.xml.security.stax.securityToken.SecurityTokenFactory;
 import org.apache.xml.security.stax.impl.util.IDGenerator;
 import org.apache.xml.security.stax.securityEvent.AlgorithmSuiteSecurityEvent;
 import org.apache.xml.security.stax.securityEvent.EncryptedKeyTokenSecurityEvent;
+import org.apache.xml.security.utils.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
@@ -46,7 +47,6 @@ import javax.xml.bind.JAXBElement;
 
 import java.security.*;
 import java.security.spec.MGF1ParameterSpec;
-import java.util.Base64;
 import java.util.Deque;
 
 /**
@@ -234,7 +234,7 @@ public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHand
 
                         byte[] sha1Bytes =
                             generateDigest(encryptedKeyType.getCipherData().getCipherValue());
-                        String sha1Identifier = Base64.getMimeEncoder().encodeToString(sha1Bytes);
+                        String sha1Identifier = Base64.encode(sha1Bytes);
                         super.setSha1Identifier(sha1Identifier);
 
                         try {

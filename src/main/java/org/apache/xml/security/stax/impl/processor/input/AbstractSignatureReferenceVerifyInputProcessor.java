@@ -21,7 +21,6 @@ package org.apache.xml.security.stax.impl.processor.input;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer20010315_Excl;
 import org.apache.xml.security.stax.securityToken.InboundSecurityToken;
-import org.apache.xml.security.utils.UnsyncBufferedOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.xml.security.binding.excc14n.InclusiveNamespaces;
@@ -40,6 +39,7 @@ import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer
 import org.apache.xml.security.stax.impl.util.DigestOutputStream;
 import org.apache.xml.security.stax.impl.util.IDGenerator;
 import org.apache.xml.security.stax.impl.util.KeyValue;
+import org.apache.xml.security.stax.impl.util.UnsynchronizedBufferedOutputStream;
 import org.apache.xml.security.stax.securityEvent.AlgorithmSuiteSecurityEvent;
 
 import javax.xml.namespace.QName;
@@ -260,11 +260,12 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
     protected void verifyExternalReference(InputProcessorChain inputProcessorChain, InputStream inputStream,
                                          ReferenceType referenceType) throws XMLSecurityException, XMLStreamException {
 
-        try (BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        try {
             DigestOutputStream digestOutputStream =
                     createMessageDigestOutputStream(referenceType, inputProcessorChain.getSecurityContext());
-            UnsyncBufferedOutputStream bufferedDigestOutputStream =
-                    new UnsyncBufferedOutputStream(digestOutputStream)) {
+            UnsynchronizedBufferedOutputStream bufferedDigestOutputStream =
+                    new UnsynchronizedBufferedOutputStream(digestOutputStream);
 
             if (referenceType.getTransforms() != null) {
                 Transformer transformer =
@@ -278,6 +279,12 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
             compareDigest(digestOutputStream.getDigestValue(), referenceType);
         } catch (IOException e) {
             throw new XMLSecurityException(e);
+        } finally {
+            try {
+                bufferedInputStream.close();
+            } catch (IOException e) {
+                log.warn("Could not close external resource input stream, ignored.");
+            }
         }
     }
 
@@ -415,7 +422,7 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
             this.setStartElement(startElement);
             this.setReferenceType(referenceType);
             this.digestOutputStream = createMessageDigestOutputStream(referenceType, inputProcessorChain.getSecurityContext());
-            this.bufferedDigestOutputStream = new UnsyncBufferedOutputStream(this.getDigestOutputStream());
+            this.bufferedDigestOutputStream = new UnsynchronizedBufferedOutputStream(this.getDigestOutputStream());
             this.transformer = buildTransformerChain(referenceType, bufferedDigestOutputStream, inputProcessorChain);
         }
 

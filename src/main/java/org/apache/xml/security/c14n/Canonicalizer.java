@@ -252,41 +252,40 @@ public class Canonicalizer {
     public byte[] canonicalize(byte[] inputBytes)
         throws javax.xml.parsers.ParserConfigurationException,
         java.io.IOException, org.xml.sax.SAXException, CanonicalizationException {
-        Document document = null;
-        try (InputStream bais = new ByteArrayInputStream(inputBytes)) {
-            InputSource in = new InputSource(bais);
-    
-            // needs to validate for ID attribute normalization
-            DocumentBuilder db = XMLUtils.createDocumentBuilder(true, secureValidation);
-    
-            /*
-             * for some of the test vectors from the specification,
-             * there has to be a validating parser for ID attributes, default
-             * attribute values, NMTOKENS, etc.
-             * Unfortunately, the test vectors do use different DTDs or
-             * even no DTD. So Xerces 1.3.1 fires many warnings about using
-             * ErrorHandlers.
-             *
-             * Text from the spec:
-             *
-             * The input octet stream MUST contain a well-formed XML document,
-             * but the input need not be validated. However, the attribute
-             * value normalization and entity reference resolution MUST be
-             * performed in accordance with the behaviors of a validating
-             * XML processor. As well, nodes for default attributes (declared
-             * in the ATTLIST with an AttValue but not specified) are created
-             * in each element. Thus, the declarations in the document type
-             * declaration are used to help create the canonical form, even
-             * though the document type declaration is not retained in the
-             * canonical form.
-             */
-            db.setErrorHandler(new org.apache.xml.security.utils.IgnoreAllErrorHandler());
-    
-            try {
-                document = db.parse(in);
-            } finally {
-                XMLUtils.repoolDocumentBuilder(db);
-            }
+        InputStream bais = new ByteArrayInputStream(inputBytes);
+        InputSource in = new InputSource(bais);
+
+        // needs to validate for ID attribute normalization
+        DocumentBuilder db = XMLUtils.createDocumentBuilder(true, secureValidation);
+
+        /*
+         * for some of the test vectors from the specification,
+         * there has to be a validating parser for ID attributes, default
+         * attribute values, NMTOKENS, etc.
+         * Unfortunately, the test vectors do use different DTDs or
+         * even no DTD. So Xerces 1.3.1 fires many warnings about using
+         * ErrorHandlers.
+         *
+         * Text from the spec:
+         *
+         * The input octet stream MUST contain a well-formed XML document,
+         * but the input need not be validated. However, the attribute
+         * value normalization and entity reference resolution MUST be
+         * performed in accordance with the behaviors of a validating
+         * XML processor. As well, nodes for default attributes (declared
+         * in the ATTLIST with an AttValue but not specified) are created
+         * in each element. Thus, the declarations in the document type
+         * declaration are used to help create the canonical form, even
+         * though the document type declaration is not retained in the
+         * canonical form.
+         */
+        db.setErrorHandler(new org.apache.xml.security.utils.IgnoreAllErrorHandler());
+
+        Document document;
+        try {
+            document = db.parse(in);
+        } finally {
+            XMLUtils.repoolDocumentBuilder(db);
         }
         return this.canonicalizeSubtree(document);
     }

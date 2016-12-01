@@ -31,7 +31,7 @@ import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
 import org.apache.xml.security.stax.impl.SignaturePartDef;
 import org.apache.xml.security.stax.impl.transformer.TransformIdentity;
 import org.apache.xml.security.stax.impl.util.DigestOutputStream;
-import org.apache.xml.security.utils.UnsyncBufferedOutputStream;
+import org.apache.xml.security.stax.impl.util.UnsynchronizedBufferedOutputStream;
 
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
@@ -266,7 +266,7 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
         @Override
         public void init(OutputProcessorChain outputProcessorChain) throws XMLSecurityException {
             this.digestOutputStream = createMessageDigestOutputStream(signaturePartDef.getDigestAlgo());
-            this.bufferedDigestOutputStream = new UnsyncBufferedOutputStream(digestOutputStream);
+            this.bufferedDigestOutputStream = new UnsynchronizedBufferedOutputStream(digestOutputStream);
             this.transformer = buildTransformerChain(this.bufferedDigestOutputStream, signaturePartDef, xmlSecStartElement);
             super.init(outputProcessorChain);
         }

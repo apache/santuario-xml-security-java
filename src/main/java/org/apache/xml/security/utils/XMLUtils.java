@@ -22,7 +22,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.math.BigInteger;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
@@ -1091,50 +1090,6 @@ public final class XMLUtils {
         return pools[idx].repool(db);
     }
 
-    /**
-     * Returns a byte-array representation of a <code>{@link BigInteger}<code>.
-     * No sign-bit is output.
-     *
-     * <b>N.B.:</B> <code>{@link BigInteger}<code>'s toByteArray
-     * returns eventually longer arrays because of the leading sign-bit.
-     *
-     * @param big <code>BigInteger<code> to be converted
-     * @param bitlen <code>int<code> the desired length in bits of the representation
-     * @return a byte array with <code>bitlen</code> bits of <code>big</code>
-     */
-    public static byte[] getBytes(BigInteger big, int bitlen) {
-
-        //round bitlen
-        bitlen = ((bitlen + 7) >> 3) << 3;
-
-        if (bitlen < big.bitLength()) {
-            throw new IllegalArgumentException(I18n.translate("utils.Base64.IllegalBitlength"));
-        }
-
-        byte[] bigBytes = big.toByteArray();
-
-        if (big.bitLength() % 8 != 0
-            && big.bitLength() / 8 + 1 == bitlen / 8) {
-            return bigBytes;
-        }
-
-        // some copying needed
-        int startSrc = 0;    // no need to skip anything
-        int bigLen = bigBytes.length;    //valid length of the string
-
-        if (big.bitLength() % 8 == 0) {    // correct values
-            startSrc = 1;    // skip sign bit
-
-            bigLen--;    // valid length of the string
-        }
-
-        int startDst = bitlen / 8 - bigLen;    //pad with leading nulls
-        byte[] resizedBytes = new byte[bitlen / 8];
-
-        System.arraycopy(bigBytes, startSrc, resizedBytes, startDst, bigLen);
-
-        return resizedBytes;
-    }
 
     /**
      * We need this proxy wrapping DocumentBuilder to record the value

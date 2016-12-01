@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.utils;
 
-import java.io.IOException;
 import java.io.OutputStream;
 
 /**
@@ -86,19 +85,6 @@ public class UnsyncByteArrayOutputStream extends OutputStream  {
         pos = 0;
     }
     
-    /**
-     * Takes the contents of this stream and writes it to the output stream
-     * {@code out}.
-     *
-     * @param out
-     *            an OutputStream on which to write the contents of this stream.
-     * @throws IOException
-     *             if an error occurs while writing to {@code out}.
-     */
-    public void writeTo(OutputStream out) throws IOException {
-        out.write(buf, 0, pos);
-    }
-
     private void expandSize(int newPos) {
         int newSize = size;
         while (newPos > newSize) {

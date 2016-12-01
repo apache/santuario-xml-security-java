@@ -33,7 +33,7 @@ import javax.xml.crypto.*;
 public class OctetStreamDataTest extends org.junit.Assert {
 
     @org.junit.Test
-    public void testConstructor() throws Exception {
+    public void testConstructor() {
         // test OctetStreamData(InputStream) and
         // OctetStreamData(InputStream, String, String)
         OctetStreamData osdata;
@@ -49,8 +49,8 @@ public class OctetStreamDataTest extends org.junit.Assert {
         int len = 300;
         byte[] in = new byte[len];
         new Random().nextBytes(in);
-        
-        try (ByteArrayInputStream bais = new ByteArrayInputStream(in)) {
+        ByteArrayInputStream bais = new ByteArrayInputStream(in);
+        try {
             osdata = new OctetStreamData(bais);
             assertNotNull(osdata);
             assertEquals(osdata.getOctetStream(), bais);
@@ -62,14 +62,20 @@ public class OctetStreamDataTest extends org.junit.Assert {
             assertEquals(osdata.getOctetStream(), bais);
             assertNull(osdata.getURI());
             assertNull(osdata.getMimeType());
+        } catch (Exception ex) {
+            fail("Unexpected Exception: " + ex);
+        }
 
-            String uri="testUri";
-            String mimeType="test";
+        String uri="testUri";
+        String mimeType="test";
+        try {
             osdata = new OctetStreamData(bais, uri, mimeType);
             assertNotNull(osdata);
             assertEquals(osdata.getOctetStream(), bais);
             assertEquals(osdata.getURI(), uri);
             assertEquals(osdata.getMimeType(), mimeType);
+        } catch (Exception ex) {
+            fail("Unexpected Exception: " + ex);
         }
     }
 }

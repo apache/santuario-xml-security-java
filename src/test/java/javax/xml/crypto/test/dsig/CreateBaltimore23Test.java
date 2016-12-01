@@ -493,10 +493,7 @@ public class CreateBaltimore23Test extends org.junit.Assert {
           + "    </html>\n"
           + "  </xsl:template>\n"
           + "</xsl:stylesheet>\n";
-        Document docxslt = null;
-        try (InputStream is = new ByteArrayInputStream(xslt.getBytes())) {
-            docxslt = db.parse(is);
-        }
+        Document docxslt = db.parse(new ByteArrayInputStream(xslt.getBytes()));
         Node xslElem = docxslt.getDocumentElement();
 
         manTrans.add(fac.newTransform(Transform.XSLT,

@@ -19,7 +19,6 @@
 package org.apache.xml.security.encryption;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -32,7 +31,6 @@ import java.security.NoSuchProviderException;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.MGF1ParameterSpec;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -51,6 +49,7 @@ import org.apache.xml.security.algorithms.JCEMapper;
 import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.c14n.InvalidCanonicalizerException;
+import org.apache.xml.security.exceptions.Base64DecodingException;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.keys.keyresolver.KeyResolverException;
@@ -60,6 +59,7 @@ import org.apache.xml.security.signature.XMLSignatureException;
 import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.transforms.InvalidTransformException;
 import org.apache.xml.security.transforms.TransformationException;
+import org.apache.xml.security.utils.Base64;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.ElementProxy;
 import org.apache.xml.security.utils.EncryptionConstants;
@@ -1188,14 +1188,13 @@ public class XMLCipher {
             if (serializedData != null) {
                 int numBytes;
                 byte[] buf = new byte[8192];
-                try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-                    while ((numBytes = serializedData.read(buf)) != -1) {
-                        byte[] data = c.update(buf, 0, numBytes);
-                        baos.write(data);
-                    }
-                    baos.write(c.doFinal());
-                    encryptedBytes = baos.toByteArray();
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                while ((numBytes = serializedData.read(buf)) != -1) {
+                    byte[] data = c.update(buf, 0, numBytes);
+                    baos.write(data);
                 }
+                baos.write(c.doFinal());
+                encryptedBytes = baos.toByteArray();
             } else {
                 encryptedBytes = c.doFinal(serializedOctets);
                 if (log.isDebugEnabled()) {
@@ -1226,7 +1225,7 @@ public class XMLCipher {
         byte[] finalEncryptedBytes = new byte[iv.length + encryptedBytes.length];
         System.arraycopy(iv, 0, finalEncryptedBytes, 0, iv.length);
         System.arraycopy(encryptedBytes, 0, finalEncryptedBytes, iv.length, encryptedBytes.length);
-        String base64EncodedEncryptedOctets = Base64.getMimeEncoder().encodeToString(finalEncryptedBytes);
+        String base64EncodedEncryptedOctets = Base64.encode(finalEncryptedBytes);
 
         if (log.isDebugEnabled()) {
             log.debug("Encrypted octets:\n" + base64EncodedEncryptedOctets);
@@ -1420,7 +1419,7 @@ public class XMLCipher {
             throw new XMLEncryptionException(e);
         }
 
-        String base64EncodedEncryptedOctets = Base64.getMimeEncoder().encodeToString(encryptedBytes);
+        String base64EncodedEncryptedOctets = Base64.encode(encryptedBytes);
         if (log.isDebugEnabled()) {
             log.debug("Encrypted key octets:\n" + base64EncodedEncryptedOctets);
             log.debug("Encrypted key octets length = " + base64EncodedEncryptedOctets.length());
@@ -1718,19 +1717,15 @@ public class XMLCipher {
         }
 
         Node sourceParent = element.getParentNode();
-        try {
-            Node decryptedNode = serializer.deserialize(octets, sourceParent);
-    
-            // The de-serialiser returns a node whose children we need to take on.
-            if (sourceParent != null && Node.DOCUMENT_NODE == sourceParent.getNodeType()) {
-                // If this is a content decryption, this may have problems
-                contextDocument.removeChild(contextDocument.getDocumentElement());
-                contextDocument.appendChild(decryptedNode);
-            } else if (sourceParent != null) {
-                sourceParent.replaceChild(decryptedNode, element);
-            }
-        } catch (IOException ex) {
-            throw new XMLEncryptionException(ex);
+        Node decryptedNode = serializer.deserialize(octets, sourceParent);
+
+        // The de-serialiser returns a node whose children we need to take on.
+        if (sourceParent != null && Node.DOCUMENT_NODE == sourceParent.getNodeType()) {
+            // If this is a content decryption, this may have problems
+            contextDocument.removeChild(contextDocument.getDocumentElement());
+            contextDocument.appendChild(decryptedNode);
+        } else if (sourceParent != null) {
+            sourceParent.replaceChild(decryptedNode, element);
         }
 
         return contextDocument;
@@ -2448,9 +2443,11 @@ public class XMLCipher {
             if (null != oaepParamsElement) {
                 try {
                     String oaepParams = oaepParamsElement.getFirstChild().getNodeValue();
-                    result.setOAEPparams(Base64.getMimeDecoder().decode(oaepParams.getBytes("UTF-8")));
+                    result.setOAEPparams(Base64.decode(oaepParams.getBytes("UTF-8")));
                 } catch(UnsupportedEncodingException e) {
                     throw new RuntimeException("UTF-8 not supported", e);
+                } catch (Base64DecodingException e) {
+                    throw new RuntimeException("BASE-64 decoding error", e);
                 }
             }
 
@@ -3226,8 +3223,7 @@ public class XMLCipher {
                         XMLUtils.createElementInEncryptionSpace(
                             contextDocument, EncryptionConstants._TAG_OAEPPARAMS
                         );
-                    oaepElement.appendChild(contextDocument.createTextNode(
-                        Base64.getMimeEncoder().encodeToString(oaepParams)));
+                    oaepElement.appendChild(contextDocument.createTextNode(Base64.encode(oaepParams)));
                     result.appendChild(oaepElement);
                 }
                 if (digestAlgorithm != null) {

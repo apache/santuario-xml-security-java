@@ -26,8 +26,8 @@ import org.apache.xml.security.stax.ext.XMLSecurityUtils;
 import org.apache.xml.security.stax.ext.stax.*;
 import org.apache.xml.security.stax.impl.processor.input.XMLEventReaderInputProcessor;
 import org.apache.xml.security.stax.impl.transformer.TransformIdentity;
-import org.apache.xml.security.utils.UnsyncByteArrayInputStream;
-import org.apache.xml.security.utils.UnsyncByteArrayOutputStream;
+import org.apache.xml.security.stax.impl.util.UnsynchronizedByteArrayInputStream;
+import org.apache.xml.security.stax.impl.util.UnsynchronizedByteArrayOutputStream;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.*;
@@ -84,7 +84,7 @@ public abstract class CanonicalizerBase extends TransformIdentity {
     @Override
     public void setTransformer(Transformer transformer) throws XMLSecurityException {
         //we support only transformers which takes an InputStream otherwise we will break the C14N
-        setOutputStream(new UnsyncByteArrayOutputStream());
+        setOutputStream(new UnsynchronizedByteArrayOutputStream());
         super.setTransformer(transformer);
     }
 
@@ -390,13 +390,9 @@ public abstract class CanonicalizerBase extends TransformIdentity {
     @Override
     public void doFinal() throws XMLStreamException {
         if (getTransformer() != null) {
-            UnsyncByteArrayOutputStream baos = (UnsyncByteArrayOutputStream)getOutputStream();
-            try (InputStream is = new UnsyncByteArrayInputStream(baos.toByteArray())) {
-                getTransformer().transform(is);
-                getTransformer().doFinal();
-            } catch (IOException ex) {
-                throw new XMLStreamException(ex);
-            }
+            UnsynchronizedByteArrayOutputStream baos = (UnsynchronizedByteArrayOutputStream)getOutputStream();
+            getTransformer().transform(new UnsynchronizedByteArrayInputStream(baos.toByteArray()));
+            getTransformer().doFinal();
         }
     }
 

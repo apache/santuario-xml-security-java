@@ -22,11 +22,9 @@ import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.apache.xml.security.utils.UnsyncByteArrayOutputStream;
-
 public class FullyBufferedOutputStream extends FilterOutputStream {
 
-    private UnsyncByteArrayOutputStream buf = new UnsyncByteArrayOutputStream();
+    private UnsynchronizedByteArrayOutputStream buf = new UnsynchronizedByteArrayOutputStream();
 
     public FullyBufferedOutputStream(OutputStream out) {
         super(out);
@@ -51,7 +49,6 @@ public class FullyBufferedOutputStream extends FilterOutputStream {
     public void close() throws IOException {
         buf.writeTo(out);
         out.close();
-        buf.close();
     }
 
     @Override

@@ -41,7 +41,6 @@ import org.w3c.dom.Text;
  * @see <A HREF="ftp://ftp.isi.edu/in-notes/rfc2045.txt">RFC 2045</A>
  * @see org.apache.xml.security.transforms.implementations.TransformBase64Decode
  */
-@Deprecated
 public class Base64 {
 
     /** Field BASE64DEFAULTLENGTH */

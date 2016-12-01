@@ -24,8 +24,8 @@ import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.stax.ext.XMLSecurityUtils;
 import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 import org.apache.xml.security.stax.impl.processor.input.XMLEventReaderInputProcessor;
-import org.apache.xml.security.utils.UnsyncByteArrayInputStream;
-import org.apache.xml.security.utils.UnsyncByteArrayOutputStream;
+import org.apache.xml.security.stax.impl.util.UnsynchronizedByteArrayInputStream;
+import org.apache.xml.security.stax.impl.util.UnsynchronizedByteArrayOutputStream;
 
 import javax.xml.stream.*;
 import java.io.*;
@@ -144,13 +144,13 @@ public class TransformIdentity implements Transformer {
                     case InputStream: {
                         childOutputMethod = new ChildOutputMethod() {
 
-                            private UnsyncByteArrayOutputStream baos;
+                            private UnsynchronizedByteArrayOutputStream baos;
                             private XMLEventWriter xmlEventWriter;
 
                             @Override
                             public void transform(Object object) throws XMLStreamException {
                                 if (xmlEventWriter == null) {
-                                    baos = new UnsyncByteArrayOutputStream();
+                                    baos = new UnsynchronizedByteArrayOutputStream();
                                     xmlEventWriter = getXmlOutputFactory().createXMLEventWriter(baos);
                                 }
 
@@ -160,12 +160,8 @@ public class TransformIdentity implements Transformer {
                             @Override
                             public void doFinal() throws XMLStreamException {
                                 xmlEventWriter.close();
-                                try (InputStream is = new UnsyncByteArrayInputStream(baos.toByteArray())) {
-                                    getTransformer().transform(is);
-                                    getTransformer().doFinal();
-                                } catch (IOException ex) {
-                                    throw new XMLStreamException(ex);
-                                }
+                                getTransformer().transform(new UnsynchronizedByteArrayInputStream(baos.toByteArray()));
+                                getTransformer().doFinal();
                             }
                         };
                         break;

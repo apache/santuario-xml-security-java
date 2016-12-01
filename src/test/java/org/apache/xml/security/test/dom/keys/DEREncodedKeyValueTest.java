@@ -25,11 +25,11 @@ import java.security.Provider;
 import java.security.PublicKey;
 import java.security.Security;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.Base64;
 
 import javax.xml.parsers.DocumentBuilder;
 
 import org.apache.xml.security.keys.content.DEREncodedKeyValue;
+import org.apache.xml.security.utils.Base64;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.JavaUtils;
 import org.apache.xml.security.utils.XMLUtils;
@@ -186,7 +186,7 @@ public class DEREncodedKeyValueTest extends Assert {
 
     private PublicKey loadPublicKey(String filePath, String algorithm) throws Exception {
         String fileData = new String(JavaUtils.getBytesFromFile(getControlFilePath(filePath)));
-        byte[] keyBytes = Base64.getMimeDecoder().decode(fileData);
+        byte[] keyBytes = Base64.decode(fileData);
         KeyFactory kf = KeyFactory.getInstance(algorithm);
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
         return kf.generatePublic(keySpec);

@@ -1,81 +1,94 @@
-/*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
+/**
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements. See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership. The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
-
 package org.apache.xml.security.utils;
 
-import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class UnsyncBufferedOutputStream extends FilterOutputStream {
+/**
+ * A class that buffers without synchronizing its methods
+ * @author raul
+ */
+public class UnsyncBufferedOutputStream extends OutputStream {
+    static final int size = 8*1024;
 
-    protected byte[] buffer;
-    protected int count;
+    private int pointer = 0;
+    private final OutputStream out;
 
+    private final byte[] buf;
+
+    /**
+     * Creates a buffered output stream without synchronization
+     * @param out the outputstream to buffer
+     */
     public UnsyncBufferedOutputStream(OutputStream out) {
-        super(out);
-        buffer = new byte[8192];
+        buf = new byte[size];
+        this.out = out;
     }
 
-    public UnsyncBufferedOutputStream(OutputStream out, int size) {
-        super(out);
-        if (size <= 0) {
-            throw new IllegalArgumentException("size must be > 0");
+    /** @inheritDoc */
+    public void write(byte[] arg0) throws IOException {
+        write(arg0, 0, arg0.length);
+    }
+
+    /** @inheritDoc */
+    public void write(byte[] arg0, int arg1, int len) throws IOException {
+        int newLen = pointer+len;
+        if (newLen > size) {
+            flushBuffer();		
+            if (len > size) {
+                out.write(arg0, arg1,len);
+                return;
+            }
+            newLen = len;
         }
-        buffer = new byte[size];
+        System.arraycopy(arg0, arg1, buf, pointer, len);
+        pointer = newLen;
     }
 
-    @Override
+    private void flushBuffer() throws IOException {
+        if (pointer > 0) {
+            out.write(buf, 0, pointer);
+        }
+        pointer = 0;
+
+    }
+
+    /** @inheritDoc */
+    public void write(int arg0) throws IOException {		
+        if (pointer >= size) {
+            flushBuffer();
+        }
+        buf[pointer++] = (byte)arg0;
+
+    }
+
+    /** @inheritDoc */	
     public void flush() throws IOException {
-        flushInternal();
+        flushBuffer();
         out.flush();
     }
 
-    @Override
-    public void write(byte[] bytes, int offset, int length) throws IOException {
-        if (length >= buffer.length) {
-            flushInternal();
-            out.write(bytes, offset, length);
-            return;
-        }
-
-        // flush the internal buffer first if we have not enough space left
-        if (length >= (buffer.length - count)) {
-            flushInternal();
-        }
-
-        // the length is always less than (internalBuffer.length - count) here so arraycopy is safe
-        System.arraycopy(bytes, offset, buffer, count, length);
-        count += length;
+    /** @inheritDoc */
+    public void close() throws IOException {
+        flush();
+        out.close();
     }
 
-    @Override
-    public void write(int oneByte) throws IOException {
-        if (count == buffer.length) {
-            out.write(buffer, 0, count);
-            count = 0;
-        }
-        buffer[count++] = (byte) oneByte;
-    }
-
-    private void flushInternal() throws IOException {
-        if (count > 0) {
-            out.write(buffer, 0, count);
-            count = 0;
-        }
-    }
 }

@@ -44,12 +44,11 @@ import java.util.*;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-
-import org.apache.xml.security.utils.XMLUtils;
-
 import org.apache.jcp.xml.dsig.internal.DigesterOutputStream;
 import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
+import org.apache.xml.security.exceptions.Base64DecodingException;
 import org.apache.xml.security.signature.XMLSignatureInput;
+import org.apache.xml.security.utils.Base64;
 import org.apache.xml.security.utils.UnsyncBufferedOutputStream;
 
 /**
@@ -244,9 +243,12 @@ public final class DOMReference extends DOMStructure
 
         // unmarshal DigestValue
         Element dvElem = DOMUtils.getNextSiblingElement(dmElem, "DigestValue", XMLSignature.XMLNS);
-        String content = XMLUtils.getFullTextChildrenFromElement(dvElem);
-        this.digestValue = Base64.getMimeDecoder().decode(content);
-        
+        try {
+            this.digestValue = Base64.decode(dvElem);
+        } catch (Base64DecodingException bde) {
+            throw new MarshalException(bde);
+        }
+
         // check for extra elements
         if (DOMUtils.getNextSiblingElement(dvElem) != null) {
             throw new MarshalException(
@@ -336,7 +338,7 @@ public final class DOMReference extends DOMStructure
         }
         xwriter.writeStartElement(dsPrefix, "DigestValue", XMLSignature.XMLNS);
         if (digestValue != null) {
-            xwriter.writeCharacters(Base64.getMimeEncoder().encodeToString(digestValue));
+            xwriter.writeCharacters(Base64.encode(digestValue));
         }
         xwriter.writeEndElement(); // "DigestValue"
         xwriter.writeEndElement(); // "Reference"
@@ -354,7 +356,7 @@ public final class DOMReference extends DOMStructure
         digestValue = transform(data, signContext);
 
         // insert digestValue into DigestValue element
-        String encodedDV = Base64.getMimeEncoder().encodeToString(digestValue);
+        String encodedDV = Base64.encode(digestValue);
         if (log.isDebugEnabled()) {
             log.debug("Reference object uri = " + uri);
         }
@@ -386,8 +388,8 @@ public final class DOMReference extends DOMStructure
         calcDigestValue = transform(data, validateContext);
 
         if (log.isDebugEnabled()) {
-            log.debug("Expected digest: " + Base64.getMimeEncoder().encodeToString(digestValue));
-            log.debug("Actual digest: " + Base64.getMimeEncoder().encodeToString(calcDigestValue));
+            log.debug("Expected digest: " + Base64.encode(digestValue));
+            log.debug("Actual digest: " + Base64.encode(calcDigestValue));
         }
 
         validationStatus = Arrays.equals(digestValue, calcDigestValue);
@@ -450,8 +452,10 @@ public final class DOMReference extends DOMStructure
         } else {
             dos = new DigesterOutputStream(md);
         }
+        OutputStream os = null;
         Data data = dereferencedData;
-        try (OutputStream os = new UnsyncBufferedOutputStream(dos)) {
+        try {
+            os = new UnsyncBufferedOutputStream(dos);
             for (int i = 0, size = transforms.size(); i < size; i++) {
                 DOMTransform transform = (DOMTransform)transforms.get(i);
                 if (i < size - 1) {
@@ -553,6 +557,13 @@ public final class DOMReference extends DOMStructure
         } catch (org.apache.xml.security.c14n.CanonicalizationException e) {
             throw new XMLSignatureException(e);
         } finally {
+            if (os != null) {
+                try {
+                    os.close();
+                } catch (IOException e) {
+                    throw new XMLSignatureException(e);
+                }
+            }
             if (dos != null) {
                 try {
                     dos.close();

@@ -21,12 +21,12 @@ package org.apache.xml.security.test.dom.keys.content.x509;
 import java.io.FileInputStream;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.util.Base64;
 
 import javax.xml.parsers.DocumentBuilder;
 
 import org.apache.xml.security.Init;
 import org.apache.xml.security.keys.content.x509.XMLX509Digest;
+import org.apache.xml.security.utils.Base64;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.Assert;
@@ -53,7 +53,7 @@ public class XMLX509DigestTest extends Assert {
 
         certControl = loadCertificate("cert-X509Digest.crt");
 
-        digestControl = Base64.getMimeDecoder().decode(digestBase64Control);
+        digestControl = Base64.decode(digestBase64Control);
 
         if (!Init.isInitialized()) {
             Init.init();

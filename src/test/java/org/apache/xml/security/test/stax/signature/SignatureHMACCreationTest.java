@@ -112,10 +112,8 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         xmlStreamWriter.close();
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
-        }
+        Document document =
+                XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
         // Verify using DOM
         verifyUsingDOM(document, key, properties.getSignatureSecureParts());
@@ -157,10 +155,8 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         xmlStreamWriter.close();
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
-        }
+        Document document =
+                XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
         // Verify using DOM
         verifyUsingDOM(document, key, properties.getSignatureSecureParts());
@@ -202,10 +198,8 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         xmlStreamWriter.close();
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
-        }
+        Document document =
+                XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
         // Verify using DOM
         verifyUsingDOM(document, key, properties.getSignatureSecureParts());
@@ -247,10 +241,8 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         xmlStreamWriter.close();
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
-        }
+        Document document =
+                XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
         // Verify using DOM
         verifyUsingDOM(document, key, properties.getSignatureSecureParts());
@@ -292,10 +284,8 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         xmlStreamWriter.close();
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
-        }
+        Document document =
+                XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
         // Verify using DOM
         verifyUsingDOM(document, key, properties.getSignatureSecureParts());
@@ -340,10 +330,8 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         xmlStreamWriter.close();
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
-        }
+        Document document =
+                XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
         // Verify using DOM
         verifyUsingDOM(document, key, properties.getSignatureSecureParts());

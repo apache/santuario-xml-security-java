@@ -18,26 +18,26 @@
  */
 package org.apache.xml.security.transforms.implementations;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Base64;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.xml.security.c14n.CanonicalizationException;
+import org.apache.xml.security.exceptions.Base64DecodingException;
 import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.transforms.Transform;
 import org.apache.xml.security.transforms.TransformSpi;
 import org.apache.xml.security.transforms.TransformationException;
 import org.apache.xml.security.transforms.Transforms;
+import org.apache.xml.security.utils.Base64;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 import org.xml.sax.SAXException;
-
-import org.apache.xml.security.utils.JavaUtils;
 
 /**
  * Implements the <CODE>http://www.w3.org/2000/09/xmldsig#base64</CODE> decoding
@@ -63,6 +63,7 @@ import org.apache.xml.security.utils.JavaUtils;
  * The output of this transform is an octet stream.</p>
  *
  * @author Christian Geuer-Pollmann
+ * @see org.apache.xml.security.utils.Base64
  */
 public class TransformBase64Decode extends TransformSpi {
 
@@ -98,66 +99,66 @@ public class TransformBase64Decode extends TransformSpi {
     protected XMLSignatureInput enginePerformTransform(
         XMLSignatureInput input, OutputStream os, Transform transformObject
     ) throws IOException, CanonicalizationException, TransformationException {
-        if (input.isElement()) {
-            Node el = input.getSubNode();
-            if (input.getSubNode().getNodeType() == Node.TEXT_NODE) {         	
-                el = el.getParentNode();
-            }
-            StringBuilder sb = new StringBuilder();
-            traverseElement((Element)el, sb);
-            if (os == null) {
-                byte[] decodedBytes = Base64.getMimeDecoder().decode(sb.toString());
-                XMLSignatureInput output = new XMLSignatureInput(decodedBytes);
-                output.setSecureValidation(secureValidation);
-                return output;
-            }
-            byte[] bytes = Base64.getMimeDecoder().decode(sb.toString());
-            os.write(bytes);
-            XMLSignatureInput output = new XMLSignatureInput((byte[])null);
-            output.setSecureValidation(secureValidation);
-            output.setOutputStream(os);
-            return output;
-        }
-
-        if (input.isOctetStream() || input.isNodeSet()) {
-            if (os == null) {
-                byte[] base64Bytes = input.getBytes();
-                byte[] decodedBytes = Base64.getMimeDecoder().decode(base64Bytes);
-                XMLSignatureInput output = new XMLSignatureInput(decodedBytes);
-                output.setSecureValidation(secureValidation);
-                return output;
-            }
-            if (input.isByteArray() || input.isNodeSet()) {
-                byte[] bytes = Base64.getMimeDecoder().decode(input.getBytes());
-                os.write(bytes);
-            } else {
-                byte[] inputBytes = JavaUtils.getBytesFromStream(input.getOctetStreamReal());
-                byte[] bytes = Base64.getMimeDecoder().decode(inputBytes);
-                os.write(bytes);
-            }
-            XMLSignatureInput output = new XMLSignatureInput((byte[])null);
-            output.setSecureValidation(secureValidation);
-            output.setOutputStream(os);
-            return output;
-        }
-
         try {
-            //Exceptional case there is current not text case testing this(Before it was a
-            //a common case).
-            Document doc =
-                XMLUtils.createDocumentBuilder(false, secureValidation).parse(input.getOctetStream());
+            if (input.isElement()) {
+                Node el = input.getSubNode();
+                if (input.getSubNode().getNodeType() == Node.TEXT_NODE) {         	
+                    el = el.getParentNode();
+                }
+                StringBuilder sb = new StringBuilder();
+                traverseElement((Element)el, sb);
+                if (os == null) {
+                    byte[] decodedBytes = Base64.decode(sb.toString());
+                    XMLSignatureInput output = new XMLSignatureInput(decodedBytes);
+                    output.setSecureValidation(secureValidation);
+                    return output;
+                }
+                Base64.decode(sb.toString(), os);
+                XMLSignatureInput output = new XMLSignatureInput((byte[])null);
+                output.setSecureValidation(secureValidation);
+                output.setOutputStream(os);
+                return output;
+            }
 
-            Element rootNode = doc.getDocumentElement();
-            StringBuilder sb = new StringBuilder();
-            traverseElement(rootNode, sb);
-            byte[] decodedBytes = Base64.getMimeDecoder().decode(sb.toString());
-            XMLSignatureInput output = new XMLSignatureInput(decodedBytes);
-            output.setSecureValidation(secureValidation);
-            return output;
-        } catch (ParserConfigurationException e) {
-            throw new TransformationException(e, "c14n.Canonicalizer.Exception");
-        } catch (SAXException e) {
-            throw new TransformationException(e, "SAX exception");
+            if (input.isOctetStream() || input.isNodeSet()) {
+                if (os == null) {
+                    byte[] base64Bytes = input.getBytes();
+                    byte[] decodedBytes = Base64.decode(base64Bytes);
+                    XMLSignatureInput output = new XMLSignatureInput(decodedBytes);
+                    output.setSecureValidation(secureValidation);
+                    return output;
+                }
+                if (input.isByteArray() || input.isNodeSet()) {
+                    Base64.decode(input.getBytes(), os);
+                } else {
+                    Base64.decode(new BufferedInputStream(input.getOctetStreamReal()), os);
+                }
+                XMLSignatureInput output = new XMLSignatureInput((byte[])null);
+                output.setSecureValidation(secureValidation);
+                output.setOutputStream(os);
+                return output;
+            }
+
+            try {
+                //Exceptional case there is current not text case testing this(Before it was a
+                //a common case).
+                Document doc =
+                    XMLUtils.createDocumentBuilder(false, secureValidation).parse(input.getOctetStream());
+
+                Element rootNode = doc.getDocumentElement();
+                StringBuilder sb = new StringBuilder();
+                traverseElement(rootNode, sb);
+                byte[] decodedBytes = Base64.decode(sb.toString());
+                XMLSignatureInput output = new XMLSignatureInput(decodedBytes);
+                output.setSecureValidation(secureValidation);
+                return output;
+            } catch (ParserConfigurationException e) {
+                throw new TransformationException(e, "c14n.Canonicalizer.Exception");
+            } catch (SAXException e) {
+                throw new TransformationException(e, "SAX exception");
+            }
+        } catch (Base64DecodingException e) {
+            throw new TransformationException(e, "Base64Decoding");
         }
     }
 

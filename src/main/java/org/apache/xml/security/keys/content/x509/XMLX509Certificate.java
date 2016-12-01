@@ -19,8 +19,6 @@
 package org.apache.xml.security.keys.content.x509;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.security.PublicKey;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
@@ -95,13 +93,15 @@ public class XMLX509Certificate extends SignatureElementProxy implements XMLX509
      * @return the x509 certificate
      * @throws XMLSecurityException
      */
-    public X509Certificate getX509Certificate() throws XMLSecurityException, IOException {
-        byte certbytes[] = this.getCertificateBytes();
-        try (InputStream is = new ByteArrayInputStream(certbytes)) {
+    public X509Certificate getX509Certificate() throws XMLSecurityException {
+        try {
+            byte certbytes[] = this.getCertificateBytes();
             CertificateFactory certFact =
                 CertificateFactory.getInstance(XMLX509Certificate.JCA_CERT_ID);
             X509Certificate cert =
-                (X509Certificate) certFact.generateCertificate(is);
+                (X509Certificate) certFact.generateCertificate(
+                    new ByteArrayInputStream(certbytes)
+                );
 
             if (cert != null) {
                 return cert;
@@ -119,7 +119,7 @@ public class XMLX509Certificate extends SignatureElementProxy implements XMLX509
      * @return the publickey
      * @throws XMLSecurityException
      */
-    public PublicKey getPublicKey() throws XMLSecurityException, IOException {
+    public PublicKey getPublicKey() throws XMLSecurityException {
         X509Certificate cert = this.getX509Certificate();
 
         if (cert != null) {

@@ -121,10 +121,8 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         xmlStreamWriter.close();
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
-        }
+        Document document =
+                XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
         NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
         Assert.assertEquals(1, nodeList.getLength());
@@ -176,10 +174,8 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         xmlStreamWriter.close();
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
-        }
+        Document document =
+                XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
         NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
         Assert.assertEquals(1, nodeList.getLength());
@@ -231,10 +227,8 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         xmlStreamWriter.close();
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
-        }
+        Document document =
+                XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
         NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
         Assert.assertEquals(1, nodeList.getLength());
@@ -286,10 +280,8 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         xmlStreamWriter.close();
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
-        }
+        Document document =
+                XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
         NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
         Assert.assertEquals(1, nodeList.getLength());
@@ -341,10 +333,8 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         xmlStreamWriter.close();
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
-        }
+        Document document =
+                XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
         NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
         Assert.assertEquals(1, nodeList.getLength());
@@ -399,10 +389,8 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         xmlStreamWriter.close();
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
-        }
+        Document document =
+                XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
         NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
         Assert.assertEquals(1, nodeList.getLength());
@@ -457,10 +445,8 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         xmlStreamWriter.close();
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
-        }
+        Document document =
+                XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
         NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
         Assert.assertEquals(1, nodeList.getLength());
@@ -515,10 +501,8 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         xmlStreamWriter.close();
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
-        }
+        Document document =
+                XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
         NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
         Assert.assertEquals(1, nodeList.getLength());
@@ -573,10 +557,8 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         xmlStreamWriter.close();
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
-        }
+        Document document =
+                XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
         NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
         Assert.assertEquals(1, nodeList.getLength());
@@ -631,10 +613,8 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         xmlStreamWriter.close();
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
-        }
+        Document document =
+                XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
         NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
         Assert.assertEquals(1, nodeList.getLength());
@@ -689,10 +669,8 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         xmlStreamWriter.close();
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
-        }
+        Document document =
+                XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
         NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
         Assert.assertEquals(1, nodeList.getLength());

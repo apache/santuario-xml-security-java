@@ -24,8 +24,8 @@ import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 import org.apache.xml.security.stax.impl.processor.input.XMLEventReaderInputProcessor;
-import org.apache.xml.security.utils.UnsyncByteArrayInputStream;
-import org.apache.xml.security.utils.UnsyncByteArrayOutputStream;
+import org.apache.xml.security.stax.impl.util.UnsynchronizedByteArrayInputStream;
+import org.apache.xml.security.stax.impl.util.UnsynchronizedByteArrayOutputStream;
 
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
@@ -89,13 +89,13 @@ public class TransformBase64Decode extends TransformIdentity {
                             case XMLSecEvent: {
                                 childOutputMethod = new ChildOutputMethod() {
 
-                                    private UnsyncByteArrayOutputStream byteArrayOutputStream;
+                                    private UnsynchronizedByteArrayOutputStream byteArrayOutputStream;
                                     private Base64OutputStream base64OutputStream;
 
                                     @Override
                                     public void transform(Object object) throws XMLStreamException {
                                         if (base64OutputStream == null) {
-                                            byteArrayOutputStream = new UnsyncByteArrayOutputStream();
+                                            byteArrayOutputStream = new UnsynchronizedByteArrayOutputStream();
                                             base64OutputStream = new Base64OutputStream(byteArrayOutputStream, false);
                                         }
                                         try {
@@ -112,18 +112,19 @@ public class TransformBase64Decode extends TransformIdentity {
                                         } catch (IOException e) {
                                             throw new XMLStreamException(e);
                                         }
+                                        XMLEventReaderInputProcessor xmlEventReaderInputProcessor
+                                                = new XMLEventReaderInputProcessor(
+                                                null,
+                                                getXmlInputFactory().createXMLStreamReader(new UnsynchronizedByteArrayInputStream(byteArrayOutputStream.toByteArray()))
+                                        );
 
-                                        try (InputStream is = new UnsyncByteArrayInputStream(byteArrayOutputStream.toByteArray())) {
-                                            XMLEventReaderInputProcessor xmlEventReaderInputProcessor
-                                                = new XMLEventReaderInputProcessor(null,
-                                                                                   getXmlInputFactory().createXMLStreamReader(is)
-                                                );
+                                        try {
                                             XMLSecEvent xmlSecEvent;
                                             do {
                                                 xmlSecEvent = xmlEventReaderInputProcessor.processNextEvent(null);
                                                 getTransformer().transform(xmlSecEvent);
                                             } while (xmlSecEvent.getEventType() != XMLStreamConstants.END_DOCUMENT);
-                                        } catch (XMLSecurityException | IOException e) {
+                                        } catch (XMLSecurityException e) {
                                             throw new XMLStreamException(e);
                                         }
                                         getTransformer().doFinal();
@@ -134,13 +135,13 @@ public class TransformBase64Decode extends TransformIdentity {
                             case InputStream: {
                                 childOutputMethod = new ChildOutputMethod() {
 
-                                    private UnsyncByteArrayOutputStream byteArrayOutputStream;
+                                    private UnsynchronizedByteArrayOutputStream byteArrayOutputStream;
                                     private Base64OutputStream base64OutputStream;
 
                                     @Override
                                     public void transform(Object object) throws XMLStreamException {
                                         if (base64OutputStream == null) {
-                                            byteArrayOutputStream = new UnsyncByteArrayOutputStream();
+                                            byteArrayOutputStream = new UnsynchronizedByteArrayOutputStream();
                                             base64OutputStream = new Base64OutputStream(byteArrayOutputStream, false);
                                         }
                                         try {
@@ -157,12 +158,8 @@ public class TransformBase64Decode extends TransformIdentity {
                                         } catch (IOException e) {
                                             throw new XMLStreamException(e);
                                         }
-                                        try (InputStream is = new UnsyncByteArrayInputStream(byteArrayOutputStream.toByteArray())) {
-                                            getTransformer().transform(is);
-                                            getTransformer().doFinal();
-                                        } catch (IOException ex) {
-                                            throw new XMLStreamException(ex);
-                                        }
+                                        getTransformer().transform(new UnsynchronizedByteArrayInputStream(byteArrayOutputStream.toByteArray()));
+                                        getTransformer().doFinal();
                                     }
                                 };
                                 break;

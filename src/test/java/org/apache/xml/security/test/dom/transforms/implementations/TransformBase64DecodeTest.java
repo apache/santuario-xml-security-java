@@ -19,7 +19,6 @@
 package org.apache.xml.security.test.dom.transforms.implementations;
 
 import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
@@ -61,10 +60,8 @@ public class TransformBase64DecodeTest extends org.junit.Assert {
         doc.appendChild(t.getElement());
         t.addTransform(TransformBase64Decode.implementedTransformURI);
 
-        XMLSignatureInput in = null;
-        try (InputStream is = new ByteArrayInputStream(s1.getBytes())) {
-            in = new XMLSignatureInput(is);
-        }
+        XMLSignatureInput in =
+            new XMLSignatureInput(new ByteArrayInputStream(s1.getBytes()));
         XMLSignatureInput out = t.performTransforms(in);
         String result = new String(out.getBytes());
 
@@ -85,10 +82,8 @@ public class TransformBase64DecodeTest extends org.junit.Assert {
 
         t.addTransform(TransformBase64Decode.implementedTransformURI);
 
-        XMLSignatureInput in = null;
-        try (InputStream is = new ByteArrayInputStream(s2.getBytes())) {
-            in = new XMLSignatureInput(is);
-        }
+        XMLSignatureInput in =
+            new XMLSignatureInput(new ByteArrayInputStream(s2.getBytes()));
         XMLSignatureInput out = t.performTransforms(t.performTransforms(in));
         String result = new String(out.getBytes());
 
@@ -113,10 +108,7 @@ public class TransformBase64DecodeTest extends org.junit.Assert {
 
         db.setErrorHandler(new org.apache.xml.security.utils.IgnoreAllErrorHandler());
 
-        Document doc = null;
-        try (InputStream is = new ByteArrayInputStream(input.getBytes())) {
-            doc = db.parse(is);
-        }
+        Document doc = db.parse(new ByteArrayInputStream(input.getBytes()));
         //XMLUtils.circumventBug2650(doc);
 
         XPathFactory xpf = XPathFactory.newInstance();

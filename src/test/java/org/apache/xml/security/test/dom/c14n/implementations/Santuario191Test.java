@@ -20,7 +20,6 @@ package org.apache.xml.security.test.dom.c14n.implementations;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 
 import javax.xml.parsers.DocumentBuilder;
 
@@ -65,10 +64,7 @@ public class Santuario191Test extends org.junit.Assert {
         // Parse the Data
         //
         db = XMLUtils.createDocumentBuilder(false);
-        Document doc = null;
-        try (InputStream is = new ByteArrayInputStream(INPUT_DATA.getBytes("UTF8"))) {
-            doc = db.parse(is);
-        }
+        Document doc = db.parse(new ByteArrayInputStream(INPUT_DATA.getBytes("UTF8")));
 
         //
         // Canonicalize the data

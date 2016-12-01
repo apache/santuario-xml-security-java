@@ -44,20 +44,19 @@ public final class Utils {
     public static byte[] readBytesFromStream(InputStream is)
         throws IOException
     {
-        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            byte[] buf = new byte[1024];
-            while (true) {
-                int read = is.read(buf);
-                if (read == -1) { // EOF
-                    break;
-                }
-                baos.write(buf, 0, read);
-                if (read < 1024) {
-                    break;
-                }
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        byte[] buf = new byte[1024];
+        while (true) {
+            int read = is.read(buf);
+            if (read == -1) { // EOF
+                break;
             }
-            return baos.toByteArray();
+            baos.write(buf, 0, read);
+            if (read < 1024) {
+                break;
+            }
         }
+        return baos.toByteArray();
     }
 
     /**

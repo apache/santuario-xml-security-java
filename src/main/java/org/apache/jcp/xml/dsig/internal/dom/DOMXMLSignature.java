@@ -42,15 +42,14 @@ import java.security.Key;
 import java.security.Provider;
 import java.util.Collections;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-
-import org.apache.xml.security.utils.XMLUtils;
+import org.apache.xml.security.exceptions.Base64DecodingException;
+import org.apache.xml.security.utils.Base64;
 
 /**
  * DOM-based implementation of XMLSignature.
@@ -500,9 +499,12 @@ public final class DOMXMLSignature extends DOMStructure
         DOMSignatureValue(Element sigValueElem)
             throws MarshalException
         {
-            // base64 decode signatureValue
-            String content = XMLUtils.getFullTextChildrenFromElement(sigValueElem);
-            value = Base64.getMimeDecoder().decode(content);
+            try {
+                // base64 decode signatureValue
+                value = Base64.decode(sigValueElem);
+            } catch (Base64DecodingException bde) {
+                throw new MarshalException(bde);
+            }
 
             id = DOMUtils.getIdAttributeValue(sigValueElem, "Id");
         }
@@ -615,7 +617,7 @@ public final class DOMXMLSignature extends DOMStructure
 
         void setValue(XmlWriter xwriter, byte[] value) {
             this.value = value;
-            valueBase64 = Base64.getMimeEncoder().encodeToString(value);
+            valueBase64 = Base64.encode(value);
             if (xwriter != null) {
                 xwriter.writeCharacters(valueBase64);
             }

@@ -578,20 +578,16 @@ public class XMLSignatureInput {
             Document doc = db.parse(this.getOctetStream());
             this.subNode = doc;
         } catch (SAXException ex) {
-            byte[] result = null;
             // if a not-wellformed nodeset exists, put a container around it...
-            try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-                baos.write("<container>".getBytes("UTF-8"));
-                baos.write(this.getBytes());
-                baos.write("</container>".getBytes("UTF-8"));
+            baos.write("<container>".getBytes("UTF-8"));
+            baos.write(this.getBytes());
+            baos.write("</container>".getBytes("UTF-8"));
 
-                result = baos.toByteArray();
-            }
-            try (InputStream is = new ByteArrayInputStream(result)) {
-                Document document = db.parse(is);
-                this.subNode = document.getDocumentElement().getFirstChild().getFirstChild();
-            }
+            byte result[] = baos.toByteArray();
+            Document document = db.parse(new ByteArrayInputStream(result));
+            this.subNode = document.getDocumentElement().getFirstChild().getFirstChild();
         } finally {
             XMLUtils.repoolDocumentBuilder(db);
             if (this.inputOctetStreamProxy != null) {

@@ -28,9 +28,9 @@ import java.net.URISyntaxException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Base64;
 
 import org.apache.xml.security.signature.XMLSignatureInput;
+import org.apache.xml.security.utils.Base64;
 import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.apache.xml.security.utils.resolver.ResourceResolverException;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
@@ -96,12 +96,14 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
     @Override
     public XMLSignatureInput engineResolveURI(ResourceResolverContext context)
         throws ResourceResolverException {
-        
+        InputStream inputStream = null;
         try {
+
             // calculate new URI
             URI uriNew = getNewURI(context.uriToResolve, context.baseUri);
             URL url = uriNew.toURL();
-            URLConnection urlConnection = openConnection(url);
+            URLConnection urlConnection;
+            urlConnection = openConnection(url);
 
             // check if Basic authentication is required
             String auth = urlConnection.getHeaderField("WWW-Authenticate");
@@ -117,7 +119,7 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
                     urlConnection = openConnection(url);
 
                     String password = user + ":" + pass;
-                    String encodedPassword = Base64.getMimeEncoder().encodeToString(password.getBytes("ISO-8859-1"));
+                    String encodedPassword = Base64.encode(password.getBytes("ISO-8859-1"));
 
                     // set authentication property in the http header
                     urlConnection.setRequestProperty("Authorization",
@@ -126,30 +128,28 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
             }
 
             String mimeType = urlConnection.getHeaderField("Content-Type");
-            try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                InputStream inputStream =  urlConnection.getInputStream()) {
-                byte[] buf = new byte[4096];
-                int read = 0;
-                int summarized = 0;
-    
-                while ((read = inputStream.read(buf)) >= 0) {
-                    baos.write(buf, 0, read);
-                    summarized += read;
-                }
-    
-                if (log.isDebugEnabled()) {
-                    log.debug("Fetched " + summarized + " bytes from URI " + uriNew.toString());
-                }
-                
-                XMLSignatureInput result = new XMLSignatureInput(baos.toByteArray());
-                result.setSecureValidation(context.secureValidation);
+            inputStream = urlConnection.getInputStream();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            byte buf[] = new byte[4096];
+            int read = 0;
+            int summarized = 0;
 
-                result.setSourceURI(uriNew.toString());
-                result.setMIMEType(mimeType);
-
-                return result;
+            while ((read = inputStream.read(buf)) >= 0) {
+                baos.write(buf, 0, read);
+                summarized += read;
             }
 
+            if (log.isDebugEnabled()) {
+                log.debug("Fetched " + summarized + " bytes from URI " + uriNew.toString());
+            }
+
+            XMLSignatureInput result = new XMLSignatureInput(baos.toByteArray());
+            result.setSecureValidation(context.secureValidation);
+
+            result.setSourceURI(uriNew.toString());
+            result.setMIMEType(mimeType);
+
+            return result;
         } catch (URISyntaxException ex) {
             throw new ResourceResolverException(ex, context.uriToResolve, context.baseUri, "generic.EmptyMessage");
         } catch (MalformedURLException ex) {
@@ -158,6 +158,16 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
             throw new ResourceResolverException(ex, context.uriToResolve, context.baseUri, "generic.EmptyMessage");
         } catch (IllegalArgumentException e) {
             throw new ResourceResolverException(e, context.uriToResolve, context.baseUri, "generic.EmptyMessage");
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    if (log.isDebugEnabled()) {
+                        log.debug(e.getMessage(), e);
+                    }
+                }
+            }
         }
     }
 
@@ -184,7 +194,7 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
 
             if (proxyUser != null && proxyPass != null) {
                 String password = proxyUser + ":" + proxyPass;
-                String authString = "Basic " + Base64.getMimeEncoder().encodeToString(password.getBytes("ISO-8859-1"));
+                String authString = "Basic " + Base64.encode(password.getBytes("ISO-8859-1"));
 
                 urlConnection.setRequestProperty("Proxy-Authorization", authString);
             }

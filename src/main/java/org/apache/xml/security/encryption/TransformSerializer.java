@@ -19,8 +19,6 @@
 package org.apache.xml.security.encryption;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.StringReader;
 
 import javax.xml.XMLConstants;
@@ -48,11 +46,9 @@ public class TransformSerializer extends AbstractSerializer {
      * @return the Node resulting from the parse of the source
      * @throws XMLEncryptionException
      */
-    public Node deserialize(byte[] source, Node ctx) throws XMLEncryptionException, IOException {
+    public Node deserialize(byte[] source, Node ctx) throws XMLEncryptionException {
         byte[] fragment = createContext(source, ctx);
-        try (InputStream is = new ByteArrayInputStream(fragment)) {
-            return deserialize(ctx, new StreamSource(is));
-        }
+        return deserialize(ctx, new StreamSource(new ByteArrayInputStream(fragment)));
     }
 
     /**

@@ -98,10 +98,8 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
         xmlStreamWriter.close();
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
-        }
+        Document document =
+                XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
         // Decrypt using DOM API
         Document doc =
@@ -167,10 +165,8 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
         xmlStreamWriter.close();
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
-        }
+        Document document =
+                XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
         // Decrypt using DOM API
         Document doc =
@@ -244,10 +240,8 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
         xmlStreamWriter.close();
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
-        }
+        Document document =
+                XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
         // Decrypt using DOM API
         Document doc =
@@ -321,10 +315,8 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
         xmlStreamWriter.close();
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
-        }
+        Document document =
+                XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
         // Decrypt using DOM API
         Document doc =
@@ -398,10 +390,8 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
         xmlStreamWriter.close();
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
-        }
+        Document document =
+                XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
@@ -482,9 +472,7 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
 
     private TestSecurityEventListener verifyUsingStAX(
             byte[] doc, Key decryptionKey, PublicKey signatureVerificationKey) throws Exception {
-        try (InputStream is = new ByteArrayInputStream(doc)) {
-            return verifyUsingStAX(is, decryptionKey, signatureVerificationKey);
-        }
+        return verifyUsingStAX(new ByteArrayInputStream(doc), decryptionKey, signatureVerificationKey);
     }
 
     private TestSecurityEventListener verifyUsingStAX(

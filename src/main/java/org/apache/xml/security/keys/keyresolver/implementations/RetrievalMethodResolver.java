@@ -20,7 +20,6 @@ package org.apache.xml.security.keys.keyresolver.implementations;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.security.PublicKey;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
@@ -284,9 +283,9 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
         // if the resource stores a raw certificate, we have to handle it
         CertificateFactory certFact =
             CertificateFactory.getInstance(XMLX509Certificate.JCA_CERT_ID);
-        try (InputStream is = new ByteArrayInputStream(inputBytes)) {
-            return (X509Certificate) certFact.generateCertificate(is);
-        }
+        X509Certificate cert = (X509Certificate)
+            certFact.generateCertificate(new ByteArrayInputStream(inputBytes));
+        return cert;
     }
 
     /**

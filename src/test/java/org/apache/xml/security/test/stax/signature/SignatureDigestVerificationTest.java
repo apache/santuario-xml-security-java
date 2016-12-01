@@ -128,12 +128,9 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
+        final XMLStreamReader xmlStreamReader =
+                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
 
-        XMLStreamReader xmlStreamReader = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
-        }
-        
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
         InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
@@ -180,12 +177,9 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
+        final XMLStreamReader xmlStreamReader =
+                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
 
-        XMLStreamReader xmlStreamReader = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
-        }
-        
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
         InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
@@ -232,12 +226,9 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
+        final XMLStreamReader xmlStreamReader =
+                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
 
-        XMLStreamReader xmlStreamReader = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
-        }
-        
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
         InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
@@ -284,12 +275,9 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
+        final XMLStreamReader xmlStreamReader =
+                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
 
-        XMLStreamReader xmlStreamReader = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
-        }
-        
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
         InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
@@ -336,12 +324,9 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
+        final XMLStreamReader xmlStreamReader =
+                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
 
-        XMLStreamReader xmlStreamReader = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
-        }
-        
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
         InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
@@ -391,12 +376,9 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
+        final XMLStreamReader xmlStreamReader =
+                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
 
-        XMLStreamReader xmlStreamReader = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
-        }
-        
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
         InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
@@ -446,12 +428,9 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
+        final XMLStreamReader xmlStreamReader =
+                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
 
-        XMLStreamReader xmlStreamReader = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
-        }
-        
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
         InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
@@ -501,12 +480,9 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
+        final XMLStreamReader xmlStreamReader =
+                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
 
-        XMLStreamReader xmlStreamReader = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
-        }
-        
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
         InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
@@ -556,12 +532,9 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
+        final XMLStreamReader xmlStreamReader =
+                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
 
-        XMLStreamReader xmlStreamReader = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
-        }
-        
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
         InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
@@ -611,12 +584,9 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
+        final XMLStreamReader xmlStreamReader =
+                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
 
-        XMLStreamReader xmlStreamReader = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
-        }
-        
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
         InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
@@ -666,12 +636,9 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
+        final XMLStreamReader xmlStreamReader =
+                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
 
-        XMLStreamReader xmlStreamReader = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
-        }
-        
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
         InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
