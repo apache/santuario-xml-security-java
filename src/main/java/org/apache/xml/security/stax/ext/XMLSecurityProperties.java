@@ -74,6 +74,9 @@ public class XMLSecurityProperties {
     private QName idAttributeNS = XMLSecurityConstants.ATT_NULL_Id;
 
     private final Map<String, Key> keyNameMap = new HashMap<String, Key>();
+
+    private boolean signatureGenerateIds = true;
+    private boolean signatureIncludeDigestTransform = true;
     
     public XMLSecurityProperties() {
     }
@@ -109,6 +112,8 @@ public class XMLSecurityProperties {
         this.signatureKeyName = xmlSecurityProperties.signatureKeyName;
         this.encryptionKeyName = xmlSecurityProperties.encryptionKeyName;
         this.keyNameMap.putAll(xmlSecurityProperties.keyNameMap);
+        this.signatureGenerateIds = xmlSecurityProperties.signatureGenerateIds;
+        this.signatureIncludeDigestTransform = xmlSecurityProperties.signatureIncludeDigestTransform;
     }
 
     public SecurityTokenConstants.KeyIdentifier getSignatureKeyIdentifier() {
@@ -465,4 +470,29 @@ public class XMLSecurityProperties {
         keyNameMap.put(keyname, key);
     }
 
+    public boolean isSignatureGenerateIds() {
+        return signatureGenerateIds;
+    }
+
+    /**
+     * specifies if Id attributes should be generated for the document element, the Signature element and KeyInfo structures
+     *
+     * @param signatureGenerateIds set to true (default) to generate Id attributes
+     */
+    public void setSignatureGenerateIds(boolean signatureGenerateIds) {
+        this.signatureGenerateIds = signatureGenerateIds;
+    }
+
+    public boolean isSignatureIncludeDigestTransform() {
+        return signatureIncludeDigestTransform;
+    }
+
+    /**
+     * specifies if the transform set with signatureDigestAlgorithm should be included in the Reference/Transforms
+     * list
+     * @param signatureIncludeDigestTransform set to true (default) to include the transform in the list
+     */
+    public void setSignatureIncludeDigestTransform(boolean signatureIncludeDigestTransform) {
+        this.signatureIncludeDigestTransform = signatureIncludeDigestTransform;
+    }
 }

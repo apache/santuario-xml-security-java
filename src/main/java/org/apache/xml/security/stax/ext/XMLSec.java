@@ -139,6 +139,14 @@ public class XMLSec {
             throw new XMLSecurityConfigurationException("stax.duplicateActions");
         }
 
+        if (!securityProperties.isSignatureGenerateIds() && !securityProperties.getIdAttributeNS().equals(XMLSecurityConstants.ATT_NULL_Id)) {
+            throw new XMLSecurityConfigurationException("stax.idsetbutnotgenerated");
+        }
+
+        if (securityProperties.getSignatureSecureParts() != null && securityProperties.getSignatureSecureParts().size() > 1 && !securityProperties.isSignatureGenerateIds()) {
+            throw new XMLSecurityConfigurationException("stax.idgenerationdisablewithmultipleparts");
+        }
+
         for (XMLSecurityConstants.Action action : securityProperties.getActions()) {
             if (XMLSecurityConstants.SIGNATURE.equals(action)) {
                 if (securityProperties.getSignatureAlgorithm() == null) {

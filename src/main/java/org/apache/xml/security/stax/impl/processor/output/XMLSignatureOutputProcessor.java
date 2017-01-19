@@ -82,20 +82,22 @@ public class XMLSignatureOutputProcessor extends AbstractSignatureOutputProcesso
                         signaturePartDef.setDigestAlgo(getSecurityProperties().getSignatureDigestAlgorithm());
                     }
 
-                    if (securePart.getIdToSign() == null) {
-                        signaturePartDef.setGenerateXPointer(securePart.isGenerateXPointer());
-                        signaturePartDef.setSigRefId(IDGenerator.generateID(null));
+                    if (securityProperties.isSignatureGenerateIds()) {
+                        if (securePart.getIdToSign() == null) {
+                            signaturePartDef.setGenerateXPointer(securePart.isGenerateXPointer());
+                            signaturePartDef.setSigRefId(IDGenerator.generateID(null));
 
-                        Attribute attribute = xmlSecStartElement.getAttributeByName(securityProperties.getIdAttributeNS());
-                        if (attribute != null) {
-                            signaturePartDef.setSigRefId(attribute.getValue());
+                            Attribute attribute = xmlSecStartElement.getAttributeByName(securityProperties.getIdAttributeNS());
+                            if (attribute != null) {
+                                signaturePartDef.setSigRefId(attribute.getValue());
+                            } else {
+                                List<XMLSecAttribute> attributeList = new ArrayList<XMLSecAttribute>(1);
+                                attributeList.add(createAttribute(securityProperties.getIdAttributeNS(), signaturePartDef.getSigRefId()));
+                                xmlSecEvent = addAttributes(xmlSecStartElement, attributeList);
+                            }
                         } else {
-                            List<XMLSecAttribute> attributeList = new ArrayList<XMLSecAttribute>(1);
-                            attributeList.add(createAttribute(securityProperties.getIdAttributeNS(), signaturePartDef.getSigRefId()));
-                            xmlSecEvent = addAttributes(xmlSecStartElement, attributeList);
+                            signaturePartDef.setSigRefId(securePart.getIdToSign());
                         }
-                    } else {
-                        signaturePartDef.setSigRefId(securePart.getIdToSign());
                     }
 
                     getSignaturePartDefList().add(signaturePartDef);
