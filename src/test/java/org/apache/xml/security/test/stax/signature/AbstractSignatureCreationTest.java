@@ -30,9 +30,12 @@ import javax.xml.xpath.XPathFactory;
 
 import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.signature.XMLSignature;
+import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.stax.ext.SecurePart;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
+import org.apache.xml.security.utils.resolver.ResourceResolverContext;
+import org.apache.xml.security.utils.resolver.ResourceResolverException;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
 import org.junit.Assert;
 import org.junit.Before;
@@ -97,9 +100,7 @@ public class AbstractSignatureCreationTest extends Assert {
             boolean keyInfoRequired,
             String idAttributeNS
     ) throws Exception {
-        XPathFactory xpf = XPathFactory.newInstance();
-        XPath xpath = xpf.newXPath();
-        xpath.setNamespaceContext(new DSNamespaceContext());
+        XPath xpath = getxPath();
 
         String expression = "//dsig:Signature[1]";
         Element sigElement =
@@ -137,9 +138,7 @@ public class AbstractSignatureCreationTest extends Assert {
             Key key,
             List<SecurePart> secureParts
     ) throws Exception {
-        XPathFactory xpf = XPathFactory.newInstance();
-        XPath xpath = xpf.newXPath();
-        xpath.setNamespaceContext(new DSNamespaceContext());
+        XPath xpath = getxPath();
 
         String expression = "//dsig:Signature[1]";
         Element sigElement =
@@ -156,5 +155,87 @@ public class AbstractSignatureCreationTest extends Assert {
 
         XMLSignature signature = new XMLSignature(sigElement, "");
         Assert.assertTrue(signature.checkSignatureValue(key));
+    }
+
+    protected void verifyUsingDOMWihtoutId(
+            Document document,
+            Key key,
+            List<SecurePart> secureParts
+    ) throws Exception {
+        XPath xpath = getxPath();
+
+        String expression = "//dsig:Signature[1]";
+        Element sigElement =
+                (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
+        Assert.assertNotNull(sigElement);
+        Assert.assertEquals("", sigElement.getAttribute("Id"));
+
+        assertEquals("Without Id there can only be one secure part", 1, secureParts.size());
+        expression = "//*[local-name()='" + secureParts.get(0).getName().getLocalPart() + "']";
+        Element signedElement =
+                (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
+        Assert.assertNotNull(signedElement);
+        Assert.assertEquals("", signedElement.getAttribute("Id"));
+
+        XMLSignature signature = new XMLSignature(sigElement, "");
+
+        // We need a special resolver for the empty URI
+        signature.addResourceResolver(new EmptyURIResourceResolverSpi(signedElement));
+
+        Assert.assertTrue(signature.checkSignatureValue(key));
+    }
+
+    protected void verifyUsingDOMWihtoutIdAndDefaultTransform (
+            Document document,
+            Key key,
+            List<SecurePart> secureParts
+    ) throws Exception {
+        XPath xpath = getxPath();
+
+        String expression = "//dsig:Signature[1]";
+        Element sigElement =
+                (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
+        Assert.assertNotNull(sigElement);
+        Assert.assertEquals("", sigElement.getAttribute("Id"));
+
+        assertEquals("Without Id there can only be one secure part", 1, secureParts.size());
+        //assertNull(secureParts.get(0).getName());
+
+        Element signedElement = document.getDocumentElement();
+
+        XMLSignature signature = new XMLSignature(sigElement, "");
+
+        // We need a special resolver for the empty URI
+        signature.addResourceResolver(new EmptyURIResourceResolverSpi(signedElement));
+
+        Assert.assertTrue(signature.checkSignatureValue(key));
+    }
+
+    private XPath getxPath() {
+        XPathFactory xpf = XPathFactory.newInstance();
+        XPath xpath = xpf.newXPath();
+        xpath.setNamespaceContext(new DSNamespaceContext());
+        return xpath;
+    }
+
+    private static class EmptyURIResourceResolverSpi extends ResourceResolverSpi {
+        private final Element signedElement;
+
+        public EmptyURIResourceResolverSpi(Element signedElement) {
+            this.signedElement = signedElement;
+        }
+
+        @Override
+        public XMLSignatureInput engineResolveURI(ResourceResolverContext context) throws ResourceResolverException {
+            if (!context.uriToResolve.isEmpty()) {
+                throw new ResourceResolverException("This resolved can only handle empty URIs", context.uriToResolve, context.baseUri);
+            }
+            return new XMLSignatureInput(signedElement);
+        }
+
+        @Override
+        public boolean engineCanResolveURI(ResourceResolverContext context) {
+            return context.uriToResolve.isEmpty();
+        }
     }
 }

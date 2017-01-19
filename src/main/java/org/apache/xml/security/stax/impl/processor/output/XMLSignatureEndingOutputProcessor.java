@@ -38,6 +38,8 @@ import org.apache.xml.security.stax.securityToken.OutboundSecurityToken;
 import org.apache.xml.security.stax.securityEvent.SignatureValueSecurityEvent;
 import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 
+import static org.apache.xml.security.stax.ext.XMLSecurityConstants.NS_XMLDSIG_ENVELOPED_SIGNATURE;
+
 /**
  * An EndingOutputProcessor for XML Signature.
  */
@@ -163,6 +165,10 @@ public class XMLSignatureEndingOutputProcessor extends AbstractSignatureEndingOu
             for (int i = 0; i < transforms.length; i++) {
                 String transform = transforms[i];
 
+                if (!shouldIncludeTransform(transform)) {
+                    continue;
+                }
+
                 List<XMLSecAttribute> attributes = new ArrayList<XMLSecAttribute>(1);
                 attributes.add(createAttribute(XMLSecurityConstants.ATT_NULL_Algorithm, transform));
                 createStartElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsig_Transform, false, attributes);
@@ -178,5 +184,15 @@ public class XMLSignatureEndingOutputProcessor extends AbstractSignatureEndingOu
             }
             createEndElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsig_Transforms);
         }
+    }
+
+    private boolean shouldIncludeTransform(String transform) {
+        boolean include = true;
+
+        if (!securityProperties.isSignatureIncludeDigestTransform() &&
+                !transform.equals(NS_XMLDSIG_ENVELOPED_SIGNATURE)) {
+            include = false;
+        }
+        return include;
     }
 }
