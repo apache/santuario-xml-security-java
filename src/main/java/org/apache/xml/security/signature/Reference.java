@@ -494,14 +494,16 @@ public class Reference extends SignatureElementProxy {
                     if (uri.equals(Transforms.TRANSFORM_C14N_EXCL_OMIT_COMMENTS)
                         || uri.equals(Transforms.TRANSFORM_C14N_EXCL_WITH_COMMENTS)
                         || uri.equals(Transforms.TRANSFORM_C14N_OMIT_COMMENTS)
-                        || uri.equals(Transforms.TRANSFORM_C14N_WITH_COMMENTS)) {
+                        || uri.equals(Transforms.TRANSFORM_C14N_WITH_COMMENTS)
+                        || uri.equals(Transforms.TRANSFORM_C14N11_OMIT_COMMENTS)
+                        || uri.equals(Transforms.TRANSFORM_C14N11_WITH_COMMENTS)) {
                         break;
                     }
 
                     output = t.performTransform(output, null);
                 }
 
-            output.setSourceURI(input.getSourceURI());
+                output.setSourceURI(input.getSourceURI());
             }
             return output;
         } catch (IOException ex) {
