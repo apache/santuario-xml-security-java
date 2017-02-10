@@ -68,7 +68,7 @@ public abstract class AbstractInputSecurityHeaderHandler implements XMLSecurityH
     }
 
     protected List<XMLSecEvent> getResponsibleXMLSecEvents(Deque<XMLSecEvent> xmlSecEvents, int index) {
-        List<XMLSecEvent> xmlSecEventList = new ArrayList<XMLSecEvent>();
+        List<XMLSecEvent> xmlSecEventList = new ArrayList<>();
 
         Iterator<XMLSecEvent> xmlSecEventIterator = xmlSecEvents.descendingIterator();
         int curIdx = 0;

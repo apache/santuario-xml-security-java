@@ -281,12 +281,12 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
          */
         protected void processEventInternal(XMLSecStartElement xmlSecStartElement, OutputProcessorChain outputProcessorChain)
                 throws XMLStreamException, XMLSecurityException {
-            List<XMLSecAttribute> attributes = new ArrayList<XMLSecAttribute>(2);
+            List<XMLSecAttribute> attributes = new ArrayList<>(2);
             attributes.add(createAttribute(XMLSecurityConstants.ATT_NULL_Id, getEncryptionPartDef().getEncRefId()));
             attributes.add(createAttribute(XMLSecurityConstants.ATT_NULL_Type, getEncryptionPartDef().getModifier().getModifier()));
             createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_xenc_EncryptedData, true, attributes);
 
-            attributes = new ArrayList<XMLSecAttribute>(1);
+            attributes = new ArrayList<>(1);
             attributes.add(createAttribute(XMLSecurityConstants.ATT_NULL_Algorithm, securityProperties.getEncryptionSymAlgorithm()));
             createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_xenc_EncryptionMethod, false, attributes);
 

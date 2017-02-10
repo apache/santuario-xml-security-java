@@ -51,11 +51,11 @@ public class InputProcessorChainImpl implements InputProcessorChain {
     }
 
     public InputProcessorChainImpl(InboundSecurityContext inboundSecurityContext, int startPos) {
-        this(inboundSecurityContext, new DocumentContextImpl(), startPos, new ArrayList<InputProcessor>(20));
+        this(inboundSecurityContext, new DocumentContextImpl(), startPos, new ArrayList<>(20));
     }
 
     public InputProcessorChainImpl(InboundSecurityContext inboundSecurityContext, DocumentContextImpl documentContext) {
-        this(inboundSecurityContext, documentContext, 0, new ArrayList<InputProcessor>(20));
+        this(inboundSecurityContext, documentContext, 0, new ArrayList<>(20));
     }
 
     protected InputProcessorChainImpl(InboundSecurityContext inboundSecurityContext, DocumentContextImpl documentContextImpl,
@@ -209,7 +209,7 @@ public class InputProcessorChainImpl implements InputProcessorChain {
         try {
             final DocumentContextImpl docContext = clone ? documentContext.clone() : documentContext;
             inputProcessorChain = new InputProcessorChainImpl(inboundSecurityContext, docContext,
-                    inputProcessors.indexOf(inputProcessor) + 1, new ArrayList<InputProcessor>(this.inputProcessors));
+                    inputProcessors.indexOf(inputProcessor) + 1, new ArrayList<>(this.inputProcessors));
         } catch (CloneNotSupportedException e) {
             throw new XMLSecurityException(e);
         }

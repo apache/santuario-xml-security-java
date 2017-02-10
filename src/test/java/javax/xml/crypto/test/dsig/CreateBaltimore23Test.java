@@ -232,7 +232,7 @@ public class CreateBaltimore23Test extends org.junit.Assert {
             return;
         }
 
-        List<Object> xds = new ArrayList<Object>();
+        List<Object> xds = new ArrayList<>();
         CertificateFactory cf = CertificateFactory.getInstance("X.509");
         xds.add(signingCert);
         String fs = System.getProperty("file.separator");
@@ -327,7 +327,7 @@ public class CreateBaltimore23Test extends org.junit.Assert {
             (TransformParameterSpec) null);
 
         // create references
-        List<Reference> refs = new ArrayList<Reference>();
+        List<Reference> refs = new ArrayList<>();
 
         // Reference 1
         refs.add(fac.newReference("http://www.w3.org/TR/xml-stylesheet", sha1));
@@ -377,7 +377,7 @@ public class CreateBaltimore23Test extends org.junit.Assert {
             SignatureProperties.TYPE, null));
 
         // Reference 8
-        List<Transform> transforms = new ArrayList<Transform>();
+        List<Transform> transforms = new ArrayList<>();
         transforms.add(env);
         refs.add(fac.newReference("", sha1, transforms, null, null));
 
@@ -435,7 +435,7 @@ public class CreateBaltimore23Test extends org.junit.Assert {
         Document doc = db.newDocument();
 
         // create objects
-        List<XMLObject> objs = new ArrayList<XMLObject>();
+        List<XMLObject> objs = new ArrayList<>();
 
         // Object 1
         objs.add(fac.newXMLObject(Collections.singletonList
@@ -455,7 +455,7 @@ public class CreateBaltimore23Test extends org.junit.Assert {
             (new DOMStructure(nc)), "object-3", null, null));
 
         // Manifest
-        List<Reference> manRefs = new ArrayList<Reference>();
+        List<Reference> manRefs = new ArrayList<>();
 
         // Manifest Reference 1
         manRefs.add(fac.newReference("http://www.w3.org/TR/xml-stylesheet",
@@ -465,7 +465,7 @@ public class CreateBaltimore23Test extends org.junit.Assert {
         manRefs.add(fac.newReference("#reference-1", sha1));
 
         // Manifest Reference 3
-        List<Transform> manTrans = new ArrayList<Transform>();
+        List<Transform> manTrans = new ArrayList<>();
         String xslt = ""
           + "<xsl:stylesheet xmlns:xsl='http://www.w3.org/1999/XSL/Transform'\n"
           + "		 xmlns='http://www.w3.org/TR/xhtml1/strict' \n"
@@ -525,7 +525,7 @@ public class CreateBaltimore23Test extends org.junit.Assert {
             null, null));
 
         // Object 4
-        List<Object> xds = new ArrayList<Object>();
+        List<Object> xds = new ArrayList<>();
         xds.add("CN=Sean Mullan,DC=sun,DC=com");
         xds.add(kifac.newX509IssuerSerial
             ("CN=Sean Mullan,DC=sun,DC=com",

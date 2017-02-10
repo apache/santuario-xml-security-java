@@ -39,7 +39,7 @@ public class GenericOutboundSecurityToken extends AbstractSecurityToken implemen
 
     private SecurityTokenConstants.TokenType tokenType;
     private Object processor;
-    private final List<OutboundSecurityToken> wrappedTokens = new ArrayList<OutboundSecurityToken>();
+    private final List<OutboundSecurityToken> wrappedTokens = new ArrayList<>();
     private OutboundSecurityToken keyWrappingToken;
     private Element customTokenReference;
 

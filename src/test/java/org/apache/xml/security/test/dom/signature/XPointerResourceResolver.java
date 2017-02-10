@@ -184,7 +184,7 @@ public class XPointerResourceResolver extends ResourceResolverSpi {
             if (node != null) {
                 result = new XMLSignatureInput(node);
             } else if (nodes != null) {
-                Set<Node> nodeSet = new HashSet<Node>(nodes.getLength());
+                Set<Node> nodeSet = new HashSet<>(nodes.getLength());
 
                 for (int j = 0; j < nodes.getLength(); ++j) {
                     nodeSet.add(nodes.item(j));

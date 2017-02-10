@@ -66,7 +66,7 @@ public final class DOMXMLObject extends BaseStructure implements XMLObject {
             this.content = Collections.emptyList();
         } else {
             this.content = Collections.unmodifiableList(
-                new ArrayList<XMLStructure>(content));
+                new ArrayList<>(content));
             for (int i = 0, size = this.content.size(); i < size; i++) {
                 if (!(this.content.get(i) instanceof XMLStructure)) {
                     throw new ClassCastException
@@ -101,7 +101,7 @@ public final class DOMXMLObject extends BaseStructure implements XMLObject {
         }
         this.mimeType = DOMUtils.getAttributeValue(objElem, "MimeType");
 
-        List<XMLStructure> newContent = new ArrayList<XMLStructure>();
+        List<XMLStructure> newContent = new ArrayList<>();
         Node firstChild = objElem.getFirstChild();
         while (firstChild != null) {
             if (firstChild.getNodeType() == Node.ELEMENT_NODE) {

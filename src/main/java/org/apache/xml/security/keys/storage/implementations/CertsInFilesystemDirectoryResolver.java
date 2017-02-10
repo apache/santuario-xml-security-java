@@ -52,7 +52,7 @@ public class CertsInFilesystemDirectoryResolver extends StorageResolverSpi {
     private String merlinsCertificatesDir = null;
 
     /** Field certs */
-    private List<X509Certificate> certs = new ArrayList<X509Certificate>();
+    private List<X509Certificate> certs = new ArrayList<>();
 
     /**
      * @param directoryName
@@ -73,7 +73,7 @@ public class CertsInFilesystemDirectoryResolver extends StorageResolverSpi {
     private void readCertsFromHarddrive() throws StorageResolverException {
 
         File certDir = new File(this.merlinsCertificatesDir);
-        List<String> al = new ArrayList<String>();
+        List<String> al = new ArrayList<>();
         String[] names = certDir.list();
 
         if (names != null) {

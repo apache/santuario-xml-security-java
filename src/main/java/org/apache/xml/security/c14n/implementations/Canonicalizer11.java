@@ -66,13 +66,13 @@ public abstract class Canonicalizer11 extends CanonicalizerBase {
         static class XmlsStackElement {
             int level;
             boolean rendered = false;
-            List<Attr> nodes = new ArrayList<Attr>();
+            List<Attr> nodes = new ArrayList<>();
         }
 
         int currentLevel = 0;
         int lastlevel = 0;
         XmlsStackElement cur;
-        List<XmlsStackElement> levels = new ArrayList<XmlsStackElement>();
+        List<XmlsStackElement> levels = new ArrayList<>();
 
         void push(int level) {
             currentLevel = level;
@@ -126,7 +126,7 @@ public abstract class Canonicalizer11 extends CanonicalizerBase {
             }
 
             Map<String, Attr> loa = new HashMap<String, Attr>();    		
-            List<Attr> baseAttrs = new ArrayList<Attr>();
+            List<Attr> baseAttrs = new ArrayList<>();
             boolean successiveOmitted = true;
             for (; size >= 0; size--) {
                 e = levels.get(size);

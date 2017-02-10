@@ -84,7 +84,7 @@ public class EncryptedKeyResolver extends KeyResolverSpi {
      */
     public void registerInternalKeyResolver(KeyResolverSpi realKeyResolver) {
         if (internalKeyResolvers == null) {
-            internalKeyResolvers = new ArrayList<KeyResolverSpi>();
+            internalKeyResolvers = new ArrayList<>();
         }
         internalKeyResolvers.add(realKeyResolver);
     }

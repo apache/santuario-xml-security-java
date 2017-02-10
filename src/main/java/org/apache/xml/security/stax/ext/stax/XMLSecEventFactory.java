@@ -45,7 +45,7 @@ public class XMLSecEventFactory {
                 List<XMLSecAttribute> comparableAttributes = null;
                 final int attributeCount = xmlStreamReader.getAttributeCount();
                 if (attributeCount > 0) {
-                    comparableAttributes = new ArrayList<XMLSecAttribute>(attributeCount);
+                    comparableAttributes = new ArrayList<>(attributeCount);
                     for (int i = 0; i < attributeCount; i++) {
                         comparableAttributes.add(XMLSecEventFactory.createXMLSecAttribute(xmlStreamReader.getAttributeName(i), xmlStreamReader.getAttributeValue(i)));
                     }
@@ -54,7 +54,7 @@ public class XMLSecEventFactory {
                 List<XMLSecNamespace> comparableNamespaces = null;
                 final int namespaceCount = xmlStreamReader.getNamespaceCount();
                 if (namespaceCount > 0) {
-                    comparableNamespaces = new ArrayList<XMLSecNamespace>(namespaceCount);
+                    comparableNamespaces = new ArrayList<>(namespaceCount);
                     for (int i = 0; i < namespaceCount; i++) {
                         comparableNamespaces.add(XMLSecNamespaceImpl.getInstance(xmlStreamReader.getNamespacePrefix(i), xmlStreamReader.getNamespaceURI(i)));
                     }

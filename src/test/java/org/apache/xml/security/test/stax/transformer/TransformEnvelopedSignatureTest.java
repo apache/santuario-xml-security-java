@@ -62,7 +62,7 @@ public class TransformEnvelopedSignatureTest extends Assert {
     public void testXMLSecEventToXMLSecEventAPI() throws Exception {
         TransformEnvelopedSignature transformEnvelopedSignature = new TransformEnvelopedSignature();
 
-        final List<XMLSecEvent> xmlSecEvents = new ArrayList<XMLSecEvent>();
+        final List<XMLSecEvent> xmlSecEvents = new ArrayList<>();
 
         Transformer transformer = new Transformer() {
             @Override

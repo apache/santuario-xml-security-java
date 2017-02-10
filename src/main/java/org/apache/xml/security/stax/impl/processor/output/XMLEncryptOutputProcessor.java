@@ -139,12 +139,12 @@ public class XMLEncryptOutputProcessor extends AbstractEncryptOutputProcessor {
 
                         createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_KeyInfo, true, null);
 
-                        List<XMLSecAttribute> attributes = new ArrayList<XMLSecAttribute>(1);
+                        List<XMLSecAttribute> attributes = new ArrayList<>(1);
                         String keyId = IDGenerator.generateID("EK");
                         attributes.add(createAttribute(XMLSecurityConstants.ATT_NULL_Id, keyId));
                         createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_xenc_EncryptedKey, true, attributes);
 
-                        attributes = new ArrayList<XMLSecAttribute>(1);
+                        attributes = new ArrayList<>(1);
                         attributes.add(createAttribute(XMLSecurityConstants.ATT_NULL_Algorithm, encryptionKeyTransportAlgorithm));
                         createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_xenc_EncryptionMethod, false, attributes);
 
@@ -162,14 +162,14 @@ public class XMLEncryptOutputProcessor extends AbstractEncryptOutputProcessor {
                             }
 
                             if (encryptionKeyTransportDigestAlgorithm != null) {
-                                attributes = new ArrayList<XMLSecAttribute>(1);
+                                attributes = new ArrayList<>(1);
                                 attributes.add(createAttribute(XMLSecurityConstants.ATT_NULL_Algorithm, encryptionKeyTransportDigestAlgorithm));
                                 createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_DigestMethod, true, attributes);
                                 createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_DigestMethod);
                             }
 
                             if (encryptionKeyTransportMGFAlgorithm != null) {
-                                attributes = new ArrayList<XMLSecAttribute>(1);
+                                attributes = new ArrayList<>(1);
                                 attributes.add(createAttribute(XMLSecurityConstants.ATT_NULL_Algorithm, encryptionKeyTransportMGFAlgorithm));
                                 createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_xenc11_MGF, true, attributes);
                                 createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_xenc11_MGF);

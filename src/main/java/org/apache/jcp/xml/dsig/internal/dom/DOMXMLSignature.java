@@ -104,7 +104,7 @@ public final class DOMXMLSignature extends DOMStructure
             this.objects = Collections.emptyList();
         } else {
             this.objects =
-                Collections.unmodifiableList(new ArrayList<XMLObject>(objs));
+                Collections.unmodifiableList(new ArrayList<>(objs));
             for (int i = 0, size = this.objects.size(); i < size; i++) {
                 if (!(this.objects.get(i) instanceof XMLObject)) {
                     throw new ClassCastException
@@ -153,7 +153,7 @@ public final class DOMXMLSignature extends DOMStructure
         if (nextSibling == null) {
             objects = Collections.emptyList();
         } else {
-            List<XMLObject> tempObjects = new ArrayList<XMLObject>();
+            List<XMLObject> tempObjects = new ArrayList<>();
             while (nextSibling != null) {
                 String name = nextSibling.getLocalName();
                 String namespace = nextSibling.getNamespaceURI();
@@ -334,7 +334,7 @@ public final class DOMXMLSignature extends DOMStructure
         Element sigElem = xwriter.getCreatedElement();
 
         // generate references and signature value
-        List<Reference> allReferences = new ArrayList<Reference>();
+        List<Reference> allReferences = new ArrayList<>();
 
         // traverse the Signature and register all objects with IDs that
         // may contain References

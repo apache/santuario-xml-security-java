@@ -236,7 +236,7 @@ public class XMLSecurityUtils {
         } else if ("EC".equals(algorithm)) {
             ECPublicKey ecPublicKey = (ECPublicKey) publicKey;
 
-            List<XMLSecAttribute> attributes = new ArrayList<XMLSecAttribute>(1);
+            List<XMLSecAttribute> attributes = new ArrayList<>(1);
             attributes.add(abstractOutputProcessor.createAttribute(XMLSecurityConstants.ATT_NULL_URI, "urn:oid:" + ECDSAUtils.getOIDFromPublicKey(ecPublicKey)));
             abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig11_ECKeyValue, true, null);
             abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig11_NamedCurve, false, attributes);
@@ -372,12 +372,12 @@ public class XMLSecurityUtils {
         if (xmlSecStartElement == null) {
             return Collections.emptySet();
         }
-        Set<String> prefixes = new HashSet<String>();
+        Set<String> prefixes = new HashSet<>();
 
         XMLSecStartElement parentXMXmlSecStartElement = xmlSecStartElement.getParentXMLSecStartElement();
         if (parentXMXmlSecStartElement != null) {
             List<XMLSecNamespace> onElementDeclaredNamespaces = parentXMXmlSecStartElement.getOnElementDeclaredNamespaces();
-            List<XMLSecNamespace> xmlSecNamespaces = new ArrayList<XMLSecNamespace>();
+            List<XMLSecNamespace> xmlSecNamespaces = new ArrayList<>();
             parentXMXmlSecStartElement.getNamespacesFromCurrentScope(xmlSecNamespaces);
             xmlSecNamespaces = xmlSecNamespaces.subList(0, xmlSecNamespaces.size() - onElementDeclaredNamespaces.size());
 

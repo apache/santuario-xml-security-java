@@ -48,8 +48,8 @@ public class OutputProcessorChainTest extends Assert {
     abstract class AbstractOutputProcessor implements OutputProcessor {
 
         private XMLSecurityConstants.Phase phase = XMLSecurityConstants.Phase.PROCESSING;
-        private Set<Object> beforeProcessors = new HashSet<Object>();
-        private Set<Object> afterProcessors = new HashSet<Object>();
+        private Set<Object> beforeProcessors = new HashSet<>();
+        private Set<Object> afterProcessors = new HashSet<>();
 
         @Override
         public void setXMLSecurityProperties(XMLSecurityProperties xmlSecurityProperties) {

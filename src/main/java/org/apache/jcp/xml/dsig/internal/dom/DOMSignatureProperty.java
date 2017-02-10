@@ -68,7 +68,7 @@ public final class DOMSignatureProperty extends BaseStructure
             throw new IllegalArgumentException("content cannot be empty");
         } else {
             this.content = Collections.unmodifiableList(
-                new ArrayList<XMLStructure>(content));
+                new ArrayList<>(content));
             for (int i = 0, size = this.content.size(); i < size; i++) {
                 if (!(this.content.get(i) instanceof XMLStructure)) {
                     throw new ClassCastException
@@ -95,7 +95,7 @@ public final class DOMSignatureProperty extends BaseStructure
         }
         id = DOMUtils.getIdAttributeValue(propElem, "Id");
 
-        List<XMLStructure> newContent = new ArrayList<XMLStructure>();
+        List<XMLStructure> newContent = new ArrayList<>();
         Node firstChild = propElem.getFirstChild();
         while (firstChild != null) {
             newContent.add(new javax.xml.crypto.dom.DOMStructure(firstChild));

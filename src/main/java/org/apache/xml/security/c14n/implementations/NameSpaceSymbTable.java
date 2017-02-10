@@ -55,7 +55,7 @@ public class NameSpaceSymbTable {
      * Default constractor
      **/		
     public NameSpaceSymbTable() {    	
-        level = new ArrayList<SymbMap>();
+        level = new ArrayList<>();
         //Insert the default binding for xmlns.    	
         symb = (SymbMap) initialMap.clone();
     }
@@ -333,7 +333,7 @@ class SymbMap implements Cloneable {
     }
 
     List<NameSpaceSymbEntry> entrySet() {
-        List<NameSpaceSymbEntry> a = new ArrayList<NameSpaceSymbEntry>();
+        List<NameSpaceSymbEntry> a = new ArrayList<>();
         for (int i = 0;i < entries.length;i++) {
             if (entries[i] != null && !"".equals(entries[i].uri)) {
                 a.add(entries[i]);

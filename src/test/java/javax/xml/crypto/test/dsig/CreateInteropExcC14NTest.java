@@ -79,7 +79,7 @@ public class CreateInteropExcC14NTest extends org.junit.Assert {
 
     @org.junit.Test
     public void test_create_Y1() throws Exception {
-        List<Reference> refs = new ArrayList<Reference>(4);
+        List<Reference> refs = new ArrayList<>(4);
 
         // create reference 1
         refs.add(fac.newReference
@@ -91,7 +91,7 @@ public class CreateInteropExcC14NTest extends org.junit.Assert {
              null, null));
 
         // create reference 2
-        List<String> prefixList = new ArrayList<String>(2);
+        List<String> prefixList = new ArrayList<>(2);
         prefixList.add("bar");
         prefixList.add("#default");
         ExcC14NParameterSpec params = new ExcC14NParameterSpec(prefixList);
@@ -112,7 +112,7 @@ public class CreateInteropExcC14NTest extends org.junit.Assert {
              null, null));
 
         // create reference 4
-        prefixList = new ArrayList<String>(2);
+        prefixList = new ArrayList<>(2);
         prefixList.add("bar");
         prefixList.add("#default");
         params = new ExcC14NParameterSpec(prefixList);
@@ -132,7 +132,7 @@ public class CreateInteropExcC14NTest extends org.junit.Assert {
             fac.newSignatureMethod(SignatureMethod.DSA_SHA1, null), refs);
 
         // create KeyInfo
-        List<KeyValue> kits = new ArrayList<KeyValue>(2);
+        List<KeyValue> kits = new ArrayList<>(2);
         kits.add(kifac.newKeyValue(validatingKey));
         KeyInfo ki = kifac.newKeyInfo(kits);
 

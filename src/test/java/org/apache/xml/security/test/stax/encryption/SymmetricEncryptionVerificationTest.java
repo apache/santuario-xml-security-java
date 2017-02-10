@@ -117,7 +117,7 @@ public class SymmetricEncryptionVerificationTest extends Assert {
         SecretKey key = keygen.generateKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         String algorithm = "http://www.w3.org/2001/04/xmlenc#aes128-cbc";
         encryptUsingDOM(
@@ -170,7 +170,7 @@ public class SymmetricEncryptionVerificationTest extends Assert {
         SecretKey key = keygen.generateKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         String algorithm = "http://www.w3.org/2009/xmlenc11#aes128-gcm";
         encryptUsingDOM(
@@ -223,7 +223,7 @@ public class SymmetricEncryptionVerificationTest extends Assert {
         SecretKey key = keygen.generateKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         String algorithm = "http://www.w3.org/2001/04/xmlenc#aes192-cbc";
         encryptUsingDOM(
@@ -276,7 +276,7 @@ public class SymmetricEncryptionVerificationTest extends Assert {
         SecretKey key = keygen.generateKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         String algorithm = "http://www.w3.org/2009/xmlenc11#aes192-gcm";
         encryptUsingDOM(
@@ -329,7 +329,7 @@ public class SymmetricEncryptionVerificationTest extends Assert {
         SecretKey key = keygen.generateKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         String algorithm = "http://www.w3.org/2001/04/xmlenc#aes256-cbc";
         encryptUsingDOM(
@@ -382,7 +382,7 @@ public class SymmetricEncryptionVerificationTest extends Assert {
         SecretKey key = keygen.generateKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         String algorithm = "http://www.w3.org/2009/xmlenc11#aes256-gcm";
         encryptUsingDOM(
@@ -434,7 +434,7 @@ public class SymmetricEncryptionVerificationTest extends Assert {
         SecretKey key = keygen.generateKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         String algorithm = "http://www.w3.org/2001/04/xmlenc#tripledes-cbc";
         encryptUsingDOM(
@@ -490,7 +490,7 @@ public class SymmetricEncryptionVerificationTest extends Assert {
         SecretKey key = keygen.generateKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         String algorithm = "http://www.w3.org/2007/05/xmldsig-more#seed128-cbc";
         encryptUsingDOM(
@@ -546,7 +546,7 @@ public class SymmetricEncryptionVerificationTest extends Assert {
         SecretKey key = keygen.generateKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         String algorithm = "http://www.w3.org/2001/04/xmldsig-more#camellia128-cbc";
         encryptUsingDOM(
@@ -602,7 +602,7 @@ public class SymmetricEncryptionVerificationTest extends Assert {
         SecretKey key = keygen.generateKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         String algorithm = "http://www.w3.org/2001/04/xmldsig-more#camellia192-cbc";
         encryptUsingDOM(
@@ -658,7 +658,7 @@ public class SymmetricEncryptionVerificationTest extends Assert {
         SecretKey key = keygen.generateKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         String algorithm = "http://www.w3.org/2001/04/xmldsig-more#camellia256-cbc";
         encryptUsingDOM(

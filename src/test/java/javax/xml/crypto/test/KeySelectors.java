@@ -173,7 +173,7 @@ public class KeySelectors {
     public static class CollectionKeySelector extends KeySelector {
         private final CertificateFactory certFac;
         private final File certDir;
-        private final List<X509Certificate> certs = new ArrayList<X509Certificate>();
+        private final List<X509Certificate> certs = new ArrayList<>();
         private static final int MATCH_SUBJECT = 0;
         private static final int MATCH_ISSUER = 1;
         private static final int MATCH_SERIAL = 2;
@@ -211,7 +211,7 @@ public class KeySelectors {
         public List<X509Certificate> match(
             int matchType, Object value, List<X509Certificate> pool
         ) {
-            List<X509Certificate> matchResult = new ArrayList<X509Certificate>();
+            List<X509Certificate> matchResult = new ArrayList<>();
 
             for (X509Certificate c : pool) {
 

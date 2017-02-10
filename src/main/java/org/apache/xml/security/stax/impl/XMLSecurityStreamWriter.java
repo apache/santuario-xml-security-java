@@ -443,7 +443,7 @@ public class XMLSecurityStreamWriter implements XMLStreamWriter {
 
         private void addNamespace(XMLSecNamespace namespace) {
             if (this.namespaces == Collections.<XMLSecNamespace>emptyList()) {
-                this.namespaces = new ArrayList<XMLSecNamespace>(1);
+                this.namespaces = new ArrayList<>(1);
             }
             this.namespaces.add(namespace);
 
@@ -457,7 +457,7 @@ public class XMLSecurityStreamWriter implements XMLStreamWriter {
 
         private void addAttribute(XMLSecAttribute attribute) {
             if (this.attributes == Collections.<XMLSecAttribute>emptyList()) {
-                this.attributes = new ArrayList<XMLSecAttribute>(1);
+                this.attributes = new ArrayList<>(1);
             }
             this.attributes.add(attribute);
         }
@@ -525,7 +525,7 @@ public class XMLSecurityStreamWriter implements XMLStreamWriter {
         @SuppressWarnings("rawtypes")
         @Override
         public Iterator getPrefixes(String namespaceURI) {
-            List<String> prefixes = new ArrayList<String>(1);
+            List<String> prefixes = new ArrayList<>(1);
             for (int i = 1; i < prefixNsList.size(); i += 2) {
                 String s = prefixNsList.get(i);
                 if (s.equals(namespaceURI)) {
@@ -545,7 +545,7 @@ public class XMLSecurityStreamWriter implements XMLStreamWriter {
 
         private void add(String prefix, String namespace) {
             if (this.prefixNsList == Collections.<String>emptyList()) {
-                this.prefixNsList = new ArrayList<String>(1);
+                this.prefixNsList = new ArrayList<>(1);
             }
             this.prefixNsList.add(prefix);
             this.prefixNsList.add(namespace);

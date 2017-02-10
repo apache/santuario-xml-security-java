@@ -40,7 +40,7 @@ public class Canonicalizer11 extends CanonicalizerBase {
 
         List<XMLSecAttribute> utilizedAttributes = Collections.emptyList();
 
-        List<XMLSecAttribute> visibleAttributes = new ArrayList<XMLSecAttribute>();
+        List<XMLSecAttribute> visibleAttributes = new ArrayList<>();
         xmlSecStartElement.getAttributesFromCurrentScope(visibleAttributes);
         for (int i = 0; i < visibleAttributes.size(); i++) {
             XMLSecAttribute comparableAttribute = visibleAttributes.get(i);
@@ -57,7 +57,7 @@ public class Canonicalizer11 extends CanonicalizerBase {
                 continue;
             }
             if (utilizedAttributes == Collections.<XMLSecAttribute>emptyList()) {
-                utilizedAttributes = new ArrayList<XMLSecAttribute>(2);
+                utilizedAttributes = new ArrayList<>(2);
             }
             utilizedAttributes.add(comparableAttribute);
             outputStack.peek().add(comparableAttribute);
@@ -73,7 +73,7 @@ public class Canonicalizer11 extends CanonicalizerBase {
                 continue;
             }
             if (utilizedAttributes == Collections.<XMLSecAttribute>emptyList()) {
-                utilizedAttributes = new ArrayList<XMLSecAttribute>(2);
+                utilizedAttributes = new ArrayList<>(2);
             }
             utilizedAttributes.add(comparableAttribute);
         }

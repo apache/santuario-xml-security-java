@@ -338,7 +338,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
         Document doc = this.db.parse(new InputSource(new StringReader(XML)));
         Canonicalizer20010315ExclOmitComments c14n =
             new Canonicalizer20010315ExclOmitComments();
-        Set<Node> nodeSet = new HashSet<Node>();
+        Set<Node> nodeSet = new HashSet<>();
         XMLUtils.getSet(doc.getDocumentElement().getFirstChild(), nodeSet, null, false);
         XMLSignatureInput input = new XMLSignatureInput(nodeSet);
         byte[] bytes = c14n.engineCanonicalize(input, "env ns0 xsi wsu");

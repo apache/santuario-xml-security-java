@@ -81,7 +81,7 @@ public final class DOMXPathFilter2Transform extends ApacheTransform {
 
     private void unmarshalParams(Element curXPathElem) throws MarshalException
     {
-        List<XPathType> list = new ArrayList<XPathType>();
+        List<XPathType> list = new ArrayList<>();
         Element currentElement = curXPathElem;
         while (currentElement != null) {
             String xPath = currentElement.getFirstChild().getNodeValue();

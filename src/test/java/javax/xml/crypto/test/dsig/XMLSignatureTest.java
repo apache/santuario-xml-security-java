@@ -257,7 +257,7 @@ public class XMLSignatureTest extends org.junit.Assert {
         SignedInfo si = fac.newSignedInfo(cm, SIG_METHODS[1], refs);
 
         // create objects
-        List<XMLObject> objs = new ArrayList<XMLObject>();
+        List<XMLObject> objs = new ArrayList<>();
 
         // Object 1
         List<Reference> manRefs = Collections.singletonList

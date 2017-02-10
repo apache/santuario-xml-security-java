@@ -79,7 +79,7 @@ public final class DOMExcC14NMethod extends ApacheCanonicalizer {
         this.inclusiveNamespaces = prefixListAttr;
         int begin = 0;
         int end = prefixListAttr.indexOf(' ');
-        List<String> prefixList = new ArrayList<String>();
+        List<String> prefixList = new ArrayList<>();
         while (end != -1) {
             prefixList.add(prefixListAttr.substring(begin, end));
             begin = end + 1;

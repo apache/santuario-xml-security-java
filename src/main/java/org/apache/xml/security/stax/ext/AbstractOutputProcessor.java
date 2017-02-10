@@ -89,7 +89,7 @@ public abstract class AbstractOutputProcessor implements OutputProcessor {
     @Override
     public void addBeforeProcessor(Object processor) {
         if (this.beforeProcessors == null) {
-            this.beforeProcessors = new HashSet<Object>();
+            this.beforeProcessors = new HashSet<>();
         }
         this.beforeProcessors.add(processor);
     }
@@ -105,7 +105,7 @@ public abstract class AbstractOutputProcessor implements OutputProcessor {
     @Override
     public void addAfterProcessor(Object processor) {
         if (this.afterProcessors == null) {
-            this.afterProcessors = new HashSet<Object>();
+            this.afterProcessors = new HashSet<>();
         }
         this.afterProcessors.add(processor);
     }
@@ -172,7 +172,7 @@ public abstract class AbstractOutputProcessor implements OutputProcessor {
 
         List<XMLSecNamespace> comparableNamespaces = Collections.emptyList();
         if (outputLocalNs) {
-            comparableNamespaces = new ArrayList<XMLSecNamespace>(2);
+            comparableNamespaces = new ArrayList<>(2);
             comparableNamespaces.add(XMLSecEventFactory.createXMLSecNamespace(element.getPrefix(), element.getNamespaceURI()));
         }
 
@@ -188,7 +188,7 @@ public abstract class AbstractOutputProcessor implements OutputProcessor {
 
                 if (!comparableNamespaces.contains(xmlSecAttribute.getAttributeNamespace())) {
                     if (comparableNamespaces == Collections.<XMLSecNamespace>emptyList()) {
-                        comparableNamespaces = new ArrayList<XMLSecNamespace>(1);
+                        comparableNamespaces = new ArrayList<>(1);
                     }
                     comparableNamespaces.add(xmlSecAttribute.getAttributeNamespace());
                 }
@@ -265,8 +265,8 @@ public abstract class AbstractOutputProcessor implements OutputProcessor {
             throws XMLStreamException, XMLSecurityException {
 
         NamedNodeMap namedNodeMap = element.getAttributes();
-        List<XMLSecAttribute> attributes = new ArrayList<XMLSecAttribute>(namedNodeMap.getLength());
-        List<XMLSecNamespace> namespaces = new ArrayList<XMLSecNamespace>(namedNodeMap.getLength());
+        List<XMLSecAttribute> attributes = new ArrayList<>(namedNodeMap.getLength());
+        List<XMLSecNamespace> namespaces = new ArrayList<>(namedNodeMap.getLength());
         for (int i = 0; i < namedNodeMap.getLength(); i++) {
             Attr attribute = (Attr) namedNodeMap.item(i);
             if (attribute.getPrefix() == null) {

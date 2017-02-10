@@ -54,7 +54,7 @@ public class SignaturePropertyTest extends org.junit.Assert {
         } catch (Exception ex) {
             fail("Should raise a NPE for null content instead of " + ex);
         }
-        List<XMLStructure> list = new ArrayList<XMLStructure>();
+        List<XMLStructure> list = new ArrayList<>();
         try {
             prop = factory.newSignatureProperty(list, target, id);
             fail("Should raise an IAE for empty content");
@@ -101,7 +101,7 @@ public class SignaturePropertyTest extends org.junit.Assert {
 
     @org.junit.Test
     public void testisFeatureSupported() {
-        List<XMLStructure> list = new ArrayList<XMLStructure>();
+        List<XMLStructure> list = new ArrayList<>();
         list.add(new TestUtils.MyOwnXMLStructure());
         SignatureProperty prop = factory.newSignatureProperty
             (list, target, id);

@@ -91,7 +91,7 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
         this.canonicalizationMethod = cm;
         this.signatureMethod = sm;
         this.references = Collections.unmodifiableList(
-            new ArrayList<Reference>(references));
+            new ArrayList<>(references));
         if (this.references.isEmpty()) {
             throw new IllegalArgumentException("list of references must " +
                 "contain at least one entry");
@@ -162,7 +162,7 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
         }
 
         // unmarshal References
-        ArrayList<Reference> refList = new ArrayList<Reference>(5);
+        ArrayList<Reference> refList = new ArrayList<>(5);
         Element refElem = DOMUtils.getNextSiblingElement(smElem, "Reference", XMLSignature.XMLNS);
         refList.add(new DOMReference(refElem, context, provider));
 

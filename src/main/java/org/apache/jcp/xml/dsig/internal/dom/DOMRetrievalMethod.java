@@ -101,7 +101,7 @@ public final class DOMRetrievalMethod extends DOMStructure
             this.transforms = Collections.emptyList();
         } else {
             this.transforms = Collections.unmodifiableList(
-                new ArrayList<Transform>(transforms));
+                new ArrayList<>(transforms));
             for (int i = 0, size = this.transforms.size(); i < size; i++) {
                 if (!(this.transforms.get(i) instanceof Transform)) {
                     throw new ClassCastException
@@ -140,7 +140,7 @@ public final class DOMRetrievalMethod extends DOMStructure
         boolean secVal = Utils.secureValidation(context);
 
         // get Transforms, if specified
-        List<Transform> newTransforms = new ArrayList<Transform>();
+        List<Transform> newTransforms = new ArrayList<>();
         Element transformsElem = DOMUtils.getFirstChildElement(rmElem);
 
         if (transformsElem != null) {

@@ -91,7 +91,7 @@ public class XMLSignatureOutputProcessor extends AbstractSignatureOutputProcesso
                             if (attribute != null) {
                                 signaturePartDef.setSigRefId(attribute.getValue());
                             } else {
-                                List<XMLSecAttribute> attributeList = new ArrayList<XMLSecAttribute>(1);
+                                List<XMLSecAttribute> attributeList = new ArrayList<>(1);
                                 attributeList.add(createAttribute(securityProperties.getIdAttributeNS(), signaturePartDef.getSigRefId()));
                                 xmlSecEvent = addAttributes(xmlSecStartElement, attributeList);
                             }

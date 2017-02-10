@@ -42,7 +42,7 @@ public class ResourceResolverMapper {
     protected static synchronized void init(ResourceResolversType resourceResolversType,
             Class<?> callingClass) throws Exception {
         List<ResolverType> handlerList = resourceResolversType.getResolver();
-        resourceResolvers = new ArrayList<ResourceResolverLookup>(handlerList.size() + 1);
+        resourceResolvers = new ArrayList<>(handlerList.size() + 1);
         for (int i = 0; i < handlerList.size(); i++) {
             ResolverType uriResolverType = handlerList.get(i);
             resourceResolvers.add((ResourceResolverLookup)

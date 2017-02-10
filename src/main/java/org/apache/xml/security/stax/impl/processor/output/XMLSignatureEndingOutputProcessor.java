@@ -169,12 +169,12 @@ public class XMLSignatureEndingOutputProcessor extends AbstractSignatureEndingOu
                     continue;
                 }
 
-                List<XMLSecAttribute> attributes = new ArrayList<XMLSecAttribute>(1);
+                List<XMLSecAttribute> attributes = new ArrayList<>(1);
                 attributes.add(createAttribute(XMLSecurityConstants.ATT_NULL_Algorithm, transform));
                 createStartElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsig_Transform, false, attributes);
 
                 if (getSecurityProperties().isAddExcC14NInclusivePrefixes()) {
-                    attributes = new ArrayList<XMLSecAttribute>(1);
+                    attributes = new ArrayList<>(1);
                     attributes.add(createAttribute(XMLSecurityConstants.ATT_NULL_PrefixList, signaturePartDef.getInclusiveNamespacesPrefixes()));
                     createStartElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_c14nExcl_InclusiveNamespaces, true, attributes);
                     createEndElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_c14nExcl_InclusiveNamespaces);

@@ -64,7 +64,7 @@ public final class DOMSignatureProperties extends BaseStructure
             throw new IllegalArgumentException("properties cannot be empty");
         } else {
             this.properties = Collections.unmodifiableList(
-                new ArrayList<SignatureProperty>(properties));
+                new ArrayList<>(properties));
             for (int i = 0, size = this.properties.size(); i < size; i++) {
                 if (!(this.properties.get(i) instanceof SignatureProperty)) {
                     throw new ClassCastException
@@ -87,7 +87,7 @@ public final class DOMSignatureProperties extends BaseStructure
         // unmarshal attributes
         id = DOMUtils.getIdAttributeValue(propsElem, "Id");
 
-        List<SignatureProperty> newProperties = new ArrayList<SignatureProperty>();
+        List<SignatureProperty> newProperties = new ArrayList<>();
         Node firstChild = propsElem.getFirstChild();
         while (firstChild != null) {
             if (firstChild.getNodeType() == Node.ELEMENT_NODE) {

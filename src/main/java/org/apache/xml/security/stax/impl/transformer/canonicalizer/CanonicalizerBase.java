@@ -99,7 +99,7 @@ public abstract class CanonicalizerBase extends TransformIdentity {
         if (found == null || found.getNamespaceURI() == null
                 || !found.getNamespaceURI().equals(elementNamespace.getNamespaceURI())) {
 
-            utilizedNamespaces = new ArrayList<XMLSecNamespace>(2);
+            utilizedNamespaces = new ArrayList<>(2);
             utilizedNamespaces.add(elementNamespace);
             outputStack.peek().add(elementNamespace);
         }
@@ -115,7 +115,7 @@ public abstract class CanonicalizerBase extends TransformIdentity {
             }
 
             if (utilizedNamespaces == Collections.<XMLSecNamespace>emptyList()) {
-                utilizedNamespaces = new ArrayList<XMLSecNamespace>(2);
+                utilizedNamespaces = new ArrayList<>(2);
             }
             utilizedNamespaces.add(comparableNamespace);
             outputStack.peek().add(comparableNamespace);
@@ -137,7 +137,7 @@ public abstract class CanonicalizerBase extends TransformIdentity {
                     || !resultNamespace.getNamespaceURI().equals(attributeNamespace.getNamespaceURI())) {
 
                 if (utilizedNamespaces == Collections.<XMLSecNamespace>emptyList()) {
-                    utilizedNamespaces = new ArrayList<XMLSecNamespace>(2);
+                    utilizedNamespaces = new ArrayList<>(2);
                 }
                 utilizedNamespaces.add(attributeNamespace);
                 outputStack.peek().add(attributeNamespace);
@@ -154,14 +154,14 @@ public abstract class CanonicalizerBase extends TransformIdentity {
             return Collections.emptyList();
         }
 
-        return new ArrayList<XMLSecAttribute>(comparableAttributes);
+        return new ArrayList<>(comparableAttributes);
     }
 
     protected List<XMLSecNamespace> getInitialUtilizedNamespaces(final XMLSecStartElement xmlSecStartElement,
                                                                       final C14NStack<XMLSecEvent> outputStack) {
 
-        final List<XMLSecNamespace> utilizedNamespaces = new ArrayList<XMLSecNamespace>();
-        List<XMLSecNamespace> visibleNamespaces = new ArrayList<XMLSecNamespace>();
+        final List<XMLSecNamespace> utilizedNamespaces = new ArrayList<>();
+        List<XMLSecNamespace> visibleNamespaces = new ArrayList<>();
         xmlSecStartElement.getNamespacesFromCurrentScope(visibleNamespaces);
         for (int i = 0; i < visibleNamespaces.size(); i++) {
             XMLSecNamespace comparableNamespace = visibleNamespaces.get(i);
@@ -190,7 +190,7 @@ public abstract class CanonicalizerBase extends TransformIdentity {
 
         List<XMLSecAttribute> utilizedAttributes = Collections.emptyList();
 
-        List<XMLSecAttribute> comparableAttributes = new ArrayList<XMLSecAttribute>();
+        List<XMLSecAttribute> comparableAttributes = new ArrayList<>();
         xmlSecStartElement.getAttributesFromCurrentScope(comparableAttributes);
         for (int i = 0; i < comparableAttributes.size(); i++) {
             XMLSecAttribute comparableAttribute = comparableAttributes.get(i);
@@ -201,7 +201,7 @@ public abstract class CanonicalizerBase extends TransformIdentity {
                 continue;
             }
             if (utilizedAttributes == Collections.<XMLSecAttribute>emptyList()) {
-                utilizedAttributes = new ArrayList<XMLSecAttribute>(2);
+                utilizedAttributes = new ArrayList<>(2);
             }
             utilizedAttributes.add(comparableAttribute);
             outputStack.peek().add(comparableAttribute);
@@ -217,7 +217,7 @@ public abstract class CanonicalizerBase extends TransformIdentity {
                 continue;
             }
             if (utilizedAttributes == Collections.<XMLSecAttribute>emptyList()) {
-                utilizedAttributes = new ArrayList<XMLSecAttribute>(2);
+                utilizedAttributes = new ArrayList<>(2);
             }
             utilizedAttributes.add(comparableAttribute);
         }
@@ -253,8 +253,8 @@ public abstract class CanonicalizerBase extends TransformIdentity {
                     final List<XMLSecAttribute> utilizedAttributes;
 
                     if (firstCall) {
-                        utilizedNamespaces = new ArrayList<XMLSecNamespace>();
-                        utilizedAttributes = new ArrayList<XMLSecAttribute>();
+                        utilizedNamespaces = new ArrayList<>();
+                        utilizedAttributes = new ArrayList<>();
                         outputStack.peek().add(XMLSecEventFactory.createXMLSecNamespace(null, ""));
                         outputStack.push(Collections.<Comparable>emptyList());
 
@@ -663,7 +663,7 @@ public abstract class CanonicalizerBase extends TransformIdentity {
             List<Comparable> list = super.peekFirst();
             if (list == Collections.<Comparable>emptyList()) {
                 super.removeFirst();
-                list = new ArrayList<Comparable>();
+                list = new ArrayList<>();
                 super.addFirst(list);
             }
             return list;

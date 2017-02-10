@@ -84,7 +84,7 @@ public class XMLSecurityStreamWriterTest extends Assert {
 
             @Override
             public Iterator<?> getPrefixes(String namespaceURI) {
-                List<String> ns = new ArrayList<String>();
+                List<String> ns = new ArrayList<>();
                 ns.add(getPrefix(namespaceURI));
                 return ns.iterator();
             }
@@ -225,7 +225,7 @@ public class XMLSecurityStreamWriterTest extends Assert {
 
         @Override
         public Set<Object> getBeforeProcessors() {
-            return new HashSet<Object>();
+            return new HashSet<>();
         }
 
         @Override
@@ -234,7 +234,7 @@ public class XMLSecurityStreamWriterTest extends Assert {
 
         @Override
         public Set<Object> getAfterProcessors() {
-            return new HashSet<Object>();
+            return new HashSet<>();
         }
 
         @Override

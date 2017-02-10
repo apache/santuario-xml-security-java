@@ -73,7 +73,7 @@ public abstract class XMLSecEventBaseImpl implements XMLSecEvent {
 
     @Override
     public List<QName> getElementPath() {
-        final List<QName> elementPath = new ArrayList<QName>();
+        final List<QName> elementPath = new ArrayList<>();
         getElementPath(elementPath);
         return elementPath;
     }

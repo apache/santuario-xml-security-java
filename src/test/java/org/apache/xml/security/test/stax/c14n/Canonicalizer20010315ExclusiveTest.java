@@ -210,7 +210,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
                         + "</env:Body>";
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        List<String> inclusiveNamespaces = new ArrayList<String>();
+        List<String> inclusiveNamespaces = new ArrayList<>();
         inclusiveNamespaces.add("env");
         inclusiveNamespaces.add("ns0");
         inclusiveNamespaces.add("xsi");
@@ -250,7 +250,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
         t.transform(new DOMSource(doc), streamResult);
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        List<String> inclusiveNamespaces = new ArrayList<String>();
+        List<String> inclusiveNamespaces = new ArrayList<>();
         Canonicalizer20010315_ExclWithCommentsTransformer c =
                 new Canonicalizer20010315_ExclWithCommentsTransformer();
         Map<String, Object> transformerProperties = new HashMap<String, Object>();
@@ -302,7 +302,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
 
         {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            List<String> inclusiveNamespaces = new ArrayList<String>();
+            List<String> inclusiveNamespaces = new ArrayList<>();
             inclusiveNamespaces.add("#default");
             inclusiveNamespaces.add("xsi");
             Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
@@ -318,7 +318,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
         {
             //exactly the same outcome is expected if #default is not set:
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            List<String> inclusiveNamespaces = new ArrayList<String>();
+            List<String> inclusiveNamespaces = new ArrayList<>();
             inclusiveNamespaces.add("xsi");
             Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
             Map<String, Object> transformerProperties = new HashMap<String, Object>();
@@ -378,7 +378,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
 
         {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            List<String> inclusiveNamespaces = new ArrayList<String>();
+            List<String> inclusiveNamespaces = new ArrayList<>();
             inclusiveNamespaces.add("#default");
             inclusiveNamespaces.add("xsi");
             Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
@@ -392,7 +392,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
         }
         {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            List<String> inclusiveNamespaces = new ArrayList<String>();
+            List<String> inclusiveNamespaces = new ArrayList<>();
             inclusiveNamespaces.add("xsi");
             Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
             Map<String, Object> transformerProperties = new HashMap<String, Object>();
@@ -440,7 +440,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
 
         {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            List<String> inclusiveNamespaces = new ArrayList<String>();
+            List<String> inclusiveNamespaces = new ArrayList<>();
             inclusiveNamespaces.add("#default");
             inclusiveNamespaces.add("xsi");
             Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
@@ -455,7 +455,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
         {
             //exactly the same outcome is expected if #default is not set:
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            List<String> inclusiveNamespaces = new ArrayList<String>();
+            List<String> inclusiveNamespaces = new ArrayList<>();
             inclusiveNamespaces.add("xsi");
             Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
             Map<String, Object> transformerProperties = new HashMap<String, Object>();
@@ -503,7 +503,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
 
         {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            List<String> inclusiveNamespaces = new ArrayList<String>();
+            List<String> inclusiveNamespaces = new ArrayList<>();
             inclusiveNamespaces.add("#default");
             inclusiveNamespaces.add("xsi");
             Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
@@ -518,7 +518,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
         {
             //exactly the same outcome is expected if #default is not set:
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            List<String> inclusiveNamespaces = new ArrayList<String>();
+            List<String> inclusiveNamespaces = new ArrayList<>();
             inclusiveNamespaces.add("xsi");
             Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
             Map<String, Object> transformerProperties = new HashMap<String, Object>();
@@ -564,7 +564,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
                         + "</env:Body>";
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        List<String> inclusiveNamespaces = new ArrayList<String>();
+        List<String> inclusiveNamespaces = new ArrayList<>();
         inclusiveNamespaces.add("#default");
         Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
         Map<String, Object> transformerProperties = new HashMap<String, Object>();
@@ -606,7 +606,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
                         + "</env:Body>";
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        List<String> inclusiveNamespaces = new ArrayList<String>();
+        List<String> inclusiveNamespaces = new ArrayList<>();
         inclusiveNamespaces.add("#default");
         Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
         Map<String, Object> transformerProperties = new HashMap<String, Object>();
@@ -648,7 +648,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
                         + "</env:Body>";
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        List<String> inclusiveNamespaces = new ArrayList<String>();
+        List<String> inclusiveNamespaces = new ArrayList<>();
         inclusiveNamespaces.add("#default");
         Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
         Map<String, Object> transformerProperties = new HashMap<String, Object>();
@@ -690,7 +690,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
                         + "</env:Body>";
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        List<String> inclusiveNamespaces = new ArrayList<String>();
+        List<String> inclusiveNamespaces = new ArrayList<>();
         inclusiveNamespaces.add("#default");
         Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
         Map<String, Object> transformerProperties = new HashMap<String, Object>();
@@ -727,7 +727,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
                         + "</ns0:Ping>";
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        List<String> inclusiveNamespaces = new ArrayList<String>();
+        List<String> inclusiveNamespaces = new ArrayList<>();
         inclusiveNamespaces.add("#default");
         Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
         Map<String, Object> transformerProperties = new HashMap<String, Object>();

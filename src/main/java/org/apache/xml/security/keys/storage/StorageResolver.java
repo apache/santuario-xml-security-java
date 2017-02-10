@@ -62,7 +62,7 @@ public class StorageResolver {
      */
     public void add(StorageResolverSpi resolver) {
         if (storageResolvers == null) {
-            storageResolvers = new ArrayList<StorageResolverSpi>();
+            storageResolvers = new ArrayList<>();
         }
         this.storageResolvers.add(resolver);
     }

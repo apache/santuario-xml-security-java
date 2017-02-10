@@ -42,7 +42,7 @@ public abstract class AbstractElementSecurityEvent extends SecurityEvent {
     }
 
     public void setElementPath(List<QName> elementPath) {
-        this.elementPath = new ArrayList<QName>(elementPath);
+        this.elementPath = new ArrayList<>(elementPath);
     }
 
     public XMLSecEvent getXmlSecEvent() {

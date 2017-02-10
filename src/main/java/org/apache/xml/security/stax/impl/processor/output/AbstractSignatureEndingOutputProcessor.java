@@ -103,9 +103,9 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
 
         OutputProcessorChain subOutputProcessorChain = outputProcessorChain.createSubChain(this);
 
-        List<XMLSecAttribute> attributes = new ArrayList<XMLSecAttribute>(1);
+        List<XMLSecAttribute> attributes = new ArrayList<>(1);
         if (securityProperties.isSignatureGenerateIds()) {
-            attributes = new ArrayList<XMLSecAttribute>(1);
+            attributes = new ArrayList<>(1);
             attributes.add(createAttribute(XMLSecurityConstants.ATT_NULL_Id, IDGenerator.generateID(null)));
         } else {
             attributes = Collections.emptyList();
@@ -149,13 +149,13 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
         SignedInfoProcessor signedInfoProcessor = newSignedInfoProcessor(signatureAlgorithm, signatureElement, subOutputProcessorChain);
         createStartElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsig_SignedInfo, false, null);
 
-        attributes = new ArrayList<XMLSecAttribute>(1);
+        attributes = new ArrayList<>(1);
         final String signatureCanonicalizationAlgorithm = getSecurityProperties().getSignatureCanonicalizationAlgorithm();
         attributes.add(createAttribute(XMLSecurityConstants.ATT_NULL_Algorithm, signatureCanonicalizationAlgorithm));
         createStartElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsig_CanonicalizationMethod, false, attributes);
 
         if (getSecurityProperties().isAddExcC14NInclusivePrefixes() && XMLSecurityConstants.NS_C14N_EXCL.equals(signatureCanonicalizationAlgorithm)) {
-            attributes = new ArrayList<XMLSecAttribute>(1);
+            attributes = new ArrayList<>(1);
             attributes.add(createAttribute(XMLSecurityConstants.ATT_NULL_PrefixList, signedInfoProcessor.getInclusiveNamespacePrefixes()));
             createStartElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_c14nExcl_InclusiveNamespaces, true, attributes);
             createEndElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_c14nExcl_InclusiveNamespaces);
@@ -163,7 +163,7 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
 
         createEndElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsig_CanonicalizationMethod);
 
-        attributes = new ArrayList<XMLSecAttribute>(1);
+        attributes = new ArrayList<>(1);
         attributes.add(createAttribute(XMLSecurityConstants.ATT_NULL_Algorithm, getSecurityProperties().getSignatureAlgorithm()));
         createStartElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsig_SignatureMethod, false, attributes);
         createEndElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsig_SignatureMethod);
@@ -183,12 +183,12 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
             } else {
                 uriString = "";
             }
-            attributes = new ArrayList<XMLSecAttribute>(1);
+            attributes = new ArrayList<>(1);
             attributes.add(createAttribute(XMLSecurityConstants.ATT_NULL_URI, uriString));
             createStartElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsig_Reference, false, attributes);
             createTransformsStructureForSignature(subOutputProcessorChain, signaturePartDef);
 
-            attributes = new ArrayList<XMLSecAttribute>(1);
+            attributes = new ArrayList<>(1);
             attributes.add(createAttribute(XMLSecurityConstants.ATT_NULL_Algorithm, signaturePartDef.getDigestAlgo()));
             createStartElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsig_DigestMethod, false, attributes);
             createEndElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsig_DigestMethod);
@@ -207,7 +207,7 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
         createEndElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsig_SignatureValue);
 
         if (securityProperties.isSignatureGenerateIds()) {
-            attributes = new ArrayList<XMLSecAttribute>(1);
+            attributes = new ArrayList<>(1);
             attributes.add(createAttribute(XMLSecurityConstants.ATT_NULL_Id, IDGenerator.generateID(null)));
         } else {
             attributes = Collections.emptyList();
@@ -278,7 +278,7 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
 
                 transformerProperties = new HashMap<String, Object>(2);
                 transformerProperties.put(
-                        Canonicalizer20010315_Excl.INCLUSIVE_NAMESPACES_PREFIX_LIST, new ArrayList<String>(prefixSet));
+                        Canonicalizer20010315_Excl.INCLUSIVE_NAMESPACES_PREFIX_LIST, new ArrayList<>(prefixSet));
             }
 
             this.transformer = XMLSecurityUtils.getTransformer(null, this.bufferedSignerOutputStream,

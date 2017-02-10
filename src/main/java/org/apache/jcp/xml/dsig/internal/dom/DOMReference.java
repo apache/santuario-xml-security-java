@@ -143,9 +143,9 @@ public final class DOMReference extends DOMStructure
             throw new NullPointerException("DigestMethod must be non-null");
         }
         if (appliedTransforms == null) {
-            this.allTransforms = new ArrayList<Transform>();
+            this.allTransforms = new ArrayList<>();
         } else {
-            this.allTransforms = new ArrayList<Transform>(appliedTransforms);
+            this.allTransforms = new ArrayList<>(appliedTransforms);
             for (int i = 0, size = this.allTransforms.size(); i < size; i++) {
                 if (!(this.allTransforms.get(i) instanceof Transform)) {
                     throw new ClassCastException
@@ -156,7 +156,7 @@ public final class DOMReference extends DOMStructure
         if (transforms == null) {
             this.transforms = Collections.emptyList();
         } else {
-            this.transforms = new ArrayList<Transform>(transforms);
+            this.transforms = new ArrayList<>(transforms);
             for (int i = 0, size = this.transforms.size(); i < size; i++) {
                 if (!(this.transforms.get(i) instanceof Transform)) {
                     throw new ClassCastException
@@ -197,7 +197,7 @@ public final class DOMReference extends DOMStructure
 
         // unmarshal Transforms, if specified
         Element nextSibling = DOMUtils.getFirstChildElement(refElem);
-        List<Transform> newTransforms = new ArrayList<Transform>(MAXIMUM_TRANSFORM_COUNT);
+        List<Transform> newTransforms = new ArrayList<>(MAXIMUM_TRANSFORM_COUNT);
         if (nextSibling.getLocalName().equals("Transforms")
             && XMLSignature.XMLNS.equals(nextSibling.getNamespaceURI())) {
             Element transformElem = DOMUtils.getFirstChildElement(nextSibling,

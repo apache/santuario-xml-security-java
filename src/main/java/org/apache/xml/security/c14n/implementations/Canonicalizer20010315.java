@@ -60,13 +60,13 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
         static class XmlsStackElement {
             int level;
             boolean rendered = false;
-            List<Attr> nodes = new ArrayList<Attr>();
+            List<Attr> nodes = new ArrayList<>();
         }
 
         int currentLevel = 0;
         int lastlevel = 0;
         XmlsStackElement cur;
-        List<XmlsStackElement> levels = new ArrayList<XmlsStackElement>();
+        List<XmlsStackElement> levels = new ArrayList<>();
 
         void push(int level) {
             currentLevel = level;

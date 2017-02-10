@@ -79,9 +79,9 @@ public class TransformXPath2Filter extends TransformSpi {
         XMLSignatureInput input, OutputStream os, Transform transformObject
     ) throws TransformationException {
         try {
-            List<NodeList> unionNodes = new ArrayList<NodeList>();
-            List<NodeList> subtractNodes = new ArrayList<NodeList>();
-            List<NodeList> intersectNodes = new ArrayList<NodeList>();
+            List<NodeList> unionNodes = new ArrayList<>();
+            List<NodeList> subtractNodes = new ArrayList<>();
+            List<NodeList> intersectNodes = new ArrayList<>();
 
             Element[] xpathElements =
                 XMLUtils.selectNodes(
@@ -278,7 +278,7 @@ class XPath2NodeFilter implements NodeFilter {
     }
 
     private static Set<Node> convertNodeListToSet(List<NodeList> l) {
-        Set<Node> result = new HashSet<Node>();
+        Set<Node> result = new HashSet<>();
         for (NodeList rootNodes : l) {
             int length = rootNodes.getLength();
 

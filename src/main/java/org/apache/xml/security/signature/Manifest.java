@@ -84,7 +84,7 @@ public class Manifest extends SignatureElementProxy {
 
         addReturnToSelf();
 
-        this.references = new ArrayList<Reference>();
+        this.references = new ArrayList<>();
     }
 
     /**
@@ -138,7 +138,7 @@ public class Manifest extends SignatureElementProxy {
         }
 
         // create List
-        this.references = new ArrayList<Reference>(le);
+        this.references = new ArrayList<>(le);
 
         for (int i = 0; i < le; i++) {
             Element refElem = referencesEl[i];
@@ -476,7 +476,7 @@ public class Manifest extends SignatureElementProxy {
             return;
         }
         if (perManifestResolvers == null) {
-            perManifestResolvers = new ArrayList<ResourceResolver>();
+            perManifestResolvers = new ArrayList<>();
         }
         this.perManifestResolvers.add(resolver);
     }
@@ -493,7 +493,7 @@ public class Manifest extends SignatureElementProxy {
             return;
         }
         if (perManifestResolvers == null) {
-            perManifestResolvers = new ArrayList<ResourceResolver>();
+            perManifestResolvers = new ArrayList<>();
         }
         perManifestResolvers.add(new ResourceResolver(resolverSpi));
     }

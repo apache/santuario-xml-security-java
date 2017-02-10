@@ -60,7 +60,7 @@ public final class DOMManifest extends BaseStructure implements Manifest {
             throw new NullPointerException("references cannot be null");
         }
         this.references =
-            Collections.unmodifiableList(new ArrayList<Reference>(references));
+            Collections.unmodifiableList(new ArrayList<>(references));
         if (this.references.isEmpty()) {
             throw new IllegalArgumentException("list of references must " +
                 "contain at least one entry");
@@ -88,7 +88,7 @@ public final class DOMManifest extends BaseStructure implements Manifest {
         boolean secVal = Utils.secureValidation(context);
 
         Element refElem = DOMUtils.getFirstChildElement(manElem, "Reference", XMLSignature.XMLNS);
-        List<Reference> refs = new ArrayList<Reference>();
+        List<Reference> refs = new ArrayList<>();
         refs.add(new DOMReference(refElem, context, provider));
 
         refElem = DOMUtils.getNextSiblingElement(refElem);

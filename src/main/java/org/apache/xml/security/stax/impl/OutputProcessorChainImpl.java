@@ -54,11 +54,11 @@ public class OutputProcessorChainImpl implements OutputProcessorChain {
     }
 
     public OutputProcessorChainImpl(OutboundSecurityContext outboundSecurityContext, int startPos) {
-        this(outboundSecurityContext, new DocumentContextImpl(), startPos, new ArrayList<OutputProcessor>(20));
+        this(outboundSecurityContext, new DocumentContextImpl(), startPos, new ArrayList<>(20));
     }
 
     public OutputProcessorChainImpl(OutboundSecurityContext outboundSecurityContext, DocumentContextImpl documentContext) {
-        this(outboundSecurityContext, documentContext, 0, new ArrayList<OutputProcessor>(20));
+        this(outboundSecurityContext, documentContext, 0, new ArrayList<>(20));
     }
 
     protected OutputProcessorChainImpl(OutboundSecurityContext outboundSecurityContext, DocumentContextImpl documentContextImpl,

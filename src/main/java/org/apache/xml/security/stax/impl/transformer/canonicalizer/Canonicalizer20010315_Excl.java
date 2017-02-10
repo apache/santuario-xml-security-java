@@ -55,7 +55,7 @@ public abstract class Canonicalizer20010315_Excl extends CanonicalizerBase {
             return null;
         }
 
-        final List<String> prefixes = new ArrayList<String>(inclusiveNamespaces.size());
+        final List<String> prefixes = new ArrayList<>(inclusiveNamespaces.size());
 
         for (int i = 0; i < inclusiveNamespaces.size(); i++) {
             final String s = inclusiveNamespaces.get(i).intern();
@@ -77,7 +77,7 @@ public abstract class Canonicalizer20010315_Excl extends CanonicalizerBase {
         final XMLSecNamespace found = (XMLSecNamespace) outputStack.containsOnStack(elementNamespace);
         //found means the prefix matched. so check the ns further
         if (found == null || found.getNamespaceURI() == null || !found.getNamespaceURI().equals(elementNamespace.getNamespaceURI())) {
-            utilizedNamespaces = new ArrayList<XMLSecNamespace>(2);
+            utilizedNamespaces = new ArrayList<>(2);
             utilizedNamespaces.add(elementNamespace);
             outputStack.peek().add(elementNamespace);
         }
@@ -98,7 +98,7 @@ public abstract class Canonicalizer20010315_Excl extends CanonicalizerBase {
                     || !resultNamespace.getNamespaceURI().equals(attributeNamespace.getNamespaceURI())) {
 
                 if (utilizedNamespaces == Collections.<XMLSecNamespace>emptyList()) {
-                    utilizedNamespaces = new ArrayList<XMLSecNamespace>(2);
+                    utilizedNamespaces = new ArrayList<>(2);
                 }
                 utilizedNamespaces.add(attributeNamespace);
                 outputStack.peek().add(attributeNamespace);
@@ -124,7 +124,7 @@ public abstract class Canonicalizer20010315_Excl extends CanonicalizerBase {
                         || firstCall && propagateDefaultNamespace && !utilizedNamespaces.contains(comparableNamespace)) {
 
                     if (utilizedNamespaces == Collections.<XMLSecNamespace>emptyList()) {
-                        utilizedNamespaces = new ArrayList<XMLSecNamespace>(2);
+                        utilizedNamespaces = new ArrayList<>(2);
                     }
                     utilizedNamespaces.add(comparableNamespace);
                     outputStack.peek().add(comparableNamespace);
@@ -149,7 +149,7 @@ public abstract class Canonicalizer20010315_Excl extends CanonicalizerBase {
         for (int i = 0; i < comparableAttributes.size(); i++) {
             XMLSecAttribute comparableAttribute = comparableAttributes.get(i);
             if (utilizedAttributes == Collections.<XMLSecAttribute>emptyList()) {
-                utilizedAttributes = new ArrayList<XMLSecAttribute>(2);
+                utilizedAttributes = new ArrayList<>(2);
             }
             utilizedAttributes.add(comparableAttribute);
         }

@@ -63,7 +63,7 @@ public class TransformBase64DecodeTest extends Assert {
     public void testXMLSecEventToXMLSecEventAPI() throws Exception {
         TransformBase64Decode transformBase64Decode = new TransformBase64Decode();
 
-        final List<XMLSecEvent> xmlSecEvents = new ArrayList<XMLSecEvent>();
+        final List<XMLSecEvent> xmlSecEvents = new ArrayList<>();
 
         Transformer transformer = new Transformer() {
             @Override
@@ -239,7 +239,7 @@ public class TransformBase64DecodeTest extends Assert {
     @Test
     public void testInputStreamToXMLSecEventAPI() throws Exception {
         TransformBase64Decode transformBase64Decode = new TransformBase64Decode();
-        final List<XMLSecEvent> xmlSecEvents = new ArrayList<XMLSecEvent>();
+        final List<XMLSecEvent> xmlSecEvents = new ArrayList<>();
 
         Transformer transformer = new Transformer() {
             @Override

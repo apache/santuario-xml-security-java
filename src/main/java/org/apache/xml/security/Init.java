@@ -317,7 +317,7 @@ public class Init {
                 if (tag.equals("KeyResolver")){
                     Element[] resolverElem =
                         XMLUtils.selectNodes(el.getFirstChild(), CONF_NS, "Resolver");
-                    List<String> classNames = new ArrayList<String>(resolverElem.length);
+                    List<String> classNames = new ArrayList<>(resolverElem.length);
                     for (Element element : resolverElem) {
                         String javaClass =
                             element.getAttributeNS(null, "JAVACLASS");

@@ -143,7 +143,7 @@ public class NameSpaceSymbTableTest extends org.junit.Assert {
     public void testGetUnrenderedNodes() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
-        List<Attr> l = new ArrayList<Attr>();
+        List<Attr> l = new ArrayList<>();
         ns.addMapping("xmlns", "http://a", node1);
         ns.push();
         ns.getUnrenderedNodes(l);
@@ -157,7 +157,7 @@ public class NameSpaceSymbTableTest extends org.junit.Assert {
     public void testUnrederedNodes() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
-        List<Attr> l = new ArrayList<Attr>();
+        List<Attr> l = new ArrayList<>();
         ns.getUnrenderedNodes(l);
         assertTrue(l.isEmpty());
         l.clear();

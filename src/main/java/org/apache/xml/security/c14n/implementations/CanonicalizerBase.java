@@ -617,7 +617,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
             return;
         }
         //Obtain all the parents of the element
-        List<Element> parents = new ArrayList<Element>();
+        List<Element> parents = new ArrayList<>();
         Node parent = n1;
         while (parent != null && Node.ELEMENT_NODE == parent.getNodeType()) {
             parents.add((Element)parent);

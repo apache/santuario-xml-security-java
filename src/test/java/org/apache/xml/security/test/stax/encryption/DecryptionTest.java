@@ -107,7 +107,7 @@ public class DecryptionTest extends Assert {
         SecretKey secretKey = generateSecretKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         encryptUsingDOM(
             "http://www.w3.org/2001/04/xmlenc#tripledes-cbc", secretKey, null, null, document,
@@ -163,7 +163,7 @@ public class DecryptionTest extends Assert {
         SecretKey secretKey = generateSecretKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         encryptUsingDOM(
             "http://www.w3.org/2001/04/xmlenc#tripledes-cbc", secretKey, null, null, document,
@@ -223,7 +223,7 @@ public class DecryptionTest extends Assert {
         SecretKey secretKey = keygen.generateKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         encryptUsingDOM(
             "http://www.w3.org/2001/04/xmlenc#aes256-cbc", secretKey, null, null, document,
@@ -281,7 +281,7 @@ public class DecryptionTest extends Assert {
         SecretKey secretKey = generateSecretKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         localNames.add("ShippingAddress");
         encryptUsingDOM(
@@ -354,7 +354,7 @@ public class DecryptionTest extends Assert {
         SecretKey secretKey = keygen.generateKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         encryptUsingDOM(
             "http://www.w3.org/2001/04/xmlenc#aes128-cbc", secretKey,
@@ -426,7 +426,7 @@ public class DecryptionTest extends Assert {
         SecretKey secretKey = keygen.generateKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         encryptUsingDOM(
             "http://www.w3.org/2001/04/xmlenc#aes256-cbc", secretKey,
@@ -494,7 +494,7 @@ public class DecryptionTest extends Assert {
         SecretKey secretKey = keygen.generateKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         encryptUsingDOM(
             "http://www.w3.org/2001/04/xmlenc#aes256-cbc", secretKey,
@@ -566,7 +566,7 @@ public class DecryptionTest extends Assert {
         SecretKey secretKey = keygen.generateKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         encryptUsingDOM(
             "http://www.w3.org/2001/04/xmlenc#aes192-cbc", secretKey,
@@ -629,7 +629,7 @@ public class DecryptionTest extends Assert {
         SecretKey secretKey = keyFactory.generateSecret(keySpec);
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         encryptUsingDOM(
             "http://www.w3.org/2001/04/xmlenc#tripledes-cbc", secretKey,
@@ -692,7 +692,7 @@ public class DecryptionTest extends Assert {
         SecretKey secretKey = new SecretKeySpec(bits128, "AES");
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         encryptUsingDOM(
             "http://www.w3.org/2001/04/xmlenc#aes128-cbc", secretKey,
@@ -757,7 +757,7 @@ public class DecryptionTest extends Assert {
         SecretKey secretKey = new SecretKeySpec(bits192, "AES");
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         encryptUsingDOM(
             "http://www.w3.org/2001/04/xmlenc#aes192-cbc", secretKey,
@@ -824,7 +824,7 @@ public class DecryptionTest extends Assert {
         SecretKey secretKey = new SecretKeySpec(bits256, "AES");
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         encryptUsingDOM(
             "http://www.w3.org/2001/04/xmlenc#aes256-cbc", secretKey,
@@ -887,7 +887,7 @@ public class DecryptionTest extends Assert {
         SecretKey secretKey = keyFactory.generateSecret(keySpec);
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PurchaseOrder");
         encryptUsingDOM(
             "http://www.w3.org/2001/04/xmlenc#tripledes-cbc", secretKey,
@@ -948,7 +948,7 @@ public class DecryptionTest extends Assert {
         SecretKey secretKey = keyFactory.generateSecret(keySpec);
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("elem");
         encryptUsingDOM(
             "http://www.w3.org/2001/04/xmlenc#tripledes-cbc", secretKey,
@@ -1016,7 +1016,7 @@ public class DecryptionTest extends Assert {
         SecretKey secretKey = keyFactory.generateSecret(keySpec);
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("elem");
         encryptUsingDOM(
             "http://www.w3.org/2001/04/xmlenc#tripledes-cbc", secretKey,
@@ -1286,7 +1286,7 @@ public class DecryptionTest extends Assert {
         SecretKey secretKey = generateSecretKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         encryptUsingDOM(
                 "http://www.w3.org/2001/04/xmlenc#tripledes-cbc", secretKey, null, null, document,
@@ -1341,7 +1341,7 @@ public class DecryptionTest extends Assert {
         SecretKey secretKey = keygen.generateKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         encryptUsingDOM(
                 "http://www.w3.org/2001/04/xmlenc#aes256-cbc", secretKey,
@@ -1423,7 +1423,7 @@ public class DecryptionTest extends Assert {
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         encryptUsingDOM(
@@ -1485,7 +1485,7 @@ public class DecryptionTest extends Assert {
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         KeyInfo encryptedKeyKeyInfo = new KeyInfo(document);
@@ -1557,7 +1557,7 @@ public class DecryptionTest extends Assert {
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         KeyInfo encryptedKeyKeyInfo = new KeyInfo(document);
@@ -1629,7 +1629,7 @@ public class DecryptionTest extends Assert {
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         KeyInfo encryptedKeyKeyInfo = new KeyInfo(document);
@@ -1709,7 +1709,7 @@ public class DecryptionTest extends Assert {
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("rsakey");
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         KeyInfo encryptedKeyKeyInfo = new KeyInfo(document);
@@ -1781,7 +1781,7 @@ public class DecryptionTest extends Assert {
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         encryptUsingDOM(
@@ -1833,7 +1833,7 @@ public class DecryptionTest extends Assert {
         SecretKey secretKey = generateSecretKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         encryptUsingDOM(
                 "http://www.w3.org/2001/04/xmlenc#tripledes-cbc", secretKey, null, null, document,
@@ -1895,7 +1895,7 @@ public class DecryptionTest extends Assert {
         SecretKey secretKey = generateSecretKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         encryptUsingDOM(
                 "http://www.w3.org/2001/04/xmlenc#tripledes-cbc", secretKey, null, null, document,
@@ -1954,7 +1954,7 @@ public class DecryptionTest extends Assert {
         SecretKey secretKey = generateSecretKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PurchaseOrder");
         encryptUsingDOM(
                 "http://www.w3.org/2001/04/xmlenc#tripledes-cbc", secretKey, null, null, document,

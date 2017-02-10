@@ -57,7 +57,7 @@ public class SignaturePropertiesTest extends org.junit.Assert {
             fail("Should raise a NPE for null content instead of " + ex);
         }
 
-        List<SignatureProperty> list = new ArrayList<SignatureProperty>();
+        List<SignatureProperty> list = new ArrayList<>();
         try {
             props = factory.newSignatureProperties(list, id);
             fail("Should raise an IAE for empty content");
@@ -98,7 +98,7 @@ public class SignaturePropertiesTest extends org.junit.Assert {
 
     @org.junit.Test
     public void testisFeatureSupported() {
-        List<SignatureProperty> list = new ArrayList<SignatureProperty>();
+        List<SignatureProperty> list = new ArrayList<>();
         list.add(prop);
         SignatureProperties props = factory.newSignatureProperties(list, id);
         try {

@@ -105,7 +105,7 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         signUsingDOM(
@@ -151,7 +151,7 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         signUsingDOM(
@@ -197,7 +197,7 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         signUsingDOM(
@@ -243,7 +243,7 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         signUsingDOM(
@@ -289,7 +289,7 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         signUsingDOM(
@@ -338,7 +338,7 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         signUsingDOM(

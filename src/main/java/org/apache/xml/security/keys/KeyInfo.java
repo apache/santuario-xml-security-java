@@ -102,7 +102,7 @@ public class KeyInfo extends SignatureElementProxy {
 
     private static final List<StorageResolver> nullList;
     static {
-        List<StorageResolver> list = new ArrayList<StorageResolver>(1);
+        List<StorageResolver> list = new ArrayList<>(1);
         list.add(null);
         nullList = java.util.Collections.unmodifiableList(list);
     }
@@ -113,7 +113,7 @@ public class KeyInfo extends SignatureElementProxy {
     /**
      * Stores the individual (per-KeyInfo) {@link KeyResolverSpi}s
      */
-    private List<KeyResolverSpi> internalKeyResolvers = new ArrayList<KeyResolverSpi>();
+    private List<KeyResolverSpi> internalKeyResolvers = new ArrayList<>();
 
     private boolean secureValidation;
 
@@ -317,7 +317,7 @@ public class KeyInfo extends SignatureElementProxy {
      */
     public void add(X509Data x509data) {
         if (x509Datas == null) {
-            x509Datas = new ArrayList<X509Data>();
+            x509Datas = new ArrayList<>();
         }
         x509Datas.add(x509data);
         appendSelf(x509data);
@@ -333,7 +333,7 @@ public class KeyInfo extends SignatureElementProxy {
 
     public void add(EncryptedKey encryptedKey) throws XMLEncryptionException {
         if (encryptedKeys == null) {
-            encryptedKeys = new ArrayList<EncryptedKey>();
+            encryptedKeys = new ArrayList<>();
         }
         encryptedKeys.add(encryptedKey);
         XMLCipher cipher = XMLCipher.getInstance();
@@ -1270,7 +1270,7 @@ public class KeyInfo extends SignatureElementProxy {
     public void addStorageResolver(StorageResolver storageResolver) {
         if (storageResolvers == nullList) {
             // Replace the default null StorageResolver
-            storageResolvers = new ArrayList<StorageResolver>();
+            storageResolvers = new ArrayList<>();
         }
         this.storageResolvers.add(storageResolver);
     }

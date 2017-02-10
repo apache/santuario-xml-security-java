@@ -52,7 +52,7 @@ public class XMLObjectTest extends org.junit.Assert {
         obj = factory.newXMLObject(null, null, null, null);
         assertNotNull(obj);
 
-        List<XMLStructure> list = new ArrayList<XMLStructure>();
+        List<XMLStructure> list = new ArrayList<>();
         obj = factory.newXMLObject(list, null, null, null);
         assertNotNull(obj);
 
@@ -89,7 +89,7 @@ public class XMLObjectTest extends org.junit.Assert {
 
     @org.junit.Test
     public void testisFeatureSupported() {
-        List<XMLStructure> list = new ArrayList<XMLStructure>();
+        List<XMLStructure> list = new ArrayList<>();
         list.add(new TestUtils.MyOwnXMLStructure());
         XMLObject obj = factory.newXMLObject(list, id, mimeType, encoding);
         try {

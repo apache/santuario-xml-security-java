@@ -65,7 +65,7 @@ public class TransformIdentityTest extends Assert {
     public void testXMLSecEventToXMLSecEventAPI() throws Exception {
         TransformIdentity transformIdentity = new TransformIdentity();
 
-        final List<XMLSecEvent> xmlSecEvents = new ArrayList<XMLSecEvent>();
+        final List<XMLSecEvent> xmlSecEvents = new ArrayList<>();
 
         Transformer transformer = new Transformer() {
             @Override
@@ -241,7 +241,7 @@ public class TransformIdentityTest extends Assert {
     @Test
     public void testInputStreamToXMLSecEventAPI() throws Exception {
         TransformIdentity transformIdentity = new TransformIdentity();
-        final List<XMLSecEvent> xmlSecEvents = new ArrayList<XMLSecEvent>();
+        final List<XMLSecEvent> xmlSecEvents = new ArrayList<>();
 
         Transformer transformer = new Transformer() {
             @Override

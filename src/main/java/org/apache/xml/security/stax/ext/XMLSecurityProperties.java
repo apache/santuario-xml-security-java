@@ -36,7 +36,7 @@ import javax.xml.namespace.QName;
  */
 public class XMLSecurityProperties {
 
-    private final List<InputProcessor> inputProcessorList = new ArrayList<InputProcessor>();
+    private final List<InputProcessor> inputProcessorList = new ArrayList<>();
     private boolean skipDocumentEvents = false;
     private boolean disableSchemaValidation = false;
 

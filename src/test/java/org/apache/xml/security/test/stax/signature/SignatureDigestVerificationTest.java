@@ -111,7 +111,7 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         String digestAlgorithm = "http://www.w3.org/2000/09/xmldsig#sha1";
@@ -163,7 +163,7 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         String digestAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#sha224";
@@ -215,7 +215,7 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         String digestAlgorithm = "http://www.w3.org/2001/04/xmlenc#sha256";
@@ -267,7 +267,7 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         String digestAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#sha384";
@@ -319,7 +319,7 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         String digestAlgorithm = "http://www.w3.org/2001/04/xmlenc#sha512";
@@ -374,7 +374,7 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         String digestAlgorithm = "http://www.w3.org/2001/04/xmlenc#ripemd160";
@@ -429,7 +429,7 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         String digestAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#whirlpool";
@@ -484,7 +484,7 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         String digestAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha3-224";
@@ -539,7 +539,7 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         String digestAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha3-256";
@@ -594,7 +594,7 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         String digestAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha3-384";
@@ -649,7 +649,7 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         String digestAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha3-512";

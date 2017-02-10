@@ -97,7 +97,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
 
         final List<JAXBElement<ReferenceType>> dataReferenceOrKeyReference = referenceList.getDataReferenceOrKeyReference();
         references = new HashMap<String, ReferenceType>(dataReferenceOrKeyReference.size() + 1); //+1 because the HashMap will resize otherwise
-        processedReferences = new ArrayList<ReferenceType>(dataReferenceOrKeyReference.size());
+        processedReferences = new ArrayList<>(dataReferenceOrKeyReference.size());
 
         Iterator<JAXBElement<ReferenceType>> referenceTypeIterator = dataReferenceOrKeyReference.iterator();
         while (referenceTypeIterator.hasNext()) {
@@ -321,8 +321,8 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
         stringBuilder.append('\"');
 
         //apply all namespaces from current scope to get a valid documentfragment:
-        List<XMLSecNamespace> comparableNamespacesToApply = new ArrayList<XMLSecNamespace>();
-        List<XMLSecNamespace> comparableNamespaceList = new ArrayList<XMLSecNamespace>();
+        List<XMLSecNamespace> comparableNamespacesToApply = new ArrayList<>();
+        List<XMLSecNamespace> comparableNamespaceList = new ArrayList<>();
         xmlSecStartElement.getNamespacesFromCurrentScope(comparableNamespaceList);
         //reverse iteration -> From current element namespaces to parent namespaces
         for (int i = comparableNamespaceList.size() - 1; i >= 0; i--) {

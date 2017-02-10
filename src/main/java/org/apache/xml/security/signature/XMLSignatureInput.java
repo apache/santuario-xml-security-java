@@ -106,7 +106,7 @@ public class XMLSignatureInput {
     /**
      * Node Filter list.
      */
-    private List<NodeFilter> nodeFilters = new ArrayList<NodeFilter>();
+    private List<NodeFilter> nodeFilters = new ArrayList<>();
 
     private boolean needsToBeExpanded = false;
     private OutputStream outputStream = null;

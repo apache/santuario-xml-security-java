@@ -266,7 +266,7 @@ public class KeyResolver {
     public static void registerClassNames(List<String> classNames)
         throws ClassNotFoundException, IllegalAccessException, InstantiationException {
         JavaUtils.checkRegisterPermission();
-        List<KeyResolver> keyResolverList = new ArrayList<KeyResolver>(classNames.size());
+        List<KeyResolver> keyResolverList = new ArrayList<>(classNames.size());
         for (String className : classNames) {
             KeyResolverSpi keyResolverSpi =
                 (KeyResolverSpi)ClassLoaderUtils.loadClass(className, KeyResolver.class).newInstance();
@@ -281,7 +281,7 @@ public class KeyResolver {
      */
     public static void registerDefaultResolvers() {
 
-        List<KeyResolver> keyResolverList = new ArrayList<KeyResolver>();
+        List<KeyResolver> keyResolverList = new ArrayList<>();
         keyResolverList.add(new KeyResolver(new RSAKeyValueResolver()));
         keyResolverList.add(new KeyResolver(new DSAKeyValueResolver()));
         keyResolverList.add(new KeyResolver(new X509CertificateResolver()));

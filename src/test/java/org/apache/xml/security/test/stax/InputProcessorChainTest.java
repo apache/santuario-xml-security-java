@@ -50,8 +50,8 @@ public class InputProcessorChainTest extends Assert {
     abstract class AbstractInputProcessor implements InputProcessor {
 
         private XMLSecurityConstants.Phase phase = XMLSecurityConstants.Phase.PROCESSING;
-        private Set<Object> beforeProcessors = new HashSet<Object>();
-        private Set<Object> afterProcessors = new HashSet<Object>();
+        private Set<Object> beforeProcessors = new HashSet<>();
+        private Set<Object> afterProcessors = new HashSet<>();
 
         @Override
         public void addBeforeProcessor(Object processor) {

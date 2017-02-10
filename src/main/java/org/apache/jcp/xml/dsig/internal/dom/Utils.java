@@ -68,7 +68,7 @@ public final class Utils {
      * @return the Set of Nodes
      */
     static Set<Node> toNodeSet(Iterator<Node> i) {
-        Set<Node> nodeSet = new HashSet<Node>();
+        Set<Node> nodeSet = new HashSet<>();
         while (i.hasNext()) {
             Node n = i.next();
             nodeSet.add(n);

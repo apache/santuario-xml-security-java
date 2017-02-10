@@ -76,7 +76,7 @@ public final class DOMKeyInfo extends BaseStructure implements KeyInfo {
             throw new NullPointerException("content cannot be null");
         }
         this.keyInfoTypes =
-            Collections.unmodifiableList(new ArrayList<XMLStructure>(content));
+            Collections.unmodifiableList(new ArrayList<>(content));
         if (this.keyInfoTypes.isEmpty()) {
             throw new IllegalArgumentException("content cannot be empty");
         }
@@ -101,7 +101,7 @@ public final class DOMKeyInfo extends BaseStructure implements KeyInfo {
         id = DOMUtils.getIdAttributeValue(kiElem, "Id");
 
         // get all children nodes
-        List<XMLStructure> content = new ArrayList<XMLStructure>();
+        List<XMLStructure> content = new ArrayList<>();
         Node firstChild = kiElem.getFirstChild();
         if (firstChild == null) {
             throw new MarshalException("KeyInfo must contain at least one type");

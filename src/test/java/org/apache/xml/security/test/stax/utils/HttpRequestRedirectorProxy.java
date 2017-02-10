@@ -88,7 +88,7 @@ public class HttpRequestRedirectorProxy {
          */
         private static final long serialVersionUID = -6720321975901047227L;
         private static MimeTypes mimeTypes = new MimeTypes();
-        private static List<String> paths = new ArrayList<String>();
+        private static List<String> paths = new ArrayList<>();
 
         static {
             paths.add("ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three");

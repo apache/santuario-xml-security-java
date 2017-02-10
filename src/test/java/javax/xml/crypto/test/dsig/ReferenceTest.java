@@ -124,7 +124,7 @@ public class ReferenceTest extends org.junit.Assert {
             fail("Unexpected Exception: " + ex);
         }
 
-        List<Transform> transforms = new ArrayList<Transform>();
+        List<Transform> transforms = new ArrayList<>();
         try {
             // try empty transforms list
             ref = fac.newReference(uri, dmSHA1, transforms,

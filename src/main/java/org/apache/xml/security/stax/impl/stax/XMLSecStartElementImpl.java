@@ -56,10 +56,10 @@ public class XMLSecStartElementImpl extends XMLSecEventBaseImpl implements XMLSe
     public XMLSecStartElementImpl(QName elementName, Collection<XMLSecAttribute> attributes, Collection<XMLSecNamespace> namespaces) {
         this.elementName = elementName;
         if (attributes != null && !attributes.isEmpty()) {
-            this.attributes = new ArrayList<XMLSecAttribute>(attributes);
+            this.attributes = new ArrayList<>(attributes);
         }
         if (namespaces != null && !namespaces.isEmpty()) {
-            this.namespaces = new ArrayList<XMLSecNamespace>(namespaces);
+            this.namespaces = new ArrayList<>(namespaces);
         }
     }
 
@@ -100,7 +100,7 @@ public class XMLSecStartElementImpl extends XMLSecEventBaseImpl implements XMLSe
     @Override
     public void addAttribute(XMLSecAttribute xmlSecAttribute) {
         if (this.attributes == Collections.<XMLSecAttribute>emptyList()) {
-            this.attributes = new ArrayList<XMLSecAttribute>(1);
+            this.attributes = new ArrayList<>(1);
         }
         this.attributes.add(xmlSecAttribute);
     }
@@ -152,7 +152,7 @@ public class XMLSecStartElementImpl extends XMLSecEventBaseImpl implements XMLSe
     @Override
     public void addNamespace(XMLSecNamespace xmlSecNamespace) {
         if (this.namespaces == Collections.<XMLSecNamespace>emptyList()) {
-            this.namespaces = new ArrayList<XMLSecNamespace>(1);
+            this.namespaces = new ArrayList<>(1);
         }
         this.namespaces.add(xmlSecNamespace);
     }
@@ -203,9 +203,9 @@ public class XMLSecStartElementImpl extends XMLSecEventBaseImpl implements XMLSe
             @Override
             public Iterator getPrefixes(String namespaceURI) {
 
-                Set<String> prefixes = new HashSet<String>();
+                Set<String> prefixes = new HashSet<>();
 
-                List<XMLSecNamespace> xmlSecNamespaces = new ArrayList<XMLSecNamespace>();
+                List<XMLSecNamespace> xmlSecNamespaces = new ArrayList<>();
                 getNamespacesFromCurrentScope(xmlSecNamespaces);
 
                 for (int i = 0; i < xmlSecNamespaces.size(); i++) {

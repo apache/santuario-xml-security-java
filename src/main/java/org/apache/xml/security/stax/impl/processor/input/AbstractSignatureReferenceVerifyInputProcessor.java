@@ -92,7 +92,7 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
         }
         sameDocumentReferences = new ArrayList<KeyValue<ResourceResolver, ReferenceType>>(referencesTypeList.size());
         externalReferences = new ArrayList<KeyValue<ResourceResolver, ReferenceType>>(referencesTypeList.size());
-        processedReferences = new ArrayList<ReferenceType>(referencesTypeList.size());
+        processedReferences = new ArrayList<>(referencesTypeList.size());
 
         Iterator<ReferenceType> referenceTypeIterator = referencesTypeList.iterator();
         while (referenceTypeIterator.hasNext()) {
@@ -198,7 +198,7 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
                 if (m != null 
                     && (Boolean)m.invoke(resolver, xmlSecStartElement, getSecurityProperties().getIdAttributeNS())) {
                     if (referenceTypes == Collections.<ReferenceType>emptyList()) {
-                        referenceTypes = new ArrayList<ReferenceType>();
+                        referenceTypes = new ArrayList<>();
                     }
                     referenceTypes.add(keyValue.getValue());
                     resourceMatches = true;
@@ -213,7 +213,7 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
             
             if (!resourceMatches && keyValue.getKey().matches(xmlSecStartElement)) {
                 if (referenceTypes == Collections.<ReferenceType>emptyList()) {
-                    referenceTypes = new ArrayList<ReferenceType>();
+                    referenceTypes = new ArrayList<>();
                 }
                 referenceTypes.add(keyValue.getValue());
             }

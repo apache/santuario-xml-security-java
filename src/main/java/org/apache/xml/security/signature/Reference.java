@@ -546,7 +546,7 @@ public class Reference extends SignatureElementProxy {
                 }
             }
 
-            Set<String> inclusiveNamespaces = new HashSet<String>();
+            Set<String> inclusiveNamespaces = new HashSet<>();
             if (c14nTransform != null
                 && c14nTransform.length(
                     InclusiveNamespaces.ExclusiveCanonicalizationNamespace,

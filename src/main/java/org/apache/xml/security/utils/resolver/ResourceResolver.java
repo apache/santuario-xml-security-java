@@ -43,7 +43,7 @@ public class ResourceResolver {
         org.slf4j.LoggerFactory.getLogger(ResourceResolver.class);
 
     /** these are the system-wide resolvers */
-    private static final List<ResourceResolver> resolverList = new ArrayList<ResourceResolver>();
+    private static final List<ResourceResolver> resolverList = new ArrayList<>();
 
     /** Field resolverSpi */
     private final ResourceResolverSpi resolverSpi;

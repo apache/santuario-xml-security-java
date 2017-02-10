@@ -57,7 +57,7 @@ public abstract class AbstractInputProcessor implements InputProcessor {
 
     @Override
     public void addBeforeProcessor(Object processor) {
-        this.beforeProcessors = new HashSet<Object>();
+        this.beforeProcessors = new HashSet<>();
         this.beforeProcessors.add(processor);
     }
 
@@ -71,7 +71,7 @@ public abstract class AbstractInputProcessor implements InputProcessor {
 
     @Override
     public void addAfterProcessor(Object processor) {
-        this.afterProcessors = new HashSet<Object>();
+        this.afterProcessors = new HashSet<>();
         this.afterProcessors.add(processor);
     }
 

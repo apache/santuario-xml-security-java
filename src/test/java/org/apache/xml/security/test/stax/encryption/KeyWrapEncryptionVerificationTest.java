@@ -129,7 +129,7 @@ public class KeyWrapEncryptionVerificationTest extends Assert {
         EncryptedKey encryptedKey = cipher.encryptKey(document, key);
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         String encryptionAlgorithm = XMLCipher.AES_128;
@@ -186,7 +186,7 @@ public class KeyWrapEncryptionVerificationTest extends Assert {
         EncryptedKey encryptedKey = cipher.encryptKey(document, key);
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         String encryptionAlgorithm = XMLCipher.AES_192;
@@ -243,7 +243,7 @@ public class KeyWrapEncryptionVerificationTest extends Assert {
         EncryptedKey encryptedKey = cipher.encryptKey(document, key);
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         String encryptionAlgorithm = XMLCipher.AES_256;
@@ -298,7 +298,7 @@ public class KeyWrapEncryptionVerificationTest extends Assert {
         EncryptedKey encryptedKey = cipher.encryptKey(document, key);
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         String encryptionAlgorithm = XMLCipher.TRIPLEDES;
@@ -355,7 +355,7 @@ public class KeyWrapEncryptionVerificationTest extends Assert {
         EncryptedKey encryptedKey = cipher.encryptKey(document, key);
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         String encryptionAlgorithm = XMLCipher.TRIPLEDES;
@@ -412,7 +412,7 @@ public class KeyWrapEncryptionVerificationTest extends Assert {
         EncryptedKey encryptedKey = cipher.encryptKey(document, key);
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         String encryptionAlgorithm = XMLCipher.TRIPLEDES;
@@ -469,7 +469,7 @@ public class KeyWrapEncryptionVerificationTest extends Assert {
         EncryptedKey encryptedKey = cipher.encryptKey(document, key);
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         String encryptionAlgorithm = XMLCipher.TRIPLEDES;
@@ -532,7 +532,7 @@ public class KeyWrapEncryptionVerificationTest extends Assert {
         EncryptedKey encryptedKey = cipher.encryptKey(document, key);
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         String encryptionAlgorithm = XMLCipher.CAMELLIA_128;
@@ -595,7 +595,7 @@ public class KeyWrapEncryptionVerificationTest extends Assert {
         EncryptedKey encryptedKey = cipher.encryptKey(document, key);
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         String encryptionAlgorithm = XMLCipher.CAMELLIA_192;
@@ -658,7 +658,7 @@ public class KeyWrapEncryptionVerificationTest extends Assert {
         EncryptedKey encryptedKey = cipher.encryptKey(document, key);
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         String encryptionAlgorithm = XMLCipher.CAMELLIA_256;
@@ -721,7 +721,7 @@ public class KeyWrapEncryptionVerificationTest extends Assert {
         EncryptedKey encryptedKey = cipher.encryptKey(document, key);
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         String encryptionAlgorithm = XMLCipher.SEED_128;

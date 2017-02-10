@@ -71,7 +71,7 @@ public final class DOMPGPData extends BaseStructure implements PGPData {
             this.externalElements = Collections.emptyList();
         } else {
             this.externalElements =
-                Collections.unmodifiableList(new ArrayList<XMLStructure>(other));
+                Collections.unmodifiableList(new ArrayList<>(other));
             for (int i = 0, size = this.externalElements.size(); i < size; i++) {
                 if (!(this.externalElements.get(i) instanceof XMLStructure)) {
                     throw new ClassCastException
@@ -118,7 +118,7 @@ public final class DOMPGPData extends BaseStructure implements PGPData {
             this.externalElements = Collections.emptyList();
         } else {
             this.externalElements =
-                Collections.unmodifiableList(new ArrayList<XMLStructure>(other));
+                Collections.unmodifiableList(new ArrayList<>(other));
             for (int i = 0, size = this.externalElements.size(); i < size; i++) {
                 if (!(this.externalElements.get(i) instanceof XMLStructure)) {
                     throw new ClassCastException
@@ -144,7 +144,7 @@ public final class DOMPGPData extends BaseStructure implements PGPData {
         byte[] pgpKeyId = null;
         byte[] pgpKeyPacket = null;
 
-        List<XMLStructure> other = new ArrayList<XMLStructure>();
+        List<XMLStructure> other = new ArrayList<>();
         Node firstChild = pdElem.getFirstChild();
         while (firstChild != null) {
             if (firstChild.getNodeType() == Node.ELEMENT_NODE) {

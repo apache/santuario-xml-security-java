@@ -83,10 +83,10 @@ public class CreateInteropXFilter2Test extends org.junit.Assert {
     })
     @org.junit.Test
     public void test_create_sign_spec() throws Exception {
-        List<Reference> refs = new ArrayList<Reference>(2);
+        List<Reference> refs = new ArrayList<>(2);
 
         // create reference 1
-        List<XPathType> types = new ArrayList<XPathType>(3);
+        List<XPathType> types = new ArrayList<>(3);
         types.add(new XPathType(" //ToBeSigned ", XPathType.Filter.INTERSECT));
         types.add(new XPathType(" //NotToBeSigned ", XPathType.Filter.SUBTRACT));
         types.add(new XPathType(" //ReallyToBeSigned ", XPathType.Filter.UNION));
@@ -97,7 +97,7 @@ public class CreateInteropXFilter2Test extends org.junit.Assert {
              null, null));
 
         // create reference 2
-        List<Transform> trans2 = new ArrayList<Transform>(2);
+        List<Transform> trans2 = new ArrayList<>(2);
         trans2.add(fac.newTransform(Transform.ENVELOPED,
             (TransformParameterSpec) null));
         XPathFilter2ParameterSpec xp2 = new XPathFilter2ParameterSpec
@@ -115,7 +115,7 @@ public class CreateInteropXFilter2Test extends org.junit.Assert {
             fac.newSignatureMethod(SignatureMethod.DSA_SHA1, null), refs);
 
         // create KeyInfo
-        List<XMLStructure> kits = new ArrayList<XMLStructure>(2);
+        List<XMLStructure> kits = new ArrayList<>(2);
         kits.add(kifac.newKeyValue(validatingKey));
         List xds = new ArrayList(2);
         xds.add("CN=Sean Mullan, DC=sun, DC=com");

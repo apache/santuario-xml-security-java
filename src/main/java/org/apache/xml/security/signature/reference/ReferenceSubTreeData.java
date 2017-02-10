@@ -109,7 +109,7 @@ public class ReferenceSubTreeData implements ReferenceNodeSetData {
          * @return a set of nodes (minus any comment nodes)
          */
         private List<Node> dereferenceSameDocumentURI(Node node) {
-            List<Node> nodeSet = new ArrayList<Node>();
+            List<Node> nodeSet = new ArrayList<>();
             if (node != null) {
                 nodeSetMinusCommentNodes(node, nodeSet, null);
             }

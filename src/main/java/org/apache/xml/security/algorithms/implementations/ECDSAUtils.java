@@ -152,7 +152,7 @@ public final class ECDSAUtils {
         return asn1Bytes;
     }
 
-    private static final List<ECCurveDefinition> ecCurveDefinitions = new ArrayList<ECCurveDefinition>();
+    private static final List<ECCurveDefinition> ecCurveDefinitions = new ArrayList<>();
 
     static {
         ecCurveDefinitions.add(

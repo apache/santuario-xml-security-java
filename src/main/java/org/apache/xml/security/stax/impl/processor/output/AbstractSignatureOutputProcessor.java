@@ -51,7 +51,7 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
 
     private static final transient Logger log = LoggerFactory.getLogger(AbstractSignatureOutputProcessor.class);
 
-    private final List<SignaturePartDef> signaturePartDefList = new ArrayList<SignaturePartDef>();
+    private final List<SignaturePartDef> signaturePartDefList = new ArrayList<>();
     private InternalSignatureOutputProcessor activeInternalSignatureOutputProcessor = null;
 
     public AbstractSignatureOutputProcessor() throws XMLSecurityException {
@@ -228,7 +228,7 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
                     prefixes.append(prefix);
                 }
                 signaturePartDef.setInclusiveNamespacesPrefixes(prefixes.toString());
-                List<String> inclusiveNamespacePrefixes = new ArrayList<String>(prefixSet);
+                List<String> inclusiveNamespacePrefixes = new ArrayList<>(prefixSet);
                 transformerProperties = new HashMap<String, Object>();
                 transformerProperties.put(
                         Canonicalizer20010315_Excl.INCLUSIVE_NAMESPACES_PREFIX_LIST, inclusiveNamespacePrefixes);

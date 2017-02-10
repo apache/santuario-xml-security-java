@@ -681,7 +681,7 @@ public class XMLCipher {
      */
     public void registerInternalKeyResolver(KeyResolverSpi keyResolver) {
         if (internalKeyResolvers == null) {
-            internalKeyResolvers = new ArrayList<KeyResolverSpi>();
+            internalKeyResolvers = new ArrayList<>();
         }
         internalKeyResolvers.add(keyResolver);
     }

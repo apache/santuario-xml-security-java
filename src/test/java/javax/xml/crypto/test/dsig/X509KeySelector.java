@@ -304,7 +304,7 @@ public class X509KeySelector extends KeySelector {
         } catch (IOException ioe) {
             throw new KeySelectorException(ioe);
         }
-        Collection<X509Certificate> certs = new ArrayList<X509Certificate>();
+        Collection<X509Certificate> certs = new ArrayList<>();
 
         @SuppressWarnings("unchecked")
         Iterator<Object> xi = xd.getContent().iterator();

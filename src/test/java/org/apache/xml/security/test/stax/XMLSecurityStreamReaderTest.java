@@ -281,7 +281,7 @@ public class XMLSecurityStreamReaderTest extends Assert {
 
         @Override
         public Set<Object> getBeforeProcessors() {
-            return new HashSet<Object>();
+            return new HashSet<>();
         }
 
         @Override
@@ -290,7 +290,7 @@ public class XMLSecurityStreamReaderTest extends Assert {
 
         @Override
         public Set<Object> getAfterProcessors() {
-            return new HashSet<Object>();
+            return new HashSet<>();
         }
 
         @Override

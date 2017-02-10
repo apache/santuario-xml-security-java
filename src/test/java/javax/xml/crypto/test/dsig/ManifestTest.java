@@ -48,7 +48,7 @@ public class ManifestTest extends org.junit.Assert {
     public void testConstructor() throws Exception {
         Manifest man = null;
         String id = "manifest_id";
-        List<Reference> refs = new ArrayList<Reference>();
+        List<Reference> refs = new ArrayList<>();
         // test XMLSignatureFactory.newManifest(List references)
         // and  XMLSignatureFactory.newManifest(List references,
         //                                       String id)
@@ -138,7 +138,7 @@ public class ManifestTest extends org.junit.Assert {
 
     @org.junit.Test
     public void testisFeatureSupported() throws Exception {
-        List<Reference> refs = new ArrayList<Reference>();
+        List<Reference> refs = new ArrayList<>();
         refs.add(VALID_REF);
 
         Manifest man = fac.newManifest(refs);
@@ -153,7 +153,7 @@ public class ManifestTest extends org.junit.Assert {
 
     @org.junit.Test
     public void testgetReferences() throws Exception {
-        List<Reference> refs = new ArrayList<Reference>();
+        List<Reference> refs = new ArrayList<>();
         refs.add(VALID_REF);	
         Manifest man = fac.newManifest(refs);
         @SuppressWarnings("unchecked")

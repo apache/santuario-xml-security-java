@@ -68,7 +68,7 @@ public final class DOMX509Data extends BaseStructure implements X509Data {
         if (content == null) {
             throw new NullPointerException("content cannot be null");
         }
-        List<Object> contentCopy = new ArrayList<Object>(content);
+        List<Object> contentCopy = new ArrayList<>(content);
         if (contentCopy.isEmpty()) {
             throw new IllegalArgumentException("content cannot be empty");
         }
@@ -95,7 +95,7 @@ public final class DOMX509Data extends BaseStructure implements X509Data {
      */
     public DOMX509Data(Element xdElem) throws MarshalException {
         // get all children nodes
-        List<Object> newContent = new ArrayList<Object>();
+        List<Object> newContent = new ArrayList<>();
         Node firstChild = xdElem.getFirstChild();
         while (firstChild != null) {
             if (firstChild.getNodeType() == Node.ELEMENT_NODE) {

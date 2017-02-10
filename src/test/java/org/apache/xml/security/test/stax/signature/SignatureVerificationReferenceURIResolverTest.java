@@ -80,7 +80,7 @@ public class SignatureVerificationReferenceURIResolverTest extends AbstractSigna
         X509Certificate cert = (X509Certificate) keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         File file = new File(BASEDIR +
                 "/src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml").getCanonicalFile();
@@ -92,7 +92,7 @@ public class SignatureVerificationReferenceURIResolverTest extends AbstractSigna
                 false
         );
 
-        List<ReferenceInfo> referenceInfos = new ArrayList<ReferenceInfo>();
+        List<ReferenceInfo> referenceInfos = new ArrayList<>();
         referenceInfos.add(referenceInfo);
 
         XMLSignature sig = signUsingDOM(
@@ -149,7 +149,7 @@ public class SignatureVerificationReferenceURIResolverTest extends AbstractSigna
         X509Certificate cert = (X509Certificate) keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         File file = new File(BASEDIR +
@@ -162,7 +162,7 @@ public class SignatureVerificationReferenceURIResolverTest extends AbstractSigna
                 true
         );
 
-        List<ReferenceInfo> referenceInfos = new ArrayList<ReferenceInfo>();
+        List<ReferenceInfo> referenceInfos = new ArrayList<>();
         referenceInfos.add(referenceInfo);
 
         XMLSignature sig = signUsingDOM(
@@ -231,7 +231,7 @@ public class SignatureVerificationReferenceURIResolverTest extends AbstractSigna
             X509Certificate cert = (X509Certificate) keyStore.getCertificate("transmitter");
 
             // Sign using DOM
-            List<String> localNames = new ArrayList<String>();
+            List<String> localNames = new ArrayList<>();
             localNames.add("PaymentInfo");
 
             ReferenceInfo referenceInfo = new ReferenceInfo(
@@ -241,7 +241,7 @@ public class SignatureVerificationReferenceURIResolverTest extends AbstractSigna
                     true
             );
 
-            List<ReferenceInfo> referenceInfos = new ArrayList<ReferenceInfo>();
+            List<ReferenceInfo> referenceInfos = new ArrayList<>();
             referenceInfos.add(referenceInfo);
 
             XMLSignature sig = signUsingDOM(
@@ -310,7 +310,7 @@ public class SignatureVerificationReferenceURIResolverTest extends AbstractSigna
         elementToSign.setIdAttributeNS(null, "Id", true);
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         ReferenceInfo referenceInfo = new ReferenceInfo(
@@ -320,7 +320,7 @@ public class SignatureVerificationReferenceURIResolverTest extends AbstractSigna
                 false
         );
 
-        List<ReferenceInfo> referenceInfos = new ArrayList<ReferenceInfo>();
+        List<ReferenceInfo> referenceInfos = new ArrayList<>();
         referenceInfos.add(referenceInfo);
 
         XMLSignature sig = signUsingDOM(
@@ -384,7 +384,7 @@ public class SignatureVerificationReferenceURIResolverTest extends AbstractSigna
         elementToSign.setIdAttributeNS(null, "Id", true);
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         ReferenceInfo referenceInfo = new ReferenceInfo(
@@ -394,7 +394,7 @@ public class SignatureVerificationReferenceURIResolverTest extends AbstractSigna
                 false
         );
 
-        List<ReferenceInfo> referenceInfos = new ArrayList<ReferenceInfo>();
+        List<ReferenceInfo> referenceInfos = new ArrayList<>();
         referenceInfos.add(referenceInfo);
 
         XMLSignature sig = signUsingDOM(
@@ -446,7 +446,7 @@ public class SignatureVerificationReferenceURIResolverTest extends AbstractSigna
         X509Certificate cert = (X509Certificate) keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
 
         ReferenceInfo referenceInfo = new ReferenceInfo(
                 "#xpointer(/)",
@@ -458,7 +458,7 @@ public class SignatureVerificationReferenceURIResolverTest extends AbstractSigna
                 false
         );
 
-        List<ReferenceInfo> referenceInfos = new ArrayList<ReferenceInfo>();
+        List<ReferenceInfo> referenceInfos = new ArrayList<>();
         referenceInfos.add(referenceInfo);
 
         XMLSignature sig = signUsingDOM(

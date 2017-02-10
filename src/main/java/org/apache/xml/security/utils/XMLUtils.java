@@ -558,11 +558,11 @@ public final class XMLUtils {
      */
     public static Set<Node> convertNodelistToSet(NodeList xpathNodeSet) {
         if (xpathNodeSet == null) {
-            return new HashSet<Node>();
+            return new HashSet<>();
         }
 
         int length = xpathNodeSet.getLength();
-        Set<Node> set = new HashSet<Node>(length);
+        Set<Node> set = new HashSet<>(length);
 
         for (int i = 0; i < length; i++) {
             set.add(xpathNodeSet.item(i));
@@ -825,7 +825,7 @@ public final class XMLUtils {
      * @return nodes with the constraint
      */
     public static Element[] selectNodes(Node sibling, String uri, String nodeName) {
-        List<Element> list = new ArrayList<Element>();
+        List<Element> list = new ArrayList<>();
         while (sibling != null) {
             if (sibling.getNamespaceURI() != null && sibling.getNamespaceURI().equals(uri)
                 && sibling.getLocalName().equals(nodeName)) {
@@ -842,7 +842,7 @@ public final class XMLUtils {
      * @return nodes with the constrain
      */
     public static Set<Node> excludeNodeFromSet(Node signatureElement, Set<Node> inputSet) {
-        Set<Node> resultSet = new HashSet<Node>();
+        Set<Node> resultSet = new HashSet<>();
         Iterator<Node> iterator = inputSet.iterator();
 
         while (iterator.hasNext()) {

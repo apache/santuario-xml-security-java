@@ -51,7 +51,7 @@ public abstract class AbstractInboundSecurityToken extends AbstractSecurityToken
     private List<QName> elementPath;
     private XMLSecEvent xmlSecEvent;
     private SecurityTokenConstants.KeyIdentifier keyIdentifier;
-    private final List<InboundSecurityToken> wrappedTokens = new ArrayList<InboundSecurityToken>();
+    private final List<InboundSecurityToken> wrappedTokens = new ArrayList<>();
     private InboundSecurityToken keyWrappingToken;
     private boolean includedInMessage = false;
 

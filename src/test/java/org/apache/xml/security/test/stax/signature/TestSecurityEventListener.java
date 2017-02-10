@@ -28,7 +28,7 @@ import org.apache.xml.security.stax.securityEvent.SecurityEventListener;
 import org.junit.Assert;
 
 public class TestSecurityEventListener implements SecurityEventListener {
-    private List<SecurityEvent> events = new ArrayList<SecurityEvent>();
+    private List<SecurityEvent> events = new ArrayList<>();
 
     @Override
     public void registerSecurityEvent(SecurityEvent securityEvent)
@@ -51,7 +51,7 @@ public class TestSecurityEventListener implements SecurityEventListener {
 
     @SuppressWarnings("unchecked")
     public <T> List<T> getSecurityEvents(Event securityEvent) {
-        List<T> foundEvents = new ArrayList<T>();
+        List<T> foundEvents = new ArrayList<>();
         for (SecurityEvent event : events) {
             if (event.getSecurityEventType() == securityEvent) {
                 foundEvents.add((T)event);

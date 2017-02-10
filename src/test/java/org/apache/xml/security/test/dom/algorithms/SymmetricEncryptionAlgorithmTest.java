@@ -92,7 +92,7 @@ public class SymmetricEncryptionAlgorithmTest extends Assert {
         keygen.init(128);
         SecretKey key = keygen.generateKey();
 
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         String encryptionAlgorithm = XMLCipher.AES_128;
@@ -125,7 +125,7 @@ public class SymmetricEncryptionAlgorithmTest extends Assert {
         keygen.init(128);
         SecretKey key = keygen.generateKey();
 
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         String encryptionAlgorithm = XMLCipher.AES_128_GCM;
@@ -158,7 +158,7 @@ public class SymmetricEncryptionAlgorithmTest extends Assert {
         keygen.init(192);
         SecretKey key = keygen.generateKey();
 
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         String encryptionAlgorithm = XMLCipher.AES_192;
@@ -191,7 +191,7 @@ public class SymmetricEncryptionAlgorithmTest extends Assert {
         keygen.init(192);
         SecretKey key = keygen.generateKey();
 
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         String encryptionAlgorithm = XMLCipher.AES_192_GCM;
@@ -224,7 +224,7 @@ public class SymmetricEncryptionAlgorithmTest extends Assert {
         keygen.init(256);
         SecretKey key = keygen.generateKey();
 
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         String encryptionAlgorithm = XMLCipher.AES_256;
@@ -257,7 +257,7 @@ public class SymmetricEncryptionAlgorithmTest extends Assert {
         keygen.init(256);
         SecretKey key = keygen.generateKey();
 
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         String encryptionAlgorithm = XMLCipher.AES_256_GCM;
@@ -289,7 +289,7 @@ public class SymmetricEncryptionAlgorithmTest extends Assert {
         KeyGenerator keygen = KeyGenerator.getInstance("DESede");
         SecretKey key = keygen.generateKey();
 
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         String encryptionAlgorithm = XMLCipher.TRIPLEDES;
@@ -325,7 +325,7 @@ public class SymmetricEncryptionAlgorithmTest extends Assert {
         keygen.init(128);
         SecretKey key = keygen.generateKey();
 
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         String encryptionAlgorithm = XMLCipher.SEED_128;
@@ -361,7 +361,7 @@ public class SymmetricEncryptionAlgorithmTest extends Assert {
         keygen.init(128);
         SecretKey key = keygen.generateKey();
 
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         String encryptionAlgorithm = XMLCipher.CAMELLIA_128;
@@ -397,7 +397,7 @@ public class SymmetricEncryptionAlgorithmTest extends Assert {
         keygen.init(192);
         SecretKey key = keygen.generateKey();
 
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         String encryptionAlgorithm = XMLCipher.CAMELLIA_192;
@@ -433,7 +433,7 @@ public class SymmetricEncryptionAlgorithmTest extends Assert {
         keygen.init(256);
         SecretKey key = keygen.generateKey();
 
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         String encryptionAlgorithm = XMLCipher.CAMELLIA_256;

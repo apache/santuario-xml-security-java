@@ -103,7 +103,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         XMLSignature sig = signUsingDOM(
             "http://www.w3.org/2000/09/xmldsig#rsa-sha1", document, localNames, key
@@ -144,8 +144,8 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         String signedElementCorrelationID = signedElementSecurityEvent.getCorrelationID();
         String x509TokenCorrelationID = x509TokenSecurityEvent.getCorrelationID();
 
-        List<SecurityEvent> signatureSecurityEvents = new ArrayList<SecurityEvent>();
-        List<SecurityEvent> signedElementSecurityEvents = new ArrayList<SecurityEvent>();
+        List<SecurityEvent> signatureSecurityEvents = new ArrayList<>();
+        List<SecurityEvent> signedElementSecurityEvents = new ArrayList<>();
 
         List<SecurityEvent> securityEvents = securityEventListener.getSecurityEvents();
         for (int i = 0; i < securityEvents.size(); i++) {
@@ -182,7 +182,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         localNames.add("ShippingAddress");
         XMLSignature sig = signUsingDOM(
@@ -226,9 +226,9 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         String signedElementCorrelationID2 = signedElementSecurityEventList.get(1).getCorrelationID();
         String x509TokenCorrelationID = x509TokenSecurityEvent.getCorrelationID();
 
-        List<SecurityEvent> signatureSecurityEvents = new ArrayList<SecurityEvent>();
-        List<SecurityEvent> signedElementSecurityEvents1 = new ArrayList<SecurityEvent>();
-        List<SecurityEvent> signedElementSecurityEvents2 = new ArrayList<SecurityEvent>();
+        List<SecurityEvent> signatureSecurityEvents = new ArrayList<>();
+        List<SecurityEvent> signedElementSecurityEvents1 = new ArrayList<>();
+        List<SecurityEvent> signedElementSecurityEvents2 = new ArrayList<>();
 
         List<SecurityEvent> securityEvents = securityEventListener.getSecurityEvents();
         for (int i = 0; i < securityEvents.size(); i++) {
@@ -268,7 +268,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         localNames.add("ShippingAddress");
         XMLSignature sig = signUsingDOM(
@@ -340,11 +340,11 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
             false
         );
 
-        List<ReferenceInfo> referenceInfos = new ArrayList<ReferenceInfo>();
+        List<ReferenceInfo> referenceInfos = new ArrayList<>();
         referenceInfos.add(referenceInfo);
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         XMLSignature sig = signUsingDOM(
             "http://www.w3.org/2000/09/xmldsig#rsa-sha1", document, localNames, key, referenceInfos
@@ -390,7 +390,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2000/09/xmldsig#hmac-sha1");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         XMLSignature sig = signUsingDOM(
             "http://www.w3.org/2000/09/xmldsig#hmac-sha1", document, localNames, key
@@ -437,8 +437,8 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         String signedElementCorrelationID = signedElementSecurityEvent.getCorrelationID();
         String x509TokenCorrelationID = keyNameSecurityToken.getCorrelationID();
 
-        List<SecurityEvent> signatureSecurityEvents = new ArrayList<SecurityEvent>();
-        List<SecurityEvent> signedElementSecurityEvents = new ArrayList<SecurityEvent>();
+        List<SecurityEvent> signatureSecurityEvents = new ArrayList<>();
+        List<SecurityEvent> signedElementSecurityEvents = new ArrayList<>();
 
         List<SecurityEvent> securityEvents = securityEventListener.getSecurityEvents();
         for (int i = 0; i < securityEvents.size(); i++) {
@@ -470,7 +470,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2000/09/xmldsig#hmac-sha1");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         XMLSignature sig = signUsingDOM(
             "http://www.w3.org/2000/09/xmldsig#hmac-sha1", document, localNames, key
@@ -543,7 +543,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("ECDSA");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         XMLSignature sig = signUsingDOM(
             "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1", document, localNames, key
@@ -587,8 +587,8 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         String signedElementCorrelationID = signedElementSecurityEvent.getCorrelationID();
         String x509TokenCorrelationID = x509TokenSecurityEvent.getCorrelationID();
 
-        List<SecurityEvent> signatureSecurityEvents = new ArrayList<SecurityEvent>();
-        List<SecurityEvent> signedElementSecurityEvents = new ArrayList<SecurityEvent>();
+        List<SecurityEvent> signatureSecurityEvents = new ArrayList<>();
+        List<SecurityEvent> signedElementSecurityEvents = new ArrayList<>();
 
         List<SecurityEvent> securityEvents = securityEventListener.getSecurityEvents();
         for (int i = 0; i < securityEvents.size(); i++) {
@@ -625,7 +625,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         XMLSignature sig = signUsingDOM(
             "http://www.w3.org/2000/09/xmldsig#rsa-sha1", document, localNames, key,
@@ -670,8 +670,8 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         String signedElementCorrelationID = signedElementSecurityEvent.getCorrelationID();
         String x509TokenCorrelationID = x509TokenSecurityEvent.getCorrelationID();
 
-        List<SecurityEvent> signatureSecurityEvents = new ArrayList<SecurityEvent>();
-        List<SecurityEvent> signedElementSecurityEvents = new ArrayList<SecurityEvent>();
+        List<SecurityEvent> signatureSecurityEvents = new ArrayList<>();
+        List<SecurityEvent> signedElementSecurityEvents = new ArrayList<>();
 
         List<SecurityEvent> securityEvents = securityEventListener.getSecurityEvents();
         for (int i = 0; i < securityEvents.size(); i++) {
@@ -708,7 +708,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         XMLSignature sig = signUsingDOM(
             "http://www.w3.org/2000/09/xmldsig#rsa-sha1", document, localNames, key,
@@ -753,8 +753,8 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         String signedElementCorrelationID = signedElementSecurityEvent.getCorrelationID();
         String x509TokenCorrelationID = x509TokenSecurityEvent.getCorrelationID();
 
-        List<SecurityEvent> signatureSecurityEvents = new ArrayList<SecurityEvent>();
-        List<SecurityEvent> signedElementSecurityEvents = new ArrayList<SecurityEvent>();
+        List<SecurityEvent> signatureSecurityEvents = new ArrayList<>();
+        List<SecurityEvent> signedElementSecurityEvents = new ArrayList<>();
 
         List<SecurityEvent> securityEvents = securityEventListener.getSecurityEvents();
         for (int i = 0; i < securityEvents.size(); i++) {
@@ -791,7 +791,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         XMLSignature sig = signUsingDOM(
             "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256", document, localNames, key,
@@ -836,8 +836,8 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         String signedElementCorrelationID = signedElementSecurityEvent.getCorrelationID();
         String x509TokenCorrelationID = x509TokenSecurityEvent.getCorrelationID();
 
-        List<SecurityEvent> signatureSecurityEvents = new ArrayList<SecurityEvent>();
-        List<SecurityEvent> signedElementSecurityEvents = new ArrayList<SecurityEvent>();
+        List<SecurityEvent> signatureSecurityEvents = new ArrayList<>();
+        List<SecurityEvent> signedElementSecurityEvents = new ArrayList<>();
 
         List<SecurityEvent> securityEvents = securityEventListener.getSecurityEvents();
         for (int i = 0; i < securityEvents.size(); i++) {
@@ -874,7 +874,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         XMLSignature sig = signUsingDOM(
             "http://www.w3.org/2000/09/xmldsig#rsa-sha1", document, localNames, key
@@ -921,8 +921,8 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         String signedElementCorrelationID = signedElementSecurityEvent.getCorrelationID();
         String x509TokenCorrelationID = x509TokenSecurityEvent.getCorrelationID();
 
-        List<SecurityEvent> signatureSecurityEvents = new ArrayList<SecurityEvent>();
-        List<SecurityEvent> signedElementSecurityEvents = new ArrayList<SecurityEvent>();
+        List<SecurityEvent> signatureSecurityEvents = new ArrayList<>();
+        List<SecurityEvent> signedElementSecurityEvents = new ArrayList<>();
 
         List<SecurityEvent> securityEvents = securityEventListener.getSecurityEvents();
         for (int i = 0; i < securityEvents.size(); i++) {
@@ -959,7 +959,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         XMLSignature sig = signUsingDOM(
             "http://www.w3.org/2000/09/xmldsig#rsa-sha1", document, localNames, key
@@ -1004,8 +1004,8 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         String signedElementCorrelationID = signedElementSecurityEvent.getCorrelationID();
         String x509TokenCorrelationID = x509TokenSecurityEvent.getCorrelationID();
 
-        List<SecurityEvent> signatureSecurityEvents = new ArrayList<SecurityEvent>();
-        List<SecurityEvent> signedElementSecurityEvents = new ArrayList<SecurityEvent>();
+        List<SecurityEvent> signatureSecurityEvents = new ArrayList<>();
+        List<SecurityEvent> signedElementSecurityEvents = new ArrayList<>();
 
         List<SecurityEvent> securityEvents = securityEventListener.getSecurityEvents();
         for (int i = 0; i < securityEvents.size(); i++) {
@@ -1050,7 +1050,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("rsakey");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         XMLSignature sig = signUsingDOM(
             "http://www.w3.org/2000/09/xmldsig#rsa-sha1", document, localNames, key
@@ -1095,8 +1095,8 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         String signedElementCorrelationID = signedElementSecurityEvent.getCorrelationID();
         String x509TokenCorrelationID = x509TokenSecurityEvent.getCorrelationID();
 
-        List<SecurityEvent> signatureSecurityEvents = new ArrayList<SecurityEvent>();
-        List<SecurityEvent> signedElementSecurityEvents = new ArrayList<SecurityEvent>();
+        List<SecurityEvent> signatureSecurityEvents = new ArrayList<>();
+        List<SecurityEvent> signedElementSecurityEvents = new ArrayList<>();
 
         List<SecurityEvent> securityEvents = securityEventListener.getSecurityEvents();
         for (int i = 0; i < securityEvents.size(); i++) {
@@ -1133,7 +1133,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         XMLSignature sig = signUsingDOM(
             "http://www.w3.org/2000/09/xmldsig#rsa-sha1", document, localNames, key
@@ -1175,8 +1175,8 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         String signedElementCorrelationID = signedElementSecurityEvent.getCorrelationID();
         String x509TokenCorrelationID = keyValueTokenSecurityEvent.getCorrelationID();
 
-        List<SecurityEvent> signatureSecurityEvents = new ArrayList<SecurityEvent>();
-        List<SecurityEvent> signedElementSecurityEvents = new ArrayList<SecurityEvent>();
+        List<SecurityEvent> signatureSecurityEvents = new ArrayList<>();
+        List<SecurityEvent> signedElementSecurityEvents = new ArrayList<>();
 
         List<SecurityEvent> securityEvents = securityEventListener.getSecurityEvents();
         for (int i = 0; i < securityEvents.size(); i++) {
@@ -1213,7 +1213,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         XMLSignature sig = signUsingDOM(
                 "http://www.w3.org/2000/09/xmldsig#rsa-sha1",
@@ -1249,8 +1249,8 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         String signedElementCorrelationID = signedElementSecurityEvent.getCorrelationID();
         String x509TokenCorrelationID = x509TokenSecurityEvent.getCorrelationID();
 
-        List<SecurityEvent> signatureSecurityEvents = new ArrayList<SecurityEvent>();
-        List<SecurityEvent> signedElementSecurityEvents = new ArrayList<SecurityEvent>();
+        List<SecurityEvent> signatureSecurityEvents = new ArrayList<>();
+        List<SecurityEvent> signedElementSecurityEvents = new ArrayList<>();
 
         List<SecurityEvent> securityEvents = securityEventListener.getSecurityEvents();
         for (int i = 0; i < securityEvents.size(); i++) {
@@ -1287,7 +1287,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("Item");
         localNames.add("PaymentInfo");
         localNames.add("ShippingAddress");
@@ -1349,7 +1349,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         XMLSignature sig = signUsingDOM(
                 "http://www.w3.org/2000/09/xmldsig#rsa-sha1", document, localNames, key
@@ -1409,7 +1409,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         XMLSignature sig = signUsingDOM(
                 "http://www.w3.org/2001/04/xmldsig-more#rsa-md5", document, localNames, key
@@ -1472,7 +1472,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         XMLSignature sig = signUsingDOM(
                 "http://www.w3.org/2001/04/xmldsig-more#rsa-md5", document, localNames, key
@@ -1532,7 +1532,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         XMLSignature sig = signUsingDOM(
                 "http://www.w3.org/2000/09/xmldsig#rsa-sha1", document, localNames, key
@@ -1603,7 +1603,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         XMLSignature sig = signUsingDOM(
@@ -1654,7 +1654,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         XMLSignature sig = signUsingDOM(
                 "http://www.w3.org/2000/09/xmldsig#rsa-sha1", document, localNames, key
@@ -1712,7 +1712,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         XMLSignature sig = signUsingDOM(
                 "http://www.w3.org/2000/09/xmldsig#rsa-sha1", document, localNames, key
@@ -1777,7 +1777,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
 
         ReferenceInfo referenceInfo = new ReferenceInfo(
                 "",
@@ -1789,7 +1789,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
                 false
         );
 
-        List<ReferenceInfo> referenceInfos = new ArrayList<ReferenceInfo>();
+        List<ReferenceInfo> referenceInfos = new ArrayList<>();
         referenceInfos.add(referenceInfo);
 
         XMLSignature sig = signUsingDOM(
@@ -1848,7 +1848,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<String>();
+        List<String> localNames = new ArrayList<>();
 
         ReferenceInfo referenceInfo = new ReferenceInfo(
                 "",
@@ -1860,7 +1860,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
                 false
         );
 
-        List<ReferenceInfo> referenceInfos = new ArrayList<ReferenceInfo>();
+        List<ReferenceInfo> referenceInfos = new ArrayList<>();
         referenceInfos.add(referenceInfo);
 
         XMLSignature sig = signUsingDOM(

@@ -31,7 +31,7 @@ import java.util.*;
 public class AbstractSecurityContextImpl {
     @SuppressWarnings("unchecked")
     private final Map content = Collections.synchronizedMap(new HashMap());
-    private final List<SecurityEventListener> securityEventListeners = new ArrayList<SecurityEventListener>(2);
+    private final List<SecurityEventListener> securityEventListeners = new ArrayList<>(2);
 
     public void addSecurityEventListener(SecurityEventListener securityEventListener) {
         if (securityEventListener != null) {
@@ -72,7 +72,7 @@ public class AbstractSecurityContextImpl {
         }
         List<T> entry = (List<T>) content.get(key);
         if (entry == null) {
-            entry = new ArrayList<T>();
+            entry = new ArrayList<>();
             content.put(key, entry);
         }
         entry.addAll(value);
@@ -82,7 +82,7 @@ public class AbstractSecurityContextImpl {
     public <T> void putAsList(Object key, T value) {
         List<T> entry = (List<T>) content.get(key);
         if (entry == null) {
-            entry = new ArrayList<T>();
+            entry = new ArrayList<>();
             content.put(key, entry);
         }
         entry.add(value);

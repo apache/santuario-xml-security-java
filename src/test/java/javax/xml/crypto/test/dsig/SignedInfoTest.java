@@ -49,7 +49,7 @@ public class SignedInfoTest extends org.junit.Assert {
             (CanonicalizationMethod.INCLUSIVE_WITH_COMMENTS,
              (C14NMethodParameterSpec) null);
         sm = fac.newSignatureMethod(SignatureMethod.DSA_SHA1, null);
-        references = new ArrayList<Reference>();
+        references = new ArrayList<>();
         references.add(fac.newReference
                        ("http://www.sun.com/index.html",
                         fac.newDigestMethod(DigestMethod.SHA1, null)));
@@ -84,7 +84,7 @@ public class SignedInfoTest extends org.junit.Assert {
             }
         }
 
-        List<Reference> empty = new ArrayList<Reference>();
+        List<Reference> empty = new ArrayList<>();
         try {
             si = fac.newSignedInfo(cm, sm, empty);
             fail("Should throw an IAE for empty references");
