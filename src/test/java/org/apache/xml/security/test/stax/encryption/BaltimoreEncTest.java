@@ -472,7 +472,7 @@ public class BaltimoreEncTest extends org.junit.Assert {
         DSNamespaceContext context = new DSNamespaceContext(namespace);
         xpath.setNamespaceContext(context);
 
-        String expression =  "//*[local-name()='Number']";
+        String expression = "//*[local-name()='Number']";
         Node ccnumElt =
             (Node) xpath.evaluate(expression, doc, XPathConstants.NODE);
 

@@ -127,7 +127,7 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
 
             String mimeType = urlConnection.getHeaderField("Content-Type");
             try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                InputStream inputStream =  urlConnection.getInputStream()) {
+                InputStream inputStream = urlConnection.getInputStream()) {
                 byte[] buf = new byte[4096];
                 int read = 0;
                 int summarized = 0;

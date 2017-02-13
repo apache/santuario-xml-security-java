@@ -262,7 +262,7 @@ public class ReferenceTest extends org.junit.Assert {
                         assertNotNull(validated_ref.getDigestInputStream());
                         assertTrue(digestInputEqual(validated_ref));
                     }
-                    byte[] dv =  validated_ref.getDigestValue();
+                    byte[] dv = validated_ref.getDigestValue();
                     byte[] cdv = validated_ref.getCalculatedDigestValue();
                     assertTrue(Arrays.equals(dv, cdv));
                     boolean valid = validated_ref.validate(validateContext);
