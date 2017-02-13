@@ -66,7 +66,7 @@ import org.xml.sax.SAXException;
  */
 public final class Transform extends SignatureElementProxy {
 
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(Transform.class);
 
     /** All available Transform classes are registered here */
@@ -357,9 +357,9 @@ public final class Transform extends SignatureElementProxy {
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("Create URI \"" + algorithmURI + "\" class \""
+            LOG.debug("Create URI \"" + algorithmURI + "\" class \""
                       + newTransformSpi.getClass() + "\"");
-            log.debug("The NodeList is " + contextNodes);
+            LOG.debug("The NodeList is " + contextNodes);
         }
 
         // give it to the current document

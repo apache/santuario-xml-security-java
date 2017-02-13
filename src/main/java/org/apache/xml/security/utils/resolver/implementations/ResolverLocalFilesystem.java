@@ -34,7 +34,7 @@ public class ResolverLocalFilesystem extends ResourceResolverSpi {
 
     private static final int FILE_URI_LENGTH = "file:/".length();
 
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(ResolverLocalFilesystem.class);
 
     @Override
@@ -116,23 +116,23 @@ public class ResolverLocalFilesystem extends ResourceResolverSpi {
 
         try {
             if (log.isDebugEnabled()) {
-                log.debug("I was asked whether I can resolve " + context.uriToResolve);
+                LOG.debug("I was asked whether I can resolve " + context.uriToResolve);
             }
 
             if (context.uriToResolve.startsWith("file:") || context.baseUri.startsWith("file:")) {
                 if (log.isDebugEnabled()) {
-                    log.debug("I state that I can resolve " + context.uriToResolve);
+                    LOG.debug("I state that I can resolve " + context.uriToResolve);
                 }
                 return true;
             }
         } catch (Exception e) {
             if (log.isDebugEnabled()) {
-                log.debug(e.getMessage(), e);
+                LOG.debug(e.getMessage(), e);
             }
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("But I can't");
+            LOG.debug("But I can't");
         }
 
         return false;

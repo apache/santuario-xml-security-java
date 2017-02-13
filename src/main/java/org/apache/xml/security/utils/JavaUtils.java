@@ -32,7 +32,7 @@ import java.security.SecurityPermission;
  */
 public final class JavaUtils {
 
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(JavaUtils.class);
 
     private static final SecurityPermission REGISTER_PERMISSION =
@@ -84,12 +84,12 @@ public final class JavaUtils {
                 fos.write(bytes);
             } catch (IOException ex) {
                 if (log.isDebugEnabled()) {
-                    log.debug(ex.getMessage(), ex);
+                    LOG.debug(ex.getMessage(), ex);
                 }
             }
         } else {
             if (log.isDebugEnabled()) {
-                log.debug("writeBytesToFilename got null byte[] pointed");
+                LOG.debug("writeBytesToFilename got null byte[] pointed");
             }
         }
     }

@@ -33,7 +33,7 @@ import org.w3c.dom.Element;
  */
 public class WrappingAttackTest extends InteropTestBase {
 
-    static org.slf4j.Logger log =
+    static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(WrappingAttackTest.class);
 
     static {

@@ -56,7 +56,7 @@ import org.w3c.dom.Element;
  */
 public class CreateSignatureTest extends org.junit.Assert {
 
-    static org.slf4j.Logger log =
+    static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(CreateSignatureTest.class);
 
     private static final String BASEDIR = System.getProperty("basedir");

@@ -56,7 +56,7 @@ public abstract class Canonicalizer11 extends CanonicalizerBase {
 
     private static final String XMLNS_URI = Constants.NamespaceSpecNS;
     private static final String XML_LANG_URI = Constants.XML_LANG_SPACE_SpecNS;
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(Canonicalizer11.class);
     private final SortedSet<Attr> result = new TreeSet<Attr>(COMPARE);
 
@@ -166,7 +166,7 @@ public abstract class Canonicalizer11 extends CanonicalizerBase {
                             base = joinURI(n.getValue(), base);
                         } catch (URISyntaxException ue) {
                             if (log.isDebugEnabled()) {
-                                log.debug(ue.getMessage(), ue);
+                                LOG.debug(ue.getMessage(), ue);
                             }
                         }
                     }
@@ -531,7 +531,7 @@ public abstract class Canonicalizer11 extends CanonicalizerBase {
 
     private static String removeDotSegments(String path) {
         if (log.isDebugEnabled()) {
-            log.debug("STEP   OUTPUT BUFFER\t\tINPUT BUFFER");
+            LOG.debug("STEP   OUTPUT BUFFER\t\tINPUT BUFFER");
         }
 
         // 1. The input buffer is initialized with the now-appended path
@@ -686,11 +686,11 @@ public abstract class Canonicalizer11 extends CanonicalizerBase {
 
     private static void printStep(String step, String output, String input) {
         if (log.isDebugEnabled()) {
-            log.debug(" " + step + ":   " + output);
+            LOG.debug(" " + step + ":   " + output);
             if (output.length() == 0) {
-                log.debug("\t\t\t\t" + input);
+                LOG.debug("\t\t\t\t" + input);
             } else {
-                log.debug("\t\t\t" + input);
+                LOG.debug("\t\t\t" + input);
             }
         }
     }

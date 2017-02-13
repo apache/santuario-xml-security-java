@@ -43,7 +43,7 @@ import org.apache.xml.security.signature.XMLSignatureException;
  */
 public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
 
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(SignatureECDSA.class);
 
     /** @inheritDoc */
@@ -96,7 +96,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
         String algorithmID = JCEMapper.translateURItoJCEID(this.engineGetURI());
 
         if (log.isDebugEnabled()) {
-            log.debug("Created SignatureECDSA using " + algorithmID);
+            LOG.debug("Created SignatureECDSA using " + algorithmID);
         }
         String provider = JCEMapper.getProviderId();
         try {
@@ -132,7 +132,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
             byte[] jcebytes = SignatureECDSA.convertXMLDSIGtoASN1(signature);
 
             if (log.isDebugEnabled()) {
-                log.debug("Called ECDSA.verify() on " + Base64.getMimeEncoder().encodeToString(signature));
+                LOG.debug("Called ECDSA.verify() on " + Base64.getMimeEncoder().encodeToString(signature));
             }
 
             return this.signatureAlgorithm.verify(jcebytes);
@@ -169,7 +169,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
                 // this shouldn't occur, but if it does, restore previous
                 // Signature
                 if (log.isDebugEnabled()) {
-                    log.debug("Exception when reinstantiating Signature:" + e);
+                    LOG.debug("Exception when reinstantiating Signature:" + e);
                 }
                 this.signatureAlgorithm = sig;
             }

@@ -39,7 +39,7 @@ import org.w3c.dom.Attr;
  */
 public class ResourceResolver {
 
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(ResourceResolver.class);
 
     /** these are the system-wide resolvers */
@@ -91,7 +91,7 @@ public class ResourceResolver {
                 }
 
                 if (log.isDebugEnabled()) {
-                    log.debug(
+                    LOG.debug(
                         "check resolvability by class " + resolverTmp.getClass().getName()
                     );
                 }
@@ -148,7 +148,7 @@ public class ResourceResolver {
         Attr uri, String baseURI, List<ResourceResolver> individualResolvers, boolean secureValidation
     ) throws ResourceResolverException {
         if (log.isDebugEnabled()) {
-            log.debug(
+            LOG.debug(
                 "I was asked to create a ResourceResolver and got "
                 + (individualResolvers == null ? 0 : individualResolvers.size())
             );
@@ -164,7 +164,7 @@ public class ResourceResolver {
                 if (resolver != null) {
                     if (log.isDebugEnabled()) {
                         String currentClass = resolver.resolverSpi.getClass().getName();
-                        log.debug("check resolvability by class " + currentClass);
+                        LOG.debug("check resolvability by class " + currentClass);
                     }
 
                     if (resolver.canResolve(context)) {
@@ -178,7 +178,7 @@ public class ResourceResolver {
     }
 
     /**
-     * Registers a ResourceResolverSpi class. This method logs a warning if
+     * Registers a ResourceResolverSpi class. This method LOGs a warning if
      * the class cannot be registered.
      *
      * @param className the name of the ResourceResolverSpi class to be registered
@@ -194,13 +194,13 @@ public class ResourceResolver {
                 ClassLoaderUtils.loadClass(className, ResourceResolver.class);
             register(resourceResolverClass, false);
         } catch (ClassNotFoundException e) {
-            log.warn("Error loading resolver " + className + " disabling it");
+            LOG.warn("Error loading resolver " + className + " disabling it");
         }
     }
 
     /**
      * Registers a ResourceResolverSpi class at the beginning of the provider
-     * list. This method logs a warning if the class cannot be registered.
+     * list. This method LOGs a warning if the class cannot be registered.
      *
      * @param className the name of the ResourceResolverSpi class to be registered
      * @throws SecurityException if a security manager is installed and the
@@ -215,12 +215,12 @@ public class ResourceResolver {
                 ClassLoaderUtils.loadClass(className, ResourceResolver.class);
             register(resourceResolverClass, true);
         } catch (ClassNotFoundException e) {
-            log.warn("Error loading resolver " + className + " disabling it");
+            LOG.warn("Error loading resolver " + className + " disabling it");
         }
     }
 
     /**
-     * Registers a ResourceResolverSpi class. This method logs a warning if the class
+     * Registers a ResourceResolverSpi class. This method LOGs a warning if the class
      * cannot be registered.
      * @param className
      * @param start
@@ -233,14 +233,14 @@ public class ResourceResolver {
             ResourceResolverSpi resourceResolverSpi = className.newInstance();
             register(resourceResolverSpi, start);
         } catch (IllegalAccessException e) {
-            log.warn("Error loading resolver " + className + " disabling it");
+            LOG.warn("Error loading resolver " + className + " disabling it");
         } catch (InstantiationException e) {
-            log.warn("Error loading resolver " + className + " disabling it");
+            LOG.warn("Error loading resolver " + className + " disabling it");
         }
     }
 
     /**
-     * Registers a ResourceResolverSpi instance. This method logs a warning if the class
+     * Registers a ResourceResolverSpi instance. This method LOGs a warning if the class
      * cannot be registered.
      * @param resourceResolverSpi
      * @param start
@@ -257,7 +257,7 @@ public class ResourceResolver {
             }
         }
         if (log.isDebugEnabled()) {
-            log.debug("Registered resolver: " + resourceResolverSpi.toString());
+            LOG.debug("Registered resolver: " + resourceResolverSpi.toString());
         }
     }
 

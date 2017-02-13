@@ -36,7 +36,7 @@ import org.w3c.dom.Element;
  */
 public class XMLX509SKI extends SignatureElementProxy implements XMLX509DataContent {
 
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(XMLX509SKI.class);
 
     /**
@@ -134,7 +134,7 @@ public class XMLX509SKI extends SignatureElementProxy implements XMLX509DataCont
         System.arraycopy(extensionValue, 4, skidValue, 0, skidValue.length);
 
         if (log.isDebugEnabled()) {
-            log.debug("Base64 of SKI is " + Base64.getMimeEncoder().encodeToString(skidValue));
+            LOG.debug("Base64 of SKI is " + Base64.getMimeEncoder().encodeToString(skidValue));
         }
 
         return skidValue;
@@ -164,7 +164,7 @@ public class XMLX509SKI extends SignatureElementProxy implements XMLX509DataCont
             }
         } catch (XMLSecurityException e) {
             if (log.isDebugEnabled()) {
-                log.debug(e.getMessage(), e);
+                LOG.debug(e.getMessage(), e);
             }
         }
         return result;

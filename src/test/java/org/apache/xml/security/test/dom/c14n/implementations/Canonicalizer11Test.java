@@ -50,7 +50,7 @@ import org.xml.sax.SAXException;
  */
 public class Canonicalizer11Test extends org.junit.Assert {
 
-    static org.slf4j.Logger log =
+    static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(Canonicalizer11Test.class);
 
     static {
@@ -403,7 +403,7 @@ public class Canonicalizer11Test extends org.junit.Assert {
             FileOutputStream fos = new FileOutputStream(f);
 
             fos.write(c14nBytes);
-            log.debug("Wrote erroneous result to file " + f.toURI().toURL().toString());
+            LOG.debug("Wrote erroneous result to file " + f.toURI().toURL().toString());
             assertEquals(new String(refBytes), new String(c14nBytes));
             fos.close();
         }

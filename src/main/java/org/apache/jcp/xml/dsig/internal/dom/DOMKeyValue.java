@@ -127,7 +127,7 @@ public abstract class DOMKeyValue<K extends PublicKey> extends BaseStructure imp
         try {
             return kf.generatePublic(keyspec);
         } catch (InvalidKeySpecException e) {
-            //@@@ should dump exception to log
+            //@@@ should dump exception to LOG
             return null;
         }
     }

@@ -48,7 +48,7 @@ import java.util.List;
  */
 public class InboundXMLSec {
 
-    protected static final transient Logger log = LoggerFactory.getLogger(InboundXMLSec.class);
+    protected static final transient Logger LOG = LoggerFactory.getLogger(InboundXMLSec.class);
 
     private static final XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
 
@@ -60,7 +60,7 @@ public class InboundXMLSec {
             xmlInputFactory.setProperty("org.codehaus.stax2.internNsUris", true);
             xmlInputFactory.setProperty("org.codehaus.stax2.preserveLocation", false);
         } catch (IllegalArgumentException e) {
-            log.debug(e.getMessage(), e);
+            LOG.debug(e.getMessage(), e);
             //ignore
         }
     }
@@ -146,8 +146,8 @@ public class InboundXMLSec {
         inputProcessorChain.addProcessor(new XMLSecurityInputProcessor(securityProperties));
 
         if (log.isTraceEnabled()) {
-            LogInputProcessor logInputProcessor = new LogInputProcessor(securityProperties);
-            logInputProcessor.addAfterProcessor(XMLSecurityInputProcessor.class.getName());
+            LogInputProcessor LOGInputProcessor = new LogInputProcessor(securityProperties);
+            LOGInputProcessor.addAfterProcessor(XMLSecurityInputProcessor.class.getName());
             inputProcessorChain.addProcessor(logInputProcessor);
         }
 

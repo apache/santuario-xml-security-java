@@ -82,7 +82,7 @@ public final class DOMReference extends DOMStructure
             }
         });
 
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(DOMReference.class);
 
     private final DigestMethod digestMethod;
@@ -307,7 +307,7 @@ public final class DOMReference extends DOMStructure
         throws MarshalException
     {
         if (log.isDebugEnabled()) {
-            log.debug("Marshalling Reference");
+            LOG.debug("Marshalling Reference");
         }
         xwriter.writeStartElement(dsPrefix, "Reference", XMLSignature.XMLNS);
         XMLStructure refStruct = xwriter.getCurrentNodeAsStructure();
@@ -332,7 +332,7 @@ public final class DOMReference extends DOMStructure
 
         // create and append DigestValue element
         if (log.isDebugEnabled()) {
-            log.debug("Adding digestValueElem");
+            LOG.debug("Adding digestValueElem");
         }
         xwriter.writeStartElement(dsPrefix, "DigestValue", XMLSignature.XMLNS);
         if (digestValue != null) {
@@ -356,7 +356,7 @@ public final class DOMReference extends DOMStructure
         // insert digestValue into DigestValue element
         String encodedDV = Base64.getMimeEncoder().encodeToString(digestValue);
         if (log.isDebugEnabled()) {
-            log.debug("Reference object uri = " + uri);
+            LOG.debug("Reference object uri = " + uri);
         }
         Element digestElem = DOMUtils.getLastChildElement(refElem);
         if (digestElem == null) {
@@ -368,7 +368,7 @@ public final class DOMReference extends DOMStructure
 
         digested = true;
         if (log.isDebugEnabled()) {
-            log.debug("Reference digesting completed");
+            LOG.debug("Reference digesting completed");
         }
     }
 
@@ -386,8 +386,8 @@ public final class DOMReference extends DOMStructure
         calcDigestValue = transform(data, validateContext);
 
         if (log.isDebugEnabled()) {
-            log.debug("Expected digest: " + Base64.getMimeEncoder().encodeToString(digestValue));
-            log.debug("Actual digest: " + Base64.getMimeEncoder().encodeToString(calcDigestValue));
+            LOG.debug("Expected digest: " + Base64.getMimeEncoder().encodeToString(digestValue));
+            LOG.debug("Actual digest: " + Base64.getMimeEncoder().encodeToString(calcDigestValue));
         }
 
         validationStatus = Arrays.equals(digestValue, calcDigestValue);
@@ -418,8 +418,8 @@ public final class DOMReference extends DOMStructure
         try {
             data = deref.dereference(this, context);
             if (log.isDebugEnabled()) {
-                log.debug("URIDereferencer class name: " + deref.getClass().getName());
-                log.debug("Data class name: " + data.getClass().getName());
+                LOG.debug("URIDereferencer class name: " + deref.getClass().getName());
+                LOG.debug("Data class name: " + data.getClass().getName());
             }
         } catch (URIReferenceException ure) {
             throw new XMLSignatureException(ure);
@@ -631,8 +631,8 @@ public final class DOMReference extends DOMStructure
                         public Iterator<Node> iterator() { return s.iterator(); }
                     };
                 } catch (Exception e) {
-                    // log a warning
-                    log.warn("cannot cache dereferenced data: " + e);
+                    // LOG a warning
+                    LOG.warn("cannot cache dereferenced data: " + e);
                     return null;
                 }
             } else if (xsi.isElement()) {
@@ -644,8 +644,8 @@ public final class DOMReference extends DOMStructure
                         (xsi.getOctetStream(), xsi.getSourceURI(),
                          xsi.getMIMEType());
                 } catch (IOException ioe) {
-                    // log a warning
-                    log.warn("cannot cache dereferenced data: " + ioe);
+                    // LOG a warning
+                    LOG.warn("cannot cache dereferenced data: " + ioe);
                     return null;
                 }
             }

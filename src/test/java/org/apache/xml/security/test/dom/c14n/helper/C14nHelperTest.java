@@ -26,7 +26,7 @@ import org.apache.xml.security.c14n.helper.C14nHelper;
  */
 public class C14nHelperTest extends org.junit.Assert {
 
-    static org.slf4j.Logger log =
+    static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(C14nHelperTest.class);
 
     static {

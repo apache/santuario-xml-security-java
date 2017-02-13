@@ -47,7 +47,7 @@ import org.w3c.dom.Element;
  */
 public class SignatureAlgorithm extends Algorithm {
 
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(SignatureAlgorithm.class);
 
     /** All available algorithm classes are registered here */
@@ -145,7 +145,7 @@ public class SignatureAlgorithm extends Algorithm {
             Class<? extends SignatureAlgorithmSpi> implementingClass =
                 algorithmHash.get(algorithmURI);
             if (log.isDebugEnabled()) {
-                log.debug("Create URI \"" + algorithmURI + "\" class \""
+                LOG.debug("Create URI \"" + algorithmURI + "\" class \""
                    + implementingClass + "\"");
             }
             return implementingClass.newInstance();
@@ -327,7 +327,7 @@ public class SignatureAlgorithm extends Algorithm {
            XMLSignatureException {
         JavaUtils.checkRegisterPermission();
         if (log.isDebugEnabled()) {
-            log.debug("Try to register " + algorithmURI + " " + implementingClass);
+            LOG.debug("Try to register " + algorithmURI + " " + implementingClass);
         }
 
         // are we already registered?
@@ -365,7 +365,7 @@ public class SignatureAlgorithm extends Algorithm {
            XMLSignatureException {
         JavaUtils.checkRegisterPermission();
         if (log.isDebugEnabled()) {
-            log.debug("Try to register " + algorithmURI + " " + implementingClass);
+            LOG.debug("Try to register " + algorithmURI + " " + implementingClass);
         }
 
         // are we already registered?

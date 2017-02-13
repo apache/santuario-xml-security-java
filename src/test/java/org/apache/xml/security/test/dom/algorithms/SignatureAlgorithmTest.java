@@ -29,7 +29,7 @@ import org.w3c.dom.Document;
 
 public class SignatureAlgorithmTest extends org.junit.Assert {
 
-    static org.slf4j.Logger log =
+    static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(SignatureAlgorithmTest.class);
 
     static {
@@ -51,7 +51,7 @@ public class SignatureAlgorithmTest extends org.junit.Assert {
         try {
             otherSignatureAlgorithm.initSign(pk);
         } catch (XMLSecurityException ex) {
-            log.warn(
+            LOG.warn(
                 "Test testSameKeySeveralAlgorithmSigning skipped as necessary algorithms "
                 + "not available"
             );

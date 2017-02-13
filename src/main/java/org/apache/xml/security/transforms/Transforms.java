@@ -97,7 +97,7 @@ public class Transforms extends SignatureElementProxy {
     public static final String TRANSFORM_XPATH2FILTER
         = "http://www.w3.org/2002/06/xmldsig-filter2";
 
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(Transforms.class);
 
     private Element[] transforms;
@@ -162,7 +162,7 @@ public class Transforms extends SignatureElementProxy {
     public void addTransform(String transformURI) throws TransformationException {
         try {
             if (log.isDebugEnabled()) {
-                log.debug("Transforms.addTransform(" + transformURI + ")");
+                LOG.debug("Transforms.addTransform(" + transformURI + ")");
             }
 
             Transform transform = new Transform(getDocument(), transformURI);
@@ -186,7 +186,7 @@ public class Transforms extends SignatureElementProxy {
        throws TransformationException {
         try {
             if (log.isDebugEnabled()) {
-                log.debug("Transforms.addTransform(" + transformURI + ")");
+                LOG.debug("Transforms.addTransform(" + transformURI + ")");
             }
 
             Transform transform = new Transform(getDocument(), transformURI, contextElement);
@@ -224,7 +224,7 @@ public class Transforms extends SignatureElementProxy {
      */
     private void addTransform(Transform transform) {
         if (log.isDebugEnabled()) {
-            log.debug("Transforms.addTransform(" + transform.getURI() + ")");
+            LOG.debug("Transforms.addTransform(" + transform.getURI() + ")");
         }
 
         Element transformElement = transform.getElement();
@@ -265,7 +265,7 @@ public class Transforms extends SignatureElementProxy {
                 Transform t = this.item(i);
                 if (log.isDebugEnabled()) {
                     String uri = t.getURI();
-                    log.debug("Perform the (" + i + ")th " + uri + " transform");
+                    LOG.debug("Perform the (" + i + ")th " + uri + " transform");
                 }
                 checkSecureValidation(t);
                 xmlSignatureInput = t.performTransform(xmlSignatureInput);
@@ -274,7 +274,7 @@ public class Transforms extends SignatureElementProxy {
                 Transform t = this.item(last);
                 if (log.isDebugEnabled()) {
                     String uri = t.getURI();
-                    log.debug("Perform the (" + last + ")th " + uri + " transform");
+                    LOG.debug("Perform the (" + last + ")th " + uri + " transform");
                 }
                 checkSecureValidation(t);
                 xmlSignatureInput = t.performTransform(xmlSignatureInput, os);

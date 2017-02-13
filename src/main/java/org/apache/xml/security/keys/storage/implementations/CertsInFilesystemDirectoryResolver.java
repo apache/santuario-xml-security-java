@@ -43,7 +43,7 @@ import org.apache.xml.security.keys.storage.StorageResolverSpi;
  */
 public class CertsInFilesystemDirectoryResolver extends StorageResolverSpi {
 
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(
             CertsInFilesystemDirectoryResolver.class
         );
@@ -112,28 +112,28 @@ public class CertsInFilesystemDirectoryResolver extends StorageResolverSpi {
                 added = true;
             } catch (FileNotFoundException ex) {
                 if (log.isDebugEnabled()) {
-                    log.debug("Could not add certificate from file " + filename, ex);
+                    LOG.debug("Could not add certificate from file " + filename, ex);
                 }
             } catch (CertificateNotYetValidException ex) {
                 if (log.isDebugEnabled()) {
-                    log.debug("Could not add certificate from file " + filename, ex);
+                    LOG.debug("Could not add certificate from file " + filename, ex);
                 }
             } catch (CertificateExpiredException ex) {
                 if (log.isDebugEnabled()) {
-                    log.debug("Could not add certificate from file " + filename, ex);
+                    LOG.debug("Could not add certificate from file " + filename, ex);
                 }
             } catch (CertificateException ex) {
                 if (log.isDebugEnabled()) {
-                    log.debug("Could not add certificate from file " + filename, ex);
+                    LOG.debug("Could not add certificate from file " + filename, ex);
                 }
             } catch (IOException ex) {
                 if (log.isDebugEnabled()) {
-                    log.debug("Could not add certificate from file " + filename, ex);
+                    LOG.debug("Could not add certificate from file " + filename, ex);
                 }
             }
 
-            if (added && log.isDebugEnabled()) {
-                log.debug("Added certificate: " + dn);
+            if (added && LOG.isDebugEnabled()) {
+                LOG.debug("Added certificate: " + dn);
             }
         }
     }

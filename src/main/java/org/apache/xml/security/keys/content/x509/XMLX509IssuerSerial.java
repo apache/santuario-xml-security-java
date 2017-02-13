@@ -30,7 +30,7 @@ import org.w3c.dom.Element;
 
 public class XMLX509IssuerSerial extends SignatureElementProxy implements XMLX509DataContent {
 
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(XMLX509IssuerSerial.class);
 
     /**
@@ -103,7 +103,7 @@ public class XMLX509IssuerSerial extends SignatureElementProxy implements XMLX50
         String text =
             this.getTextFromChildElement(Constants._TAG_X509SERIALNUMBER, Constants.SignatureSpecNS);
         if (log.isDebugEnabled()) {
-            log.debug("X509SerialNumber text: " + text);
+            LOG.debug("X509SerialNumber text: " + text);
         }
 
         return new BigInteger(text);

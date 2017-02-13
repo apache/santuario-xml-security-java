@@ -53,7 +53,7 @@ import org.apache.xml.security.utils.JavaUtils;
  * <p>This transform requires an octet stream for input.
  * If an XPath node-set (or sufficiently functional alternative) is
  * given as input, then it is converted to an octet stream by
- * performing operations logically equivalent to 1) applying an XPath
+ * performing operations LOGically equivalent to 1) applying an XPath
  * transform with expression self::text(), then 2) taking the string-value
  * of the node-set. Thus, if an XML element is identified by a barename
  * XPointer in the Reference URI, and its content consists solely of base64

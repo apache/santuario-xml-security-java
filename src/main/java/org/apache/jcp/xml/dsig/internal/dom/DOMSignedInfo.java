@@ -51,7 +51,7 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
      */
     public static final int MAXIMUM_REFERENCE_COUNT = 30;
 
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(DOMSignedInfo.class);
 
     /** Signature - NOT Recommended RSAwithMD5 */
@@ -225,15 +225,15 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
 
             byte[] signedInfoBytes = bos.toByteArray();
 
-            // this whole block should only be done if logging is enabled
+            // this whole block should only be done if LOGging is enabled
             if (log.isDebugEnabled()) {
-                log.debug("Canonicalized SignedInfo:");
+                LOG.debug("Canonicalized SignedInfo:");
                 StringBuilder sb = new StringBuilder(signedInfoBytes.length);
                 for (int i = 0; i < signedInfoBytes.length; i++) {
                     sb.append((char)signedInfoBytes[i]);
                 }
-                log.debug(sb.toString());
-                log.debug("Data to be signed/verified:" + Base64.getMimeEncoder().encodeToString(signedInfoBytes));
+                LOG.debug(sb.toString());
+                LOG.debug("Data to be signed/verified:" + Base64.getMimeEncoder().encodeToString(signedInfoBytes));
             }
 
             this.canonData = new ByteArrayInputStream(signedInfoBytes);
@@ -243,7 +243,7 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
             throw new XMLSignatureException(te);
         } catch (IOException e) {
             if (log.isDebugEnabled()) {
-                log.debug(e.getMessage(), e);
+                LOG.debug(e.getMessage(), e);
             }
             // Impossible
         }

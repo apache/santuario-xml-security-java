@@ -33,8 +33,8 @@ import org.slf4j.LoggerFactory;
  */
 public class DigestOutputStream extends OutputStream {
 
-    protected static final transient Logger log = LoggerFactory.getLogger(DigestOutputStream.class);
-    protected static final transient boolean isDebugEnabled = log.isDebugEnabled();
+    protected static final transient Logger LOG = LoggerFactory.getLogger(DigestOutputStream.class);
+    protected static final transient boolean isDebugEnabled = LOG.isDebugEnabled();
 
     private final MessageDigest messageDigest;
     private StringBuilder stringBuilder;
@@ -67,16 +67,16 @@ public class DigestOutputStream extends OutputStream {
             try {
                 stringBuilder.append(new String(arg0, arg1, arg2, "UTF-8"));
             } catch (UnsupportedEncodingException e) {
-                log.warn(e.toString(), e);//UTF-8 is mandatory actually
+                LOG.warn(e.toString(), e);//UTF-8 is mandatory actually
             }
         }
     }
 
     public byte[] getDigestValue() {
         if (isDebugEnabled) {
-            log.debug("Pre Digest: ");
-            log.debug(stringBuilder.toString());
-            log.debug("End pre Digest ");
+            LOG.debug("Pre Digest: ");
+            LOG.debug(stringBuilder.toString());
+            LOG.debug("End pre Digest ");
             stringBuilder = new StringBuilder();
         }
         return messageDigest.digest();

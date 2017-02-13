@@ -47,7 +47,7 @@ public class TransformXSLTTest extends org.junit.Assert {
         "signature-rsa-detached-xslt-transform.xml";
     private static final String STYLESHEET_FILE = "document-stylesheet.xml";
 
-    static org.slf4j.Logger log =
+    static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(TransformXSLTTest.class);
 
     static {

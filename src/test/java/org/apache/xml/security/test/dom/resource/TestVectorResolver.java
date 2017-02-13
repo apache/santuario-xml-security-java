@@ -35,7 +35,7 @@ import org.xml.sax.InputSource;
  */
 public class TestVectorResolver implements EntityResolver {
 
-    static org.slf4j.Logger log =
+    static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(TestVectorResolver.class);
 
     /** Field alreadyInitialized */
@@ -84,7 +84,7 @@ public class TestVectorResolver implements EntityResolver {
                             org.apache.xml.security.utils.JavaUtils.getBytesFromStream(zis);
 
                         TestVectorResolver.vectors.put(ze.getName(), data);
-                        log.debug("Contents of " + thisClass + "/" + testVectorFile
+                        LOG.debug("Contents of " + thisClass + "/" + testVectorFile
                                   + "#" + ze.getName() + " " + data.length + " bytes");
                     }
                 }
@@ -167,7 +167,7 @@ public class TestVectorResolver implements EntityResolver {
 
         this._firstEntitySystemIdDirectory = getFilePath(systemId);
 
-        log.debug("this._firstEntitySystemIdDirectory = "
+        LOG.debug("this._firstEntitySystemIdDirectory = "
                   + this._firstEntitySystemIdDirectory);
     }
 
@@ -186,7 +186,7 @@ public class TestVectorResolver implements EntityResolver {
 
             systemId = this.getFileName(systemId);
 
-            log.debug("publicId=\"" + publicId + "\" systemId=\"" + systemId
+            LOG.debug("publicId=\"" + publicId + "\" systemId=\"" + systemId
                       + "\"");
 
             // InputStream result = this.getInputStream(systemId);

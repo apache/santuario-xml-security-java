@@ -27,7 +27,7 @@ import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
  */
 public class Driver {
 
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(Driver.class);
 
     public void dsig() throws Exception {
@@ -42,8 +42,8 @@ public class Driver {
         long end = System.currentTimeMillis();
         long elapsed = end - start;
         if (log.isDebugEnabled()) {
-            log.debug("Elapsed: " + elapsed);
-            log.debug("dsig succeeded");
+            LOG.debug("Elapsed: " + elapsed);
+            LOG.debug("dsig succeeded");
         }
     }
 }

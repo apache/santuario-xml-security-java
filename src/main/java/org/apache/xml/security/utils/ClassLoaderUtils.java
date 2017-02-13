@@ -34,7 +34,7 @@ import java.util.List;
  */
 public final class ClassLoaderUtils {
 
-    private static final org.slf4j.Logger log =
+    private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(ClassLoaderUtils.class);
 
     private ClassLoaderUtils() {
@@ -120,7 +120,7 @@ public final class ClassLoaderUtils {
             urls = Thread.currentThread().getContextClassLoader().getResources(resourceName);
         } catch (IOException e) {
             if (log.isDebugEnabled()) {
-                log.debug(e.getMessage(), e);
+                LOG.debug(e.getMessage(), e);
             }
             //ignore
         }
@@ -133,7 +133,7 @@ public final class ClassLoaderUtils {
                     );
             } catch (IOException e) {
                 if (log.isDebugEnabled()) {
-                    log.debug(e.getMessage(), e);
+                    LOG.debug(e.getMessage(), e);
                 }
                 // ignore
             }
@@ -148,7 +148,7 @@ public final class ClassLoaderUtils {
                 urls = cluClassloader.getResources(resourceName);
             } catch (IOException e) {
                 if (log.isDebugEnabled()) {
-                    log.debug(e.getMessage(), e);
+                    LOG.debug(e.getMessage(), e);
                 }
                 // ignore
             }
@@ -159,7 +159,7 @@ public final class ClassLoaderUtils {
                 urls = cluClassloader.getResources(resourceName.substring(1));
             } catch (IOException e) {
                 if (log.isDebugEnabled()) {
-                    log.debug(e.getMessage(), e);
+                    LOG.debug(e.getMessage(), e);
                 }
                 // ignore
             }
@@ -173,7 +173,7 @@ public final class ClassLoaderUtils {
                     urls = cl.getResources(resourceName);
                 } catch (IOException e) {
                     if (log.isDebugEnabled()) {
-                        log.debug(e.getMessage(), e);
+                        LOG.debug(e.getMessage(), e);
                     }
                     // ignore
                 }
@@ -212,7 +212,7 @@ public final class ClassLoaderUtils {
             return (url != null) ? url.openStream() : null;
         } catch (IOException e) {
             if (log.isDebugEnabled()) {
-                log.debug(e.getMessage(), e);
+                LOG.debug(e.getMessage(), e);
             }
             return null;
         }
@@ -242,7 +242,7 @@ public final class ClassLoaderUtils {
             }
         } catch (ClassNotFoundException e) {
             if (log.isDebugEnabled()) {
-                log.debug(e.getMessage(), e);
+                LOG.debug(e.getMessage(), e);
             }
             //ignore
         }
@@ -264,7 +264,7 @@ public final class ClassLoaderUtils {
                 }
             }
             if (log.isDebugEnabled()) {
-                log.debug(ex.getMessage(), ex);
+                LOG.debug(ex.getMessage(), ex);
             }
             throw ex;
         }

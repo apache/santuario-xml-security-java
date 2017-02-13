@@ -61,7 +61,7 @@ import org.apache.xml.security.utils.XMLUtils;
 public final class DOMXMLSignature extends DOMStructure
     implements XMLSignature {
 
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(DOMXMLSignature.class);
     private String id;
     private SignatureValue sv;
@@ -266,13 +266,13 @@ public final class DOMXMLSignature extends DOMStructure
             Reference ref = refs.get(i);
             boolean refValid = ref.validate(vc);
             if (log.isDebugEnabled()) {
-                log.debug("Reference[" + ref.getURI() + "] is valid: " + refValid);
+                LOG.debug("Reference[" + ref.getURI() + "] is valid: " + refValid);
             }
             validateRefs &= refValid;
         }
         if (!validateRefs) {
             if (log.isDebugEnabled()) {
-                log.debug("Couldn't validate the References");
+                LOG.debug("Couldn't validate the References");
             }
             validationStatus = false;
             validated = true;
@@ -292,7 +292,7 @@ public final class DOMXMLSignature extends DOMStructure
                     XMLStructure xs = content.get(j);
                     if (xs instanceof Manifest) {
                         if (log.isDebugEnabled()) {
-                            log.debug("validating manifest");
+                            LOG.debug("validating manifest");
                         }
                         Manifest man = (Manifest)xs;
                         List<Reference> manRefs = DOMManifest.getManifestReferences(man);
@@ -301,7 +301,7 @@ public final class DOMXMLSignature extends DOMStructure
                             Reference ref = manRefs.get(k);
                             boolean refValid = ref.validate(vc);
                             if (log.isDebugEnabled()) {
-                                log.debug(
+                                LOG.debug(
                                     "Manifest ref[" + ref.getURI() + "] is valid: " + refValid
                                 );
                             }

@@ -32,7 +32,7 @@ import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
  */
 public class RSASecurityTest extends InteropTestBase {
 
-    static org.slf4j.Logger log =
+    static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(RSASecurityTest.class);
 
     /** Field blakesDir           */
@@ -63,7 +63,7 @@ public class RSASecurityTest extends InteropTestBase {
         boolean verify = this.verify(filename, resolver, followManifests);
 
         if (!verify) {
-            log.error("Verification failed for " + filename);
+            LOG.error("Verification failed for " + filename);
         }
 
         assertTrue(filename, verify);
@@ -78,7 +78,7 @@ public class RSASecurityTest extends InteropTestBase {
         boolean verify = this.verify(filename, resolver, followManifests);
 
         if (!verify) {
-            log.error("Verification failed for " + filename);
+            LOG.error("Verification failed for " + filename);
         }
 
         assertTrue(filename, verify);

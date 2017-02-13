@@ -71,7 +71,7 @@ public class XMLEncryption11Test extends org.junit.Assert {
     private static int nodeCount = 0;
     private boolean haveISOPadding;
 
-    static org.slf4j.Logger log =
+    static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(XMLEncryption11Test.class);
 
     /**
@@ -171,7 +171,7 @@ public class XMLEncryption11Test extends org.junit.Assert {
             // XMLUtils.outputDOM(dd.getFirstChild(), System.out);
             checkDecryptedDoc(dd, true);
         } else {
-            log.warn(
+            LOG.warn(
                 "Skipping testRSA2048 as necessary "
                 + "crypto algorithms are not available"
             );
@@ -236,7 +236,7 @@ public class XMLEncryption11Test extends org.junit.Assert {
             // XMLUtils.outputDOM(dd.getFirstChild(), System.out);
             checkDecryptedDoc(dd, true);
         } else {
-            log.warn(
+            LOG.warn(
                 "Skipping testRSA2048 as necessary "
                 + "crypto algorithms are not available"
             );
@@ -273,7 +273,7 @@ public class XMLEncryption11Test extends org.junit.Assert {
             // XMLUtils.outputDOM(dd.getFirstChild(), System.out);
             checkDecryptedDoc(dd, true);
         } else {
-            log.warn(
+            LOG.warn(
                 "Skipping testRSA3072 as necessary "
                 + "crypto algorithms are not available"
             );
@@ -338,7 +338,7 @@ public class XMLEncryption11Test extends org.junit.Assert {
             // XMLUtils.outputDOM(dd.getFirstChild(), System.out);
             checkDecryptedDoc(dd, true);
         } else {
-            log.warn(
+            LOG.warn(
                 "Skipping testRSA3072 as necessary "
                 + "crypto algorithms are not available"
             );
@@ -375,7 +375,7 @@ public class XMLEncryption11Test extends org.junit.Assert {
             // XMLUtils.outputDOM(dd.getFirstChild(), System.out);
             checkDecryptedDoc(dd, true);
         } else {
-            log.warn(
+            LOG.warn(
                 "Skipping testRSA307OAEP as necessary "
                 + "crypto algorithms are not available"
             );
@@ -440,7 +440,7 @@ public class XMLEncryption11Test extends org.junit.Assert {
             // XMLUtils.outputDOM(dd.getFirstChild(), System.out);
             checkDecryptedDoc(dd, true);
         } else {
-            log.warn(
+            LOG.warn(
                 "Skipping testRSA2048 as necessary "
                 + "crypto algorithms are not available"
             );
@@ -477,7 +477,7 @@ public class XMLEncryption11Test extends org.junit.Assert {
             // XMLUtils.outputDOM(dd.getFirstChild(), System.out);
             checkDecryptedDoc(dd, true);
         } else {
-            log.warn(
+            LOG.warn(
                 "Skipping testRSA4096 as necessary "
                 + "crypto algorithms are not available"
             );
@@ -542,7 +542,7 @@ public class XMLEncryption11Test extends org.junit.Assert {
             // XMLUtils.outputDOM(dd.getFirstChild(), System.out);
             checkDecryptedDoc(dd, true);
         } else {
-            log.warn(
+            LOG.warn(
                 "Skipping testRSA2048 as necessary "
                 + "crypto algorithms are not available"
             );
@@ -750,7 +750,7 @@ public class XMLEncryption11Test extends org.junit.Assert {
     private void checkDecryptedDoc(Document d, boolean doNodeCheck) throws Exception {
 
         String cc = retrieveCCNumber(d);
-        log.debug("Retrieved Credit Card : " + cc);
+        LOG.debug("Retrieved Credit Card : " + cc);
         assertTrue(cc, cc!= null && cc.equals(cardNumber));
 
         // Test cc numbers

@@ -39,7 +39,7 @@ import org.w3c.dom.Element;
  */
 public class BobKeyResolver extends KeyResolverSpi {
 
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(BobKeyResolver.class);
 
     private KeyName _kn;
@@ -56,7 +56,7 @@ public class BobKeyResolver extends KeyResolverSpi {
         if (element == null) {
             return false;
         }
-        log.debug("Can I resolve " + element.getTagName());
+        LOG.debug("Can I resolve " + element.getTagName());
 
         boolean isKeyName = XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_KEYNAME);
         try {

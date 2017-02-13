@@ -61,7 +61,7 @@ public class TransformXSLT extends TransformSpi {
     static final String defaultXSLTSpecNSprefix = "xslt";
     static final String XSLTSTYLESHEET = "stylesheet";
 
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(TransformXSLT.class);
 
     /**
@@ -131,7 +131,7 @@ public class TransformXSLT extends TransformSpi {
             try {
                 transformer.setOutputProperty("{http://xml.apache.org/xalan}line-separator", "\n");
             } catch (Exception e) {
-                log.warn("Unable to set Xalan line-separator property: " + e.getMessage());
+                LOG.warn("Unable to set Xalan line-separator property: " + e.getMessage());
             }
 
             try (InputStream is = new ByteArrayInputStream(input.getBytes())) {

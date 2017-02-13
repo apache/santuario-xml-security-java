@@ -32,8 +32,8 @@ import org.slf4j.LoggerFactory;
  */
 public class SignerOutputStream extends OutputStream {
 
-    protected static final transient Logger log = LoggerFactory.getLogger(SignerOutputStream.class);
-    protected static final transient boolean isDebugEnabled = log.isDebugEnabled();
+    protected static final transient Logger LOG = LoggerFactory.getLogger(SignerOutputStream.class);
+    protected static final transient boolean isDebugEnabled = LOG.isDebugEnabled();
 
     private final SignatureAlgorithm signatureAlgorithm;
     private StringBuilder stringBuilder;
@@ -73,15 +73,15 @@ public class SignerOutputStream extends OutputStream {
         } catch (XMLSecurityException e) {
             throw new RuntimeException(e);
         } catch (UnsupportedEncodingException e) {
-            log.warn(e.toString(), e);//UTF-8 is mandatory actually
+            LOG.warn(e.toString(), e);//UTF-8 is mandatory actually
         }
     }
 
     public boolean verify(byte[] signatureValue) throws XMLSecurityException {
         if (isDebugEnabled) {
-            log.debug("Pre Signed: ");
-            log.debug(stringBuilder.toString());
-            log.debug("End pre Signed ");
+            LOG.debug("Pre Signed: ");
+            LOG.debug(stringBuilder.toString());
+            LOG.debug("End pre Signed ");
             stringBuilder = new StringBuilder();
         }
         return signatureAlgorithm.engineVerify(signatureValue);
@@ -89,9 +89,9 @@ public class SignerOutputStream extends OutputStream {
 
     public byte[] sign() throws XMLSecurityException {
         if (isDebugEnabled) {
-            log.debug("Pre Signed: ");
-            log.debug(stringBuilder.toString());
-            log.debug("End pre Signed ");
+            LOG.debug("Pre Signed: ");
+            LOG.debug(stringBuilder.toString());
+            LOG.debug("End pre Signed ");
             stringBuilder = new StringBuilder();
         }
         return signatureAlgorithm.engineSign();

@@ -63,7 +63,7 @@ import org.xml.sax.SAXException;
  */
 public class Canonicalizer20010315Test extends org.junit.Assert {
 
-    static org.slf4j.Logger log =
+    static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(Canonicalizer20010315Test.class);
 
     static {
@@ -689,7 +689,7 @@ public class Canonicalizer20010315Test extends org.junit.Assert {
 
         } catch (CanonicalizationException cex) {
             // if we reach this point - good.
-            log.debug("We catched the C14nEx, that's good: " + cex.getMessage());
+            LOG.debug("We catched the C14nEx, that's good: " + cex.getMessage());
             weCatchedTheRelativeNS = true;
         }
 
@@ -1090,7 +1090,7 @@ public class Canonicalizer20010315Test extends org.junit.Assert {
             FileOutputStream fos = new FileOutputStream(f);
 
             fos.write(c14nBytes);
-            log.debug("Wrote erroneous result to file " + f.toURI().toURL().toString());
+            LOG.debug("Wrote erroneous result to file " + f.toURI().toURL().toString());
             assertEquals(new String(refBytes),new String(c14nBytes));
             fos.close();
         }

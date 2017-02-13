@@ -31,7 +31,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Abstract class for SecurityHeaderHandlers with parse logic for the xml structures
+ * Abstract class for SecurityHeaderHandlers with parse LOGic for the xml structures
  *
  * @author $Author$
  * @version $Revision$ $Date$

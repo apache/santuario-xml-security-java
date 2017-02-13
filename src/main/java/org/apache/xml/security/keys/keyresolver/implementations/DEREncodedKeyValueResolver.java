@@ -41,7 +41,7 @@ import org.w3c.dom.Element;
  */
 public class DEREncodedKeyValueResolver extends KeyResolverSpi {
 
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(DEREncodedKeyValueResolver.class);
 
     /** {@inheritDoc}. */
@@ -54,7 +54,7 @@ public class DEREncodedKeyValueResolver extends KeyResolverSpi {
         throws KeyResolverException {
 
         if (log.isDebugEnabled()) {
-            log.debug("Can I resolve " + element.getTagName());
+            LOG.debug("Can I resolve " + element.getTagName());
         }
 
         if (!engineCanResolve(element, baseURI, storage)) {
@@ -66,7 +66,7 @@ public class DEREncodedKeyValueResolver extends KeyResolverSpi {
             return derKeyValue.getPublicKey();
         } catch (XMLSecurityException e) {
             if (log.isDebugEnabled()) {
-                log.debug("XMLSecurityException", e);
+                LOG.debug("XMLSecurityException", e);
             }
         }
 

@@ -39,7 +39,7 @@ import org.w3c.dom.Element;
  */
 public class X509CertificateResolver extends KeyResolverSpi {
 
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(X509CertificateResolver.class);
 
     /**
@@ -101,7 +101,7 @@ public class X509CertificateResolver extends KeyResolverSpi {
             return null;
         } catch (XMLSecurityException | IOException ex) {
             if (log.isDebugEnabled()) {
-                log.debug("Security Exception", ex);
+                LOG.debug("Security Exception", ex);
             }
             throw new KeyResolverException(ex);
         }

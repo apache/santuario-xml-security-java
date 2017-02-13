@@ -54,7 +54,7 @@ public abstract class ApacheTransform extends TransformService {
         org.apache.xml.security.Init.init();
     }
 
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(ApacheTransform.class);
     private Transform apacheTransform;
     protected Document ownerDoc;
@@ -142,7 +142,7 @@ public abstract class ApacheTransform extends TransformService {
                 boolean secVal = Utils.secureValidation(xc);
                 apacheTransform.setSecureValidation(secVal);
                 if (log.isDebugEnabled()) {
-                    log.debug("Created transform for algorithm: " +
+                    LOG.debug("Created transform for algorithm: " +
                             getAlgorithm());
                 }
             } catch (Exception ex) {
@@ -163,16 +163,16 @@ public abstract class ApacheTransform extends TransformService {
         XMLSignatureInput in;
         if (data instanceof ApacheData) {
             if (log.isDebugEnabled()) {
-                log.debug("ApacheData = true");
+                LOG.debug("ApacheData = true");
             }
             in = ((ApacheData)data).getXMLSignatureInput();
         } else if (data instanceof NodeSetData) {
             if (log.isDebugEnabled()) {
-                log.debug("isNodeSet() = true");
+                LOG.debug("isNodeSet() = true");
             }
             if (data instanceof DOMSubTreeData) {
                 if (log.isDebugEnabled()) {
-                    log.debug("DOMSubTreeData = true");
+                    LOG.debug("DOMSubTreeData = true");
                 }
                 DOMSubTreeData subTree = (DOMSubTreeData)data;
                 in = new XMLSignatureInput(subTree.getRoot());
@@ -185,7 +185,7 @@ public abstract class ApacheTransform extends TransformService {
             }
         } else {
             if (log.isDebugEnabled()) {
-                log.debug("isNodeSet() = false");
+                LOG.debug("isNodeSet() = false");
             }
             try {
                 in = new XMLSignatureInput

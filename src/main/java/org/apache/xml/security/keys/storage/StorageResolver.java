@@ -34,7 +34,7 @@ import org.apache.xml.security.keys.storage.implementations.SingleCertificateRes
  */
 public class StorageResolver {
 
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(StorageResolver.class);
 
     /** Field storageResolvers */
@@ -85,7 +85,7 @@ public class StorageResolver {
         try {
             this.add(new KeyStoreResolver(keyStore));
         } catch (StorageResolverException ex) {
-            log.error("Could not add KeyStore because of: ", ex);
+            LOG.error("Could not add KeyStore because of: ", ex);
         }
     }
 

@@ -46,7 +46,7 @@ import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
  */
 public class IBMTest extends InteropTestBase {
 
-    static org.slf4j.Logger log =
+    static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(IBMTest.class);
 
     /** Field kentsDir           */
@@ -91,12 +91,12 @@ public class IBMTest extends InteropTestBase {
         try {
             verify = this.verifyHMAC(filename, resolver, followManifests, hmacKey);
         } catch (RuntimeException ex) {
-            log.error("Verification crashed for " + filename);
+            LOG.error("Verification crashed for " + filename);
             throw ex;
         }
 
         if (!verify) {
-            log.error("Verification failed for " + filename);
+            LOG.error("Verification failed for " + filename);
         }
 
         assertTrue(filename, verify);
@@ -120,12 +120,12 @@ public class IBMTest extends InteropTestBase {
         try {
             verify = this.verify(filename, resolver, followManifests);
         } catch (RuntimeException ex) {
-            log.error("Verification crashed for " + filename);
+            LOG.error("Verification crashed for " + filename);
             throw ex;
         }
 
         if (!verify) {
-            log.error("Verification failed for " + filename);
+            LOG.error("Verification failed for " + filename);
         }
 
         assertTrue(filename, verify);
@@ -149,12 +149,12 @@ public class IBMTest extends InteropTestBase {
         try {
             verify = this.verify(filename, resolver, followManifests);
         } catch (RuntimeException ex) {
-            log.error("Verification crashed for " + filename);
+            LOG.error("Verification crashed for " + filename);
             throw ex;
         }
 
         if (!verify) {
-            log.error("Verification failed for " + filename);
+            LOG.error("Verification failed for " + filename);
         }
 
         assertTrue(filename, verify);
@@ -178,12 +178,12 @@ public class IBMTest extends InteropTestBase {
         try {
             verify = this.verify(filename, resolver, followManifests);
         } catch (RuntimeException ex) {
-            log.error("Verification crashed for " + filename);
+            LOG.error("Verification crashed for " + filename);
             throw ex;
         }
 
         if (!verify) {
-            log.error("Verification failed for " + filename);
+            LOG.error("Verification failed for " + filename);
         }
 
         assertTrue(filename, verify);
@@ -207,12 +207,12 @@ public class IBMTest extends InteropTestBase {
         try {
             verify = this.verify(filename, resolver, followManifests);
         } catch (RuntimeException ex) {
-            log.error("Verification crashed for " + filename);
+            LOG.error("Verification crashed for " + filename);
             throw ex;
         }
 
         if (!verify) {
-            log.error("Verification failed for " + filename);
+            LOG.error("Verification failed for " + filename);
         }
 
         assertTrue(filename, verify);
@@ -236,12 +236,12 @@ public class IBMTest extends InteropTestBase {
         try {
             verify = this.verify(filename, resolver, followManifests);
         } catch (RuntimeException ex) {
-            log.error("Verification crashed for " + filename);
+            LOG.error("Verification crashed for " + filename);
             throw ex;
         }
 
         if (!verify) {
-            log.error("Verification failed for " + filename);
+            LOG.error("Verification failed for " + filename);
         }
 
         assertTrue(filename, verify);
@@ -265,12 +265,12 @@ public class IBMTest extends InteropTestBase {
         try {
             verify = this.verify(filename, resolver, followManifests);
         } catch (RuntimeException ex) {
-            log.error("Verification crashed for " + filename);
+            LOG.error("Verification crashed for " + filename);
             throw ex;
         }
 
         if (!verify) {
-            log.error("Verification failed for " + filename);
+            LOG.error("Verification failed for " + filename);
         }
 
         assertTrue(filename, verify);
@@ -298,12 +298,12 @@ public class IBMTest extends InteropTestBase {
         try {
             verify = this.verify(filename, resolver, followManifests);
         } catch (RuntimeException ex) {
-            log.error("Verification crashed for " + filename);
+            LOG.error("Verification crashed for " + filename);
             throw ex;
         }
 
         if (verify) {
-            log.error("Verification failed for " + filename + ", had to be broken but was successful");
+            LOG.error("Verification failed for " + filename + ", had to be broken but was successful");
         }
 
         assertTrue(filename, !verify);

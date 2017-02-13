@@ -37,7 +37,7 @@ import org.w3c.dom.Element;
  */
 public class SecretKeyResolver extends KeyResolverSpi
 {
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(SecretKeyResolver.class);
 
     private KeyStore keyStore;
@@ -106,7 +106,7 @@ public class SecretKeyResolver extends KeyResolverSpi
         Element element, String baseURI, StorageResolver storage
     ) throws KeyResolverException {
         if (log.isDebugEnabled()) {
-            log.debug("Can I resolve " + element.getTagName() + "?");
+            LOG.debug("Can I resolve " + element.getTagName() + "?");
         }
 
         if (XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_KEYNAME)) {
@@ -117,11 +117,11 @@ public class SecretKeyResolver extends KeyResolverSpi
                     return (SecretKey) key;
                 }
             } catch (Exception e) {
-                log.debug("Cannot recover the key", e);
+                LOG.debug("Cannot recover the key", e);
             }
         }
 
-        log.debug("I can't");
+        LOG.debug("I can't");
         return null;
     }
 

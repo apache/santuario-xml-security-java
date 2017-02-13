@@ -43,7 +43,7 @@ import org.w3c.dom.NodeList;
 
 public class EncryptContentTest extends org.junit.Assert {
 
-    static org.slf4j.Logger log =
+    static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(EncryptContentTest.class);
 
     private static final String DATA =
@@ -109,7 +109,7 @@ public class EncryptContentTest extends org.junit.Assert {
     @org.junit.Test
     public void testContentRemoved() throws Exception {
         if (!haveISOPadding) {
-            log.warn("Test testContentRemoved skipped as necessary algorithms not available");
+            LOG.warn("Test testContentRemoved skipped as necessary algorithms not available");
             return;
         }
 
@@ -161,7 +161,7 @@ public class EncryptContentTest extends org.junit.Assert {
     @org.junit.Test
     public void testMultipleKeyInfoElements() throws Exception {
         if (!haveISOPadding) {
-            log.warn("Test testMultipleKeyInfoElements skipped as necessary algorithms not available");
+            LOG.warn("Test testMultipleKeyInfoElements skipped as necessary algorithms not available");
             return;
         }
 

@@ -62,7 +62,7 @@ import java.util.Map;
  */
 public class XIncludeHandler extends DefaultHandler {
 
-    private static final transient Logger log = LoggerFactory.getLogger(XIncludeHandler.class);
+    private static final transient Logger LOG = LoggerFactory.getLogger(XIncludeHandler.class);
 
     private static final String xIncludeNS = "http://www.w3.org/2001/XInclude";
     private static final String xIncludeLN = "include";
@@ -231,17 +231,17 @@ public class XIncludeHandler extends DefaultHandler {
 
     @Override
     public void warning(SAXParseException e) throws SAXException {
-        log.warn(e.getMessage(), e);
+        LOG.warn(e.getMessage(), e);
     }
 
     @Override
     public void error(SAXParseException e) throws SAXException {
-        log.error(e.getMessage(), e);
+        LOG.error(e.getMessage(), e);
     }
 
     @Override
     public void fatalError(SAXParseException e) throws SAXException {
-        log.error(e.getMessage(), e);
+        LOG.error(e.getMessage(), e);
     }
 
     private NodeList evaluateXPointer(String xpointer, Node node) throws SAXException {

@@ -42,7 +42,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
 
     public static final String URI = Constants.SignatureSpecNS + "dsa-sha1";
 
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(SignatureDSA.class);
 
     /** Field algorithm */
@@ -68,7 +68,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
     public SignatureDSA() throws XMLSignatureException {
         String algorithmID = JCEMapper.translateURItoJCEID(engineGetURI());
         if (log.isDebugEnabled()) {
-            log.debug("Created SignatureDSA using " + algorithmID);
+            LOG.debug("Created SignatureDSA using " + algorithmID);
         }
 
         String provider = JCEMapper.getProviderId();
@@ -107,7 +107,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
         throws XMLSignatureException {
         try {
             if (log.isDebugEnabled()) {
-                log.debug("Called DSA.verify() on " + Base64.getMimeEncoder().encodeToString(signature));
+                LOG.debug("Called DSA.verify() on " + Base64.getMimeEncoder().encodeToString(signature));
             }
 
             byte[] jcebytes = JavaUtils.convertDsaXMLDSIGtoASN1(signature,
@@ -148,7 +148,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
                 // this shouldn't occur, but if it does, restore previous
                 // Signature
                 if (log.isDebugEnabled()) {
-                    log.debug("Exception when reinstantiating Signature:" + e);
+                    LOG.debug("Exception when reinstantiating Signature:" + e);
                 }
                 this.signatureAlgorithm = sig;
             }

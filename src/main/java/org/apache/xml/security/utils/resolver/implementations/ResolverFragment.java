@@ -37,7 +37,7 @@ import org.w3c.dom.Node;
  */
 public class ResolverFragment extends ResourceResolverSpi {
 
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(ResolverFragment.class);
 
     @Override
@@ -61,7 +61,7 @@ public class ResolverFragment extends ResourceResolverSpi {
              * resource containing the signature
              */
             if (log.isDebugEnabled()) {
-                log.debug("ResolverFragment with empty URI (means complete document)");
+                LOG.debug("ResolverFragment with empty URI (means complete document)");
             }
             selectedElem = doc;
         } else {
@@ -92,7 +92,7 @@ public class ResolverFragment extends ResourceResolverSpi {
                 }
             }
             if (log.isDebugEnabled()) {
-                log.debug(
+                LOG.debug(
                     "Try to catch an Element with ID " + id + " and Element was " + selectedElem
                 );
             }
@@ -119,7 +119,7 @@ public class ResolverFragment extends ResourceResolverSpi {
     public boolean engineCanResolveURI(ResourceResolverContext context) {
         if (context.uriToResolve == null) {
             if (log.isDebugEnabled()) {
-                log.debug("Quick fail for null uri");
+                LOG.debug("Quick fail for null uri");
             }
             return false;
         }
@@ -128,12 +128,12 @@ public class ResolverFragment extends ResourceResolverSpi {
             context.uriToResolve.charAt(0) == '#' && !context.uriToResolve.startsWith("#xpointer(")
         ) {
             if (log.isDebugEnabled()) {
-                log.debug("State I can resolve reference: \"" + context.uriToResolve + "\"");
+                LOG.debug("State I can resolve reference: \"" + context.uriToResolve + "\"");
             }
             return true;
         }
         if (log.isDebugEnabled()) {
-            log.debug("Do not seem to be able to resolve reference: \"" + context.uriToResolve + "\"");
+            LOG.debug("Do not seem to be able to resolve reference: \"" + context.uriToResolve + "\"");
         }
         return false;
     }

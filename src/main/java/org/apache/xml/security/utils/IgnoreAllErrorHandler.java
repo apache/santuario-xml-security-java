@@ -23,14 +23,14 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 /**
- * This {@link org.xml.sax.ErrorHandler} does absolutely nothing but log
+ * This {@link org.xml.sax.ErrorHandler} does absolutely nothing but LOG
  * the events.
  *
  * @author Christian Geuer-Pollmann
  */
 public class IgnoreAllErrorHandler implements ErrorHandler {
 
-    private static final org.slf4j.Logger log =
+    private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(IgnoreAllErrorHandler.class);
 
     /** Field throwExceptions */
@@ -56,7 +56,7 @@ public class IgnoreAllErrorHandler implements ErrorHandler {
     @Override
     public void warning(SAXParseException ex) throws SAXException {
         if (IgnoreAllErrorHandler.warnOnExceptions) {
-            log.warn("", ex);
+            LOG.warn("", ex);
         }
         if (IgnoreAllErrorHandler.throwExceptions) {
             throw ex;
@@ -68,7 +68,7 @@ public class IgnoreAllErrorHandler implements ErrorHandler {
     @Override
     public void error(SAXParseException ex) throws SAXException {
         if (IgnoreAllErrorHandler.warnOnExceptions) {
-            log.error("", ex);
+            LOG.error("", ex);
         }
         if (IgnoreAllErrorHandler.throwExceptions) {
             throw ex;
@@ -80,7 +80,7 @@ public class IgnoreAllErrorHandler implements ErrorHandler {
     @Override
     public void fatalError(SAXParseException ex) throws SAXException {
         if (IgnoreAllErrorHandler.warnOnExceptions) {
-            log.warn("", ex);
+            LOG.warn("", ex);
         }
         if (IgnoreAllErrorHandler.throwExceptions) {
             throw ex;

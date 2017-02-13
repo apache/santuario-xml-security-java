@@ -44,7 +44,7 @@ import org.w3c.dom.Node;
  */
 public class ResolverXPointer extends ResourceResolverSpi {
 
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(ResolverXPointer.class);
 
     private static final String XP = "#xpointer(id(";
@@ -145,7 +145,7 @@ public class ResolverXPointer extends ResourceResolverSpi {
             if (idPlusDelim.charAt(0) == '"' && idPlusDelim.charAt(idLen) == '"'
                 || idPlusDelim.charAt(0) == '\'' && idPlusDelim.charAt(idLen) == '\'') {
                 if (log.isDebugEnabled()) {
-                    log.debug("Id = " + idPlusDelim.substring(1, idLen));
+                    LOG.debug("Id = " + idPlusDelim.substring(1, idLen));
                 }
                 return true;
             }

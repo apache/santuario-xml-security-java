@@ -35,7 +35,7 @@ import org.apache.xml.security.signature.XMLSignatureInput;
  */
 public class XMLSignatureInputTest extends org.junit.Assert {
 
-    static org.slf4j.Logger log =
+    static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(XMLSignatureInputTest.class);
 
     static final String _octetStreamTextInput = "Kleiner Test";

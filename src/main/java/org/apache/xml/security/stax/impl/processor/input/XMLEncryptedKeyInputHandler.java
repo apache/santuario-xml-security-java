@@ -57,7 +57,7 @@ import java.util.Deque;
  */
 public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHandler {
 
-    private static final transient Logger log = LoggerFactory.getLogger(XMLEncryptedKeyInputHandler.class);
+    private static final transient Logger LOG = LoggerFactory.getLogger(XMLEncryptedKeyInputHandler.class);
 
     @Override
     public void handle(final InputProcessorChain inputProcessorChain, final XMLSecurityProperties securityProperties,
@@ -245,7 +245,7 @@ public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHand
                         } catch (IllegalStateException e) {
                             throw new XMLSecurityException(e);
                         } catch (Exception e) {
-                            log.warn("Unwrapping of the encrypted key failed with error: " + e.getMessage() + ". " +
+                            LOG.warn("Unwrapping of the encrypted key failed with error: " + e.getMessage() + ". " +
                                     "Generating a faked one to mitigate timing attacks.");
 
                             int keyLength = JCEAlgorithmMapper.getKeyLengthFromURI(symmetricAlgorithmURI);

@@ -45,7 +45,7 @@ import org.apache.jcp.xml.dsig.internal.SignerOutputStream;
  */
 public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
 
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(DOMSignatureMethod.class);
 
     private SignatureMethodParameterSpec params;
@@ -219,10 +219,10 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
         }
         signature.initVerify((PublicKey)key);
         if (log.isDebugEnabled()) {
-            log.debug("Signature provider:" + signature.getProvider());
-            log.debug("Verifying with key: " + key);
-            log.debug("JCA Algorithm: " + getJCAAlgorithm());
-            log.debug("Signature Bytes length: " + sig.length);
+            LOG.debug("Signature provider:" + signature.getProvider());
+            LOG.debug("Verifying with key: " + key);
+            LOG.debug("JCA Algorithm: " + getJCAAlgorithm());
+            LOG.debug("Signature Bytes length: " + sig.length);
         }
 
         try (SignerOutputStream outputStream = new SignerOutputStream(signature)) {
@@ -267,9 +267,9 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
         }
         signature.initSign((PrivateKey)key);
         if (log.isDebugEnabled()) {
-            log.debug("Signature provider:" + signature.getProvider());
-            log.debug("Signing with key: " + key);
-            log.debug("JCA Algorithm: " + getJCAAlgorithm());
+            LOG.debug("Signature provider:" + signature.getProvider());
+            LOG.debug("Signing with key: " + key);
+            LOG.debug("JCA Algorithm: " + getJCAAlgorithm());
         }
 
         try (SignerOutputStream outputStream = new SignerOutputStream(signature)) {

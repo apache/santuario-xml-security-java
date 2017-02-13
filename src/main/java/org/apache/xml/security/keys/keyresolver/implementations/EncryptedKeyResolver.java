@@ -49,7 +49,7 @@ import org.w3c.dom.Element;
  */
 public class EncryptedKeyResolver extends KeyResolverSpi {
 
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(RSAKeyValueResolver.class);
 
     private Key kek;
@@ -108,7 +108,7 @@ public class EncryptedKeyResolver extends KeyResolverSpi {
         Element element, String baseURI, StorageResolver storage
     ) {
         if (log.isDebugEnabled()) {
-            log.debug("EncryptedKeyResolver - Can I resolve " + element.getTagName());
+            LOG.debug("EncryptedKeyResolver - Can I resolve " + element.getTagName());
         }
 
         if (element == null) {
@@ -120,7 +120,7 @@ public class EncryptedKeyResolver extends KeyResolverSpi {
             XMLUtils.elementIsInEncryptionSpace(element, EncryptionConstants._TAG_ENCRYPTEDKEY);
         if (isEncryptedKey) {
             if (log.isDebugEnabled()) {
-                log.debug("Passed an Encrypted Key");
+                LOG.debug("Passed an Encrypted Key");
             }
             try {
                 XMLCipher cipher = XMLCipher.getInstance();
@@ -135,7 +135,7 @@ public class EncryptedKeyResolver extends KeyResolverSpi {
                 key = (SecretKey) cipher.decryptKey(ek, algorithm);
             } catch (XMLEncryptionException e) {
                 if (log.isDebugEnabled()) {
-                    log.debug(e.getMessage(), e);
+                    LOG.debug(e.getMessage(), e);
                 }
             }
         }

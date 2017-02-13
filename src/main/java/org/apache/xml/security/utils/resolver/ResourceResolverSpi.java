@@ -30,7 +30,7 @@ import org.apache.xml.security.signature.XMLSignatureInput;
  */
 public abstract class ResourceResolverSpi {
 
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(ResourceResolverSpi.class);
 
     /** Field properties */
@@ -158,8 +158,8 @@ public abstract class ResourceResolverSpi {
                 && ch1 == ':' && ch2 == '/'
                 && ch3 != '/';
 
-            if (isDosFilename && log.isDebugEnabled()) {
-                log.debug("Found DOS filename: " + str);
+            if (isDosFilename && LOG.isDebugEnabled()) {
+                LOG.debug("Found DOS filename: " + str);
             }
         }
 

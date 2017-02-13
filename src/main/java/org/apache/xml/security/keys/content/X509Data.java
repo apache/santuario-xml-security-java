@@ -37,7 +37,7 @@ import org.w3c.dom.Node;
 
 public class X509Data extends SignatureElementProxy implements KeyInfoContent {
 
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(X509Data.class);
 
     /**
@@ -457,7 +457,7 @@ public class X509Data extends SignatureElementProxy implements KeyInfoContent {
      **/
     public Element itemUnknownElement(int i) {
         if (log.isDebugEnabled()) {
-            log.debug("itemUnknownElement not implemented: " + i);
+            LOG.debug("itemUnknownElement not implemented: " + i);
         }
         return null;
     }

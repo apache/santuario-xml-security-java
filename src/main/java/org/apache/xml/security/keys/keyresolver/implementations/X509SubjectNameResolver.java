@@ -35,7 +35,7 @@ import org.w3c.dom.Element;
 
 public class X509SubjectNameResolver extends KeyResolverSpi {
 
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(X509SubjectNameResolver.class);
 
 
@@ -75,14 +75,14 @@ public class X509SubjectNameResolver extends KeyResolverSpi {
         Element element, String baseURI, StorageResolver storage
     ) throws KeyResolverException {
         if (log.isDebugEnabled()) {
-            log.debug("Can I resolve " + element.getTagName() + "?");
+            LOG.debug("Can I resolve " + element.getTagName() + "?");
         }
         Element[] x509childNodes = null;
         XMLX509SubjectName x509childObject[] = null;
 
         if (!XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_X509DATA)) {
             if (log.isDebugEnabled()) {
-                log.debug("I can't");
+                LOG.debug("I can't");
             }
             return null;
         }
@@ -91,7 +91,7 @@ public class X509SubjectNameResolver extends KeyResolverSpi {
 
         if (!(x509childNodes != null && x509childNodes.length > 0)) {
             if (log.isDebugEnabled()) {
-                log.debug("I can't");
+                LOG.debug("I can't");
             }
             return null;
         }
@@ -103,7 +103,7 @@ public class X509SubjectNameResolver extends KeyResolverSpi {
                     new KeyResolverException("KeyResolver.needStorageResolver", exArgs);
 
                 if (log.isDebugEnabled()) {
-                    log.debug("", ex);
+                    LOG.debug("", ex);
                 }
 
                 throw ex;
@@ -122,24 +122,24 @@ public class X509SubjectNameResolver extends KeyResolverSpi {
                     new XMLX509SubjectName(element.getOwnerDocument(), cert);
 
                 if (log.isDebugEnabled()) {
-                    log.debug("Found Certificate SN: " + certSN.getSubjectName());
+                    LOG.debug("Found Certificate SN: " + certSN.getSubjectName());
                 }
 
                 for (int i = 0; i < x509childObject.length; i++) {
                     if (log.isDebugEnabled()) {
-                        log.debug("Found Element SN:     "
+                        LOG.debug("Found Element SN:     "
                               + x509childObject[i].getSubjectName());
                     }
 
                     if (certSN.equals(x509childObject[i])) {
                         if (log.isDebugEnabled()) {
-                            log.debug("match !!! ");
+                            LOG.debug("match !!! ");
                         }
 
                         return cert;
                     }
                     if (log.isDebugEnabled()) {
-                        log.debug("no match...");
+                        LOG.debug("no match...");
                     }
                 }
             }
@@ -147,7 +147,7 @@ public class X509SubjectNameResolver extends KeyResolverSpi {
             return null;
         } catch (XMLSecurityException ex) {
             if (log.isDebugEnabled()) {
-                log.debug("XMLSecurityException", ex);
+                LOG.debug("XMLSecurityException", ex);
             }
 
             throw new KeyResolverException(ex);

@@ -42,7 +42,7 @@ import org.apache.xml.security.utils.UnsyncByteArrayOutputStream;
  * @author Sean Mullan
  */
 public class DigesterOutputStream extends OutputStream {
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(DigesterOutputStream.class);
 
     private final boolean buffer;
@@ -85,12 +85,12 @@ public class DigesterOutputStream extends OutputStream {
             bos.write(input, offset, len);
         }
         if (log.isDebugEnabled()) {
-            log.debug("Pre-digested input:");
+            LOG.debug("Pre-digested input:");
             StringBuilder sb = new StringBuilder(len);
             for (int i = offset; i < (offset + len); i++) {
                 sb.append((char)input[i]);
             }
-            log.debug(sb.toString());
+            LOG.debug(sb.toString());
         }
         md.update(input, offset, len);
     }

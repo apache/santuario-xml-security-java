@@ -42,7 +42,7 @@ import org.w3c.dom.Node;
  */
 public class TransformBase64DecodeTest extends org.junit.Assert {
 
-    static org.slf4j.Logger log =
+    static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(TransformBase64DecodeTest.class);
 
     static {
@@ -150,7 +150,7 @@ public class TransformBase64DecodeTest extends org.junit.Assert {
         if (doc == null) {
             throw new RuntimeException("Could not create a Document");
         } else {
-            log.debug("I could create the Document");
+            LOG.debug("I could create the Document");
         }
         return doc;
     }

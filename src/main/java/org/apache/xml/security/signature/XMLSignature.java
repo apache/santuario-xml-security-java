@@ -183,7 +183,7 @@ public final class XMLSignature extends SignatureElementProxy {
     public static final String ALGO_ID_SIGNATURE_ECDSA_RIPEMD160 =
         "http://www.w3.org/2007/05/xmldsig-more#ecdsa-ripemd160";
 
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(XMLSignature.class);
 
     /** ds:Signature.ds:SignedInfo element */
@@ -713,10 +713,10 @@ public final class XMLSignature extends SignatureElementProxy {
             //SignedInfo. This is used to validate the signature.
             SignatureAlgorithm sa = si.getSignatureAlgorithm();
             if (log.isDebugEnabled()) {
-                log.debug("signatureMethodURI = " + sa.getAlgorithmURI());
-                log.debug("jceSigAlgorithm = " + sa.getJCEAlgorithmString());
-                log.debug("jceSigProvider = " + sa.getJCEProviderName());
-                log.debug("PublicKey = " + pk);
+                LOG.debug("signatureMethodURI = " + sa.getAlgorithmURI());
+                LOG.debug("jceSigAlgorithm = " + sa.getJCEAlgorithmString());
+                LOG.debug("jceSigProvider = " + sa.getJCEProviderName());
+                LOG.debug("PublicKey = " + pk);
             }
             byte sigBytes[] = null;
             try (SignerOutputStream so = new SignerOutputStream(sa);
@@ -731,7 +731,7 @@ public final class XMLSignature extends SignatureElementProxy {
                 sigBytes = this.getSignatureValue();
             } catch (IOException ex) {
                 if (log.isDebugEnabled()) {
-                    log.debug(ex.getMessage(), ex);
+                    LOG.debug(ex.getMessage(), ex);
                 }
                 // Impossible...
             } catch (XMLSecurityException ex) {
@@ -741,7 +741,7 @@ public final class XMLSignature extends SignatureElementProxy {
             // have SignatureAlgorithm sign the input bytes and compare them to
             // the bytes that were stored in the signature.
             if (!sa.verify(sigBytes)) {
-                log.warn("Signature verification failed.");
+                LOG.warn("Signature verification failed.");
                 return false;
             }
 

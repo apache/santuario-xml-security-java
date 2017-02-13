@@ -57,7 +57,7 @@ import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
  */
 public class ResolverDirectHTTP extends ResourceResolverSpi {
 
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(ResolverDirectHTTP.class);
 
     /** Field properties[] */
@@ -138,7 +138,7 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
                 }
 
                 if (log.isDebugEnabled()) {
-                    log.debug("Fetched " + summarized + " bytes from URI " + uriNew.toString());
+                    LOG.debug("Fetched " + summarized + " bytes from URI " + uriNew.toString());
                 }
 
                 XMLSignatureInput result = new XMLSignatureInput(baos.toByteArray());
@@ -204,32 +204,32 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
     public boolean engineCanResolveURI(ResourceResolverContext context) {
         if (context.uriToResolve == null) {
             if (log.isDebugEnabled()) {
-                log.debug("quick fail, uri == null");
+                LOG.debug("quick fail, uri == null");
             }
             return false;
         }
 
         if (context.uriToResolve.equals("") || context.uriToResolve.charAt(0) == '#') {
             if (log.isDebugEnabled()) {
-                log.debug("quick fail for empty URIs and local ones");
+                LOG.debug("quick fail for empty URIs and local ones");
             }
             return false;
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("I was asked whether I can resolve " + context.uriToResolve);
+            LOG.debug("I was asked whether I can resolve " + context.uriToResolve);
         }
 
         if (context.uriToResolve.startsWith("http:") ||
             context.baseUri != null && context.baseUri.startsWith("http:")) {
             if (log.isDebugEnabled()) {
-                log.debug("I state that I can resolve " + context.uriToResolve);
+                LOG.debug("I state that I can resolve " + context.uriToResolve);
             }
             return true;
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("I state that I can't resolve " + context.uriToResolve);
+            LOG.debug("I state that I can't resolve " + context.uriToResolve);
         }
 
         return false;

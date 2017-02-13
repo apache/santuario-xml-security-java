@@ -49,7 +49,7 @@ import org.apache.jcp.xml.dsig.internal.MacOutputStream;
  */
 public abstract class DOMHMACSignatureMethod extends AbstractDOMSignatureMethod {
 
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(DOMHMACSignatureMethod.class);
 
     // see RFC 4051 for these algorithm definitions
@@ -111,7 +111,7 @@ public abstract class DOMHMACSignatureMethod extends AbstractDOMSignatureMethod 
             outputLength = ((HMACParameterSpec)params).getOutputLength();
             outputLengthSet = true;
             if (log.isDebugEnabled()) {
-                log.debug("Setting outputLength from HMACParameterSpec to: " + outputLength);
+                LOG.debug("Setting outputLength from HMACParameterSpec to: " + outputLength);
             }
         }
     }
@@ -128,7 +128,7 @@ public abstract class DOMHMACSignatureMethod extends AbstractDOMSignatureMethod 
         outputLength = Integer.parseInt(textOfNode(paramsElem));
         outputLengthSet = true;
         if (log.isDebugEnabled()) {
-            log.debug("unmarshalled outputLength: " + outputLength);
+            LOG.debug("unmarshalled outputLength: " + outputLength);
         }
         return new HMACParameterSpec(outputLength);
     }

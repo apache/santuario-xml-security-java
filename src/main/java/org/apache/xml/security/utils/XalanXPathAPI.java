@@ -44,7 +44,7 @@ import org.w3c.dom.NodeList;
  */
 public class XalanXPathAPI implements XPathAPI {
 
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(XalanXPathAPI.class);
 
     private String xpathStr;
@@ -152,7 +152,7 @@ public class XalanXPathAPI implements XPathAPI {
             xpath = (XPath) constructor.newInstance(objects);
         } catch (Exception ex) {
             if (log.isDebugEnabled()) {
-                log.debug(ex.getMessage(), ex);
+                LOG.debug(ex.getMessage(), ex);
             }
         }
         if (xpath == null) {
@@ -165,13 +165,13 @@ public class XalanXPathAPI implements XPathAPI {
         installed = false;
         if (new FunctionTable().functionAvailable("here")) {
             if (log.isDebugEnabled()) {
-                log.debug("Here function already registered");
+                LOG.debug("Here function already registered");
             }
             installed = true;
             return;
         }
         if (log.isDebugEnabled()) {
-            log.debug("Registering Here function");
+            LOG.debug("Registering Here function");
         }
         /**
          * Try to register our here() implementation as internal function.
@@ -185,7 +185,7 @@ public class XalanXPathAPI implements XPathAPI {
                 installed = true;
             }
         } catch (Exception ex) {
-            log.debug("Error installing function using the static installFunction method", ex);
+            LOG.debug("Error installing function using the static installFunction method", ex);
         }
         if (!installed) {
             try {
@@ -196,15 +196,15 @@ public class XalanXPathAPI implements XPathAPI {
                 installFunction.invoke(funcTable, params);
                 installed = true;
             } catch (Exception ex) {
-                log.debug("Error installing function using the static installFunction method", ex);
+                LOG.debug("Error installing function using the static installFunction method", ex);
             }
         }
         if (log.isDebugEnabled()) {
             if (installed) {
-                log.debug("Registered class " + FuncHere.class.getName()
+                LOG.debug("Registered class " + FuncHere.class.getName()
                           + " for XPath function 'here()' function in internal table");
             } else {
-                log.debug("Unable to register class " + FuncHere.class.getName()
+                LOG.debug("Unable to register class " + FuncHere.class.getName()
                           + " for XPath function 'here()' function in internal table");
             }
         }

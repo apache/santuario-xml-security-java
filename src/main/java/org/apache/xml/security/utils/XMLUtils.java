@@ -82,7 +82,7 @@ public final class XMLUtils {
     private static volatile String xencPrefix = "xenc";
     private static volatile String xenc11Prefix = "xenc11";
 
-    private static final org.slf4j.Logger log =
+    private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(XMLUtils.class);
 
 
@@ -234,16 +234,16 @@ public final class XMLUtils {
             );
         } catch (IOException ex) {
             if (log.isDebugEnabled()) {
-                log.debug(ex.getMessage(), ex);
+                LOG.debug(ex.getMessage(), ex);
             }
         }
         catch (InvalidCanonicalizerException ex) {
             if (log.isDebugEnabled()) {
-                log.debug(ex.getMessage(), ex);
+                LOG.debug(ex.getMessage(), ex);
             }
         } catch (CanonicalizationException ex) {
             if (log.isDebugEnabled()) {
-                log.debug(ex.getMessage(), ex);
+                LOG.debug(ex.getMessage(), ex);
             }
         }
     }
@@ -268,17 +268,17 @@ public final class XMLUtils {
             );
         } catch (IOException ex) {
             if (log.isDebugEnabled()) {
-                log.debug(ex.getMessage(), ex);
+                LOG.debug(ex.getMessage(), ex);
             }
             // throw new RuntimeException(ex.getMessage());
         } catch (InvalidCanonicalizerException ex) {
             if (log.isDebugEnabled()) {
-                log.debug(ex.getMessage(), ex);
+                LOG.debug(ex.getMessage(), ex);
             }
             // throw new RuntimeException(ex.getMessage());
         } catch (CanonicalizationException ex) {
             if (log.isDebugEnabled()) {
-                log.debug(ex.getMessage(), ex);
+                LOG.debug(ex.getMessage(), ex);
             }
             // throw new RuntimeException(ex.getMessage());
         }
@@ -973,7 +973,7 @@ public final class XMLUtils {
                                 // Continue searching to find duplicates
                                 foundElement = attr.getOwnerElement();
                             } else {
-                                log.debug("Multiple elements with the same 'Id' attribute value!");
+                                LOG.debug("Multiple elements with the same 'Id' attribute value!");
                                 return false;
                             }
                         }
@@ -1033,7 +1033,7 @@ public final class XMLUtils {
                     for (int i = 0; i < length; i++) {
                         Attr attr = (Attr)attributes.item(i);
                         if (attr.isId() && id.equals(attr.getValue()) && se != knownElement) {
-                            log.debug("Multiple elements with the same 'Id' attribute value!");
+                            LOG.debug("Multiple elements with the same 'Id' attribute value!");
                             return false;
                         }
                     }

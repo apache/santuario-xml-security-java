@@ -44,7 +44,7 @@ import org.w3c.dom.Attr;
  */
 public class XMLCipherInput {
 
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(XMLCipherInput.class);
 
     /** The data we are working with */
@@ -115,7 +115,7 @@ public class XMLCipherInput {
         if (cipherData.getDataType() == CipherData.REFERENCE_TYPE) {
             // Fun time!
             if (log.isDebugEnabled()) {
-                log.debug("Found a reference type CipherData");
+                LOG.debug("Found a reference type CipherData");
             }
             CipherReference cr = cipherData.getCipherReference();
 
@@ -135,11 +135,11 @@ public class XMLCipherInput {
 
             if (input != null) {
                 if (log.isDebugEnabled()) {
-                    log.debug("Managed to resolve URI \"" + cr.getURI() + "\"");
+                    LOG.debug("Managed to resolve URI \"" + cr.getURI() + "\"");
                 }
             } else {
                 if (log.isDebugEnabled()) {
-                    log.debug("Failed to resolve URI \"" + cr.getURI() + "\"");
+                    LOG.debug("Failed to resolve URI \"" + cr.getURI() + "\"");
                 }
             }
 
@@ -147,7 +147,7 @@ public class XMLCipherInput {
             Transforms transforms = cr.getTransforms();
             if (transforms != null) {
                 if (log.isDebugEnabled()) {
-                    log.debug("Have transforms in cipher reference");
+                    LOG.debug("Have transforms in cipher reference");
                 }
                 try {
                     org.apache.xml.security.transforms.Transforms dsTransforms =
@@ -175,7 +175,7 @@ public class XMLCipherInput {
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("Encrypted octets:\n" + base64EncodedEncryptedOctets);
+            LOG.debug("Encrypted octets:\n" + base64EncodedEncryptedOctets);
         }
 
         return Base64.getMimeDecoder().decode(base64EncodedEncryptedOctets);

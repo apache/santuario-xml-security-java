@@ -32,7 +32,7 @@ import org.w3c.dom.Document;
  */
 public class ResourceResolverTest extends org.junit.Assert {
 
-    static org.slf4j.Logger log =
+    static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger
             (ResourceResolverTest.class);
 

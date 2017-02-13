@@ -42,7 +42,7 @@ import org.w3c.dom.Node;
 
 public class InteropTestBase extends org.junit.Assert {
 
-    static org.slf4j.Logger log =
+    static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(InteropTestBase.class);
 
     /**
@@ -137,10 +137,10 @@ public class InteropTestBase extends org.junit.Assert {
                     signature.getSignedInfo().getVerificationResult(i);
 
                 if (refVerify) {
-                    log.debug("Reference " + i + " was OK");
+                    LOG.debug("Reference " + i + " was OK");
                 } else {
                     // JavaUtils.writeBytesToFilename(filename + i + ".apache.txt", signature.getSignedInfo().item(i).getContentsAfterTransformation().getBytes());
-                    log.debug("Reference " + i + " was not OK");
+                    LOG.debug("Reference " + i + " was not OK");
                 }
             }
             checkReferences(signature);

@@ -43,7 +43,7 @@ import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
  */
 public class OfflineResolver extends ResourceResolverSpi {
 
-    static org.slf4j.Logger log =
+    static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(OfflineResolver.class);
 
     /** Field _uriMap */
@@ -105,11 +105,11 @@ public class OfflineResolver extends ResourceResolverSpi {
             if (OfflineResolver._uriMap.containsKey(URI)) {
                 String newURI = OfflineResolver._uriMap.get(URI);
 
-                log.debug("Mapped " + URI + " to " + newURI);
+                LOG.debug("Mapped " + URI + " to " + newURI);
 
                 InputStream is = new FileInputStream(newURI);
 
-                log.debug("Available bytes = " + is.available());
+                LOG.debug("Available bytes = " + is.available());
 
                 XMLSignatureInput result = new XMLSignatureInput(is);
 
@@ -147,7 +147,7 @@ public class OfflineResolver extends ResourceResolverSpi {
         try {
             uriNew = getNewURI(context.uriToResolve, context.baseUri);
             if (uriNew.getScheme().equals("http")) {
-                log.debug("I state that I can resolve " + uriNew.toString());
+                LOG.debug("I state that I can resolve " + uriNew.toString());
                 return true;
             }
 

@@ -55,7 +55,7 @@ public class Init {
     /** The namespace for CONF file **/
     public static final String CONF_NS = "http://www.xmlsecurity.org/NS/#configuration";
 
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(Init.class);
 
     /** Field alreadyInitialized */
@@ -111,7 +111,7 @@ public class Init {
         I18n.init("en", "US");
 
         if (log.isDebugEnabled()) {
-            log.debug("Registering default algorithms");
+            LOG.debug("Registering default algorithms");
         }
         try {
             AccessController.doPrivileged(new PrivilegedExceptionAction<Void>(){
@@ -156,7 +156,7 @@ public class Init {
             });
         } catch (PrivilegedActionException ex) {
             XMLSecurityException xse = (XMLSecurityException)ex.getException();
-            log.error(xse.getMessage(), xse);
+            LOG.error(xse.getMessage(), xse);
         }
     }
 
@@ -181,7 +181,7 @@ public class Init {
                 }
             }
             if (config == null) {
-                log.error("Error in reading configuration file - Configuration element not found");
+                LOG.error("Error in reading configuration file - Configuration element not found");
                 return;
             }
             for (Node el = config.getFirstChild(); el != null; el = el.getNextSibling()) {
@@ -212,11 +212,11 @@ public class Init {
                         try {
                             Canonicalizer.register(uri, javaClass);
                             if (log.isDebugEnabled()) {
-                                log.debug("Canonicalizer.register(" + uri + ", " + javaClass + ")");
+                                LOG.debug("Canonicalizer.register(" + uri + ", " + javaClass + ")");
                             }
                         } catch (ClassNotFoundException e) {
                             Object exArgs[] = { uri, javaClass };
-                            log.error(I18n.translate("algorithm.classDoesNotExist", exArgs));
+                            LOG.error(I18n.translate("algorithm.classDoesNotExist", exArgs));
                         }
                     }
                 }
@@ -232,14 +232,14 @@ public class Init {
                         try {
                             Transform.register(uri, javaClass);
                             if (log.isDebugEnabled()) {
-                                log.debug("Transform.register(" + uri + ", " + javaClass + ")");
+                                LOG.debug("Transform.register(" + uri + ", " + javaClass + ")");
                             }
                         } catch (ClassNotFoundException e) {
                             Object exArgs[] = { uri, javaClass };
 
-                            log.error(I18n.translate("algorithm.classDoesNotExist", exArgs));
+                            LOG.error(I18n.translate("algorithm.classDoesNotExist", exArgs));
                         } catch (NoClassDefFoundError ex) {
-                            log.warn("Not able to found dependencies for algorithm, I'll keep working.");
+                            LOG.warn("Not able to found dependencies for algorithm, I'll keep working.");
                         }
                     }
                 }
@@ -270,13 +270,13 @@ public class Init {
                         try {
                             SignatureAlgorithm.register(uri, javaClass);
                             if (log.isDebugEnabled()) {
-                                log.debug("SignatureAlgorithm.register(" + uri + ", "
+                                LOG.debug("SignatureAlgorithm.register(" + uri + ", "
                                           + javaClass + ")");
                             }
                         } catch (ClassNotFoundException e) {
                             Object exArgs[] = { uri, javaClass };
 
-                            log.error(I18n.translate("algorithm.classDoesNotExist", exArgs));
+                            LOG.error(I18n.translate("algorithm.classDoesNotExist", exArgs));
                         }
                     }
                 }
@@ -293,19 +293,19 @@ public class Init {
 
                         if (description != null && description.length() > 0) {
                             if (log.isDebugEnabled()) {
-                                log.debug("Register Resolver: " + javaClass + ": "
+                                LOG.debug("Register Resolver: " + javaClass + ": "
                                           + description);
                             }
                         } else {
                             if (log.isDebugEnabled()) {
-                                log.debug("Register Resolver: " + javaClass
+                                LOG.debug("Register Resolver: " + javaClass
                                           + ": For unknown purposes");
                             }
                         }
                         try {
                             ResourceResolver.register(javaClass);
                         } catch (Throwable e) {
-                            log.warn(
+                            LOG.warn(
                                  "Cannot register:" + javaClass
                                  + " perhaps some needed jars are not installed",
                                  e
@@ -326,12 +326,12 @@ public class Init {
 
                         if (description != null && description.length() > 0) {
                             if (log.isDebugEnabled()) {
-                                log.debug("Register Resolver: " + javaClass + ": "
+                                LOG.debug("Register Resolver: " + javaClass + ": "
                                           + description);
                             }
                         } else {
                             if (log.isDebugEnabled()) {
-                                log.debug("Register Resolver: " + javaClass
+                                LOG.debug("Register Resolver: " + javaClass
                                           + ": For unknown purposes");
                             }
                         }
@@ -343,7 +343,7 @@ public class Init {
 
                 if (tag.equals("PrefixMappings")){
                     if (log.isDebugEnabled()) {
-                        log.debug("Now I try to bind prefixes:");
+                        LOG.debug("Now I try to bind prefixes:");
                     }
 
                     Element[] nl =
@@ -353,14 +353,14 @@ public class Init {
                         String namespace = element.getAttributeNS(null, "namespace");
                         String prefix = element.getAttributeNS(null, "prefix");
                         if (log.isDebugEnabled()) {
-                            log.debug("Now I try to bind " + prefix + " to " + namespace);
+                            LOG.debug("Now I try to bind " + prefix + " to " + namespace);
                         }
                         ElementProxy.setDefaultPrefix(namespace, prefix);
                     }
                 }
             }
         } catch (Exception e) {
-            log.error("Bad: ", e);
+            LOG.error("Bad: ", e);
         }
     }
 

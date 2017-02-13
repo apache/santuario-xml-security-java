@@ -49,7 +49,7 @@ import java.util.*;
  */
 public abstract class AbstractSignatureOutputProcessor extends AbstractOutputProcessor {
 
-    private static final transient Logger log = LoggerFactory.getLogger(AbstractSignatureOutputProcessor.class);
+    private static final transient Logger LOG = LoggerFactory.getLogger(AbstractSignatureOutputProcessor.class);
 
     private final List<SignaturePartDef> signaturePartDefList = new ArrayList<>();
     private InternalSignatureOutputProcessor activeInternalSignatureOutputProcessor;
@@ -129,7 +129,7 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
 
         String calculatedDigest = new String(Base64.encodeBase64(digestOutputStream.getDigestValue()));
         if (log.isDebugEnabled()) {
-            log.debug("Calculated Digest: " + calculatedDigest);
+            LOG.debug("Calculated Digest: " + calculatedDigest);
         }
 
         signaturePartDef.setDigestValue(calculatedDigest);
@@ -295,7 +295,7 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
                         }
                         String calculatedDigest = new String(Base64.encodeBase64(this.digestOutputStream.getDigestValue()));
                         if (log.isDebugEnabled()) {
-                            log.debug("Calculated Digest: " + calculatedDigest);
+                            LOG.debug("Calculated Digest: " + calculatedDigest);
                         }
                         signaturePartDef.setDigestValue(calculatedDigest);
 

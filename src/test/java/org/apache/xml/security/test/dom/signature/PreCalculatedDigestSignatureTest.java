@@ -55,7 +55,7 @@ import static org.junit.Assert.assertTrue;
 
 public class PreCalculatedDigestSignatureTest {
 
-    private static Logger log = LoggerFactory.getLogger(PreCalculatedDigestSignatureTest.class);
+    private static Logger LOG = LoggerFactory.getLogger(PreCalculatedDigestSignatureTest.class);
 
     /**
      * External resource name to be signed
@@ -134,7 +134,7 @@ public class PreCalculatedDigestSignatureTest {
     private boolean validateSignature(XMLSignature signature) throws XMLSecurityException {
         PublicKey publicKey = signature.getKeyInfo().getPublicKey();
         boolean validSignature = signature.checkSignatureValue(publicKey);
-        log.debug("Is signature valid: " + validSignature);
+        LOG.debug("Is signature valid: " + validSignature);
         return validSignature;
     }
 
@@ -178,7 +178,7 @@ public class PreCalculatedDigestSignatureTest {
         try {
             fileOutputStream = new FileOutputStream(signatureFilePath);
             XMLUtils.outputDOMc14nWithComments(doc, fileOutputStream);
-            log.debug("Wrote signature to " + signatureFilePath);
+            LOG.debug("Wrote signature to " + signatureFilePath);
         } finally {
             fileOutputStream.close();
         }

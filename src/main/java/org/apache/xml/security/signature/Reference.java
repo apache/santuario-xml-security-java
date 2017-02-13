@@ -127,7 +127,7 @@ public class Reference extends SignatureElementProxy {
             }
         });
 
-    private static final org.slf4j.Logger log =
+    private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(Reference.class);
 
     private Manifest manifest;
@@ -646,8 +646,8 @@ public class Reference extends SignatureElementProxy {
                     }
                 };
             } catch (Exception e) {
-                // log a warning
-                log.warn("cannot cache dereferenced data: " + e);
+                // LOG a warning
+                LOG.warn("cannot cache dereferenced data: " + e);
             }
         } else if (input.isElement()) {
             referenceData = new ReferenceSubTreeData
@@ -658,8 +658,8 @@ public class Reference extends SignatureElementProxy {
                     (input.getOctetStream(), input.getSourceURI(),
                         input.getMIMEType());
             } catch (IOException ioe) {
-                // log a warning
-                log.warn("cannot cache dereferenced data: " + ioe);
+                // LOG a warning
+                LOG.warn("cannot cache dereferenced data: " + ioe);
             }
         }
     }
@@ -761,7 +761,7 @@ public class Reference extends SignatureElementProxy {
      */
     private byte[] getPreCalculatedDigest(XMLSignatureInput input)
             throws ReferenceNotInitializedException {
-        log.debug("Verifying element with pre-calculated digest");
+        LOG.debug("Verifying element with pre-calculated digest");
         String preCalculatedDigest = input.getPreCalculatedDigest();
         return Base64.getMimeDecoder().decode(preCalculatedDigest);
     }
@@ -800,12 +800,12 @@ public class Reference extends SignatureElementProxy {
         boolean equal = MessageDigestAlgorithm.isEqual(elemDig, calcDig);
 
         if (!equal) {
-            log.warn("Verification failed for URI \"" + this.getURI() + "\"");
-            log.warn("Expected Digest: " + Base64.getMimeEncoder().encodeToString(elemDig));
-            log.warn("Actual Digest: " + Base64.getMimeEncoder().encodeToString(calcDig));
+            LOG.warn("Verification failed for URI \"" + this.getURI() + "\"");
+            LOG.warn("Expected Digest: " + Base64.getMimeEncoder().encodeToString(elemDig));
+            LOG.warn("Actual Digest: " + Base64.getMimeEncoder().encodeToString(calcDig));
         } else {
             if (log.isDebugEnabled()) {
-                log.debug("Verification successful for URI \"" + this.getURI() + "\"");
+                LOG.debug("Verification successful for URI \"" + this.getURI() + "\"");
             }
         }
 

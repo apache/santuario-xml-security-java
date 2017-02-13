@@ -37,7 +37,7 @@ import org.w3c.dom.Text;
  */
 public abstract class ElementProxy {
 
-    protected static final org.slf4j.Logger log =
+    protected static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(ElementProxy.class);
 
     /**
@@ -88,7 +88,7 @@ public abstract class ElementProxy {
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("setElement(\"" + element.getTagName() + "\", \"" + baseURI + "\")");
+            LOG.debug("setElement(\"" + element.getTagName() + "\", \"" + baseURI + "\")");
         }
 
         setElement(element);
@@ -178,7 +178,7 @@ public abstract class ElementProxy {
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("setElement(" + element.getTagName() + ", \"" + baseURI + "\"");
+            LOG.debug("setElement(" + element.getTagName() + ", \"" + baseURI + "\"");
         }
 
         setElement(element);

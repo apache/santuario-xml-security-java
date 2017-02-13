@@ -32,7 +32,7 @@ import org.w3c.dom.Element;
  */
 public class JCEMapper {
 
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(JCEMapper.class);
 
     private static Map<String, Algorithm> algorithmsMap =
@@ -395,7 +395,7 @@ public class JCEMapper {
      */
     private static Algorithm getAlgorithm(String algorithmURI) {
         if (log.isDebugEnabled()) {
-            log.debug("Request for URI " + algorithmURI);
+            LOG.debug("Request for URI " + algorithmURI);
         }
 
         if (algorithmURI != null) {

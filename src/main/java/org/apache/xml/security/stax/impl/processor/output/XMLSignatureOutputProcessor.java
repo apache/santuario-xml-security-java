@@ -42,7 +42,7 @@ import org.apache.xml.security.stax.impl.util.IDGenerator;
  */
 public class XMLSignatureOutputProcessor extends AbstractSignatureOutputProcessor {
 
-    private static final transient Logger log = LoggerFactory.getLogger(XMLSignatureOutputProcessor.class);
+    private static final transient Logger LOG = LoggerFactory.getLogger(XMLSignatureOutputProcessor.class);
 
     public XMLSignatureOutputProcessor() throws XMLSecurityException {
         super();
@@ -66,7 +66,7 @@ public class XMLSignatureOutputProcessor extends AbstractSignatureOutputProcesso
             if (getActiveInternalSignatureOutputProcessor() == null) {
                 SecurePart securePart = securePartMatches(xmlSecStartElement, outputProcessorChain, XMLSecurityConstants.SIGNATURE_PARTS);
                 if (securePart != null) {
-                    log.debug("Matched securePart for signature");
+                    LOG.debug("Matched securePart for signature");
 
                     InternalSignatureOutputProcessor internalSignatureOutputProcessor = null;
 

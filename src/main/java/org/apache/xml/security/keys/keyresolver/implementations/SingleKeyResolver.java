@@ -33,7 +33,7 @@ import org.w3c.dom.Element;
  * Resolves a single Key based on the KeyName.
  */
 public class SingleKeyResolver extends KeyResolverSpi {
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(SingleKeyResolver.class);
 
     private String keyName;
@@ -96,7 +96,7 @@ public class SingleKeyResolver extends KeyResolverSpi {
         Element element, String baseURI, StorageResolver storage
     ) throws KeyResolverException {
         if (log.isDebugEnabled()) {
-            log.debug("Can I resolve " + element.getTagName() + "?");
+            LOG.debug("Can I resolve " + element.getTagName() + "?");
         }
 
         if (publicKey != null
@@ -107,7 +107,7 @@ public class SingleKeyResolver extends KeyResolverSpi {
             }
         }
 
-        log.debug("I can't");
+        LOG.debug("I can't");
         return null;
     }
 
@@ -139,7 +139,7 @@ public class SingleKeyResolver extends KeyResolverSpi {
         Element element, String baseURI, StorageResolver storage
     ) throws KeyResolverException {
         if (log.isDebugEnabled()) {
-            log.debug("Can I resolve " + element.getTagName() + "?");
+            LOG.debug("Can I resolve " + element.getTagName() + "?");
         }
 
         if (secretKey != null
@@ -150,7 +150,7 @@ public class SingleKeyResolver extends KeyResolverSpi {
             }
         }
 
-        log.debug("I can't");
+        LOG.debug("I can't");
         return null;
     }
 
@@ -167,7 +167,7 @@ public class SingleKeyResolver extends KeyResolverSpi {
         Element element, String baseURI, StorageResolver storage
     ) throws KeyResolverException {
         if (log.isDebugEnabled()) {
-            log.debug("Can I resolve " + element.getTagName() + "?");
+            LOG.debug("Can I resolve " + element.getTagName() + "?");
         }
 
         if (privateKey != null
@@ -178,7 +178,7 @@ public class SingleKeyResolver extends KeyResolverSpi {
             }
         }
 
-        log.debug("I can't");
+        LOG.debug("I can't");
         return null;
     }
 }

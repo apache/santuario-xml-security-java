@@ -49,7 +49,7 @@ import org.w3c.dom.Node;
  */
 public class KeyResolver {
 
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(KeyResolver.class);
 
     /** Field resolverVector */
@@ -100,7 +100,7 @@ public class KeyResolver {
                 throw new KeyResolverException("utils.resolver.noClass", exArgs);
             }
             if (log.isDebugEnabled()) {
-                log.debug("check resolvability by class " + resolver.getClass());
+                LOG.debug("check resolvability by class " + resolver.getClass());
             }
 
             X509Certificate cert = resolver.resolveX509Certificate(element, baseURI, storage);
@@ -141,7 +141,7 @@ public class KeyResolver {
                 throw new KeyResolverException("utils.resolver.noClass", exArgs);
             }
             if (log.isDebugEnabled()) {
-                log.debug("check resolvability by class " + resolver.getClass());
+                LOG.debug("check resolvability by class " + resolver.getClass());
             }
 
             PublicKey cert = resolver.resolvePublicKey(element, baseURI, storage);

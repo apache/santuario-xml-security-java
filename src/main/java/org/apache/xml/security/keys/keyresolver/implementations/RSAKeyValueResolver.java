@@ -32,7 +32,7 @@ import org.w3c.dom.Element;
 
 public class RSAKeyValueResolver extends KeyResolverSpi {
 
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(RSAKeyValueResolver.class);
 
 
@@ -41,7 +41,7 @@ public class RSAKeyValueResolver extends KeyResolverSpi {
         Element element, String baseURI, StorageResolver storage
     ) {
         if (log.isDebugEnabled()) {
-            log.debug("Can I resolve " + element.getTagName());
+            LOG.debug("Can I resolve " + element.getTagName());
         }
         if (element == null) {
             return null;
@@ -68,7 +68,7 @@ public class RSAKeyValueResolver extends KeyResolverSpi {
             return rsaKeyValue.getPublicKey();
         } catch (XMLSecurityException ex) {
             if (log.isDebugEnabled()) {
-                log.debug("XMLSecurityException", ex);
+                LOG.debug("XMLSecurityException", ex);
             }
         }
 

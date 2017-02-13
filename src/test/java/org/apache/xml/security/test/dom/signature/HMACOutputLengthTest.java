@@ -34,7 +34,7 @@ import org.apache.xml.security.utils.XMLUtils;
 
 public class HMACOutputLengthTest extends org.junit.Assert {
 
-    static org.slf4j.Logger log =
+    static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger
             (HMACOutputLengthTest.class);
 

@@ -50,7 +50,7 @@ import org.xml.sax.SAXException;
  */
 public class KeyInfoReferenceResolver extends KeyResolverSpi {
 
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(KeyInfoReferenceResolver.class);
 
     /** {@inheritDoc}. */
@@ -63,7 +63,7 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
         throws KeyResolverException {
 
         if (log.isDebugEnabled()) {
-            log.debug("Can I resolve " + element.getTagName());
+            LOG.debug("Can I resolve " + element.getTagName());
         }
 
         if (!engineCanResolve(element, baseURI, storage)) {
@@ -77,7 +77,7 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
             }
         } catch (XMLSecurityException e) {
             if (log.isDebugEnabled()) {
-                log.debug("XMLSecurityException", e);
+                LOG.debug("XMLSecurityException", e);
             }
         }
 
@@ -89,7 +89,7 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
         throws KeyResolverException {
 
         if (log.isDebugEnabled()) {
-            log.debug("Can I resolve " + element.getTagName());
+            LOG.debug("Can I resolve " + element.getTagName());
         }
 
         if (!engineCanResolve(element, baseURI, storage)) {
@@ -103,7 +103,7 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
             }
         } catch (XMLSecurityException e) {
             if (log.isDebugEnabled()) {
-                log.debug("XMLSecurityException", e);
+                LOG.debug("XMLSecurityException", e);
             }
         }
 
@@ -115,7 +115,7 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
         throws KeyResolverException {
 
         if (log.isDebugEnabled()) {
-            log.debug("Can I resolve " + element.getTagName());
+            LOG.debug("Can I resolve " + element.getTagName());
         }
 
         if (!engineCanResolve(element, baseURI, storage)) {
@@ -129,7 +129,7 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
             }
         } catch (XMLSecurityException e) {
             if (log.isDebugEnabled()) {
-                log.debug("XMLSecurityException", e);
+                LOG.debug("XMLSecurityException", e);
             }
         }
 
@@ -141,7 +141,7 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
         throws KeyResolverException {
 
         if (log.isDebugEnabled()) {
-            log.debug("Can I resolve " + element.getTagName());
+            LOG.debug("Can I resolve " + element.getTagName());
         }
 
         if (!engineCanResolve(element, baseURI, storage)) {
@@ -155,7 +155,7 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
             }
         } catch (XMLSecurityException e) {
             if (log.isDebugEnabled()) {
-                log.debug("XMLSecurityException", e);
+                LOG.debug("XMLSecurityException", e);
             }
         }
 
@@ -182,14 +182,14 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
             referentElement = obtainReferenceElement(resource);
         } catch (Exception e) {
             if (log.isDebugEnabled()) {
-                log.debug("XMLSecurityException", e);
+                LOG.debug("XMLSecurityException", e);
             }
             return null;
         }
 
         if (referentElement == null) {
             if (log.isDebugEnabled()) {
-                log.debug("De-reference of KeyInfoReference URI returned null: " + uriAttr.getValue());
+                LOG.debug("De-reference of KeyInfoReference URI returned null: " + uriAttr.getValue());
             }
             return null;
         }
@@ -262,7 +262,7 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
         if (resource.isElement()){
             e = (Element) resource.getSubNode();
         } else if (resource.isNodeSet()) {
-            log.debug("De-reference of KeyInfoReference returned an unsupported NodeSet");
+            LOG.debug("De-reference of KeyInfoReference returned an unsupported NodeSet");
             return null;
         } else {
             // Retrieved resource is a byte stream

@@ -65,7 +65,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
         org.apache.xml.security.Init.init();
     }
 
-    static org.slf4j.Logger log =
+    static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(
             Canonicalizer20010315ExclusiveTest.class
         );

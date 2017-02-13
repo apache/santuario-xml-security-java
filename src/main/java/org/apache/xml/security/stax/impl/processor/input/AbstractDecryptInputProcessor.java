@@ -67,7 +67,7 @@ import java.util.*;
  */
 public abstract class AbstractDecryptInputProcessor extends AbstractInputProcessor {
 
-    private static final transient Logger log = LoggerFactory.getLogger(AbstractDecryptInputProcessor.class);
+    private static final transient Logger LOG = LoggerFactory.getLogger(AbstractDecryptInputProcessor.class);
 
     protected static final Integer maximumAllowedXMLStructureDepth =
             Integer.valueOf(ConfigurationProperties.getProperty("MaximumAllowedXMLStructureDepth"));
@@ -190,7 +190,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                 }
                 tmpXmlEventList.clear();
 
-                //the following logic reads the encryptedData structure and doesn't pass them further
+                //the following LOGic reads the encryptedData structure and doesn't pass them further
                 //through the chain
                 InputProcessorChain subInputProcessorChain = inputProcessorChain.createSubChain(this);
 
@@ -261,7 +261,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                 //we have to start the thread before we call decryptionThread.getPipedInputStream().
                 //Otherwise we will end in a deadlock, because the StAX reader expects already data.
                 //@See some lines below:
-                log.debug("Starting decryption thread");
+                LOG.debug("Starting decryption thread");
                 thread.start();
 
                 InputStream prologInputStream;
@@ -815,7 +815,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
 
                 //close to get Cipher.doFinal() called
                 outputStreamWriter.close();
-                log.debug("Decryption thread finished");
+                LOG.debug("Decryption thread finished");
 
             } catch (Exception e) {
                 try {

@@ -36,7 +36,7 @@ import org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI;
  */
 public class ClassLoaderTest extends org.junit.Assert {
 
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(ClassLoaderTest.class);
 
     @SuppressWarnings("resource")
@@ -107,7 +107,7 @@ public class ClassLoaderTest extends org.junit.Assert {
         long end = System.currentTimeMillis();
         long elapsed = end-start;
         if (log.isDebugEnabled()) {
-            log.debug("Elapsed: " + elapsed);
+            LOG.debug("Elapsed: " + elapsed);
         }
     }
 

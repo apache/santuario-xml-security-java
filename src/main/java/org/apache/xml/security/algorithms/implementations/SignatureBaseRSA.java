@@ -36,7 +36,7 @@ import org.apache.xml.security.signature.XMLSignatureException;
 
 public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
 
-    private static org.slf4j.Logger log =
+    private static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(SignatureBaseRSA.class);
 
     /** @inheritDoc */
@@ -54,7 +54,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
         String algorithmID = JCEMapper.translateURItoJCEID(this.engineGetURI());
 
         if (log.isDebugEnabled()) {
-            log.debug("Created SignatureRSA using " + algorithmID);
+            LOG.debug("Created SignatureRSA using " + algorithmID);
         }
         String provider = JCEMapper.getProviderId();
         try {
@@ -118,7 +118,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
                 // this shouldn't occur, but if it does, restore previous
                 // Signature
                 if (log.isDebugEnabled()) {
-                    log.debug("Exception when reinstantiating Signature:" + e);
+                    LOG.debug("Exception when reinstantiating Signature:" + e);
                 }
                 this.signatureAlgorithm = sig;
             }
