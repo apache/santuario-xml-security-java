@@ -35,7 +35,7 @@ public class UnsyncByteArrayOutputStream extends OutputStream  {
 
     private byte[] buf;
     private int size = INITIAL_SIZE;
-    private int pos = 0;
+    private int pos;
 
     public UnsyncByteArrayOutputStream() {
         buf = new byte[INITIAL_SIZE];

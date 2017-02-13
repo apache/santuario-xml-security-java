@@ -29,7 +29,7 @@ public class MultiInputStream extends InputStream {
 
     private final InputStream[] inputStreams;
     private final int inputStreamCount;
-    private int inputStreamIndex = 0;
+    private int inputStreamIndex;
 
     public MultiInputStream(InputStream... inputStreams) {
         this.inputStreams = inputStreams;

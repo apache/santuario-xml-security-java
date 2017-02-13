@@ -218,7 +218,7 @@ public class PerformanceMemoryTest extends AbstractPerformanceTest {
 
     class MemorySamplerThread implements Runnable {
 
-        private long memoryDiff = 0;
+        private long memoryDiff;
         private volatile boolean stop = false;
 
         private List<Integer> memory = new LinkedList<Integer>();

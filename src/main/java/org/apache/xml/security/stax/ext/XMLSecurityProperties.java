@@ -69,7 +69,7 @@ public class XMLSecurityProperties {
 
     private Key signatureVerificationKey;
 
-    private int signaturePosition = 0;
+    private int signaturePosition;
 
     private QName idAttributeNS = XMLSecurityConstants.ATT_NULL_Id;
 

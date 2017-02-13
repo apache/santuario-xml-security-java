@@ -42,8 +42,8 @@ public class OutputProcessorChainImpl implements OutputProcessorChain {
     protected static final transient boolean isDebugEnabled = log.isDebugEnabled();
 
     private List<OutputProcessor> outputProcessors;
-    private int startPos = 0;
-    private int curPos = 0;
+    private int startPos;
+    private int curPos;
     private XMLSecStartElement parentXmlSecStartElement;
 
     private final OutboundSecurityContext outboundSecurityContext;

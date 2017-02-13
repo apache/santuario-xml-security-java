@@ -39,7 +39,7 @@ import java.util.ArrayDeque;
  */
 public class XMLSecurityInputProcessor extends AbstractInputProcessor {
 
-    private int startIndexForProcessor = 0;
+    private int startIndexForProcessor;
     private InternalBufferProcessor internalBufferProcessor;
     private boolean signatureElementFound = false;
     private boolean encryptedDataElementFound = false;

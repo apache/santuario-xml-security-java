@@ -249,7 +249,7 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
 
         private SignaturePartDef signaturePartDef;
         private XMLSecStartElement xmlSecStartElement;
-        private int elementCounter = 0;
+        private int elementCounter;
 
         private OutputStream bufferedDigestOutputStream;
         private DigestOutputStream digestOutputStream;

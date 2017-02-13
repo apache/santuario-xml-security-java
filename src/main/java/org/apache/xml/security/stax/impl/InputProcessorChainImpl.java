@@ -40,8 +40,8 @@ public class InputProcessorChainImpl implements InputProcessorChain {
     protected static final transient boolean isDebugEnabled = log.isDebugEnabled();
 
     private List<InputProcessor> inputProcessors;
-    private int startPos = 0;
-    private int curPos = 0;
+    private int startPos;
+    private int curPos;
 
     private final InboundSecurityContext inboundSecurityContext;
     private final DocumentContextImpl documentContext;

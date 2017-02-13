@@ -129,7 +129,7 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
         private String encoding;
 
         private XMLSecStartElement xmlSecStartElement;
-        private int elementCounter = 0;
+        private int elementCounter;
 
         public AbstractInternalEncryptionOutputProcessor(EncryptionPartDef encryptionPartDef,
                                                          XMLSecStartElement xmlSecStartElement, String encoding)

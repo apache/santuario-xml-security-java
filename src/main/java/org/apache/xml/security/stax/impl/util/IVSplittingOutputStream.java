@@ -44,7 +44,7 @@ public class IVSplittingOutputStream extends FilterOutputStream {
 
     private final byte[] iv;
     private final int ivLength;
-    private int pos = 0;
+    private int pos;
 
     private final Cipher cipher;
     private final Key secretKey;

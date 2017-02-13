@@ -64,7 +64,7 @@ import org.w3c.dom.Node;
 public class BaltimoreEncTest extends org.junit.Assert {
 
     private static String cardNumber;
-    private static int nodeCount = 0;
+    private static int nodeCount;
     private static PrivateKey rsaKey;
 
     private XMLInputFactory xmlInputFactory;

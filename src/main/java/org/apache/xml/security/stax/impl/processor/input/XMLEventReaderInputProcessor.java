@@ -41,7 +41,7 @@ public class XMLEventReaderInputProcessor extends AbstractInputProcessor {
 
     private static final Integer maximumAllowedXMLStructureDepth =
             Integer.valueOf(ConfigurationProperties.getProperty("MaximumAllowedXMLStructureDepth"));
-    private int currentXMLStructureDepth = 0;
+    private int currentXMLStructureDepth;
     private final XMLStreamReader xmlStreamReader;
     private XMLSecStartElement parentXmlSecStartElement;
     private boolean EOF = false;

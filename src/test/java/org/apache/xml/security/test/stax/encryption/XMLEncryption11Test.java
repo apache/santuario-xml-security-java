@@ -80,7 +80,7 @@ import org.w3c.dom.NodeList;
 public class XMLEncryption11Test extends Assert {
 
     private String cardNumber;
-    private int nodeCount = 0;
+    private int nodeCount;
 
     private XMLInputFactory xmlInputFactory;
 

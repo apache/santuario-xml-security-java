@@ -33,7 +33,7 @@ public class TrimmerOutputStream extends FilterOutputStream {
     private byte[] buffer;
     private int bufferedCount;
 
-    private int preTrimmed = 0;
+    private int preTrimmed;
     private int startTrimLength;
     private int endTrimLength;
 

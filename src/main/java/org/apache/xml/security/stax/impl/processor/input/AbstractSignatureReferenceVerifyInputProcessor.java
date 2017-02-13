@@ -404,7 +404,7 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
         private OutputStream bufferedDigestOutputStream;
         private List<QName> startElementPath;
         private XMLSecStartElement startElement;
-        private int elementCounter = 0;
+        private int elementCounter;
         private boolean finished = false;
 
         public InternalSignatureReferenceVerifier(

@@ -47,7 +47,7 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
     private Mac macAlgorithm;
 
     /** Field HMACOutputLength */
-    private int HMACOutputLength = 0;
+    private int HMACOutputLength;
     private boolean HMACOutputLengthSet = false;
 
     /**

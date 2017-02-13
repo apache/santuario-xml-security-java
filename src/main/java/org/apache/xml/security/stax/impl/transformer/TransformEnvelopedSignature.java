@@ -33,7 +33,7 @@ import java.io.InputStream;
  */
 public class TransformEnvelopedSignature extends TransformIdentity {
 
-    private int curLevel = 0;
+    private int curLevel;
     private int sigElementLevel = -1;
 
     @Override

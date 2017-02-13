@@ -555,7 +555,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
     public abstract class AbstractDecryptedEventReaderInputProcessor
             extends AbstractInputProcessor implements Thread.UncaughtExceptionHandler {
 
-        private int currentXMLStructureDepth = 0;
+        private int currentXMLStructureDepth;
         private XMLStreamReader xmlStreamReader;
         private XMLSecStartElement parentXmlSecStartElement;
         private boolean encryptedHeader = false;
