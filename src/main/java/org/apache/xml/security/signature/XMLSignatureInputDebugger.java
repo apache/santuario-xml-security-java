@@ -141,7 +141,7 @@ public class XMLSignatureInputDebugger {
      * @throws XMLSignatureException
      */
     public String getHTMLRepresentation() throws XMLSignatureException {
-        if (this.xpathNodeSet == null || this.xpathNodeSet.size() == 0) {
+        if (this.xpathNodeSet == null || this.xpathNodeSet.isEmpty()) {
             return HTMLPrefix + "<blink>no node set, sorry</blink>" + HTMLSuffix;
         }
 

@@ -232,7 +232,7 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
             }
         }
 
-        if (externalReferences.size() > 0) {
+        if (!externalReferences.isEmpty()) {
             for (int i = 0; i < externalReferences.size(); i++) {
                 KeyValue<ResourceResolver, ReferenceType> keyValue = externalReferences.get(i);
                 verifyExternalReference(
