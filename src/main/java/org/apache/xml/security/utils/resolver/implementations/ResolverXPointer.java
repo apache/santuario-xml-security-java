@@ -144,7 +144,7 @@ public class ResolverXPointer extends ResourceResolverSpi {
             int idLen = idPlusDelim.length() -1;
             if (idPlusDelim.charAt(0) == '"' && idPlusDelim.charAt(idLen) == '"'
                 || idPlusDelim.charAt(0) == '\'' && idPlusDelim.charAt(idLen) == '\'') {
-                if (log.isDebugEnabled()) {
+                if (LOG.isDebugEnabled()) {
                     LOG.debug("Id = " + idPlusDelim.substring(1, idLen));
                 }
                 return true;

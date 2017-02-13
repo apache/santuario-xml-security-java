@@ -218,7 +218,7 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
             }
         }
         signature.initVerify((PublicKey)key);
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Signature provider:" + signature.getProvider());
             LOG.debug("Verifying with key: " + key);
             LOG.debug("JCA Algorithm: " + getJCAAlgorithm());
@@ -266,7 +266,7 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
             }
         }
         signature.initSign((PrivateKey)key);
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Signature provider:" + signature.getProvider());
             LOG.debug("Signing with key: " + key);
             LOG.debug("JCA Algorithm: " + getJCAAlgorithm());

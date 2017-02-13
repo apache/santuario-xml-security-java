@@ -60,7 +60,7 @@ public class SignerOutputStream extends ByteArrayOutputStream {
 
     /** @inheritDoc */
     public void write(byte[] arg0, int arg1, int arg2) {
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Canonicalized SignedInfo:");
             StringBuilder sb = new StringBuilder(arg2);
             for (int i = arg1; i < (arg1 + arg2); i++) {

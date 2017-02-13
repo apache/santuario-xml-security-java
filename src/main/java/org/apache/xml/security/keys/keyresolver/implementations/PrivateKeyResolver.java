@@ -137,7 +137,7 @@ public class PrivateKeyResolver extends KeyResolverSpi {
     public PrivateKey engineLookupAndResolvePrivateKey(
         Element element, String baseURI, StorageResolver storage
     ) throws KeyResolverException {
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Can I resolve " + element.getTagName() + "?");
         }
 

@@ -117,7 +117,7 @@ public abstract class ApacheCanonicalizer extends TransformService {
                 apacheCanonicalizer = Canonicalizer.getInstance(getAlgorithm());
                 boolean secVal = Utils.secureValidation(xc);
                 apacheCanonicalizer.setSecureValidation(secVal);
-                if (log.isDebugEnabled()) {
+                if (LOG.isDebugEnabled()) {
                     LOG.debug("Created canonicalizer for algorithm: " + getAlgorithm());
                 }
             } catch (InvalidCanonicalizerException ice) {
@@ -172,7 +172,7 @@ public abstract class ApacheCanonicalizer extends TransformService {
                 @SuppressWarnings("unchecked")
                 Set<Node> ns = Utils.toNodeSet(nsd.iterator());
                 nodeSet = ns;
-                if (log.isDebugEnabled()) {
+                if (LOG.isDebugEnabled()) {
                     LOG.debug("Canonicalizing " + nodeSet.size() + " nodes");
                 }
             } else {
@@ -215,7 +215,7 @@ public abstract class ApacheCanonicalizer extends TransformService {
                 apacheTransform.setElement(transformElem, xc.getBaseURI());
                 boolean secVal = Utils.secureValidation(xc);
                 apacheTransform.setSecureValidation(secVal);
-                if (log.isDebugEnabled()) {
+                if (LOG.isDebugEnabled()) {
                     LOG.debug("Created transform for algorithm: " + getAlgorithm());
                 }
             } catch (Exception ex) {
@@ -226,12 +226,12 @@ public abstract class ApacheCanonicalizer extends TransformService {
 
         XMLSignatureInput in;
         if (data instanceof ApacheData) {
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("ApacheData = true");
             }
             in = ((ApacheData)data).getXMLSignatureInput();
         } else if (data instanceof NodeSetData) {
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("isNodeSet() = true");
             }
             if (data instanceof DOMSubTreeData) {
@@ -245,7 +245,7 @@ public abstract class ApacheCanonicalizer extends TransformService {
                 in = new XMLSignatureInput(nodeSet);
             }
         } else {
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("isNodeSet() = false");
             }
             try {

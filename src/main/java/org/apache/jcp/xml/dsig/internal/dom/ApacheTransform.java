@@ -141,7 +141,7 @@ public abstract class ApacheTransform extends TransformService {
                 apacheTransform.setElement(transformElem, xc.getBaseURI());
                 boolean secVal = Utils.secureValidation(xc);
                 apacheTransform.setSecureValidation(secVal);
-                if (log.isDebugEnabled()) {
+                if (LOG.isDebugEnabled()) {
                     LOG.debug("Created transform for algorithm: " +
                             getAlgorithm());
                 }
@@ -162,16 +162,16 @@ public abstract class ApacheTransform extends TransformService {
 
         XMLSignatureInput in;
         if (data instanceof ApacheData) {
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("ApacheData = true");
             }
             in = ((ApacheData)data).getXMLSignatureInput();
         } else if (data instanceof NodeSetData) {
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("isNodeSet() = true");
             }
             if (data instanceof DOMSubTreeData) {
-                if (log.isDebugEnabled()) {
+                if (LOG.isDebugEnabled()) {
                     LOG.debug("DOMSubTreeData = true");
                 }
                 DOMSubTreeData subTree = (DOMSubTreeData)data;
@@ -184,7 +184,7 @@ public abstract class ApacheTransform extends TransformService {
                 in = new XMLSignatureInput(nodeSet);
             }
         } else {
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("isNodeSet() = false");
             }
             try {

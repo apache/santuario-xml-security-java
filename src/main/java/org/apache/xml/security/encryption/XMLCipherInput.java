@@ -114,7 +114,7 @@ public class XMLCipherInput {
 
         if (cipherData.getDataType() == CipherData.REFERENCE_TYPE) {
             // Fun time!
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("Found a reference type CipherData");
             }
             CipherReference cr = cipherData.getCipherReference();
@@ -134,11 +134,11 @@ public class XMLCipherInput {
             }
 
             if (input != null) {
-                if (log.isDebugEnabled()) {
+                if (LOG.isDebugEnabled()) {
                     LOG.debug("Managed to resolve URI \"" + cr.getURI() + "\"");
                 }
             } else {
-                if (log.isDebugEnabled()) {
+                if (LOG.isDebugEnabled()) {
                     LOG.debug("Failed to resolve URI \"" + cr.getURI() + "\"");
                 }
             }
@@ -146,7 +146,7 @@ public class XMLCipherInput {
             // Lets see if there are any transforms
             Transforms transforms = cr.getTransforms();
             if (transforms != null) {
-                if (log.isDebugEnabled()) {
+                if (LOG.isDebugEnabled()) {
                     LOG.debug("Have transforms in cipher reference");
                 }
                 try {
@@ -174,7 +174,7 @@ public class XMLCipherInput {
             throw new XMLEncryptionException("CipherData.getDataType() returned unexpected value");
         }
 
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Encrypted octets:\n" + base64EncodedEncryptedOctets);
         }
 

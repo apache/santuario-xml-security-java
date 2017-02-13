@@ -226,7 +226,7 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
             byte[] signedInfoBytes = bos.toByteArray();
 
             // this whole block should only be done if LOGging is enabled
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("Canonicalized SignedInfo:");
                 StringBuilder sb = new StringBuilder(signedInfoBytes.length);
                 for (int i = 0; i < signedInfoBytes.length; i++) {
@@ -242,7 +242,7 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
         } catch (TransformException te) {
             throw new XMLSignatureException(te);
         } catch (IOException e) {
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug(e.getMessage(), e);
             }
             // Impossible

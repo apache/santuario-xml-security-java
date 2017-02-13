@@ -712,7 +712,7 @@ public final class XMLSignature extends SignatureElementProxy {
             //create a SignatureAlgorithms from the SignatureMethod inside
             //SignedInfo. This is used to validate the signature.
             SignatureAlgorithm sa = si.getSignatureAlgorithm();
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("signatureMethodURI = " + sa.getAlgorithmURI());
                 LOG.debug("jceSigAlgorithm = " + sa.getJCEAlgorithmString());
                 LOG.debug("jceSigProvider = " + sa.getJCEProviderName());
@@ -730,7 +730,7 @@ public final class XMLSignature extends SignatureElementProxy {
                 // retrieve the byte[] from the stored signature
                 sigBytes = this.getSignatureValue();
             } catch (IOException ex) {
-                if (log.isDebugEnabled()) {
+                if (LOG.isDebugEnabled()) {
                     LOG.debug(ex.getMessage(), ex);
                 }
                 // Impossible...

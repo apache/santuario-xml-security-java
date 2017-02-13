@@ -119,7 +119,7 @@ public final class ClassLoaderUtils {
         try {
             urls = Thread.currentThread().getContextClassLoader().getResources(resourceName);
         } catch (IOException e) {
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug(e.getMessage(), e);
             }
             //ignore
@@ -132,7 +132,7 @@ public final class ClassLoaderUtils {
                         resourceName.substring(1)
                     );
             } catch (IOException e) {
-                if (log.isDebugEnabled()) {
+                if (LOG.isDebugEnabled()) {
                     LOG.debug(e.getMessage(), e);
                 }
                 // ignore
@@ -147,7 +147,7 @@ public final class ClassLoaderUtils {
             try {
                 urls = cluClassloader.getResources(resourceName);
             } catch (IOException e) {
-                if (log.isDebugEnabled()) {
+                if (LOG.isDebugEnabled()) {
                     LOG.debug(e.getMessage(), e);
                 }
                 // ignore
@@ -158,7 +158,7 @@ public final class ClassLoaderUtils {
             try {
                 urls = cluClassloader.getResources(resourceName.substring(1));
             } catch (IOException e) {
-                if (log.isDebugEnabled()) {
+                if (LOG.isDebugEnabled()) {
                     LOG.debug(e.getMessage(), e);
                 }
                 // ignore
@@ -172,7 +172,7 @@ public final class ClassLoaderUtils {
                 try {
                     urls = cl.getResources(resourceName);
                 } catch (IOException e) {
-                    if (log.isDebugEnabled()) {
+                    if (LOG.isDebugEnabled()) {
                         LOG.debug(e.getMessage(), e);
                     }
                     // ignore
@@ -211,7 +211,7 @@ public final class ClassLoaderUtils {
         try {
             return (url != null) ? url.openStream() : null;
         } catch (IOException e) {
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug(e.getMessage(), e);
             }
             return null;
@@ -241,7 +241,7 @@ public final class ClassLoaderUtils {
                 return cl.loadClass(className);
             }
         } catch (ClassNotFoundException e) {
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug(e.getMessage(), e);
             }
             //ignore
@@ -263,7 +263,7 @@ public final class ClassLoaderUtils {
                     return callingClass.getClassLoader().loadClass(className);
                 }
             }
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug(ex.getMessage(), ex);
             }
             throw ex;

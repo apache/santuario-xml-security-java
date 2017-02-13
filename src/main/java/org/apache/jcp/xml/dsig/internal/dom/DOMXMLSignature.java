@@ -265,13 +265,13 @@ public final class DOMXMLSignature extends DOMStructure
         for (int i = 0, size = refs.size(); validateRefs && i < size; i++) {
             Reference ref = refs.get(i);
             boolean refValid = ref.validate(vc);
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("Reference[" + ref.getURI() + "] is valid: " + refValid);
             }
             validateRefs &= refValid;
         }
         if (!validateRefs) {
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("Couldn't validate the References");
             }
             validationStatus = false;
@@ -291,7 +291,7 @@ public final class DOMXMLSignature extends DOMStructure
                 for (int j = 0; validateMans && j < csize; j++) {
                     XMLStructure xs = content.get(j);
                     if (xs instanceof Manifest) {
-                        if (log.isDebugEnabled()) {
+                        if (LOG.isDebugEnabled()) {
                             LOG.debug("validating manifest");
                         }
                         Manifest man = (Manifest)xs;
@@ -300,7 +300,7 @@ public final class DOMXMLSignature extends DOMStructure
                         for (int k = 0; validateMans && k < rsize; k++) {
                             Reference ref = manRefs.get(k);
                             boolean refValid = ref.validate(vc);
-                            if (log.isDebugEnabled()) {
+                            if (LOG.isDebugEnabled()) {
                                 LOG.debug(
                                     "Manifest ref[" + ref.getURI() + "] is valid: " + refValid
                                 );

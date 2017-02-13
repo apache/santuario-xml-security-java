@@ -60,7 +60,7 @@ public class ResolverFragment extends ResourceResolverSpi {
              * Identifies the node-set (minus any comment nodes) of the XML
              * resource containing the signature
              */
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("ResolverFragment with empty URI (means complete document)");
             }
             selectedElem = doc;
@@ -91,7 +91,7 @@ public class ResolverFragment extends ResourceResolverSpi {
                     );
                 }
             }
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug(
                     "Try to catch an Element with ID " + id + " and Element was " + selectedElem
                 );
@@ -118,7 +118,7 @@ public class ResolverFragment extends ResourceResolverSpi {
      */
     public boolean engineCanResolveURI(ResourceResolverContext context) {
         if (context.uriToResolve == null) {
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("Quick fail for null uri");
             }
             return false;
@@ -127,12 +127,12 @@ public class ResolverFragment extends ResourceResolverSpi {
         if (context.uriToResolve.equals("") ||
             context.uriToResolve.charAt(0) == '#' && !context.uriToResolve.startsWith("#xpointer(")
         ) {
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("State I can resolve reference: \"" + context.uriToResolve + "\"");
             }
             return true;
         }
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Do not seem to be able to resolve reference: \"" + context.uriToResolve + "\"");
         }
         return false;

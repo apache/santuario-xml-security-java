@@ -133,7 +133,7 @@ public class XMLX509SKI extends SignatureElementProxy implements XMLX509DataCont
 
         System.arraycopy(extensionValue, 4, skidValue, 0, skidValue.length);
 
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Base64 of SKI is " + Base64.getMimeEncoder().encodeToString(skidValue));
         }
 
@@ -163,7 +163,7 @@ public class XMLX509SKI extends SignatureElementProxy implements XMLX509DataCont
                 result = 31 * result + bytes[i];
             }
         } catch (XMLSecurityException e) {
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug(e.getMessage(), e);
             }
         }

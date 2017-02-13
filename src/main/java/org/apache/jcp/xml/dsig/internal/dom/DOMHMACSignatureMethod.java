@@ -110,7 +110,7 @@ public abstract class DOMHMACSignatureMethod extends AbstractDOMSignatureMethod 
             }
             outputLength = ((HMACParameterSpec)params).getOutputLength();
             outputLengthSet = true;
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("Setting outputLength from HMACParameterSpec to: " + outputLength);
             }
         }
@@ -127,7 +127,7 @@ public abstract class DOMHMACSignatureMethod extends AbstractDOMSignatureMethod 
     {
         outputLength = Integer.parseInt(textOfNode(paramsElem));
         outputLengthSet = true;
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("unmarshalled outputLength: " + outputLength);
         }
         return new HMACParameterSpec(outputLength);

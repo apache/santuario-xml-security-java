@@ -144,7 +144,7 @@ public class SignatureAlgorithm extends Algorithm {
         try {
             Class<? extends SignatureAlgorithmSpi> implementingClass =
                 algorithmHash.get(algorithmURI);
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("Create URI \"" + algorithmURI + "\" class \""
                    + implementingClass + "\"");
             }
@@ -326,7 +326,7 @@ public class SignatureAlgorithm extends Algorithm {
        throws AlgorithmAlreadyRegisteredException, ClassNotFoundException,
            XMLSignatureException {
         JavaUtils.checkRegisterPermission();
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Try to register " + algorithmURI + " " + implementingClass);
         }
 
@@ -364,7 +364,7 @@ public class SignatureAlgorithm extends Algorithm {
        throws AlgorithmAlreadyRegisteredException, ClassNotFoundException,
            XMLSignatureException {
         JavaUtils.checkRegisterPermission();
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Try to register " + algorithmURI + " " + implementingClass);
         }
 

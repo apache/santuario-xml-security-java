@@ -111,23 +111,23 @@ public class CertsInFilesystemDirectoryResolver extends StorageResolverSpi {
                 dn = cert.getSubjectX500Principal().getName();
                 added = true;
             } catch (FileNotFoundException ex) {
-                if (log.isDebugEnabled()) {
+                if (LOG.isDebugEnabled()) {
                     LOG.debug("Could not add certificate from file " + filename, ex);
                 }
             } catch (CertificateNotYetValidException ex) {
-                if (log.isDebugEnabled()) {
+                if (LOG.isDebugEnabled()) {
                     LOG.debug("Could not add certificate from file " + filename, ex);
                 }
             } catch (CertificateExpiredException ex) {
-                if (log.isDebugEnabled()) {
+                if (LOG.isDebugEnabled()) {
                     LOG.debug("Could not add certificate from file " + filename, ex);
                 }
             } catch (CertificateException ex) {
-                if (log.isDebugEnabled()) {
+                if (LOG.isDebugEnabled()) {
                     LOG.debug("Could not add certificate from file " + filename, ex);
                 }
             } catch (IOException ex) {
-                if (log.isDebugEnabled()) {
+                if (LOG.isDebugEnabled()) {
                     LOG.debug("Could not add certificate from file " + filename, ex);
                 }
             }

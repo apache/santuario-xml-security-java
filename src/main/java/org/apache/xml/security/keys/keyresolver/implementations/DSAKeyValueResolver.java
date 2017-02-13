@@ -71,7 +71,7 @@ public class DSAKeyValueResolver extends KeyResolverSpi {
 
             return pk;
         } catch (XMLSecurityException ex) {
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug(ex.getMessage(), ex);
             }
             //do nothing

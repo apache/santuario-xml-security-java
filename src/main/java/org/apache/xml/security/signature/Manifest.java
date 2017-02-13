@@ -307,7 +307,7 @@ public class Manifest extends SignatureElementProxy {
                     getFirstChild(), Constants._TAG_REFERENCE
                 );
         }
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("verify " + referencesEl.length + " References");
             LOG.debug("I am " + (followManifests
                 ? "" : "not") + " requested to follow nested Manifests");
@@ -338,13 +338,13 @@ public class Manifest extends SignatureElementProxy {
                 if (!currentRefVerified) {
                     verify = false;
                 }
-                if (log.isDebugEnabled()) {
+                if (LOG.isDebugEnabled()) {
                     LOG.debug("The Reference has Type " + currentRef.getType());
                 }
 
                 // was verification successful till now and do we want to verify the Manifest?
                 if (verify && followManifests && currentRef.typeIsReferenceToManifest()) {
-                    if (log.isDebugEnabled()) {
+                    if (LOG.isDebugEnabled()) {
                         LOG.debug("We have to follow a nested Manifest");
                     }
 
@@ -369,7 +369,7 @@ public class Manifest extends SignatureElementProxy {
                                         );
                                     break;
                                 } catch (XMLSecurityException ex) {
-                                    if (log.isDebugEnabled()) {
+                                    if (LOG.isDebugEnabled()) {
                                         LOG.debug(ex.getMessage(), ex);
                                     }
                                     // Hm, seems not to be a ds:Manifest
@@ -395,7 +395,7 @@ public class Manifest extends SignatureElementProxy {
 
                             LOG.warn("The nested Manifest was invalid (bad)");
                         } else {
-                            if (log.isDebugEnabled()) {
+                            if (LOG.isDebugEnabled()) {
                                 LOG.debug("The nested Manifest was valid (good)");
                             }
                         }

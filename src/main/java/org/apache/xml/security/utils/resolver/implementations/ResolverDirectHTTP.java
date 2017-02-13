@@ -137,7 +137,7 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
                     summarized += read;
                 }
 
-                if (log.isDebugEnabled()) {
+                if (LOG.isDebugEnabled()) {
                     LOG.debug("Fetched " + summarized + " bytes from URI " + uriNew.toString());
                 }
 
@@ -203,32 +203,32 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
      */
     public boolean engineCanResolveURI(ResourceResolverContext context) {
         if (context.uriToResolve == null) {
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("quick fail, uri == null");
             }
             return false;
         }
 
         if (context.uriToResolve.equals("") || context.uriToResolve.charAt(0) == '#') {
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("quick fail for empty URIs and local ones");
             }
             return false;
         }
 
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("I was asked whether I can resolve " + context.uriToResolve);
         }
 
         if (context.uriToResolve.startsWith("http:") ||
             context.baseUri != null && context.baseUri.startsWith("http:")) {
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("I state that I can resolve " + context.uriToResolve);
             }
             return true;
         }
 
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("I state that I can't resolve " + context.uriToResolve);
         }
 

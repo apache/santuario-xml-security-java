@@ -268,7 +268,7 @@ public class XMLSecurityStreamWriter implements XMLStreamWriter {
     @Override
     public void writeDTD(String dtd) throws XMLStreamException {
         if (elementStack != null) {
-            throw new XMLStreamException("Not in prolog");
+            throw new XMLStreamException("Not in proLOG");
         }
         chainProcessEvent(XMLSecEventFactory.createXMLSecDTD(dtd));
     }

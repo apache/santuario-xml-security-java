@@ -161,7 +161,7 @@ public class Transforms extends SignatureElementProxy {
      */
     public void addTransform(String transformURI) throws TransformationException {
         try {
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("Transforms.addTransform(" + transformURI + ")");
             }
 
@@ -185,7 +185,7 @@ public class Transforms extends SignatureElementProxy {
     public void addTransform(String transformURI, Element contextElement)
        throws TransformationException {
         try {
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("Transforms.addTransform(" + transformURI + ")");
             }
 
@@ -223,7 +223,7 @@ public class Transforms extends SignatureElementProxy {
      * @param transform {@link Transform} object
      */
     private void addTransform(Transform transform) {
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Transforms.addTransform(" + transform.getURI() + ")");
         }
 
@@ -263,7 +263,7 @@ public class Transforms extends SignatureElementProxy {
             int last = this.getLength() - 1;
             for (int i = 0; i < last; i++) {
                 Transform t = this.item(i);
-                if (log.isDebugEnabled()) {
+                if (LOG.isDebugEnabled()) {
                     String uri = t.getURI();
                     LOG.debug("Perform the (" + i + ")th " + uri + " transform");
                 }
@@ -272,7 +272,7 @@ public class Transforms extends SignatureElementProxy {
             }
             if (last >= 0) {
                 Transform t = this.item(last);
-                if (log.isDebugEnabled()) {
+                if (LOG.isDebugEnabled()) {
                     String uri = t.getURI();
                     LOG.debug("Perform the (" + last + ")th " + uri + " transform");
                 }

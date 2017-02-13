@@ -151,7 +151,7 @@ public class XalanXPathAPI implements XPathAPI {
             Constructor<?> constructor = XPath.class.getConstructor(classes);
             xpath = (XPath) constructor.newInstance(objects);
         } catch (Exception ex) {
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug(ex.getMessage(), ex);
             }
         }
@@ -164,13 +164,13 @@ public class XalanXPathAPI implements XPathAPI {
     private static synchronized void fixupFunctionTable() {
         installed = false;
         if (new FunctionTable().functionAvailable("here")) {
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("Here function already registered");
             }
             installed = true;
             return;
         }
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Registering Here function");
         }
         /**
@@ -199,7 +199,7 @@ public class XalanXPathAPI implements XPathAPI {
                 LOG.debug("Error installing function using the static installFunction method", ex);
             }
         }
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             if (installed) {
                 LOG.debug("Registered class " + FuncHere.class.getName()
                           + " for XPath function 'here()' function in internal table");

@@ -95,7 +95,7 @@ public class SingleKeyResolver extends KeyResolverSpi {
     public PublicKey engineLookupAndResolvePublicKey(
         Element element, String baseURI, StorageResolver storage
     ) throws KeyResolverException {
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Can I resolve " + element.getTagName() + "?");
         }
 
@@ -138,7 +138,7 @@ public class SingleKeyResolver extends KeyResolverSpi {
     public SecretKey engineResolveSecretKey(
         Element element, String baseURI, StorageResolver storage
     ) throws KeyResolverException {
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Can I resolve " + element.getTagName() + "?");
         }
 
@@ -166,7 +166,7 @@ public class SingleKeyResolver extends KeyResolverSpi {
     public PrivateKey engineLookupAndResolvePrivateKey(
         Element element, String baseURI, StorageResolver storage
     ) throws KeyResolverException {
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Can I resolve " + element.getTagName() + "?");
         }
 

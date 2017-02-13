@@ -95,7 +95,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
 
         String algorithmID = JCEMapper.translateURItoJCEID(this.engineGetURI());
 
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Created SignatureECDSA using " + algorithmID);
         }
         String provider = JCEMapper.getProviderId();
@@ -131,7 +131,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
         try {
             byte[] jcebytes = SignatureECDSA.convertXMLDSIGtoASN1(signature);
 
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("Called ECDSA.verify() on " + Base64.getMimeEncoder().encodeToString(signature));
             }
 
@@ -168,7 +168,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
             } catch (Exception e) {
                 // this shouldn't occur, but if it does, restore previous
                 // Signature
-                if (log.isDebugEnabled()) {
+                if (LOG.isDebugEnabled()) {
                     LOG.debug("Exception when reinstantiating Signature:" + e);
                 }
                 this.signatureAlgorithm = sig;

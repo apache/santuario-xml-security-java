@@ -53,7 +53,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
     public SignatureBaseRSA() throws XMLSignatureException {
         String algorithmID = JCEMapper.translateURItoJCEID(this.engineGetURI());
 
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Created SignatureRSA using " + algorithmID);
         }
         String provider = JCEMapper.getProviderId();
@@ -117,7 +117,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
             } catch (Exception e) {
                 // this shouldn't occur, but if it does, restore previous
                 // Signature
-                if (log.isDebugEnabled()) {
+                if (LOG.isDebugEnabled()) {
                     LOG.debug("Exception when reinstantiating Signature:" + e);
                 }
                 this.signatureAlgorithm = sig;

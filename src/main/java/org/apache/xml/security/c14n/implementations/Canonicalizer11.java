@@ -165,7 +165,7 @@ public abstract class Canonicalizer11 extends CanonicalizerBase {
                         try {
                             base = joinURI(n.getValue(), base);
                         } catch (URISyntaxException ue) {
-                            if (log.isDebugEnabled()) {
+                            if (LOG.isDebugEnabled()) {
                                 LOG.debug(ue.getMessage(), ue);
                             }
                         }
@@ -530,7 +530,7 @@ public abstract class Canonicalizer11 extends CanonicalizerBase {
     }
 
     private static String removeDotSegments(String path) {
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("STEP   OUTPUT BUFFER\t\tINPUT BUFFER");
         }
 
@@ -685,7 +685,7 @@ public abstract class Canonicalizer11 extends CanonicalizerBase {
     }
 
     private static void printStep(String step, String output, String input) {
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug(" " + step + ":   " + output);
             if (output.length() == 0) {
                 LOG.debug("\t\t\t\t" + input);

@@ -84,7 +84,7 @@ public class DigesterOutputStream extends OutputStream {
         if (buffer) {
             bos.write(input, offset, len);
         }
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Pre-digested input:");
             StringBuilder sb = new StringBuilder(len);
             for (int i = offset; i < (offset + len); i++) {

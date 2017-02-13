@@ -394,7 +394,7 @@ public class JCEMapper {
      * @return The Algorithm object for the given URI.
      */
     private static Algorithm getAlgorithm(String algorithmURI) {
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Request for URI " + algorithmURI);
         }
 

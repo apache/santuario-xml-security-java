@@ -150,7 +150,7 @@ public class XMLX509Certificate extends SignatureElementProxy implements XMLX509
                 result = 31 * result + bytes[i];
             }
         } catch (XMLSecurityException e) {
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug(e.getMessage(), e);
             }
         }

@@ -110,7 +110,7 @@ public class Init {
         //
         I18n.init("en", "US");
 
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Registering default algorithms");
         }
         try {
@@ -211,7 +211,7 @@ public class Init {
                             element.getAttributeNS(null, "JAVACLASS");
                         try {
                             Canonicalizer.register(uri, javaClass);
-                            if (log.isDebugEnabled()) {
+                            if (LOG.isDebugEnabled()) {
                                 LOG.debug("Canonicalizer.register(" + uri + ", " + javaClass + ")");
                             }
                         } catch (ClassNotFoundException e) {
@@ -231,7 +231,7 @@ public class Init {
                             element.getAttributeNS(null, "JAVACLASS");
                         try {
                             Transform.register(uri, javaClass);
-                            if (log.isDebugEnabled()) {
+                            if (LOG.isDebugEnabled()) {
                                 LOG.debug("Transform.register(" + uri + ", " + javaClass + ")");
                             }
                         } catch (ClassNotFoundException e) {
@@ -269,7 +269,7 @@ public class Init {
 
                         try {
                             SignatureAlgorithm.register(uri, javaClass);
-                            if (log.isDebugEnabled()) {
+                            if (LOG.isDebugEnabled()) {
                                 LOG.debug("SignatureAlgorithm.register(" + uri + ", "
                                           + javaClass + ")");
                             }
@@ -292,12 +292,12 @@ public class Init {
                             element.getAttributeNS(null, "DESCRIPTION");
 
                         if (description != null && description.length() > 0) {
-                            if (log.isDebugEnabled()) {
+                            if (LOG.isDebugEnabled()) {
                                 LOG.debug("Register Resolver: " + javaClass + ": "
                                           + description);
                             }
                         } else {
-                            if (log.isDebugEnabled()) {
+                            if (LOG.isDebugEnabled()) {
                                 LOG.debug("Register Resolver: " + javaClass
                                           + ": For unknown purposes");
                             }
@@ -325,12 +325,12 @@ public class Init {
                             element.getAttributeNS(null, "DESCRIPTION");
 
                         if (description != null && description.length() > 0) {
-                            if (log.isDebugEnabled()) {
+                            if (LOG.isDebugEnabled()) {
                                 LOG.debug("Register Resolver: " + javaClass + ": "
                                           + description);
                             }
                         } else {
-                            if (log.isDebugEnabled()) {
+                            if (LOG.isDebugEnabled()) {
                                 LOG.debug("Register Resolver: " + javaClass
                                           + ": For unknown purposes");
                             }
@@ -342,7 +342,7 @@ public class Init {
 
 
                 if (tag.equals("PrefixMappings")){
-                    if (log.isDebugEnabled()) {
+                    if (LOG.isDebugEnabled()) {
                         LOG.debug("Now I try to bind prefixes:");
                     }
 
@@ -352,7 +352,7 @@ public class Init {
                     for (Element element : nl) {
                         String namespace = element.getAttributeNS(null, "namespace");
                         String prefix = element.getAttributeNS(null, "prefix");
-                        if (log.isDebugEnabled()) {
+                        if (LOG.isDebugEnabled()) {
                             LOG.debug("Now I try to bind " + prefix + " to " + namespace);
                         }
                         ElementProxy.setDefaultPrefix(namespace, prefix);

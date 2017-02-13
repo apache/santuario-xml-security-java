@@ -40,7 +40,7 @@ public class RSAKeyValueResolver extends KeyResolverSpi {
     public PublicKey engineLookupAndResolvePublicKey(
         Element element, String baseURI, StorageResolver storage
     ) {
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Can I resolve " + element.getTagName());
         }
         if (element == null) {
@@ -67,7 +67,7 @@ public class RSAKeyValueResolver extends KeyResolverSpi {
 
             return rsaKeyValue.getPublicKey();
         } catch (XMLSecurityException ex) {
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("XMLSecurityException", ex);
             }
         }

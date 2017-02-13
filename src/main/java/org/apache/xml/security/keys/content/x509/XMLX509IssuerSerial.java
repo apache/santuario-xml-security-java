@@ -102,7 +102,7 @@ public class XMLX509IssuerSerial extends SignatureElementProxy implements XMLX50
     public BigInteger getSerialNumber() {
         String text =
             this.getTextFromChildElement(Constants._TAG_X509SERIALNUMBER, Constants.SignatureSpecNS);
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("X509SerialNumber text: " + text);
         }
 

@@ -74,14 +74,14 @@ public class X509SubjectNameResolver extends KeyResolverSpi {
     public X509Certificate engineLookupResolveX509Certificate(
         Element element, String baseURI, StorageResolver storage
     ) throws KeyResolverException {
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Can I resolve " + element.getTagName() + "?");
         }
         Element[] x509childNodes = null;
         XMLX509SubjectName x509childObject[] = null;
 
         if (!XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_X509DATA)) {
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("I can't");
             }
             return null;
@@ -90,7 +90,7 @@ public class X509SubjectNameResolver extends KeyResolverSpi {
             XMLUtils.selectDsNodes(element.getFirstChild(), Constants._TAG_X509SUBJECTNAME);
 
         if (!(x509childNodes != null && x509childNodes.length > 0)) {
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("I can't");
             }
             return null;
@@ -102,7 +102,7 @@ public class X509SubjectNameResolver extends KeyResolverSpi {
                 KeyResolverException ex =
                     new KeyResolverException("KeyResolver.needStorageResolver", exArgs);
 
-                if (log.isDebugEnabled()) {
+                if (LOG.isDebugEnabled()) {
                     LOG.debug("", ex);
                 }
 
@@ -121,24 +121,24 @@ public class X509SubjectNameResolver extends KeyResolverSpi {
                 XMLX509SubjectName certSN =
                     new XMLX509SubjectName(element.getOwnerDocument(), cert);
 
-                if (log.isDebugEnabled()) {
+                if (LOG.isDebugEnabled()) {
                     LOG.debug("Found Certificate SN: " + certSN.getSubjectName());
                 }
 
                 for (int i = 0; i < x509childObject.length; i++) {
-                    if (log.isDebugEnabled()) {
+                    if (LOG.isDebugEnabled()) {
                         LOG.debug("Found Element SN:     "
                               + x509childObject[i].getSubjectName());
                     }
 
                     if (certSN.equals(x509childObject[i])) {
-                        if (log.isDebugEnabled()) {
+                        if (LOG.isDebugEnabled()) {
                             LOG.debug("match !!! ");
                         }
 
                         return cert;
                     }
-                    if (log.isDebugEnabled()) {
+                    if (LOG.isDebugEnabled()) {
                         LOG.debug("no match...");
                     }
                 }
@@ -146,7 +146,7 @@ public class X509SubjectNameResolver extends KeyResolverSpi {
 
             return null;
         } catch (XMLSecurityException ex) {
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("XMLSecurityException", ex);
             }
 

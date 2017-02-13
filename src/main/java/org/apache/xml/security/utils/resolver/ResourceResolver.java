@@ -90,7 +90,7 @@ public class ResourceResolver {
                     }
                 }
 
-                if (log.isDebugEnabled()) {
+                if (LOG.isDebugEnabled()) {
                     LOG.debug(
                         "check resolvability by class " + resolverTmp.getClass().getName()
                     );
@@ -147,7 +147,7 @@ public class ResourceResolver {
     public static ResourceResolver getInstance(
         Attr uri, String baseURI, List<ResourceResolver> individualResolvers, boolean secureValidation
     ) throws ResourceResolverException {
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug(
                 "I was asked to create a ResourceResolver and got "
                 + (individualResolvers == null ? 0 : individualResolvers.size())
@@ -162,7 +162,7 @@ public class ResourceResolver {
                 ResourceResolver resolver = individualResolvers.get(i);
 
                 if (resolver != null) {
-                    if (log.isDebugEnabled()) {
+                    if (LOG.isDebugEnabled()) {
                         String currentClass = resolver.resolverSpi.getClass().getName();
                         LOG.debug("check resolvability by class " + currentClass);
                     }
@@ -256,7 +256,7 @@ public class ResourceResolver {
                 resolverList.add(new ResourceResolver(resourceResolverSpi));
             }
         }
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Registered resolver: " + resourceResolverSpi.toString());
         }
     }

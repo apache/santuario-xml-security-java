@@ -306,7 +306,7 @@ public final class DOMReference extends DOMStructure
     public void marshal(XmlWriter xwriter, String dsPrefix, XMLCryptoContext context)
         throws MarshalException
     {
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Marshalling Reference");
         }
         xwriter.writeStartElement(dsPrefix, "Reference", XMLSignature.XMLNS);
@@ -331,7 +331,7 @@ public final class DOMReference extends DOMStructure
         DOMDigestMethod.marshal(xwriter, digestMethod, dsPrefix);
 
         // create and append DigestValue element
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Adding digestValueElem");
         }
         xwriter.writeStartElement(dsPrefix, "DigestValue", XMLSignature.XMLNS);
@@ -355,7 +355,7 @@ public final class DOMReference extends DOMStructure
 
         // insert digestValue into DigestValue element
         String encodedDV = Base64.getMimeEncoder().encodeToString(digestValue);
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Reference object uri = " + uri);
         }
         Element digestElem = DOMUtils.getLastChildElement(refElem);
@@ -367,7 +367,7 @@ public final class DOMReference extends DOMStructure
             (refElem.getOwnerDocument().createTextNode(encodedDV));
 
         digested = true;
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Reference digesting completed");
         }
     }
@@ -385,7 +385,7 @@ public final class DOMReference extends DOMStructure
         Data data = dereference(validateContext);
         calcDigestValue = transform(data, validateContext);
 
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Expected digest: " + Base64.getMimeEncoder().encodeToString(digestValue));
             LOG.debug("Actual digest: " + Base64.getMimeEncoder().encodeToString(calcDigestValue));
         }
@@ -417,7 +417,7 @@ public final class DOMReference extends DOMStructure
         }
         try {
             data = deref.dereference(this, context);
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("URIDereferencer class name: " + deref.getClass().getName());
                 LOG.debug("Data class name: " + data.getClass().getName());
             }

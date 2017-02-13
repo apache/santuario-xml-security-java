@@ -105,7 +105,7 @@ public class SecretKeyResolver extends KeyResolverSpi
     public SecretKey engineResolveSecretKey(
         Element element, String baseURI, StorageResolver storage
     ) throws KeyResolverException {
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Can I resolve " + element.getTagName() + "?");
         }
 

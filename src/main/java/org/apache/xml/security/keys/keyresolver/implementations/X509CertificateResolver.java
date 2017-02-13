@@ -100,7 +100,7 @@ public class X509CertificateResolver extends KeyResolverSpi {
             }
             return null;
         } catch (XMLSecurityException | IOException ex) {
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("Security Exception", ex);
             }
             throw new KeyResolverException(ex);

@@ -67,7 +67,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
      */
     public SignatureDSA() throws XMLSignatureException {
         String algorithmID = JCEMapper.translateURItoJCEID(engineGetURI());
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Created SignatureDSA using " + algorithmID);
         }
 
@@ -106,7 +106,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
     protected boolean engineVerify(byte[] signature)
         throws XMLSignatureException {
         try {
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("Called DSA.verify() on " + Base64.getMimeEncoder().encodeToString(signature));
             }
 
@@ -147,7 +147,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
             } catch (Exception e) {
                 // this shouldn't occur, but if it does, restore previous
                 // Signature
-                if (log.isDebugEnabled()) {
+                if (LOG.isDebugEnabled()) {
                     LOG.debug("Exception when reinstantiating Signature:" + e);
                 }
                 this.signatureAlgorithm = sig;

@@ -385,7 +385,7 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
     }
 
     protected void compareDigest(byte[] calculatedDigest, ReferenceType referenceType) throws XMLSecurityException {
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Calculated Digest: " + new String(Base64.encodeBase64(calculatedDigest)));
             LOG.debug("Stored Digest: " + new String(Base64.encodeBase64(referenceType.getDigestValue())));
         }

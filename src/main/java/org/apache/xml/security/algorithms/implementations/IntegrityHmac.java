@@ -69,7 +69,7 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
      */
     public IntegrityHmac() throws XMLSignatureException {
         String algorithmID = JCEMapper.translateURItoJCEID(this.engineGetURI());
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Created IntegrityHmacSHA1 using " + algorithmID);
         }
 
@@ -111,7 +111,7 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
     protected boolean engineVerify(byte[] signature) throws XMLSignatureException {
         try {
             if (this.HMACOutputLengthSet && this.HMACOutputLength < getDigestLength()) {
-                if (log.isDebugEnabled()) {
+                if (LOG.isDebugEnabled()) {
                     LOG.debug("HMACOutputLength must not be less than " + getDigestLength());
                 }
                 Object[] exArgs = { String.valueOf(getDigestLength()) };
@@ -154,7 +154,7 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
                 this.macAlgorithm = Mac.getInstance(macAlgorithm.getAlgorithm());
             } catch (Exception e) {
                 // this shouldn't occur, but if it does, restore previous Mac
-                if (log.isDebugEnabled()) {
+                if (LOG.isDebugEnabled()) {
                     LOG.debug("Exception when reinstantiating Mac:" + e);
                 }
                 this.macAlgorithm = mac;
@@ -173,7 +173,7 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
     protected byte[] engineSign() throws XMLSignatureException {
         try {
             if (this.HMACOutputLengthSet && this.HMACOutputLength < getDigestLength()) {
-                if (log.isDebugEnabled()) {
+                if (LOG.isDebugEnabled()) {
                     LOG.debug("HMACOutputLength must not be less than " + getDigestLength());
                 }
                 Object[] exArgs = { String.valueOf(getDigestLength()) };

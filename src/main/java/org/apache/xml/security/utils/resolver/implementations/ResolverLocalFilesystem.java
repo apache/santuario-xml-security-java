@@ -115,23 +115,23 @@ public class ResolverLocalFilesystem extends ResourceResolverSpi {
         }
 
         try {
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("I was asked whether I can resolve " + context.uriToResolve);
             }
 
             if (context.uriToResolve.startsWith("file:") || context.baseUri.startsWith("file:")) {
-                if (log.isDebugEnabled()) {
+                if (LOG.isDebugEnabled()) {
                     LOG.debug("I state that I can resolve " + context.uriToResolve);
                 }
                 return true;
             }
         } catch (Exception e) {
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug(e.getMessage(), e);
             }
         }
 
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("But I can't");
         }
 

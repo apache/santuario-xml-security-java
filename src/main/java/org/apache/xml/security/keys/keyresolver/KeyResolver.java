@@ -99,7 +99,7 @@ public class KeyResolver {
 
                 throw new KeyResolverException("utils.resolver.noClass", exArgs);
             }
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("check resolvability by class " + resolver.getClass());
             }
 
@@ -140,7 +140,7 @@ public class KeyResolver {
 
                 throw new KeyResolverException("utils.resolver.noClass", exArgs);
             }
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("check resolvability by class " + resolver.getClass());
             }
 
