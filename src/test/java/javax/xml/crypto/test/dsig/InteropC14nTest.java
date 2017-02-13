@@ -34,7 +34,7 @@ import javax.xml.crypto.test.KeySelectors;
  */
 public class InteropC14nTest extends org.junit.Assert {
 
-    private SignatureValidator validator = null;
+    private SignatureValidator validator;
     private String base;
 
     static {

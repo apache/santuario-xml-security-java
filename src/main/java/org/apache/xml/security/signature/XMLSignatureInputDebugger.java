@@ -45,7 +45,7 @@ public class XMLSignatureInputDebugger {
     private Set<String> inclusiveNamespaces;
 
     /** Field writer */
-    private Writer writer = null;
+    private Writer writer;
 
     /** The HTML Prefix* */
     static final String HTMLPrefix =

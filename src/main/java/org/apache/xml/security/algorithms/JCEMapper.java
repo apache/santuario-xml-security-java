@@ -38,7 +38,7 @@ public class JCEMapper {
     private static Map<String, Algorithm> algorithmsMap =
         new ConcurrentHashMap<String, Algorithm>();
 
-    private static String providerName = null;
+    private static String providerName;
 
     /**
      * Method register

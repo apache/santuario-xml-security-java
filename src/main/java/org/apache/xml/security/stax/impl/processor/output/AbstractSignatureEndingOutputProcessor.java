@@ -241,8 +241,8 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
         private SignerOutputStream signerOutputStream;
         private OutputStream bufferedSignerOutputStream;
         private Transformer transformer;
-        private byte[] signatureValue = null;
-        private String inclusiveNamespacePrefixes = null;
+        private byte[] signatureValue;
+        private String inclusiveNamespacePrefixes;
         private SignatureAlgorithm signatureAlgorithm;
         private XMLSecStartElement xmlSecStartElement;
 

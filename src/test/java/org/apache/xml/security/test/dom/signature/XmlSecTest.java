@@ -85,7 +85,7 @@ public class XmlSecTest extends org.junit.Assert {
         childElement.appendChild(testDocument.createTextNode("hello world"));
         rootElement.appendChild(childElement);
 
-        PrivateKey privateKey = null;
+        PrivateKey privateKey;
         PublicKey publicKey = null;
         X509Certificate signingCert = null;
         if (cert) {

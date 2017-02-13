@@ -250,10 +250,10 @@ public class XMLCipher {
     private int cipherMode = Integer.MIN_VALUE;
 
     /** URI of algorithm that is being used for cryptographic operation */
-    private String algorithm = null;
+    private String algorithm;
 
     /** Cryptographic provider requested by caller */
-    private String requestedJCEProvider = null;
+    private String requestedJCEProvider;
 
     /** Holds c14n to serialize, if initialized then _always_ use this c14n to serialize */
     private Canonicalizer canon;
@@ -2588,11 +2588,11 @@ public class XMLCipher {
         }
 
         private class AgreementMethodImpl implements AgreementMethod {
-            private byte[] kaNonce = null;
-            private List<Element> agreementMethodInformation = null;
-            private KeyInfo originatorKeyInfo = null;
-            private KeyInfo recipientKeyInfo = null;
-            private String algorithmURI = null;
+            private byte[] kaNonce;
+            private List<Element> agreementMethodInformation;
+            private KeyInfo originatorKeyInfo;
+            private KeyInfo recipientKeyInfo;
+            private String algorithmURI;
 
             /**
              * @param algorithm
@@ -2665,8 +2665,8 @@ public class XMLCipher {
                 "Data type is reference type.";
             private static final String referenceMessage =
                 "Data type is value type.";
-            private CipherValue cipherValue = null;
-            private CipherReference cipherReference = null;
+            private CipherValue cipherValue;
+            private CipherReference cipherReference;
             private int cipherType = Integer.MIN_VALUE;
 
             /**
@@ -2729,9 +2729,9 @@ public class XMLCipher {
         }
 
         private class CipherReferenceImpl implements CipherReference {
-            private String referenceURI = null;
-            private Transforms referenceTransforms = null;
-            private Attr referenceNode = null;
+            private String referenceURI;
+            private Transforms referenceTransforms;
+            private Attr referenceNode;
 
             /**
              * @param uri
@@ -2785,7 +2785,7 @@ public class XMLCipher {
         }
 
         private class CipherValueImpl implements CipherValue {
-            private String cipherValue = null;
+            private String cipherValue;
 
             /**
              * @param value
@@ -2867,9 +2867,9 @@ public class XMLCipher {
         }
 
         private class EncryptedKeyImpl extends EncryptedTypeImpl implements EncryptedKey {
-            private String keyRecipient = null;
-            private ReferenceList referenceList = null;
-            private String carriedName = null;
+            private String keyRecipient;
+            private ReferenceList referenceList;
+            private String carriedName;
 
             /**
              * @param data
@@ -2966,14 +2966,14 @@ public class XMLCipher {
         }
 
         private abstract class EncryptedTypeImpl {
-            private String id =  null;
-            private String type = null;
-            private String mimeType = null;
-            private String encoding = null;
-            private EncryptionMethod encryptionMethod = null;
-            private KeyInfo keyInfo = null;
-            private CipherData cipherData = null;
-            private EncryptionProperties encryptionProperties = null;
+            private String id;
+            private String type;
+            private String mimeType;
+            private String encoding;
+            private EncryptionMethod encryptionMethod;
+            private KeyInfo keyInfo;
+            private CipherData cipherData;
+            private EncryptionProperties encryptionProperties;
 
             /**
              * Constructor.
@@ -3126,12 +3126,12 @@ public class XMLCipher {
         }
 
         private class EncryptionMethodImpl implements EncryptionMethod {
-            private String algorithm = null;
+            private String algorithm;
             private int keySize = Integer.MIN_VALUE;
-            private byte[] oaepParams = null;
-            private List<Element> encryptionMethodInformation = null;
-            private String digestAlgorithm = null;
-            private String mgfAlgorithm = null;
+            private byte[] oaepParams;
+            private List<Element> encryptionMethodInformation;
+            private String digestAlgorithm;
+            private String mgfAlgorithm;
 
             /**
              * Constructor.
@@ -3264,8 +3264,8 @@ public class XMLCipher {
         }
 
         private class EncryptionPropertiesImpl implements EncryptionProperties {
-            private String id = null;
-            private List<EncryptionProperty> encryptionProperties = null;
+            private String id;
+            private List<EncryptionProperty> encryptionProperties;
 
             /**
              * Constructor.
@@ -3317,10 +3317,10 @@ public class XMLCipher {
         }
 
         private class EncryptionPropertyImpl implements EncryptionProperty {
-            private String target = null;
-            private String id = null;
+            private String target;
+            private String id;
             private Map<String, String> attributeMap = new HashMap<String, String>();
-            private List<Element> encryptionInformation = null;
+            private List<Element> encryptionInformation;
 
             /**
              * Constructor.

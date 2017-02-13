@@ -33,7 +33,7 @@ public class KeyValueTest extends org.junit.Assert {
 
     private static final String[] ALGOS = { "DSA", "RSA" };
     private KeyInfoFactory fac;
-    private PublicKey keys[] = null;
+    private PublicKey keys[];
 
     public KeyValueTest() throws Exception {
         fac = KeyInfoFactory.getInstance

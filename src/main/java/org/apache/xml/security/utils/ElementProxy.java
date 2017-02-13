@@ -43,13 +43,13 @@ public abstract class ElementProxy {
     /**
      * What XML element does this ElementProxy instance wrap?
      */
-    private Element wrappedElement = null;
+    private Element wrappedElement;
 
     /** Field baseURI */
-    protected String baseURI = null;
+    protected String baseURI;
 
     /** Field doc */
-    private Document wrappedDoc = null;
+    private Document wrappedDoc;
 
     /** Field prefixMappings */
     private static Map<String, String> prefixMappings = new ConcurrentHashMap<String, String>();

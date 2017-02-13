@@ -42,7 +42,7 @@ public class BobKeyResolver extends KeyResolverSpi {
     private static org.slf4j.Logger log =
         org.slf4j.LoggerFactory.getLogger(BobKeyResolver.class);
 
-    private KeyName _kn = null;
+    private KeyName _kn;
 
     /**
      * Method engineCanResolve

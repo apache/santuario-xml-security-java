@@ -32,7 +32,7 @@ import org.apache.xml.security.keys.storage.StorageResolverSpi;
 public class SingleCertificateResolver extends StorageResolverSpi {
 
     /** Field certificate */
-    private X509Certificate certificate = null;
+    private X509Certificate certificate;
 
     /**
      * @param x509cert the single {@link X509Certificate}

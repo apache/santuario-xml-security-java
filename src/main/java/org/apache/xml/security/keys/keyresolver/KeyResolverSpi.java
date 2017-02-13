@@ -49,7 +49,7 @@ import org.xml.sax.SAXException;
 public abstract class KeyResolverSpi {
 
     /** Field properties */
-    protected java.util.Map<String, String> properties = null;
+    protected java.util.Map<String, String> properties;
 
     protected boolean globalResolver = false;
 

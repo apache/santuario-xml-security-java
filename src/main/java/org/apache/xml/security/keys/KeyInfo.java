@@ -97,8 +97,8 @@ public class KeyInfo extends SignatureElementProxy {
     // the KeyResolvers would not be called.
     // The default StorageResolver is null.
 
-    private List<X509Data> x509Datas = null;
-    private List<EncryptedKey> encryptedKeys = null;
+    private List<X509Data> x509Datas;
+    private List<EncryptedKey> encryptedKeys;
 
     private static final List<StorageResolver> nullList;
     static {

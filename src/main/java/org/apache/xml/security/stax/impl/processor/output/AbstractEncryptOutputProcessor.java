@@ -63,7 +63,7 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
         wrapperEndElement = XMLSecEventFactory.createXmlSecEndElement(new QName("a"));
     }
 
-    private AbstractInternalEncryptionOutputProcessor activeInternalEncryptionOutputProcessor = null;
+    private AbstractInternalEncryptionOutputProcessor activeInternalEncryptionOutputProcessor;
 
     public AbstractEncryptOutputProcessor() throws XMLSecurityException {
         super();

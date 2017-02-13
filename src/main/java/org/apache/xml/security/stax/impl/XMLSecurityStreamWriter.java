@@ -46,8 +46,8 @@ import java.util.List;
 public class XMLSecurityStreamWriter implements XMLStreamWriter {
 
     private final OutputProcessorChain outputProcessorChain;
-    private Element elementStack = null;
-    private Element openStartElement = null;
+    private Element elementStack;
+    private Element openStartElement;
     private NSContext namespaceContext = new NSContext(null);
     private boolean endDocumentWritten = false;
     private boolean haveToWriteEndElement = false;

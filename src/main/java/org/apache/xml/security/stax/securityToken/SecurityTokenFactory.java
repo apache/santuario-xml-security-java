@@ -33,7 +33,7 @@ import org.apache.xml.security.utils.ClassLoaderUtils;
  */
 public abstract class SecurityTokenFactory {
 
-    private static SecurityTokenFactory securityTokenFactory = null;
+    private static SecurityTokenFactory securityTokenFactory;
 
     public static synchronized SecurityTokenFactory getInstance() throws XMLSecurityException {
         if (securityTokenFactory == null) {

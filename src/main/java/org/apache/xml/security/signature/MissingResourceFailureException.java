@@ -34,7 +34,7 @@ public class MissingResourceFailureException extends XMLSignatureException {
     private static final long serialVersionUID = 1L;
 
     /** Field uninitializedReference */
-    private Reference uninitializedReference = null;
+    private Reference uninitializedReference;
 
     /**
      * MissingKeyResourceFailureException constructor.

@@ -34,7 +34,7 @@ import javax.xml.crypto.test.KeySelectors;
  */
 public class BaltimoreXPathFilter2ThreeTest extends org.junit.Assert {
 
-    private SignatureValidator validator = null;
+    private SignatureValidator validator;
 
     static {
         Security.insertProviderAt

@@ -62,7 +62,7 @@ public class CreateSignatureTest extends org.junit.Assert {
     private static final String BASEDIR = System.getProperty("basedir");
     private static final String SEP = System.getProperty("file.separator");
 
-    private KeyPair kp = null;
+    private KeyPair kp;
     private javax.xml.parsers.DocumentBuilder db;
 
     public CreateSignatureTest() throws Exception {

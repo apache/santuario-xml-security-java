@@ -38,7 +38,7 @@ public class StorageResolver {
         org.slf4j.LoggerFactory.getLogger(StorageResolver.class);
 
     /** Field storageResolvers */
-    private List<StorageResolverSpi> storageResolvers = null;
+    private List<StorageResolverSpi> storageResolvers;
 
     /**
      * Constructor StorageResolver

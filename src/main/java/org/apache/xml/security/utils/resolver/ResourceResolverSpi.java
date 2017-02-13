@@ -34,7 +34,7 @@ public abstract class ResourceResolverSpi {
         org.slf4j.LoggerFactory.getLogger(ResourceResolverSpi.class);
 
     /** Field properties */
-    protected Map<String, String> properties = null;
+    protected Map<String, String> properties;
 
     /**
      * This is the workhorse method used to resolve resources.

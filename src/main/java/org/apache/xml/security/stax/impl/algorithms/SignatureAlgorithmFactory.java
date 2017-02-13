@@ -30,7 +30,7 @@ import java.security.NoSuchProviderException;
  */
 public class SignatureAlgorithmFactory {
 
-    private static SignatureAlgorithmFactory instance = null;
+    private static SignatureAlgorithmFactory instance;
 
     private SignatureAlgorithmFactory() {
     }

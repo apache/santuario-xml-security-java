@@ -342,7 +342,7 @@ public class TestUtils {
 
     public static class OctetStreamURIDereferencer implements URIDereferencer {
 
-        private byte[] data = null;
+        private byte[] data;
 
         public OctetStreamURIDereferencer(byte[] in) {
             data = (byte[]) in.clone();
@@ -372,7 +372,7 @@ public class TestUtils {
 
     public static class NodeSetURIDereferencer implements URIDereferencer {
 
-        private Node data = null;
+        private Node data;
 
         public NodeSetURIDereferencer(Node node) {
             data = node;

@@ -49,7 +49,7 @@ public class CertsInFilesystemDirectoryResolver extends StorageResolverSpi {
         );
 
     /** Field merlinsCertificatesDir */
-    private String merlinsCertificatesDir = null;
+    private String merlinsCertificatesDir;
 
     /** Field certs */
     private List<X509Certificate> certs = new ArrayList<>();
@@ -149,7 +149,7 @@ public class CertsInFilesystemDirectoryResolver extends StorageResolverSpi {
     private static class FilesystemIterator implements Iterator<Certificate> {
 
         /** Field certs */
-        private List<X509Certificate> certs = null;
+        private List<X509Certificate> certs;
 
         /** Field i */
         private int i;

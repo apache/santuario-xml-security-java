@@ -67,7 +67,7 @@ public class XIncludeHandler extends DefaultHandler {
     private static final String xIncludeNS = "http://www.w3.org/2001/XInclude";
     private static final String xIncludeLN = "include";
     private final ContentHandler contentHandler;
-    private URL systemId = null;
+    private URL systemId;
     private boolean skipEvents = false;
 
     Map<URI, Document> uriDocMap = new HashMap<URI, Document>();

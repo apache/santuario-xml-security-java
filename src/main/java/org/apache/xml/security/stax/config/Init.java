@@ -47,7 +47,7 @@ import java.net.URL;
  */
 public class Init {
 
-    private static URI initialized = null;
+    private static URI initialized;
 
     @SuppressWarnings("unchecked")
     public static synchronized void init(URI uri, Class<?> callingClass) throws XMLSecurityException {

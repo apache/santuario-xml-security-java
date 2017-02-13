@@ -43,7 +43,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
     public abstract String engineGetURI();
 
     /** Field algorithm */
-    private Signature signatureAlgorithm = null;
+    private Signature signatureAlgorithm;
 
     /**
      * Constructor SignatureRSA

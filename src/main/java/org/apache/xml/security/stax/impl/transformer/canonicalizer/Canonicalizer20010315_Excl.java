@@ -32,7 +32,7 @@ public abstract class Canonicalizer20010315_Excl extends CanonicalizerBase {
     public static final String INCLUSIVE_NAMESPACES_PREFIX_LIST = "inclusiveNamespacePrefixList";
     public static final String PROPAGATE_DEFAULT_NAMESPACE = "propagateDefaultNamespace";
 
-    protected List<String> inclusiveNamespaces = null;
+    protected List<String> inclusiveNamespaces;
     protected boolean propagateDefaultNamespace = false;
 
     public Canonicalizer20010315_Excl(boolean includeComments) {

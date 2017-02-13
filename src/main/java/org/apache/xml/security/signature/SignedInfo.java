@@ -50,10 +50,10 @@ import org.xml.sax.SAXException;
 public class SignedInfo extends Manifest {
 
     /** Field signatureAlgorithm */
-    private SignatureAlgorithm signatureAlgorithm = null;
+    private SignatureAlgorithm signatureAlgorithm;
 
     /** Field c14nizedBytes           */
-    private byte[] c14nizedBytes = null;
+    private byte[] c14nizedBytes;
 
     private Element c14nMethod;
     private Element signatureMethod;

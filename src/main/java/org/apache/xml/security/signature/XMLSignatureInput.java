@@ -62,19 +62,19 @@ public class XMLSignatureInput {
      * Some InputStreams do not support the {@link java.io.InputStream#reset}
      * method, so we read it in completely and work on our Proxy.
      */
-    private InputStream inputOctetStreamProxy = null;
+    private InputStream inputOctetStreamProxy;
     /**
      * The original NodeSet for this XMLSignatureInput
      */
-    private Set<Node> inputNodeSet = null;
+    private Set<Node> inputNodeSet;
     /**
      * The original Element
      */
-    private Node subNode = null;
+    private Node subNode;
     /**
      * Exclude Node *for enveloped transformations*
      */
-    private Node excludeNode = null;
+    private Node excludeNode;
     /**
      *
      */
@@ -84,7 +84,7 @@ public class XMLSignatureInput {
     /**
      * A cached bytes
      */
-    private byte[] bytes = null;
+    private byte[] bytes;
     private boolean secureValidation;
 
     /**
@@ -96,12 +96,12 @@ public class XMLSignatureInput {
      * Transform algorithm and should be described in the specification for the
      * algorithm.
      */
-    private String mimeType = null;
+    private String mimeType;
 
     /**
      * Field sourceURI
      */
-    private String sourceURI = null;
+    private String sourceURI;
 
     /**
      * Node Filter list.
@@ -109,7 +109,7 @@ public class XMLSignatureInput {
     private List<NodeFilter> nodeFilters = new ArrayList<>();
 
     private boolean needsToBeExpanded = false;
-    private OutputStream outputStream = null;
+    private OutputStream outputStream;
 
     /**
      * Pre-calculated digest value of the object in base64.

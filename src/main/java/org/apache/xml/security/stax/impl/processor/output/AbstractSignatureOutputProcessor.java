@@ -52,7 +52,7 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
     private static final transient Logger log = LoggerFactory.getLogger(AbstractSignatureOutputProcessor.class);
 
     private final List<SignaturePartDef> signaturePartDefList = new ArrayList<>();
-    private InternalSignatureOutputProcessor activeInternalSignatureOutputProcessor = null;
+    private InternalSignatureOutputProcessor activeInternalSignatureOutputProcessor;
 
     public AbstractSignatureOutputProcessor() throws XMLSecurityException {
         super();

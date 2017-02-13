@@ -33,7 +33,7 @@ import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
  */
 public class ResolverAnonymous extends ResourceResolverSpi {
 
-    private InputStream inStream = null;
+    private InputStream inStream;
 
     @Override
     public boolean engineIsThreadSafe() {

@@ -45,7 +45,7 @@ import static org.apache.xml.security.stax.ext.XMLSecurityConstants.NS_XMLDSIG_E
  */
 public class XMLSignatureEndingOutputProcessor extends AbstractSignatureEndingOutputProcessor {
 
-    private SignedInfoProcessor signedInfoProcessor = null;
+    private SignedInfoProcessor signedInfoProcessor;
 
     public XMLSignatureEndingOutputProcessor(XMLSignatureOutputProcessor signatureOutputProcessor) throws XMLSecurityException {
         super(signatureOutputProcessor);

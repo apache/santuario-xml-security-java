@@ -44,7 +44,7 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
         org.slf4j.LoggerFactory.getLogger(IntegrityHmac.class);
 
     /** Field macAlgorithm */
-    private Mac macAlgorithm = null;
+    private Mac macAlgorithm;
 
     /** Field HMACOutputLength */
     private int HMACOutputLength = 0;

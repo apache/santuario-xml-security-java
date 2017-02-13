@@ -64,13 +64,13 @@ public class Manifest extends SignatureElementProxy {
     private Element[] referencesEl;
 
     /** Field verificationResults[] */
-    private boolean[] verificationResults = null;
+    private boolean[] verificationResults;
 
     /** Field resolverProperties */
-    private Map<String, String> resolverProperties = null;
+    private Map<String, String> resolverProperties;
 
     /** Field perManifestResolvers */
-    private List<ResourceResolver> perManifestResolvers = null;
+    private List<ResourceResolver> perManifestResolvers;
 
     private boolean secureValidation;
 

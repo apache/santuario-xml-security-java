@@ -30,9 +30,9 @@ public class ResourceResolverException extends XMLSecurityException {
 
     private static final long serialVersionUID = 1L;
 
-    private String uri = null;
+    private String uri;
 
-    private String baseURI = null;
+    private String baseURI;
 
     /**
      * Constructor ResourceResolverException

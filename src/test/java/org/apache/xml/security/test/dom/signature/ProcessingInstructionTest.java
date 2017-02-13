@@ -101,7 +101,7 @@ public class ProcessingInstructionTest extends org.junit.Assert {
      */
     private static class FileResolver extends ResourceResolverSpi {
 
-        private static FileResolver resolver = null;
+        private static FileResolver resolver;
 
         public synchronized static ResourceResolverSpi getInstance() {
             if (resolver == null) {

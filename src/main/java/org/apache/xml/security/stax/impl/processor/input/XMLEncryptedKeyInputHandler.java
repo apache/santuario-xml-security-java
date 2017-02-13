@@ -89,7 +89,7 @@ public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHand
         final SecurityTokenProvider<InboundSecurityToken> securityTokenProvider =
                 new SecurityTokenProvider<InboundSecurityToken>() {
 
-            private AbstractInboundSecurityToken securityToken = null;
+            private AbstractInboundSecurityToken securityToken;
 
             @Override
             public InboundSecurityToken getSecurityToken() throws XMLSecurityException {
@@ -102,7 +102,7 @@ public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHand
                         inboundSecurityContext, encryptedKeyType.getId(),
                         SecurityTokenConstants.KeyIdentifier_EncryptedKey, true) {
 
-                    private byte[] decryptedKey = null;
+                    private byte[] decryptedKey;
 
                     @Override
                     public Key getKey(String algorithmURI, XMLSecurityConstants.AlgorithmUsage algorithmUsage, String correlationID)
@@ -128,7 +128,7 @@ public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHand
                         return SecurityTokenConstants.EncryptedKeyToken;
                     }
 
-                    private InboundSecurityToken wrappingSecurityToken = null;
+                    private InboundSecurityToken wrappingSecurityToken;
 
                     private InboundSecurityToken getWrappingSecurityToken(InboundSecurityToken wrappedSecurityToken)
                             throws XMLSecurityException {

@@ -46,7 +46,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
         org.slf4j.LoggerFactory.getLogger(SignatureDSA.class);
 
     /** Field algorithm */
-    private Signature signatureAlgorithm = null;
+    private Signature signatureAlgorithm;
 
     /** size of Q */
     private int size;

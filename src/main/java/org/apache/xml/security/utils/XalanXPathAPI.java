@@ -47,11 +47,11 @@ public class XalanXPathAPI implements XPathAPI {
     private static org.slf4j.Logger log =
         org.slf4j.LoggerFactory.getLogger(XalanXPathAPI.class);
 
-    private String xpathStr = null;
+    private String xpathStr;
 
-    private XPath xpath = null;
+    private XPath xpath;
 
-    private static FunctionTable funcTable = null;
+    private static FunctionTable funcTable;
 
     private static boolean installed;
 
