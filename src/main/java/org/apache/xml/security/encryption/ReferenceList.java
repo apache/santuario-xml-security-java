@@ -46,7 +46,7 @@ public interface ReferenceList {
     int DATA_REFERENCE = 0x00000001;
 
     /** KEY TAG */
-    int KEY_REFERENCE  = 0x00000002;
+    int KEY_REFERENCE = 0x00000002;
 
     /**
      * Adds a reference to this reference list.

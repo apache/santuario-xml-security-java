@@ -714,8 +714,8 @@ public final class XMLSignature extends SignatureElementProxy {
             SignatureAlgorithm sa = si.getSignatureAlgorithm();
             if (log.isDebugEnabled()) {
                 log.debug("signatureMethodURI = " + sa.getAlgorithmURI());
-                log.debug("jceSigAlgorithm    = " + sa.getJCEAlgorithmString());
-                log.debug("jceSigProvider     = " + sa.getJCEProviderName());
+                log.debug("jceSigAlgorithm = " + sa.getJCEAlgorithmString());
+                log.debug("jceSigProvider = " + sa.getJCEProviderName());
                 log.debug("PublicKey = " + pk);
             }
             byte sigBytes[] = null;

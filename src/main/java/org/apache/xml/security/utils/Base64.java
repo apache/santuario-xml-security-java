@@ -395,8 +395,8 @@ public class Base64 {
                 b2 = binaryData[dataIndex++];
                 b3 = binaryData[dataIndex++];
 
-                l  = (byte)(b2 & 0x0f);
-                k  = (byte)(b1 & 0x03);
+                l = (byte)(b2 & 0x0f);
+                k = (byte)(b1 & 0x03);
 
                 byte val1 = ((b1 & SIGN) == 0) ? (byte)(b1 >> 2): (byte)((b1) >> 2 ^ 0xc0);
 
@@ -420,8 +420,8 @@ public class Base64 {
             b2 = binaryData[dataIndex++];
             b3 = binaryData[dataIndex++];
 
-            l  = (byte)(b2 & 0x0f);
-            k  = (byte)(b1 & 0x03);
+            l = (byte)(b2 & 0x0f);
+            k = (byte)(b1 & 0x03);
 
             byte val1 = ((b1 & SIGN) == 0) ? (byte)(b1 >> 2) : (byte)((b1) >> 2 ^ 0xc0);
 

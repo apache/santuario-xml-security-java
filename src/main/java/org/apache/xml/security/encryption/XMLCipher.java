@@ -227,10 +227,10 @@ public class XMLCipher {
     public static final int DECRYPT_MODE = Cipher.DECRYPT_MODE;
 
     /** UNWRAP Mode */
-    public static final int UNWRAP_MODE  = Cipher.UNWRAP_MODE;
+    public static final int UNWRAP_MODE = Cipher.UNWRAP_MODE;
 
     /** WRAP Mode */
-    public static final int WRAP_MODE    = Cipher.WRAP_MODE;
+    public static final int WRAP_MODE = Cipher.WRAP_MODE;
 
     private static final String ENC_ALGORITHMS = TRIPLEDES + "\n" +
     AES_128 + "\n" + AES_256 + "\n" + AES_192 + "\n" + RSA_v1dot5 + "\n" +

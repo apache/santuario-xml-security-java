@@ -31,17 +31,17 @@ import org.w3c.dom.Element;
 public class RetrievalMethod extends SignatureElementProxy implements KeyInfoContent {
 
     /** DSA retrieval */
-    public static final String TYPE_DSA     = Constants.SignatureSpecNS + "DSAKeyValue";
+    public static final String TYPE_DSA = Constants.SignatureSpecNS + "DSAKeyValue";
     /** RSA retrieval */
-    public static final String TYPE_RSA     = Constants.SignatureSpecNS + "RSAKeyValue";
+    public static final String TYPE_RSA = Constants.SignatureSpecNS + "RSAKeyValue";
     /** PGP retrieval */
-    public static final String TYPE_PGP     = Constants.SignatureSpecNS + "PGPData";
+    public static final String TYPE_PGP = Constants.SignatureSpecNS + "PGPData";
     /** SPKI retrieval */
-    public static final String TYPE_SPKI    = Constants.SignatureSpecNS + "SPKIData";
+    public static final String TYPE_SPKI = Constants.SignatureSpecNS + "SPKIData";
     /** MGMT retrieval */
-    public static final String TYPE_MGMT    = Constants.SignatureSpecNS + "MgmtData";
+    public static final String TYPE_MGMT = Constants.SignatureSpecNS + "MgmtData";
     /** X509 retrieval */
-    public static final String TYPE_X509    = Constants.SignatureSpecNS + "X509Data";
+    public static final String TYPE_X509 = Constants.SignatureSpecNS + "X509Data";
     /** RAWX509 retrieval */
     public static final String TYPE_RAWX509 = Constants.SignatureSpecNS + "rawX509Certificate";
 

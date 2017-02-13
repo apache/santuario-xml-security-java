@@ -60,8 +60,8 @@ public class TransformXSLTTest extends org.junit.Assert {
      */
     @org.junit.Test
     public void test1() throws Exception {
-        File file1  = null;
-        File file2  = null;
+        File file1 = null;
+        File file2 = null;
         if (BASEDIR != null && !"".equals(BASEDIR)) {
             file1 = new File(BASEDIR + SEP + SOURCE_PATH, SIGNATURE_FILE);
             file2 = new File(BASEDIR + SEP + SOURCE_PATH, STYLESHEET_FILE);

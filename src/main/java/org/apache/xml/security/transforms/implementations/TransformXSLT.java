@@ -57,9 +57,9 @@ public class TransformXSLT extends TransformSpi {
     public static final String implementedTransformURI =
         Transforms.TRANSFORM_XSLT;
 
-    static final String XSLTSpecNS              = "http://www.w3.org/1999/XSL/Transform";
+    static final String XSLTSpecNS = "http://www.w3.org/1999/XSL/Transform";
     static final String defaultXSLTSpecNSprefix = "xslt";
-    static final String XSLTSTYLESHEET          = "stylesheet";
+    static final String XSLTSTYLESHEET = "stylesheet";
 
     private static org.slf4j.Logger log =
         org.slf4j.LoggerFactory.getLogger(TransformXSLT.class);

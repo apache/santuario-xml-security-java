@@ -196,7 +196,7 @@ public final class Constants {
     public static final String _TAG_P = "P";
 
     /** Tag of Element Q **/
-    public static final String _TAG_Q   = "Q";
+    public static final String _TAG_Q = "Q";
 
     /** Tag of Element G **/
     public static final String _TAG_G = "G";

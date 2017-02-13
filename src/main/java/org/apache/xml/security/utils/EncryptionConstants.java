@@ -21,89 +21,89 @@ package org.apache.xml.security.utils;
 public final class EncryptionConstants {
     // Attributes that exist in XML Signature in the same way
     /** Tag of Attr Algorithm **/
-    public static final String _ATT_ALGORITHM              = Constants._ATT_ALGORITHM;
+    public static final String _ATT_ALGORITHM = Constants._ATT_ALGORITHM;
 
     /** Tag of Attr Id**/
-    public static final String _ATT_ID                     = Constants._ATT_ID;
+    public static final String _ATT_ID = Constants._ATT_ID;
 
     /** Tag of Attr Target **/
-    public static final String _ATT_TARGET                 = Constants._ATT_TARGET;
+    public static final String _ATT_TARGET = Constants._ATT_TARGET;
 
     /** Tag of Attr Type **/
-    public static final String _ATT_TYPE                   = Constants._ATT_TYPE;
+    public static final String _ATT_TYPE = Constants._ATT_TYPE;
 
     /** Tag of Attr URI **/
-    public static final String _ATT_URI                    = Constants._ATT_URI;
+    public static final String _ATT_URI = Constants._ATT_URI;
 
     // Attributes new in XML Encryption
     /** Tag of Attr encoding **/
-    public static final String _ATT_ENCODING               = "Encoding";
+    public static final String _ATT_ENCODING = "Encoding";
 
     /** Tag of Attr recipient **/
-    public static final String _ATT_RECIPIENT              = "Recipient";
+    public static final String _ATT_RECIPIENT = "Recipient";
 
     /** Tag of Attr mimetype **/
-    public static final String _ATT_MIMETYPE               = "MimeType";
+    public static final String _ATT_MIMETYPE = "MimeType";
 
     /** Tag of Element CarriedKeyName **/
-    public static final String _TAG_CARRIEDKEYNAME         = "CarriedKeyName";
+    public static final String _TAG_CARRIEDKEYNAME = "CarriedKeyName";
 
     /** Tag of Element CipherData **/
-    public static final String _TAG_CIPHERDATA             = "CipherData";
+    public static final String _TAG_CIPHERDATA = "CipherData";
 
     /** Tag of Element CipherReference **/
-    public static final String _TAG_CIPHERREFERENCE        = "CipherReference";
+    public static final String _TAG_CIPHERREFERENCE = "CipherReference";
 
     /** Tag of Element CipherValue **/
-    public static final String _TAG_CIPHERVALUE            = "CipherValue";
+    public static final String _TAG_CIPHERVALUE = "CipherValue";
 
     /** Tag of Element DataReference **/
-    public static final String _TAG_DATAREFERENCE          = "DataReference";
+    public static final String _TAG_DATAREFERENCE = "DataReference";
 
     /** Tag of Element EncryptedData **/
-    public static final String _TAG_ENCRYPTEDDATA          = "EncryptedData";
+    public static final String _TAG_ENCRYPTEDDATA = "EncryptedData";
 
     /** Tag of Element EncryptedKey **/
-    public static final String _TAG_ENCRYPTEDKEY           = "EncryptedKey";
+    public static final String _TAG_ENCRYPTEDKEY = "EncryptedKey";
 
     /** Tag of Element EncryptionMethod **/
-    public static final String _TAG_ENCRYPTIONMETHOD       = "EncryptionMethod";
+    public static final String _TAG_ENCRYPTIONMETHOD = "EncryptionMethod";
 
     /** Tag of Element EncryptionProperties **/
-    public static final String _TAG_ENCRYPTIONPROPERTIES   = "EncryptionProperties";
+    public static final String _TAG_ENCRYPTIONPROPERTIES = "EncryptionProperties";
 
     /** Tag of Element EncryptionProperty **/
-    public static final String _TAG_ENCRYPTIONPROPERTY     = "EncryptionProperty";
+    public static final String _TAG_ENCRYPTIONPROPERTY = "EncryptionProperty";
 
     /** Tag of Element KeyReference **/
-    public static final String _TAG_KEYREFERENCE           = "KeyReference";
+    public static final String _TAG_KEYREFERENCE = "KeyReference";
 
     /** Tag of Element KeySize **/
-    public static final String _TAG_KEYSIZE                = "KeySize";
+    public static final String _TAG_KEYSIZE = "KeySize";
 
     /** Tag of Element OAEPparams **/
-    public static final String _TAG_OAEPPARAMS             = "OAEPparams";
+    public static final String _TAG_OAEPPARAMS = "OAEPparams";
 
     /** Tag of Element MGF **/
-    public static final String _TAG_MGF                    = "MGF";
+    public static final String _TAG_MGF = "MGF";
 
     /** Tag of Element ReferenceList **/
-    public static final String _TAG_REFERENCELIST          = "ReferenceList";
+    public static final String _TAG_REFERENCELIST = "ReferenceList";
 
     /** Tag of Element Transforms **/
-    public static final String _TAG_TRANSFORMS             = "Transforms";
+    public static final String _TAG_TRANSFORMS = "Transforms";
 
     /** Tag of Element AgreementMethod **/
-    public static final String _TAG_AGREEMENTMETHOD        = "AgreementMethod";
+    public static final String _TAG_AGREEMENTMETHOD = "AgreementMethod";
 
     /** Tag of Element KA-Nonce **/
-    public static final String _TAG_KA_NONCE               = "KA-Nonce";
+    public static final String _TAG_KA_NONCE = "KA-Nonce";
 
     /** Tag of Element OriginatorKeyInfo **/
-    public static final String _TAG_ORIGINATORKEYINFO      = "OriginatorKeyInfo";
+    public static final String _TAG_ORIGINATORKEYINFO = "OriginatorKeyInfo";
 
     /** Tag of Element RecipientKeyInfo **/
-    public static final String _TAG_RECIPIENTKEYINFO       = "RecipientKeyInfo";
+    public static final String _TAG_RECIPIENTKEYINFO = "RecipientKeyInfo";
 
     /** Field ENCRYPTIONSPECIFICATION_URL */
     public static final String ENCRYPTIONSPECIFICATION_URL =

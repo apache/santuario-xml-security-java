@@ -110,7 +110,7 @@ public class ReferenceTest extends org.junit.Assert {
             fail("Should throw a NPE instead of " + ex + " for null dm");
         }
 
-        String id  = "id";
+        String id = "id";
         String type = "type";
         try {
             ref = fac.newReference(uri, dmSHA1, null, type, id);
