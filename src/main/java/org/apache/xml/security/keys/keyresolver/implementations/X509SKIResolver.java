@@ -76,7 +76,7 @@ public class X509SKIResolver extends KeyResolverSpi {
     ) throws KeyResolverException {
         if (log.isDebugEnabled()) {
             log.debug("Can I resolve " + element.getTagName() + "?");
-        }	
+        }
         if (!XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_X509DATA)) {
             if (log.isDebugEnabled()) {
                 log.debug("I can't");

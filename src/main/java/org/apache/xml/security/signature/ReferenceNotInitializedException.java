@@ -71,7 +71,7 @@ public class ReferenceNotInitializedException extends XMLSignatureException {
     public ReferenceNotInitializedException(Exception originalException, String msgID) {
         super(originalException, msgID);
     }
-    
+
     @Deprecated
     public ReferenceNotInitializedException(String msgID, Exception originalException) {
         this(originalException, msgID);
@@ -87,7 +87,7 @@ public class ReferenceNotInitializedException extends XMLSignatureException {
     public ReferenceNotInitializedException(Exception originalException, String msgID, Object exArgs[]) {
         super(originalException, msgID, exArgs);
     }
-    
+
     @Deprecated
     public ReferenceNotInitializedException(String msgID, Object[] exArgs, Exception originalException) {
         this(originalException, msgID, exArgs);

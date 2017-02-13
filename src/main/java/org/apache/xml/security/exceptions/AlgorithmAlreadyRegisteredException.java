@@ -60,7 +60,7 @@ public class AlgorithmAlreadyRegisteredException extends XMLSecurityException {
     public AlgorithmAlreadyRegisteredException(Exception originalException, String msgID) {
         super(originalException, msgID);
     }
-    
+
     @Deprecated
     public AlgorithmAlreadyRegisteredException(String msgID, Exception originalException) {
         this(originalException, msgID);
@@ -78,7 +78,7 @@ public class AlgorithmAlreadyRegisteredException extends XMLSecurityException {
     ) {
         super(originalException, msgID, exArgs);
     }
-    
+
     @Deprecated
     public AlgorithmAlreadyRegisteredException(String msgID, Object[] exArgs, Exception originalException) {
         this(originalException, msgID, exArgs);

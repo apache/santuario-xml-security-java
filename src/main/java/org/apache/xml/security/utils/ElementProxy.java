@@ -58,7 +58,7 @@ public abstract class ElementProxy {
      * Constructor ElementProxy
      *
      */
-    public ElementProxy() {	
+    public ElementProxy() {
     }
 
     /**
@@ -129,7 +129,7 @@ public abstract class ElementProxy {
                 result = doc.createElementNS(namespace, prefix + ":" + localName);
                 result.setAttributeNS(Constants.NamespaceSpecNS, "xmlns:" + prefix, namespace);
             }
-        }	
+        }
         return result;
     }
 
@@ -268,12 +268,12 @@ public abstract class ElementProxy {
 
             byte[] bytes = XMLUtils.getBytes(bi, bi.bitLength());
             String encodedInt = Base64.getMimeEncoder().encodeToString(bytes);
-            
+
             Document doc = e.getOwnerDocument();
             Text text = doc.createTextNode(encodedInt);
 
             e.appendChild(text);
-            
+
             appendSelf(e);
             addReturnToSelf();
         }

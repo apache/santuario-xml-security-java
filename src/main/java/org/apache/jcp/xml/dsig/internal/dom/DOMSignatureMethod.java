@@ -227,7 +227,7 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
 
         try (SignerOutputStream outputStream = new SignerOutputStream(signature)) {
             si.canonicalize(context, outputStream);
-            
+
             Type type = getAlgorithmType();
             if (type == Type.DSA) {
                 int size = ((DSAKey)key).getParams().getQ().bitLength();
@@ -274,7 +274,7 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
 
         try (SignerOutputStream outputStream = new SignerOutputStream(signature)) {
             si.canonicalize(context, outputStream);
-            
+
             Type type = getAlgorithmType();
             if (type == Type.DSA) {
                 int size = ((DSAKey)key).getParams().getQ().bitLength();

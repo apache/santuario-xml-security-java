@@ -40,7 +40,7 @@ public class NameSpaceSymbTable {
 
     static {
         NameSpaceSymbEntry ne = new NameSpaceSymbEntry("", null, true, XMLNS);
-        ne.lastrendered = "";		
+        ne.lastrendered = "";
         initialMap.put(XMLNS, ne);
     }
 
@@ -53,10 +53,10 @@ public class NameSpaceSymbTable {
 
     /**
      * Default constractor
-     **/		
-    public NameSpaceSymbTable() {    	
+     **/
+    public NameSpaceSymbTable() {
         level = new ArrayList<>();
-        //Insert the default binding for xmlns.    	
+        //Insert the default binding for xmlns.
         symb = (SymbMap) initialMap.clone();
     }
 
@@ -65,9 +65,9 @@ public class NameSpaceSymbTable {
      * For Inclusive rendering
      * @param result the list where to fill the unrendered xmlns definitions.
      **/
-    public void getUnrenderedNodes(Collection<Attr> result) {		
+    public void getUnrenderedNodes(Collection<Attr> result) {
         Iterator<NameSpaceSymbEntry> it = symb.entrySet().iterator();
-        while (it.hasNext()) {	   	
+        while (it.hasNext()) {
             NameSpaceSymbEntry n = it.next();
             //put them rendered?
             if (!n.rendered && n.n != null) {
@@ -79,7 +79,7 @@ public class NameSpaceSymbTable {
 
                 result.add(n.n);
             }
-        }	
+        }
     }
 
     /**
@@ -101,7 +101,7 @@ public class NameSpaceSymbTable {
      * Push a frame for a node.
      * Inclusive or Exclusive.
      **/
-    public void push() {		
+    public void push() {
         //Put the number of namespace definitions in the stack.
         level.add(null);
         cloned = false;
@@ -127,7 +127,7 @@ public class NameSpaceSymbTable {
     }
 
     final void needsClone() {
-        if (!cloned) {			
+        if (!cloned) {
             level.set(level.size() - 1, symb);
             symb = (SymbMap) symb.clone();
             cloned = true;
@@ -141,22 +141,22 @@ public class NameSpaceSymbTable {
      * @return null if there is no need to render the prefix. Otherwise the node of
      * definition.
      **/
-    public Attr getMapping(String prefix) {					
+    public Attr getMapping(String prefix) {
         NameSpaceSymbEntry entry = symb.get(prefix);
         if (entry == null) {
             //There is no definition for the prefix(a bug?).
             return null;
         }
-        if (entry.rendered) {		
+        if (entry.rendered) {
             //No need to render an entry already rendered.
-            return null;		
+            return null;
         }
         // Mark this entry as render.
         entry = (NameSpaceSymbEntry) entry.clone();
         needsClone();
         symb.put(prefix, entry);
         entry.rendered = true;
-        entry.lastrendered = entry.uri;				
+        entry.lastrendered = entry.uri;
         // Return the node for outputing.
         return entry.n;
     }
@@ -167,13 +167,13 @@ public class NameSpaceSymbTable {
      * @param prefix The prefix whose definition is neaded.
      * @return the attr to render, null if there is no need to render
      **/
-    public Attr getMappingWithoutRendered(String prefix) {					
+    public Attr getMappingWithoutRendered(String prefix) {
         NameSpaceSymbEntry entry = symb.get(prefix);
-        if (entry == null) {		
+        if (entry == null) {
             return null;
         }
-        if (entry.rendered) {		
-            return null;		
+        if (entry.rendered) {
+            return null;
         }
         return entry.n;
     }
@@ -185,25 +185,25 @@ public class NameSpaceSymbTable {
      * @param n the attribute that have the definition
      * @return true if there is already defined.
      **/
-    public boolean addMapping(String prefix, String uri, Attr n) {						
-        NameSpaceSymbEntry ob = symb.get(prefix);		
+    public boolean addMapping(String prefix, String uri, Attr n) {
+        NameSpaceSymbEntry ob = symb.get(prefix);
         if (ob != null && uri.equals(ob.uri)) {
             //If we have it previously defined. Don't keep working.
             return false;
-        }			
+        }
         //Creates and entry in the table for this new definition.
-        NameSpaceSymbEntry ne = new NameSpaceSymbEntry(uri, n, false, prefix);		
+        NameSpaceSymbEntry ne = new NameSpaceSymbEntry(uri, n, false, prefix);
         needsClone();
         symb.put(prefix, ne);
         if (ob != null) {
-            //We have a previous definition store it for the pop.			
-            //Check if a previous definition(not the inmidiatly one) has been rendered.			
-            ne.lastrendered = ob.lastrendered;			
+            //We have a previous definition store it for the pop.
+            //Check if a previous definition(not the inmidiatly one) has been rendered.
+            ne.lastrendered = ob.lastrendered;
             if (ob.lastrendered != null && ob.lastrendered.equals(uri)) {
                 //Yes it is. Mark as rendered.
                 ne.rendered = true;
-            }			
-        } 			
+            }
+        }
         return true;
     }
 
@@ -320,15 +320,15 @@ class SymbMap implements Cloneable {
         keys = new String[free];
     }
 
-    void put(String key, NameSpaceSymbEntry value) {		
+    void put(String key, NameSpaceSymbEntry value) {
         int index = index(key);
         Object oldKey = keys[index];
         keys[index] = key;
         entries[index] = value;
-        if ((oldKey == null || !oldKey.equals(key)) && --free == 0) {	        	
+        if ((oldKey == null || !oldKey.equals(key)) && --free == 0) {
             free = entries.length;
-            int newCapacity = free << 2;				
-            rehash(newCapacity);			
+            int newCapacity = free << 2;
+            rehash(newCapacity);
         }
     }
 
@@ -339,10 +339,10 @@ class SymbMap implements Cloneable {
                 a.add(entries[i]);
             }
         }
-        return a;		
+        return a;
     }
 
-    protected int index(Object obj) {		
+    protected int index(Object obj) {
         Object[] set = keys;
         int length = set.length;
         //abs of index

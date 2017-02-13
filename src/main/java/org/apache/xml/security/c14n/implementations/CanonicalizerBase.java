@@ -241,7 +241,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
             return;
         }
         Node sibling = null;
-        Node parentNode = null;    	
+        Node parentNode = null;
         final OutputStream writer = this.writer;
         final Node excludeNode = this.excludeNode;
         final boolean includeComments = this.includeComments;
@@ -317,7 +317,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
             default :
                 break;
             }
-            while (sibling == null && parentNode != null) {    		      		      			
+            while (sibling == null && parentNode != null) {
                 writer.write(END_TAG.clone());
                 UtfHelpper.writeByte(((Element)parentNode).getTagName(), writer, cache);
                 writer.write('>');
@@ -331,7 +331,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
                 if (parentNode == null || Node.ELEMENT_NODE != parentNode.getNodeType()) {
                     documentLevel = NODE_AFTER_DOCUMENT_ELEMENT;
                     parentNode = null;
-                }    			
+                }
             }
             if (sibling == null) {
                 return;
@@ -388,7 +388,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
         if (isVisibleInt(currentNode) == -1) {
             return;
         }
-        boolean currentNodeIsVisible = false;	
+        boolean currentNodeIsVisible = false;
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         if (currentNode != null && Node.ELEMENT_NODE == currentNode.getNodeType()) {
             getParentNameSpaces((Element)currentNode, ns);
@@ -397,7 +397,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
             return;
         }
         Node sibling = null;
-        Node parentNode = null;	
+        Node parentNode = null;
         OutputStream writer = this.writer;
         int documentLevel = NODE_BEFORE_DOCUMENT_ELEMENT;
         Map<String, byte[]> cache = new HashMap<String, byte[]>();
@@ -417,7 +417,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
                 sibling = currentNode.getFirstChild();
                 break;
 
-            case Node.COMMENT_NODE :			
+            case Node.COMMENT_NODE :
                 if (this.includeComments && isVisibleDO(currentNode, ns.getLevel()) == 1) {
                     outputCommentToWriter((Comment) currentNode, writer, documentLevel);
                 }
@@ -486,13 +486,13 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
                         ns.outputNodePop();
                     } else {
                         ns.pop();
-                    }				
+                    }
                     if (parentNode != null) {
                         sibling = currentNode.getNextSibling();
                     }
                 } else {
                     parentNode = currentElement;
-                }			
+                }
                 break;
 
             case Node.DOCUMENT_TYPE_NODE :
@@ -517,7 +517,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
                 if (parentNode == null || Node.ELEMENT_NODE != parentNode.getNodeType()) {
                     parentNode = null;
                     documentLevel = NODE_AFTER_DOCUMENT_ELEMENT;
-                }    			
+                }
             }
             if (sibling == null) {
                 return;
@@ -530,7 +530,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
     protected int isVisibleDO(Node currentNode, int level) {
         if (nodeFilter != null) {
             Iterator<NodeFilter> it = nodeFilter.iterator();
-            while (it.hasNext()) {   	
+            while (it.hasNext()) {
                 int i = it.next().isNodeIncludeDO(currentNode, level);
                 if (i != 1) {
                     return i;
@@ -546,7 +546,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
     protected int isVisibleInt(Node currentNode) {
         if (nodeFilter != null) {
             Iterator<NodeFilter> it = nodeFilter.iterator();
-            while (it.hasNext()) {   			
+            while (it.hasNext()) {
                 int i = it.next().isNodeInclude(currentNode);
                 if (i != 1) {
                     return i;
@@ -562,7 +562,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
     protected boolean isVisible(Node currentNode) {
         if (nodeFilter != null) {
             Iterator<NodeFilter> it = nodeFilter.iterator();
-            while (it.hasNext()) {   			
+            while (it.hasNext()) {
                 if (it.next().isNodeInclude(currentNode) != 1) {
                     return false;
                 }
@@ -744,7 +744,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
      */
     protected void outputPItoWriter(
         ProcessingInstruction currentPI, OutputStream writer, int position
-    ) throws IOException {   	
+    ) throws IOException {
         if (position == NODE_AFTER_DOCUMENT_ELEMENT) {
             writer.write('\n');
         }
@@ -800,7 +800,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
      */
     protected void outputCommentToWriter(
         Comment currentComment, OutputStream writer, int position
-    ) throws IOException {   	
+    ) throws IOException {
         if (position == NODE_AFTER_DOCUMENT_ELEMENT) {
             writer.write('\n');
         }

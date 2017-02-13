@@ -66,7 +66,7 @@ public final class ECDSAUtils {
     }
 
     public static ECCurveDefinition getECCurveDefinition(String oid) {
-        org.apache.xml.security.algorithms.implementations.ECDSAUtils.ECCurveDefinition curveDef = 
+        org.apache.xml.security.algorithms.implementations.ECDSAUtils.ECCurveDefinition curveDef =
             org.apache.xml.security.algorithms.implementations.ECDSAUtils.getECCurveDefinition(oid);
         if (curveDef != null) {
             return new ECCurveDefinition(curveDef.getName(), curveDef.getOid(), curveDef.getField(), curveDef.getA(),
@@ -76,9 +76,9 @@ public final class ECDSAUtils {
         return null;
     }
 
-    public static class ECCurveDefinition 
+    public static class ECCurveDefinition
         extends org.apache.xml.security.algorithms.implementations.ECDSAUtils.ECCurveDefinition {
-        
+
         public ECCurveDefinition(String name, String oid, String field, String a, String b, String x, String y, String n, int h) {
             super(name, oid, field, a, b, x, y, n, h);
         }

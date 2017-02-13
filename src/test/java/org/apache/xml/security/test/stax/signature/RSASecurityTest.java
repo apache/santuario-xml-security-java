@@ -81,7 +81,7 @@ public class RSASecurityTest extends AbstractSignatureVerificationTest {
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
            xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
         }
-        
+
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
         InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
@@ -117,7 +117,7 @@ public class RSASecurityTest extends AbstractSignatureVerificationTest {
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
            xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
         }
-        
+
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
         InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);

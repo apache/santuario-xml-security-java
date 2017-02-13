@@ -541,7 +541,7 @@ public class XMLSignatureInput {
     /**
      * @param filter
      */
-    public void addNodeFilter(NodeFilter filter) {	
+    public void addNodeFilter(NodeFilter filter) {
         if (isOctetStream()) {
             try {
                 convertToNodes();

@@ -77,7 +77,7 @@ public class X509SubjectNameResolver extends KeyResolverSpi {
         if (log.isDebugEnabled()) {
             log.debug("Can I resolve " + element.getTagName() + "?");
         }
-        Element[] x509childNodes = null;	
+        Element[] x509childNodes = null;
         XMLX509SubjectName x509childObject[] = null;
 
         if (!XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_X509DATA)) {

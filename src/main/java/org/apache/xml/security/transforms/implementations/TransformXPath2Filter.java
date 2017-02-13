@@ -179,7 +179,7 @@ class XPath2NodeFilter implements NodeFilter {
     /**
      * @see org.apache.xml.security.signature.NodeFilter#isNodeInclude(org.w3c.dom.Node)
      */
-    public int isNodeInclude(Node currentNode) {	
+    public int isNodeInclude(Node currentNode) {
         int result = 1;
 
         if (hasSubtractFilter && rooted(currentNode, subtractNodes)) {
@@ -189,7 +189,7 @@ class XPath2NodeFilter implements NodeFilter {
         }
 
         //TODO OPTIMIZE
-        if (result == 1) {     	
+        if (result == 1) {
             return 1;
         }
         if (hasUnionFilter) {
@@ -197,7 +197,7 @@ class XPath2NodeFilter implements NodeFilter {
                 return 1;
             }
             result = 0;
-        }    	
+        }
         return result;
     }
 
@@ -208,8 +208,8 @@ class XPath2NodeFilter implements NodeFilter {
                 if (inList(n, subtractNodes)) {
                     inSubtract = level;
                 } else {
-                    inSubtract = -1;   			
-                }		
+                    inSubtract = -1;
+                }
             }
             if (inSubtract != -1){
                 result = -1;
@@ -221,14 +221,14 @@ class XPath2NodeFilter implements NodeFilter {
                 inIntersect = -1;
                 result = 0;
             } else {
-                inIntersect = level;   			
-            }		
+                inIntersect = level;
+            }
         }
 
         if (level <= inUnion) {
             inUnion = -1;
         }
-        if (result == 1) {     	
+        if (result == 1) {
             return 1;
         }
         if (hasUnionFilter) {

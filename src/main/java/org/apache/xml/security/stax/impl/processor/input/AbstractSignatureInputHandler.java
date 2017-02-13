@@ -157,7 +157,7 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
                     null,
                     signatureType.getSignedInfo().getCanonicalizationMethod().getAlgorithm(),
                     XMLSecurityConstants.DIRECTION.IN);
-    
+
             Iterator<XMLSecEvent> iterator = eventDeque.descendingIterator();
             //forward to <Signature> Element
             int i = 0;
@@ -198,18 +198,18 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
                 XMLStreamReader xmlStreamReader = inputProcessorChain.getSecurityContext().
                         <XMLInputFactory>get(XMLSecurityConstants.XMLINPUTFACTORY).
                         createXMLStreamReader(is);
-    
+
                 while (xmlStreamReader.hasNext()) {
                     XMLSecEvent xmlSecEvent = XMLSecEventFactory.allocate(xmlStreamReader, null);
                     signedInfoDeque.push(xmlSecEvent);
                     xmlStreamReader.next();
                 }
-    
+
                 @SuppressWarnings("unchecked")
                 final SignedInfoType signedInfoType =
                         ((JAXBElement<SignedInfoType>) parseStructure(signedInfoDeque, 0, securityProperties)).getValue();
                 signatureType.setSignedInfo(signedInfoType);
-    
+
                 return signedInfoDeque;
             }
         } catch (XMLStreamException | IOException e) {

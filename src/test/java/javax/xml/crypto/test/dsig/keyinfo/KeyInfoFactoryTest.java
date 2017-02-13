@@ -186,7 +186,7 @@ public class KeyInfoFactoryTest extends org.junit.Assert {
             fail("Should raise a NPE for null URI");
         } catch (NullPointerException npe) {}
 
-        // test RetrievalMethod(String, String, List)	
+        // test RetrievalMethod(String, String, List)
         try {
             rm = factory.newRetrievalMethod(null, null, null);
             fail("Should raise a NPE for null URI");

@@ -119,12 +119,12 @@ public class XMLSecurityException extends Exception {
 
         this.msgID = msgID;
     }
-    
+
     @Deprecated
     public XMLSecurityException(String msgID, Exception originalException) {
         this(originalException, msgID);
     }
-    
+
     /**
      * Constructor XMLSecurityException
      *
@@ -137,7 +137,7 @@ public class XMLSecurityException extends Exception {
 
         this.msgID = msgID;
     }
-    
+
     @Deprecated
     public XMLSecurityException(String msgID, Object[] exArgs, Exception originalException) {
         this(originalException, msgID, exArgs);

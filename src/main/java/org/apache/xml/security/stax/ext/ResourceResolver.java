@@ -33,6 +33,6 @@ public interface ResourceResolver {
     boolean isSameDocumentReference();
 
     boolean matches(XMLSecStartElement xmlSecStartElement);
-    
+
     InputStream getInputStreamFromExternalReference() throws XMLSecurityException;
 }

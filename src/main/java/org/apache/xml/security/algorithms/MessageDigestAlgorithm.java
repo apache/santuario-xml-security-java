@@ -108,7 +108,7 @@ public class MessageDigestAlgorithm extends Algorithm {
 
         MessageDigest md;
         String provider = JCEMapper.getProviderId();
-        try {      	
+        try {
             if (provider == null) {
                 md = MessageDigest.getInstance(algorithmID);
             } else {

@@ -84,7 +84,7 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
         try {
             // Create a retrieval method over the given element
             RetrievalMethod rm = new RetrievalMethod(element, baseURI);
-            String type = rm.getType();		
+            String type = rm.getType();
             XMLSignatureInput resource = resolveInput(rm, baseURI, secureValidation);
             if (RetrievalMethod.TYPE_RAWX509.equals(type)) {
                 // a raw certificate, direct parsing is done!
@@ -158,7 +158,7 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
 
         try {
             RetrievalMethod rm = new RetrievalMethod(element, baseURI);
-            String type = rm.getType();		
+            String type = rm.getType();
             XMLSignatureInput resource = resolveInput(rm, baseURI, secureValidation);
             if (RetrievalMethod.TYPE_RAWX509.equals(type)) {
                 return getRawCertificate(resource);
@@ -280,7 +280,7 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
 
     private static X509Certificate getRawCertificate(XMLSignatureInput resource)
         throws CanonicalizationException, IOException, CertificateException {
-        byte inputBytes[] = resource.getBytes();	
+        byte inputBytes[] = resource.getBytes();
         // if the resource stores a raw certificate, we have to handle it
         CertificateFactory certFact =
             CertificateFactory.getInstance(XMLX509Certificate.JCA_CERT_ID);
@@ -307,7 +307,7 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
                 log.debug("We have Transforms");
             }
             resource = transforms.performTransforms(resource);
-        }		
+        }
         return resource;
     }
 

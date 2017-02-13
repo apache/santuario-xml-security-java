@@ -121,7 +121,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        
+
         XMLStreamReader xmlStreamReader = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
            xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
@@ -162,7 +162,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        
+
         XMLStreamReader xmlStreamReader = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
            xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
@@ -203,7 +203,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        
+
         XMLStreamReader xmlStreamReader = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
            xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
@@ -249,7 +249,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
            xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
         }
-        
+
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(rsaKeyPair.getPublic());
@@ -293,7 +293,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
            xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
         }
-        
+
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(rsaKeyPair.getPublic());
@@ -332,12 +332,12 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        
+
         XMLStreamReader xmlStreamReader = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
            xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
         }
-        
+
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(rsaKeyPair.getPublic());
@@ -376,12 +376,12 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
-        
+
         XMLStreamReader xmlStreamReader = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
            xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
         }
-        
+
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(rsaKeyPair.getPublic());
@@ -425,7 +425,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
            xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
         }
-        
+
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(rsaKeyPair.getPublic());
@@ -469,7 +469,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
            xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
         }
-        
+
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(rsaKeyPair.getPublic());
@@ -513,7 +513,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
            xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
         }
-        
+
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(rsaKeyPair.getPublic());
@@ -554,7 +554,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
            xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
         }
-        
+
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(ecKeyPair.getPublic());
@@ -595,7 +595,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
            xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
         }
-        
+
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(ecKeyPair.getPublic());
@@ -636,7 +636,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
            xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
         }
-        
+
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(ecKeyPair.getPublic());
@@ -677,7 +677,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
            xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
         }
-        
+
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(ecKeyPair.getPublic());
@@ -718,7 +718,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
            xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
         }
-        
+
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(ecKeyPair.getPublic());
@@ -762,7 +762,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
            xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
         }
-        
+
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(ecKeyPair.getPublic());

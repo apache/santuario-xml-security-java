@@ -115,7 +115,7 @@ public class SignatureVerificationReferenceURIResolverTest extends AbstractSigna
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
            xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
         }
-        
+
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(cert.getPublicKey());
@@ -185,7 +185,7 @@ public class SignatureVerificationReferenceURIResolverTest extends AbstractSigna
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
            xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
         }
-        
+
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(cert.getPublicKey());
@@ -265,7 +265,7 @@ public class SignatureVerificationReferenceURIResolverTest extends AbstractSigna
             try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
                xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
             }
-            
+
             // Verify signature
             XMLSecurityProperties properties = new XMLSecurityProperties();
             properties.setSignatureVerificationKey(cert.getPublicKey());
@@ -343,7 +343,7 @@ public class SignatureVerificationReferenceURIResolverTest extends AbstractSigna
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
            xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
         }
-        
+
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(cert.getPublicKey());
@@ -417,7 +417,7 @@ public class SignatureVerificationReferenceURIResolverTest extends AbstractSigna
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
            xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
         }
-        
+
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(cert.getPublicKey());

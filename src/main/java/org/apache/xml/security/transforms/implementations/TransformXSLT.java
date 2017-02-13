@@ -113,9 +113,9 @@ public class TransformXSLT extends TransformSpi {
                     Transformer transformer = tFactory.newTransformer();
                     DOMSource source = new DOMSource(xsltElement);
                     StreamResult result = new StreamResult(os);
-    
+
                     transformer.transform(source, result);
-    
+
                     stylesheet =
                         new StreamSource(new ByteArrayInputStream(os.toByteArray()));
                 }

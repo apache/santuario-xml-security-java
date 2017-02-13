@@ -73,7 +73,7 @@ public class ResolverSameDocument implements ResourceResolver, ResourceResolverL
     public boolean matches(XMLSecStartElement xmlSecStartElement) {
         return this.matches(xmlSecStartElement, XMLSecurityConstants.ATT_NULL_Id);
     }
-    
+
     public boolean matches(XMLSecStartElement xmlSecStartElement, QName idAttributeNS) {
         if (id.isEmpty()) {
             if (firstElementOccured) {

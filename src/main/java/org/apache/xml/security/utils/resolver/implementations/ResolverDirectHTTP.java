@@ -96,7 +96,7 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
     @Override
     public XMLSignatureInput engineResolveURI(ResourceResolverContext context)
         throws ResourceResolverException {
-        
+
         try {
             // calculate new URI
             URI uriNew = getNewURI(context.uriToResolve, context.baseUri);
@@ -131,16 +131,16 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
                 byte[] buf = new byte[4096];
                 int read = 0;
                 int summarized = 0;
-    
+
                 while ((read = inputStream.read(buf)) >= 0) {
                     baos.write(buf, 0, read);
                     summarized += read;
                 }
-    
+
                 if (log.isDebugEnabled()) {
                     log.debug("Fetched " + summarized + " bytes from URI " + uriNew.toString());
                 }
-                
+
                 XMLSignatureInput result = new XMLSignatureInput(baos.toByteArray());
                 result.setSecureValidation(context.secureValidation);
 

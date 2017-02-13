@@ -119,7 +119,7 @@ public final class UtfHelpper {
     }
 
     @Deprecated
-    public static void writeCharToUtf8(final char c, final OutputStream out) throws IOException {       
+    public static void writeCharToUtf8(final char c, final OutputStream out) throws IOException {
         if (c < 0x80) {
             out.write(c);
             return;
@@ -133,14 +133,14 @@ public final class UtfHelpper {
         int write;
         char ch;
         if (c > 0x07FF) {
-            ch = (char)(c>>>12);      
+            ch = (char)(c>>>12);
             write = 0xE0;
             if (ch > 0) {
                 write |= ch & 0x0F;
-            } 
+            }
             out.write(write);
             write = 0x80;
-            bias = 0x3F;        
+            bias = 0x3F;
         } else {
             write = 0xC0;
             bias = 0x1F;
@@ -148,12 +148,12 @@ public final class UtfHelpper {
         ch = (char)(c>>>6);
         if (ch > 0) {
             write |= ch & bias;
-        } 
+        }
         out.write(write);
-        out.write(0x80 | ((c) & 0x3F));    
+        out.write(0x80 | ((c) & 0x3F));
 
     }
-    
+
     public static void writeStringToUtf8(
         final String str, final OutputStream out
     ) throws IOException {

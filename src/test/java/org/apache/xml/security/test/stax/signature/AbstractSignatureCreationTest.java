@@ -76,7 +76,7 @@ public class AbstractSignatureCreationTest extends Assert {
     ) throws Exception {
         verifyUsingDOM(document, cert, secureParts, null);
     }
-    
+
     /**
      * Verify the document using DOM
      */
@@ -88,7 +88,7 @@ public class AbstractSignatureCreationTest extends Assert {
     ) throws Exception {
         verifyUsingDOM(document, cert, secureParts, resourceResolverSpi, true, "Id");
     }
-    
+
     /**
      * Verify the document using DOM
      */

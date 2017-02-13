@@ -899,7 +899,7 @@ public class XMLCipher {
         if (algorithm == null) {
             throw new XMLEncryptionException("empty", "XMLCipher instance without transformation specified");
         }
-        encryptData(contextDocument, element, true);	
+        encryptData(contextDocument, element, true);
 
         Element encryptedElement = factory.toElement(ed);
 
@@ -1720,7 +1720,7 @@ public class XMLCipher {
         Node sourceParent = element.getParentNode();
         try {
             Node decryptedNode = serializer.deserialize(octets, sourceParent);
-    
+
             // The de-serialiser returns a node whose children we need to take on.
             if (sourceParent != null && Node.DOCUMENT_NODE == sourceParent.getNodeType()) {
                 // If this is a content decryption, this may have problems

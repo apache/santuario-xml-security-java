@@ -72,7 +72,7 @@ public class CanonicalizationException extends XMLSecurityException {
     public CanonicalizationException(Exception originalException, String msgID) {
         super(originalException, msgID);
     }
-    
+
     @Deprecated
     public CanonicalizationException(String msgID, Exception originalException) {
         this(originalException, msgID);
@@ -90,7 +90,7 @@ public class CanonicalizationException extends XMLSecurityException {
     ) {
         super(originalException, msgID, exArgs);
     }
-    
+
     @Deprecated
     public CanonicalizationException(String msgID, Object exArgs[], Exception originalException) {
         this(originalException, msgID, exArgs);

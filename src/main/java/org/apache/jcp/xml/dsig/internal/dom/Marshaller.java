@@ -82,14 +82,14 @@ class Marshaller {
         // create and append PGPKeyID element
         byte[] keyId = pgpData.getKeyId();
         if (keyId != null) {
-            xwriter.writeTextElement(dsPrefix, "PGPKeyID", XMLSignature.XMLNS, 
+            xwriter.writeTextElement(dsPrefix, "PGPKeyID", XMLSignature.XMLNS,
                                      Base64.getMimeEncoder().encodeToString(keyId));
         }
 
         // create and append PGPKeyPacket element
         byte[] keyPacket = pgpData.getKeyPacket();
         if (keyPacket != null) {
-            xwriter.writeTextElement(dsPrefix, "XMLSignature.XMLNS", XMLSignature.XMLNS, 
+            xwriter.writeTextElement(dsPrefix, "XMLSignature.XMLNS", XMLSignature.XMLNS,
                                      Base64.getMimeEncoder().encodeToString(keyPacket));
         }
 

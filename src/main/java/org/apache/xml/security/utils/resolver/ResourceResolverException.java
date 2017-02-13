@@ -79,7 +79,7 @@ public class ResourceResolverException extends XMLSecurityException {
         this.uri = uri;
         this.baseURI = baseURI;
     }
-    
+
     @Deprecated
     public ResourceResolverException(String msgID, Exception originalException,
                                      String uri, String baseURI) {
@@ -102,7 +102,7 @@ public class ResourceResolverException extends XMLSecurityException {
         this.uri = uri;
         this.baseURI = baseURI;
     }
-    
+
     @Deprecated
     public ResourceResolverException(String msgID, Object exArgs[],
                                      Exception originalException, String uri,

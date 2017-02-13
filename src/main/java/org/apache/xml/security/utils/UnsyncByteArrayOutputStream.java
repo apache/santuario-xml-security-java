@@ -26,9 +26,9 @@ import java.io.OutputStream;
  * @author raul
  *
  */
-public class UnsyncByteArrayOutputStream extends OutputStream  {	
+public class UnsyncByteArrayOutputStream extends OutputStream  {
 
-    // Maximum array size. Using same value as ArrayList in OpenJDK. 
+    // Maximum array size. Using same value as ArrayList in OpenJDK.
     // Integer.MAX_VALUE doesn't work on some VMs, as some header values are reserved
     private static final int VM_ARRAY_INDEX_MAX_VALUE = Integer.MAX_VALUE - 8;
     private static final int INITIAL_SIZE = 8192;
@@ -73,7 +73,7 @@ public class UnsyncByteArrayOutputStream extends OutputStream  {
         if (newPos > size) {
             expandSize(newPos);
         }
-        buf[pos++] = (byte)arg0;		
+        buf[pos++] = (byte)arg0;
     }
 
     public byte[] toByteArray() {
@@ -85,7 +85,7 @@ public class UnsyncByteArrayOutputStream extends OutputStream  {
     public void reset() {
         pos = 0;
     }
-    
+
     /**
      * Takes the contents of this stream and writes it to the output stream
      * {@code out}.

@@ -86,7 +86,7 @@ public class X509CertificateResolver extends KeyResolverSpi {
                     XMLUtils.selectDsNode(element.getFirstChild(), Constants._TAG_X509DATA, 0);
                 if (el != null) {
                     return engineLookupResolveX509Certificate(el, baseURI, storage);
-                }        	
+                }
                 return null;
             }
 

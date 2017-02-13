@@ -85,7 +85,7 @@ public abstract class Canonicalizer11 extends CanonicalizerBase {
                 int newSize = levels.size();
                 if (newSize == 0) {
                     lastlevel = 0;
-                    return;    				
+                    return;
                 }
                 lastlevel = levels.get(newSize - 1).level;
             }
@@ -125,7 +125,7 @@ public abstract class Canonicalizer11 extends CanonicalizerBase {
                 return;
             }
 
-            Map<String, Attr> loa = new HashMap<String, Attr>();    		
+            Map<String, Attr> loa = new HashMap<String, Attr>();
             List<Attr> baseAttrs = new ArrayList<>();
             boolean successiveOmitted = true;
             for (; size >= 0; size--) {
@@ -294,7 +294,7 @@ public abstract class Canonicalizer11 extends CanonicalizerBase {
         if (firstCall) {
             // It is the first node of the subtree
             // Obtain all the namespaces defined in the parents, and added to the output.
-            ns.getUnrenderedNodes(result);          	      		
+            ns.getUnrenderedNodes(result);
             // output the attributes in the xml namespace.
             xmlattrStack.getXmlnsAttr(result);
             firstCall = false;

@@ -195,7 +195,7 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
             try {
                 // A reflection hack to avoid breaking the ResourceResolver interface for SANTUARIO-407.
                 Method m = resolver.getClass().getMethod("matches", XMLSecStartElement.class, QName.class);
-                if (m != null 
+                if (m != null
                     && (Boolean)m.invoke(resolver, xmlSecStartElement, getSecurityProperties().getIdAttributeNS())) {
                     if (referenceTypes == Collections.<ReferenceType>emptyList()) {
                         referenceTypes = new ArrayList<>();
@@ -210,7 +210,7 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
             } catch (IllegalAccessException ex) {
                 // No need to report this
             }
-            
+
             if (!resourceMatches && keyValue.getKey().matches(xmlSecStartElement)) {
                 if (referenceTypes == Collections.<ReferenceType>emptyList()) {
                     referenceTypes = new ArrayList<>();

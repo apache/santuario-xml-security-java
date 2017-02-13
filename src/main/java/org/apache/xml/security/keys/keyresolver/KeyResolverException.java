@@ -67,7 +67,7 @@ public class KeyResolverException extends XMLSecurityException {
     public KeyResolverException(Exception originalException, String msgID) {
         super(originalException, msgID);
     }
-    
+
     @Deprecated
     public KeyResolverException(String msgID, Exception originalException) {
         this(originalException, msgID);
@@ -83,7 +83,7 @@ public class KeyResolverException extends XMLSecurityException {
     public KeyResolverException(Exception originalException, String msgID, Object exArgs[]) {
         super(originalException, msgID, exArgs);
     }
-    
+
     @Deprecated
     public KeyResolverException(String msgID, Object[] exArgs, Exception originalException) {
         this(originalException, msgID, exArgs);

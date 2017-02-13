@@ -66,7 +66,7 @@ public class XMLEncryptionException extends XMLSecurityException {
         super(originalException, msgID);
 
     }
-    
+
     @Deprecated
     public XMLEncryptionException(String msgID, Exception originalException) {
         this(originalException, msgID);
@@ -80,7 +80,7 @@ public class XMLEncryptionException extends XMLSecurityException {
     public XMLEncryptionException(Exception originalException, String msgID, Object exArgs[]) {
         super(originalException, msgID, exArgs);
     }
-    
+
     @Deprecated
     public XMLEncryptionException(String msgID, Object[] exArgs, Exception originalException) {
         this(originalException, msgID, exArgs);

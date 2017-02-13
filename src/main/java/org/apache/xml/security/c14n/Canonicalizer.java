@@ -255,10 +255,10 @@ public class Canonicalizer {
         Document document = null;
         try (InputStream bais = new ByteArrayInputStream(inputBytes)) {
             InputSource in = new InputSource(bais);
-    
+
             // needs to validate for ID attribute normalization
             DocumentBuilder db = XMLUtils.createDocumentBuilder(true, secureValidation);
-    
+
             /*
              * for some of the test vectors from the specification,
              * there has to be a validating parser for ID attributes, default
@@ -281,7 +281,7 @@ public class Canonicalizer {
              * canonical form.
              */
             db.setErrorHandler(new org.apache.xml.security.utils.IgnoreAllErrorHandler());
-    
+
             try {
                 document = db.parse(in);
             } finally {

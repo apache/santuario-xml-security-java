@@ -393,7 +393,7 @@ public class Canonicalizer11Test extends org.junit.Assert {
         // if everything is OK, result is true; we do a binary compare, byte by byte
         boolean result = java.security.MessageDigest.isEqual(refBytes, c14nBytes);
 
-        if (!result) {    	
+        if (!result) {
             File f = new File(fileOut);
             if (!f.exists()) {
                 File parent = new File(f.getParent());

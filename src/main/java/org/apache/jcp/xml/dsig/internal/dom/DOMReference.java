@@ -246,7 +246,7 @@ public final class DOMReference extends DOMStructure
         Element dvElem = DOMUtils.getNextSiblingElement(dmElem, "DigestValue", XMLSignature.XMLNS);
         String content = XMLUtils.getFullTextChildrenFromElement(dvElem);
         this.digestValue = Base64.getMimeDecoder().decode(content);
-        
+
         // check for extra elements
         if (DOMUtils.getNextSiblingElement(dvElem) != null) {
             throw new MarshalException(

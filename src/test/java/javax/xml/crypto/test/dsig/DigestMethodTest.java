@@ -47,7 +47,7 @@ public class DigestMethodTest extends org.junit.Assert {
         DigestMethod dm;
         for (int i = 0; i < MD_ALGOS.length; i++) {
             String algo = MD_ALGOS[i];
-            dm = factory.newDigestMethod(algo, null);	
+            dm = factory.newDigestMethod(algo, null);
             try {
                 dm.isFeatureSupported(null);
                 fail("Should raise a NPE for null feature");

@@ -48,7 +48,7 @@ public class TransformC14N11 extends TransformSpi {
             c14n.setWriter(os);
         }
         byte[] result = null;
-        result = c14n.engineCanonicalize(input);         		         	
+        result = c14n.engineCanonicalize(input);
         XMLSignatureInput output = new XMLSignatureInput(result);
         output.setSecureValidation(secureValidation);
         if (os != null) {

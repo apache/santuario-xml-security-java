@@ -63,7 +63,7 @@ public class ContentHandlerAlreadyRegisteredException extends XMLSecurityExcepti
     public ContentHandlerAlreadyRegisteredException(Exception originalException, String msgID) {
         super(originalException, msgID);
     }
-    
+
     @Deprecated
     public ContentHandlerAlreadyRegisteredException(String msgID, Exception originalException) {
         this(originalException, msgID);
@@ -81,7 +81,7 @@ public class ContentHandlerAlreadyRegisteredException extends XMLSecurityExcepti
     ) {
         super(originalException, msgID, exArgs);
     }
-    
+
     @Deprecated
     public ContentHandlerAlreadyRegisteredException(String msgID, Object[] exArgs, Exception originalException) {
         this(originalException, msgID, exArgs);

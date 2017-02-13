@@ -61,7 +61,7 @@ public class EncryptedKeyResolver extends KeyResolverSpi {
      * list
      * @param algorithm
      */
-    public EncryptedKeyResolver(String algorithm) {		
+    public EncryptedKeyResolver(String algorithm) {
         kek = null;
         this.algorithm = algorithm;
     }
@@ -71,7 +71,7 @@ public class EncryptedKeyResolver extends KeyResolverSpi {
      * @param algorithm
      * @param kek
      */
-    public EncryptedKeyResolver(String algorithm, Key kek) {		
+    public EncryptedKeyResolver(String algorithm, Key kek) {
         this.algorithm = algorithm;
         this.kek = kek;
     }

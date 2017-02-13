@@ -165,7 +165,7 @@ public final class XMLUtils {
         if (rootNode == exclude) {
             return;
         }
-        switch (rootNode.getNodeType()) {   	   		   	   			
+        switch (rootNode.getNodeType()) {
         case Node.ELEMENT_NODE:
             result.add(rootNode);
             Element el = (Element)rootNode;
@@ -177,7 +177,7 @@ public final class XMLUtils {
                 }
             }
             //no return keep working
-        case Node.DOCUMENT_NODE:   	   			
+        case Node.DOCUMENT_NODE:
             for (Node r = rootNode.getFirstChild(); r != null; r = r.getNextSibling()) {
                 if (r.getNodeType() == Node.TEXT_NODE) {
                     result.add(r);
@@ -617,8 +617,8 @@ public final class XMLUtils {
                 if (!element.hasChildNodes()) {
                     break;
                 }
-                if (element.hasAttributes()) {            	
-                    NamedNodeMap attributes = element.getAttributes();         	
+                if (element.hasAttributes()) {
+                    NamedNodeMap attributes = element.getAttributes();
                     int attributesLength = attributes.getLength();
 
                     for (Node child = element.getFirstChild(); child!=null;
@@ -640,7 +640,7 @@ public final class XMLUtils {
                             }
                             childElement.setAttributeNS(namespaceNs,
                                                         currentAttr.getName(),
-                                                        currentAttr.getNodeValue());         					
+                                                        currentAttr.getNodeValue());
                         }
                     }
                 }

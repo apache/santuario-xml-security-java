@@ -293,7 +293,7 @@ public class Base64 {
      * @throws Base64DecodingException
      *
      */
-    public static final byte[] decode(byte[] base64) throws Base64DecodingException  {   	
+    public static final byte[] decode(byte[] base64) throws Base64DecodingException  {
         return decodeInternal(base64, -1);
     }
 
@@ -604,12 +604,12 @@ public class Base64 {
      * @throws Base64DecodingException
      */
     public static final void decode(byte[] base64Data, OutputStream os)
-        throws Base64DecodingException, IOException {	
+        throws Base64DecodingException, IOException {
         decode(base64Data, os, -1);
     }
 
     protected static final void decode(byte[] base64Data, OutputStream os, int len)
-        throws Base64DecodingException, IOException {	
+        throws Base64DecodingException, IOException {
         // remove white spaces
         if (len == -1) {
             len = removeWhiteSpace(base64Data);

@@ -55,7 +55,7 @@ public class RSAKeyValueResolver extends KeyResolverSpi {
         } else if (XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_RSAKEYVALUE)) {
             // this trick is needed to allow the RetrievalMethodResolver to eat a
             // ds:RSAKeyValue directly (without KeyValue)
-            rsaKeyElement = element;		
+            rsaKeyElement = element;
         }
 
         if (rsaKeyElement == null) {

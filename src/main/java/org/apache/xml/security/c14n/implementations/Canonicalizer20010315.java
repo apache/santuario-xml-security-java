@@ -79,7 +79,7 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
                 int newSize = levels.size();
                 if (newSize == 0) {
                     lastlevel = 0;
-                    return;    				
+                    return;
                 }
                 lastlevel = levels.get(newSize - 1).level;
             }
@@ -119,7 +119,7 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
                 return;
             }
 
-            Map<String, Attr> loa = new HashMap<String, Attr>();    		
+            Map<String, Attr> loa = new HashMap<String, Attr>();
             for (; size >= 0; size--) {
                 e = levels.get(size);
                 Iterator<Attr> it = e.nodes.iterator();
@@ -233,7 +233,7 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
                     result.add(attribute);
                 } else if (!(XML.equals(NName) && XML_LANG_URI.equals(NValue))) {
                     //The default mapping for xml must not be output.
-                    Node n = ns.addMappingAndRender(NName, NValue, attribute);          		
+                    Node n = ns.addMappingAndRender(NName, NValue, attribute);
 
                     if (n != null) {
                         //Render the ns definition
@@ -252,7 +252,7 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
         if (firstCall) {
             //It is the first node of the subtree
             //Obtain all the namespaces defined in the parents, and added to the output.
-            ns.getUnrenderedNodes(result);          	      		
+            ns.getUnrenderedNodes(result);
             //output the attributes in the xml namespace.
             xmlattrStack.getXmlnsAttr(result);
             firstCall = false;
@@ -321,7 +321,7 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
                         }
                     } else {
                         if (isRealVisible && !XMLNS.equals(NName)) {
-                            ns.removeMapping(NName);	
+                            ns.removeMapping(NName);
                         } else {
                             ns.addMapping(NName, NValue, attribute);
                         }
@@ -329,13 +329,13 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
                 }
             }
         }
-        if (isRealVisible) {    	
+        if (isRealVisible) {
             //The element is visible, handle the xmlns definition
             Attr xmlns = element.getAttributeNodeNS(XMLNS_URI, XMLNS);
             Node n = null;
             if (xmlns == null) {
                 //No xmlns def just get the already defined.
-                n = ns.getMapping(XMLNS);        		
+                n = ns.getMapping(XMLNS);
             } else if (!isVisible(xmlns)) {
                 //There is a definition but the xmlns is not selected by the xpath.
                 //then xmlns=""

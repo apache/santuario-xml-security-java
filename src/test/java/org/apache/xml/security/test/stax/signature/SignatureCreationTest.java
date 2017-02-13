@@ -377,7 +377,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         // Specify the signature position
         properties.setIdAttributeNS(new QName(null, "ID"));
-        
+
         // Set the key up
         KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
@@ -422,8 +422,8 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts(),null,true,"ID");
     }
-    
-    
+
+
     @Test
     public void testMultipleElements() throws Exception {
         // Set up the Configuration
@@ -986,7 +986,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
             document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
-        
+
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
     }

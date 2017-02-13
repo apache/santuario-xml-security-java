@@ -713,10 +713,10 @@ public class Reference extends SignatureElementProxy {
         if (input.isPreCalculatedDigest()) {
             return getPreCalculatedDigest(input);
         }
-        
+
         MessageDigestAlgorithm mda = this.getMessageDigestAlgorithm();
         mda.reset();
-        
+
         try (DigesterOutputStream diOs = new DigesterOutputStream(mda);
             OutputStream os = new UnsyncBufferedOutputStream(diOs)) {
             XMLSignatureInput output = this.dereferenceURIandPerformTransforms(os);

@@ -993,7 +993,7 @@ public class KeyInfo extends SignatureElementProxy {
                             (Element) currentChild, uri, storage
                         );
 
-                    if (cert != null) {                	
+                    if (cert != null) {
                         return cert;
                     }
                 }
@@ -1024,7 +1024,7 @@ public class KeyInfo extends SignatureElementProxy {
             }
             keyResolver.setSecureValidation(secureValidation);
             X509Certificate cert = applyCurrentResolver(uri, keyResolver);
-            if (cert != null) {        	
+            if (cert != null) {
                 return cert;
             }
         }

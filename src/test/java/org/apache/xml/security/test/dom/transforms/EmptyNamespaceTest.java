@@ -83,7 +83,7 @@ public class EmptyNamespaceTest {
 
             transformer.transform(stream);
             transformer.doFinal();
-            
+
             String result = outputStream.toString();
             Assert.assertEquals(message, result);
         }

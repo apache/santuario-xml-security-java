@@ -136,7 +136,7 @@ public class TransformXPath extends TransformSpi {
         /**
          * @see org.apache.xml.security.signature.NodeFilter#isNodeInclude(org.w3c.dom.Node)
          */
-        public int isNodeInclude(Node currentNode) {			
+        public int isNodeInclude(Node currentNode) {
             try {
                 boolean include = xPathAPI.evaluate(currentNode, xpathnode, str, xpathElement);
                 if (include) {

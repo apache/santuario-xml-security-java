@@ -86,7 +86,7 @@ public class ResourceResolver {
                     } catch (InstantiationException e) {
                         throw new ResourceResolverException(e, context.uriToResolve, context.baseUri, "");
                     } catch (IllegalAccessException e) {
-                        throw new ResourceResolverException(e, context.uriToResolve, context.baseUri, "");			
+                        throw new ResourceResolverException(e, context.uriToResolve, context.baseUri, "");
                     }
                 }
 

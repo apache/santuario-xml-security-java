@@ -1574,7 +1574,7 @@ public class EncryptionCreationTest extends Assert {
                 "<ns:root xmlns=\"defns.com\" xmlns:ns=\"ns.com\"><elem xmlns=\"\">11</elem></ns:root>";
         try (InputStream sourceDocument = new ByteArrayInputStream(DATA2.getBytes("UTF8"))) {
             XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-    
+
             XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
             xmlStreamWriter.close();
         }

@@ -397,13 +397,13 @@ public class JCEMapper {
         if (log.isDebugEnabled()) {
             log.debug("Request for URI " + algorithmURI);
         }
-        
+
         if (algorithmURI != null) {
             return algorithmsMap.get(algorithmURI);
         }
         return null;
     }
-    
+
     /**
      * Gets the default Provider for obtaining the security algorithms
      * @return the default providerId.

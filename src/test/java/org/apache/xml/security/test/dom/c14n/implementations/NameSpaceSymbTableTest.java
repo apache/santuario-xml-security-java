@@ -188,13 +188,13 @@ public class NameSpaceSymbTableTest extends org.junit.Assert {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
 
-        ns.addMappingAndRender("generated-command", "http://foo.com/command",node1);        	
+        ns.addMappingAndRender("generated-command", "http://foo.com/command",node1);
         ns.addMappingAndRender("generated-event", "http://foo.com/event",node1);
         ns.addMappingAndRender("command", "http://foo.com/command",node1);
         ns.addMappingAndRender("ui", "http://foo.com/ui", node1);
         ns.addMappingAndRender("event", "http://foo.com/event", node1);
         ns.addMappingAndRender("instruction", "http://foo/instruction", node1);
-        ns.addMappingAndRender("directory", "http://foo.com/io/directory", node1);    		
+        ns.addMappingAndRender("directory", "http://foo.com/io/directory", node1);
         ns.addMappingAndRender("function", "http://foo.com/function", node1);
         ns.addMappingAndRender("xmlns", "http://www.w3.org/1999/xhtml", node1);
         ns.addMappingAndRender("ctrl", "http://foo.com/controls", node1);

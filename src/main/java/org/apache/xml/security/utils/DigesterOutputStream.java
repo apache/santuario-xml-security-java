@@ -36,7 +36,7 @@ public class DigesterOutputStream extends ByteArrayOutputStream {
      * @param mda
      */
     public DigesterOutputStream(MessageDigestAlgorithm mda) {
-        this.mda = mda;		
+        this.mda = mda;
     }
 
     /** @inheritDoc */

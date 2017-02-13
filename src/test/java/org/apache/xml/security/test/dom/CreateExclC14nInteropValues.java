@@ -344,7 +344,7 @@ public class CreateExclC14nInteropValues {
             try (InputStream is = new ByteArrayInputStream(xmlStr.getBytes("UTF8"))) {
                 importDoc = db.parse(is);
             }
-            
+
             obj.getElement().appendChild(doc.createTextNode("\n"));
             obj.getElement()
             .appendChild(doc.importNode(importDoc.getDocumentElement(), true));

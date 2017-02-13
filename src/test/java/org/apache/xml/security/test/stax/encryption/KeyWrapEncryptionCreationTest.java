@@ -613,7 +613,7 @@ public class KeyWrapEncryptionCreationTest extends Assert {
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
             document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
-        
+
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
         Assert.assertEquals(nodeList.getLength(), 0);
 

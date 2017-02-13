@@ -234,7 +234,7 @@ public class SignatureAlgorithm extends Algorithm {
      * @param signingKey
      * @throws XMLSignatureException
      */
-    public void initSign(Key signingKey) throws XMLSignatureException {	
+    public void initSign(Key signingKey) throws XMLSignatureException {
         signatureAlgorithm.engineInitSign(signingKey);
     }
 

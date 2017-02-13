@@ -92,7 +92,7 @@ public class RetrievalMethodTest extends org.junit.Assert {
             case 1:
                 rm = fac.newRetrievalMethod(uri, type, null);
                 break;
-            }		
+            }
             try {
                 rm.isFeatureSupported(null);
                 fail("Should raise a NPE for null feature");

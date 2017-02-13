@@ -100,7 +100,7 @@ public class TransformBase64Decode extends TransformSpi {
     ) throws IOException, CanonicalizationException, TransformationException {
         if (input.isElement()) {
             Node el = input.getSubNode();
-            if (input.getSubNode().getNodeType() == Node.TEXT_NODE) {         	
+            if (input.getSubNode().getNodeType() == Node.TEXT_NODE) {
                 el = el.getParentNode();
             }
             StringBuilder sb = new StringBuilder();

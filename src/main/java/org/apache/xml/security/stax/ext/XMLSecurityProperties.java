@@ -77,7 +77,7 @@ public class XMLSecurityProperties {
 
     private boolean signatureGenerateIds = true;
     private boolean signatureIncludeDigestTransform = true;
-    
+
     public XMLSecurityProperties() {
     }
 
@@ -143,10 +143,10 @@ public class XMLSecurityProperties {
         this.signaturePosition = signaturePosition;
     }
 
-    /** 
+    /**
      * Return the qualified name of the ID attribute used to sign the document.
      * By default, ID is used.
-     * 
+     *
      * @return the qualified name of the ID attribute
      */
     public QName getIdAttributeNS() {

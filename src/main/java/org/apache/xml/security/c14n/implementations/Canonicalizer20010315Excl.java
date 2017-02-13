@@ -272,7 +272,7 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
                         String prefix = attribute.getPrefix();
                         if (prefix != null && !(prefix.equals(XML) || prefix.equals(XMLNS))) {
                             visiblyUtilized.add(prefix);
-                        }					
+                        }
                         // Add to the result.
                         result.add(attribute);
                     }
@@ -306,7 +306,7 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
             }
         }
 
-        if (isOutputElement) {	
+        if (isOutputElement) {
             // The element is visible, handle the xmlns definition
             Attr xmlns = element.getAttributeNodeNS(XMLNS_URI, XMLNS);
             if (xmlns != null && !isVisible(xmlns)) {

@@ -102,7 +102,7 @@ public class CanonicalizationMethodTest extends org.junit.Assert {
                      new ExcC14NParameterSpec());
                 AlgorithmParameterSpec aps = cm.getParameterSpec();
                 assertNotNull(aps);
-                assertTrue(aps instanceof ExcC14NParameterSpec);	
+                assertTrue(aps instanceof ExcC14NParameterSpec);
             }
         }
 

@@ -220,9 +220,9 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
         try (OutputStream os = new UnsyncBufferedOutputStream(bos)) {
             ((DOMCanonicalizationMethod)
                 canonicalizationMethod).canonicalize(subTree, context, os);
-            
+
             os.flush();
-            
+
             byte[] signedInfoBytes = bos.toByteArray();
 
             // this whole block should only be done if logging is enabled

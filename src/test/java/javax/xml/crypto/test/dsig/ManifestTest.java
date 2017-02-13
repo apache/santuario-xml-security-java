@@ -68,7 +68,7 @@ public class ManifestTest extends org.junit.Assert {
                 man = fac.newManifest(refs, id);
                 expectedId = id;
                 break;
-            }		
+            }
             assertNotNull(man);
             assertTrue(Arrays.equals(man.getReferences().toArray(), refs.toArray()));
             assertEquals(man.getId(), expectedId);
@@ -154,7 +154,7 @@ public class ManifestTest extends org.junit.Assert {
     @org.junit.Test
     public void testgetReferences() throws Exception {
         List<Reference> refs = new ArrayList<>();
-        refs.add(VALID_REF);	
+        refs.add(VALID_REF);
         Manifest man = fac.newManifest(refs);
         @SuppressWarnings("unchecked")
         List<Reference> stored = man.getReferences();

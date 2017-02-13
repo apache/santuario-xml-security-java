@@ -154,7 +154,7 @@ public final class DOMX509Data extends BaseStructure implements X509Data {
 
     private static void marshalSKI(XmlWriter xwriter, byte[] skid, String dsPrefix)
     {
-        xwriter.writeTextElement(dsPrefix, "X509SKI", XMLSignature.XMLNS, 
+        xwriter.writeTextElement(dsPrefix, "X509SKI", XMLSignature.XMLNS,
                                  Base64.getMimeEncoder().encodeToString(skid));
     }
 
@@ -168,7 +168,7 @@ public final class DOMX509Data extends BaseStructure implements X509Data {
     {
         try {
             byte[] encoded = cert.getEncoded();
-            xwriter.writeTextElement(dsPrefix, "X509Certificate", XMLSignature.XMLNS, 
+            xwriter.writeTextElement(dsPrefix, "X509Certificate", XMLSignature.XMLNS,
                                      Base64.getMimeEncoder().encodeToString(encoded));
         } catch (CertificateEncodingException e) {
             throw new MarshalException("Error encoding X509Certificate", e);
@@ -180,7 +180,7 @@ public final class DOMX509Data extends BaseStructure implements X509Data {
     {
         try {
             byte[] encoded = crl.getEncoded();
-            xwriter.writeTextElement(dsPrefix, "X509CRL", XMLSignature.XMLNS, 
+            xwriter.writeTextElement(dsPrefix, "X509CRL", XMLSignature.XMLNS,
                                      Base64.getMimeEncoder().encodeToString(encoded));
         } catch (CRLException e) {
             throw new MarshalException("Error encoding X509CRL", e);

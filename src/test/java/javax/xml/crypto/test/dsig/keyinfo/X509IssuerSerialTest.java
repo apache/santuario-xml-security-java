@@ -44,13 +44,13 @@ public class X509IssuerSerialTest extends org.junit.Assert {
     @org.junit.Test
     public void testgetIssuerName() {
         X509IssuerSerial x509is = fac.newX509IssuerSerial(name,BigInteger.ZERO);
-        assertNotNull(x509is.getIssuerName());	
+        assertNotNull(x509is.getIssuerName());
     }
 
     @org.junit.Test
     public void testgetSerialNumber() {
         X509IssuerSerial x509is = fac.newX509IssuerSerial(name,BigInteger.ZERO);
-        assertNotNull(x509is.getSerialNumber());	
+        assertNotNull(x509is.getSerialNumber());
     }
 
     @org.junit.Test
