@@ -64,7 +64,7 @@ import org.xml.sax.SAXException;
  */
 public class RetrievalMethodResolver extends KeyResolverSpi {
 
-    private static org.slf4j.Logger LOG =
+    private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(RetrievalMethodResolver.class);
 
     /**

@@ -183,7 +183,7 @@ public final class XMLSignature extends SignatureElementProxy {
     public static final String ALGO_ID_SIGNATURE_ECDSA_RIPEMD160 =
         "http://www.w3.org/2007/05/xmldsig-more#ecdsa-ripemd160";
 
-    private static org.slf4j.Logger LOG =
+    private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(XMLSignature.class);
 
     /** ds:Signature.ds:SignedInfo element */

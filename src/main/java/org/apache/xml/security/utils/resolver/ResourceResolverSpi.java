@@ -30,7 +30,7 @@ import org.apache.xml.security.signature.XMLSignatureInput;
  */
 public abstract class ResourceResolverSpi {
 
-    private static org.slf4j.Logger LOG =
+    private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(ResourceResolverSpi.class);
 
     /** Field properties */

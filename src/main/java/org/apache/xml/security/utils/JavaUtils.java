@@ -32,7 +32,7 @@ import java.security.SecurityPermission;
  */
 public final class JavaUtils {
 
-    private static org.slf4j.Logger LOG =
+    private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(JavaUtils.class);
 
     private static final SecurityPermission REGISTER_PERMISSION =

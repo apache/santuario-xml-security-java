@@ -43,7 +43,7 @@ import org.apache.xml.security.keys.storage.StorageResolverSpi;
  */
 public class CertsInFilesystemDirectoryResolver extends StorageResolverSpi {
 
-    private static org.slf4j.Logger LOG =
+    private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(
             CertsInFilesystemDirectoryResolver.class
         );

@@ -36,7 +36,7 @@ import org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI;
  */
 public class ClassLoaderTest extends org.junit.Assert {
 
-    private static org.slf4j.Logger LOG =
+    private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(ClassLoaderTest.class);
 
     @SuppressWarnings("resource")

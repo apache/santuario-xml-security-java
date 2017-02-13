@@ -97,7 +97,7 @@ public class Transforms extends SignatureElementProxy {
     public static final String TRANSFORM_XPATH2FILTER
         = "http://www.w3.org/2002/06/xmldsig-filter2";
 
-    private static org.slf4j.Logger LOG =
+    private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(Transforms.class);
 
     private Element[] transforms;

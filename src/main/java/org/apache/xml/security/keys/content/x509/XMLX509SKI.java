@@ -36,7 +36,7 @@ import org.w3c.dom.Element;
  */
 public class XMLX509SKI extends SignatureElementProxy implements XMLX509DataContent {
 
-    private static org.slf4j.Logger LOG =
+    private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(XMLX509SKI.class);
 
     /**

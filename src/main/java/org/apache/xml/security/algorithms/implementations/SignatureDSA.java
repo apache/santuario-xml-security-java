@@ -42,7 +42,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
 
     public static final String URI = Constants.SignatureSpecNS + "dsa-sha1";
 
-    private static org.slf4j.Logger LOG =
+    private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(SignatureDSA.class);
 
     /** Field algorithm */

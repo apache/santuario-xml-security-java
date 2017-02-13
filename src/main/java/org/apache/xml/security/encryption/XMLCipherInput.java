@@ -44,7 +44,7 @@ import org.w3c.dom.Attr;
  */
 public class XMLCipherInput {
 
-    private static org.slf4j.Logger LOG =
+    private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(XMLCipherInput.class);
 
     /** The data we are working with */

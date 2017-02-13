@@ -57,7 +57,7 @@ import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
  */
 public class ResolverDirectHTTP extends ResourceResolverSpi {
 
-    private static org.slf4j.Logger LOG =
+    private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(ResolverDirectHTTP.class);
 
     /** Field properties[] */

@@ -34,7 +34,7 @@ import org.apache.xml.security.keys.storage.implementations.SingleCertificateRes
  */
 public class StorageResolver {
 
-    private static org.slf4j.Logger LOG =
+    private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(StorageResolver.class);
 
     /** Field storageResolvers */

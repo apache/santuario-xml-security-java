@@ -81,7 +81,7 @@ import org.w3c.dom.NodeList;
  */
 public class XMLCipher {
 
-    private static org.slf4j.Logger LOG =
+    private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(XMLCipher.class);
 
     /** Triple DES EDE (192 bit key) in CBC mode */

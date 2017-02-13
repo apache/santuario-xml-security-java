@@ -42,7 +42,7 @@ import org.apache.xml.security.utils.UnsyncByteArrayOutputStream;
  * @author Sean Mullan
  */
 public class DigesterOutputStream extends OutputStream {
-    private static org.slf4j.Logger LOG =
+    private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(DigesterOutputStream.class);
 
     private final boolean buffer;

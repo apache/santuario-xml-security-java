@@ -61,7 +61,7 @@ import org.apache.xml.security.utils.XMLUtils;
 public final class DOMXMLSignature extends DOMStructure
     implements XMLSignature {
 
-    private static org.slf4j.Logger LOG =
+    private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(DOMXMLSignature.class);
     private String id;
     private SignatureValue sv;

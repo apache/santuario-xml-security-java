@@ -55,7 +55,7 @@ import static org.junit.Assert.assertTrue;
 
 public class PreCalculatedDigestSignatureTest {
 
-    private static Logger LOG = LoggerFactory.getLogger(PreCalculatedDigestSignatureTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(PreCalculatedDigestSignatureTest.class);
 
     /**
      * External resource name to be signed

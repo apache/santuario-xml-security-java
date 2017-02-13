@@ -44,7 +44,7 @@ import org.w3c.dom.NodeList;
  */
 public class XalanXPathAPI implements XPathAPI {
 
-    private static org.slf4j.Logger LOG =
+    private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(XalanXPathAPI.class);
 
     private String xpathStr;

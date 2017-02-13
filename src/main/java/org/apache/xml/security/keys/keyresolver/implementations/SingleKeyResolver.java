@@ -33,7 +33,7 @@ import org.w3c.dom.Element;
  * Resolves a single Key based on the KeyName.
  */
 public class SingleKeyResolver extends KeyResolverSpi {
-    private static org.slf4j.Logger LOG =
+    private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(SingleKeyResolver.class);
 
     private String keyName;

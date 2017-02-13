@@ -82,7 +82,7 @@ public final class DOMReference extends DOMStructure
             }
         });
 
-    private static org.slf4j.Logger LOG =
+    private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(DOMReference.class);
 
     private final DigestMethod digestMethod;

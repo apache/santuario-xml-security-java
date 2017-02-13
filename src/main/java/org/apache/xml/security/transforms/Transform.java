@@ -66,7 +66,7 @@ import org.xml.sax.SAXException;
  */
 public final class Transform extends SignatureElementProxy {
 
-    private static org.slf4j.Logger LOG =
+    private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(Transform.class);
 
     /** All available Transform classes are registered here */

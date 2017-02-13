@@ -56,7 +56,7 @@ public abstract class Canonicalizer11 extends CanonicalizerBase {
 
     private static final String XMLNS_URI = Constants.NamespaceSpecNS;
     private static final String XML_LANG_URI = Constants.XML_LANG_SPACE_SpecNS;
-    private static org.slf4j.Logger LOG =
+    private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(Canonicalizer11.class);
     private final SortedSet<Attr> result = new TreeSet<Attr>(COMPARE);
 

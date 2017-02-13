@@ -51,7 +51,7 @@ public abstract class ApacheCanonicalizer extends TransformService {
         org.apache.xml.security.Init.init();
     }
 
-    private static org.slf4j.Logger LOG =
+    private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(ApacheCanonicalizer.class);
     protected Canonicalizer apacheCanonicalizer;
     private Transform apacheTransform;

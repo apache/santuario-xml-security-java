@@ -49,7 +49,7 @@ import org.apache.jcp.xml.dsig.internal.MacOutputStream;
  */
 public abstract class DOMHMACSignatureMethod extends AbstractDOMSignatureMethod {
 
-    private static org.slf4j.Logger LOG =
+    private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(DOMHMACSignatureMethod.class);
 
     // see RFC 4051 for these algorithm definitions

@@ -61,7 +61,7 @@ public class TransformXSLT extends TransformSpi {
     static final String defaultXSLTSpecNSprefix = "xslt";
     static final String XSLTSTYLESHEET = "stylesheet";
 
-    private static org.slf4j.Logger LOG =
+    private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(TransformXSLT.class);
 
     /**

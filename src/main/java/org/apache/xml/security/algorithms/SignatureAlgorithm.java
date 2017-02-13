@@ -47,7 +47,7 @@ import org.w3c.dom.Element;
  */
 public class SignatureAlgorithm extends Algorithm {
 
-    private static org.slf4j.Logger LOG =
+    private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(SignatureAlgorithm.class);
 
     /** All available algorithm classes are registered here */

@@ -28,7 +28,7 @@ import org.apache.xml.security.signature.XMLSignatureException;
  *
  */
 public class SignerOutputStream extends ByteArrayOutputStream {
-    private static org.slf4j.Logger LOG =
+    private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(SignerOutputStream.class);
 
     final SignatureAlgorithm sa;

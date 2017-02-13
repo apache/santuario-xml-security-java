@@ -55,7 +55,7 @@ public class Init {
     /** The namespace for CONF file **/
     public static final String CONF_NS = "http://www.xmlsecurity.org/NS/#configuration";
 
-    private static org.slf4j.Logger LOG =
+    private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(Init.class);
 
     /** Field alreadyInitialized */

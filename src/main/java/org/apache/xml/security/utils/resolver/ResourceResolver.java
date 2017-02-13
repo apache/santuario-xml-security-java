@@ -39,7 +39,7 @@ import org.w3c.dom.Attr;
  */
 public class ResourceResolver {
 
-    private static org.slf4j.Logger LOG =
+    private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(ResourceResolver.class);
 
     /** these are the system-wide resolvers */

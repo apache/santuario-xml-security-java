@@ -56,7 +56,7 @@ public class Manifest extends SignatureElementProxy {
      */
     public static final int MAXIMUM_REFERENCE_COUNT = 30;
 
-    private static org.slf4j.Logger LOG =
+    private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(Manifest.class);
 
     /** Field references */

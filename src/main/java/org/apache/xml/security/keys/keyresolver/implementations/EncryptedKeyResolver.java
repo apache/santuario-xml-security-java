@@ -49,7 +49,7 @@ import org.w3c.dom.Element;
  */
 public class EncryptedKeyResolver extends KeyResolverSpi {
 
-    private static org.slf4j.Logger LOG =
+    private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(RSAKeyValueResolver.class);
 
     private Key kek;

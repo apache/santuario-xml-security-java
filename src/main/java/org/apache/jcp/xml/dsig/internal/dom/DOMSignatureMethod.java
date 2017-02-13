@@ -45,7 +45,7 @@ import org.apache.jcp.xml.dsig.internal.SignerOutputStream;
  */
 public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
 
-    private static org.slf4j.Logger LOG =
+    private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(DOMSignatureMethod.class);
 
     private SignatureMethodParameterSpec params;
