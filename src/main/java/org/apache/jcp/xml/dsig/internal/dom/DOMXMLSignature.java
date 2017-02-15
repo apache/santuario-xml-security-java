@@ -266,7 +266,7 @@ public final class DOMXMLSignature extends DOMStructure
             Reference ref = refs.get(i);
             boolean refValid = ref.validate(vc);
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Reference[" + ref.getURI() + "] is valid: " + refValid);
+                LOG.debug("Reference [" + ref.getURI() + "] is valid: " + refValid);
             }
             validateRefs &= refValid;
         }
@@ -302,7 +302,7 @@ public final class DOMXMLSignature extends DOMStructure
                             boolean refValid = ref.validate(vc);
                             if (LOG.isDebugEnabled()) {
                                 LOG.debug(
-                                    "Manifest ref[" + ref.getURI() + "] is valid: " + refValid
+                                    "Manifest ref [" + ref.getURI() + "] is valid: " + refValid
                                 );
                             }
                             validateMans &= refValid;
