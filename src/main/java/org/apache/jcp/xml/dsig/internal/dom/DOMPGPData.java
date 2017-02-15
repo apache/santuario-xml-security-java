@@ -151,10 +151,10 @@ public final class DOMPGPData extends BaseStructure implements PGPData {
                 Element childElem = (Element)firstChild;
                 String localName = childElem.getLocalName();
                 String namespace = childElem.getNamespaceURI();
-                if (localName.equals("PGPKeyID") && XMLSignature.XMLNS.equals(namespace)) {
+                if ("PGPKeyID".equals(localName) && XMLSignature.XMLNS.equals(namespace)) {
                     String content = XMLUtils.getFullTextChildrenFromElement(childElem);
                     pgpKeyId = Base64.getMimeDecoder().decode(content);
-                } else if (localName.equals("PGPKeyPacket") && XMLSignature.XMLNS.equals(namespace)) {
+                } else if ("PGPKeyPacket".equals(localName) && XMLSignature.XMLNS.equals(namespace)) {
                     String content = XMLUtils.getFullTextChildrenFromElement(childElem);
                     pgpKeyPacket = Base64.getMimeDecoder().decode(content);
                 } else {

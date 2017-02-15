@@ -70,11 +70,11 @@ public final class DOMKeyInfoFactory extends KeyInfoFactory {
     @Override
     public KeyValue newKeyValue(PublicKey key)  throws KeyException {
         String algorithm = key.getAlgorithm();
-        if (algorithm.equals("DSA")) {
+        if ("DSA".equals(algorithm)) {
             return new DOMKeyValue.DSA((DSAPublicKey) key);
-        } else if (algorithm.equals("RSA")) {
+        } else if ("RSA".equals(algorithm)) {
             return new DOMKeyValue.RSA((RSAPublicKey) key);
-        } else if (algorithm.equals("EC")) {
+        } else if ("EC".equals(algorithm)) {
             return new DOMKeyValue.EC((ECPublicKey) key);
         } else {
             throw new KeyException("unsupported key algorithm: " + algorithm);
@@ -169,7 +169,7 @@ public final class DOMKeyInfoFactory extends KeyInfoFactory {
             throw new MarshalException("Document implementation must " +
                 "support DOM Level 2 and be namespace aware");
         }
-        if (tag.equals("KeyInfo") && XMLSignature.XMLNS.equals(namespace)) {
+        if ("KeyInfo".equals(tag) && XMLSignature.XMLNS.equals(namespace)) {
             return new DOMKeyInfo(element, new UnmarshalContext(), getProvider());
         } else {
             throw new MarshalException("invalid KeyInfo tag: " + namespace + ":" + tag);

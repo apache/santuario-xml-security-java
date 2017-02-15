@@ -449,7 +449,7 @@ public abstract class ElementProxy {
 
         if (prefix == null || prefix.length() == 0) {
             throw new XMLSecurityException("defaultNamespaceCannotBeSetHere");
-        } else if (prefix.equals("xmlns")) {
+        } else if ("xmlns".equals(prefix)) {
             throw new XMLSecurityException("defaultNamespaceCannotBeSetHere");
         } else if (prefix.startsWith("xmlns:")) {
             ns = prefix;//"xmlns:" + prefix.substring("xmlns:".length());

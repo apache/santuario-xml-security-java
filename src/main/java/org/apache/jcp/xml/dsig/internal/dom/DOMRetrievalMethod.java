@@ -146,7 +146,7 @@ public final class DOMRetrievalMethod extends DOMStructure
         if (transformsElem != null) {
             String localName = transformsElem.getLocalName();
             String namespace = transformsElem.getNamespaceURI();
-            if (!localName.equals("Transforms") || !XMLSignature.XMLNS.equals(namespace)) {
+            if (!"Transforms".equals(localName) || !XMLSignature.XMLNS.equals(namespace)) {
                 throw new MarshalException("Invalid element name: " +
                                            namespace + ":" + localName + ", expected Transforms");
             }
@@ -155,7 +155,7 @@ public final class DOMRetrievalMethod extends DOMStructure
             while (transformElem != null) {
                 String name = transformElem.getLocalName();
                 namespace = transformElem.getNamespaceURI();
-                if (!name.equals("Transform") || !XMLSignature.XMLNS.equals(namespace)) {
+                if (!"Transform".equals(name) || !XMLSignature.XMLNS.equals(namespace)) {
                     throw new MarshalException("Invalid element name: " +
                                                name + ", expected Transform");
                 }

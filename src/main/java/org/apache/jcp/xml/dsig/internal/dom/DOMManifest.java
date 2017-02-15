@@ -95,7 +95,7 @@ public final class DOMManifest extends BaseStructure implements Manifest {
         while (refElem != null) {
             String localName = refElem.getLocalName();
             String namespace = refElem.getNamespaceURI();
-            if (!localName.equals("Reference") || !XMLSignature.XMLNS.equals(namespace)) {
+            if (!"Reference".equals(localName) || !XMLSignature.XMLNS.equals(namespace)) {
                 throw new MarshalException("Invalid element name: " +
                                            namespace + ":" + localName + ", expected Reference");
             }

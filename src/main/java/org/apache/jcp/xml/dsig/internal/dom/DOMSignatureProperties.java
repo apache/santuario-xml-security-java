@@ -93,7 +93,7 @@ public final class DOMSignatureProperties extends BaseStructure
             if (firstChild.getNodeType() == Node.ELEMENT_NODE) {
                 String name = firstChild.getLocalName();
                 String namespace = firstChild.getNamespaceURI();
-                if (!name.equals("SignatureProperty") || !XMLSignature.XMLNS.equals(namespace)) {
+                if (!"SignatureProperty".equals(name) || !XMLSignature.XMLNS.equals(namespace)) {
                     throw new MarshalException("Invalid element name: " + namespace + ":" + name +
                                                ", expected SignatureProperty");
                 }

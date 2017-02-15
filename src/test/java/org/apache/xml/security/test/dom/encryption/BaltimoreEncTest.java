@@ -458,17 +458,17 @@ public class BaltimoreEncTest extends org.junit.Assert {
      * @param name Name to map a key from
      */
     private SecretKey mapKeyName(String name) throws Exception {
-        if (name.equals("job")) {
+        if ("job".equals(name)) {
             // Job is a AES-128 key
             SecretKey key = new SecretKeySpec(jobBytes, "AES");
             return key;
         }
-        if (name.equals("jeb")) {
+        if ("jeb".equals(name)) {
             // Jeb is a AES-192 key
             SecretKey key = new SecretKeySpec(jebBytes, "AES");
             return key;
         }
-        if (name.equals("jed")) {
+        if ("jed".equals(name)) {
             // Jed is a AES-256 key
             SecretKey key = new SecretKeySpec(jedBytes, "AES");
             return key;

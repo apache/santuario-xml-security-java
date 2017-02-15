@@ -338,7 +338,7 @@ public abstract class Canonicalizer11 extends CanonicalizerBase {
                 if (!XMLNS_URI.equals(NUri)) {
                     //A non namespace definition node.
                     if (XML_LANG_URI.equals(NUri)) {
-                        if (NName.equals("id")) {
+                        if ("id".equals(NName)) {
                             if (isRealVisible) {
                                 // treat xml:id like any other attribute
                                 // (emit it, but don't inherit it)

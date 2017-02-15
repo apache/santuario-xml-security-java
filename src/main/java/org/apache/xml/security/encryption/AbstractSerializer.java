@@ -195,7 +195,7 @@ public abstract class AbstractSerializer implements Serializer {
                     for (int i = 0; i < atts.getLength(); ++i) {
                         Node att = atts.item(i);
                         String nodeName = att.getNodeName();
-                        if ((nodeName.equals("xmlns") || nodeName.startsWith("xmlns:"))
+                        if (("xmlns".equals(nodeName) || nodeName.startsWith("xmlns:"))
                                 && !storedNamespaces.containsKey(att.getNodeName())) {
                             outputStreamWriter.write(" ");
                             outputStreamWriter.write(nodeName);
@@ -237,7 +237,7 @@ public abstract class AbstractSerializer implements Serializer {
                 for (int i = 0; i < atts.getLength(); ++i) {
                     Node att = atts.item(i);
                     String nodeName = att.getNodeName();
-                    if ((nodeName.equals("xmlns") || nodeName.startsWith("xmlns:"))
+                    if (("xmlns".equals(nodeName) || nodeName.startsWith("xmlns:"))
                         && !storedNamespaces.containsKey(att.getNodeName())) {
                         sb.append(" ");
                         sb.append(nodeName);

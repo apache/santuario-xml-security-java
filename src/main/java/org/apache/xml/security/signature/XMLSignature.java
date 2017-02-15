@@ -432,9 +432,9 @@ public final class XMLSignature extends SignatureElementProxy {
                 if (firstChild.getNodeType() == Node.ELEMENT_NODE) {
                     Element childElem = (Element)firstChild;
                     String tag = childElem.getLocalName();
-                    if (tag.equals("Manifest")) {
+                    if ("Manifest".equals(tag)) {
                         new Manifest(childElem, baseURI);
-                    } else if (tag.equals("SignatureProperties")) {
+                    } else if ("SignatureProperties".equals(tag)) {
                         new SignatureProperties(childElem, baseURI);
                     }
                 }

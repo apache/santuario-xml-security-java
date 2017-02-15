@@ -111,16 +111,16 @@ public final class DOMKeyInfo extends BaseStructure implements KeyInfo {
                 Element childElem = (Element)firstChild;
                 String localName = childElem.getLocalName();
                 String namespace = childElem.getNamespaceURI();
-                if (localName.equals("X509Data") && XMLSignature.XMLNS.equals(namespace)) {
+                if ("X509Data".equals(localName) && XMLSignature.XMLNS.equals(namespace)) {
                     content.add(new DOMX509Data(childElem));
-                } else if (localName.equals("KeyName") && XMLSignature.XMLNS.equals(namespace)) {
+                } else if ("KeyName".equals(localName) && XMLSignature.XMLNS.equals(namespace)) {
                     content.add(new DOMKeyName(childElem));
-                } else if (localName.equals("KeyValue") && XMLSignature.XMLNS.equals(namespace)) {
+                } else if ("KeyValue".equals(localName) && XMLSignature.XMLNS.equals(namespace)) {
                     content.add(DOMKeyValue.unmarshal(childElem));
-                } else if (localName.equals("RetrievalMethod") && XMLSignature.XMLNS.equals(namespace)) {
+                } else if ("RetrievalMethod".equals(localName) && XMLSignature.XMLNS.equals(namespace)) {
                     content.add(new DOMRetrievalMethod(childElem,
                                                        context, provider));
-                } else if (localName.equals("PGPData") && XMLSignature.XMLNS.equals(namespace)) {
+                } else if ("PGPData".equals(localName) && XMLSignature.XMLNS.equals(namespace)) {
                     content.add(new DOMPGPData(childElem));
                 } else { //may be MgmtData, SPKIData or element from other namespace
                     content.add(new javax.xml.crypto.dom.DOMStructure(childElem));

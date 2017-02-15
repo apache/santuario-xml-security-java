@@ -78,7 +78,7 @@ public class InclusiveNamespaces extends ElementProxy implements TransformParam 
 
         StringBuilder sb = new StringBuilder();
         for (String prefix : prefixList) {
-            if (prefix.equals("xmlns")) {
+            if ("xmlns".equals(prefix)) {
                 sb.append("#default ");
             } else {
                 sb.append(prefix);

@@ -189,7 +189,7 @@ public class Init {
                     continue;
                 }
                 String tag = el.getLocalName();
-                if (tag.equals("ResourceBundles")) {
+                if ("ResourceBundles".equals(tag)) {
                     Element resource = (Element)el;
                     /* configure internationalization */
                     Attr langAttr = resource.getAttributeNodeNS(null, "defaultLanguageCode");
@@ -201,7 +201,7 @@ public class Init {
                     I18n.init(languageCode, countryCode);
                 }
 
-                if (tag.equals("CanonicalizationMethods")) {
+                if ("CanonicalizationMethods".equals(tag)) {
                     Element[] list =
                         XMLUtils.selectNodes(el.getFirstChild(), CONF_NS, "CanonicalizationMethod");
 
@@ -221,7 +221,7 @@ public class Init {
                     }
                 }
 
-                if (tag.equals("TransformAlgorithms")) {
+                if ("TransformAlgorithms".equals(tag)) {
                     Element[] tranElem =
                         XMLUtils.selectNodes(el.getFirstChild(), CONF_NS, "TransformAlgorithm");
 
@@ -256,7 +256,7 @@ public class Init {
                     }
                 }
 
-                if (tag.equals("SignatureAlgorithms")) {
+                if ("SignatureAlgorithms".equals(tag)) {
                     Element[] sigElems =
                         XMLUtils.selectNodes(el.getFirstChild(), CONF_NS, "SignatureAlgorithm");
 
@@ -281,7 +281,7 @@ public class Init {
                     }
                 }
 
-                if (tag.equals("ResourceResolvers")) {
+                if ("ResourceResolvers".equals(tag)) {
                     Element[] resolverElem =
                         XMLUtils.selectNodes(el.getFirstChild(), CONF_NS, "Resolver");
 
@@ -314,7 +314,7 @@ public class Init {
                     }
                 }
 
-                if (tag.equals("KeyResolver")){
+                if ("KeyResolver".equals(tag)){
                     Element[] resolverElem =
                         XMLUtils.selectNodes(el.getFirstChild(), CONF_NS, "Resolver");
                     List<String> classNames = new ArrayList<>(resolverElem.length);
@@ -341,7 +341,7 @@ public class Init {
                 }
 
 
-                if (tag.equals("PrefixMappings")){
+                if ("PrefixMappings".equals(tag)){
                     if (LOG.isDebugEnabled()) {
                         LOG.debug("Now I try to bind prefixes:");
                     }

@@ -108,11 +108,11 @@ public final class DOMXMLObject extends BaseStructure implements XMLObject {
                 Element childElem = (Element)firstChild;
                 String tag = childElem.getLocalName();
                 String namespace = childElem.getNamespaceURI();
-                if (tag.equals("Manifest") && XMLSignature.XMLNS.equals(namespace)) {
+                if ("Manifest".equals(tag) && XMLSignature.XMLNS.equals(namespace)) {
                     newContent.add(new DOMManifest(childElem, context, provider));
-                } else if (tag.equals("SignatureProperties") && XMLSignature.XMLNS.equals(namespace)) {
+                } else if ("SignatureProperties".equals(tag) && XMLSignature.XMLNS.equals(namespace)) {
                     newContent.add(new DOMSignatureProperties(childElem));
-                } else if (tag.equals("X509Data") && XMLSignature.XMLNS.equals(namespace)) {
+                } else if ("X509Data".equals(tag) && XMLSignature.XMLNS.equals(namespace)) {
                     newContent.add(new DOMX509Data(childElem));
                 } else {
                     //@@@FIXME: check for other dsig structures

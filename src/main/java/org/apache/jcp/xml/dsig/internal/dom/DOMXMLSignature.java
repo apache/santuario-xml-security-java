@@ -157,7 +157,7 @@ public final class DOMXMLSignature extends DOMStructure
             while (nextSibling != null) {
                 String name = nextSibling.getLocalName();
                 String namespace = nextSibling.getNamespaceURI();
-                if (!name.equals("Object") || !XMLSignature.XMLNS.equals(namespace)) {
+                if (!"Object".equals(name) || !XMLSignature.XMLNS.equals(namespace)) {
                     throw new MarshalException("Invalid element name: " + namespace + ":" + name +
                                                ", expected KeyInfo or Object");
                 }

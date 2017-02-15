@@ -102,16 +102,16 @@ public final class DOMX509Data extends BaseStructure implements X509Data {
                 Element childElem = (Element)firstChild;
                 String localName = childElem.getLocalName();
                 String namespace = childElem.getNamespaceURI();
-                if (localName.equals("X509Certificate") && XMLSignature.XMLNS.equals(namespace)) {
+                if ("X509Certificate".equals(localName) && XMLSignature.XMLNS.equals(namespace)) {
                     newContent.add(unmarshalX509Certificate(childElem));
-                } else if (localName.equals("X509IssuerSerial") && XMLSignature.XMLNS.equals(namespace)) {
+                } else if ("X509IssuerSerial".equals(localName) && XMLSignature.XMLNS.equals(namespace)) {
                     newContent.add(new DOMX509IssuerSerial(childElem));
-                } else if (localName.equals("X509SubjectName") && XMLSignature.XMLNS.equals(namespace)) {
+                } else if ("X509SubjectName".equals(localName) && XMLSignature.XMLNS.equals(namespace)) {
                     newContent.add(childElem.getFirstChild().getNodeValue());
-                } else if (localName.equals("X509SKI") && XMLSignature.XMLNS.equals(namespace)) {
+                } else if ("X509SKI".equals(localName) && XMLSignature.XMLNS.equals(namespace)) {
                     String content = XMLUtils.getFullTextChildrenFromElement(childElem);
                     newContent.add(Base64.getMimeDecoder().decode(content));
-                } else if (localName.equals("X509CRL") && XMLSignature.XMLNS.equals(namespace)) {
+                } else if ("X509CRL".equals(localName) && XMLSignature.XMLNS.equals(namespace)) {
                     newContent.add(unmarshalX509CRL(childElem));
                 } else {
                     newContent.add(new javax.xml.crypto.dom.DOMStructure(childElem));

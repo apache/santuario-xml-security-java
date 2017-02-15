@@ -91,11 +91,11 @@ public final class DOMXPathFilter2Transform extends ApacheTransform {
                 throw new MarshalException("filter cannot be null");
             }
             XPathType.Filter filter = null;
-            if (filterVal.equals("intersect")) {
+            if ("intersect".equals(filterVal)) {
                 filter = XPathType.Filter.INTERSECT;
-            } else if (filterVal.equals("subtract")) {
+            } else if ("subtract".equals(filterVal)) {
                 filter = XPathType.Filter.SUBTRACT;
-            } else if (filterVal.equals("union")) {
+            } else if ("union".equals(filterVal)) {
                 filter = XPathType.Filter.UNION;
             } else {
                 throw new MarshalException("Unknown XPathType filter type" +
@@ -109,7 +109,7 @@ public final class DOMXPathFilter2Transform extends ApacheTransform {
                 for (int i = 0; i < length; i++) {
                     Attr attr = (Attr)attributes.item(i);
                     String prefix = attr.getPrefix();
-                    if (prefix != null && prefix.equals("xmlns")) {
+                    if (prefix != null && "xmlns".equals(prefix)) {
                         namespaceMap.put(attr.getLocalName(), attr.getValue());
                     }
                 }

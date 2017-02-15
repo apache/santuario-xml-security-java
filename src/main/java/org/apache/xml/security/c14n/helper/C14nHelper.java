@@ -96,7 +96,7 @@ public final class C14nHelper {
         }
 
         String nodeAttrName = attr.getNodeName();
-        boolean definesDefaultNS = nodeAttrName.equals("xmlns");
+        boolean definesDefaultNS = "xmlns".equals(nodeAttrName);
         boolean definesNonDefaultNS = nodeAttrName.startsWith("xmlns:");
 
         if ((definesDefaultNS || definesNonDefaultNS) && namespaceIsRelative(attr)) {

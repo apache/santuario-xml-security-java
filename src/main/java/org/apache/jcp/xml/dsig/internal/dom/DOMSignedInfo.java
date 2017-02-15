@@ -170,7 +170,7 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
         while (refElem != null) {
             String name = refElem.getLocalName();
             String namespace = refElem.getNamespaceURI();
-            if (!name.equals("Reference") || !XMLSignature.XMLNS.equals(namespace)) {
+            if (!"Reference".equals(name) || !XMLSignature.XMLNS.equals(namespace)) {
                 throw new MarshalException("Invalid element name: " +
                                            namespace + ":" + name + ", expected Reference");
             }

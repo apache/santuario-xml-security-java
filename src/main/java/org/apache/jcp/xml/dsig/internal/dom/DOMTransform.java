@@ -112,7 +112,7 @@ public class DOMTransform extends BaseStructure implements Transform {
         throws MarshalException
     {
         String parentLocalName = xwriter.getCurrentLocalName();
-        String localName = parentLocalName.equals("Transforms") ? "Transform" : "CanonicalizationMethod";
+        String localName = "Transforms".equals(parentLocalName) ? "Transform" : "CanonicalizationMethod";
         xwriter.writeStartElement(dsPrefix, localName, XMLSignature.XMLNS);
         xwriter.writeAttribute("", "", "Algorithm", getAlgorithm());
 

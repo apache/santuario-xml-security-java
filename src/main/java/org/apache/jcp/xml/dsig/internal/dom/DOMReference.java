@@ -208,7 +208,7 @@ public final class DOMReference extends DOMStructure
             while (transformElem != null) {
                 String localName = transformElem.getLocalName();
                 String namespace = transformElem.getNamespaceURI();
-                if (!localName.equals("Transform") || !XMLSignature.XMLNS.equals(namespace)) {
+                if (!"Transform".equals(localName) || !XMLSignature.XMLNS.equals(namespace)) {
                     throw new MarshalException(
                         "Invalid element name: " + localName +
                         ", expected Transform");
