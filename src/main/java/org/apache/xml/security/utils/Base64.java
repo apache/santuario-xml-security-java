@@ -766,7 +766,7 @@ public class Base64 {
      * remove WhiteSpace from MIME containing encoded Base64 data.
      *
      * @param data  the byte array of base64 data (with WS)
-     * @return      the new length
+     * @return the new length
      */
     protected static final int removeWhiteSpace(byte[] data) {
         if (data == null) {

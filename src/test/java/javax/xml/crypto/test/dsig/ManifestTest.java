@@ -50,7 +50,7 @@ public class ManifestTest extends org.junit.Assert {
         String id = "manifest_id";
         List<Reference> refs = new ArrayList<>();
         // test XMLSignatureFactory.newManifest(List references)
-        // and  XMLSignatureFactory.newManifest(List references,
+        // and XMLSignatureFactory.newManifest(List references,
         //                                       String id)
         // for generating Manifest objects
         refs.add(VALID_REF);

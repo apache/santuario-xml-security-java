@@ -531,7 +531,7 @@ public abstract class Canonicalizer11 extends CanonicalizerBase {
 
     private static String removeDotSegments(String path) {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("STEP   OUTPUT BUFFER\t\tINPUT BUFFER");
+            LOG.debug("STEP OUTPUT BUFFER\t\tINPUT BUFFER");
         }
 
         // 1. The input buffer is initialized with the now-appended path

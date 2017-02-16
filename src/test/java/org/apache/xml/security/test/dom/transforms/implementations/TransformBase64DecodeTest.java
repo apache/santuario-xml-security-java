@@ -103,7 +103,7 @@ public class TransformBase64DecodeTest extends org.junit.Assert {
         String input = ""
             + "<Object xmlns:signature='http://www.w3.org/2000/09/xmldsig#'>\n"
             + "<signature:Base64>\n"
-            + "VGhlIFVSSSBvZiB0aGU   gdHJhbn<RealText>Nmb  3JtIGlzIG<test/>h0dHA6</RealText>Ly93d3cudzMub3JnLzIwMDAvMDkveG1s\n"
+            + "VGhlIFVSSSBvZiB0aGU gdHJhbn<RealText>Nmb  3JtIGlzIG<test/>h0dHA6</RealText>Ly93d3cudzMub3JnLzIwMDAvMDkveG1s\n"
             + "ZHNpZyNiYXNlNjQ=\n"
             + "</signature:Base64>\n"
             + "</Object>\n"

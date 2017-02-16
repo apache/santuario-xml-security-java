@@ -264,7 +264,7 @@ public class CreateExclC14nInteropValues {
             String xmlStr = "" + "<included    xml:lang='de'>" + "\n"
             + "<notIncluded xml:lang='de'>" + "\n"
             + "<notIncluded xml:lang='uk'>" + "\n"
-            + "<included    xml:lang='de'>" + "\n" + "</included>"
+            + "<included xml:lang='de'>" + "\n" + "</included>"
             + "\n" + "</notIncluded>" + "\n" + "</notIncluded>"
             + "\n" + "</included>";
             Document importDoc = null;
@@ -298,7 +298,7 @@ public class CreateExclC14nInteropValues {
             obj.setId(id);
 
             String xmlStr = "" + "<included    xml:lang='de'>" + "\n"
-            + "<included    xml:lang='de'>" + "\n"
+            + "<included xml:lang='de'>" + "\n"
             + "<notIncluded xml:lang='uk'>" + "\n"
             + "<included                 >" + "\n" + "</included>"
             + "\n" + "</notIncluded>" + "\n" + "</included>"
@@ -334,7 +334,7 @@ public class CreateExclC14nInteropValues {
 
             String xmlStr = "" + "<included                         xml:lang='de'>"
             + "\n"
-            + "<included                         xml:lang='de'>"
+            + "<included xml:lang='de'>"
             + "\n"
             + "<notIncluded xml:space='preserve' xml:lang='uk'>"
             + "\n" + "<included                 >" + "\n"
@@ -371,9 +371,9 @@ public class CreateExclC14nInteropValues {
 
             String xmlStr = "" + "<included   xml:space='preserve'  xml:lang='de'>"
             + "\n"
-            + "<included                         xml:lang='de'>"
+            + "<included xml:lang='de'>"
             + "\n"
-            + "<notIncluded                      xml:lang='uk'>"
+            + "<notIncluded xml:lang='uk'>"
             + "\n" + "<included>" + "\n" + "</included>" + "\n"
             + "</notIncluded>" + "\n" + "</included>" + "\n"
             + "</included>";

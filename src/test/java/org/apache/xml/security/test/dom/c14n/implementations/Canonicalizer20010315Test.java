@@ -667,8 +667,8 @@ public class Canonicalizer20010315Test extends org.junit.Assert {
 
         //J-
         String inputStr = ""
-            + "<absolute:correct      xmlns:absolute='http://www.absolute.org/#likeVodka'>"
-            + "<relative:incorrect    xmlns:relative='../cheating#away'>"
+            + "<absolute:correct xmlns:absolute='http://www.absolute.org/#likeVodka'>"
+            + "<relative:incorrect xmlns:relative='../cheating#away'>"
             + "</relative:incorrect>"
             + "</absolute:correct>"
             + "\n"
@@ -754,7 +754,7 @@ public class Canonicalizer20010315Test extends org.junit.Assert {
         InvalidCanonicalizerException, TransformerException, XPathExpressionException {
         //J-
         String input = ""
-            + "<included    xml:lang='de'>"
+            + "<included xml:lang='de'>"
             + "<notIncluded xml:lang='de'>"
             + "<notIncluded xml:lang='uk'>"
             + "<included                 >"
@@ -791,7 +791,7 @@ public class Canonicalizer20010315Test extends org.junit.Assert {
         InvalidCanonicalizerException, TransformerException, XPathExpressionException {
         //J-
         String input = ""
-            + "<included    xml:lang='uk'>"
+            + "<included xml:lang='uk'>"
             + "<notIncluded xml:lang='de'>"
             + "<notIncluded xml:lang='uk'>"
             + "<included                 >"
@@ -828,10 +828,10 @@ public class Canonicalizer20010315Test extends org.junit.Assert {
         InvalidCanonicalizerException, TransformerException, XPathExpressionException {
         //J-
         String input = ""
-            + "<included    xml:lang='de'>"
+            + "<included xml:lang='de'>"
             + "<notIncluded xml:lang='de'>"
             + "<notIncluded xml:lang='uk'>"
-            + "<included    xml:lang='de'>"
+            + "<included xml:lang='de'>"
             + "</included>"
             + "</notIncluded>"
             + "</notIncluded>"
@@ -866,8 +866,8 @@ public class Canonicalizer20010315Test extends org.junit.Assert {
         InvalidCanonicalizerException, TransformerException, XPathExpressionException {
         //J-
         String input = ""
-            + "<included    xml:lang='de'>"
-            + "<included    xml:lang='de'>"
+            + "<included xml:lang='de'>"
+            + "<included xml:lang='de'>"
             + "<notIncluded xml:lang='uk'>"
             + "<included                 >"
             + "</included>"
@@ -906,8 +906,8 @@ public class Canonicalizer20010315Test extends org.junit.Assert {
         InvalidCanonicalizerException, TransformerException, XPathExpressionException {
         //J-
         String input = ""
-            + "<included                         xml:lang='de'>"
-            + "<included                         xml:lang='de'>"
+            + "<included xml:lang='de'>"
+            + "<included xml:lang='de'>"
             + "<notIncluded xml:space='preserve' xml:lang='uk'>"
             + "<included                 >"
             + "</included>"
@@ -946,9 +946,9 @@ public class Canonicalizer20010315Test extends org.junit.Assert {
         InvalidCanonicalizerException, TransformerException, XPathExpressionException {
         //J-
         String input = ""
-            + "<included   xml:space='preserve'  xml:lang='de'>"
-            + "<included                         xml:lang='de'>"
-            + "<notIncluded                      xml:lang='uk'>"
+            + "<included xml:space='preserve'  xml:lang='de'>"
+            + "<included xml:lang='de'>"
+            + "<notIncluded xml:lang='uk'>"
             + "<included>"
             + "</included>"
             + "</notIncluded>"

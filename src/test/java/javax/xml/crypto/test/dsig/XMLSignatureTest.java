@@ -96,8 +96,8 @@ public class XMLSignatureTest extends org.junit.Assert {
     @org.junit.Test
     public void testConstructor() throws Exception {
         XMLSignature sig = null;
-        // test  XMLSignatureFactory.newXMLSignature(SignedInfo, KeyInfo)
-        // and  XMLSignatureFactory.newXMLSignature(SignedInfo,
+        // test XMLSignatureFactory.newXMLSignature(SignedInfo, KeyInfo)
+        // and XMLSignatureFactory.newXMLSignature(SignedInfo,
         //          KeyInfo, List, String, String)
         // for generating XMLSignature objects
         for (int i = 0; i < 2; i++) {
@@ -229,7 +229,7 @@ public class XMLSignatureTest extends org.junit.Assert {
     @org.junit.Test
     public void testSignWithEmptyNSPrefix() throws Exception {
         SignedInfo si = createSignedInfo(SIG_METHODS[1]);
-        KeyInfo	ki = kifac.newKeyInfo(Collections.singletonList
+        KeyInfo ki = kifac.newKeyInfo(Collections.singletonList
                     (kifac.newKeyValue((PublicKey) VALIDATE_KEYS[1])));
         XMLSignature sig = fac.newXMLSignature(si, ki, objs, id, sigValueId);
         Document doc = TestUtils.newDocument();
@@ -273,7 +273,7 @@ public class XMLSignatureTest extends org.junit.Assert {
         objs.add(fac.newXMLObject(Collections.singletonList
             (new DOMStructure(nc)), "object-2", null, null));
 
-        KeyInfo	ki = kifac.newKeyInfo(Collections.singletonList
+        KeyInfo ki = kifac.newKeyInfo(Collections.singletonList
                     (kifac.newKeyValue((PublicKey) VALIDATE_KEYS[1])));
 
         // create XMLSignature
@@ -361,7 +361,7 @@ public class XMLSignatureTest extends org.junit.Assert {
             (new DOMStructure(doc.createTextNode("I am the text."))),
             "", "text/plain", null);
 
-        KeyInfo	ki = kifac.newKeyInfo(Collections.singletonList
+        KeyInfo ki = kifac.newKeyInfo(Collections.singletonList
                     (kifac.newKeyValue((PublicKey) VALIDATE_KEYS[1])));
 
         // create XMLSignature

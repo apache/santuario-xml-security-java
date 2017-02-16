@@ -380,7 +380,7 @@ public class Canonicalizer11Test extends org.junit.Assert {
 //   public static void testXMLAttributes1() throws Exception {
 //      //J-
 //      String input = ""
-//         + "<included    xml:lang='de'>"
+//         + "<included xml:lang='de'>"
 //         + "<notIncluded xml:lang='de'>"
 //         + "<notIncluded xml:lang='uk'>"
 //         + "<included                 >"
@@ -412,7 +412,7 @@ public class Canonicalizer11Test extends org.junit.Assert {
 //   public static void testXMLAttributes2() throws Exception {
 //      //J-
 //      String input = ""
-//         + "<included    xml:lang='uk'>"
+//         + "<included xml:lang='uk'>"
 //         + "<notIncluded xml:lang='de'>"
 //         + "<notIncluded xml:lang='uk'>"
 //         + "<included                 >"
@@ -444,10 +444,10 @@ public class Canonicalizer11Test extends org.junit.Assert {
 //   public static void testXMLAttributes3() throws Exception {
 //      //J-
 //      String input = ""
-//         + "<included    xml:lang='de'>"
+//         + "<included xml:lang='de'>"
 //         + "<notIncluded xml:lang='de'>"
 //         + "<notIncluded xml:lang='uk'>"
-//         + "<included    xml:lang='de'>"
+//         + "<included xml:lang='de'>"
 //         + "</included>"
 //         + "</notIncluded>"
 //         + "</notIncluded>"
@@ -476,8 +476,8 @@ public class Canonicalizer11Test extends org.junit.Assert {
 //   public static void _testXMLAttributes4() throws Exception {
 //      //J-
 //      String input = ""
-//         + "<included    xml:lang='de'>"
-//         + "<included    xml:lang='de'>"
+//         + "<included xml:lang='de'>"
+//         + "<included xml:lang='de'>"
 //         + "<notIncluded xml:lang='uk'>"
 //         + "<included                 >"
 //         + "</included>"
@@ -510,8 +510,8 @@ public class Canonicalizer11Test extends org.junit.Assert {
 //   public static void _testXMLAttributes5() throws Exception {
 //      //J-
 //      String input = ""
-//         + "<included                         xml:lang='de'>"
-//         + "<included                         xml:lang='de'>"
+//         + "<included xml:lang='de'>"
+//         + "<included xml:lang='de'>"
 //         + "<notIncluded xml:space='preserve' xml:lang='uk'>"
 //         + "<included                 >"
 //         + "</included>"
@@ -544,9 +544,9 @@ public class Canonicalizer11Test extends org.junit.Assert {
 //   public static void _testXMLAttributes6() throws Exception {
 //      //J-
 //      String input = ""
-//         + "<included   xml:space='preserve'  xml:lang='de'>"
-//         + "<included                         xml:lang='de'>"
-//         + "<notIncluded                      xml:lang='uk'>"
+//         + "<included xml:space='preserve'  xml:lang='de'>"
+//         + "<included xml:lang='de'>"
+//         + "<notIncluded xml:lang='uk'>"
 //         + "<included>"
 //         + "</included>"
 //         + "</notIncluded>"
