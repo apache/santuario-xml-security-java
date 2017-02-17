@@ -118,7 +118,7 @@ public final class JavaUtils {
     /**
      * Converts an ASN.1 DSA value to a XML Signature DSA Value.
      *
-     * The JCE DSA Signature algorithm creates ASN.1 encoded (r,s) value
+     * The JCE DSA Signature algorithm creates ASN.1 encoded (r, s) value
      * pairs (see section 2.2.2 of RFC 3279); the XML Signature requires the
      * core BigInteger values.
      *
@@ -159,7 +159,7 @@ public final class JavaUtils {
     /**
      * Converts an XML Signature DSA Value to a ASN.1 DSA value.
      *
-     * The JCE DSA Signature algorithm creates ASN.1 encoded (r,s) value
+     * The JCE DSA Signature algorithm creates ASN.1 encoded (r, s) value
      * pairs (see section 2.2.2 of RFC 3279); the XML Signature requires the
      * core BigInteger values.
      *

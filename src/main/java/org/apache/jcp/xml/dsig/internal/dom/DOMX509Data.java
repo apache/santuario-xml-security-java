@@ -138,7 +138,7 @@ public final class DOMX509Data extends BaseStructure implements X509Data {
         for (int i = 0, size = content.size(); i < size; i++) {
             Object object = content.get(i);
             if (object instanceof X509Certificate) {
-                marshalCert(xwriter, (X509Certificate) object,dsPrefix);
+                marshalCert(xwriter, (X509Certificate) object, dsPrefix);
             } else if (object instanceof XMLStructure) {
                 xwriter.marshalStructure((XMLStructure) object, dsPrefix, context);
             } else if (object instanceof byte[]) {

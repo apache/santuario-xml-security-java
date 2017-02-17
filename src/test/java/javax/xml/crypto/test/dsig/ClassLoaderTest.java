@@ -97,12 +97,12 @@ public class ClassLoaderTest extends org.junit.Assert {
             ("javax.xml.crypto.dsig.spec.C14NMethodParameterSpec");
         Method canonicalizationMethod = factoryClass.getDeclaredMethod
             ("newCanonicalizationMethod",
-                new Class[]{String.class,methodParameterClass});
+                new Class[]{String.class, methodParameterClass});
         Object factory = factoryMethod.invoke(null, "DOM");
         long start = System.currentTimeMillis();
         for (int i = 0; i < 100; i++) {
             canonicalizationMethod.invoke
-                (factory, new Object[]{CanonicalizationMethod.EXCLUSIVE,null});
+                (factory, new Object[]{CanonicalizationMethod.EXCLUSIVE, null});
         }
         long end = System.currentTimeMillis();
         long elapsed = end-start;

@@ -129,7 +129,7 @@ public class DetachedTest extends org.junit.Assert {
                 Collections.singletonList(ref));
 
             // Create XMLSignature
-            XMLSignature signature = fac.newXMLSignature(si,ki,null,null,null);
+            XMLSignature signature = fac.newXMLSignature(si, ki, null, null, null);
 
             // Create an XMLSignContext and set the
             // DSA PrivateKey for signing

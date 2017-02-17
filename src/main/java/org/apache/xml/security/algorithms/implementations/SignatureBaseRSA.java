@@ -61,7 +61,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
             if (provider == null) {
                 this.signatureAlgorithm = Signature.getInstance(algorithmID);
             } else {
-                this.signatureAlgorithm = Signature.getInstance(algorithmID,provider);
+                this.signatureAlgorithm = Signature.getInstance(algorithmID, provider);
             }
         } catch (java.security.NoSuchAlgorithmException ex) {
             Object[] exArgs = { algorithmID, ex.getLocalizedMessage() };

@@ -27,7 +27,7 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 
 public class NameSpaceSymbTableTest extends org.junit.Assert {
-    static Attr node1,node2;
+    static Attr node1, node2;
     static {
         try {
             Document doc = XMLUtils.createDocumentBuilder(false).newDocument();

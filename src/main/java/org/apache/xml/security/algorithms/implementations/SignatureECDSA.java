@@ -55,7 +55,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
     /**
      * Converts an ASN.1 ECDSA value to a XML Signature ECDSA Value.
      *
-     * The JAVA JCE ECDSA Signature algorithm creates ASN.1 encoded (r,s) value
+     * The JAVA JCE ECDSA Signature algorithm creates ASN.1 encoded (r, s) value
      * pairs; the XML Signature requires the core BigInteger values.
      *
      * @param asn1Bytes
@@ -72,7 +72,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
     /**
      * Converts a XML Signature ECDSA Value to an ASN.1 DSA value.
      *
-     * The JAVA JCE ECDSA Signature algorithm creates ASN.1 encoded (r,s) value
+     * The JAVA JCE ECDSA Signature algorithm creates ASN.1 encoded (r, s) value
      * pairs; the XML Signature requires the core BigInteger values.
      *
      * @param xmldsigBytes
@@ -103,7 +103,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
             if (provider == null) {
                 this.signatureAlgorithm = Signature.getInstance(algorithmID);
             } else {
-                this.signatureAlgorithm = Signature.getInstance(algorithmID,provider);
+                this.signatureAlgorithm = Signature.getInstance(algorithmID, provider);
             }
         } catch (java.security.NoSuchAlgorithmException ex) {
             Object[] exArgs = { algorithmID, ex.getLocalizedMessage() };

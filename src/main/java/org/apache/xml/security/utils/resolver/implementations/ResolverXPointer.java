@@ -162,7 +162,7 @@ public class ResolverXPointer extends ResourceResolverSpi {
      */
     private static String getXPointerId(String uri) {
         if (uri.startsWith(XP) && uri.endsWith("))")) {
-            String idPlusDelim = uri.substring(XP_LENGTH,uri.length() - 2);
+            String idPlusDelim = uri.substring(XP_LENGTH, uri.length() - 2);
 
             int idLen = idPlusDelim.length() -1;
             if (idPlusDelim.charAt(0) == '"' && idPlusDelim.charAt(idLen) == '"'

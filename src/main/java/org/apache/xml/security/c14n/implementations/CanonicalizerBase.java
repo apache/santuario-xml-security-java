@@ -464,7 +464,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
                     ns.push();
                 }
 
-                Iterator<Attr> attrs = handleAttributes(currentElement,ns);
+                Iterator<Attr> attrs = handleAttributes(currentElement, ns);
                 if (attrs != null) {
                     //we output all Attrs which are available
                     while (attrs.hasNext()) {

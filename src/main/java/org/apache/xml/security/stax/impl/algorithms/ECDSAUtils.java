@@ -32,7 +32,7 @@ public final class ECDSAUtils {
     /**
      * Converts an ASN.1 ECDSA value to a XML Signature ECDSA Value.
      * <p/>
-     * The JAVA JCE ECDSA Signature algorithm creates ASN.1 encoded (r,s) value
+     * The JAVA JCE ECDSA Signature algorithm creates ASN.1 encoded (r, s) value
      * pairs; the XML Signature requires the core BigInteger values.
      *
      * @param asn1Bytes
@@ -48,7 +48,7 @@ public final class ECDSAUtils {
     /**
      * Converts a XML Signature ECDSA Value to an ASN.1 DSA value.
      * <p/>
-     * The JAVA JCE ECDSA Signature algorithm creates ASN.1 encoded (r,s) value
+     * The JAVA JCE ECDSA Signature algorithm creates ASN.1 encoded (r, s) value
      * pairs; the XML Signature requires the core BigInteger values.
      *
      * @param xmldsigBytes

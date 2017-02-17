@@ -230,7 +230,7 @@ public class NameSpaceSymbTable {
             return null;
         }
 
-        NameSpaceSymbEntry ne = new NameSpaceSymbEntry(uri,n,true,prefix);
+        NameSpaceSymbEntry ne = new NameSpaceSymbEntry(uri, n, true, prefix);
         ne.lastrendered = uri;
         needsClone();
         symb.put(prefix, ne);

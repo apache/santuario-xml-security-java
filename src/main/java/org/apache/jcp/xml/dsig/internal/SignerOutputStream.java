@@ -20,7 +20,7 @@
  * Copyright 2005 Sun Microsystems, Inc. All rights reserved.
  */
 /*
- * $Id: SignerOutputStream.java,v 1.2 2005/09/15 14:29:02 mullan Exp $
+ * $Id: SignerOutputStream.java, v 1.2 2005/09/15 14:29:02 mullan Exp $
  */
 package org.apache.jcp.xml.dsig.internal;
 

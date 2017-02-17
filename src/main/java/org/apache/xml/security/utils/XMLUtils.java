@@ -731,7 +731,7 @@ public final class XMLUtils {
      * @return nodes with the constrain
      */
     public static Text selectDsNodeText(Node sibling, String nodeName, int number) {
-        Node n = selectDsNode(sibling,nodeName,number);
+        Node n = selectDsNode(sibling, nodeName, number);
         if (n == null) {
             return null;
         }
@@ -749,7 +749,7 @@ public final class XMLUtils {
      * @return nodes with the constrain
      */
     public static Text selectDs11NodeText(Node sibling, String nodeName, int number) {
-        Node n = selectDs11Node(sibling,nodeName,number);
+        Node n = selectDs11Node(sibling, nodeName, number);
         if (n == null) {
             return null;
         }
@@ -768,7 +768,7 @@ public final class XMLUtils {
      * @return nodes with the constrain
      */
     public static Text selectNodeText(Node sibling, String uri, String nodeName, int number) {
-        Node n = selectNode(sibling,uri,nodeName,number);
+        Node n = selectNode(sibling, uri, nodeName, number);
         if (n == null) {
             return null;
         }

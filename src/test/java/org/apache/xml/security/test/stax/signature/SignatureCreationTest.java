@@ -420,7 +420,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts(),null,true,"ID");
+        verifyUsingDOM(document, cert, properties.getSignatureSecureParts(), null, true, "ID");
     }
 
 

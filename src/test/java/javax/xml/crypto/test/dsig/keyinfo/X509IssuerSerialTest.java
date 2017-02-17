@@ -27,7 +27,7 @@ import javax.xml.crypto.dsig.keyinfo.*;
 /**
  * Unit test for javax.xml.crypto.dsig.keyinfo.X509IssuerSerial
  *
- * @version $Id: X509IssuerSerialTest.java,v 1.1 2004/04/07 21:11:36 mullan Exp $
+ * @version $Id: X509IssuerSerialTest.java, v 1.1 2004/04/07 21:11:36 mullan Exp $
  * @author Valerie Peng
  */
 public class X509IssuerSerialTest extends org.junit.Assert {
@@ -43,13 +43,13 @@ public class X509IssuerSerialTest extends org.junit.Assert {
 
     @org.junit.Test
     public void testgetIssuerName() {
-        X509IssuerSerial x509is = fac.newX509IssuerSerial(name,BigInteger.ZERO);
+        X509IssuerSerial x509is = fac.newX509IssuerSerial(name, BigInteger.ZERO);
         assertNotNull(x509is.getIssuerName());
     }
 
     @org.junit.Test
     public void testgetSerialNumber() {
-        X509IssuerSerial x509is = fac.newX509IssuerSerial(name,BigInteger.ZERO);
+        X509IssuerSerial x509is = fac.newX509IssuerSerial(name, BigInteger.ZERO);
         assertNotNull(x509is.getSerialNumber());
     }
 
@@ -70,7 +70,7 @@ public class X509IssuerSerialTest extends org.junit.Assert {
         // test newX509IssuerSerial(String, BigInteger)
         String badName = "cn=bad,=+bad,";
         try {
-            fac.newX509IssuerSerial(badName,BigInteger.ONE);
+            fac.newX509IssuerSerial(badName, BigInteger.ONE);
             fail("Should raise an IllegalArgumentException when issuer " +
                 "distinguished name does not conform to RFC 2253");
         } catch (IllegalArgumentException e) {

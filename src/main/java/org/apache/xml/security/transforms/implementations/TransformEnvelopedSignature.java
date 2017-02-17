@@ -132,7 +132,7 @@ public class TransformEnvelopedSignature extends TransformSpi {
                 return -1;
             }
             return 1;
-            //return !XMLUtils.isDescendantOrSelf(exclude,n);
+            //return !XMLUtils.isDescendantOrSelf(exclude, n);
         }
     }
 }
