@@ -242,9 +242,7 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
         } catch (TransformException te) {
             throw new XMLSignatureException(te);
         } catch (IOException e) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug(e.getMessage(), e);
-            }
+            LOG.debug(e.getMessage(), e);
             // Impossible
         }
     }

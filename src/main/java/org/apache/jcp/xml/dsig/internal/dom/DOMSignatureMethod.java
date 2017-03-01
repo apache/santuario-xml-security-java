@@ -218,12 +218,10 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
             }
         }
         signature.initVerify((PublicKey)key);
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Signature provider:" + signature.getProvider());
-            LOG.debug("Verifying with key: " + key);
-            LOG.debug("JCA Algorithm: " + getJCAAlgorithm());
-            LOG.debug("Signature Bytes length: " + sig.length);
-        }
+        LOG.debug("Signature provider: {}", signature.getProvider());
+        LOG.debug("Verifying with key: {}", key);
+        LOG.debug("JCA Algorithm: {}", getJCAAlgorithm());
+        LOG.debug("Signature Bytes length: {}", sig.length);
 
         try (SignerOutputStream outputStream = new SignerOutputStream(signature)) {
             si.canonicalize(context, outputStream);
@@ -266,11 +264,9 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
             }
         }
         signature.initSign((PrivateKey)key);
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Signature provider:" + signature.getProvider());
-            LOG.debug("Signing with key: " + key);
-            LOG.debug("JCA Algorithm: " + getJCAAlgorithm());
-        }
+        LOG.debug("Signature provider: {}", signature.getProvider());
+        LOG.debug("Signing with key: {}", key);
+        LOG.debug("JCA Algorithm: {}", getJCAAlgorithm());
 
         try (SignerOutputStream outputStream = new SignerOutputStream(signature)) {
             si.canonicalize(context, outputStream);

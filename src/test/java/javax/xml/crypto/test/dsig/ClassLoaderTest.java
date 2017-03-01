@@ -106,9 +106,7 @@ public class ClassLoaderTest extends org.junit.Assert {
         }
         long end = System.currentTimeMillis();
         long elapsed = end-start;
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Elapsed: " + elapsed);
-        }
+        LOG.debug("Elapsed: {}", elapsed);
     }
 
     @SuppressWarnings("resource")

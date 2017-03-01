@@ -141,10 +141,7 @@ public abstract class ApacheTransform extends TransformService {
                 apacheTransform.setElement(transformElem, xc.getBaseURI());
                 boolean secVal = Utils.secureValidation(xc);
                 apacheTransform.setSecureValidation(secVal);
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Created transform for algorithm: " +
-                            getAlgorithm());
-                }
+                LOG.debug("Created transform for algorithm: {}", getAlgorithm());
             } catch (Exception ex) {
                 throw new TransformException("Couldn't find Transform for: " +
                                              getAlgorithm(), ex);
@@ -162,18 +159,12 @@ public abstract class ApacheTransform extends TransformService {
 
         XMLSignatureInput in;
         if (data instanceof ApacheData) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("ApacheData = true");
-            }
+            LOG.debug("ApacheData = true");
             in = ((ApacheData)data).getXMLSignatureInput();
         } else if (data instanceof NodeSetData) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("isNodeSet() = true");
-            }
+            LOG.debug("isNodeSet() = true");
             if (data instanceof DOMSubTreeData) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("DOMSubTreeData = true");
-                }
+                LOG.debug("DOMSubTreeData = true");
                 DOMSubTreeData subTree = (DOMSubTreeData)data;
                 in = new XMLSignatureInput(subTree.getRoot());
                 in.setExcludeComments(subTree.excludeComments());
@@ -184,9 +175,7 @@ public abstract class ApacheTransform extends TransformService {
                 in = new XMLSignatureInput(nodeSet);
             }
         } else {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("isNodeSet() = false");
-            }
+            LOG.debug("isNodeSet() = false");
             try {
                 in = new XMLSignatureInput
                     (((OctetStreamData)data).getOctetStream());

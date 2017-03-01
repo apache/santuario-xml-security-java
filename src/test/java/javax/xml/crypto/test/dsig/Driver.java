@@ -41,9 +41,7 @@ public class Driver {
         }
         long end = System.currentTimeMillis();
         long elapsed = end - start;
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Elapsed: " + elapsed);
-            LOG.debug("dsig succeeded");
-        }
+        LOG.debug("Elapsed: {}", elapsed);
+        LOG.debug("dsig succeeded");
     }
 }

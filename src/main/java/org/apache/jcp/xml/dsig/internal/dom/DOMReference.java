@@ -306,9 +306,7 @@ public final class DOMReference extends DOMStructure
     public void marshal(XmlWriter xwriter, String dsPrefix, XMLCryptoContext context)
         throws MarshalException
     {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Marshalling Reference");
-        }
+        LOG.debug("Marshalling Reference");
         xwriter.writeStartElement(dsPrefix, "Reference", XMLSignature.XMLNS);
         XMLStructure refStruct = xwriter.getCurrentNodeAsStructure();
         refElem = (Element) ((javax.xml.crypto.dom.DOMStructure) refStruct).getNode();
@@ -331,9 +329,7 @@ public final class DOMReference extends DOMStructure
         DOMDigestMethod.marshal(xwriter, digestMethod, dsPrefix);
 
         // create and append DigestValue element
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Adding digestValueElem");
-        }
+        LOG.debug("Adding digestValueElem");
         xwriter.writeStartElement(dsPrefix, "DigestValue", XMLSignature.XMLNS);
         if (digestValue != null) {
             xwriter.writeCharacters(Base64.getMimeEncoder().encodeToString(digestValue));
@@ -355,9 +351,7 @@ public final class DOMReference extends DOMStructure
 
         // insert digestValue into DigestValue element
         String encodedDV = Base64.getMimeEncoder().encodeToString(digestValue);
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Reference object uri = " + uri);
-        }
+        LOG.debug("Reference object uri = {}", uri);
         Element digestElem = DOMUtils.getLastChildElement(refElem);
         if (digestElem == null) {
             throw new XMLSignatureException("DigestValue element expected");
@@ -367,9 +361,7 @@ public final class DOMReference extends DOMStructure
             (refElem.getOwnerDocument().createTextNode(encodedDV));
 
         digested = true;
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Reference digesting completed");
-        }
+        LOG.debug("Reference digesting completed");
     }
 
     @Override
@@ -417,10 +409,8 @@ public final class DOMReference extends DOMStructure
         }
         try {
             data = deref.dereference(this, context);
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("URIDereferencer class name: " + deref.getClass().getName());
-                LOG.debug("Data class name: " + data.getClass().getName());
-            }
+            LOG.debug("URIDereferencer class name: {}", deref.getClass().getName());
+            LOG.debug("Data class name: {}", data.getClass().getName());
         } catch (URIReferenceException ure) {
             throw new XMLSignatureException(ure);
         }

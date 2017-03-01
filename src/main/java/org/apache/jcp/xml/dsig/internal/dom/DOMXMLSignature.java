@@ -265,15 +265,11 @@ public final class DOMXMLSignature extends DOMStructure
         for (int i = 0, size = refs.size(); validateRefs && i < size; i++) {
             Reference ref = refs.get(i);
             boolean refValid = ref.validate(vc);
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Reference [" + ref.getURI() + "] is valid: " + refValid);
-            }
+            LOG.debug("Reference [{}] is valid: {}", ref.getURI(), refValid);
             validateRefs &= refValid;
         }
         if (!validateRefs) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Couldn't validate the References");
-            }
+            LOG.debug("Couldn't validate the References");
             validationStatus = false;
             validated = true;
             return validationStatus;
@@ -291,20 +287,16 @@ public final class DOMXMLSignature extends DOMStructure
                 for (int j = 0; validateMans && j < csize; j++) {
                     XMLStructure xs = content.get(j);
                     if (xs instanceof Manifest) {
-                        if (LOG.isDebugEnabled()) {
-                            LOG.debug("validating manifest");
-                        }
+                        LOG.debug("validating manifest");
                         Manifest man = (Manifest)xs;
                         List<Reference> manRefs = DOMManifest.getManifestReferences(man);
                         int rsize = manRefs.size();
                         for (int k = 0; validateMans && k < rsize; k++) {
                             Reference ref = manRefs.get(k);
                             boolean refValid = ref.validate(vc);
-                            if (LOG.isDebugEnabled()) {
-                                LOG.debug(
-                                    "Manifest ref [" + ref.getURI() + "] is valid: " + refValid
-                                );
-                            }
+                            LOG.debug(
+                                "Manifest ref [{}] is valid: {}", ref.getURI(),  refValid
+                            );
                             validateMans &= refValid;
                         }
                     }

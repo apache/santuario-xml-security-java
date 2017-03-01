@@ -117,9 +117,7 @@ public abstract class ApacheCanonicalizer extends TransformService {
                 apacheCanonicalizer = Canonicalizer.getInstance(getAlgorithm());
                 boolean secVal = Utils.secureValidation(xc);
                 apacheCanonicalizer.setSecureValidation(secVal);
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Created canonicalizer for algorithm: " + getAlgorithm());
-                }
+                LOG.debug("Created canonicalizer for algorithm: {}", getAlgorithm());
             } catch (InvalidCanonicalizerException ice) {
                 throw new TransformException
                     ("Couldn't find Canonicalizer for: " + getAlgorithm() +
@@ -172,9 +170,7 @@ public abstract class ApacheCanonicalizer extends TransformService {
                 @SuppressWarnings("unchecked")
                 Set<Node> ns = Utils.toNodeSet(nsd.iterator());
                 nodeSet = ns;
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Canonicalizing " + nodeSet.size() + " nodes");
-                }
+                LOG.debug("Canonicalizing {} nodes", nodeSet.size());
             } else {
                 return new OctetStreamData(new ByteArrayInputStream(
                     apacheCanonicalizer.canonicalize(
@@ -215,9 +211,7 @@ public abstract class ApacheCanonicalizer extends TransformService {
                 apacheTransform.setElement(transformElem, xc.getBaseURI());
                 boolean secVal = Utils.secureValidation(xc);
                 apacheTransform.setSecureValidation(secVal);
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Created transform for algorithm: " + getAlgorithm());
-                }
+                LOG.debug("Created transform for algorithm: {}", getAlgorithm());
             } catch (Exception ex) {
                 throw new TransformException
                     ("Couldn't find Transform for: " + getAlgorithm(), ex);
@@ -226,14 +220,10 @@ public abstract class ApacheCanonicalizer extends TransformService {
 
         XMLSignatureInput in;
         if (data instanceof ApacheData) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("ApacheData = true");
-            }
+            LOG.debug("ApacheData = true");
             in = ((ApacheData)data).getXMLSignatureInput();
         } else if (data instanceof NodeSetData) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("isNodeSet() = true");
-            }
+            LOG.debug("isNodeSet() = true");
             if (data instanceof DOMSubTreeData) {
                 DOMSubTreeData subTree = (DOMSubTreeData)data;
                 in = new XMLSignatureInput(subTree.getRoot());
@@ -245,9 +235,7 @@ public abstract class ApacheCanonicalizer extends TransformService {
                 in = new XMLSignatureInput(nodeSet);
             }
         } else {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("isNodeSet() = false");
-            }
+            LOG.debug("isNodeSet() = false");
             try {
                 in = new XMLSignatureInput
                     (((OctetStreamData)data).getOctetStream());
