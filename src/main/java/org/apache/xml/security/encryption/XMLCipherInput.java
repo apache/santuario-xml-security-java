@@ -114,9 +114,7 @@ public class XMLCipherInput {
 
         if (cipherData.getDataType() == CipherData.REFERENCE_TYPE) {
             // Fun time!
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Found a reference type CipherData");
-            }
+            LOG.debug("Found a reference type CipherData");
             CipherReference cr = cipherData.getCipherReference();
 
             // Need to wrap the uri in an Attribute node so that we can
@@ -134,21 +132,15 @@ public class XMLCipherInput {
             }
 
             if (input != null) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Managed to resolve URI \"" + cr.getURI() + "\"");
-                }
+                LOG.debug("Managed to resolve URI \"{}\"", cr.getURI());
             } else {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Failed to resolve URI \"" + cr.getURI() + "\"");
-                }
+                LOG.debug("Failed to resolve URI \"{}\"", cr.getURI());
             }
 
             // Lets see if there are any transforms
             Transforms transforms = cr.getTransforms();
             if (transforms != null) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Have transforms in cipher reference");
-                }
+                LOG.debug("Have transforms in cipher reference");
                 try {
                     org.apache.xml.security.transforms.Transforms dsTransforms =
                         transforms.getDSTransforms();
@@ -174,9 +166,7 @@ public class XMLCipherInput {
             throw new XMLEncryptionException("CipherData.getDataType() returned unexpected value");
         }
 
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Encrypted octets:\n" + base64EncodedEncryptedOctets);
-        }
+        LOG.debug("Encrypted octets:\n{}", base64EncodedEncryptedOctets);
 
         return Base64.getMimeDecoder().decode(base64EncodedEncryptedOctets);
     }

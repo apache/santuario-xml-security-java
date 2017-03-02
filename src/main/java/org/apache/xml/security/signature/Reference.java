@@ -804,9 +804,7 @@ public class Reference extends SignatureElementProxy {
             LOG.warn("Expected Digest: " + Base64.getMimeEncoder().encodeToString(elemDig));
             LOG.warn("Actual Digest: " + Base64.getMimeEncoder().encodeToString(calcDig));
         } else {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Verification successful for URI \"" + this.getURI() + "\"");
-            }
+            LOG.debug("Verification successful for URI \"{}\"", this.getURI());
         }
 
         return equal;

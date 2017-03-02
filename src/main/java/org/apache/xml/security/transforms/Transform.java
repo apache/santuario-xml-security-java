@@ -356,11 +356,8 @@ public final class Transform extends SignatureElementProxy {
             );
         }
 
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Create URI \"" + algorithmURI + "\" class \""
-                      + newTransformSpi.getClass() + "\"");
-            LOG.debug("The NodeList is " + contextNodes);
-        }
+        LOG.debug("Create URI \"{}\" class \"{}\"", algorithmURI, newTransformSpi.getClass());
+        LOG.debug("The NodeList is {}", contextNodes);
 
         // give it to the current document
         if (contextNodes != null) {

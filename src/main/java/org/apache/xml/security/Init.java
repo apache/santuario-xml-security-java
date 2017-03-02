@@ -110,9 +110,7 @@ public class Init {
         //
         I18n.init("en", "US");
 
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Registering default algorithms");
-        }
+        LOG.debug("Registering default algorithms");
         try {
             AccessController.doPrivileged(new PrivilegedExceptionAction<Void>(){
                 @Override public Void run() throws XMLSecurityException {
@@ -211,9 +209,7 @@ public class Init {
                             element.getAttributeNS(null, "JAVACLASS");
                         try {
                             Canonicalizer.register(uri, javaClass);
-                            if (LOG.isDebugEnabled()) {
-                                LOG.debug("Canonicalizer.register(" + uri + ", " + javaClass + ")");
-                            }
+                            LOG.debug("Canonicalizer.register({}, {})", uri, javaClass);
                         } catch (ClassNotFoundException e) {
                             Object exArgs[] = { uri, javaClass };
                             LOG.error(I18n.translate("algorithm.classDoesNotExist", exArgs));
@@ -231,9 +227,7 @@ public class Init {
                             element.getAttributeNS(null, "JAVACLASS");
                         try {
                             Transform.register(uri, javaClass);
-                            if (LOG.isDebugEnabled()) {
-                                LOG.debug("Transform.register(" + uri + ", " + javaClass + ")");
-                            }
+                            LOG.debug("Transform.register({}, {})", uri, javaClass);
                         } catch (ClassNotFoundException e) {
                             Object exArgs[] = { uri, javaClass };
 
@@ -269,10 +263,7 @@ public class Init {
 
                         try {
                             SignatureAlgorithm.register(uri, javaClass);
-                            if (LOG.isDebugEnabled()) {
-                                LOG.debug("SignatureAlgorithm.register(" + uri + ", "
-                                          + javaClass + ")");
-                            }
+                            LOG.debug("SignatureAlgorithm.register({}, {})", uri, javaClass);
                         } catch (ClassNotFoundException e) {
                             Object exArgs[] = { uri, javaClass };
 
@@ -292,15 +283,9 @@ public class Init {
                             element.getAttributeNS(null, "DESCRIPTION");
 
                         if (description != null && description.length() > 0) {
-                            if (LOG.isDebugEnabled()) {
-                                LOG.debug("Register Resolver: " + javaClass + ": "
-                                          + description);
-                            }
+                            LOG.debug("Register Resolver: {}: {}", javaClass, description);
                         } else {
-                            if (LOG.isDebugEnabled()) {
-                                LOG.debug("Register Resolver: " + javaClass
-                                          + ": For unknown purposes");
-                            }
+                            LOG.debug("Register Resolver: {}: For unknown purposes", javaClass);
                         }
                         try {
                             ResourceResolver.register(javaClass);
@@ -325,15 +310,9 @@ public class Init {
                             element.getAttributeNS(null, "DESCRIPTION");
 
                         if (description != null && description.length() > 0) {
-                            if (LOG.isDebugEnabled()) {
-                                LOG.debug("Register Resolver: " + javaClass + ": "
-                                          + description);
-                            }
+                            LOG.debug("Register Resolver: {}: {}", javaClass, description);
                         } else {
-                            if (LOG.isDebugEnabled()) {
-                                LOG.debug("Register Resolver: " + javaClass
-                                          + ": For unknown purposes");
-                            }
+                            LOG.debug("Register Resolver: {}: For unknown purposes", javaClass);
                         }
                         classNames.add(javaClass);
                     }
@@ -342,9 +321,7 @@ public class Init {
 
 
                 if ("PrefixMappings".equals(tag)){
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("Now I try to bind prefixes:");
-                    }
+                    LOG.debug("Now I try to bind prefixes:");
 
                     Element[] nl =
                         XMLUtils.selectNodes(el.getFirstChild(), CONF_NS, "PrefixMapping");
@@ -352,9 +329,7 @@ public class Init {
                     for (Element element : nl) {
                         String namespace = element.getAttributeNS(null, "namespace");
                         String prefix = element.getAttributeNS(null, "prefix");
-                        if (LOG.isDebugEnabled()) {
-                            LOG.debug("Now I try to bind " + prefix + " to " + namespace);
-                        }
+                        LOG.debug("Now I try to bind {} to {}", prefix, namespace);
                         ElementProxy.setDefaultPrefix(namespace, prefix);
                     }
                 }

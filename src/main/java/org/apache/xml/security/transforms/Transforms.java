@@ -161,9 +161,7 @@ public class Transforms extends SignatureElementProxy {
      */
     public void addTransform(String transformURI) throws TransformationException {
         try {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Transforms.addTransform(" + transformURI + ")");
-            }
+            LOG.debug("Transforms.addTransform({})", transformURI);
 
             Transform transform = new Transform(getDocument(), transformURI);
 
@@ -185,9 +183,7 @@ public class Transforms extends SignatureElementProxy {
     public void addTransform(String transformURI, Element contextElement)
        throws TransformationException {
         try {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Transforms.addTransform(" + transformURI + ")");
-            }
+            LOG.debug("Transforms.addTransform({})", transformURI);
 
             Transform transform = new Transform(getDocument(), transformURI, contextElement);
 
@@ -223,9 +219,7 @@ public class Transforms extends SignatureElementProxy {
      * @param transform {@link Transform} object
      */
     private void addTransform(Transform transform) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Transforms.addTransform(" + transform.getURI() + ")");
-        }
+        LOG.debug("Transforms.addTransform({})", transform.getURI());
 
         Element transformElement = transform.getElement();
 
@@ -263,19 +257,13 @@ public class Transforms extends SignatureElementProxy {
             int last = this.getLength() - 1;
             for (int i = 0; i < last; i++) {
                 Transform t = this.item(i);
-                if (LOG.isDebugEnabled()) {
-                    String uri = t.getURI();
-                    LOG.debug("Perform the (" + i + ")th " + uri + " transform");
-                }
+                LOG.debug("Perform the ({})th {} transform", i, t.getURI());
                 checkSecureValidation(t);
                 xmlSignatureInput = t.performTransform(xmlSignatureInput);
             }
             if (last >= 0) {
                 Transform t = this.item(last);
-                if (LOG.isDebugEnabled()) {
-                    String uri = t.getURI();
-                    LOG.debug("Perform the (" + last + ")th " + uri + " transform");
-                }
+                LOG.debug("Perform the ({})th {} transform", last, t.getURI());
                 checkSecureValidation(t);
                 xmlSignatureInput = t.performTransform(xmlSignatureInput, os);
             }

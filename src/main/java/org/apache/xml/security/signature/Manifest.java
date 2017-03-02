@@ -307,11 +307,9 @@ public class Manifest extends SignatureElementProxy {
                     getFirstChild(), Constants._TAG_REFERENCE
                 );
         }
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("verify " + referencesEl.length + " References");
-            LOG.debug("I am " + (followManifests
-                ? "" : "not") + " requested to follow nested Manifests");
-        }
+        LOG.debug("verify {} References", referencesEl.length);
+        LOG.debug("I am {} requested to follow nested Manifests", (followManifests
+            ? "" : "not"));
         if (referencesEl.length == 0) {
             throw new XMLSecurityException("empty", new Object[]{"References are empty"});
         }
@@ -338,15 +336,11 @@ public class Manifest extends SignatureElementProxy {
                 if (!currentRefVerified) {
                     verify = false;
                 }
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("The Reference has Type " + currentRef.getType());
-                }
+                LOG.debug("The Reference has Type {}", currentRef.getType());
 
                 // was verification successful till now and do we want to verify the Manifest?
                 if (verify && followManifests && currentRef.typeIsReferenceToManifest()) {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("We have to follow a nested Manifest");
-                    }
+                    LOG.debug("We have to follow a nested Manifest");
 
                     try {
                         XMLSignatureInput signedManifestNodes =
@@ -369,9 +363,7 @@ public class Manifest extends SignatureElementProxy {
                                         );
                                     break;
                                 } catch (XMLSecurityException ex) {
-                                    if (LOG.isDebugEnabled()) {
-                                        LOG.debug(ex.getMessage(), ex);
-                                    }
+                                    LOG.debug(ex.getMessage(), ex);
                                     // Hm, seems not to be a ds:Manifest
                                 }
                             }
@@ -395,9 +387,7 @@ public class Manifest extends SignatureElementProxy {
 
                             LOG.warn("The nested Manifest was invalid (bad)");
                         } else {
-                            if (LOG.isDebugEnabled()) {
-                                LOG.debug("The nested Manifest was valid (good)");
-                            }
+                            LOG.debug("The nested Manifest was valid (good)");
                         }
                     } catch (IOException ex) {
                         throw new ReferenceNotInitializedException(ex);

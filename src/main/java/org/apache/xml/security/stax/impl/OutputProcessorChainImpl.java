@@ -39,7 +39,6 @@ import java.util.List;
 public class OutputProcessorChainImpl implements OutputProcessorChain {
 
     protected static final transient Logger LOG = LoggerFactory.getLogger(OutputProcessorChainImpl.class);
-    protected static final transient boolean isDebugEnabled = LOG.isDebugEnabled();
 
     private List<OutputProcessor> outputProcessors;
     private int startPos;
@@ -164,20 +163,18 @@ public class OutputProcessorChainImpl implements OutputProcessorChain {
         if (idxToInsert < this.curPos) {
             this.curPos++;
         }
-        if (isDebugEnabled) {
-            LOG.debug("Added " + newOutputProcessor.getClass().getName() + " to output chain: ");
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Added {} to output chain: ", newOutputProcessor.getClass().getName());
             for (int i = 0; i < outputProcessors.size(); i++) {
                 OutputProcessor outputProcessor = outputProcessors.get(i);
-                LOG.debug("Name: " + outputProcessor.getClass().getName() + " phase: " + outputProcessor.getPhase());
+                LOG.debug("Name: {} phase: {}", outputProcessor.getClass().getName(), outputProcessor.getPhase());
             }
         }
     }
 
     @Override
     public void removeProcessor(OutputProcessor outputProcessor) {
-        if (isDebugEnabled) {
-            LOG.debug("Removing processor " + outputProcessor.getClass().getName() + " from output chain");
-        }
+        LOG.debug("Removing processor {} from output chain", outputProcessor.getClass().getName());
         if (this.outputProcessors.indexOf(outputProcessor) <= this.curPos) {
             this.curPos--;
         }

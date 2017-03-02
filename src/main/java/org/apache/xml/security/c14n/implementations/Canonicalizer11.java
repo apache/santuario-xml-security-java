@@ -165,9 +165,7 @@ public abstract class Canonicalizer11 extends CanonicalizerBase {
                         try {
                             base = joinURI(n.getValue(), base);
                         } catch (URISyntaxException ue) {
-                            if (LOG.isDebugEnabled()) {
-                                LOG.debug(ue.getMessage(), ue);
-                            }
+                            LOG.debug(ue.getMessage(), ue);
                         }
                     }
                 }
@@ -530,9 +528,7 @@ public abstract class Canonicalizer11 extends CanonicalizerBase {
     }
 
     private static String removeDotSegments(String path) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("STEP OUTPUT BUFFER\t\tINPUT BUFFER");
-        }
+        LOG.debug("STEP OUTPUT BUFFER\t\tINPUT BUFFER");
 
         // 1. The input buffer is initialized with the now-appended path
         // components then replace occurrences of "//" in the input buffer

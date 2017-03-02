@@ -69,9 +69,7 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
      */
     public IntegrityHmac() throws XMLSignatureException {
         String algorithmID = JCEMapper.translateURItoJCEID(this.engineGetURI());
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Created IntegrityHmacSHA1 using " + algorithmID);
-        }
+        LOG.debug("Created IntegrityHmacSHA1 using {}", algorithmID);
 
         try {
             this.macAlgorithm = Mac.getInstance(algorithmID);
@@ -111,9 +109,7 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
     protected boolean engineVerify(byte[] signature) throws XMLSignatureException {
         try {
             if (this.HMACOutputLengthSet && this.HMACOutputLength < getDigestLength()) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("HMACOutputLength must not be less than " + getDigestLength());
-                }
+                LOG.debug("HMACOutputLength must not be less than {}", getDigestLength());
                 Object[] exArgs = { String.valueOf(getDigestLength()) };
                 throw new XMLSignatureException("algorithms.HMACOutputLengthMin", exArgs);
             } else {
@@ -154,9 +150,7 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
                 this.macAlgorithm = Mac.getInstance(macAlgorithm.getAlgorithm());
             } catch (Exception e) {
                 // this shouldn't occur, but if it does, restore previous Mac
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Exception when reinstantiating Mac:" + e);
-                }
+                LOG.debug("Exception when reinstantiating Mac: {}", e);
                 this.macAlgorithm = mac;
             }
             throw new XMLSignatureException(ex);
@@ -173,9 +167,7 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
     protected byte[] engineSign() throws XMLSignatureException {
         try {
             if (this.HMACOutputLengthSet && this.HMACOutputLength < getDigestLength()) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("HMACOutputLength must not be less than " + getDigestLength());
-                }
+                LOG.debug("HMACOutputLength must not be less than {}", getDigestLength());
                 Object[] exArgs = { String.valueOf(getDigestLength()) };
                 throw new XMLSignatureException("algorithms.HMACOutputLengthMin", exArgs);
             } else {

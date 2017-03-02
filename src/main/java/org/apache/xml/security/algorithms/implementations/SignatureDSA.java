@@ -67,9 +67,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
      */
     public SignatureDSA() throws XMLSignatureException {
         String algorithmID = JCEMapper.translateURItoJCEID(engineGetURI());
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Created SignatureDSA using " + algorithmID);
-        }
+        LOG.debug("Created SignatureDSA using {}", algorithmID);
 
         String provider = JCEMapper.getProviderId();
         try {
@@ -147,9 +145,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
             } catch (Exception e) {
                 // this shouldn't occur, but if it does, restore previous
                 // Signature
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Exception when reinstantiating Signature:" + e);
-                }
+                LOG.debug("Exception when reinstantiating Signature: {}", e);
                 this.signatureAlgorithm = sig;
             }
             throw new XMLSignatureException(ex);

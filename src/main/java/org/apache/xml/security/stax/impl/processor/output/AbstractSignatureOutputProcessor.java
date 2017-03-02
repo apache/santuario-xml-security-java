@@ -128,9 +128,7 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
         }
 
         String calculatedDigest = new String(Base64.encodeBase64(digestOutputStream.getDigestValue()));
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Calculated Digest: " + calculatedDigest);
-        }
+        LOG.debug("Calculated Digest: {}", calculatedDigest);
 
         signaturePartDef.setDigestValue(calculatedDigest);
 
@@ -294,9 +292,7 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
                             throw new XMLSecurityException(e);
                         }
                         String calculatedDigest = new String(Base64.encodeBase64(this.digestOutputStream.getDigestValue()));
-                        if (LOG.isDebugEnabled()) {
-                            LOG.debug("Calculated Digest: " + calculatedDigest);
-                        }
+                        LOG.debug("Calculated Digest: {}", calculatedDigest);
                         signaturePartDef.setDigestValue(calculatedDigest);
 
                         outputProcessorChain.removeProcessor(this);
