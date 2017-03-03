@@ -53,9 +53,7 @@ public class DEREncodedKeyValueResolver extends KeyResolverSpi {
     public PublicKey engineLookupAndResolvePublicKey(Element element, String baseURI, StorageResolver storage)
         throws KeyResolverException {
 
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Can I resolve " + element.getTagName());
-        }
+        LOG.debug("Can I resolve {}", element.getTagName());
 
         if (!engineCanResolve(element, baseURI, storage)) {
             return null;
@@ -65,9 +63,7 @@ public class DEREncodedKeyValueResolver extends KeyResolverSpi {
             DEREncodedKeyValue derKeyValue = new DEREncodedKeyValue(element, baseURI);
             return derKeyValue.getPublicKey();
         } catch (XMLSecurityException e) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("XMLSecurityException", e);
-            }
+            LOG.debug("XMLSecurityException", e);
         }
 
         return null;

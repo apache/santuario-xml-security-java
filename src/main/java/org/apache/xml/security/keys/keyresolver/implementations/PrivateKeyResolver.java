@@ -137,9 +137,7 @@ public class PrivateKeyResolver extends KeyResolverSpi {
     public PrivateKey engineLookupAndResolvePrivateKey(
         Element element, String baseURI, StorageResolver storage
     ) throws KeyResolverException {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Can I resolve " + element.getTagName() + "?");
-        }
+        LOG.debug("Can I resolve {}?", element.getTagName());
 
         if (XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_X509DATA)) {
             PrivateKey privKey = resolveX509Data(element, baseURI);

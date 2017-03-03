@@ -107,9 +107,7 @@ public class EncryptedKeyResolver extends KeyResolverSpi {
     public SecretKey engineLookupAndResolveSecretKey(
         Element element, String baseURI, StorageResolver storage
     ) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("EncryptedKeyResolver - Can I resolve " + element.getTagName());
-        }
+        LOG.debug("EncryptedKeyResolver - Can I resolve {}", element.getTagName());
 
         if (element == null) {
             return null;
@@ -119,9 +117,7 @@ public class EncryptedKeyResolver extends KeyResolverSpi {
         boolean isEncryptedKey =
             XMLUtils.elementIsInEncryptionSpace(element, EncryptionConstants._TAG_ENCRYPTEDKEY);
         if (isEncryptedKey) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Passed an Encrypted Key");
-            }
+            LOG.debug("Passed an Encrypted Key");
             try {
                 XMLCipher cipher = XMLCipher.getInstance();
                 cipher.init(XMLCipher.UNWRAP_MODE, kek);
@@ -134,9 +130,7 @@ public class EncryptedKeyResolver extends KeyResolverSpi {
                 EncryptedKey ek = cipher.loadEncryptedKey(element);
                 key = (SecretKey) cipher.decryptKey(ek, algorithm);
             } catch (XMLEncryptionException e) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug(e.getMessage(), e);
-                }
+                LOG.debug(e.getMessage(), e);
             }
         }
 

@@ -99,9 +99,7 @@ public class KeyResolver {
 
                 throw new KeyResolverException("utils.resolver.noClass", exArgs);
             }
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("check resolvability by class " + resolver.getClass());
-            }
+            LOG.debug("check resolvability by class {}", resolver.getClass());
 
             X509Certificate cert = resolver.resolveX509Certificate(element, baseURI, storage);
             if (cert != null) {
@@ -140,9 +138,7 @@ public class KeyResolver {
 
                 throw new KeyResolverException("utils.resolver.noClass", exArgs);
             }
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("check resolvability by class " + resolver.getClass());
-            }
+            LOG.debug("check resolvability by class {}", resolver.getClass());
 
             PublicKey cert = resolver.resolvePublicKey(element, baseURI, storage);
             if (cert != null) {

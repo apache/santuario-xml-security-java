@@ -822,28 +822,20 @@ public class KeyInfo extends SignatureElementProxy {
         PublicKey pk = this.getPublicKeyFromInternalResolvers();
 
         if (pk != null) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("I could find a key using the per-KeyInfo key resolvers");
-            }
+            LOG.debug("I could find a key using the per-KeyInfo key resolvers");
 
             return pk;
         }
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("I couldn't find a key using the per-KeyInfo key resolvers");
-        }
+        LOG.debug("I couldn't find a key using the per-KeyInfo key resolvers");
 
         pk = this.getPublicKeyFromStaticResolvers();
 
         if (pk != null) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("I could find a key using the system-wide key resolvers");
-            }
+            LOG.debug("I could find a key using the system-wide key resolvers");
 
             return pk;
         }
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("I couldn't find a key using the system-wide key resolvers");
-        }
+        LOG.debug("I couldn't find a key using the system-wide key resolvers");
 
         return null;
     }
@@ -888,9 +880,7 @@ public class KeyInfo extends SignatureElementProxy {
      */
     PublicKey getPublicKeyFromInternalResolvers() throws KeyResolverException {
         for (KeyResolverSpi keyResolver : internalKeyResolvers) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Try " + keyResolver.getClass().getName());
-            }
+            LOG.debug("Try {}", keyResolver.getClass().getName());
             keyResolver.setSecureValidation(secureValidation);
             Node currentChild = getFirstChild();
             String uri = this.getBaseURI();
@@ -925,29 +915,21 @@ public class KeyInfo extends SignatureElementProxy {
         X509Certificate cert = this.getX509CertificateFromInternalResolvers();
 
         if (cert != null) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("I could find a X509Certificate using the per-KeyInfo key resolvers");
-            }
+            LOG.debug("I could find a X509Certificate using the per-KeyInfo key resolvers");
 
             return cert;
         }
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("I couldn't find a X509Certificate using the per-KeyInfo key resolvers");
-        }
+        LOG.debug("I couldn't find a X509Certificate using the per-KeyInfo key resolvers");
 
         // Then use the system-wide Resolvers
         cert = this.getX509CertificateFromStaticResolvers();
 
         if (cert != null) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("I could find a X509Certificate using the system-wide key resolvers");
-            }
+            LOG.debug("I could find a X509Certificate using the system-wide key resolvers");
 
             return cert;
         }
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("I couldn't find a X509Certificate using the system-wide key resolvers");
-        }
+        LOG.debug("I couldn't find a X509Certificate using the system-wide key resolvers");
 
         return null;
     }
@@ -962,12 +944,9 @@ public class KeyInfo extends SignatureElementProxy {
      */
     X509Certificate getX509CertificateFromStaticResolvers()
         throws KeyResolverException {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug(
-                "Start getX509CertificateFromStaticResolvers() with " + KeyResolver.length()
-                + " resolvers"
-            );
-        }
+        LOG.debug(
+            "Start getX509CertificateFromStaticResolvers() with {} resolvers", KeyResolver.length()
+        );
         String uri = this.getBaseURI();
         Iterator<KeyResolverSpi> it = KeyResolver.iterator();
         while (it.hasNext()) {
@@ -1011,17 +990,13 @@ public class KeyInfo extends SignatureElementProxy {
      */
     X509Certificate getX509CertificateFromInternalResolvers()
         throws KeyResolverException {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug(
-                "Start getX509CertificateFromInternalResolvers() with "
-                + this.lengthInternalKeyResolver() + " resolvers"
-            );
-        }
+        LOG.debug(
+            "Start getX509CertificateFromInternalResolvers() with {} resolvers",
+            + this.lengthInternalKeyResolver()
+        );
         String uri = this.getBaseURI();
         for (KeyResolverSpi keyResolver : internalKeyResolvers) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Try " + keyResolver.getClass().getName());
-            }
+            LOG.debug("Try {}", keyResolver.getClass().getName());
             keyResolver.setSecureValidation(secureValidation);
             X509Certificate cert = applyCurrentResolver(uri, keyResolver);
             if (cert != null) {
@@ -1041,28 +1016,20 @@ public class KeyInfo extends SignatureElementProxy {
         SecretKey sk = this.getSecretKeyFromInternalResolvers();
 
         if (sk != null) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("I could find a secret key using the per-KeyInfo key resolvers");
-            }
+            LOG.debug("I could find a secret key using the per-KeyInfo key resolvers");
 
             return sk;
         }
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("I couldn't find a secret key using the per-KeyInfo key resolvers");
-        }
+        LOG.debug("I couldn't find a secret key using the per-KeyInfo key resolvers");
 
         sk = this.getSecretKeyFromStaticResolvers();
 
         if (sk != null) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("I could find a secret key using the system-wide key resolvers");
-            }
+            LOG.debug("I could find a secret key using the system-wide key resolvers");
 
             return sk;
         }
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("I couldn't find a secret key using the system-wide key resolvers");
-        }
+        LOG.debug("I couldn't find a secret key using the system-wide key resolvers");
 
         return null;
     }
@@ -1109,9 +1076,7 @@ public class KeyInfo extends SignatureElementProxy {
 
     SecretKey getSecretKeyFromInternalResolvers() throws KeyResolverException {
         for (KeyResolverSpi keyResolver : internalKeyResolvers) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Try " + keyResolver.getClass().getName());
-            }
+            LOG.debug("Try {}", keyResolver.getClass().getName());
             keyResolver.setSecureValidation(secureValidation);
             Node currentChild = getFirstChild();
             String uri = this.getBaseURI();
@@ -1144,25 +1109,17 @@ public class KeyInfo extends SignatureElementProxy {
         PrivateKey pk = this.getPrivateKeyFromInternalResolvers();
 
         if (pk != null) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("I could find a private key using the per-KeyInfo key resolvers");
-            }
+            LOG.debug("I could find a private key using the per-KeyInfo key resolvers");
             return pk;
         }
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("I couldn't find a secret key using the per-KeyInfo key resolvers");
-        }
+        LOG.debug("I couldn't find a secret key using the per-KeyInfo key resolvers");
 
         pk = this.getPrivateKeyFromStaticResolvers();
         if (pk != null) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("I could find a private key using the system-wide key resolvers");
-            }
+            LOG.debug("I could find a private key using the system-wide key resolvers");
             return pk;
         }
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("I couldn't find a private key using the system-wide key resolvers");
-        }
+        LOG.debug("I couldn't find a private key using the system-wide key resolvers");
 
         return null;
     }
@@ -1208,9 +1165,7 @@ public class KeyInfo extends SignatureElementProxy {
      */
     PrivateKey getPrivateKeyFromInternalResolvers() throws KeyResolverException {
         for (KeyResolverSpi keyResolver : internalKeyResolvers) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Try " + keyResolver.getClass().getName());
-            }
+            LOG.debug("Try {}", keyResolver.getClass().getName());
             keyResolver.setSecureValidation(secureValidation);
             Node currentChild = getFirstChild();
             String uri = this.getBaseURI();

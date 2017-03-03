@@ -74,13 +74,9 @@ public class X509SKIResolver extends KeyResolverSpi {
     public X509Certificate engineLookupResolveX509Certificate(
         Element element, String baseURI, StorageResolver storage
     ) throws KeyResolverException {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Can I resolve " + element.getTagName() + "?");
-        }
+        LOG.debug("Can I resolve {}?", element.getTagName());
         if (!XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_X509DATA)) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("I can't");
-            }
+            LOG.debug("I can't");
             return null;
         }
         /** Field _x509childObject[] */
@@ -90,9 +86,7 @@ public class X509SKIResolver extends KeyResolverSpi {
         x509childNodes = XMLUtils.selectDsNodes(element.getFirstChild(), Constants._TAG_X509SKI);
 
         if (!(x509childNodes != null && x509childNodes.length > 0)) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("I can't");
-            }
+            LOG.debug("I can't");
             return null;
         }
         try {
@@ -101,9 +95,7 @@ public class X509SKIResolver extends KeyResolverSpi {
                 KeyResolverException ex =
                     new KeyResolverException("KeyResolver.needStorageResolver", exArgs);
 
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("", ex);
-                }
+                LOG.debug("", ex);
 
                 throw ex;
             }
@@ -121,9 +113,7 @@ public class X509SKIResolver extends KeyResolverSpi {
 
                 for (int i = 0; i < x509childObject.length; i++) {
                     if (certSKI.equals(x509childObject[i])) {
-                        if (LOG.isDebugEnabled()) {
-                            LOG.debug("Return PublicKey from " + cert.getSubjectX500Principal().getName());
-                        }
+                        LOG.debug("Return PublicKey from {}", cert.getSubjectX500Principal().getName());
 
                         return cert;
                     }

@@ -95,9 +95,7 @@ public class SingleKeyResolver extends KeyResolverSpi {
     public PublicKey engineLookupAndResolvePublicKey(
         Element element, String baseURI, StorageResolver storage
     ) throws KeyResolverException {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Can I resolve " + element.getTagName() + "?");
-        }
+        LOG.debug("Can I resolve {}?", element.getTagName());
 
         if (publicKey != null
             && XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_KEYNAME)) {
@@ -138,9 +136,7 @@ public class SingleKeyResolver extends KeyResolverSpi {
     public SecretKey engineResolveSecretKey(
         Element element, String baseURI, StorageResolver storage
     ) throws KeyResolverException {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Can I resolve " + element.getTagName() + "?");
-        }
+        LOG.debug("Can I resolve {}?", element.getTagName());
 
         if (secretKey != null
             && XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_KEYNAME)) {
@@ -166,9 +162,7 @@ public class SingleKeyResolver extends KeyResolverSpi {
     public PrivateKey engineLookupAndResolvePrivateKey(
         Element element, String baseURI, StorageResolver storage
     ) throws KeyResolverException {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Can I resolve " + element.getTagName() + "?");
-        }
+        LOG.debug("Can I resolve {}?", element.getTagName());
 
         if (privateKey != null
             && XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_KEYNAME)) {

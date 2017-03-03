@@ -78,9 +78,7 @@ public class X509DigestResolver extends KeyResolverSpi {
     public X509Certificate engineLookupResolveX509Certificate(Element element, String baseURI, StorageResolver storage)
         throws KeyResolverException {
 
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Can I resolve " + element.getTagName());
-        }
+        LOG.debug("Can I resolve {}", element.getTagName());
 
         if (!engineCanResolve(element, baseURI, storage)) {
             return null;
@@ -89,9 +87,7 @@ public class X509DigestResolver extends KeyResolverSpi {
         try {
             return resolveCertificate(element, baseURI, storage);
         } catch (XMLSecurityException e) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("XMLSecurityException", e);
-            }
+            LOG.debug("XMLSecurityException", e);
         }
 
         return null;
@@ -141,9 +137,7 @@ public class X509DigestResolver extends KeyResolverSpi {
                     byte[] certDigestBytes = XMLX509Digest.getDigestBytesFromCert(cert, keyInfoDigest.getAlgorithm());
 
                     if (Arrays.equals(keyInfoDigest.getDigestBytes(), certDigestBytes)) {
-                        if (LOG.isDebugEnabled()) {
-                            LOG.debug("Found certificate with: " + cert.getSubjectX500Principal().getName());
-                        }
+                        LOG.debug("Found certificate with: {}", cert.getSubjectX500Principal().getName());
                         return cert;
                     }
 
@@ -167,9 +161,7 @@ public class X509DigestResolver extends KeyResolverSpi {
         if (storage == null) {
             Object exArgs[] = { Constants._TAG_X509DIGEST };
             KeyResolverException ex = new KeyResolverException("KeyResolver.needStorageResolver", exArgs);
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("", ex);
-            }
+            LOG.debug("", ex);
             throw ex;
         }
     }

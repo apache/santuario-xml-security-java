@@ -62,9 +62,7 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
     public PublicKey engineLookupAndResolvePublicKey(Element element, String baseURI, StorageResolver storage)
         throws KeyResolverException {
 
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Can I resolve " + element.getTagName());
-        }
+        LOG.debug("Can I resolve {}", element.getTagName());
 
         if (!engineCanResolve(element, baseURI, storage)) {
             return null;
@@ -76,9 +74,7 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
                 return referent.getPublicKey();
             }
         } catch (XMLSecurityException e) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("XMLSecurityException", e);
-            }
+            LOG.debug("XMLSecurityException", e);
         }
 
         return null;
@@ -88,9 +84,7 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
     public X509Certificate engineLookupResolveX509Certificate(Element element, String baseURI, StorageResolver storage)
         throws KeyResolverException {
 
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Can I resolve " + element.getTagName());
-        }
+        LOG.debug("Can I resolve {}", element.getTagName());
 
         if (!engineCanResolve(element, baseURI, storage)) {
             return null;
@@ -102,9 +96,7 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
                 return referent.getX509Certificate();
             }
         } catch (XMLSecurityException e) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("XMLSecurityException", e);
-            }
+            LOG.debug("XMLSecurityException", e);
         }
 
         return null;
@@ -114,9 +106,7 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
     public SecretKey engineLookupAndResolveSecretKey(Element element, String baseURI, StorageResolver storage)
         throws KeyResolverException {
 
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Can I resolve " + element.getTagName());
-        }
+        LOG.debug("Can I resolve {}", element.getTagName());
 
         if (!engineCanResolve(element, baseURI, storage)) {
             return null;
@@ -128,9 +118,7 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
                 return referent.getSecretKey();
             }
         } catch (XMLSecurityException e) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("XMLSecurityException", e);
-            }
+            LOG.debug("XMLSecurityException", e);
         }
 
         return null;
@@ -140,9 +128,7 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
     public PrivateKey engineLookupAndResolvePrivateKey(Element element, String baseURI, StorageResolver storage)
         throws KeyResolverException {
 
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Can I resolve " + element.getTagName());
-        }
+        LOG.debug("Can I resolve " + element.getTagName());
 
         if (!engineCanResolve(element, baseURI, storage)) {
             return null;
@@ -154,9 +140,7 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
                 return referent.getPrivateKey();
             }
         } catch (XMLSecurityException e) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("XMLSecurityException", e);
-            }
+            LOG.debug("XMLSecurityException", e);
         }
 
         return null;
@@ -181,16 +165,12 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
         try {
             referentElement = obtainReferenceElement(resource);
         } catch (Exception e) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("XMLSecurityException", e);
-            }
+            LOG.debug("XMLSecurityException", e);
             return null;
         }
 
         if (referentElement == null) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("De-reference of KeyInfoReference URI returned null: " + uriAttr.getValue());
-            }
+            LOG.debug("De-reference of KeyInfoReference URI returned null: {}", uriAttr.getValue());
             return null;
         }
 

@@ -105,9 +105,7 @@ public class SecretKeyResolver extends KeyResolverSpi
     public SecretKey engineResolveSecretKey(
         Element element, String baseURI, StorageResolver storage
     ) throws KeyResolverException {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Can I resolve " + element.getTagName() + "?");
-        }
+        LOG.debug("Can I resolve {}?", element.getTagName());
 
         if (XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_KEYNAME)) {
             String keyName = element.getFirstChild().getNodeValue();
