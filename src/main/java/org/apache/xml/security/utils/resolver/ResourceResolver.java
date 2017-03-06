@@ -90,11 +90,7 @@ public class ResourceResolver {
                     }
                 }
 
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug(
-                        "check resolvability by class " + resolverTmp.getClass().getName()
-                    );
-                }
+                LOG.debug("check resolvability by class {}", resolverTmp.getClass().getName());
 
                 if (resolverTmp != null && resolverTmp.canResolve(context)) {
                     // Check to see whether the Resolver is allowed
@@ -147,12 +143,10 @@ public class ResourceResolver {
     public static ResourceResolver getInstance(
         Attr uri, String baseURI, List<ResourceResolver> individualResolvers, boolean secureValidation
     ) throws ResourceResolverException {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug(
-                "I was asked to create a ResourceResolver and got "
-                + (individualResolvers == null ? 0 : individualResolvers.size())
-            );
-        }
+        LOG.debug(
+            "I was asked to create a ResourceResolver and got {}",
+            (individualResolvers == null ? 0 : individualResolvers.size())
+        );
 
         ResourceResolverContext context = new ResourceResolverContext(uri, baseURI, secureValidation);
 
@@ -162,10 +156,8 @@ public class ResourceResolver {
                 ResourceResolver resolver = individualResolvers.get(i);
 
                 if (resolver != null) {
-                    if (LOG.isDebugEnabled()) {
-                        String currentClass = resolver.resolverSpi.getClass().getName();
-                        LOG.debug("check resolvability by class " + currentClass);
-                    }
+                    String currentClass = resolver.resolverSpi.getClass().getName();
+                    LOG.debug("check resolvability by class {}", currentClass);
 
                     if (resolver.canResolve(context)) {
                         return resolver;
@@ -256,9 +248,7 @@ public class ResourceResolver {
                 resolverList.add(new ResourceResolver(resourceResolverSpi));
             }
         }
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Registered resolver: " + resourceResolverSpi.toString());
-        }
+        LOG.debug("Registered resolver: {}", resourceResolverSpi.toString());
     }
 
     /**

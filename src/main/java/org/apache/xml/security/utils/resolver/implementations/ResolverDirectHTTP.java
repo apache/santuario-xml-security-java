@@ -137,9 +137,7 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
                     summarized += read;
                 }
 
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Fetched " + summarized + " bytes from URI " + uriNew.toString());
-                }
+                LOG.debug("Fetched {} bytes from URI {}", summarized, uriNew.toString());
 
                 XMLSignatureInput result = new XMLSignatureInput(baos.toByteArray());
                 result.setSecureValidation(context.secureValidation);
@@ -203,34 +201,24 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
      */
     public boolean engineCanResolveURI(ResourceResolverContext context) {
         if (context.uriToResolve == null) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("quick fail, uri == null");
-            }
+            LOG.debug("quick fail, uri == null");
             return false;
         }
 
         if (context.uriToResolve.equals("") || context.uriToResolve.charAt(0) == '#') {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("quick fail for empty URIs and local ones");
-            }
+            LOG.debug("quick fail for empty URIs and local ones");
             return false;
         }
 
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("I was asked whether I can resolve " + context.uriToResolve);
-        }
+        LOG.debug("I was asked whether I can resolve {}", context.uriToResolve);
 
         if (context.uriToResolve.startsWith("http:") ||
             context.baseUri != null && context.baseUri.startsWith("http:")) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("I state that I can resolve " + context.uriToResolve);
-            }
+            LOG.debug("I state that I can resolve {}", context.uriToResolve);
             return true;
         }
 
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("I state that I can't resolve " + context.uriToResolve);
-        }
+        LOG.debug("I state that I can't resolve {}", context.uriToResolve);
 
         return false;
     }

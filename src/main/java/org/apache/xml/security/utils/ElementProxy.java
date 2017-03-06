@@ -87,9 +87,7 @@ public abstract class ElementProxy {
             throw new XMLSecurityException("ElementProxy.nullElement");
         }
 
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("setElement(\"" + element.getTagName() + "\", \"" + baseURI + "\")");
-        }
+        LOG.debug("setElement(\"{}\", \"{}\")", element.getTagName(), baseURI);
 
         setElement(element);
         this.baseURI = baseURI;
@@ -177,9 +175,7 @@ public abstract class ElementProxy {
             throw new XMLSecurityException("ElementProxy.nullElement");
         }
 
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("setElement(" + element.getTagName() + ", \"" + baseURI + "\"");
-        }
+        LOG.debug("setElement({}, \"{}\")", element.getTagName(), baseURI);
 
         setElement(element);
         this.baseURI = baseURI;

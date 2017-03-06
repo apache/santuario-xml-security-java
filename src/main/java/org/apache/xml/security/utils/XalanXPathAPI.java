@@ -151,9 +151,7 @@ public class XalanXPathAPI implements XPathAPI {
             Constructor<?> constructor = XPath.class.getConstructor(classes);
             xpath = (XPath) constructor.newInstance(objects);
         } catch (Exception ex) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug(ex.getMessage(), ex);
-            }
+            LOG.debug(ex.getMessage(), ex);
         }
         if (xpath == null) {
             xpath = new XPath(str, null, prefixResolver, XPath.SELECT, null);
@@ -164,15 +162,11 @@ public class XalanXPathAPI implements XPathAPI {
     private static synchronized void fixupFunctionTable() {
         installed = false;
         if (new FunctionTable().functionAvailable("here")) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Here function already registered");
-            }
+            LOG.debug("Here function already registered");
             installed = true;
             return;
         }
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Registering Here function");
-        }
+        LOG.debug("Registering Here function");
         /**
          * Try to register our here() implementation as internal function.
          */
@@ -199,14 +193,10 @@ public class XalanXPathAPI implements XPathAPI {
                 LOG.debug("Error installing function using the static installFunction method", ex);
             }
         }
-        if (LOG.isDebugEnabled()) {
-            if (installed) {
-                LOG.debug("Registered class " + FuncHere.class.getName()
-                          + " for XPath function 'here()' function in internal table");
-            } else {
-                LOG.debug("Unable to register class " + FuncHere.class.getName()
-                          + " for XPath function 'here()' function in internal table");
-            }
+        if (installed) {
+            LOG.debug("Registered class {} for XPath function 'here()' function in internal table", FuncHere.class.getName());
+        } else {
+            LOG.debug("Unable to register class {} for XPath function 'here()' function in internal table", FuncHere.class.getName());
         }
     }
 

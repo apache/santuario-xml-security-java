@@ -83,14 +83,10 @@ public final class JavaUtils {
             try (FileOutputStream fos = new FileOutputStream(f)) {
                 fos.write(bytes);
             } catch (IOException ex) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug(ex.getMessage(), ex);
-                }
+                LOG.debug(ex.getMessage(), ex);
             }
         } else {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("writeBytesToFilename got null byte[] pointed");
-            }
+            LOG.debug("writeBytesToFilename got null byte[] pointed");
         }
     }
 
