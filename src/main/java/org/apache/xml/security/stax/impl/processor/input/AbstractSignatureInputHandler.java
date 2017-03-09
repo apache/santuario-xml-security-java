@@ -321,7 +321,7 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
 
                 Map<String, Object> transformerProperties = null;
                 if (inclusiveNamespacesType != null) {
-                    transformerProperties = new HashMap<String, Object>();
+                    transformerProperties = new HashMap<>();
                     transformerProperties.put(
                             Canonicalizer20010315_Excl.INCLUSIVE_NAMESPACES_PREFIX_LIST,
                             inclusiveNamespacesType.getPrefixList());

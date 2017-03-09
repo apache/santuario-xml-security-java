@@ -70,7 +70,7 @@ public class XIncludeHandler extends DefaultHandler {
     private URL systemId;
     private boolean skipEvents = false;
 
-    Map<URI, Document> uriDocMap = new HashMap<URI, Document>();
+    Map<URI, Document> uriDocMap = new HashMap<>();
 
     public XIncludeHandler(ContentHandler contentHandler) {
         this.contentHandler = contentHandler;

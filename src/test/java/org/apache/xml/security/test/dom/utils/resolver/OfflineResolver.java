@@ -55,8 +55,8 @@ public class OfflineResolver extends ResourceResolverSpi {
     static {
         org.apache.xml.security.Init.init();
 
-        _uriMap = new HashMap<String, String>();
-        _mimeMap = new HashMap<String, String>();
+        _uriMap = new HashMap<>();
+        _mimeMap = new HashMap<>();
 
         String basedir =
             System.getProperty("basedir") == null ? "./": System.getProperty("basedir") + "/";

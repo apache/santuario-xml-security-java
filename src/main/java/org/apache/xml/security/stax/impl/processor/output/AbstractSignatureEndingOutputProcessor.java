@@ -276,7 +276,7 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
                 }
                 this.inclusiveNamespacePrefixes = prefixes.toString();
 
-                transformerProperties = new HashMap<String, Object>(2);
+                transformerProperties = new HashMap<>(2);
                 transformerProperties.put(
                         Canonicalizer20010315_Excl.INCLUSIVE_NAMESPACES_PREFIX_LIST, new ArrayList<>(prefixSet));
             }

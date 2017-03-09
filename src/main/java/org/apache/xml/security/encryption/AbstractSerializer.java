@@ -187,7 +187,7 @@ public abstract class AbstractSerializer implements Serializer {
             outputStreamWriter.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?><dummy");
 
             // Run through each node up to the document node and find any xmlns: nodes
-            Map<String, String> storedNamespaces = new HashMap<String, String>();
+            Map<String, String> storedNamespaces = new HashMap<>();
             Node wk = ctx;
             while (wk != null) {
                 NamedNodeMap atts = wk.getAttributes();
@@ -229,7 +229,7 @@ public abstract class AbstractSerializer implements Serializer {
         sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?><dummy");
 
         // Run through each node up to the document node and find any xmlns: nodes
-        Map<String, String> storedNamespaces = new HashMap<String, String>();
+        Map<String, String> storedNamespaces = new HashMap<>();
         Node wk = ctx;
         while (wk != null) {
             NamedNodeMap atts = wk.getAttributes();

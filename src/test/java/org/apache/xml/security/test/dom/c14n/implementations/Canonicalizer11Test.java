@@ -276,7 +276,7 @@ public class Canonicalizer11Test extends org.junit.Assert {
         String c14nURI = Canonicalizer.ALGO_ID_C14N11_OMIT_COMMENTS;
         boolean validating = true;
 
-        Map<String, String> namespace = new HashMap<String, String>();
+        Map<String, String> namespace = new HashMap<>();
         namespace.put("ietf", "http://www.ietf.org");
         String xpath =
             "(//. | //@* | //namespace::*)"
@@ -314,7 +314,7 @@ public class Canonicalizer11Test extends org.junit.Assert {
         String c14nURI = Canonicalizer.ALGO_ID_C14N11_OMIT_COMMENTS;
         boolean validating = true;
 
-        Map<String, String> namespace = new HashMap<String, String>();
+        Map<String, String> namespace = new HashMap<>();
         namespace.put("ietf", "http://www.ietf.org");
         String xpath =
             "(//. | //@* | //namespace::*)"
@@ -338,7 +338,7 @@ public class Canonicalizer11Test extends org.junit.Assert {
                                ) throws IOException, FileNotFoundException, SAXException,
                                    ParserConfigurationException, CanonicalizationException,
                                    InvalidCanonicalizerException, TransformerException, XPathExpressionException {
-        Map<String, String> namespace = new HashMap<String, String>();
+        Map<String, String> namespace = new HashMap<>();
         return c14nAndCompare(fileIn, fileRef, fileOut,
             c14nURI, validating, xpath, namespace);
     }

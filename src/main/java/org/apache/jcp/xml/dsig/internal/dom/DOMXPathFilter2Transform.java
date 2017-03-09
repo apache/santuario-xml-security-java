@@ -105,7 +105,7 @@ public final class DOMXPathFilter2Transform extends ApacheTransform {
             if (attributes != null) {
                 int length = attributes.getLength();
                 Map<String, String> namespaceMap =
-                    new HashMap<String, String>(length);
+                    new HashMap<>(length);
                 for (int i = 0; i < length; i++) {
                     Attr attr = (Attr)attributes.item(i);
                     String prefix = attr.getPrefix();

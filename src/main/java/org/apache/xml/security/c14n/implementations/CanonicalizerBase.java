@@ -245,7 +245,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
         final OutputStream writer = this.writer;
         final Node excludeNode = this.excludeNode;
         final boolean includeComments = this.includeComments;
-        Map<String, byte[]> cache = new HashMap<String, byte[]>();
+        Map<String, byte[]> cache = new HashMap<>();
         do {
             switch (currentNode.getNodeType()) {
 
@@ -400,7 +400,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
         Node parentNode = null;
         OutputStream writer = this.writer;
         int documentLevel = NODE_BEFORE_DOCUMENT_ELEMENT;
-        Map<String, byte[]> cache = new HashMap<String, byte[]>();
+        Map<String, byte[]> cache = new HashMap<>();
         do {
             switch (currentNode.getNodeType()) {
 

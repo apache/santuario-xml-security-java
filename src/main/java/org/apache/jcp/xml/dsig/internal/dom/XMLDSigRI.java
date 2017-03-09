@@ -59,7 +59,7 @@ public final class XMLDSigRI extends Provider {
         /* We are the ApacheXMLDSig provider */
         super("ApacheXMLDSig", 2.10, INFO);
 
-        final Map<Object, Object> map = new HashMap<Object, Object>();
+        final Map<Object, Object> map = new HashMap<>();
         map.put("XMLSignatureFactory.DOM",
                 "org.apache.jcp.xml.dsig.internal.dom.DOMXMLSignatureFactory");
         map.put("KeyInfoFactory.DOM",

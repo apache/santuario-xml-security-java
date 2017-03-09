@@ -216,7 +216,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
         inclusiveNamespaces.add("xsi");
         inclusiveNamespaces.add("wsu");
         Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
-        Map<String, Object> transformerProperties = new HashMap<String, Object>();
+        Map<String, Object> transformerProperties = new HashMap<>();
         transformerProperties.put(Canonicalizer20010315_Excl.INCLUSIVE_NAMESPACES_PREFIX_LIST, inclusiveNamespaces);
         c.setProperties(transformerProperties);
         c.setOutputStream(baos);
@@ -253,7 +253,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
         List<String> inclusiveNamespaces = new ArrayList<>();
         Canonicalizer20010315_ExclWithCommentsTransformer c =
                 new Canonicalizer20010315_ExclWithCommentsTransformer();
-        Map<String, Object> transformerProperties = new HashMap<String, Object>();
+        Map<String, Object> transformerProperties = new HashMap<>();
         transformerProperties.put(Canonicalizer20010315_Excl.INCLUSIVE_NAMESPACES_PREFIX_LIST, inclusiveNamespaces);
         c.setProperties(transformerProperties);
         c.setOutputStream(baos);
@@ -306,7 +306,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
             inclusiveNamespaces.add("#default");
             inclusiveNamespaces.add("xsi");
             Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
-            Map<String, Object> transformerProperties = new HashMap<String, Object>();
+            Map<String, Object> transformerProperties = new HashMap<>();
             transformerProperties.put(Canonicalizer20010315_Excl.INCLUSIVE_NAMESPACES_PREFIX_LIST, inclusiveNamespaces);
             c.setProperties(transformerProperties);
             c.setOutputStream(baos);
@@ -321,7 +321,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
             List<String> inclusiveNamespaces = new ArrayList<>();
             inclusiveNamespaces.add("xsi");
             Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
-            Map<String, Object> transformerProperties = new HashMap<String, Object>();
+            Map<String, Object> transformerProperties = new HashMap<>();
             transformerProperties.put(Canonicalizer20010315_Excl.INCLUSIVE_NAMESPACES_PREFIX_LIST, inclusiveNamespaces);
             c.setProperties(transformerProperties);
             c.setOutputStream(baos);
@@ -382,7 +382,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
             inclusiveNamespaces.add("#default");
             inclusiveNamespaces.add("xsi");
             Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
-            Map<String, Object> transformerProperties = new HashMap<String, Object>();
+            Map<String, Object> transformerProperties = new HashMap<>();
             transformerProperties.put(Canonicalizer20010315_Excl.INCLUSIVE_NAMESPACES_PREFIX_LIST, inclusiveNamespaces);
             c.setProperties(transformerProperties);
             c.setOutputStream(baos);
@@ -395,7 +395,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
             List<String> inclusiveNamespaces = new ArrayList<>();
             inclusiveNamespaces.add("xsi");
             Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
-            Map<String, Object> transformerProperties = new HashMap<String, Object>();
+            Map<String, Object> transformerProperties = new HashMap<>();
             transformerProperties.put(Canonicalizer20010315_Excl.INCLUSIVE_NAMESPACES_PREFIX_LIST, inclusiveNamespaces);
             c.setProperties(transformerProperties);
             c.setOutputStream(baos);
@@ -444,7 +444,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
             inclusiveNamespaces.add("#default");
             inclusiveNamespaces.add("xsi");
             Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
-            Map<String, Object> transformerProperties = new HashMap<String, Object>();
+            Map<String, Object> transformerProperties = new HashMap<>();
             transformerProperties.put(Canonicalizer20010315_Excl.INCLUSIVE_NAMESPACES_PREFIX_LIST, inclusiveNamespaces);
             c.setProperties(transformerProperties);
             c.setOutputStream(baos);
@@ -458,7 +458,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
             List<String> inclusiveNamespaces = new ArrayList<>();
             inclusiveNamespaces.add("xsi");
             Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
-            Map<String, Object> transformerProperties = new HashMap<String, Object>();
+            Map<String, Object> transformerProperties = new HashMap<>();
             transformerProperties.put(Canonicalizer20010315_Excl.INCLUSIVE_NAMESPACES_PREFIX_LIST, inclusiveNamespaces);
             c.setProperties(transformerProperties);
             c.setOutputStream(baos);
@@ -507,7 +507,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
             inclusiveNamespaces.add("#default");
             inclusiveNamespaces.add("xsi");
             Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
-            Map<String, Object> transformerProperties = new HashMap<String, Object>();
+            Map<String, Object> transformerProperties = new HashMap<>();
             transformerProperties.put(Canonicalizer20010315_Excl.INCLUSIVE_NAMESPACES_PREFIX_LIST, inclusiveNamespaces);
             c.setProperties(transformerProperties);
             c.setOutputStream(baos);
@@ -521,7 +521,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
             List<String> inclusiveNamespaces = new ArrayList<>();
             inclusiveNamespaces.add("xsi");
             Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
-            Map<String, Object> transformerProperties = new HashMap<String, Object>();
+            Map<String, Object> transformerProperties = new HashMap<>();
             transformerProperties.put(Canonicalizer20010315_Excl.INCLUSIVE_NAMESPACES_PREFIX_LIST, inclusiveNamespaces);
             c.setProperties(transformerProperties);
             c.setOutputStream(baos);
@@ -567,7 +567,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
         List<String> inclusiveNamespaces = new ArrayList<>();
         inclusiveNamespaces.add("#default");
         Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
-        Map<String, Object> transformerProperties = new HashMap<String, Object>();
+        Map<String, Object> transformerProperties = new HashMap<>();
         transformerProperties.put(Canonicalizer20010315_Excl.INCLUSIVE_NAMESPACES_PREFIX_LIST, inclusiveNamespaces);
         transformerProperties.put(Canonicalizer20010315_Excl.PROPAGATE_DEFAULT_NAMESPACE, Boolean.TRUE);
         c.setProperties(transformerProperties);
@@ -609,7 +609,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
         List<String> inclusiveNamespaces = new ArrayList<>();
         inclusiveNamespaces.add("#default");
         Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
-        Map<String, Object> transformerProperties = new HashMap<String, Object>();
+        Map<String, Object> transformerProperties = new HashMap<>();
         transformerProperties.put(Canonicalizer20010315_Excl.INCLUSIVE_NAMESPACES_PREFIX_LIST, inclusiveNamespaces);
         transformerProperties.put(Canonicalizer20010315_Excl.PROPAGATE_DEFAULT_NAMESPACE, Boolean.TRUE);
         c.setProperties(transformerProperties);
@@ -651,7 +651,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
         List<String> inclusiveNamespaces = new ArrayList<>();
         inclusiveNamespaces.add("#default");
         Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
-        Map<String, Object> transformerProperties = new HashMap<String, Object>();
+        Map<String, Object> transformerProperties = new HashMap<>();
         transformerProperties.put(Canonicalizer20010315_Excl.INCLUSIVE_NAMESPACES_PREFIX_LIST, inclusiveNamespaces);
         transformerProperties.put(Canonicalizer20010315_Excl.PROPAGATE_DEFAULT_NAMESPACE, Boolean.TRUE);
         c.setProperties(transformerProperties);
@@ -693,7 +693,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
         List<String> inclusiveNamespaces = new ArrayList<>();
         inclusiveNamespaces.add("#default");
         Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
-        Map<String, Object> transformerProperties = new HashMap<String, Object>();
+        Map<String, Object> transformerProperties = new HashMap<>();
         transformerProperties.put(Canonicalizer20010315_Excl.INCLUSIVE_NAMESPACES_PREFIX_LIST, inclusiveNamespaces);
         transformerProperties.put(Canonicalizer20010315_Excl.PROPAGATE_DEFAULT_NAMESPACE, Boolean.TRUE);
         c.setProperties(transformerProperties);
@@ -730,7 +730,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
         List<String> inclusiveNamespaces = new ArrayList<>();
         inclusiveNamespaces.add("#default");
         Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
-        Map<String, Object> transformerProperties = new HashMap<String, Object>();
+        Map<String, Object> transformerProperties = new HashMap<>();
         transformerProperties.put(Canonicalizer20010315_Excl.INCLUSIVE_NAMESPACES_PREFIX_LIST, inclusiveNamespaces);
         transformerProperties.put(Canonicalizer20010315_Excl.PROPAGATE_DEFAULT_NAMESPACE, Boolean.TRUE);
         c.setProperties(transformerProperties);

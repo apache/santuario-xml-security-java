@@ -34,7 +34,7 @@ import org.w3c.dom.Node;
  */
 public class DOMNamespaceContext implements NamespaceContext {
 
-    private Map<String, String> namespaceMap = new HashMap<String, String>();
+    private Map<String, String> namespaceMap = new HashMap<>();
 
     public DOMNamespaceContext(Node contextNode) {
         addNamespaces(contextNode);

@@ -34,7 +34,7 @@ public class DocumentContextImpl implements DocumentContext, Cloneable {
     private String encoding;
     private String baseURI;
     private final Map<Integer, XMLSecurityConstants.ContentType> contentTypeMap = new TreeMap<Integer, XMLSecurityConstants.ContentType>();
-    private final Map<Object, Integer> processorToIndexMap = new HashMap<Object, Integer>();
+    private final Map<Object, Integer> processorToIndexMap = new HashMap<>();
 
     @Override
     public String getEncoding() {

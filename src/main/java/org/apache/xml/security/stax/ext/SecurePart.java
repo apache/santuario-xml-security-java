@@ -45,7 +45,7 @@ public class SecurePart {
             return this.modifier;
         }
 
-        private static final Map<String, Modifier> modifierMap = new HashMap<String, Modifier>();
+        private static final Map<String, Modifier> modifierMap = new HashMap<>();
 
         static {
             for (Modifier modifier : EnumSet.allOf(Modifier.class)) {

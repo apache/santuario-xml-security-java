@@ -120,7 +120,7 @@ public class XPointerResourceResolver extends ResourceResolverSpi {
         String parts[] = xpURI.substring(1).split("\\s");
 
         int i = 0;
-        Map<String, String> namespaces = new HashMap<String, String>();
+        Map<String, String> namespaces = new HashMap<>();
 
         if (parts.length > 1) {
 

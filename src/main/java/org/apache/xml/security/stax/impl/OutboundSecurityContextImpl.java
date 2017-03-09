@@ -36,7 +36,7 @@ import java.util.Map;
 public class OutboundSecurityContextImpl extends AbstractSecurityContextImpl implements OutboundSecurityContext {
 
     private final Map<String, SecurityTokenProvider<OutboundSecurityToken>> securityTokenProviders =
-            new HashMap<String, SecurityTokenProvider<OutboundSecurityToken>>();
+            new HashMap<>();
 
     @Override
     public void registerSecurityTokenProvider(String id, SecurityTokenProvider<OutboundSecurityToken> securityTokenProvider) {

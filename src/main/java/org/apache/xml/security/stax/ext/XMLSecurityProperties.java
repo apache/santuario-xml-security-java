@@ -73,7 +73,7 @@ public class XMLSecurityProperties {
 
     private QName idAttributeNS = XMLSecurityConstants.ATT_NULL_Id;
 
-    private final Map<String, Key> keyNameMap = new HashMap<String, Key>();
+    private final Map<String, Key> keyNameMap = new HashMap<>();
 
     private boolean signatureGenerateIds = true;
     private boolean signatureIncludeDigestTransform = true;

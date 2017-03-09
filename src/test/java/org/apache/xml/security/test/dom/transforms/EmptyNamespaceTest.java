@@ -72,7 +72,7 @@ public class EmptyNamespaceTest {
 
         List<String> inclusiveNamespaces = Arrays.asList("SOAP-ENV ec ec1 ns0 ns1 ns11 ns2 ns4 ns9".split(" "));
         Canonicalizer20010315_Excl transformer = new Canonicalizer20010315_ExclOmitCommentsTransformer();
-        Map<String, Object> properties = new HashMap<String, Object>();
+        Map<String, Object> properties = new HashMap<>();
         properties.put(Canonicalizer20010315_Excl.INCLUSIVE_NAMESPACES_PREFIX_LIST, inclusiveNamespaces);
 
         transformer.setProperties(properties);

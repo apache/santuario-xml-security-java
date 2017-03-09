@@ -125,7 +125,7 @@ public abstract class Canonicalizer11 extends CanonicalizerBase {
                 return;
             }
 
-            Map<String, Attr> loa = new HashMap<String, Attr>();
+            Map<String, Attr> loa = new HashMap<>();
             List<Attr> baseAttrs = new ArrayList<>();
             boolean successiveOmitted = true;
             for (; size >= 0; size--) {

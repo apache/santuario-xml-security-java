@@ -467,7 +467,7 @@ public class BaltimoreEncTest extends org.junit.Assert {
 
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();
-        Map<String, String> namespace = new HashMap<String, String>();
+        Map<String, String> namespace = new HashMap<>();
         namespace.put("x", "urn:example:po");
         DSNamespaceContext context = new DSNamespaceContext(namespace);
         xpath.setNamespaceContext(context);

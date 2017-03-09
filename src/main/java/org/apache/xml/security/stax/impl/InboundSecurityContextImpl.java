@@ -39,7 +39,7 @@ public class InboundSecurityContextImpl extends AbstractSecurityContextImpl impl
 
     private static final Boolean allowMD5Algorithm = Boolean.valueOf(ConfigurationProperties.getProperty("AllowMD5Algorithm"));
     private final Map<String, SecurityTokenProvider<? extends InboundSecurityToken>> securityTokenProviders =
-            new HashMap<String, SecurityTokenProvider<? extends InboundSecurityToken>>();
+            new HashMap<>();
 
     @Override
     protected void forwardSecurityEvent(SecurityEvent securityEvent) throws XMLSecurityException {

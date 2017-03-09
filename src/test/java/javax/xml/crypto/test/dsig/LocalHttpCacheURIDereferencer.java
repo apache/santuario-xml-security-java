@@ -48,7 +48,7 @@ public class LocalHttpCacheURIDereferencer implements URIDereferencer {
         String base = BASEDIR == null ? "./": BASEDIR;
         File dir = new File(base + FS + "src/test/resources" + FS + "javax" +
             FS + "xml" + FS + "crypto" + FS + "dsig");
-        uriMap = new HashMap<String, File>();
+        uriMap = new HashMap<>();
         uriMap.put("http://www.w3.org/TR/xml-stylesheet",
                    new File(dir, "xml-stylesheet"));
         uriMap.put("http://www.w3.org/Signature/2002/04/xml-stylesheet.b64",

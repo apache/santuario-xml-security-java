@@ -3241,7 +3241,7 @@ public class XMLCipher {
         private class EncryptionPropertyImpl implements EncryptionProperty {
             private String target;
             private String id;
-            private Map<String, String> attributeMap = new HashMap<String, String>();
+            private Map<String, String> attributeMap = new HashMap<>();
             private List<Element> encryptionInformation;
 
             /**

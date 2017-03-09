@@ -227,7 +227,7 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
                 }
                 signaturePartDef.setInclusiveNamespacesPrefixes(prefixes.toString());
                 List<String> inclusiveNamespacePrefixes = new ArrayList<>(prefixSet);
-                transformerProperties = new HashMap<String, Object>();
+                transformerProperties = new HashMap<>();
                 transformerProperties.put(
                         Canonicalizer20010315_Excl.INCLUSIVE_NAMESPACES_PREFIX_LIST, inclusiveNamespacePrefixes);
             }

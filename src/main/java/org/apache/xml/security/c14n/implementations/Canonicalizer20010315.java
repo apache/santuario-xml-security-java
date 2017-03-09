@@ -119,7 +119,7 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
                 return;
             }
 
-            Map<String, Attr> loa = new HashMap<String, Attr>();
+            Map<String, Attr> loa = new HashMap<>();
             for (; size >= 0; size--) {
                 e = levels.get(size);
                 Iterator<Attr> it = e.nodes.iterator();

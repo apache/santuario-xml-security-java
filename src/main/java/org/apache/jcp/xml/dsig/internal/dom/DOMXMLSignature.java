@@ -330,7 +330,7 @@ public final class DOMXMLSignature extends DOMStructure
 
         // traverse the Signature and register all objects with IDs that
         // may contain References
-        signatureIdMap = new HashMap<String, XMLStructure>();
+        signatureIdMap = new HashMap<>();
         signatureIdMap.put(id, this);
         signatureIdMap.put(si.getId(), si);
         List<Reference> refs = DOMSignedInfo.getSignedInfoReferences(si);

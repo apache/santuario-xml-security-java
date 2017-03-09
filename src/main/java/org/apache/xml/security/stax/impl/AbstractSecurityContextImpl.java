@@ -97,7 +97,7 @@ public class AbstractSecurityContextImpl {
     public <T, U> void putAsMap(Object key, T mapKey, U mapValue) {
         Map<T, U> entry = (Map<T, U>) content.get(key);
         if (entry == null) {
-            entry = new HashMap<T, U>();
+            entry = new HashMap<>();
             content.put(key, entry);
         }
         entry.put(mapKey, mapValue);
