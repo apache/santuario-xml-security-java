@@ -23,8 +23,6 @@ import org.apache.xml.security.stax.ext.SecurePart;
 /**
  * SignaturePartDef holds information about parts to be signed
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class SignaturePartDef {
 

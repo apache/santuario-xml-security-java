@@ -30,7 +30,6 @@ import org.apache.xml.security.signature.XMLSignatureInput;
 /**
  * Unit test for {@link org.apache.xml.security.signature.XMLSignatureInput}
  *
- * @author Christian Geuer-Pollmann
  * @see <A HREF="http://nagoya.apache.org/bugzilla/show_bug.cgi?id=4336">Bug 4336</A>
  */
 public class XMLSignatureInputTest extends org.junit.Assert {

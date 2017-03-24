@@ -42,7 +42,6 @@ import org.w3c.dom.Node;
 /**
  * DOM-based implementation of KeyInfo.
  *
- * @author Sean Mullan
  */
 public final class DOMKeyInfo extends BaseStructure implements KeyInfo {
 

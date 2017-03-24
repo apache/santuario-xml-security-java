@@ -35,7 +35,6 @@ import org.w3c.dom.Node;
 /**
  * Miscellaneous static utility methods for use in JSR 105 RI.
  *
- * @author Sean Mullan
  */
 public final class Utils {
 

@@ -31,8 +31,6 @@ import java.util.Set;
 /**
  * An abstract InputProcessor class for reusabilty
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public abstract class AbstractInputProcessor implements InputProcessor {
 

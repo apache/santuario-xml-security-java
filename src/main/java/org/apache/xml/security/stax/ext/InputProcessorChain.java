@@ -27,8 +27,6 @@ import java.util.List;
 /**
  * The InputProcessorChain manages the InputProcessors and controls the XMLEvent flow
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public interface InputProcessorChain extends ProcessorChain {
 

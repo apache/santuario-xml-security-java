@@ -30,8 +30,6 @@ import javax.xml.crypto.dsig.keyinfo.*;
 /**
  * Unit test for javax.xml.crypto.dsig.keyinfo.X509Data
  *
- * @version $Id$
- * @author Valerie Peng
  */
 public class X509DataTest extends org.junit.Assert {
 

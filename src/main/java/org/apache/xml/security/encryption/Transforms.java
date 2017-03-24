@@ -30,7 +30,6 @@ package org.apache.xml.security.encryption;
  * </complexType>
  * </xmp>
  *
- * @author Axl Mattheus
  * @see org.apache.xml.security.encryption.CipherReference
  */
 public interface Transforms {

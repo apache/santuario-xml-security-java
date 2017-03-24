@@ -27,8 +27,6 @@ import java.io.IOException;
 import java.io.Writer;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class XMLSecCommentImpl extends XMLSecEventBaseImpl implements XMLSecComment {
 

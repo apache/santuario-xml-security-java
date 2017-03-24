@@ -21,8 +21,6 @@ package org.apache.xml.security.stax.ext.stax;
 import javax.xml.stream.events.EndDocument;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public interface XMLSecEndDocument extends XMLSecEvent, EndDocument {
 

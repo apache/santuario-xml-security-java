@@ -43,8 +43,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class AbstractSignatureCreationTest extends Assert {
 

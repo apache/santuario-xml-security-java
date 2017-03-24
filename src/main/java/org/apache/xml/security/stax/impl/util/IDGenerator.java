@@ -21,8 +21,6 @@ package org.apache.xml.security.stax.impl.util;
 import java.util.UUID;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class IDGenerator {
 

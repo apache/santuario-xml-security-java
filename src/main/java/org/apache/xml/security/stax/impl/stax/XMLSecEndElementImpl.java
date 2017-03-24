@@ -29,8 +29,6 @@ import java.io.Writer;
 import java.util.Iterator;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class XMLSecEndElementImpl extends XMLSecEventBaseImpl implements XMLSecEndElement {
 

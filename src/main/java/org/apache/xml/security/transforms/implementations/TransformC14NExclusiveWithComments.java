@@ -35,7 +35,6 @@ import org.w3c.dom.Element;
  * Implements the <CODE>http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments</CODE>
  * transform.
  *
- * @author Christian Geuer-Pollmann
  */
 public class TransformC14NExclusiveWithComments extends TransformSpi {
 

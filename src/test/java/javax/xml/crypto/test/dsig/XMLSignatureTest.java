@@ -40,8 +40,6 @@ import org.w3c.dom.*;
 /**
  * Unit test for javax.xml.crypto.dsig.XMLSignature
  *
- * @version $Id$
- * @author Valerie Peng
  */
 public class XMLSignatureTest extends org.junit.Assert {
     private XMLSignatureFactory fac;

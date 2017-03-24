@@ -49,8 +49,6 @@ import java.security.PublicKey;
 import java.util.UUID;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class SignedEncryptedTest extends Assert {
 

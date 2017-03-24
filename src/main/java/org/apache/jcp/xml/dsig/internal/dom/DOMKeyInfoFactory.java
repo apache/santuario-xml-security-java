@@ -44,7 +44,6 @@ import org.w3c.dom.Node;
 /**
  * DOM-based implementation of KeyInfoFactory.
  *
- * @author Sean Mullan
  */
 public final class DOMKeyInfoFactory extends KeyInfoFactory {
 

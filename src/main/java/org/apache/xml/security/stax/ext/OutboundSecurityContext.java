@@ -26,8 +26,6 @@ import java.util.List;
 /**
  * The document security context
  *
- * @author $Author: giger $
- * @version $Revision: 1416649 $ $Date: 2012-12-03 21:04:06 +0100 (Mon, 03 Dec 2012) $
  */
 public interface OutboundSecurityContext extends SecurityContext {
 

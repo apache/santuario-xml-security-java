@@ -30,7 +30,6 @@ import org.apache.xml.security.signature.XMLSignatureInput;
 /**
  * XMLSignatureInput Data wrapper.
  *
- * @author Sean Mullan
  */
 public interface ApacheData extends Data {
 

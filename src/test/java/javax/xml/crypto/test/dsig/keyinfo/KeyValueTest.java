@@ -27,7 +27,6 @@ import javax.xml.crypto.dsig.keyinfo.*;
 /**
  * Unit test for javax.xml.crypto.dsig.keyinfo.KeyValue
  *
- * @author Valerie Peng
  */
 public class KeyValueTest extends org.junit.Assert {
 

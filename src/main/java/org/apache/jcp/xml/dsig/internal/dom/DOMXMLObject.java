@@ -38,7 +38,6 @@ import org.w3c.dom.Node;
 /**
  * DOM-based implementation of XMLObject.
  *
- * @author Sean Mullan
  */
 public final class DOMXMLObject extends BaseStructure implements XMLObject {
 

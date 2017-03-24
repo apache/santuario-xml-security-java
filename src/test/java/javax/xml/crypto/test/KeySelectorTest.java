@@ -31,7 +31,6 @@ import javax.xml.crypto.dsig.*;
 /**
  * Unit test for javax.xml.crypto.KeySelector
  *
- * @author Valerie Peng
  */
 public class KeySelectorTest extends org.junit.Assert {
     private Key key;

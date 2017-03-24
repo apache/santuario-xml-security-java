@@ -50,8 +50,6 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class AbstractSignatureVerificationTest extends Assert {
 

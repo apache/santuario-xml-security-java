@@ -28,8 +28,6 @@ import org.slf4j.LoggerFactory;
 /**
  * A Streaming based message-digest implementation
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class DigestOutputStream extends OutputStream {
 

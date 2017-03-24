@@ -30,8 +30,6 @@ import javax.xml.crypto.dsig.spec.ExcC14NParameterSpec;
 /**
  * Unit test for javax.xml.crypto.dsig.CanonicalizationMethod
  *
- * @version $Id$
- * @author Valerie Peng
  */
 public class CanonicalizationMethodTest extends org.junit.Assert {
 

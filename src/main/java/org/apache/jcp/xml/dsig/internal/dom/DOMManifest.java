@@ -35,7 +35,6 @@ import org.w3c.dom.Element;
 /**
  * DOM-based implementation of Manifest.
  *
- * @author Sean Mullan
  */
 public final class DOMManifest extends BaseStructure implements Manifest {
 

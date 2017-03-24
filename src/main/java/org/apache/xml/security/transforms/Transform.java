@@ -60,7 +60,6 @@ import org.xml.sax.SAXException;
  * algorithm</a>.
  * Implements the Factory and Proxy pattern for ds:Transform algorithms.
  *
- * @author Christian Geuer-Pollmann
  * @see Transforms
  * @see TransformSpi
  */

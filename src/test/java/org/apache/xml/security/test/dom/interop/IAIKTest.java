@@ -28,7 +28,6 @@ import org.apache.xml.security.utils.resolver.implementations.ResolverAnonymous;
  * XML Signature implementation. Thanks to Gregor Karlinger who provided these
  * test vectors. They are located in the directory <CODE>data/at/iaik/ixsil/</CODE>.
  *
- * @author $Author$
  * @see <A HREF="http://jcewww.iaik.at/products/ixsil/index.php">The IAIK IXSIL Website</A>
  */
 public class IAIKTest extends InteropTestBase {

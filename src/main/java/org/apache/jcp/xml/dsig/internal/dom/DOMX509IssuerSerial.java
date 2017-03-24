@@ -37,7 +37,6 @@ import org.w3c.dom.Element;
 /**
  * DOM-based implementation of X509IssuerSerial.
  *
- * @author Sean Mullan
  */
 public final class DOMX509IssuerSerial extends BaseStructure
     implements X509IssuerSerial {

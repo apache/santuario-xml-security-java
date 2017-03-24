@@ -30,7 +30,6 @@ import org.w3c.dom.Node;
  * Handles <code>&lt;ds:Object&gt;</code> elements
  * <code>Object<code> {@link Element} supply facility which can contain any kind data
  *
- * @author Christian Geuer-Pollmann
  * $todo$ if we remove childen, the boolean values are not updated
  */
 public class ObjectContainer extends SignatureElementProxy {

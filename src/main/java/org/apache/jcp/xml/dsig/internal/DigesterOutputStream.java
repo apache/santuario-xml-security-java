@@ -38,8 +38,6 @@ import org.apache.xml.security.utils.UnsyncByteArrayOutputStream;
  * org.apache.xml.security.algorithms.MessageDigestAlgorithm objects.
  * It also optionally caches the input bytes.
  *
- * @author raul
- * @author Sean Mullan
  */
 public class DigesterOutputStream extends OutputStream {
     private static final org.slf4j.Logger LOG =

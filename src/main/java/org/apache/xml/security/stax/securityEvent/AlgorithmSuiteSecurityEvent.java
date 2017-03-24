@@ -22,8 +22,6 @@ package org.apache.xml.security.stax.securityEvent;
 import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 
 /**
- * @author $Author: coheigea $
- * @version $Revision: 1354898 $ $Date: 2012-06-28 11:19:02 +0100 (Thu, 28 Jun 2012) $
  */
 public class AlgorithmSuiteSecurityEvent extends SecurityEvent {
 

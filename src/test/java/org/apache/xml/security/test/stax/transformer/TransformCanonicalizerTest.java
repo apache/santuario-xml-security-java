@@ -41,8 +41,6 @@ import java.io.OutputStream;
 import java.util.Map;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class TransformCanonicalizerTest extends Assert {
 

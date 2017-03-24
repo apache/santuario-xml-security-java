@@ -45,7 +45,6 @@ import org.xml.sax.SAXException;
 /**
  * Class XMLSignatureInput
  *
- * @author Christian Geuer-Pollmann
  * $todo$ check whether an XMLSignatureInput can be _both_, octet stream _and_ node set?
  */
 public class XMLSignatureInput {

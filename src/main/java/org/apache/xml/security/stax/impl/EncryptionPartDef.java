@@ -25,8 +25,6 @@ import java.security.Key;
 /**
  * EncryptionPartDef holds information about parts to be encrypt
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class EncryptionPartDef {
 

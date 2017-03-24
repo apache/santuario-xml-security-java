@@ -31,8 +31,6 @@ import java.util.Map;
 /**
  * Mapping between JCE id and xmlsec uri's for algorithms
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class TransformerAlgorithmMapper {
 

@@ -76,8 +76,6 @@ import org.w3c.dom.NodeList;
  * contents. It was designed to resemble <code>javax.crypto.Cipher</code> in
  * order to facilitate understanding of its functioning.
  *
- * @author Axl Mattheus (Sun Microsystems)
- * @author Christian Geuer-Pollmann
  */
 public class XMLCipher {
 
@@ -2011,7 +2009,6 @@ public class XMLCipher {
 
     /**
      *
-     * @author Axl Mattheus
      */
     private class Factory {
         /**

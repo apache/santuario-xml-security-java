@@ -25,8 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author $Author: giger $
- * @version $Revision: 1296293 $ $Date: 2012-03-02 17:33:09 +0100 (Fri, 02 Mar 2012) $
  */
 public abstract class AbstractElementSecurityEvent extends SecurityEvent {
 

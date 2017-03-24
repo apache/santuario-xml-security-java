@@ -32,8 +32,6 @@ import java.util.WeakHashMap;
 /**
  * Class to let XML-Namespaces be comparable how it is requested by C14N
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class XMLSecNamespaceImpl extends XMLSecEventBaseImpl implements XMLSecNamespace {
 

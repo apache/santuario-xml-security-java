@@ -30,8 +30,6 @@ import java.net.URI;
  * Resolver for local filesystem resources. Use the standard java security-manager to
  * restrict filesystem accesses.
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class ResolverFilesystem implements ResourceResolver, ResourceResolverLookup {
 

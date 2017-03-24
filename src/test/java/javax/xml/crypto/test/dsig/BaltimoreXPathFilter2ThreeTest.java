@@ -30,7 +30,6 @@ import javax.xml.crypto.test.KeySelectors;
  * This is a testcase to validate the "merlin-xpath-filter2-three" testcases
  * under data/vectors/ie/baltimore/merlin-examples directory
  *
- * @author Sean Mullan
  */
 public class BaltimoreXPathFilter2ThreeTest extends org.junit.Assert {
 

@@ -29,7 +29,6 @@ import org.xml.sax.InputSource;
 /**
  * This package is responsible for retrieving test vectors for our unit tests.
  *
- * @author Christian Geuer-Pollmann
  * $todo$ Currently, the test vectors are in the file system under the data/ directory.
  * It is planned to put them all into a single jar/zip which is deployed with the library.
  */

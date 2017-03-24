@@ -27,8 +27,6 @@ import java.io.FileWriter;
 import java.util.*;
 
 /**
- * @author $Author: $
- * @version $Revision: $ $Date: $
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class PerformanceMemoryTest extends AbstractPerformanceTest {

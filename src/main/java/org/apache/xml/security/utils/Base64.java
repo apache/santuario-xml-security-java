@@ -35,9 +35,6 @@ import org.w3c.dom.Text;
  * Optimized code. (raw version taken from oreilly.jonathan.util,
  * and currently org.apache.xerces.ds.util.Base64)
  *
- * @author Raul Benito(Of the xerces copy, and little adaptations).
- * @author Anli Shundi
- * @author Christian Geuer-Pollmann
  * @see <A HREF="ftp://ftp.isi.edu/in-notes/rfc2045.txt">RFC 2045</A>
  * @see org.apache.xml.security.transforms.implementations.TransformBase64Decode
  */

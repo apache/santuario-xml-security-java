@@ -31,7 +31,6 @@ import org.w3c.dom.Element;
 /**
  * DOM-based implementation of KeyName.
  *
- * @author Sean Mullan
  */
 public final class DOMKeyName extends BaseStructure implements KeyName {
 

@@ -62,8 +62,6 @@ import org.w3c.dom.NodeList;
 
 /**
  *
- * @author Axl Mattheus
- * @author Berin Lautenbach
  */
 public class XMLCipherTest extends org.junit.Assert {
 

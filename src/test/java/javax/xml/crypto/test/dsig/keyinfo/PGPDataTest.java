@@ -30,7 +30,6 @@ import javax.xml.crypto.dsig.keyinfo.*;
 /**
  * Unit test for javax.xml.crypto.dsig.keyinfo.PGPData
  *
- * @author Valerie Peng
  */
 public class PGPDataTest extends org.junit.Assert {
 

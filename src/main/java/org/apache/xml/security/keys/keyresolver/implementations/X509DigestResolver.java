@@ -40,7 +40,6 @@ import org.w3c.dom.Element;
  * KeyResolverSpi implementation which resolves public keys and X.509 certificates from a
  * <code>dsig11:X509Digest</code> element.
  *
- * @author Brent Putman (putmanb@georgetown.edu)
  */
 public class X509DigestResolver extends KeyResolverSpi {
 

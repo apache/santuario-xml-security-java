@@ -28,7 +28,6 @@ import javax.xml.crypto.*;
 /**
  * Unit test for javax.xml.crypto.OctetStreamData
  *
- * @author Valerie Peng
  */
 public class OctetStreamDataTest extends org.junit.Assert {
 

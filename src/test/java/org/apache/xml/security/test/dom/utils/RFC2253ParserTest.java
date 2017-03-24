@@ -23,8 +23,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class RFC2253ParserTest extends Assert {
 

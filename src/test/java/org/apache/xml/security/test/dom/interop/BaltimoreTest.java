@@ -27,7 +27,6 @@ import org.apache.xml.security.signature.XMLSignatureException;
  * from Baltimore using KeyTools XML. These test vectors are located in the directory
  * <CODE>data/ie/baltimore/merlin-examples/</CODE>.
  *
- * @author $Author$
  * @see <A HREF="http://www.baltimore.com/keytools/xml/index.html">The KeyTools XML Website</A>
  */
 public class BaltimoreTest extends InteropTestBase {

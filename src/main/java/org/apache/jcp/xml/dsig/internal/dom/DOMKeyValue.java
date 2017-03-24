@@ -57,7 +57,6 @@ import org.w3c.dom.Element;
 /**
  * DOM-based implementation of KeyValue.
  *
- * @author Sean Mullan
  */
 public abstract class DOMKeyValue<K extends PublicKey> extends BaseStructure implements KeyValue {
 

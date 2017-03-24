@@ -33,8 +33,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public abstract class XMLSecEventBaseImpl implements XMLSecEvent {
 

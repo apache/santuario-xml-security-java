@@ -40,7 +40,6 @@ import org.w3c.dom.Attr;
  * quickly and easily retrieve the encrypted bytes from an EncryptedType
  * object
  *
- * @author Berin Lautenbach
  */
 public class XMLCipherInput {
 

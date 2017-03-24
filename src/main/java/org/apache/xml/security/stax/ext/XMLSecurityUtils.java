@@ -61,8 +61,6 @@ import java.security.interfaces.RSAPublicKey;
 import java.util.*;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class XMLSecurityUtils {
 

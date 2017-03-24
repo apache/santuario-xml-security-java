@@ -46,7 +46,6 @@ import org.xml.sax.SAXException;
  * KeyResolverSpi implementation which resolves public keys, private keys, secret keys, and X.509 certificates from a
  * <code>dsig11:KeyInfoReference</code> element.
  *
- * @author Brent Putman (putmanb@georgetown.edu)
  */
 public class KeyInfoReferenceResolver extends KeyResolverSpi {
 

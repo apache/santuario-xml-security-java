@@ -32,7 +32,6 @@ import org.w3c.dom.Element;
 /**
  * Provides content model support for the <code>dsig11:X509Digest</code> element.
  *
- * @author Brent Putman (putmanb@georgetown.edu)
  */
 public class XMLX509Digest extends Signature11ElementProxy implements XMLX509DataContent {
 

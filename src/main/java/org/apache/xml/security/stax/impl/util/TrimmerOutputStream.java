@@ -25,8 +25,6 @@ import java.io.OutputStream;
 /**
  * Trimms the start and the end of a stream
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class TrimmerOutputStream extends FilterOutputStream {
 

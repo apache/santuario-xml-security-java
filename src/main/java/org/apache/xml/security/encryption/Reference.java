@@ -36,7 +36,6 @@ import org.w3c.dom.Element;
  * </complexType>
  * </xmp>
  *
- * @author Axl Mattheus
  * @see ReferenceList
  */
 public interface Reference {

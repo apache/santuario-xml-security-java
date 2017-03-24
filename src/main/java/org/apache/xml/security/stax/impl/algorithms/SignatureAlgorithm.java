@@ -25,8 +25,6 @@ import java.security.SecureRandom;
 import java.security.spec.AlgorithmParameterSpec;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public interface SignatureAlgorithm {
 

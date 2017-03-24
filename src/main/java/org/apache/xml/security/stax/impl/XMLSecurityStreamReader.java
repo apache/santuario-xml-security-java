@@ -44,8 +44,6 @@ import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
  * A custom implementation of a XMLStreamReader to get back from the XMLEventReader world
  * to XMLStreamReader
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class XMLSecurityStreamReader implements XMLStreamReader {
 

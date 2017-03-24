@@ -40,7 +40,6 @@ import org.w3c.dom.Node;
  * nodes of the parse tree (all descendants, plus all attributes,
  * plus all namespaces nodes).
  *
- * @author $Author$
  */
 public class ResolverXPointer extends ResourceResolverSpi {
 

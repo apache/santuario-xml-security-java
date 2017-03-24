@@ -25,8 +25,6 @@ import java.security.*;
 import java.security.spec.AlgorithmParameterSpec;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class HMACSignatureAlgorithm implements SignatureAlgorithm {
 

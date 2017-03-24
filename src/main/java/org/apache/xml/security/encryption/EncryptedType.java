@@ -43,7 +43,6 @@ import org.apache.xml.security.keys.KeyInfo;
  * </complexType>
  * </xmp>
  *
- * @author Axl Mattheus
  */
 public interface EncryptedType {
 

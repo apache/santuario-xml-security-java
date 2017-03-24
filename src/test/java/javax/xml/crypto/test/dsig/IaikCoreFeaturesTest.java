@@ -33,7 +33,6 @@ import javax.xml.crypto.test.KeySelectors;
  * This is a testcase to validate all "coreFeatures"
  * testcases from IAIK
  *
- * @author Sean Mullan
  */
 public class IaikCoreFeaturesTest extends org.junit.Assert {
 

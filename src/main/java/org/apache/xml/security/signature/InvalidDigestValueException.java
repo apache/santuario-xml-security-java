@@ -23,7 +23,6 @@ package org.apache.xml.security.signature;
  * Additional human readable info is passed to the constructor -- this being the benefit
  * of raising an exception or returning a value.
  *
- * @author Christian Geuer-Pollmann
  */
 public class InvalidDigestValueException extends XMLSignatureException {
 

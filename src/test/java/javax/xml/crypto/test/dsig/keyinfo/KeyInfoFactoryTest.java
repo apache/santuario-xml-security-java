@@ -31,8 +31,6 @@ import javax.xml.crypto.*;
 /**
  * Unit test for javax.xml.crypto.dsig.keyinfo.KeyInfoFactory
  *
- * @version $Id$
- * @author Valerie Peng
  */
 public class KeyInfoFactoryTest extends org.junit.Assert {
 

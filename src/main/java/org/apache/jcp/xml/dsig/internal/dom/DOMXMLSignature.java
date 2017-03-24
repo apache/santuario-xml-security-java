@@ -55,8 +55,6 @@ import org.apache.xml.security.utils.XMLUtils;
 /**
  * DOM-based implementation of XMLSignature.
  *
- * @author Sean Mullan
- * @author Joyce Leung
  */
 public final class DOMXMLSignature extends DOMStructure
     implements XMLSignature {

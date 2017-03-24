@@ -28,8 +28,6 @@ import java.io.IOException;
 import java.io.Writer;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class XMLSecEntityReferenceImpl extends XMLSecEventBaseImpl implements XMLSecEntityReference {
 

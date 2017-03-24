@@ -31,8 +31,6 @@ import javax.xml.namespace.QName;
  * Main configuration class to supply keys etc.
  * This class is subject to change in the future.
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class XMLSecurityProperties {
 

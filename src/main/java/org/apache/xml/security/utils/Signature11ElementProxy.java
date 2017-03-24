@@ -25,7 +25,6 @@ import org.w3c.dom.Element;
 /**
  * Class SignatureElementProxy
  *
- * @author Brent Putman (putmanb@georgetown.edu)
  */
 public abstract class Signature11ElementProxy extends ElementProxy {
 

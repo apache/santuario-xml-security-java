@@ -35,8 +35,6 @@ import javax.xml.stream.events.XMLEvent;
 import java.io.StringWriter;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class XMLSecurityEventWriterTest extends Assert {
 

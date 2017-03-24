@@ -23,8 +23,6 @@ import org.apache.xml.security.exceptions.XMLSecurityException;
 /**
  * Exception when configuration errors are detected
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class XMLSecurityConfigurationException extends XMLSecurityException {
 

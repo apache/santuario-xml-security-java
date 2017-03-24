@@ -35,7 +35,6 @@ import javax.xml.crypto.test.KeySelectors;
  * This is a testcase to validate all "merlin-xmldsig-twenty-three"
  * testcases from Baltimore
  *
- * @author Sean Mullan
  */
 public class Baltimore23Test extends org.junit.Assert {
 

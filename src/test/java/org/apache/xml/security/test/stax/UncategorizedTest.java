@@ -32,8 +32,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class UncategorizedTest extends Assert {
 

@@ -28,7 +28,6 @@ import java.security.SecurityPermission;
 
 /**
  * A collection of different, general-purpose methods for JAVA-specific things
- * @author Christian Geuer-Pollmann
  */
 public final class JavaUtils {
 

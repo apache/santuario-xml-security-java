@@ -19,8 +19,6 @@
 package org.apache.xml.security.stax.impl.transformer.canonicalizer;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public abstract class Canonicalizer20010315 extends CanonicalizerBase {
 

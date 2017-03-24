@@ -28,8 +28,6 @@ import org.apache.xml.security.utils.ClassLoaderUtils;
 /**
  * Factory to create SecurityToken Objects from keys in XML
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public abstract class SecurityTokenFactory {
 

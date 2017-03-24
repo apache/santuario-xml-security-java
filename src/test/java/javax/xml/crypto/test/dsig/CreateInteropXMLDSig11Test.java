@@ -38,7 +38,6 @@ import javax.xml.crypto.test.KeySelectors;
 /**
  * This is a testcase to generate all the W3C xmldsig XMLDSig11 testcases.
  *
- * @author Sean Mullan
  */
 public class CreateInteropXMLDSig11Test extends org.junit.Assert {
 

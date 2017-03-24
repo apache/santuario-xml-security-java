@@ -45,8 +45,6 @@ import org.apache.xml.security.stax.impl.util.IDGenerator;
  * Outbound Streaming-XML-Security
  * An instance of this class can be retrieved over the XMLSec class
  *
- * @author $Author: coheigea $
- * @version $Revision: 1355448 $ $Date: 2012-06-29 16:38:18 +0100 (Fri, 29 Jun 2012) $
  */
 public class OutboundXMLSec {
 

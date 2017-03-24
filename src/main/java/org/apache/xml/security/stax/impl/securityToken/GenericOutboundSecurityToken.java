@@ -32,8 +32,6 @@ import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 import org.apache.xml.security.stax.securityToken.SecurityTokenConstants.KeyIdentifier;
 
 /**
- * @author $Author: $
- * @version $Revision: $ $Date: $
  */
 public class GenericOutboundSecurityToken extends AbstractSecurityToken implements OutboundSecurityToken {
 

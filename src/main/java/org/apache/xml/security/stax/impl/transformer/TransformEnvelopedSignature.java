@@ -28,8 +28,6 @@ import javax.xml.stream.XMLStreamException;
 import java.io.InputStream;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class TransformEnvelopedSignature extends TransformIdentity {
 

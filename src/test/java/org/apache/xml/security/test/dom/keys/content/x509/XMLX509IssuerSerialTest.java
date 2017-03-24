@@ -25,7 +25,6 @@ import org.w3c.dom.Document;
 /**
  * XMLX509IssuerSerial tests.
  *
- * @author Sean Mullan
  */
 public class XMLX509IssuerSerialTest extends org.junit.Assert {
 

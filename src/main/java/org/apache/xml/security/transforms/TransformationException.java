@@ -22,7 +22,6 @@ import org.apache.xml.security.exceptions.XMLSecurityException;
 
 /**
  *
- * @author Christian Geuer-Pollmann
  */
 public class TransformationException extends XMLSecurityException {
     /**

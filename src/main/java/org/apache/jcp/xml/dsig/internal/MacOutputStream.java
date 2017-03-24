@@ -25,8 +25,6 @@ import javax.crypto.Mac;
  * Derived from Apache sources and changed to use Mac objects instead of
  * org.apache.xml.security.algorithms.SignatureAlgorithm objects.
  *
- * @author raul
- * @author Sean Mullan
  *
  */
 public class MacOutputStream extends ByteArrayOutputStream {

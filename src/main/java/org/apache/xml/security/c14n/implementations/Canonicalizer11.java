@@ -49,8 +49,6 @@ import org.apache.xml.security.utils.XMLUtils;
  * Canonical XML Version 1.1</A>, a W3C Proposed Recommendation from 29
  * January 2008.
  *
- * @author Sean Mullan
- * @author Raul Benito
  */
 public abstract class Canonicalizer11 extends CanonicalizerBase {
 

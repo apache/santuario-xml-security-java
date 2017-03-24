@@ -31,7 +31,6 @@ import org.apache.xml.security.transforms.Transforms;
  * Implements the <CODE>http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments</CODE>
  * transform.
  *
- * @author Christian Geuer-Pollmann
  */
 public class TransformC14NWithComments extends TransformSpi {
 

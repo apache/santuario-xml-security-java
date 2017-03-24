@@ -28,7 +28,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * @author $Author$
  */
 public class XMLX509SubjectName extends SignatureElementProxy implements XMLX509DataContent {
 

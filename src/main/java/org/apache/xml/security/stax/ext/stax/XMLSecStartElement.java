@@ -22,8 +22,6 @@ import javax.xml.stream.events.StartElement;
 import java.util.List;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public interface XMLSecStartElement extends XMLSecEvent, StartElement {
 

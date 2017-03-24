@@ -50,7 +50,6 @@ import org.w3c.dom.NamedNodeMap;
  * DOM-based implementation of XPath Filter 2.0 Transform.
  * (Uses Apache XML-Sec Transform implementation)
  *
- * @author Joyce Leung
  */
 public final class DOMXPathFilter2Transform extends ApacheTransform {
 

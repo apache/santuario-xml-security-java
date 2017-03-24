@@ -27,8 +27,6 @@ import java.util.Properties;
 /**
  * Configuration Properties
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class ConfigurationProperties {
 

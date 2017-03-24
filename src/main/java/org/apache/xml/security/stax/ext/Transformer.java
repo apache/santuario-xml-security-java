@@ -27,8 +27,6 @@ import java.io.OutputStream;
 import java.util.Map;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public interface Transformer {
 

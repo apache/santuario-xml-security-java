@@ -23,7 +23,6 @@ package org.apache.xml.security.signature;
  * testing the signature fails because of uninitialized
  * {@link org.apache.xml.security.signature.Reference}s.
  *
- * @author Christian Geuer-Pollmann
  * @see ReferenceNotInitializedException
  */
 public class MissingResourceFailureException extends XMLSignatureException {

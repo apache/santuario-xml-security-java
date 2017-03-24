@@ -33,8 +33,6 @@ import javax.xml.stream.util.XMLEventConsumer;
  * <p/>
  * An extended XMLEventAllocator to collect namespaces and C14N relevant attributes
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class XMLSecEventAllocator implements XMLEventAllocator {
 

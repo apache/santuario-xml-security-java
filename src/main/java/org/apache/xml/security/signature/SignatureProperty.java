@@ -30,7 +30,6 @@ import org.w3c.dom.Node;
  * Additional information item concerning the generation of the signature(s) can
  * be placed in this Element
  *
- * @author Christian Geuer-Pollmann
  */
 public class SignatureProperty extends SignatureElementProxy {
 

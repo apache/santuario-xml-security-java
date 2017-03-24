@@ -47,8 +47,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author $Author: $
- * @version $Revision: $ $Date: $
  */
 public abstract class AbstractPerformanceTest {
 

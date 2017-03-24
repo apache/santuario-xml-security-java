@@ -37,7 +37,6 @@ import javax.xml.crypto.dsig.*;
 /**
  * DOM-based abstract implementation of CanonicalizationMethod.
  *
- * @author Sean Mullan
  */
 public class DOMCanonicalizationMethod extends DOMTransform
     implements CanonicalizationMethod {

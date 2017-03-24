@@ -57,7 +57,6 @@ import org.apache.jcp.xml.dsig.internal.dom.DOMRetrievalMethod;
  * java.security.cert.X509CertSelector & javax.security.auth.x500.X500Principal
  * classes to parse X.500 DNs and match on certificate attributes.
  *
- * @author Sean Mullan
  */
 public class X509KeySelector extends KeySelector {
 

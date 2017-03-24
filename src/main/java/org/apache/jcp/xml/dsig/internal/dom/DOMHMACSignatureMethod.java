@@ -45,7 +45,6 @@ import org.apache.jcp.xml.dsig.internal.MacOutputStream;
 /**
  * DOM-based implementation of HMAC SignatureMethod.
  *
- * @author Sean Mullan
  */
 public abstract class DOMHMACSignatureMethod extends AbstractDOMSignatureMethod {
 

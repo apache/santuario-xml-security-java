@@ -24,8 +24,6 @@ import org.apache.xml.security.stax.ext.stax.*;
 import java.util.*;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public abstract class Canonicalizer20010315_Excl extends CanonicalizerBase {
 

@@ -36,7 +36,6 @@ import javax.xml.crypto.dsig.spec.XSLTTransformParameterSpec;
  * DOM-based implementation of XSLT Transform.
  * (Uses Apache XML-Sec Transform implementation)
  *
- * @author Sean Mullan
  */
 public final class DOMXSLTTransform extends ApacheTransform {
 

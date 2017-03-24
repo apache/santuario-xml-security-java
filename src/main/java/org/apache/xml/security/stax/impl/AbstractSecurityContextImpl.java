@@ -25,8 +25,6 @@ import org.apache.xml.security.stax.securityEvent.SecurityEventListener;
 import java.util.*;
 
 /**
- * @author $Author: $
- * @version $Revision: $ $Date: $
  */
 public class AbstractSecurityContextImpl {
     @SuppressWarnings("unchecked")

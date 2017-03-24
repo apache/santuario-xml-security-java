@@ -42,7 +42,6 @@ import org.apache.xml.security.utils.XMLUtils;
 /**
  * DOM-based implementation of X509Data.
  *
- * @author Sean Mullan
  */
 //@@@ check for illegal combinations of data violating MUSTs in W3c spec
 public final class DOMX509Data extends BaseStructure implements X509Data {

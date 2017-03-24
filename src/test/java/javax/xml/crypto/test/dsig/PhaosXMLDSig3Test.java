@@ -34,7 +34,6 @@ import javax.xml.crypto.test.KeySelectors;
  * This is a testcase to validate all "phaos-xmldsig-three"
  * testcases from Phaos
  *
- * @author Sean Mullan
  */
 public class PhaosXMLDSig3Test extends org.junit.Assert {
 

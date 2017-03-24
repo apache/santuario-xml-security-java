@@ -22,7 +22,6 @@ package org.apache.xml.security.signature;
  * Raised if verifying a {@link org.apache.xml.security.signature.Reference} fails
  * because of an uninitialized {@link org.apache.xml.security.signature.XMLSignatureInput}
  *
- * @author Christian Geuer-Pollmann
  */
 public class ReferenceNotInitializedException extends XMLSignatureException {
 

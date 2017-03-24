@@ -96,7 +96,6 @@ import org.w3c.dom.Text;
  *  &lt;/complexType&gt;
  * </pre>
  *
- * @author Christian Geuer-Pollmann
  * @see ObjectContainer
  * @see Manifest
  */

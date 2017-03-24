@@ -38,7 +38,6 @@ import org.w3c.dom.Node;
 /**
  * Unit test for {@link org.apache.xml.security.transforms.implementations.TransformBase64Decode}
  *
- * @author Christian Geuer-Pollmann
  */
 public class TransformBase64DecodeTest extends org.junit.Assert {
 

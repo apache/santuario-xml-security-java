@@ -35,7 +35,6 @@ import org.w3c.dom.Node;
 /**
  * DOM-based implementation of SignatureProperties.
  *
- * @author Sean Mullan
  */
 public final class DOMSignatureProperties extends BaseStructure
     implements SignatureProperties {

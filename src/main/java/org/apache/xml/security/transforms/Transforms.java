@@ -43,7 +43,6 @@ import org.w3c.dom.NodeList;
  * The output from the last Transform is the input for the
  * <code>DigestMethod algorithm</code>
  *
- * @author Christian Geuer-Pollmann
  * @see Transform
  * @see org.apache.xml.security.signature.Reference
  */

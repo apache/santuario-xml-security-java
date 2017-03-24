@@ -34,8 +34,6 @@ import java.util.NoSuchElementException;
  * The XMLEventReaderInputProcessor reads requested XMLEvents from the original XMLEventReader
  * and returns them to the requester
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class XMLEventReaderInputProcessor extends AbstractInputProcessor {
 

@@ -39,7 +39,6 @@ import javax.xml.crypto.dsig.*;
 /**
  * The XMLDSig RI Provider.
  *
- * @author Joyce Leung
  */
 
 /**

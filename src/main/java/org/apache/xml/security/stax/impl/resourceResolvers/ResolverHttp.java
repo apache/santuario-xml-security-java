@@ -31,8 +31,6 @@ import java.util.regex.Pattern;
 /**
  * Resolver for external http[s] resources.
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class ResolverHttp implements ResourceResolver, ResourceResolverLookup {
 

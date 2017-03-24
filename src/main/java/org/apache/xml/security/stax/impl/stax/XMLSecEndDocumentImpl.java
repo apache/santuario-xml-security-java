@@ -25,8 +25,6 @@ import javax.xml.stream.XMLStreamException;
 import java.io.Writer;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class XMLSecEndDocumentImpl extends XMLSecEventBaseImpl implements XMLSecEndDocument {
 

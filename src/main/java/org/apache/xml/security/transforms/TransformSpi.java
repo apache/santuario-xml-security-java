@@ -32,7 +32,6 @@ import org.xml.sax.SAXException;
  * have to be overridden are the
  * {@link #enginePerformTransform(XMLSignatureInput, Transform)} method.
  *
- * @author Christian Geuer-Pollmann
  */
 public abstract class TransformSpi {
 

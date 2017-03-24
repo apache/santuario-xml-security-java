@@ -27,8 +27,6 @@ import java.util.*;
 /**
  * An abstract OutputProcessor class for reusabilty
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public abstract class AbstractBufferingOutputProcessor extends AbstractOutputProcessor {
 

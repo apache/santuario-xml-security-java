@@ -33,7 +33,6 @@ import org.xml.sax.InputSource;
 /**
  * Base class which all Canonicalization algorithms extend.
  *
- * @author Christian Geuer-Pollmann
  */
 public abstract class CanonicalizerSpi {
 

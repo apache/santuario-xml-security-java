@@ -29,7 +29,6 @@ import javax.xml.crypto.KeySelectorException;
 /**
  * Unit test for javax.xml.crypto.KeySelectorException
  *
- * @author Valerie Peng
  */
 public class KeySelectorExceptionTest extends org.junit.Assert {
 

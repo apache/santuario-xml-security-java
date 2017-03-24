@@ -39,7 +39,6 @@ import org.w3c.dom.Element;
 /**
  * Unit test for javax.xml.crypto.dsig.keyinfo.KeyInfo
  *
- * @author Valerie Peng
  */
 public class KeyInfoTest extends org.junit.Assert {
 

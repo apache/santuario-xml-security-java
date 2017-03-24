@@ -56,7 +56,6 @@ import org.xml.sax.SAXException;
 /**
  * DOM and XML accessibility and comfort functions.
  *
- * @author Christian Geuer-Pollmann
  */
 public final class XMLUtils {
 

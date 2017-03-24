@@ -24,8 +24,6 @@ import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 import java.util.Deque;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public interface XMLSecurityHeaderHandler {
 

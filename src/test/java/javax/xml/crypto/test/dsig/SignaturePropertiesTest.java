@@ -27,7 +27,6 @@ import javax.xml.crypto.dsig.*;
 /**
  * Unit test for javax.xml.crypto.dsig.SignatureProperties
  *
- * @author Valerie Peng
  */
 public class SignaturePropertiesTest extends org.junit.Assert {
 

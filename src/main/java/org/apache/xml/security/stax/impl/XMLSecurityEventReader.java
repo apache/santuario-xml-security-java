@@ -29,8 +29,6 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class XMLSecurityEventReader implements XMLEventReader {
 

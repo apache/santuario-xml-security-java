@@ -26,7 +26,6 @@ import javax.xml.crypto.dsig.keyinfo.*;
 /**
  * Unit test for javax.xml.crypto.dsig.keyinfo.KeyName
  *
- * @author Sean Mullan
  */
 public class KeyNameTest extends org.junit.Assert {
 

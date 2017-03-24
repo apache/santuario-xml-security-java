@@ -33,8 +33,6 @@ import java.util.List;
 /**
  * Abstract class for SecurityHeaderHandlers with parse LOGic for the xml structures
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public abstract class AbstractInputSecurityHeaderHandler implements XMLSecurityHeaderHandler {
 

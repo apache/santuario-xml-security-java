@@ -31,7 +31,6 @@ import org.apache.xml.security.transforms.Transforms;
  * Implements the <CODE>http://www.w3.org/2006/12/xml-c14n-11#WithComments</CODE>
  * (C14N 1.1 With Comments) transform.
  *
- * @author Sean Mullan
  */
 public class TransformC14N11_WithComments extends TransformSpi {
 

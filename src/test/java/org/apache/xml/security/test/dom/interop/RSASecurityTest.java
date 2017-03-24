@@ -27,7 +27,6 @@ import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
  * from RSA Security using Cert-J 2.01. These test vectors are located in the directory
  * <CODE>data/com/rsasecurity/bdournaee/</CODE>.
  *
- * @author $Author$
  * @see <A HREF="http://www.rsasecurity.com/products/bsafe/certj.html">RSA BSAFE Cert-J</A>
  */
 public class RSASecurityTest extends InteropTestBase {

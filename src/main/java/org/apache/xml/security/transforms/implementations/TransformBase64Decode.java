@@ -62,7 +62,6 @@ import org.apache.xml.security.utils.JavaUtils;
  * elements as well as any descendant comments and processing instructions.
  * The output of this transform is an octet stream.</p>
  *
- * @author Christian Geuer-Pollmann
  */
 public class TransformBase64Decode extends TransformSpi {
 

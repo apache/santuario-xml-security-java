@@ -74,8 +74,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
- * @author $Author: $
- * @version $Revision: $ $Date: $
  */
 public class XMLEncryption11Test extends Assert {
 

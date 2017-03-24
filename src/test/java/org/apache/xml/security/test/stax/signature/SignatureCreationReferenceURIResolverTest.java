@@ -51,8 +51,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class SignatureCreationReferenceURIResolverTest extends AbstractSignatureCreationTest {
 

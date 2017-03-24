@@ -50,8 +50,6 @@ import org.apache.xml.security.stax.securityToken.SecurityTokenProvider;
 import org.apache.xml.security.utils.UnsyncBufferedOutputStream;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBufferingOutputProcessor {
 

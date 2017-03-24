@@ -27,7 +27,6 @@ import javax.xml.crypto.test.KeySelectors;
 /**
  * This is a testcase to validate all the W3C xmldsig C14N11 testcases.
  *
- * @author Sean Mullan
  */
 public class C14N11Test extends org.junit.Assert {
 

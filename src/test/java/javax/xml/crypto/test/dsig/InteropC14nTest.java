@@ -30,7 +30,6 @@ import javax.xml.crypto.test.KeySelectors;
  * This is a testcase to validate all "c14n" testcases
  * under data/vectors/interop directory
  *
- * @author Sean Mullan
  */
 public class InteropC14nTest extends org.junit.Assert {
 

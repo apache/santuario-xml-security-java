@@ -19,8 +19,6 @@
 package org.apache.xml.security.stax.impl.util;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class KeyValue<E, K> {
 

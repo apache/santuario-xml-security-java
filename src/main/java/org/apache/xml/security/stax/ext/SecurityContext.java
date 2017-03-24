@@ -24,8 +24,6 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author $Author: $
- * @version $Revision: $ $Date: $
  */
 public interface SecurityContext extends SecurityEventListener {
     <T> void put(String key, T value);

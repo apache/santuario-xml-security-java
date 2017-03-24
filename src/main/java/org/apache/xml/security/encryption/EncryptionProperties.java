@@ -39,7 +39,6 @@ import java.util.Iterator;
  * </complexType>
  * </xmp>
  *
- * @author Axl Mattheus
  */
 public interface EncryptionProperties {
 

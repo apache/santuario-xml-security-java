@@ -34,8 +34,6 @@ import org.w3c.dom.Document;
 /**
  * Unit test for javax.xml.crypto.dsig.XMLSignContext
  *
- * @version $Id$
- * @author Valerie Peng
  */
 public class XMLSignContextTest extends org.junit.Assert {
 

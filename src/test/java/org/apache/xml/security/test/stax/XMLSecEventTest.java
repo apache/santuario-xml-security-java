@@ -34,8 +34,6 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class XMLSecEventTest extends Assert {
 

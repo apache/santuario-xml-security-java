@@ -23,7 +23,6 @@ import org.apache.xml.security.exceptions.XMLSecurityException;
 /**
  * Class CanonicalizationException
  *
- * @author Christian Geuer-Pollmann
  */
 public class CanonicalizationException extends XMLSecurityException {
 

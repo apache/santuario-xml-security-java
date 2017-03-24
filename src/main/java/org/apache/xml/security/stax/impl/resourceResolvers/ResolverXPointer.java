@@ -34,8 +34,6 @@ import java.util.regex.Pattern;
  * Resolver for xpointer references in the same document.
  * Supported xpointers are '#xpointer(/)' and '#xpointer(id('ID'))'
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class ResolverXPointer implements ResourceResolver, ResourceResolverLookup {
 

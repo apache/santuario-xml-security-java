@@ -41,7 +41,6 @@ import org.w3c.dom.NodeList;
 /**
  * An implementation of a resource resolver, which evaluates xpointer expressions.
  *
- * @author wglas
  */
 public class XPointerResourceResolver extends ResourceResolverSpi {
     private static final org.slf4j.Logger LOG =

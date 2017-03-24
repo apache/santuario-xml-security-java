@@ -45,7 +45,6 @@ import org.xml.sax.InputSource;
 
 /**
  *
- * @author Christian Geuer-Pollmann
  */
 public class Canonicalizer {
 

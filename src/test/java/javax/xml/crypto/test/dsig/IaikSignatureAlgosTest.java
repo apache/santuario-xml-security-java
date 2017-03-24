@@ -31,7 +31,6 @@ import javax.xml.crypto.test.KeySelectors;
  * This is a testcase to validate all "signatureAlgorithms"
  * testcases from IAIK
  *
- * @author Sean Mullan
  */
 public class IaikSignatureAlgosTest extends org.junit.Assert {
 

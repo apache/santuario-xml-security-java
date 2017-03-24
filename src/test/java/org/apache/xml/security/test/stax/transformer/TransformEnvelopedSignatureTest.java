@@ -43,8 +43,6 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class TransformEnvelopedSignatureTest extends Assert {
 

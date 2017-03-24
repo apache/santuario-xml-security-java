@@ -24,8 +24,6 @@ import java.io.InputStream;
 import java.io.Reader;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class ConcreteLSInput implements LSInput {
 

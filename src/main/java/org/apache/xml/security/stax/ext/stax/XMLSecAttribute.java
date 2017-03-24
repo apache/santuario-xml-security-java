@@ -21,8 +21,6 @@ package org.apache.xml.security.stax.ext.stax;
 import javax.xml.stream.events.Attribute;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public interface XMLSecAttribute extends XMLSecEvent, Attribute, Comparable<XMLSecAttribute> {
 

@@ -35,7 +35,6 @@ import org.w3c.dom.Element;
 /**
  * Test resolver - simply maps a key name to the appropriate key
  *
- * @author Berin Lautenbach
  */
 public class BobKeyResolver extends KeyResolverSpi {
 

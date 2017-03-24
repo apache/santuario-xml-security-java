@@ -35,7 +35,6 @@ import org.w3c.dom.Element;
 /**
  * DOM-based abstract implementation of DigestMethod.
  *
- * @author Sean Mullan
  */
 public abstract class DOMDigestMethod extends BaseStructure
     implements DigestMethod {

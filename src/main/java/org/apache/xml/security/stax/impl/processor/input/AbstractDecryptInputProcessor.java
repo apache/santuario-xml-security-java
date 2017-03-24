@@ -62,8 +62,6 @@ import java.util.*;
 /**
  * Processor for decryption of EncryptedData XML structures
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public abstract class AbstractDecryptInputProcessor extends AbstractInputProcessor {
 

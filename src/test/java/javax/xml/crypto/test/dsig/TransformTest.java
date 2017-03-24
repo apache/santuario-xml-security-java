@@ -34,7 +34,6 @@ import java.security.*;
 /**
  * Unit test for javax.xml.crypto.dsig.Transform
  *
- * @author Valerie Peng
  */
 public class TransformTest extends org.junit.Assert {
 

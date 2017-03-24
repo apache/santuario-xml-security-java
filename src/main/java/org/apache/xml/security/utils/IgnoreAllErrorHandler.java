@@ -26,7 +26,6 @@ import org.xml.sax.SAXParseException;
  * This {@link org.xml.sax.ErrorHandler} does absolutely nothing but LOG
  * the events.
  *
- * @author Christian Geuer-Pollmann
  */
 public class IgnoreAllErrorHandler implements ErrorHandler {
 

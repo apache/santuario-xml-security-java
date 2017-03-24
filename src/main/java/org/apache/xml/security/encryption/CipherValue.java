@@ -21,7 +21,6 @@ package org.apache.xml.security.encryption;
 /**
  * <code>CipherValue</code> is the wrapper for cipher text.
  *
- * @author Axl Mattheus
  */
 public interface CipherValue {
     /**

@@ -28,8 +28,6 @@ import java.util.List;
 /**
  * The OutputProcessorChain manages the OutputProcessors and controls the XMLEvent flow
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public interface OutputProcessorChain extends ProcessorChain {
 

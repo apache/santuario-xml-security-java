@@ -26,8 +26,6 @@ import java.util.Map;
 /**
  * Class to describe which and how an element must be secured
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class SecurePart {
 

@@ -31,7 +31,6 @@ import org.w3c.dom.Text;
  * the <CODE>ds:XPath</CODE> Element. It implements the {@link org.w3c.dom.Element} interface
  * and can be used directly in a DOM tree.
  *
- * @author Christian Geuer-Pollmann
  */
 public class XPathContainer extends SignatureElementProxy implements TransformParam {
 

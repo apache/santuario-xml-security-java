@@ -42,7 +42,6 @@ import org.apache.xml.security.utils.UnsyncBufferedOutputStream;
 /**
  * DOM-based implementation of SignedInfo.
  *
- * @author Sean Mullan
  */
 public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
 

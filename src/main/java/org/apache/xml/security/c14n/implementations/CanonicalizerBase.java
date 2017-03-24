@@ -52,7 +52,6 @@ import org.xml.sax.SAXException;
 /**
  * Abstract base class for canonicalization algorithms.
  *
- * @author Christian Geuer-Pollmann <geuerp@apache.org>
  */
 public abstract class CanonicalizerBase extends CanonicalizerSpi {
     public static final String XML = "xml";

@@ -24,8 +24,6 @@ import java.util.Map;
 /**
  * This class holds per document, context informations
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public interface DocumentContext {
 

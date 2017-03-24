@@ -44,8 +44,6 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class TransformBase64DecodeTest extends Assert {
 

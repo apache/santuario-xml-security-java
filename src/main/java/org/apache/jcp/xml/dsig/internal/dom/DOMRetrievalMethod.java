@@ -63,8 +63,6 @@ import org.w3c.dom.Node;
 /**
  * DOM-based implementation of RetrievalMethod.
  *
- * @author Sean Mullan
- * @author Joyce Leung
  */
 public final class DOMRetrievalMethod extends DOMStructure
     implements RetrievalMethod, DOMURIReference {

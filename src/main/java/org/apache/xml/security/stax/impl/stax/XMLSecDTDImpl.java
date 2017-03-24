@@ -29,8 +29,6 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class XMLSecDTDImpl extends XMLSecEventBaseImpl implements XMLSecDTD {
 

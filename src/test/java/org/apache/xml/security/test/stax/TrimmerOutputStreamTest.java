@@ -26,8 +26,6 @@ import org.apache.xml.security.stax.impl.util.TrimmerOutputStream;
 import java.io.ByteArrayOutputStream;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class TrimmerOutputStreamTest extends Assert {
 

@@ -42,7 +42,6 @@ import javax.xml.parsers.DocumentBuilder;
  * Test that recreates merlin-xpath-filter2-three test vectors
  * but with different keys and X.509 data.
  *
- * @author Sean Mullan
  */
 public class CreateInteropXFilter2Test extends org.junit.Assert {
 

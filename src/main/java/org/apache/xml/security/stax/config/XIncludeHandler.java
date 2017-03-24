@@ -57,8 +57,6 @@ import java.util.Map;
 /**
  * Absolutely primitive XInclude#xpointer scheme handling
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class XIncludeHandler extends DefaultHandler {
 

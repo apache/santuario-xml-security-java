@@ -21,8 +21,6 @@ package org.apache.xml.security.stax.ext.stax;
 import javax.xml.stream.events.Comment;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public interface XMLSecComment extends XMLSecEvent, Comment {
 }

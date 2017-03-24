@@ -33,8 +33,6 @@ import java.util.List;
 /**
  * Implementation of a OutputProcessorChain
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class OutputProcessorChainImpl implements OutputProcessorChain {
 

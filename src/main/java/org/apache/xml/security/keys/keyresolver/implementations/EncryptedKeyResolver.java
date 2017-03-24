@@ -45,7 +45,6 @@ import org.w3c.dom.Element;
  * with an algorithm.  It can also be instantiated with a key (the KEK) or
  * will search the static KeyResolvers to find the appropriate key.
  *
- * @author Berin Lautenbach
  */
 public class EncryptedKeyResolver extends KeyResolverSpi {
 

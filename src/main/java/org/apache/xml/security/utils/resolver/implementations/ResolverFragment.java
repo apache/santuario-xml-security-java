@@ -30,7 +30,6 @@ import org.w3c.dom.Node;
 /**
  * This resolver is used for resolving same-document URIs like URI="" of URI="#id".
  *
- * @author $Author$
  * @see <A HREF="http://www.w3.org/TR/xmldsig-core/#sec-ReferenceProcessingModel">The Reference processing model in the XML Signature spec</A>
  * @see <A HREF="http://www.w3.org/TR/xmldsig-core/#sec-Same-Document">Same-Document URI-References in the XML Signature spec</A>
  * @see <A HREF="http://www.ietf.org/rfc/rfc2396.txt">Section 4.2 of RFC 2396</A>

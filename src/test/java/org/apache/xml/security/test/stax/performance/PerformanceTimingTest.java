@@ -29,8 +29,6 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
- * @author $Author: $
- * @version $Revision: $ $Date: $
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class PerformanceTimingTest extends AbstractPerformanceTest {

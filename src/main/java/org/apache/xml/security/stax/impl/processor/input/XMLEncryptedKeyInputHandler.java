@@ -52,8 +52,6 @@ import java.util.Deque;
 /**
  * An input handler for the EncryptedKey XML Structure
  *
- * @author $Author: coheigea $
- * @version $Revision: 1360243 $ $Date: 2012-07-11 16:53:55 +0100 (Wed, 11 Jul 2012) $
  */
 public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHandler {
 

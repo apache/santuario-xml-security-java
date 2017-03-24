@@ -31,7 +31,6 @@ import org.apache.xml.security.utils.XMLUtils;
 /**
  * Certificate parsing test.
  *
- * @author Sean Mullan
  */
 public class XMLX509CertificateTest extends org.junit.Assert {
 

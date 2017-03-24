@@ -32,7 +32,6 @@ import org.w3c.dom.Element;
  * concerning the generation of the signature.
  * for example, data-time stamp, serial number of cryptographic hardware.
  *
- * @author Christian Geuer-Pollmann
  */
 public class SignatureProperties extends SignatureElementProxy {
 

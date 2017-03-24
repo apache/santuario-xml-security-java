@@ -27,8 +27,6 @@ import javax.xml.crypto.dsig.keyinfo.*;
 /**
  * Unit test for javax.xml.crypto.dsig.keyinfo.X509IssuerSerial
  *
- * @version $Id: X509IssuerSerialTest.java, v 1.1 2004/04/07 21:11:36 mullan Exp $
- * @author Valerie Peng
  */
 public class X509IssuerSerialTest extends org.junit.Assert {
 

@@ -30,7 +30,6 @@ import javax.xml.crypto.test.KeySelectors;
  * This is a testcase to validate all "merlin-exc-c14n-one"
  * testcases from Baltimore
  *
- * @author Sean Mullan
  */
 public class BaltimoreExcC14n1Test extends org.junit.Assert {
 

@@ -26,8 +26,6 @@ import java.util.*;
 /**
  * A concrete DocumentContext Implementation
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class DocumentContextImpl implements DocumentContext, Cloneable {
 

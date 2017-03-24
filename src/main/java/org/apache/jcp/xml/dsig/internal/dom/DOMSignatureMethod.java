@@ -41,7 +41,6 @@ import org.apache.jcp.xml.dsig.internal.SignerOutputStream;
 /**
  * DOM-based abstract implementation of SignatureMethod.
  *
- * @author Sean Mullan
  */
 public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
 

@@ -32,8 +32,6 @@ import javax.xml.stream.XMLStreamException;
 import java.io.*;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class TransformBase64Decode extends TransformIdentity {
 

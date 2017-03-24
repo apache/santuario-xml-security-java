@@ -30,8 +30,6 @@ import java.io.InputStream;
  * It's inefficient and simply suppresses the output of '\r' which
  * is not correct in every case. So do not use it in productive code.
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class UnixInputStream extends InputStream {
 

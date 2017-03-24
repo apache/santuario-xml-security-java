@@ -31,7 +31,6 @@ import org.w3c.dom.Element;
 /**
  * Interop test for exclusive canonical XML.
  *
- * @author Christian Geuer-Pollmann
  */
 public class ExclusiveC14NInteropTest extends InteropTestBase {
 

@@ -27,8 +27,6 @@ import javax.xml.stream.events.*;
 import java.util.List;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class XMLSecurityEventWriter implements XMLEventWriter {
 

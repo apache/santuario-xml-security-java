@@ -29,7 +29,6 @@ import org.apache.xml.security.transforms.Transforms;
 /**
  * Class TransformXPointer
  *
- * @author Christian Geuer-Pollmann
  */
 public class TransformXPointer extends TransformSpi {
 

@@ -50,8 +50,6 @@ import java.util.*;
 /**
  * Processor to encrypt XML structures
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProcessor {
 

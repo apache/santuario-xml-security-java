@@ -22,7 +22,6 @@ import org.apache.xml.security.c14n.helper.C14nHelper;
 
 
 /**
- * @author Christian Geuer-Pollmann
  */
 public class C14nHelperTest extends org.junit.Assert {
 

@@ -21,8 +21,6 @@ package org.apache.xml.security.stax.securityEvent;
 import org.apache.xml.security.stax.securityToken.SecurityToken;
 
 /**
- * @author $Author: giger $
- * @version $Revision: 1228829 $ $Date: 2012-01-08 11:44:13 +0000 (Sun, 08 Jan 2012) $
  */
 public class DefaultTokenSecurityEvent extends TokenSecurityEvent<SecurityToken> {
 

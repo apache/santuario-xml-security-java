@@ -26,8 +26,6 @@ import javax.xml.namespace.QName;
 import java.util.*;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class Canonicalizer11 extends CanonicalizerBase {
     public Canonicalizer11(boolean includeComments) {

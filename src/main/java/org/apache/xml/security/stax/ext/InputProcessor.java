@@ -27,8 +27,6 @@ import java.util.Set;
 /**
  * This is the Interface which every InputProcessor must implement.
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public interface InputProcessor {
 

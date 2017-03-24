@@ -43,7 +43,6 @@ import org.w3c.dom.Node;
  * Implements the <CODE>http://www.w3.org/TR/1999/REC-xpath-19991116</CODE>
  * transform.
  *
- * @author Christian Geuer-Pollmann
  * @see <a href="http://www.w3.org/TR/1999/REC-xpath-19991116">XPath</a>
  *
  */

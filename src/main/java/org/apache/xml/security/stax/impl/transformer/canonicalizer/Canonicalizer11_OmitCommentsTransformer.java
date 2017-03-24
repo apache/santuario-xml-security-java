@@ -19,8 +19,6 @@
 package org.apache.xml.security.stax.impl.transformer.canonicalizer;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class Canonicalizer11_OmitCommentsTransformer extends Canonicalizer11 {
 

@@ -26,8 +26,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 /**
- * @author $Author: $
- * @version $Revision: $ $Date: $
  */
 public class TestUtils {
 

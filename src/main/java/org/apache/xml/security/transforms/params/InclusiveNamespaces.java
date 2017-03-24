@@ -35,7 +35,6 @@ import org.w3c.dom.Element;
  * It implements the {@link Element} interface
  * and can be used directly in a DOM tree.
  *
- * @author Christian Geuer-Pollmann
  */
 public class InclusiveNamespaces extends ElementProxy implements TransformParam {
 

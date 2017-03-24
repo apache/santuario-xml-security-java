@@ -29,7 +29,6 @@ import org.w3c.dom.Node;
  * Implements the parameters for the <A
  * HREF="http://www.w3.org/TR/xmldsig-filter2/">XPath Filter v2.0</A>.
  *
- * @author $Author$
  * @see <A HREF="http://www.w3.org/TR/xmldsig-filter2/">XPath Filter v2.0 (TR)</A>
  */
 public class XPath2FilterContainer04 extends ElementProxy implements TransformParam {

@@ -59,7 +59,6 @@ import org.xml.sax.SAXException;
  * Unit test for
  * {@link org.apache.xml.security.c14n.implementations.Canonicalizer20010315WithXPath}
  *
- * @author Christian Geuer-Pollmann
  */
 public class Canonicalizer20010315Test extends org.junit.Assert {
 

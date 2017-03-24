@@ -42,7 +42,6 @@ import javax.xml.parsers.DocumentBuilder;
  * Test that recreates interop exc C14N test vectors
  * but with different keys.
  *
- * @author Sean Mullan
  */
 public class CreateInteropExcC14NTest extends org.junit.Assert {
 

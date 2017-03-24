@@ -32,8 +32,6 @@ import java.util.*;
 /**
  * Concrete security context implementation
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class InboundSecurityContextImpl extends AbstractSecurityContextImpl implements InboundSecurityContext {
 

@@ -52,7 +52,6 @@ import org.w3c.dom.Attr;
  * </complexType>
  * </xmp>
  *
- * @author Axl Mattheus
  */
 public interface CipherReference {
     /**

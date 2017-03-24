@@ -34,8 +34,6 @@ import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 import org.apache.xml.security.stax.securityToken.SecurityTokenConstants.TokenUsage;
 
 /**
- * @author $Author: coheigea $
- * @version $Revision: 1359731 $ $Date: 2012-07-10 16:39:40 +0100 (Tue, 10 Jul 2012) $
  */
 public abstract class AbstractSecurityToken implements SecurityToken {
 

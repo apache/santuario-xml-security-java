@@ -38,7 +38,6 @@ import org.apache.xml.security.utils.XMLUtils;
 /**
  * DOM-based implementation of PGPData.
  *
- * @author Sean Mullan
  */
 public final class DOMPGPData extends BaseStructure implements PGPData {
 

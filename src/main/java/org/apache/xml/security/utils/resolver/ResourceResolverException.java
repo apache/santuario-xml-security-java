@@ -24,7 +24,6 @@ import org.apache.xml.security.exceptions.XMLSecurityException;
  * This Exception is thrown if something related to the
  * {@link org.apache.xml.security.utils.resolver.ResourceResolver} goes wrong.
  *
- * @author $Author$
  */
 public class ResourceResolverException extends XMLSecurityException {
 

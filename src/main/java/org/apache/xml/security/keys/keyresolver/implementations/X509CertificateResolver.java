@@ -35,7 +35,6 @@ import org.w3c.dom.Element;
  * Resolves Certificates which are directly contained inside a
  * <CODE>ds:X509Certificate</CODE> Element.
  *
- * @author $Author$
  */
 public class X509CertificateResolver extends KeyResolverSpi {
 

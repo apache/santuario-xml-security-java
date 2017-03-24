@@ -35,8 +35,6 @@ import java.security.spec.AlgorithmParameterSpec;
  * When the iv is completely received the cipher will be initialized
  * and this output stream will be removed from chain of output streams
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class IVSplittingOutputStream extends FilterOutputStream {
 

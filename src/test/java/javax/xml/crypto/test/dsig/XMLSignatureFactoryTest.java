@@ -39,8 +39,6 @@ import org.w3c.dom.NodeList;
 /**
  * Unit test for javax.xml.crypto.dsig.XMLSignatureFactory
  *
- * @version $Id$
- * @author Valerie Peng
  */
 public class XMLSignatureFactoryTest extends org.junit.Assert {
 

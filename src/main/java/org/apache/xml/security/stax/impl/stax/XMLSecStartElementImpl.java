@@ -32,8 +32,6 @@ import java.io.Writer;
 import java.util.*;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class XMLSecStartElementImpl extends XMLSecEventBaseImpl implements XMLSecStartElement {
 

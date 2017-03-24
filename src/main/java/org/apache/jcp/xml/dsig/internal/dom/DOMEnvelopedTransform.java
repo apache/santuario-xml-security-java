@@ -31,7 +31,6 @@ import javax.xml.crypto.dsig.spec.TransformParameterSpec;
  * DOM-based implementation of Enveloped Signature Transform.
  * (Uses Apache XML-Sec Transform implementation)
  *
- * @author Sean Mullan
  */
 public final class DOMEnvelopedTransform extends ApacheTransform {
 

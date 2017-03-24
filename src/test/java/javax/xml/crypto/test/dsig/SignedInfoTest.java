@@ -29,7 +29,6 @@ import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 /**
  * Unit test for javax.xml.crypto.dsig.SignedInfo
  *
- * @author Valerie Peng
  */
 public class SignedInfoTest extends org.junit.Assert {
     private XMLSignatureFactory fac;

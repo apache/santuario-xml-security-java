@@ -25,7 +25,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * @author $Author$
  */
 public class KeyName extends SignatureElementProxy implements KeyInfoContent {
 

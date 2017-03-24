@@ -26,7 +26,6 @@ import org.apache.xml.security.signature.XMLSignatureInput;
 /**
  * During reference validation, we have to retrieve resources from somewhere.
  *
- * @author $Author$
  */
 public abstract class ResourceResolverSpi {
 

@@ -31,7 +31,6 @@ import org.w3c.dom.Node;
  * A stack based Symbol Table.
  *<br>For speed reasons all the symbols are introduced in the same map,
  * and at the same time in a list so it can be removed when the frame is pop back.
- * @author Raul Benito
  */
 public class NameSpaceSymbTable {
 

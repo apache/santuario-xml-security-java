@@ -21,7 +21,6 @@ package org.apache.xml.security.exceptions;
 /**
  * This Exception is thrown if decoding of Base64 data fails.
  *
- * @author Christian Geuer-Pollmann
  */
 public class Base64DecodingException extends XMLSecurityException {
 

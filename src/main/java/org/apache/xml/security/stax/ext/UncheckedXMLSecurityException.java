@@ -21,8 +21,6 @@ package org.apache.xml.security.stax.ext;
 /**
  * Unchecked Exception to mark uncaught-exceptions in threads
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class UncheckedXMLSecurityException extends RuntimeException {
 

@@ -25,8 +25,6 @@ import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
 import java.io.InputStream;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public interface ResourceResolver {
 

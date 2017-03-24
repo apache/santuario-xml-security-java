@@ -52,7 +52,6 @@ import org.apache.xml.security.utils.I18n;
  * </pre>
  *
  *
- * @author Christian Geuer-Pollmann
  */
 public class XMLSecurityException extends Exception {
 

@@ -20,8 +20,6 @@ package org.apache.xml.security.stax.ext;
 
 
 /**
-* @author $Author: $
-* @version $Revision: $ $Date: $
 */
 public abstract class ComparableType<T extends ComparableType> implements Comparable<T> {
 

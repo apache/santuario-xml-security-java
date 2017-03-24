@@ -25,7 +25,6 @@ import java.util.ResourceBundle;
 /**
  * The Internationalization (I18N) pack.
  *
- * @author Christian Geuer-Pollmann
  */
 public class I18n {
 

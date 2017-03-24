@@ -25,7 +25,6 @@ package org.apache.xml.security.utils;
  * <A HREF="http://www.w3.org/TR/xmldsig-core/#sec-TransformAlg">XML
  * Signature specification</A>.
  *
- * @author $Author$
  */
 public final class Constants {
 

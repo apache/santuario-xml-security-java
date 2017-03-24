@@ -45,8 +45,6 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
 

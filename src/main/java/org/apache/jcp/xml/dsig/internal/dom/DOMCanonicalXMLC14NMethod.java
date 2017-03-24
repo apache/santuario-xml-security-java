@@ -37,7 +37,6 @@ import org.apache.xml.security.c14n.InvalidCanonicalizerException;
  * DOM-based implementation of CanonicalizationMethod for Canonical XML
  * (with or without comments). Uses Apache XML-Sec Canonicalizer.
  *
- * @author Sean Mullan
  */
 public final class DOMCanonicalXMLC14NMethod extends ApacheCanonicalizer {
 

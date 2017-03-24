@@ -34,8 +34,6 @@ import java.util.ArrayDeque;
 /**
  * Processor for XML Security.
  *
- * @author $Author: coheigea $
- * @version $Revision: 1354898 $ $Date: 2012-06-28 11:19:02 +0100 (Thu, 28 Jun 2012) $
  */
 public class XMLSecurityInputProcessor extends AbstractInputProcessor {
 

@@ -35,8 +35,6 @@ import java.io.*;
 import java.util.*;
 
 /**
- * @author $Author: coheigea $
- * @version $Revision: 1556187 $ $Date: 2014-01-07 11:46:31 +0000 (Tue, 07 Jan 2014) $
  */
 public abstract class CanonicalizerBase extends TransformIdentity {
 

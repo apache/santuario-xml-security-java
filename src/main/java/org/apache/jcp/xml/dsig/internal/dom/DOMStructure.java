@@ -30,7 +30,6 @@ import javax.xml.crypto.XMLCryptoContext;
 /**
  * DOM-based abstract implementation of XMLStructure.
  *
- * @author Sean Mullan
  */
 public abstract class DOMStructure extends BaseStructure {
 

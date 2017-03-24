@@ -47,7 +47,6 @@ import org.w3c.dom.Element;
  * Tests creating and validating an XML Signature with an XPath Transform.
  * Tests bug #44617.
  *
- * @author Frank Cornelis
  */
 public class XmlSecTest extends org.junit.Assert {
 

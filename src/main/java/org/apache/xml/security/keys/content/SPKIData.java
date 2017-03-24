@@ -24,7 +24,6 @@ import org.apache.xml.security.utils.SignatureElementProxy;
 import org.w3c.dom.Element;
 
 /**
- * @author $Author$
  * $todo$ implement
  */
 public class SPKIData extends SignatureElementProxy implements KeyInfoContent {

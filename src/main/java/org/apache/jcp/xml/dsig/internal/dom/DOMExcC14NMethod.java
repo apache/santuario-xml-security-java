@@ -43,7 +43,6 @@ import org.apache.xml.security.c14n.InvalidCanonicalizerException;
  * Canonical XML algorithm (with or without comments).
  * Uses Apache XML-Sec Canonicalizer.
  *
- * @author Sean Mullan
  */
 public final class DOMExcC14NMethod extends ApacheCanonicalizer {
 

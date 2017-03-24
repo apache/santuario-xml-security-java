@@ -43,8 +43,6 @@ import java.util.List;
  * Inbound Streaming-XML-Security
  * An instance of this class can be retrieved over the XMLSec class
  *
- * @author $Author: coheigea $
- * @version $Revision: 1354898 $ $Date: 2012-06-28 11:19:02 +0100 (Thu, 28 Jun 2012) $
  */
 public class InboundXMLSec {
 

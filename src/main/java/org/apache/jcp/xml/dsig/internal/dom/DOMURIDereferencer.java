@@ -39,7 +39,6 @@ import javax.xml.crypto.dom.*;
 /**
  * DOM-based implementation of URIDereferencer.
  *
- * @author Sean Mullan
  */
 public final class DOMURIDereferencer implements URIDereferencer {
 

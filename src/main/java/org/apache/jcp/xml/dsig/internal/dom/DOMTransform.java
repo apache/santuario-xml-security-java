@@ -45,7 +45,6 @@ import org.w3c.dom.Node;
 /**
  * DOM-based abstract implementation of Transform.
  *
- * @author Sean Mullan
  */
 public class DOMTransform extends BaseStructure implements Transform {
 

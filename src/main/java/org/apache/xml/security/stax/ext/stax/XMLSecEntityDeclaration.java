@@ -21,8 +21,6 @@ package org.apache.xml.security.stax.ext.stax;
 import javax.xml.stream.events.EntityDeclaration;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public interface XMLSecEntityDeclaration extends XMLSecEvent, EntityDeclaration {
 }

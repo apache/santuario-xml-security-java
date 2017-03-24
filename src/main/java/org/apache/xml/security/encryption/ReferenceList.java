@@ -37,7 +37,6 @@ import java.util.Iterator;
  * </element>
  * </xmp>
  *
- * @author Axl Mattheus
  * @see Reference
  */
 public interface ReferenceList {

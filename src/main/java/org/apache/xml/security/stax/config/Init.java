@@ -42,8 +42,6 @@ import java.net.URL;
  * Class to load the algorithms-mappings from a configuration file.
  * After the initialization the mapping is available through the JCEAlgorithmMapper
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class Init {
 

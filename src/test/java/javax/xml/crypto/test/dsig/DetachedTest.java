@@ -78,7 +78,6 @@ import org.w3c.dom.Document;
  *   </KeyInfo>
  * </Signature>
  *
- * @author Sean Mullan
  */
 public class DetachedTest extends org.junit.Assert {
 

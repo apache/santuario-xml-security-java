@@ -57,7 +57,6 @@ import org.xml.sax.SAXException;
 
 
 /**
- * @author Christian Geuer-Pollmann
  */
 public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
 

@@ -32,8 +32,6 @@ import java.io.*;
 import java.util.Map;
 
 /**
- * @author $Author: $
- * @version $Revision: $ $Date: $
  */
 public class TransformIdentity implements Transformer {
 

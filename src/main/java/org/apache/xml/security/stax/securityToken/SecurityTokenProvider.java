@@ -23,8 +23,6 @@ import org.apache.xml.security.exceptions.XMLSecurityException;
 /**
  * A SecurityTokenProvider is a object which provides a Token for cryptographic operations
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public interface SecurityTokenProvider<T> {
 

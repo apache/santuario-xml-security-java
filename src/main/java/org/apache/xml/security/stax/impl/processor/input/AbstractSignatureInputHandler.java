@@ -49,8 +49,6 @@ import java.security.NoSuchProviderException;
 import java.util.*;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public abstract class AbstractSignatureInputHandler extends AbstractInputSecurityHeaderHandler {
 

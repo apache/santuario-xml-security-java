@@ -49,8 +49,6 @@ import org.xml.sax.SAXException;
  * <BR />
  * <i>THIS </i> implementation is a complete rewrite of the algorithm.
  *
- * @author Christian Geuer-Pollmann <geuerp@apache.org>
- * @version $Revision$
  * @see <a href="http://www.w3.org/TR/2002/REC-xml-exc-c14n-20020718/ Exclusive#">
  *          XML Canonicalization, Version 1.0</a>
  */

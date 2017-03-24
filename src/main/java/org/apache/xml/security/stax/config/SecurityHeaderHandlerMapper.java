@@ -31,8 +31,6 @@ import java.util.Map;
 /**
  * Security-header handler mapper
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class SecurityHeaderHandlerMapper {
 

@@ -52,7 +52,6 @@ import org.w3c.dom.Element;
 /**
  * Tests that create signatures.
  *
- * @author Sean Mullan
  */
 public class CreateSignatureTest extends org.junit.Assert {
 

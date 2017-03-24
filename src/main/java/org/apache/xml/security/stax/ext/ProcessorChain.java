@@ -25,8 +25,6 @@ import javax.xml.stream.XMLStreamException;
 /**
  * Basic interface for Output- and Input-Processor chains
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public interface ProcessorChain {
 

@@ -58,7 +58,6 @@ import javax.xml.crypto.test.KeySelectors;
  * Test that recreates merlin-xmldsig-twenty-three test vectors but with
  * different keys and X.509 data.
  *
- * @author Sean Mullan
  */
 public class CreateBaltimore23Test extends org.junit.Assert {
 

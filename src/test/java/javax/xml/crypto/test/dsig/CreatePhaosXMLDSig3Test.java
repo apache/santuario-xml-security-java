@@ -40,7 +40,6 @@ import javax.xml.parsers.DocumentBuilder;
  * but with different keys. For now we are just focusing on
  * the exc-c14n vectors.
  *
- * @author Sean Mullan
  */
 public class CreatePhaosXMLDSig3Test extends org.junit.Assert {
 

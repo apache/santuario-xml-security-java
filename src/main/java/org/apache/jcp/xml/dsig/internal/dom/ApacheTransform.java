@@ -45,8 +45,6 @@ import javax.xml.crypto.dsig.spec.TransformParameterSpec;
  * This is a wrapper/glue class which invokes the Apache XML-Security
  * Transform.
  *
- * @author Sean Mullan
- * @author Erwin van der Koogh
  */
 public abstract class ApacheTransform extends TransformService {
 

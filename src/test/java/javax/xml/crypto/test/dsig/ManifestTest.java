@@ -27,8 +27,6 @@ import javax.xml.crypto.dsig.*;
 /**
  * Unit test for javax.xml.crypto.dsig.Manifest
  *
- * @version $Id$
- * @author Valerie Peng
  */
 public class ManifestTest extends org.junit.Assert {
     private XMLSignatureFactory fac;

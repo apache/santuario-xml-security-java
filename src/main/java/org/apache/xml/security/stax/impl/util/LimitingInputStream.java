@@ -25,8 +25,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class LimitingInputStream extends FilterInputStream {
 

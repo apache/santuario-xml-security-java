@@ -37,8 +37,6 @@ import org.w3c.dom.traversal.*;
 /**
  * This is a class which performs xml signature validation upon request
  *
- * @author Sean Mullan
- * @author Valerie Peng
  */
 public class SignatureValidator {
 

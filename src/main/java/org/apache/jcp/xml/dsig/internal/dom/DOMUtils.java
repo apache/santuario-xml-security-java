@@ -40,7 +40,6 @@ import javax.xml.crypto.dsig.spec.*;
 /**
  * Useful static DOM utility methods.
  *
- * @author Sean Mullan
  */
 public final class DOMUtils {
 

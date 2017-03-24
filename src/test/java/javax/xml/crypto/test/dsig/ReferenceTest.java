@@ -37,7 +37,6 @@ import org.w3c.dom.Document;
 /**
  * Unit test for javax.xml.crypto.dsig.Reference
  *
- * @author Valerie Peng
  */
 public class ReferenceTest extends org.junit.Assert {
     private XMLSignatureFactory fac;

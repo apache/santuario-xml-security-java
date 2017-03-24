@@ -42,7 +42,6 @@ import org.w3c.dom.Node;
 /**
  * DOM-based implementation of XMLSignatureFactory.
  *
- * @author Sean Mullan
  */
 public final class DOMXMLSignatureFactory extends XMLSignatureFactory {
 

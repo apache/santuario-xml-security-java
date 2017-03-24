@@ -55,8 +55,6 @@ import org.apache.xml.security.utils.UnsyncBufferedOutputStream;
 /**
  * DOM-based implementation of Reference.
  *
- * @author Sean Mullan
- * @author Joyce Leung
  */
 public final class DOMReference extends DOMStructure
     implements Reference, DOMURIReference {

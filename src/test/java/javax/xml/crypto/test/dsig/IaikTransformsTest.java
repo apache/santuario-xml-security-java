@@ -30,7 +30,6 @@ import javax.xml.crypto.test.KeySelectors;
  * This is a testcase to validate all "transforms"
  * testcases from IAIK
  *
- * @author Sean Mullan
  */
 public class IaikTransformsTest extends org.junit.Assert {
 

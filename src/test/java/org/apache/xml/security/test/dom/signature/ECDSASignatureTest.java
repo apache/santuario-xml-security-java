@@ -47,7 +47,6 @@ import org.w3c.dom.Element;
 /**
  * Tests that creates and verifies ECDSA signatures.
  *
- * @author Wolfgang Glas
  */
 public class ECDSASignatureTest extends org.junit.Assert {
 

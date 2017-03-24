@@ -35,8 +35,6 @@ import org.apache.xml.security.exceptions.XMLSecurityException;
 /**
  * XMLSecurityConstants for global use
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class XMLSecurityConstants {
 

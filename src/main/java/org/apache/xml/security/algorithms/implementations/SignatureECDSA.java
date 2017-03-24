@@ -38,8 +38,6 @@ import org.apache.xml.security.signature.XMLSignatureException;
 
 /**
  *
- * @author $Author: raul $
- * @author Alex Dupre
  */
 public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
 
@@ -269,7 +267,6 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
     /**
      * Class SignatureECDSASHA1
      *
-     * @author $Author: marcx $
      */
     public static class SignatureECDSASHA1 extends SignatureECDSA {
         /**
@@ -310,7 +307,6 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
     /**
      * Class SignatureECDSASHA256
      *
-     * @author Alex Dupre
      */
     public static class SignatureECDSASHA256 extends SignatureECDSA {
 
@@ -332,7 +328,6 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
     /**
      * Class SignatureECDSASHA384
      *
-     * @author Alex Dupre
      */
     public static class SignatureECDSASHA384 extends SignatureECDSA {
 
@@ -354,7 +349,6 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
     /**
      * Class SignatureECDSASHA512
      *
-     * @author Alex Dupre
      */
     public static class SignatureECDSASHA512 extends SignatureECDSA {
 

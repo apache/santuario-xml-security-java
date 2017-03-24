@@ -27,7 +27,6 @@ import java.security.*;
 /**
  * Unit test for javax.xml.crypto.dsig.DigestMethod
  *
- * @author Valerie Peng
  */
 public class DigestMethodTest extends org.junit.Assert {
 

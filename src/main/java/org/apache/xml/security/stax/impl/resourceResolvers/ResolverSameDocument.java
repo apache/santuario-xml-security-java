@@ -29,8 +29,6 @@ import java.io.InputStream;
 /**
  * Resolver for references in the same document.
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class ResolverSameDocument implements ResourceResolver, ResourceResolverLookup {
 

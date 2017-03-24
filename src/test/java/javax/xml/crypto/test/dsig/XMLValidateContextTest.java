@@ -30,8 +30,6 @@ import javax.crypto.spec.SecretKeySpec;
 /**
  * Unit test for javax.xml.crypto.dsig.XMLValidateContext
  *
- * @version $Id$
- * @author Valerie Peng
  */
 public class XMLValidateContextTest extends org.junit.Assert {
 

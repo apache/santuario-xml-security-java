@@ -46,8 +46,6 @@ import org.w3c.dom.Text;
 /**
  * An abstract OutputProcessor class for reusabilty
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public abstract class AbstractOutputProcessor implements OutputProcessor {
 

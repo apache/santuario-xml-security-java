@@ -45,7 +45,6 @@ import org.xml.sax.SAXException;
  * This <code>SignedInfo<code> element includes the canonicalization algorithm,
  * a signature algorithm, and one or more references.
  *
- * @author Christian Geuer-Pollmann
  */
 public class SignedInfo extends Manifest {
 

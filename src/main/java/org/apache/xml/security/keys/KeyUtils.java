@@ -30,7 +30,6 @@ import org.apache.xml.security.keys.content.X509Data;
 /**
  * Utility class for for <CODE>org.apache.xml.security.keys</CODE> package.
  *
- * @author $Author$
  */
 public final class KeyUtils {
 

@@ -22,7 +22,6 @@ package org.apache.xml.security.signature;
  * Raised if testing the signature value over <i>DigestValue</i> fails because of invalid signature.
  *
  * @see InvalidDigestValueException  MissingKeyFailureException  MissingResourceFailureException
- * @author Christian Geuer-Pollmann
  */
 public class InvalidSignatureValueException extends XMLSignatureException {
 

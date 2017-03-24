@@ -33,7 +33,6 @@ import org.w3c.dom.NamedNodeMap;
 /**
  * Unit test for {@link org.apache.xml.security.c14n.AttrCompare#compare}
  *
- * @author Christian Geuer-Pollmann
  */
 public class AttrCompareTest extends org.junit.Assert {
 

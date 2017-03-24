@@ -33,7 +33,6 @@ import javax.xml.crypto.test.KeySelectors;
  * This is a testcase to validate all "merlin-xmldsig-eighteen"
  * testcases from Baltimore
  *
- * @author Sean Mullan
  */
 public class Baltimore18Test extends org.junit.Assert {
 

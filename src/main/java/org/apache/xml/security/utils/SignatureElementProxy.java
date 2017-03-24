@@ -25,7 +25,6 @@ import org.w3c.dom.Element;
 /**
  * Class SignatureElementProxy
  *
- * @author $Author$
  */
 public abstract class SignatureElementProxy extends ElementProxy {
 

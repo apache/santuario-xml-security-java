@@ -23,7 +23,6 @@ import java.io.ByteArrayOutputStream;
 import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
 
 /**
- * @author raul
  *
  */
 public class DigesterOutputStream extends ByteArrayOutputStream {

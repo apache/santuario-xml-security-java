@@ -19,8 +19,6 @@
 package org.apache.xml.security.stax.ext;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public interface ResourceResolverLookup {
 

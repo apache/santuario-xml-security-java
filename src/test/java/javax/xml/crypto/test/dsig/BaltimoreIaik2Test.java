@@ -30,7 +30,6 @@ import javax.xml.crypto.test.KeySelectors;
  * This is a testcase to validate all "ec-merlin-iaikTests-two"
  * testcases from Baltimore
  *
- * @author Sean Mullan
  */
 public class BaltimoreIaik2Test extends org.junit.Assert {
 

@@ -27,7 +27,6 @@ import org.w3c.dom.NamedNodeMap;
 /**
  * Temporary swapped static functions from the normalizer Section
  *
- * @author Christian Geuer-Pollmann
  */
 public final class C14nHelper {
 

@@ -30,7 +30,6 @@ import javax.xml.crypto.test.KeySelectors;
  * This is a testcase to validate all "bdournaee"
  * testcases from RSA
  *
- * @author Sean Mullan
  */
 public class ComRSASecurityTest extends org.junit.Assert {
 

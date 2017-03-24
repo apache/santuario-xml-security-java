@@ -36,8 +36,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class InputProcessorChainTest extends Assert {
 

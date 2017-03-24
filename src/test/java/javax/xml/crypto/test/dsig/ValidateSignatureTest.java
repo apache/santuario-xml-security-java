@@ -37,7 +37,6 @@ import javax.xml.crypto.dsig.dom.DOMValidateContext;
 /**
  * This is a testcase that validates various signatures
  *
- * @author Sean Mullan
  */
 public class ValidateSignatureTest extends org.junit.Assert {
 

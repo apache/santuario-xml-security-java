@@ -29,7 +29,6 @@ import javax.xml.crypto.test.dsig.TestUtils;
 /**
  * Unit test for javax.xml.crypto.dsig.dom.DOMValidateContext
  *
- * @author Valerie Peng
  */
 public class DOMValidateContextTest extends org.junit.Assert {
     private DOMValidateContext domVC;

@@ -32,7 +32,6 @@ import javax.xml.crypto.dsig.spec.TransformParameterSpec;
  * DOM-based implementation of Base64 Encoding Transform.
  * (Uses Apache XML-Sec Transform implementation)
  *
- * @author Sean Mullan
  */
 public final class DOMBase64Transform extends ApacheTransform {
 

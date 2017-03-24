@@ -30,8 +30,6 @@ import javax.crypto.SecretKey;
 import java.io.ByteArrayOutputStream;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class IVSplittingOutputStreamTest extends Assert {
 

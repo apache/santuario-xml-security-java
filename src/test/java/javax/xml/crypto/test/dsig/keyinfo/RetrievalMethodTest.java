@@ -26,7 +26,6 @@ import javax.xml.crypto.dsig.keyinfo.*;
 /**
  * Unit test for javax.xml.crypto.dsig.keyinfo.RetrievalMethod
  *
- * @author Sean Mullan
  */
 public class RetrievalMethodTest extends org.junit.Assert {
 

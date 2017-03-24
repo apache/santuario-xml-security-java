@@ -23,7 +23,6 @@ import java.io.OutputStream;
 
 /**
  * A simple Unsynced ByteArrayOutputStream
- * @author raul
  *
  */
 public class UnsyncByteArrayOutputStream extends OutputStream  {

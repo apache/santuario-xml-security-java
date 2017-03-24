@@ -27,8 +27,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class SignerOutputStream extends OutputStream {
 

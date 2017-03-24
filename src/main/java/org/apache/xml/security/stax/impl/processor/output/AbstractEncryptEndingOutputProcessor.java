@@ -24,8 +24,6 @@ import org.apache.xml.security.stax.ext.AbstractBufferingOutputProcessor;
 /**
  * Processor buffers encrypted XMLEvents and forwards them when final is called
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public abstract class AbstractEncryptEndingOutputProcessor extends AbstractBufferingOutputProcessor {
 

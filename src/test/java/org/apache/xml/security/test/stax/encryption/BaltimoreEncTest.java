@@ -58,8 +58,6 @@ import org.w3c.dom.Node;
 /**
  * Interop test for XML Encryption
  *
- * @author $Author: coheigea $
- * @version $Revision: 1236690 $ $Date: 2012-01-27 14:07:10 +0000 (Fri, 27 Jan 2012) $
  */
 public class BaltimoreEncTest extends org.junit.Assert {
 

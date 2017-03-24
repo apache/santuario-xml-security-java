@@ -34,8 +34,6 @@ import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
  * Sometimes it isn't known (@see EncryptedKeyInputProcessor) which kind of Token(Asymmetric, Symmetric)
  * we have at creation time. So we use a generic interface for both types.
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public interface InboundSecurityToken extends SecurityToken {
 

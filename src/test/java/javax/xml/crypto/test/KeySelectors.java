@@ -34,8 +34,6 @@ import javax.crypto.SecretKey;
 /**
  * This is a class which supplies several KeySelector implementations
  *
- * @author Sean Mullan
- * @author Valerie Peng
  */
 public class KeySelectors {
 

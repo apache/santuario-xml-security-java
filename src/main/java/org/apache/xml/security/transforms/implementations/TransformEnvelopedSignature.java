@@ -35,7 +35,6 @@ import org.w3c.dom.Node;
  * Implements the <CODE>http://www.w3.org/2000/09/xmldsig#enveloped-signature</CODE>
  * transform.
  *
- * @author Christian Geuer-Pollmann
  */
 public class TransformEnvelopedSignature extends TransformSpi {
 

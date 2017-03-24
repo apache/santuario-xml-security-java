@@ -43,7 +43,6 @@ import org.w3c.dom.Element;
  * Allows selection of digital signature's algorithm, private keys, other
  * security parameters, and algorithm's ID.
  *
- * @author Christian Geuer-Pollmann
  */
 public class SignatureAlgorithm extends Algorithm {
 

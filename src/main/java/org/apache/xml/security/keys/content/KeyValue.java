@@ -37,7 +37,6 @@ import org.w3c.dom.Element;
  * keys values represented as PCDATA or element types from an external
  * namespace.
  *
- * @author $Author$
  */
 public class KeyValue extends SignatureElementProxy implements KeyInfoContent {
 

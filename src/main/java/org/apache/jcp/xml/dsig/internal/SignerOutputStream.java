@@ -33,8 +33,6 @@ import java.security.SignatureException;
  * objects as input instead of
  * org.apache.xml.security.algorithms.SignatureAlgorithm objects.
  *
- * @author raul
- * @author Sean Mullan
  */
 public class SignerOutputStream extends ByteArrayOutputStream {
     private final Signature sig;

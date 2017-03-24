@@ -31,7 +31,6 @@ import org.w3c.dom.Node;
  * Implements the parameters for a custom Transform which has a better performance
  * than the xfilter2.
  *
- * @author $Author$
  */
 public class XPathFilterCHGPContainer extends ElementProxy implements TransformParam {
 

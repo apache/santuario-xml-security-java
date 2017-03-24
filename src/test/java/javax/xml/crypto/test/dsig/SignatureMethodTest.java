@@ -27,7 +27,6 @@ import java.security.*;
 /**
  * Unit test for javax.xml.crypto.dsig.SignatureMethod
  *
- * @author Valerie Peng
  */
 public class SignatureMethodTest extends org.junit.Assert {
 

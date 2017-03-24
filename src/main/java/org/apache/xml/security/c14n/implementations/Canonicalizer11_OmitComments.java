@@ -21,7 +21,6 @@ package org.apache.xml.security.c14n.implementations;
 import org.apache.xml.security.c14n.Canonicalizer;
 
 /**
- * @author Sean Mullan
  */
 public class Canonicalizer11_OmitComments extends Canonicalizer11 {
 

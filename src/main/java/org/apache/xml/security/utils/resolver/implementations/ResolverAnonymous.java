@@ -29,7 +29,6 @@ import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
 
 /**
- * @author $Author$
  */
 public class ResolverAnonymous extends ResourceResolverSpi {
 

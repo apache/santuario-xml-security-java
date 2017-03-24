@@ -25,8 +25,6 @@ import org.w3c.dom.Element;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public interface OutboundSecurityToken extends SecurityToken {
 

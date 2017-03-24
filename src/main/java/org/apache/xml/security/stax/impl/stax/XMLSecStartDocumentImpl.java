@@ -26,8 +26,6 @@ import java.io.IOException;
 import java.io.Writer;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class XMLSecStartDocumentImpl extends XMLSecEventBaseImpl implements XMLSecStartDocument {
 

@@ -25,8 +25,6 @@ import org.apache.xml.security.stax.securityToken.SecurityToken;
 import java.util.List;
 
 /**
- * @author $Author: $
- * @version $Revision: $ $Date: $
  */
 public abstract class AbstractSecuredElementSecurityEvent extends AbstractElementSecurityEvent {
 

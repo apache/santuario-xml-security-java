@@ -28,7 +28,6 @@ import org.w3c.dom.Document;
 /**
  * Unit test for {@link org.apache.xml.security.utils.resolver.ResourceResolver}
  *
- * @author Sean Mullan
  */
 public class ResourceResolverTest extends org.junit.Assert {
 

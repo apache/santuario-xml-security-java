@@ -24,7 +24,6 @@ import org.apache.xml.security.algorithms.SignatureAlgorithm;
 import org.apache.xml.security.signature.XMLSignatureException;
 
 /**
- * @author raul
  *
  */
 public class SignerOutputStream extends ByteArrayOutputStream {

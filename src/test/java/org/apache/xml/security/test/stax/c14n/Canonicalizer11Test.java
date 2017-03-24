@@ -37,8 +37,6 @@ import java.io.InputStream;
 import java.net.URL;
 
 /**
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class Canonicalizer11Test extends org.junit.Assert {
 

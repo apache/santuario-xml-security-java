@@ -28,8 +28,6 @@ import javax.xml.crypto.dsig.*;
 /**
  * Unit test for javax.xml.crypto.dsig.XMLObject
  *
- * @version $Id$
- * @author Valerie Peng
  */
 public class XMLObjectTest extends org.junit.Assert {
 

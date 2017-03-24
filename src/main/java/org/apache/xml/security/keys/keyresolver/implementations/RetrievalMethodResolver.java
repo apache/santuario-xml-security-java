@@ -60,7 +60,6 @@ import org.xml.sax.SAXException;
  * RetrievalMethodResolver cannot handle itself, resolving of the extracted
  * element is delegated back to the KeyResolver mechanism.
  *
- * @author $Author: raul $ modified by Dave Garcia
  */
 public class RetrievalMethodResolver extends KeyResolverSpi {
 

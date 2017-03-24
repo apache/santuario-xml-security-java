@@ -26,8 +26,6 @@ import org.apache.xml.security.stax.securityToken.SecurityTokenProvider;
 /**
  * The document security context
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public interface InboundSecurityContext extends SecurityContext {
 

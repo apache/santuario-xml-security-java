@@ -40,8 +40,6 @@ import java.util.List;
 /**
  * Custom XMLStreamWriter to map XMLStreamWriter method calls into XMLEvent's
  *
- * @author $Author$
- * @version $Revision$ $Date$
  */
 public class XMLSecurityStreamWriter implements XMLStreamWriter {
 

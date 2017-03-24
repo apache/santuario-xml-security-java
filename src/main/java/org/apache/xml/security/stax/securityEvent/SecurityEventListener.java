@@ -22,8 +22,6 @@ package org.apache.xml.security.stax.securityEvent;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 
 /**
- * @author $Author: giger $
- * @version $Revision: 1299273 $ $Date: 2012-03-10 21:05:21 +0000 (Sat, 10 Mar 2012) $
  */
 public interface SecurityEventListener {
 

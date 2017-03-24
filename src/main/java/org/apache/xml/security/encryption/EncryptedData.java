@@ -35,7 +35,6 @@ package org.apache.xml.security.encryption;
  * </complexType>
  * </xmp>
  *
- * @author Axl Mattheus
  */
 public interface EncryptedData extends EncryptedType {
 }
