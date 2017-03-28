@@ -33,6 +33,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
+import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
 import org.apache.xml.security.algorithms.SignatureAlgorithm;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.keys.KeyInfo;
@@ -251,6 +252,44 @@ public class CreateSignatureTest extends org.junit.Assert {
         assertTrue(si.verify(false));
     }
 
+    @org.junit.Test
+    public void testSHA256Digest() throws Exception {
+        PrivateKey privateKey = kp.getPrivate();
+        Document doc = db.newDocument();
+        doc.appendChild(doc.createComment(" Comment before "));
+        Element root = doc.createElementNS("", "RootElement");
+
+        doc.appendChild(root);
+        root.appendChild(doc.createTextNode("Some simple text\n"));
+
+        Element canonElem =
+            XMLUtils.createElementInSignatureSpace(doc, Constants._TAG_CANONICALIZATIONMETHOD);
+        canonElem.setAttributeNS(
+            null, Constants._ATT_ALGORITHM, Canonicalizer.ALGO_ID_C14N_EXCL_OMIT_COMMENTS
+        );
+
+        SignatureAlgorithm signatureAlgorithm =
+            new SignatureAlgorithm(doc, XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA256);
+        XMLSignature sig =
+            new XMLSignature(doc, null, signatureAlgorithm.getElement(), canonElem);
+
+        root.appendChild(sig.getElement());
+        doc.appendChild(doc.createComment(" Comment after "));
+        Transforms transforms = new Transforms(doc);
+        transforms.addTransform(Transforms.TRANSFORM_ENVELOPED_SIGNATURE);
+        transforms.addTransform(Transforms.TRANSFORM_C14N_WITH_COMMENTS);
+        sig.addDocument("", transforms, MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256);
+
+        sig.addKeyInfo(kp.getPublic());
+        sig.sign(privateKey);
+
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+        XMLUtils.outputDOMc14nWithComments(doc, bos);
+        String signedContent = new String(bos.toByteArray());
+
+        doVerify(signedContent);
+    }
 
     private String doSign() throws Exception {
         PrivateKey privateKey = kp.getPrivate();
