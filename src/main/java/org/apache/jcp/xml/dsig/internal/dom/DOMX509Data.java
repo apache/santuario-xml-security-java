@@ -131,8 +131,7 @@ public final class DOMX509Data extends BaseStructure implements X509Data {
     {
         xwriter.writeStartElement(dsPrefix, "X509Data", XMLSignature.XMLNS);
 
-        @SuppressWarnings("unchecked")
-        List<Object> content = x509Data.getContent();
+        List<?> content = x509Data.getContent();
         // append children and preserve order
         for (int i = 0, size = content.size(); i < size; i++) {
             Object object = content.get(i);
@@ -232,7 +231,7 @@ public final class DOMX509Data extends BaseStructure implements X509Data {
         }
         X509Data oxd = (X509Data)o;
 
-        @SuppressWarnings("unchecked") List<Object> ocontent = oxd.getContent();
+        List<?> ocontent = oxd.getContent();
         int size = content.size();
         if (size != ocontent.size()) {
             return false;

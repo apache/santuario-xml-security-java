@@ -49,7 +49,7 @@ public class InvalidKeyTest extends org.junit.Assert {
     public void test() throws Exception {
         FileInputStream input = new FileInputStream(BASEDIR + SEP +
             "src/test/resources/org/apache/xml/security/samples/input/truststore.jks");
-        KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
+        KeyStore trustStore = KeyStore.getInstance("JKS");
         trustStore.load(input, "testpw".toCharArray());
 
         try {

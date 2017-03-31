@@ -305,8 +305,7 @@ public class X509KeySelector extends KeySelector {
         }
         Collection<X509Certificate> certs = new ArrayList<>();
 
-        @SuppressWarnings("unchecked")
-        Iterator<Object> xi = xd.getContent().iterator();
+        Iterator<?> xi = xd.getContent().iterator();
         while (xi.hasNext()) {
             Object o = xi.next();
             // check X509IssuerSerial

@@ -108,8 +108,7 @@ public class KeySelectors {
                             crl = (X509CRL) entries[i];
                         }
                     }
-                    @SuppressWarnings("unchecked")
-                    Iterator<Object> xi = xd.getContent().iterator();
+                    Iterator<?> xi = xd.getContent().iterator();
                     while (xi.hasNext()) {
                         Object o = xi.next();
                         // skip non-X509Certificate entries
@@ -307,8 +306,7 @@ public class KeySelectors {
                                 ("Unsupported RetrievalMethod type");
                         }
                     } else if (xmlStructure instanceof X509Data) {
-                        @SuppressWarnings("unchecked")
-                        List<Object> content = ((X509Data)xmlStructure).getContent();
+                        List<?> content = ((X509Data)xmlStructure).getContent();
                         int size = content.size();
                         List<X509Certificate> result = null;
                         // Lookup the public key using the information
