@@ -1085,8 +1085,8 @@ public final class XMLUtils {
      * <b>N.B.:</B> <code>{@link BigInteger}<code>'s toByteArray
      * returns eventually longer arrays because of the leading sign-bit.
      *
-     * @param big <code>BigInteger<code> to be converted
-     * @param bitlen <code>int<code> the desired length in bits of the representation
+     * @param big <code>BigInteger</code> to be converted
+     * @param bitlen <code>int</code> the desired length in bits of the representation
      * @return a byte array with <code>bitlen</code> bits of <code>big</code>
      */
     public static byte[] getBytes(BigInteger big, int bitlen) {

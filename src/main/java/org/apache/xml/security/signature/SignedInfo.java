@@ -42,7 +42,7 @@ import org.xml.sax.SAXException;
 
 /**
  * Handles <code>&lt;ds:SignedInfo&gt;</code> elements
- * This <code>SignedInfo<code> element includes the canonicalization algorithm,
+ * This <code>SignedInfo</code> element includes the canonicalization algorithm,
  * a signature algorithm, and one or more references.
  *
  */

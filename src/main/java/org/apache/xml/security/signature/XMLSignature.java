@@ -569,11 +569,11 @@ public final class XMLSignature extends SignatureElementProxy {
     }
 
     /**
-     * Returns the <code>i<code>th <code>ds:Object</code> child of the signature
+     * Returns the <code>i</code>th <code>ds:Object</code> child of the signature
      * or null if no such <code>ds:Object</code> element exists.
      *
      * @param i
-     * @return the <code>i<code>th <code>ds:Object</code> child of the signature
+     * @return the <code>i</code>th <code>ds:Object</code> child of the signature
      * or null if no such <code>ds:Object</code> element exists.
      */
     public ObjectContainer getObjectItem(int i) {

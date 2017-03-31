@@ -28,7 +28,7 @@ import org.w3c.dom.Node;
 
 /**
  * Handles <code>&lt;ds:Object&gt;</code> elements
- * <code>Object<code> {@link Element} supply facility which can contain any kind data
+ * <code>Object</code> {@link Element} supply facility which can contain any kind data
  *
  * $todo$ if we remove childen, the boolean values are not updated
  */

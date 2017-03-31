@@ -99,8 +99,8 @@ public class Base64 {
      * <b>N.B.:</B> <code>{@link BigInteger}<code>'s toByteArray
      * returns eventually longer arrays because of the leading sign-bit.
      *
-     * @param big <code>BigInteger<code> to be converted
-     * @param bitlen <code>int<code> the desired length in bits of the representation
+     * @param big <code>BigInteger</code> to be converted
+     * @param bitlen <code>int</code> the desired length in bits of the representation
      * @return a byte array with <code>bitlen</code> bits of <code>big</code>
      */
     static final byte[] getBytes(BigInteger big, int bitlen) {
@@ -154,8 +154,8 @@ public class Base64 {
      * <b>N.B.:</B> <code>{@link BigInteger}<code>'s toByteArray
      * returns eventually longer arrays because of the leading sign-bit.
      *
-     * @param big <code>BigInteger<code> to be converted
-     * @param bitlen <code>int<code> the desired length in bits of the representation
+     * @param big <code>BigInteger</code> to be converted
+     * @param bitlen <code>int</code> the desired length in bits of the representation
      * @return a byte array with <code>bitlen</code> bits of <code>big</code>
      */
     public static final byte[] encode(BigInteger big, int bitlen) {
@@ -299,7 +299,7 @@ public class Base64 {
      * ignore line breaks property is set.
      *
      * @param binaryData <code>byte[]<code> to be base64 encoded
-     * @return the <code>String<code> with encoded data
+     * @return the <code>String</code> with encoded data
      */
     public static final String encode(byte[] binaryData) {
         return XMLUtils.ignoreLineBreaks()
@@ -355,7 +355,7 @@ public class Base64 {
      * wrapped line.
      *
      * @param binaryData <code>byte[]</code> data to be encoded
-     * @param length <code>int<code> length of wrapped lines; No wrapping if less than 4.
+     * @param length <code>int</code> length of wrapped lines; No wrapping if less than 4.
      * @return a <code>String</code> with encoded data
      */
     public static final String  encode(byte[] binaryData, int length) {
