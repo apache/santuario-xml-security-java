@@ -92,7 +92,7 @@ public class DSAKeyValue extends SignatureElementProxy implements KeyValueConten
         }
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public PublicKey getPublicKey() throws XMLSecurityException {
         try {
             DSAPublicKeySpec pkspec =
@@ -121,7 +121,7 @@ public class DSAKeyValue extends SignatureElementProxy implements KeyValueConten
         }
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public String getBaseLocalName() {
         return Constants._TAG_DSAKEYVALUE;
     }

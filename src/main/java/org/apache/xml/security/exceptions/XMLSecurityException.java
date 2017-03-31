@@ -155,7 +155,7 @@ public class XMLSecurityException extends Exception {
         return msgID;
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public String toString() {
         String s = this.getClass().getName();
         String message = super.getLocalizedMessage();

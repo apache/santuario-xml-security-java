@@ -88,21 +88,21 @@ public class EncryptedKeyResolver extends KeyResolverSpi {
         internalKeyResolvers.add(realKeyResolver);
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public PublicKey engineLookupAndResolvePublicKey(
         Element element, String baseURI, StorageResolver storage
     ) {
         return null;
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public X509Certificate engineLookupResolveX509Certificate(
         Element element, String baseURI, StorageResolver storage
     ) {
         return null;
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public SecretKey engineLookupAndResolveSecretKey(
         Element element, String baseURI, StorageResolver storage
     ) {

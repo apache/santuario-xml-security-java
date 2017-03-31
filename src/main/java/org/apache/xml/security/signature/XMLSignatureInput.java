@@ -390,7 +390,7 @@ public class XMLSignatureInput {
 
     /**
      * Method toString
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public String toString() {
         if (isNodeSet()) {

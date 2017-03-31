@@ -77,7 +77,7 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
 
     /**
      * Method engineCanonicalizeSubTree
-     * @inheritDoc
+     * {@inheritDoc}
      * @param rootNode
      *
      * @throws CanonicalizationException
@@ -89,7 +89,7 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
 
     /**
      * Method engineCanonicalizeSubTree
-     *  @inheritDoc
+     *  {@inheritDoc}
      * @param rootNode
      * @param inclusiveNamespaces
      *
@@ -103,7 +103,7 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
 
     /**
      * Method engineCanonicalizeSubTree
-     *  @inheritDoc
+     *  {@inheritDoc}
      * @param rootNode
      * @param inclusiveNamespaces
      * @param propagateDefaultNamespace If true the default namespace will be propagated to the c14n-ized root element
@@ -148,7 +148,7 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
 
     /**
      * Method engineCanonicalizeXPathNodeSet
-     * @inheritDoc
+     * {@inheritDoc}
      * @param xpathNodeSet
      * @param inclusiveNamespaces
      * @throws CanonicalizationException
@@ -231,7 +231,7 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      * @param element
      * @throws CanonicalizationException
      */

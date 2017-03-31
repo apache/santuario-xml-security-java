@@ -227,12 +227,12 @@ public class XPath2FilterContainer04 extends ElementProxy implements TransformPa
         return null;
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public final String getBaseLocalName() {
         return XPath2FilterContainer04._TAG_XPATH2;
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public final String getBaseNamespace() {
         return XPath2FilterContainer04.XPathFilter2NS;
     }

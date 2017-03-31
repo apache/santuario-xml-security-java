@@ -54,7 +54,7 @@ public class TransformXPath extends TransformSpi {
     /**
      * Method engineGetURI
      *
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected String engineGetURI() {
         return implementedTransformURI;
@@ -62,7 +62,7 @@ public class TransformXPath extends TransformSpi {
 
     /**
      * Method enginePerformTransform
-     * @inheritDoc
+     * {@inheritDoc}
      * @param input
      *
      * @throws TransformationException

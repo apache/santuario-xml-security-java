@@ -38,17 +38,17 @@ public class DigesterOutputStream extends ByteArrayOutputStream {
         this.mda = mda;
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public void write(byte[] arg0) {
         write(arg0, 0, arg0.length);
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public void write(int arg0) {
         mda.update((byte)arg0);
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public void write(byte[] arg0, int arg1, int arg2) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Pre-digested input:");

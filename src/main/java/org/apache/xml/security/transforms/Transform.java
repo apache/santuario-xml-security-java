@@ -322,7 +322,7 @@ public final class Transform extends SignatureElementProxy {
         return result;
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public String getBaseLocalName() {
         return Constants._TAG_TRANSFORM;
     }

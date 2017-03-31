@@ -41,7 +41,7 @@ public class SingleCertificateResolver extends StorageResolverSpi {
         this.certificate = x509cert;
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public Iterator<Certificate> getIterator() {
         return new InternalIterator(this.certificate);
     }
@@ -66,12 +66,12 @@ public class SingleCertificateResolver extends StorageResolverSpi {
             this.certificate = x509cert;
         }
 
-        /** @inheritDoc */
+        /** {@inheritDoc} */
         public boolean hasNext() {
             return !this.alreadyReturned;
         }
 
-        /** @inheritDoc */
+        /** {@inheritDoc} */
         public Certificate next() {
             if (this.alreadyReturned) {
                 throw new NoSuchElementException();

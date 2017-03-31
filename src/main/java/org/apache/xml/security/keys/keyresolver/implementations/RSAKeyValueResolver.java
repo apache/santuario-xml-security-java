@@ -36,7 +36,7 @@ public class RSAKeyValueResolver extends KeyResolverSpi {
         org.slf4j.LoggerFactory.getLogger(RSAKeyValueResolver.class);
 
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public PublicKey engineLookupAndResolvePublicKey(
         Element element, String baseURI, StorageResolver storage
     ) {
@@ -71,14 +71,14 @@ public class RSAKeyValueResolver extends KeyResolverSpi {
         return null;
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public X509Certificate engineLookupResolveX509Certificate(
         Element element, String baseURI, StorageResolver storage
     ) {
         return null;
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public javax.crypto.SecretKey engineLookupAndResolveSecretKey(
         Element element, String baseURI, StorageResolver storage
     ) {

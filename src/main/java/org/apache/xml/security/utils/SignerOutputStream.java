@@ -39,7 +39,7 @@ public class SignerOutputStream extends ByteArrayOutputStream {
         this.sa = sa;
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public void write(byte[] arg0)  {
         try {
             sa.update(arg0);
@@ -48,7 +48,7 @@ public class SignerOutputStream extends ByteArrayOutputStream {
         }
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public void write(int arg0) {
         try {
             sa.update((byte)arg0);
@@ -57,7 +57,7 @@ public class SignerOutputStream extends ByteArrayOutputStream {
         }
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public void write(byte[] arg0, int arg1, int arg2) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Canonicalized SignedInfo:");

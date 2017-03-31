@@ -111,7 +111,7 @@ public class SingleKeyResolver extends KeyResolverSpi {
 
     /**
      * Method engineResolveX509Certificate
-     * @inheritDoc
+     * {@inheritDoc}
      * @param element
      * @param baseURI
      * @param storage
@@ -152,7 +152,7 @@ public class SingleKeyResolver extends KeyResolverSpi {
 
     /**
      * Method engineResolvePrivateKey
-     * @inheritDoc
+     * {@inheritDoc}
      * @param element
      * @param baseURI
      * @param storage

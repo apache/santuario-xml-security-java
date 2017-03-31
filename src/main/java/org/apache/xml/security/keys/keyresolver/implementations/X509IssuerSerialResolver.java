@@ -39,7 +39,7 @@ public class X509IssuerSerialResolver extends KeyResolverSpi {
         org.slf4j.LoggerFactory.getLogger(X509IssuerSerialResolver.class);
 
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public PublicKey engineLookupAndResolvePublicKey(
         Element element, String baseURI, StorageResolver storage
     ) throws KeyResolverException {
@@ -54,7 +54,7 @@ public class X509IssuerSerialResolver extends KeyResolverSpi {
         return null;
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public X509Certificate engineLookupResolveX509Certificate(
         Element element, String baseURI, StorageResolver storage
     ) throws KeyResolverException {
@@ -116,7 +116,7 @@ public class X509IssuerSerialResolver extends KeyResolverSpi {
         }
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public javax.crypto.SecretKey engineLookupAndResolveSecretKey(
         Element element, String baseURI, StorageResolver storage
     ) {

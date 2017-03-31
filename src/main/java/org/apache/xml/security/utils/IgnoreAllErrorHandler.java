@@ -51,7 +51,7 @@ public class IgnoreAllErrorHandler implements ErrorHandler {
                 });
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     @Override
     public void warning(SAXParseException ex) throws SAXException {
         if (IgnoreAllErrorHandler.warnOnExceptions) {
@@ -63,7 +63,7 @@ public class IgnoreAllErrorHandler implements ErrorHandler {
     }
 
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     @Override
     public void error(SAXParseException ex) throws SAXException {
         if (IgnoreAllErrorHandler.warnOnExceptions) {
@@ -75,7 +75,7 @@ public class IgnoreAllErrorHandler implements ErrorHandler {
     }
 
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     @Override
     public void fatalError(SAXParseException ex) throws SAXException {
         if (IgnoreAllErrorHandler.warnOnExceptions) {

@@ -53,7 +53,7 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
     /**
      * Method engineGetURI
      *
-     *@inheritDoc
+     *{@inheritDoc}
      */
     public abstract String engineGetURI();
 
@@ -283,7 +283,7 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
 
     /**
      * Method engineGetJCEAlgorithmString
-     * @inheritDoc
+     * {@inheritDoc}
      *
      */
     protected String engineGetJCEAlgorithmString() {
@@ -293,7 +293,7 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
     /**
      * Method engineGetJCEAlgorithmString
      *
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected String engineGetJCEProviderName() {
         return this.macAlgorithm.getProvider().getName();
@@ -370,7 +370,7 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
 
         /**
          * Method engineGetURI
-         * @inheritDoc
+         * {@inheritDoc}
          *
          */
         public String engineGetURI() {
@@ -399,7 +399,7 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
         /**
          * Method engineGetURI
          *
-         * @inheritDoc
+         * {@inheritDoc}
          */
         public String engineGetURI() {
             return XMLSignature.ALGO_ID_MAC_HMAC_SHA224;
@@ -427,7 +427,7 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
         /**
          * Method engineGetURI
          *
-         * @inheritDoc
+         * {@inheritDoc}
          */
         public String engineGetURI() {
             return XMLSignature.ALGO_ID_MAC_HMAC_SHA256;
@@ -454,7 +454,7 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
 
         /**
          * Method engineGetURI
-         * @inheritDoc
+         * {@inheritDoc}
          *
          */
         public String engineGetURI() {
@@ -482,7 +482,7 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
 
         /**
          * Method engineGetURI
-         * @inheritDoc
+         * {@inheritDoc}
          *
          */
         public String engineGetURI() {
@@ -511,7 +511,7 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
         /**
          * Method engineGetURI
          *
-         * @inheritDoc
+         * {@inheritDoc}
          */
         public String engineGetURI() {
             return XMLSignature.ALGO_ID_MAC_HMAC_RIPEMD160;
@@ -539,7 +539,7 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
         /**
          * Method engineGetURI
          *
-         * @inheritDoc
+         * {@inheritDoc}
          */
         public String engineGetURI() {
             return XMLSignature.ALGO_ID_MAC_HMAC_NOT_RECOMMENDED_MD5;

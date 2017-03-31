@@ -144,7 +144,7 @@ public class XMLSecurityRuntimeException extends RuntimeException {
         return msgID;
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public String toString() {
         String s = this.getClass().getName();
         String message = super.getLocalizedMessage();

@@ -44,7 +44,7 @@ public class TransformC14NExclusiveWithComments extends TransformSpi {
 
     /**
      * Method engineGetURI
-     *@inheritDoc
+     *{@inheritDoc}
      *
      */
     protected String engineGetURI() {

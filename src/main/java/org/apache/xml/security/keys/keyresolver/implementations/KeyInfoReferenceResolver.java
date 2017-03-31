@@ -52,12 +52,12 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
     private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(KeyInfoReferenceResolver.class);
 
-    /** {@inheritDoc}. */
+    /** {{@inheritDoc}}. */
     public boolean engineCanResolve(Element element, String baseURI, StorageResolver storage) {
         return XMLUtils.elementIsInSignature11Space(element, Constants._TAG_KEYINFOREFERENCE);
     }
 
-    /** {@inheritDoc}. */
+    /** {{@inheritDoc}}. */
     public PublicKey engineLookupAndResolvePublicKey(Element element, String baseURI, StorageResolver storage)
         throws KeyResolverException {
 
@@ -79,7 +79,7 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
         return null;
     }
 
-    /** {@inheritDoc}. */
+    /** {{@inheritDoc}}. */
     public X509Certificate engineLookupResolveX509Certificate(Element element, String baseURI, StorageResolver storage)
         throws KeyResolverException {
 
@@ -101,7 +101,7 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
         return null;
     }
 
-    /** {@inheritDoc}. */
+    /** {{@inheritDoc}}. */
     public SecretKey engineLookupAndResolveSecretKey(Element element, String baseURI, StorageResolver storage)
         throws KeyResolverException {
 
@@ -123,7 +123,7 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
         return null;
     }
 
-    /** {@inheritDoc}. */
+    /** {{@inheritDoc}}. */
     public PrivateKey engineLookupAndResolvePrivateKey(Element element, String baseURI, StorageResolver storage)
         throws KeyResolverException {
 

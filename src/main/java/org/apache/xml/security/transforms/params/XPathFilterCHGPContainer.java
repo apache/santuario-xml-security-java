@@ -289,7 +289,7 @@ public class XPathFilterCHGPContainer extends ElementProxy implements TransformP
     /**
      * Method getBaseLocalName
      *
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public final String getBaseLocalName() {
         return XPathFilterCHGPContainer._TAG_XPATHCHGP;
@@ -298,7 +298,7 @@ public class XPathFilterCHGPContainer extends ElementProxy implements TransformP
     /**
      * Method getBaseNamespace
      *
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public final String getBaseNamespace() {
         return TRANSFORM_XPATHFILTERCHGP;

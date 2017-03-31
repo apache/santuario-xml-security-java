@@ -365,7 +365,7 @@ public class SignedInfo extends Manifest {
 
     /**
      * Method getBaseLocalName
-     * @inheritDoc
+     * {@inheritDoc}
      *
      */
     public String getBaseLocalName() {

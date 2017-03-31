@@ -93,7 +93,7 @@ public class DEREncodedKeyValue extends Signature11ElementProxy implements KeyIn
         return getLocalAttribute(Constants._ATT_ID);
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public String getBaseLocalName() {
         return Constants._TAG_DERENCODEDKEYVALUE;
     }

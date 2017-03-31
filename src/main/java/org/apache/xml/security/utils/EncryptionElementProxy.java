@@ -51,7 +51,7 @@ public abstract class EncryptionElementProxy extends ElementProxy {
         super(element, baseURI);
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public final String getBaseNamespace() {
         return EncryptionConstants.EncryptionSpecNS;
     }

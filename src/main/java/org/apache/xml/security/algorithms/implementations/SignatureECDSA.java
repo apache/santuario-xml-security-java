@@ -44,7 +44,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
     private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(SignatureECDSA.class);
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public abstract String engineGetURI();
 
     /** Field algorithm */
@@ -112,7 +112,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
         }
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     protected void engineSetParameter(AlgorithmParameterSpec params)
         throws XMLSignatureException {
         try {
@@ -122,7 +122,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
         }
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     protected boolean engineVerify(byte[] signature) throws XMLSignatureException {
         try {
             byte[] jcebytes = SignatureECDSA.convertXMLDSIGtoASN1(signature);
@@ -139,7 +139,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
         }
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     protected void engineInitVerify(Key publicKey) throws XMLSignatureException {
 
         if (!(publicKey instanceof PublicKey)) {
@@ -171,7 +171,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
         }
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     protected byte[] engineSign() throws XMLSignatureException {
         try {
             byte jcebytes[] = this.signatureAlgorithm.sign();
@@ -184,7 +184,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
         }
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     protected void engineInitSign(Key privateKey, SecureRandom secureRandom)
         throws XMLSignatureException {
         if (!(privateKey instanceof PrivateKey)) {
@@ -209,12 +209,12 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
         }
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     protected void engineInitSign(Key privateKey) throws XMLSignatureException {
         engineInitSign(privateKey, (SecureRandom)null);
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     protected void engineUpdate(byte[] input) throws XMLSignatureException {
         try {
             this.signatureAlgorithm.update(input);
@@ -223,7 +223,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
         }
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     protected void engineUpdate(byte input) throws XMLSignatureException {
         try {
             this.signatureAlgorithm.update(input);
@@ -232,7 +232,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
         }
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     protected void engineUpdate(byte buf[], int offset, int len) throws XMLSignatureException {
         try {
             this.signatureAlgorithm.update(buf, offset, len);
@@ -241,23 +241,23 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
         }
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     protected String engineGetJCEAlgorithmString() {
         return this.signatureAlgorithm.getAlgorithm();
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     protected String engineGetJCEProviderName() {
         return this.signatureAlgorithm.getProvider().getName();
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     protected void engineSetHMACOutputLength(int HMACOutputLength)
         throws XMLSignatureException {
         throw new XMLSignatureException("algorithms.HMACOutputLengthOnlyForHMAC");
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     protected void engineInitSign(
         Key signingKey, AlgorithmParameterSpec algorithmParameterSpec
     ) throws XMLSignatureException {
@@ -278,7 +278,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
             super();
         }
 
-        /** @inheritDoc */
+        /** {@inheritDoc} */
         public String engineGetURI() {
             return XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA1;
         }
@@ -298,7 +298,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
             super();
         }
 
-        /** @inheritDoc */
+        /** {@inheritDoc} */
         public String engineGetURI() {
             return XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA224;
         }
@@ -319,7 +319,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
             super();
         }
 
-        /** @inheritDoc */
+        /** {@inheritDoc} */
         public String engineGetURI() {
             return XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA256;
         }
@@ -340,7 +340,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
             super();
         }
 
-        /** @inheritDoc */
+        /** {@inheritDoc} */
         public String engineGetURI() {
             return XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA384;
         }
@@ -361,7 +361,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
             super();
         }
 
-        /** @inheritDoc */
+        /** {@inheritDoc} */
         public String engineGetURI() {
             return XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA512;
         }
@@ -381,7 +381,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
             super();
         }
 
-        /** @inheritDoc */
+        /** {@inheritDoc} */
         public String engineGetURI() {
             return XMLSignature.ALGO_ID_SIGNATURE_ECDSA_RIPEMD160;
         }

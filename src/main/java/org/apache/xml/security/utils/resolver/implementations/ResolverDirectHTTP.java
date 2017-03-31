@@ -91,7 +91,7 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     @Override
     public XMLSignatureInput engineResolveURI(ResourceResolverContext context)
@@ -224,7 +224,7 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public String[] engineGetPropertyKeys() {
         return ResolverDirectHTTP.properties.clone();

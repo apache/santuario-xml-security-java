@@ -60,7 +60,7 @@ public class KeyName extends SignatureElementProxy implements KeyInfoContent {
         return this.getTextFromTextChild();
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public String getBaseLocalName() {
         return Constants._TAG_KEYNAME;
     }

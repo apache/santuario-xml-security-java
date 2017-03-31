@@ -2528,52 +2528,52 @@ public class XMLCipher {
                 algorithmURI = tmpAlgorithm.toString();
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public byte[] getKANonce() {
                 return kaNonce;
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public void setKANonce(byte[] kanonce) {
                 kaNonce = kanonce;
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public Iterator<Element> getAgreementMethodInformation() {
                 return agreementMethodInformation.iterator();
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public void addAgreementMethodInformation(Element info) {
                 agreementMethodInformation.add(info);
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public void revoveAgreementMethodInformation(Element info) {
                 agreementMethodInformation.remove(info);
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public KeyInfo getOriginatorKeyInfo() {
                 return originatorKeyInfo;
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public void setOriginatorKeyInfo(KeyInfo keyInfo) {
                 originatorKeyInfo = keyInfo;
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public KeyInfo getRecipientKeyInfo() {
                 return recipientKeyInfo;
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public void setRecipientKeyInfo(KeyInfo keyInfo) {
                 recipientKeyInfo = keyInfo;
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public String getAlgorithm() {
                 return algorithmURI;
             }
@@ -2595,12 +2595,12 @@ public class XMLCipher {
                 cipherType = type;
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public CipherValue getCipherValue() {
                 return cipherValue;
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public void setCipherValue(CipherValue value) throws XMLEncryptionException {
 
                 if (cipherType == REFERENCE_TYPE) {
@@ -2610,12 +2610,12 @@ public class XMLCipher {
                 cipherValue = value;
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public CipherReference getCipherReference() {
                 return cipherReference;
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public void setCipherReference(CipherReference reference) throws
             XMLEncryptionException {
                 if (cipherType == VALUE_TYPE) {
@@ -2627,7 +2627,7 @@ public class XMLCipher {
                 cipherReference = reference;
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public int getDataType() {
                 return cipherType;
             }
@@ -2669,22 +2669,22 @@ public class XMLCipher {
                 referenceNode = uri;
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public String getURI() {
                 return referenceURI;
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public Attr getURIAsAttr() {
                 return referenceNode;
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public Transforms getTransforms() {
                 return referenceTransforms;
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public void setTransforms(Transforms transforms) {
                 referenceTransforms = transforms;
             }
@@ -2713,12 +2713,12 @@ public class XMLCipher {
                 cipherValue = value;
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public String getValue() {
                 return cipherValue;
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public void setValue(String value) {
                 cipherValue = value;
             }
@@ -2797,32 +2797,32 @@ public class XMLCipher {
                 super(data);
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public String getRecipient() {
                 return keyRecipient;
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public void setRecipient(String recipient) {
                 keyRecipient = recipient;
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public ReferenceList getReferenceList() {
                 return referenceList;
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public void setReferenceList(ReferenceList list) {
                 referenceList = list;
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public String getCarriedName() {
                 return carriedName;
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public void setCarriedName(String name) {
                 carriedName = name;
             }
@@ -3068,62 +3068,62 @@ public class XMLCipher {
                 encryptionMethodInformation = new LinkedList<Element>();
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public String getAlgorithm() {
                 return algorithm;
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public int getKeySize() {
                 return keySize;
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public void setKeySize(int size) {
                 keySize = size;
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public byte[] getOAEPparams() {
                 return oaepParams;
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public void setOAEPparams(byte[] params) {
                 oaepParams = params;
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public void setDigestAlgorithm(String digestAlgorithm) {
                 this.digestAlgorithm = digestAlgorithm;
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public String getDigestAlgorithm() {
                 return digestAlgorithm;
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public void setMGFAlgorithm(String mgfAlgorithm) {
                 this.mgfAlgorithm = mgfAlgorithm;
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public String getMGFAlgorithm() {
                 return mgfAlgorithm;
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public Iterator<Element> getEncryptionMethodInformation() {
                 return encryptionMethodInformation.iterator();
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public void addEncryptionMethodInformation(Element info) {
                 encryptionMethodInformation.add(info);
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public void removeEncryptionMethodInformation(Element info) {
                 encryptionMethodInformation.remove(info);
             }
@@ -3193,27 +3193,27 @@ public class XMLCipher {
                 encryptionProperties = new LinkedList<EncryptionProperty>();
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public String getId() {
                 return id;
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public void setId(String id) {
                 this.id = id;
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public Iterator<EncryptionProperty> getEncryptionProperties() {
                 return encryptionProperties.iterator();
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public void addEncryptionProperty(EncryptionProperty property) {
                 encryptionProperties.add(property);
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public void removeEncryptionProperty(EncryptionProperty property) {
                 encryptionProperties.remove(property);
             }
@@ -3248,12 +3248,12 @@ public class XMLCipher {
                 encryptionInformation = new LinkedList<Element>();
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public String getTarget() {
                 return target;
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public void setTarget(String target) {
                 if (target == null || target.length() == 0) {
                     this.target = null;
@@ -3275,37 +3275,37 @@ public class XMLCipher {
                 }
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public String getId() {
                 return id;
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public void setId(String id) {
                 this.id = id;
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public String getAttribute(String attribute) {
                 return attributeMap.get(attribute);
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public void setAttribute(String attribute, String value) {
                 attributeMap.put(attribute, value);
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public Iterator<Element> getEncryptionInformation() {
                 return encryptionInformation.iterator();
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public void addEncryptionInformation(Element info) {
                 encryptionInformation.add(info);
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public void removeEncryptionInformation(Element info) {
                 encryptionInformation.remove(info);
             }
@@ -3391,13 +3391,13 @@ public class XMLCipher {
                 return getElement();
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public org.apache.xml.security.transforms.Transforms getDSTransforms() {
                 return this;
             }
 
             // Over-ride the namespace
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public String getBaseNamespace() {
                 return EncryptionConstants.EncryptionSpecNS;
             }
@@ -3422,7 +3422,7 @@ public class XMLCipher {
                 references = new LinkedList<Reference>();
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public void add(Reference reference) {
                 if (!reference.getClass().equals(sentry)) {
                     throw new IllegalArgumentException();
@@ -3430,7 +3430,7 @@ public class XMLCipher {
                 references.add(reference);
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public void remove(Reference reference) {
                 if (!reference.getClass().equals(sentry)) {
                     throw new IllegalArgumentException();
@@ -3438,17 +3438,17 @@ public class XMLCipher {
                 references.remove(reference);
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public int size() {
                 return references.size();
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public boolean isEmpty() {
                 return references.isEmpty();
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public Iterator<Reference> getReferences() {
                 return references.iterator();
             }
@@ -3468,12 +3468,12 @@ public class XMLCipher {
                 return result;
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public Reference newDataReference(String uri) {
                 return new DataReference(uri);
             }
 
-            /** @inheritDoc */
+            /** {@inheritDoc} */
             public Reference newKeyReference(String uri) {
                 return new KeyReference(uri);
             }
@@ -3493,30 +3493,30 @@ public class XMLCipher {
                     referenceInformation = new LinkedList<Element>();
                 }
 
-                /** @inheritDoc */
+                /** {@inheritDoc} */
                 public abstract String getType();
 
-                /** @inheritDoc */
+                /** {@inheritDoc} */
                 public String getURI() {
                     return uri;
                 }
 
-                /** @inheritDoc */
+                /** {@inheritDoc} */
                 public Iterator<Element> getElementRetrievalInformation() {
                     return referenceInformation.iterator();
                 }
 
-                /** @inheritDoc */
+                /** {@inheritDoc} */
                 public void setURI(String uri) {
                     this.uri = uri;
                 }
 
-                /** @inheritDoc */
+                /** {@inheritDoc} */
                 public void removeElementRetrievalInformation(Element node) {
                     referenceInformation.remove(node);
                 }
 
-                /** @inheritDoc */
+                /** {@inheritDoc} */
                 public void addElementRetrievalInformation(Element node) {
                     referenceInformation.add(node);
                 }
@@ -3548,7 +3548,7 @@ public class XMLCipher {
                     super(uri);
                 }
 
-                /** @inheritDoc */
+                /** {@inheritDoc} */
                 public String getType() {
                     return EncryptionConstants._TAG_DATAREFERENCE;
                 }
@@ -3560,7 +3560,7 @@ public class XMLCipher {
                     super(uri);
                 }
 
-                /** @inheritDoc */
+                /** {@inheritDoc} */
                 public String getType() {
                     return EncryptionConstants._TAG_KEYREFERENCE;
                 }

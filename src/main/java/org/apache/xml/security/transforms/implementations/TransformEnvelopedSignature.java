@@ -45,14 +45,14 @@ public class TransformEnvelopedSignature extends TransformSpi {
     /**
      * Method engineGetURI
      *
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected String engineGetURI() {
         return implementedTransformURI;
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected XMLSignatureInput enginePerformTransform(
         XMLSignatureInput input, OutputStream os, Transform transformObject

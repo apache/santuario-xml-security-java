@@ -79,14 +79,14 @@ public class DSAKeyValueResolver extends KeyResolverSpi {
     }
 
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public X509Certificate engineLookupResolveX509Certificate(
         Element element, String baseURI, StorageResolver storage
     ) {
         return null;
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public javax.crypto.SecretKey engineLookupAndResolveSecretKey(
         Element element, String baseURI, StorageResolver storage
     ) {

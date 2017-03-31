@@ -37,7 +37,7 @@ public class TransformXPointer extends TransformSpi {
         Transforms.TRANSFORM_XPOINTER;
 
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     protected String engineGetURI() {
         return implementedTransformURI;
     }

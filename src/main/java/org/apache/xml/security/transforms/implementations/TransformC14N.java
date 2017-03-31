@@ -39,7 +39,7 @@ public class TransformC14N extends TransformSpi {
         Transforms.TRANSFORM_C14N_OMIT_COMMENTS;
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected String engineGetURI() {
         return TransformC14N.implementedTransformURI;

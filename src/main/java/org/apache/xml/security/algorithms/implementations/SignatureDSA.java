@@ -54,7 +54,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
     /**
      * Method engineGetURI
      *
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected String engineGetURI() {
         return XMLSignature.ALGO_ID_SIGNATURE_DSA;
@@ -87,7 +87,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected void engineSetParameter(AlgorithmParameterSpec params)
         throws XMLSignatureException {
@@ -99,7 +99,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected boolean engineVerify(byte[] signature)
         throws XMLSignatureException {
@@ -120,7 +120,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected void engineInitVerify(Key publicKey) throws XMLSignatureException {
         if (!(publicKey instanceof PublicKey)) {
@@ -154,7 +154,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected byte[] engineSign() throws XMLSignatureException {
         try {
@@ -169,7 +169,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected void engineInitSign(Key privateKey, SecureRandom secureRandom)
         throws XMLSignatureException {
@@ -197,14 +197,14 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected void engineInitSign(Key privateKey) throws XMLSignatureException {
         engineInitSign(privateKey, (SecureRandom)null);
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected void engineUpdate(byte[] input) throws XMLSignatureException {
         try {
@@ -215,7 +215,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected void engineUpdate(byte input) throws XMLSignatureException {
         try {
@@ -226,7 +226,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected void engineUpdate(byte buf[], int offset, int len) throws XMLSignatureException {
         try {
@@ -239,7 +239,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
     /**
      * Method engineGetJCEAlgorithmString
      *
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected String engineGetJCEAlgorithmString() {
         return this.signatureAlgorithm.getAlgorithm();
@@ -248,7 +248,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
     /**
      * Method engineGetJCEProviderName
      *
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected String engineGetJCEProviderName() {
         return this.signatureAlgorithm.getProvider().getName();

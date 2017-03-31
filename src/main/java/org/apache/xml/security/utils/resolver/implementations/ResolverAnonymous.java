@@ -55,7 +55,7 @@ public class ResolverAnonymous extends ResourceResolverSpi {
         inStream = is;
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     @Override
     public XMLSignatureInput engineResolveURI(ResourceResolverContext context) {
         XMLSignatureInput input = new XMLSignatureInput(inStream);
@@ -64,7 +64,7 @@ public class ResolverAnonymous extends ResourceResolverSpi {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     @Override
     public boolean engineCanResolveURI(ResourceResolverContext context) {
@@ -74,7 +74,7 @@ public class ResolverAnonymous extends ResourceResolverSpi {
         return false;
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public String[] engineGetPropertyKeys() {
         return new String[0];
     }

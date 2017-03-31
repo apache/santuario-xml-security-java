@@ -124,7 +124,7 @@ public class RetrievalMethod extends SignatureElementProxy implements KeyInfoCon
         }
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public String getBaseLocalName() {
         return Constants._TAG_RETRIEVALMETHOD;
     }

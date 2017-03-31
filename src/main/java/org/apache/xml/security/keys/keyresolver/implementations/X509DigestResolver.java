@@ -46,7 +46,7 @@ public class X509DigestResolver extends KeyResolverSpi {
     private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(X509DigestResolver.class);
 
-    /** {@inheritDoc}. */
+    /** {{@inheritDoc}}. */
     public boolean engineCanResolve(Element element, String baseURI, StorageResolver storage) {
         if (XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_X509DATA)) {
             try {
@@ -60,7 +60,7 @@ public class X509DigestResolver extends KeyResolverSpi {
         }
     }
 
-    /** {@inheritDoc}. */
+    /** {{@inheritDoc}}. */
     public PublicKey engineLookupAndResolvePublicKey(Element element, String baseURI, StorageResolver storage)
         throws KeyResolverException {
 
@@ -73,7 +73,7 @@ public class X509DigestResolver extends KeyResolverSpi {
         return null;
     }
 
-    /** {@inheritDoc}. */
+    /** {{@inheritDoc}}. */
     public X509Certificate engineLookupResolveX509Certificate(Element element, String baseURI, StorageResolver storage)
         throws KeyResolverException {
 
@@ -92,7 +92,7 @@ public class X509DigestResolver extends KeyResolverSpi {
         return null;
     }
 
-    /** {@inheritDoc}. */
+    /** {{@inheritDoc}}. */
     public SecretKey engineLookupAndResolveSecretKey(Element element, String baseURI, StorageResolver storage)
         throws KeyResolverException {
         return null;

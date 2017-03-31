@@ -169,12 +169,12 @@ public class CanonicalizerPhysical extends CanonicalizerBase {
         // nothing to do
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public final String engineGetURI() {
         return Canonicalizer.ALGO_ID_C14N_PHYSICAL;
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public final boolean engineGetIncludeComments() {
         return true;
     }

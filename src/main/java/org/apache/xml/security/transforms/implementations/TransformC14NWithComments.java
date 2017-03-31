@@ -38,12 +38,12 @@ public class TransformC14NWithComments extends TransformSpi {
     public static final String implementedTransformURI =
         Transforms.TRANSFORM_C14N_WITH_COMMENTS;
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     protected String engineGetURI() {
         return implementedTransformURI;
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     protected XMLSignatureInput enginePerformTransform(
         XMLSignatureInput input, OutputStream os, Transform transformObject
     ) throws CanonicalizationException {

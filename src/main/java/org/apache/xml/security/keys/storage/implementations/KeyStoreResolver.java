@@ -53,7 +53,7 @@ public class KeyStoreResolver extends StorageResolverSpi {
         }
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public Iterator<Certificate> getIterator() {
         return new KeyStoreIterator(this.keyStore);
     }
@@ -94,7 +94,7 @@ public class KeyStoreResolver extends StorageResolverSpi {
             }
         }
 
-        /** @inheritDoc */
+        /** {@inheritDoc} */
         public boolean hasNext() {
             if (nextCert == null) {
                 nextCert = findNextCert();
@@ -103,7 +103,7 @@ public class KeyStoreResolver extends StorageResolverSpi {
             return nextCert != null;
         }
 
-        /** @inheritDoc */
+        /** {@inheritDoc} */
         public Certificate next() {
             if (nextCert == null) {
                 // maybe caller did not call hasNext()

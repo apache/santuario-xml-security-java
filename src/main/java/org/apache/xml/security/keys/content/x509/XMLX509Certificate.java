@@ -129,7 +129,7 @@ public class XMLX509Certificate extends SignatureElementProxy implements XMLX509
         return null;
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public boolean equals(Object obj) {
         if (!(obj instanceof XMLX509Certificate)) {
             return false;
@@ -155,7 +155,7 @@ public class XMLX509Certificate extends SignatureElementProxy implements XMLX509
         return result;
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public String getBaseLocalName() {
         return Constants._TAG_X509CERTIFICATE;
     }

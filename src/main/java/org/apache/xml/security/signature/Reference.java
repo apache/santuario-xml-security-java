@@ -811,7 +811,7 @@ public class Reference extends SignatureElementProxy {
 
     /**
      * Method getBaseLocalName
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public String getBaseLocalName() {
         return Constants._TAG_REFERENCE;

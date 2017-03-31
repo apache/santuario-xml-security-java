@@ -66,7 +66,7 @@ public class TransformXSLT extends TransformSpi {
     /**
      * Method engineGetURI
      *
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected String engineGetURI() {
         return implementedTransformURI;

@@ -140,7 +140,7 @@ public class XMLX509SKI extends SignatureElementProxy implements XMLX509DataCont
         return skidValue;
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public boolean equals(Object obj) {
         if (!(obj instanceof XMLX509SKI)) {
             return false;
@@ -169,7 +169,7 @@ public class XMLX509SKI extends SignatureElementProxy implements XMLX509DataCont
 
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public String getBaseLocalName() {
         return Constants._TAG_X509SKI;
     }

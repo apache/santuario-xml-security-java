@@ -127,7 +127,7 @@ public class XMLX509IssuerSerial extends SignatureElementProxy implements XMLX50
         );
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public boolean equals(Object obj) {
         if (!(obj instanceof XMLX509IssuerSerial)) {
             return false;
@@ -146,7 +146,7 @@ public class XMLX509IssuerSerial extends SignatureElementProxy implements XMLX50
         return result;
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public String getBaseLocalName() {
         return Constants._TAG_X509ISSUERSERIAL;
     }

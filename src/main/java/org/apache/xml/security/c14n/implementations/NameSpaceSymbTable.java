@@ -299,7 +299,7 @@ class NameSpaceSymbEntry implements Cloneable {
         this.prefix = prefix;
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public Object clone() {
         try {
             return super.clone();

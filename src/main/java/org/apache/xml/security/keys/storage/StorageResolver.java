@@ -137,7 +137,7 @@ public class StorageResolver {
             currentResolver = findNextResolver();
         }
 
-        /** @inheritDoc */
+        /** {@inheritDoc} */
         public boolean hasNext() {
             if (currentResolver == null) {
                 return false;
@@ -151,7 +151,7 @@ public class StorageResolver {
             return currentResolver != null;
         }
 
-        /** @inheritDoc */
+        /** {@inheritDoc} */
         public Certificate next() {
             if (hasNext()) {
                 return currentResolver.next();

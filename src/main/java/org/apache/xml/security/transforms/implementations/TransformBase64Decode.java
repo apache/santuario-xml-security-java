@@ -72,7 +72,7 @@ public class TransformBase64Decode extends TransformSpi {
     /**
      * Method engineGetURI
      *
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected String engineGetURI() {
         return TransformBase64Decode.implementedTransformURI;
@@ -83,7 +83,7 @@ public class TransformBase64Decode extends TransformSpi {
      *
      * @param input
      * @return {@link XMLSignatureInput} as the result of transformation
-     * @inheritDoc
+     * {@inheritDoc}
      * @throws CanonicalizationException
      * @throws IOException
      * @throws TransformationException

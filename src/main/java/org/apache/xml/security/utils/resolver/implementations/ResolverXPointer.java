@@ -55,7 +55,7 @@ public class ResolverXPointer extends ResourceResolverSpi {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     @Override
     public XMLSignatureInput engineResolveURI(ResourceResolverContext context)
@@ -103,7 +103,7 @@ public class ResolverXPointer extends ResourceResolverSpi {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public boolean engineCanResolveURI(ResourceResolverContext context) {
         if (context.uriToResolve == null) {

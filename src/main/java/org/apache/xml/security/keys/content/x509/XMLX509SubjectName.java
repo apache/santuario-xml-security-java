@@ -75,7 +75,7 @@ public class XMLX509SubjectName extends SignatureElementProxy implements XMLX509
         return RFC2253Parser.normalize(this.getTextFromTextChild());
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public boolean equals(Object obj) {
         if (!(obj instanceof XMLX509SubjectName)) {
             return false;
@@ -94,7 +94,7 @@ public class XMLX509SubjectName extends SignatureElementProxy implements XMLX509
         return result;
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public String getBaseLocalName() {
         return Constants._TAG_X509SUBJECTNAME;
     }

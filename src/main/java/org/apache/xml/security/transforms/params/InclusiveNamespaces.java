@@ -148,7 +148,7 @@ public class InclusiveNamespaces extends ElementProxy implements TransformParam 
     /**
      * Method getBaseNamespace
      *
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public String getBaseNamespace() {
         return InclusiveNamespaces.ExclusiveCanonicalizationNamespace;
@@ -157,7 +157,7 @@ public class InclusiveNamespaces extends ElementProxy implements TransformParam 
     /**
      * Method getBaseLocalName
      *
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public String getBaseLocalName() {
         return InclusiveNamespaces._TAG_EC_INCLUSIVENAMESPACES;
