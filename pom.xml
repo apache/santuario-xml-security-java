@@ -369,9 +369,9 @@
             </properties>
         </profile>
         <profile>
-            <id>jdk18</id>
+            <id>nodoclint</id>
             <activation>
-                <jdk>1.8</jdk>
+                <jdk>[1.8,1.9]</jdk>
             </activation>
             <build>
                 <pluginManagement>
