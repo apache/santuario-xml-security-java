@@ -445,7 +445,7 @@ public class XMLEncryption11Test extends Assert {
 
     /**
      * Method decryptElement
-     * <p/>
+     * <p></p>
      * Take a key, encryption type and a file, find an encrypted element
      * decrypt it and return the resulting document
      */
@@ -458,7 +458,7 @@ public class XMLEncryption11Test extends Assert {
 
     /**
      * Method decryptElement
-     * <p/>
+     * <p></p>
      * Take a key, encryption type and a document, find an encrypted element
      * decrypt it and return the resulting document
      */
@@ -589,7 +589,7 @@ public class XMLEncryption11Test extends Assert {
 
     /**
      * Method countNodes
-     * <p/>
+     * <p></p>
      * Recursively count the number of nodes in the document
      *
      * @param n Node to count beneath
@@ -613,7 +613,7 @@ public class XMLEncryption11Test extends Assert {
 
     /**
      * Method retrieveCCNumber
-     * <p/>
+     * <p></p>
      * Retrieve the credit card number from the payment info document
      *
      * @param doc The document to retrieve the card number from

@@ -30,7 +30,7 @@ import javax.xml.stream.util.XMLEventAllocator;
 import javax.xml.stream.util.XMLEventConsumer;
 
 /**
- * <p/>
+ * <p></p>
  * An extended XMLEventAllocator to collect namespaces and C14N relevant attributes
  *
  */

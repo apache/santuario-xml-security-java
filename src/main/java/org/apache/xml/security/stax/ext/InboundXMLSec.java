@@ -77,7 +77,7 @@ public class InboundXMLSec {
      * xmlInputFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
      * xmlInputFactory.setProperty(XMLInputFactory.IS_COALESCING, false);
      * xmlInputFactory.setProperty(WstxInputProperties.P_MIN_TEXT_SEGMENT, new Integer(8192));
-     * <p/>
+     * <p></p>
      * This method is the entry point for the incoming security-engine.
      * Hand over the original XMLStreamReader and use the returned one for further processing
      *
@@ -97,7 +97,7 @@ public class InboundXMLSec {
      * xmlInputFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
      * xmlInputFactory.setProperty(XMLInputFactory.IS_COALESCING, false);
      * xmlInputFactory.setProperty(WstxInputProperties.P_MIN_TEXT_SEGMENT, new Integer(8192));
-     * <p/>
+     * <p></p>
      * This method is the entry point for the incoming security-engine.
      * Hand over the original XMLStreamReader and use the returned one for further processing
      *

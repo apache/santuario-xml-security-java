@@ -33,9 +33,9 @@ import java.io.StringReader;
 
 /**
  * This is a test for Santuario-191:
- * <p/>
+ * <p></p>
  * https://issues.apache.org/jira/browse/SANTUARIO-191
- * <p/>
+ * <p></p>
  * An xml:Id attribute is appearing in a child element, contrary to the C14n11 spec.
  */
 public class Santuario191Test extends org.junit.Assert {

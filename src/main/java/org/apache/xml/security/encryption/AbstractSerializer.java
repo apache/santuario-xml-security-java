@@ -48,7 +48,7 @@ public abstract class AbstractSerializer implements Serializer {
     /**
      * Returns a <code>String</code> representation of the specified
      * <code>Element</code>.
-     * <p/>
+     * <p></p>
      * Refer also to comments about setup of format.
      *
      * @param element the <code>Element</code> to serialize.
@@ -76,18 +76,18 @@ public abstract class AbstractSerializer implements Serializer {
     /**
      * Returns a <code>String</code> representation of the specified
      * <code>NodeList</code>.
-     * <p/>
+     * <p></p>
      * This is a special case because the NodeList may represent a
      * <code>DocumentFragment</code>. A document fragment may be a
      * non-valid XML document (refer to appropriate description of
      * W3C) because it my start with a non-element node, e.g. a text
      * node.
-     * <p/>
+     * <p></p>
      * The methods first converts the node list into a document fragment.
      * Special care is taken to not destroy the current document, thus
      * the method clones the nodes (deep cloning) before it appends
      * them to the document fragment.
-     * <p/>
+     * <p></p>
      * Refer also to comments about setup of format.
      *
      * @param content the <code>NodeList</code> to serialize.

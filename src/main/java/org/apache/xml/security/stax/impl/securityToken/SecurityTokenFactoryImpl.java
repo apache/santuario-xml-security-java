@@ -278,7 +278,7 @@ public class SecurityTokenFactoryImpl extends SecurityTokenFactory {
 
     /**
      * Construct an X509Certificate'from the byte array.
-     * <p/>
+     * <p></p>
      *
      * @param data The <code>byte</code> array containing the X509 data
      * @return An X509 certificate

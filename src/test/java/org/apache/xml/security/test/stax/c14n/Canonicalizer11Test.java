@@ -145,9 +145,9 @@ public class Canonicalizer11Test extends org.junit.Assert {
 
     /**
      * 3.4 Character Modifications and Character References (patched to run on validating Parsers)
-     * <p/>
+     * <p></p>
      * <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119"> The spec</A> states that:
-     * <p/>
+     * <p></p>
      * Note: The last element, normId, is well-formed but violates a validity
      * constraint for attributes of type ID. For testing canonical XML
      * implementations based on validating processors, remove the line
@@ -307,7 +307,7 @@ public class Canonicalizer11Test extends org.junit.Assert {
      * canonicalization MUST report an operation failure on documents containing
      * relative namespace URIs. XML canonicalization MUST NOT be implemented
      * with an XML parser that converts relative URIs to absolute URIs.
-     * <p/>
+     * <p></p>
      * Implementations MUST report an operation failure on documents containing
      * relative namespace URIs.
      */

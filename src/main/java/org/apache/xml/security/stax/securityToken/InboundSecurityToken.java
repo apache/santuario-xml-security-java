@@ -30,7 +30,7 @@ import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 
 /**
  * This class represents the different token types which can occur in WS-Security
- * <p/>
+ * <p></p>
  * Sometimes it isn't known (@see EncryptedKeyInputProcessor) which kind of Token(Asymmetric, Symmetric)
  * we have at creation time. So we use a generic interface for both types.
  *
