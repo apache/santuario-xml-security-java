@@ -31,7 +31,7 @@ import org.w3c.dom.Element;
 /**
  * This Object serves as Content for the ds:Transforms for exclusive
  * Canonicalization.
- * <BR />
+ * <br></br>
  * It implements the {@link Element} interface
  * and can be used directly in a DOM tree.
  *

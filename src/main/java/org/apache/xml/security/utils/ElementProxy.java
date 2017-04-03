@@ -136,7 +136,7 @@ public abstract class ElementProxy {
      * This method creates an Element in a given namespace with a given localname.
      * It uses the {@link ElementProxy#getDefaultPrefix} method to decide whether
      * a particular prefix is bound to that namespace.
-     * <BR />
+     * <br></br>
      * This method was refactored out of the constructor.
      *
      * @param doc

@@ -244,7 +244,7 @@ public final class XMLUtils {
     /**
      * Serializes the <CODE>contextNode</CODE> into the OutputStream, <I>but
      * suppresses all Exceptions</I>.
-     * <BR />
+     * <br></br>
      * NOTE: <I>This should only be used for debugging purposes,
      * NOT in a production environment; this method ignores all exceptions,
      * so you won't notice if something goes wrong. If you're asking what is to

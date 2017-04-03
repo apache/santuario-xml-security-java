@@ -29,10 +29,10 @@ import org.w3c.dom.Node;
 
 /**
  * Handles barename XPointer Reference URIs.
- * <BR />
+ * <br></br>
  * To retain comments while selecting an element by an identifier ID,
  * use the following full XPointer: URI='#xpointer(id('ID'))'.
- * <BR />
+ * <br></br>
  * To retain comments while selecting the entire document,
  * use the following full XPointer: URI='#xpointer(/)'.
  * This XPointer contains a simple XPath expression that includes

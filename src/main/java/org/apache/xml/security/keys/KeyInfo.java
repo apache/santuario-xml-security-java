@@ -61,11 +61,11 @@ import org.w3c.dom.Node;
  * This class stand for KeyInfo Element that may contain keys, names,
  * certificates and other public key management information,
  * such as in-band key distribution or key agreement data.
- * <BR />
+ * <br></br>
  * KeyInfo Element has two basic functions:
  * One is KeyResolve for getting the public key in signature validation processing.
  * the other one is toElement for getting the element in signature generation processing.
- * <BR />
+ * <br></br>
  * The <CODE>lengthXXX()</CODE> methods provide access to the internal Key
  * objects:
  * <UL>
@@ -76,14 +76,14 @@ import org.w3c.dom.Node;
  * Signature generation), the <CODE>lengthXXX()</CODE> methods return the number
  * of <CODE>XXXs</CODE> objects already passed to the KeyInfo</LI>
  * </UL>
- * <BR />
+ * <br></br>
  * The <CODE>addXXX()</CODE> methods are used for adding Objects of the
  * appropriate type to the <CODE>KeyInfo</CODE>. This is used during signature
  * generation.
- * <BR />
+ * <br></br>
  * The <CODE>itemXXX(int i)</CODE> methods return the i'th object of the
  * corresponding type.
- * <BR />
+ * <br></br>
  * The <CODE>containsXXX()</CODE> methods return <I>whether</I> the KeyInfo
  * contains the corresponding type.
  *
