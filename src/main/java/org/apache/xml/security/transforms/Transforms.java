@@ -300,11 +300,11 @@ public class Transforms extends SignatureElementProxy {
     }
 
     /**
-     * Return the <it>i</it><sup>th</sup> <code>{@link Transform}</code>.
+     * Return the <i>i</i><sup>th</sup> <code>{@link Transform}</code>.
      * Valid <code>i</code> values are 0 to <code>{@link #getLength}-1</code>.
      *
      * @param i index of {@link Transform} to return
-     * @return the <it>i</it><sup>th</sup> Transform
+     * @return the <i>i</i><sup>th</sup> Transform
      * @throws TransformationException
      */
     public Transform item(int i) throws TransformationException {

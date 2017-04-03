@@ -216,11 +216,11 @@ public class Manifest extends SignatureElementProxy {
     }
 
     /**
-     * Return the <it>i</it><sup>th</sup> reference. Valid <code>i</code>
+     * Return the <i>i</i><sup>th</sup> reference. Valid <code>i</code>
      * values are 0 to <code>{link@ getSize}-1</code>.
      *
      * @param i Index of the requested {@link Reference}
-     * @return the <it>i</it><sup>th</sup> reference
+     * @return the <i>i</i><sup>th</sup> reference
      * @throws XMLSecurityException
      */
     public Reference item(int i) throws XMLSecurityException {
