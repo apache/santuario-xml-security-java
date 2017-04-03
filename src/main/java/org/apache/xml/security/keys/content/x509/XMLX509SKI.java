@@ -44,7 +44,7 @@ public class XMLX509SKI extends SignatureElementProxy implements XMLX509DataCont
      * This extension identifies the public key being certified. It enables
      * distinct keys used by the same subject to be differentiated
      * (e.g., as key updating occurs).
-     * <br></br>
+     * <p></p>
      * A key identifier shall be unique with respect to all key identifiers
      * for the subject with which it is used. This extension is always non-critical.
      */

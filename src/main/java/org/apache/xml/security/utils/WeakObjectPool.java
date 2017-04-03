@@ -64,7 +64,7 @@ public abstract class WeakObjectPool<T, E extends Throwable> {
      * Called whenever a new pool object is desired; subclasses must implement.
      *
      * @return object of the type desired by the subclass
-     * @throws parameterizable Throwable's subclass
+     * @throws E Throwable's subclass
      */
     protected abstract T createObject() throws E;
 

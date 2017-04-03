@@ -36,10 +36,9 @@ import org.apache.xml.security.utils.ClassLoaderUtils;
 import org.xml.sax.SAXException;
 
 /**
- * This is the central class of the streaming XML-security framework.<br/>
+ * This is the central class of the streaming XML-security framework.
  * Instances of the inbound and outbound security streams can be retrieved
  * with this class.
- *
  */
 public class XMLSec {
 

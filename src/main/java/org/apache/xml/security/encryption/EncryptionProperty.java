@@ -32,7 +32,7 @@ import org.w3c.dom.Element;
  * <code>xml:lang</code>, and <code>xml:base</code>).
  * <p>
  * It is defined as follows:
- * <xmp>
+ * <pre>
  * <element name='EncryptionProperty' type='xenc:EncryptionPropertyType'/>
  * <complexType name='EncryptionPropertyType' mixed='true'>
  *     <choice maxOccurs='unbounded'>
@@ -42,7 +42,7 @@ import org.w3c.dom.Element;
  *     <attribute name='Id' type='ID' use='optional'/>
  *     <anyAttribute namespace="http://www.w3.org/XML/1998/namespace"/>
  * </complexType>
- * </xmp>
+ * </pre>
  *
  */
 public interface EncryptionProperty {

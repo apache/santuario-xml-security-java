@@ -31,7 +31,7 @@ import org.w3c.dom.Element;
 /**
  * This Object serves as Content for the ds:Transforms for exclusive
  * Canonicalization.
- * <br></br>
+ * <p></p>
  * It implements the {@link Element} interface
  * and can be used directly in a DOM tree.
  *
@@ -114,7 +114,7 @@ public class InclusiveNamespaces extends ElementProxy implements TransformParam 
      * selected namespace prefixes as a Set. The <code>#default</code>
      * namespace token is represented as an empty namespace prefix
      * (<code>"xmlns"</code>).
-     * <BR/>
+     * <BR>
      * The String <code>inclusiveNamespaces=" xenc    ds #default"</code>
      * is returned as a Set containing the following Strings:
      * <UL>

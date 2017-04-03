@@ -27,7 +27,7 @@ import org.apache.xml.security.utils.EncryptionConstants;
 import org.w3c.dom.Document;
 
 /**
- * Digest Message wrapper & selector class.
+ * Digest Message wrapper and selector class.
  *
  * <pre>
  * MessageDigestAlgorithm.getInstance()

@@ -34,7 +34,7 @@ import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
 /**
  * This class helps us home users to resolve http URIs without a network
  * connection.
- * <br></br>
+ * <p></p>
  * The OfflineResolver is only needed for Unit testing. This is not needed for
  * a production environment. It's a very simple cache/proxy to HTTP space
  * so that I can do unit testing with http:// URIs even if I'm not connected

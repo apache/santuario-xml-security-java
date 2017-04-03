@@ -29,7 +29,7 @@ import java.util.Iterator;
  * used during encryption).
  * <p>
  * It is defined as follows:
- * <xmp>
+ * <pre>
  * <element name='EncryptionProperties' type='xenc:EncryptionPropertiesType'/>
  * <complexType name='EncryptionPropertiesType'>
  *     <sequence>
@@ -37,7 +37,7 @@ import java.util.Iterator;
  *     </sequence>
  *     <attribute name='Id' type='ID' use='optional'/>
  * </complexType>
- * </xmp>
+ * </pre>
  *
  */
 public interface EncryptionProperties {

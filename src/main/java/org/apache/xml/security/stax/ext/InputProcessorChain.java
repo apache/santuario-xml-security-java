@@ -49,7 +49,7 @@ public interface InputProcessorChain extends ProcessorChain {
     /**
      * Returns a list with the active processors.
      *
-     * @return List<InputProcessor>
+     * @return a list with the active processors
      */
     List<InputProcessor> getProcessors();
 

@@ -74,7 +74,7 @@ public class XMLSecurityConstants {
      * instance that backs this method is cached for efficiency.
      *
      * @return a byte array of the given length
-     * @throws WSSecurityException
+     * @throws XMLSecurityException
      */
     public static byte[] generateBytes(int length) throws XMLSecurityException {
         try {

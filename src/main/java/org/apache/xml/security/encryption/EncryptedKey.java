@@ -29,7 +29,7 @@ package org.apache.xml.security.encryption;
  * additional processing.
  * <p>
  * Its schema definition is as follows:
- * <xmp>
+ * <pre>
  * <element name='EncryptedKey' type='xenc:EncryptedKeyType'/>
  * <complexType name='EncryptedKeyType'>
  *     <complexContent>
@@ -42,7 +42,7 @@ package org.apache.xml.security.encryption;
  *         </extension>
  *     </complexContent>
  * </complexType>
- * </xmp>
+ * </pre>
  *
  */
 public interface EncryptedKey extends EncryptedType {

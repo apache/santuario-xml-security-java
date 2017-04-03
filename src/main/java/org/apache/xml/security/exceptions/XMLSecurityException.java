@@ -40,7 +40,7 @@ import org.apache.xml.security.utils.I18n;
  * }
  * </pre>
  *
- * Additionally, if another Exception has been caught, we can supply it, too>
+ * Additionally, if another Exception has been caught, we can supply it, too
  * <pre>
  * try {
  *    ...

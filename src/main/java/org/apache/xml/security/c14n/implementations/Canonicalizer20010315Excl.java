@@ -41,16 +41,16 @@ import org.xml.sax.SAXException;
 /**
  * Implements &quot; <A
  * HREF="http://www.w3.org/TR/2002/REC-xml-exc-c14n-20020718/">Exclusive XML
- * Canonicalization, Version 1.0 </A>&quot; <br></br>
+ * Canonicalization, Version 1.0 </A>&quot; <p></p>
  * Credits: During restructuring of the Canonicalizer framework, Ren??
  * Kollmorgen from Software AG submitted an implementation of ExclC14n which
  * fitted into the old architecture and which based heavily on my old (and slow)
  * implementation of "Canonical XML". A big "thank you" to Ren?? for this.
- * <br></br>
+ * <p></p>
  * <i>THIS </i> implementation is a complete rewrite of the algorithm.
  *
- * @see <a href="http://www.w3.org/TR/2002/REC-xml-exc-c14n-20020718/ Exclusive#">
- *          XML Canonicalization, Version 1.0</a>
+ * @see <a href="http://www.w3.org/TR/2002/REC-xml-exc-c14n-20020718/">
+ *          Exclusive XML Canonicalization, Version 1.0</a>
  */
 public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
 

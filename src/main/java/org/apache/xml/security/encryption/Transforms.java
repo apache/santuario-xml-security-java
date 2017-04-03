@@ -22,13 +22,13 @@ package org.apache.xml.security.encryption;
  * A container for <code>ds:Transform</code>s.
  * <p>
  * It is defined as follows:
- * <xmp>
+ * <pre>
  * <complexType name='TransformsType'>
  *     <sequence>
  *         <element ref='ds:Transform' maxOccurs='unbounded'/>
  *     </sequence>
  * </complexType>
- * </xmp>
+ * </pre>
  *
  * @see org.apache.xml.security.encryption.CipherReference
  */

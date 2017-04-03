@@ -29,7 +29,7 @@ import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
  * This test is to ensure interoperability with the examples provided by the IBM
  * XML Security Suite. They have to be located in the directory
  * <CODE>data/com/ibm/xss4j-20030127/</CODE>.
- * <br></br>
+ * <p></p>
  * For license issues, the vectors are not included in the distibution. See
  * <A HREF="../../../../../../../interop.html">the interop page</A> for more on this.
  *

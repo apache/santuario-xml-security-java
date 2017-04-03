@@ -26,14 +26,14 @@ package org.apache.xml.security.encryption;
  * <p>
  * It's schema definition is as follows:
  * <p>
- * <xmp>
+ * <pre>
  * <element name='EncryptedData' type='xenc:EncryptedDataType'/>
  * <complexType name='EncryptedDataType'>
  *     <complexContent>
  *         <extension base='xenc:EncryptedType'/>
  *     </complexContent>
  * </complexType>
- * </xmp>
+ * </pre>
  *
  */
 public interface EncryptedData extends EncryptedType {

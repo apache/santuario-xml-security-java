@@ -58,7 +58,7 @@ import org.w3c.dom.Element;
  * inside an <code>EncryptedKey</code> element.
  * <p>
  * The Schema for AgreementMethod is as follows:
- * <xmp>
+ * <pre>
  * <element name="AgreementMethod" type="xenc:AgreementMethodType"/>
  * <complexType name="AgreementMethodType" mixed="true">
  *     <sequence>
@@ -70,7 +70,7 @@ import org.w3c.dom.Element;
  *     </sequence>
  *     <attribute name="Algorithm" type="anyURI" use="required"/>
  * </complexType>
- * </xmp>
+ * </pre>
  *
  */
 public interface AgreementMethod {
@@ -98,9 +98,9 @@ public interface AgreementMethod {
      *
      * @param info a <code>Element</code> that represents additional information
      * specified by
-     *   <xmp>
+     *   <pre>
      *     <any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
-     *   </xmp>
+     *   </pre>
      */
     void addAgreementMethodInformation(Element info);
 
@@ -109,9 +109,9 @@ public interface AgreementMethod {
      *
      * @param info a <code>Element</code> that represents additional information
      * specified by
-     *   <xmp>
+     *   <pre>
      *     <any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
-     *   </xmp>
+     *   </pre>
      */
     void revoveAgreementMethodInformation(Element info);
 

@@ -26,7 +26,7 @@ package org.apache.xml.security.encryption;
  * <code>CipherReference</code> element.
  * <p>
  * The schema definition is as follows:
- * <xmp>
+ * <pre>
  * <element name='CipherData' type='xenc:CipherDataType'/>
  * <complexType name='CipherDataType'>
  *     <choice>
@@ -34,7 +34,7 @@ package org.apache.xml.security.encryption;
  *         <element ref='xenc:CipherReference'/>
  *     </choice>
  * </complexType>
- * </xmp>
+ * </pre>
  *
  */
 public interface CipherData {

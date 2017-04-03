@@ -26,7 +26,7 @@ import java.util.Iterator;
  * (<code>EncryptedData</code> or <code>EncryptedKey</code> elements).
  * <p>
  * It is defined as follows:
- * <xmp>
+ * <pre>
  * <element name='ReferenceList'>
  *     <complexType>
  *         <choice minOccurs='1' maxOccurs='unbounded'>
@@ -35,7 +35,7 @@ import java.util.Iterator;
  *         </choice>
  *     </complexType>
  * </element>
- * </xmp>
+ * </pre>
  *
  * @see Reference
  */

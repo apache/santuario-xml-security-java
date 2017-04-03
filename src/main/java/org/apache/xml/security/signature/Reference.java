@@ -769,7 +769,6 @@ public class Reference extends SignatureElementProxy {
      * Returns the digest value.
      *
      * @return the digest value.
-     * @throws Base64DecodingException if Reference contains no proper base64 encoded data.
      * @throws XMLSecurityException if the Reference does not contain a DigestValue element
      */
     public byte[] getDigestValue() throws XMLSecurityException {

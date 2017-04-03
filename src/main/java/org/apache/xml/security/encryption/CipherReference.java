@@ -42,7 +42,7 @@ import org.w3c.dom.Attr;
  * the &xenc; namespace.
  * <p>
  * The schema definition is as follows:
- * <xmp>
+ * <pre>
  * <element name='CipherReference' type='xenc:CipherReferenceType'/>
  * <complexType name='CipherReferenceType'>
  *     <sequence>
@@ -50,7 +50,7 @@ import org.w3c.dom.Attr;
  *     </sequence>
  *     <attribute name='URI' type='anyURI' use='required'/>
  * </complexType>
- * </xmp>
+ * </pre>
  *
  */
 public interface CipherReference {

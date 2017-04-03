@@ -136,7 +136,7 @@ public abstract class ElementProxy {
      * This method creates an Element in a given namespace with a given localname.
      * It uses the {@link ElementProxy#getDefaultPrefix} method to decide whether
      * a particular prefix is bound to that namespace.
-     * <br></br>
+     * <p></p>
      * This method was refactored out of the constructor.
      *
      * @param doc
@@ -359,7 +359,6 @@ public abstract class ElementProxy {
      * @param localname
      * @param namespace
      * @return The biginteger contained in the given element
-     * @throws Base64DecodingException
      */
     public BigInteger getBigIntegerFromChildElement(
         String localname, String namespace

@@ -27,7 +27,7 @@ import org.apache.xml.security.keys.KeyInfo;
  * distinction is useful to processing.
  * <p>
  * Its schema definition is as follows:
- * <xmp>
+ * <pre>
  * <complexType name='EncryptedType' abstract='true'>
  *     <sequence>
  *         <element name='EncryptionMethod' type='xenc:EncryptionMethodType'
@@ -41,7 +41,7 @@ import org.apache.xml.security.keys.KeyInfo;
  *     <attribute name='MimeType' type='string' use='optional'/>
  *     <attribute name='Encoding' type='anyURI' use='optional'/>
  * </complexType>
- * </xmp>
+ * </pre>
  *
  */
 public interface EncryptedType {

@@ -27,7 +27,7 @@ import org.w3c.dom.Element;
  * known by the recipient or the decryption will fail.
  * <p>
  * It is defined as follows:
- * <xmp>
+ * <pre>
  * <complexType name='EncryptionMethodType' mixed='true'>
  *     <sequence>
  *         <element name='KeySize' minOccurs='0' type='xenc:KeySizeType'/>
@@ -36,7 +36,7 @@ import org.w3c.dom.Element;
  *     </sequence>
  *     <attribute name='Algorithm' type='anyURI' use='required'/>
  * </complexType>
- * </xmp>
+ * </pre>
  *
  */
 public interface EncryptionMethod {

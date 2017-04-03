@@ -138,7 +138,7 @@ public class Base64 {
     }
 
     /**
-     * Encode in Base64 the given <code>{@link BigInteger}<code>.
+     * Encode in Base64 the given <code>{@link BigInteger}</code>.
      *
      * @param big
      * @return String with Base64 encoding
@@ -148,10 +148,10 @@ public class Base64 {
     }
 
     /**
-     * Returns a byte-array representation of a <code>{@link BigInteger}<code>.
+     * Returns a byte-array representation of a <code>{@link BigInteger}</code>.
      * No sign-bit is output.
      *
-     * <b>N.B.:</B> <code>{@link BigInteger}<code>'s toByteArray
+     * <b>N.B.:</B> <code>{@link BigInteger}</code>'s toByteArray
      * returns eventually longer arrays because of the leading sign-bit.
      *
      * @param big <code>BigInteger</code> to be converted
@@ -298,7 +298,7 @@ public class Base64 {
      * Encode a byte array and fold lines at the standard 76th character unless
      * ignore line breaks property is set.
      *
-     * @param binaryData <code>byte[]<code> to be base64 encoded
+     * @param binaryData <code>byte[]</code> to be base64 encoded
      * @return the <code>String</code> with encoded data
      */
     public static final String encode(byte[] binaryData) {

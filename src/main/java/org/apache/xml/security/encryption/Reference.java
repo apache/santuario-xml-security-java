@@ -27,14 +27,14 @@ import org.w3c.dom.Element;
  * <code>EncryptedKey</code> elements).
  * <p>
  * It is defined as follows:
- * <xmp>
+ * <pre>
  * <complexType name='ReferenceType'>
  *     <sequence>
  *         <any namespace='##other' minOccurs='0' maxOccurs='unbounded'/>
  *     </sequence>
  *     <attribute name='URI' type='anyURI' use='required'/>
  * </complexType>
- * </xmp>
+ * </pre>
  *
  * @see ReferenceList
  */

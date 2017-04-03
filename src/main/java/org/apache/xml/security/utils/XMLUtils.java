@@ -244,7 +244,7 @@ public final class XMLUtils {
     /**
      * Serializes the <CODE>contextNode</CODE> into the OutputStream, <I>but
      * suppresses all Exceptions</I>.
-     * <br></br>
+     * <p></p>
      * NOTE: <I>This should only be used for debugging purposes,
      * NOT in a production environment; this method ignores all exceptions,
      * so you won't notice if something goes wrong. If you're asking what is to
@@ -1079,10 +1079,10 @@ public final class XMLUtils {
     }
 
     /**
-     * Returns a byte-array representation of a <code>{@link BigInteger}<code>.
+     * Returns a byte-array representation of a <code>{@link BigInteger}</code>.
      * No sign-bit is output.
      *
-     * <b>N.B.:</B> <code>{@link BigInteger}<code>'s toByteArray
+     * <b>N.B.:</B> <code>{@link BigInteger}</code>'s toByteArray
      * returns eventually longer arrays because of the leading sign-bit.
      *
      * @param big <code>BigInteger</code> to be converted
