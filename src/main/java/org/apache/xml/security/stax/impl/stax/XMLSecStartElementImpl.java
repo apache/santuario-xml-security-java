@@ -76,12 +76,14 @@ public class XMLSecStartElementImpl extends XMLSecEventBaseImpl implements XMLSe
         return this.elementNamespace;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public Iterator<XMLSecAttribute> getAttributes() {
+    public Iterator<Attribute> getAttributes() {
         if (attributes.isEmpty()) {
             return getEmptyIterator();
         }
-        return attributes.iterator();
+        // Hack to get the code working with JDK9
+        return (Iterator<Attribute>)(Iterator<?>)attributes.iterator();
     }
 
     @Override
@@ -128,12 +130,14 @@ public class XMLSecStartElementImpl extends XMLSecEventBaseImpl implements XMLSe
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public Iterator<XMLSecNamespace> getNamespaces() {
+    public Iterator<Namespace> getNamespaces() {
         if (namespaces.isEmpty()) {
             return getEmptyIterator();
         }
-        return namespaces.iterator();
+        // Hack to get the code working with JDK9
+        return (Iterator<Namespace>)(Iterator<?>)namespaces.iterator();
     }
 
     @Override
