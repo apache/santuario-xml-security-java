@@ -95,7 +95,7 @@ public class XMLX509Certificate extends SignatureElementProxy implements XMLX509
      * @return the x509 certificate
      * @throws XMLSecurityException
      */
-    public X509Certificate getX509Certificate() throws XMLSecurityException, IOException {
+    public X509Certificate getX509Certificate() throws XMLSecurityException {
         byte certbytes[] = this.getCertificateBytes();
         try (InputStream is = new ByteArrayInputStream(certbytes)) {
             CertificateFactory certFact =
@@ -108,7 +108,7 @@ public class XMLX509Certificate extends SignatureElementProxy implements XMLX509
             }
 
             return null;
-        } catch (CertificateException ex) {
+        } catch (CertificateException | IOException ex) {
             throw new XMLSecurityException(ex);
         }
     }

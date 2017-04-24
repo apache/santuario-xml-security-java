@@ -395,7 +395,7 @@ public class X509Data extends SignatureElementProxy implements KeyInfoContent {
      * Method itemCertificate
      *
      * @param i
-     * @return the X509Certifacte, null if not present
+     * @return the X509Certificate, null if not present
      * @throws XMLSecurityException
      */
     public XMLX509Certificate itemCertificate(int i) throws XMLSecurityException {

@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.keys.keyresolver.implementations;
 
-import java.io.IOException;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
 
@@ -98,7 +97,7 @@ public class X509CertificateResolver extends KeyResolverSpi {
                 }
             }
             return null;
-        } catch (XMLSecurityException | IOException ex) {
+        } catch (XMLSecurityException ex) {
             LOG.debug("Security Exception", ex);
             throw new KeyResolverException(ex);
         }
