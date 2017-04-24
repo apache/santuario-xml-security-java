@@ -18,9 +18,11 @@
  */
 package org.apache.xml.security.utils.resolver.implementations;
 
-import java.io.FileInputStream;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.utils.resolver.ResourceResolverContext;
@@ -54,7 +56,7 @@ public class ResolverLocalFilesystem extends ResourceResolverSpi {
 
             String fileName =
                 ResolverLocalFilesystem.translateUriToFilename(uriNew.toString());
-            FileInputStream inputStream = new FileInputStream(fileName);
+            InputStream inputStream = Files.newInputStream(Paths.get(fileName));
             XMLSignatureInput result = new XMLSignatureInput(inputStream);
             result.setSecureValidation(context.secureValidation);
 

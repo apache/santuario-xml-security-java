@@ -19,9 +19,11 @@
 package org.apache.xml.security.keys.storage.implementations;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateExpiredException;
@@ -96,13 +98,12 @@ public class CertsInFilesystemDirectoryResolver extends StorageResolverSpi {
 
         for (int i = 0; i < al.size(); i++) {
             String filename = certDir.getAbsolutePath() + File.separator + al.get(i);
-            File file = new File(filename);
             boolean added = false;
             String dn = null;
 
-            try (FileInputStream fis = new FileInputStream(file)) {
+            try (InputStream inputStream = Files.newInputStream(Paths.get(filename))) {
                 X509Certificate cert =
-                    (X509Certificate) cf.generateCertificate(fis);
+                    (X509Certificate) cf.generateCertificate(inputStream);
 
                 //add to ArrayList
                 cert.checkValidity();

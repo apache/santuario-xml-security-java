@@ -18,12 +18,12 @@
  */
 package org.apache.xml.security.utils;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.SecurityPermission;
 
 /**
@@ -55,12 +55,12 @@ public final class JavaUtils {
 
         byte refBytes[] = null;
 
-        try (FileInputStream fisRef = new FileInputStream(fileName);
+        try (InputStream inputStream = Files.newInputStream(Paths.get(fileName));
             UnsyncByteArrayOutputStream baos = new UnsyncByteArrayOutputStream()) {
             byte buf[] = new byte[1024];
             int len;
 
-            while ((len = fisRef.read(buf)) > 0) {
+            while ((len = inputStream.read(buf)) > 0) {
                 baos.write(buf, 0, len);
             }
 
@@ -78,9 +78,8 @@ public final class JavaUtils {
      */
     public static void writeBytesToFilename(String filename, byte[] bytes) {
         if (filename != null && bytes != null) {
-            File f = new File(filename);
-            try (FileOutputStream fos = new FileOutputStream(f)) {
-                fos.write(bytes);
+            try (OutputStream outputStream = Files.newOutputStream(Paths.get(filename))) {
+                outputStream.write(bytes);
             } catch (IOException ex) {
                 LOG.debug(ex.getMessage(), ex);
             }

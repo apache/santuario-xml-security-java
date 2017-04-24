@@ -19,10 +19,11 @@
 
 package org.apache.xml.security.utils.resolver.implementations;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.utils.resolver.ResourceResolverContext;
@@ -45,7 +46,7 @@ public class ResolverAnonymous extends ResourceResolverSpi {
      * @throws IOException
      */
     public ResolverAnonymous(String filename) throws FileNotFoundException, IOException {
-        inStream = new FileInputStream(filename);
+        inStream = Files.newInputStream(Paths.get(filename));
     }
 
     /**
