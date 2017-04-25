@@ -19,12 +19,7 @@
 package org.apache.xml.security.c14n.implementations;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -55,88 +50,7 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
     private boolean firstCall = true;
     private final SortedSet<Attr> result = new TreeSet<Attr>(COMPARE);
 
-    private static class XmlAttrStack {
-        static class XmlsStackElement {
-            int level;
-            boolean rendered = false;
-            List<Attr> nodes = new ArrayList<>();
-        }
-
-        int currentLevel = 0;
-        int lastlevel = 0;
-        XmlsStackElement cur;
-        List<XmlsStackElement> levels = new ArrayList<>();
-
-        void push(int level) {
-            currentLevel = level;
-            if (currentLevel == -1) {
-                return;
-            }
-            cur = null;
-            while (lastlevel >= currentLevel) {
-                levels.remove(levels.size() - 1);
-                int newSize = levels.size();
-                if (newSize == 0) {
-                    lastlevel = 0;
-                    return;
-                }
-                lastlevel = levels.get(newSize - 1).level;
-            }
-        }
-
-        void addXmlnsAttr(Attr n) {
-            if (cur == null) {
-                cur = new XmlsStackElement();
-                cur.level = currentLevel;
-                levels.add(cur);
-                lastlevel = currentLevel;
-            }
-            cur.nodes.add(n);
-        }
-
-        void getXmlnsAttr(Collection<Attr> col) {
-            int size = levels.size() - 1;
-            if (cur == null) {
-                cur = new XmlsStackElement();
-                cur.level = currentLevel;
-                lastlevel = currentLevel;
-                levels.add(cur);
-            }
-            boolean parentRendered = false;
-            XmlsStackElement e = null;
-            if (size == -1) {
-                parentRendered = true;
-            } else {
-                e = levels.get(size);
-                if (e.rendered && e.level + 1 == currentLevel) {
-                    parentRendered = true;
-                }
-            }
-            if (parentRendered) {
-                col.addAll(cur.nodes);
-                cur.rendered = true;
-                return;
-            }
-
-            Map<String, Attr> loa = new HashMap<>();
-            for (; size >= 0; size--) {
-                e = levels.get(size);
-                Iterator<Attr> it = e.nodes.iterator();
-                while (it.hasNext()) {
-                    Attr n = it.next();
-                    if (!loa.containsKey(n.getName())) {
-                        loa.put(n.getName(), n);
-                    }
-                }
-            }
-
-            cur.rendered = true;
-            col.addAll(loa.values());
-        }
-
-    }
-
-    private XmlAttrStack xmlattrStack = new XmlAttrStack();
+    private XmlAttrStack xmlattrStack = new XmlAttrStack(false);
 
     /**
      * Constructor Canonicalizer20010315
