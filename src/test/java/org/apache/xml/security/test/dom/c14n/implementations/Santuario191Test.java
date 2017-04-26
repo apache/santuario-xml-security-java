@@ -26,7 +26,6 @@ import javax.xml.parsers.DocumentBuilder;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
-import org.apache.xml.security.c14n.implementations.Canonicalizer11;
 import org.apache.xml.security.c14n.implementations.Canonicalizer11_OmitComments;
 import org.apache.xml.security.utils.XMLUtils;
 
@@ -74,7 +73,7 @@ public class Santuario191Test extends org.junit.Assert {
         // Canonicalize the data
         //
         NodeList dataNodes = doc.getElementsByTagName("data");
-        Canonicalizer11 c14ner = new Canonicalizer11_OmitComments();
+        Canonicalizer11_OmitComments c14ner = new Canonicalizer11_OmitComments();
         byte[] result = c14ner.engineCanonicalizeSubTree(dataNodes.item(0));
 
         //

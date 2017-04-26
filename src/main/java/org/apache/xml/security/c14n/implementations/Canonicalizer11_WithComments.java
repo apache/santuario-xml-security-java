@@ -22,10 +22,10 @@ import org.apache.xml.security.c14n.Canonicalizer;
 
 /**
  */
-public class Canonicalizer11_WithComments extends Canonicalizer11 {
+public class Canonicalizer11_WithComments extends Canonicalizer20010315 {
 
     public Canonicalizer11_WithComments() {
-        super(true);
+        super(true, true);
     }
 
     public final String engineGetURI() {

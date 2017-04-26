@@ -50,7 +50,8 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
     private boolean firstCall = true;
     private final SortedSet<Attr> result = new TreeSet<Attr>(COMPARE);
 
-    private XmlAttrStack xmlattrStack = new XmlAttrStack(false);
+    private final XmlAttrStack xmlattrStack;
+    private final boolean c14n11;
 
     /**
      * Constructor Canonicalizer20010315
@@ -58,8 +59,21 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
      * @param includeComments
      */
     public Canonicalizer20010315(boolean includeComments) {
-        super(includeComments);
+        this(includeComments, false);
     }
+
+    /**
+     * Constructor Canonicalizer20010315
+     *
+     * @param includeComments
+     * @param c14n11 Whether this is a Canonical XML 1.1 implementation or not
+     */
+    public Canonicalizer20010315(boolean includeComments, boolean c14n11) {
+        super(includeComments);
+        xmlattrStack = new XmlAttrStack(c14n11);
+        this.c14n11 = c14n11;
+    }
+
 
     /**
      * Always throws a CanonicalizationException because this is inclusive c14n.
@@ -208,7 +222,15 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
                 if (!XMLNS_URI.equals(NUri)) {
                     //A non namespace definition node.
                     if (XML_LANG_URI.equals(NUri)) {
-                        xmlattrStack.addXmlnsAttr(attribute);
+                        if (c14n11 && "id".equals(NName)) {
+                            if (isRealVisible) {
+                                // treat xml:id like any other attribute
+                                // (emit it, but don't inherit it)
+                                result.add(attribute);
+                            }
+                        } else {
+                            xmlattrStack.addXmlnsAttr(attribute);
+                        }
                     } else if (isRealVisible) {
                         //The node is visible add the attribute to the list of output attributes.
                         result.add(attribute);
@@ -298,7 +320,8 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
                 if (!XML.equals(NName) || !Constants.XML_LANG_SPACE_SpecNS.equals(NValue)) {
                     ns.addMapping(NName, NValue, attribute);
                 }
-            } else if (XML_LANG_URI.equals(attribute.getNamespaceURI())) {
+            } else if (XML_LANG_URI.equals(attribute.getNamespaceURI())
+                && (!c14n11 || c14n11 && !"id".equals(NName))) {
                 xmlattrStack.addXmlnsAttr(attribute);
             }
         }
