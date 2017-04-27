@@ -42,6 +42,7 @@ import org.apache.xml.security.utils.UnsyncByteArrayOutputStream;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Comment;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -51,11 +52,14 @@ import org.xml.sax.SAXException;
 
 /**
  * Abstract base class for canonicalization algorithms.
- *
+ * Please note that these implementations are NOT thread safe - please see the following JIRA for more information:
+ * https://issues.apache.org/jira/browse/SANTUARIO-463
  */
 public abstract class CanonicalizerBase extends CanonicalizerSpi {
     public static final String XML = "xml";
     public static final String XMLNS = "xmlns";
+    public static final String XMLNS_URI = Constants.NamespaceSpecNS;
+    public static final String XML_LANG_URI = Constants.XML_LANG_SPACE_SpecNS;
 
     protected static final AttrCompare COMPARE = new AttrCompare();
 
@@ -170,6 +174,10 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
      */
     public void setWriter(OutputStream writer) {
         this.writer = writer;
+    }
+
+    protected OutputStream getWriter() {
+        return writer;
     }
 
     /**
@@ -288,14 +296,8 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
                 String name = currentElement.getTagName();
                 UtfHelpper.writeByte(name, writer, cache);
 
-                Iterator<Attr> attrs = this.handleAttributesSubtree(currentElement, ns);
-                if (attrs != null) {
-                    //we output all Attrs which are available
-                    while (attrs.hasNext()) {
-                        Attr attr = attrs.next();
-                        outputAttrToWriter(attr.getNodeName(), attr.getNodeValue(), writer, cache);
-                    }
-                }
+                outputAttributesSubtree(currentElement, ns, cache);
+
                 writer.write('>');
                 sibling = currentNode.getFirstChild();
                 if (sibling == null) {
@@ -397,7 +399,6 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
         }
         Node sibling = null;
         Node parentNode = null;
-        OutputStream writer = this.writer;
         int documentLevel = NODE_BEFORE_DOCUMENT_ELEMENT;
         Map<String, byte[]> cache = new HashMap<>();
         do {
@@ -463,14 +464,8 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
                     ns.push();
                 }
 
-                Iterator<Attr> attrs = handleAttributes(currentElement, ns);
-                if (attrs != null) {
-                    //we output all Attrs which are available
-                    while (attrs.hasNext()) {
-                        Attr attr = attrs.next();
-                        outputAttrToWriter(attr.getNodeName(), attr.getNodeValue(), writer, cache);
-                    }
-                }
+                outputAttributes(currentElement, ns, cache);
+
                 if (currentNodeIsVisible) {
                     writer.write('>');
                 }
@@ -637,26 +632,26 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
     }
 
     /**
-     * Obtain the attributes to output for this node in XPathNodeSet c14n.
+     * Output the attributes for this node in XPathNodeSet c14n.
      *
      * @param element
      * @param ns
-     * @return the attributes nodes to output.
-     * @throws CanonicalizationException
+     * @param cache
+     * @throws CanonicalizationException, DOMException, IOException
      */
-    abstract Iterator<Attr> handleAttributes(Element element, NameSpaceSymbTable ns)
-        throws CanonicalizationException;
+    abstract void outputAttributes(Element element, NameSpaceSymbTable ns, Map<String, byte[]> cache)
+        throws CanonicalizationException, DOMException, IOException;
 
     /**
-     * Obtain the attributes to output for this node in a Subtree c14n.
+     * Output the attributes for this node in a Subtree c14n.
      *
      * @param element
      * @param ns
-     * @return the attributes nodes to output.
-     * @throws CanonicalizationException
+     * @param cache
+     * @throws CanonicalizationException, DOMException, IOException
      */
-    abstract Iterator<Attr> handleAttributesSubtree(Element element, NameSpaceSymbTable ns)
-        throws CanonicalizationException;
+    abstract void outputAttributesSubtree(Element element, NameSpaceSymbTable ns, Map<String, byte[]> cache)
+        throws CanonicalizationException, DOMException, IOException;
 
     abstract void circumventBugIfNeeded(XMLSignatureInput input)
         throws CanonicalizationException, ParserConfigurationException, IOException, SAXException;

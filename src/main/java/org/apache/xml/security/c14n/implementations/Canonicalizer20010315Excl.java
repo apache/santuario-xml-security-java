@@ -19,7 +19,8 @@
 package org.apache.xml.security.c14n.implementations;
 
 import java.io.IOException;
-import java.util.Iterator;
+import java.io.OutputStream;
+import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -29,9 +30,9 @@ import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.helper.C14nHelper;
 import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.transforms.params.InclusiveNamespaces;
-import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Attr;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -54,17 +55,12 @@ import org.xml.sax.SAXException;
  */
 public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
 
-    private static final String XML_LANG_URI = Constants.XML_LANG_SPACE_SpecNS;
-    private static final String XMLNS_URI = Constants.NamespaceSpecNS;
-
     /**
-      * This Set contains the names (Strings like "xmlns" or "xmlns:foo") of
-      * the inclusive namespaces.
-      */
+     * This Set contains the names (Strings like "xmlns" or "xmlns:foo") of
+     * the inclusive namespaces.
+     */
     private SortedSet<String> inclusiveNSSet;
     private boolean propagateDefaultNamespace = false;
-
-    private final SortedSet<Attr> result = new TreeSet<Attr>(COMPARE);
 
     /**
      * Constructor Canonicalizer20010315Excl
@@ -161,11 +157,11 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
     }
 
     @Override
-    protected Iterator<Attr> handleAttributesSubtree(Element element, NameSpaceSymbTable ns)
-        throws CanonicalizationException {
+    protected void outputAttributesSubtree(Element element, NameSpaceSymbTable ns,
+                                           Map<String, byte[]> cache)
+        throws CanonicalizationException, DOMException, IOException {
         // result will contain the attrs which have to be output
-        final SortedSet<Attr> result = this.result;
-        result.clear();
+        SortedSet<Attr> result = new TreeSet<Attr>(COMPARE);
 
         // The prefix visibly utilized (in the attribute or in the name) in
         // the element
@@ -227,20 +223,22 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
             }
         }
 
-        return result.iterator();
+        OutputStream writer = getWriter();
+        //we output all Attrs which are available
+        for (Attr attr : result) {
+            outputAttrToWriter(attr.getNodeName(), attr.getNodeValue(), writer, cache);
+        }
     }
 
     /**
      * {@inheritDoc}
-     * @param element
-     * @throws CanonicalizationException
      */
     @Override
-    protected final Iterator<Attr> handleAttributes(Element element, NameSpaceSymbTable ns)
-        throws CanonicalizationException {
+    protected void outputAttributes(Element element, NameSpaceSymbTable ns,
+                                    Map<String, byte[]> cache)
+        throws CanonicalizationException, DOMException, IOException {
         // result will contain the attrs which have to be output
-        final SortedSet<Attr> result = this.result;
-        result.clear();
+        SortedSet<Attr> result = new TreeSet<Attr>(COMPARE);
 
         // The prefix visibly utilized (in the attribute or in the name) in
         // the element
@@ -330,7 +328,11 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
             }
         }
 
-        return result.iterator();
+        OutputStream writer = getWriter();
+        //we output all Attrs which are available
+        for (Attr attr : result) {
+            outputAttrToWriter(attr.getNodeName(), attr.getNodeValue(), writer, cache);
+        }
     }
 
     protected void circumventBugIfNeeded(XMLSignatureInput input)
