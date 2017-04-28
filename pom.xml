@@ -310,7 +310,6 @@
         <defaultGoal>install</defaultGoal>
     </build>
 
-
     <profiles>
         <profile>
             <id>release</id>
