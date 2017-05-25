@@ -94,7 +94,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
 
     @org.junit.AfterClass
     public static void cleanup() throws Exception {
-        Security.removeProvider("org.bouncycastle.jce.provider.BouncyCastleProvider");
+        Security.removeProvider("BC");
     }
 
     @Test

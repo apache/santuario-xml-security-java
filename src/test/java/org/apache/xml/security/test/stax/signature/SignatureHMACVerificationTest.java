@@ -87,7 +87,7 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
 
     @org.junit.AfterClass
     public static void cleanup() throws Exception {
-        Security.removeProvider("org.bouncycastle.jce.provider.BouncyCastleProvider");
+        Security.removeProvider("BC");
     }
 
     @Test

@@ -77,7 +77,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
 
     @org.junit.AfterClass
     public static void cleanup() throws Exception {
-        Security.removeProvider("org.bouncycastle.jce.provider.BouncyCastleProvider");
+        Security.removeProvider("BC");
     }
 
     @Test
