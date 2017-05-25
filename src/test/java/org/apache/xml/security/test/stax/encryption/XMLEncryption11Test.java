@@ -119,7 +119,7 @@ public class XMLEncryption11Test extends Assert {
 
     @org.junit.AfterClass
     public static void cleanup() throws Exception {
-        Security.removeProvider("org.bouncycastle.jce.provider.BouncyCastleProvider");
+        Security.removeProvider("BC");
     }
 
     /**

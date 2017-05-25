@@ -79,7 +79,7 @@ public class DEREncodedKeyValueTest extends Assert {
 
     @org.junit.AfterClass
     public static void cleanup() throws Exception {
-        Security.removeProvider("org.bouncycastle.jce.provider.BouncyCastleProvider");
+        Security.removeProvider("BC");
     }
 
     @org.junit.Test
