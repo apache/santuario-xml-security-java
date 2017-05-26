@@ -473,6 +473,11 @@ public abstract class ElementProxy {
     public static void setDefaultPrefix(String namespace, String prefix)
         throws XMLSecurityException {
         JavaUtils.checkRegisterPermission();
+        setNamespacePrefix(namespace, prefix);
+    }
+    
+    private static void setNamespacePrefix(String namespace, String prefix)
+        throws XMLSecurityException {
         if (prefixMappings.containsValue(prefix)) {
             String storedPrefix = prefixMappings.get(namespace);
             if (!storedPrefix.equals(prefix)) {
@@ -495,14 +500,14 @@ public abstract class ElementProxy {
      * This method registers the default prefixes.
      */
     public static void registerDefaultPrefixes() throws XMLSecurityException {
-        setDefaultPrefix("http://www.w3.org/2000/09/xmldsig#", "ds");
-        setDefaultPrefix("http://www.w3.org/2001/04/xmlenc#", "xenc");
-        setDefaultPrefix("http://www.w3.org/2009/xmlenc11#", "xenc11");
-        setDefaultPrefix("http://www.xmlsecurity.org/experimental#", "experimental");
-        setDefaultPrefix("http://www.w3.org/2002/04/xmldsig-filter2", "dsig-xpath-old");
-        setDefaultPrefix("http://www.w3.org/2002/06/xmldsig-filter2", "dsig-xpath");
-        setDefaultPrefix("http://www.w3.org/2001/10/xml-exc-c14n#", "ec");
-        setDefaultPrefix(
+        setNamespacePrefix("http://www.w3.org/2000/09/xmldsig#", "ds");
+        setNamespacePrefix("http://www.w3.org/2001/04/xmlenc#", "xenc");
+        setNamespacePrefix("http://www.w3.org/2009/xmlenc11#", "xenc11");
+        setNamespacePrefix("http://www.xmlsecurity.org/experimental#", "experimental");
+        setNamespacePrefix("http://www.w3.org/2002/04/xmldsig-filter2", "dsig-xpath-old");
+        setNamespacePrefix("http://www.w3.org/2002/06/xmldsig-filter2", "dsig-xpath");
+        setNamespacePrefix("http://www.w3.org/2001/10/xml-exc-c14n#", "ec");
+        setNamespacePrefix(
             "http://www.nue.et-inf.uni-siegen.de/~geuer-pollmann/#xpathFilter", "xx"
         );
     }
