@@ -25,11 +25,15 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Enumeration;
 
+import javax.xml.crypto.dsig.DigestMethod;
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.apache.xml.security.Init;
+import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.signature.Manifest;
 import org.apache.xml.security.signature.Reference;
 import org.apache.xml.security.signature.SignedInfo;
 import org.apache.xml.security.signature.XMLSignature;
@@ -85,6 +89,44 @@ public class SignatureReferenceTest extends org.junit.Assert {
             (Element) doc.getElementsByTagNameNS("http://ns.example.org/", "root").item(0);
         assertNotNull(originalElement);
         assertEquals(referenceElement, originalElement);
+    }
+
+    // See SANTUARIO-465
+    @org.junit.Test
+    public void testNoReferenceChildren() throws ParserConfigurationException, XMLSecurityException {
+        DocumentBuilder db = XMLUtils.createDocumentBuilder(true);
+        Document doc = db.newDocument();
+        Element referenceElement = doc.createElementNS(Constants.SignatureSpecNS, "Reference");
+        referenceElement.setAttributeNS(null, "URI", "#_12345");
+
+        // No DigestMethod child
+        try {
+            new WrappedReference(referenceElement, "_54321", null);
+            fail("Failure expected on no Reference DigestMethod child element");
+        } catch (XMLSecurityException ex) {
+            // ex.printStackTrace();
+            // expected
+        }
+
+        // No DigestValue child
+        try {
+            Element digestMethod = doc.createElementNS(Constants.SignatureSpecNS, "DigestMethod");
+            digestMethod.setAttributeNS(null, "Algorithm", DigestMethod.SHA1);
+            referenceElement.appendChild(digestMethod);
+
+            new WrappedReference(referenceElement, "_54321", null);
+            fail("Failure expected on no Reference DigestValue child element");
+        } catch (XMLSecurityException ex) {
+            // expected
+        }
+
+        Element digestValue = doc.createElementNS(Constants.SignatureSpecNS, "DigestValue");
+        digestValue.setTextContent("abcabc");
+        referenceElement.appendChild(digestValue);
+
+        new WrappedReference(referenceElement, "_54321", null);
+
+        XMLUtils.repoolDocumentBuilder(db);
     }
 
     /**
@@ -152,5 +194,11 @@ public class SignatureReferenceTest extends org.junit.Assert {
         sig.sign(getPrivateKey());
 
         return sig;
+    }
+
+    private static class WrappedReference extends Reference {
+        public WrappedReference(Element element, String baseURI, Manifest manifest) throws XMLSecurityException {
+            super(element, baseURI, manifest);
+        }
     }
 }
