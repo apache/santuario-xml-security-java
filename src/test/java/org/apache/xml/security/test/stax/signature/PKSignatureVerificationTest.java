@@ -263,9 +263,8 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
 
     @Test
     public void testRSA_RIPEMD160() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
+
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -307,9 +306,8 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
 
     @Test
     public void testRSA_SHA1_MGF1() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
+
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -351,9 +349,8 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
 
     @Test
     public void testRSA_SHA224_MGF1() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
+
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -395,9 +392,8 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
 
     @Test
     public void testRSA_SHA256_MGF1() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
+
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -439,9 +435,8 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
 
     @Test
     public void testRSA_SHA384_MGF1() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
+
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -483,9 +478,8 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
 
     @Test
     public void testRSA_SHA512_MGF1() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
+
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -732,9 +726,8 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
 
     @Test
     public void testECDSA_RIPEMD160() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
+
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(

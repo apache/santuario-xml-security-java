@@ -189,54 +189,42 @@ public class PKSignatureAlgorithmTest extends org.junit.Assert {
 
     @org.junit.Test
     public void testRSA_RIPEMD160() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaRipemd160, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
 
     @org.junit.Test
     public void testRSA_SHA1_MGF1() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha1Mgf1, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
 
     @org.junit.Test
     public void testRSA_SHA224_MGF1() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha224Mgf1, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
 
     @org.junit.Test
     public void testRSA_SHA256_MGF1() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha256Mgf1, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
 
     @org.junit.Test
     public void testRSA_SHA384_MGF1() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha384Mgf1, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
 
     @org.junit.Test
     public void testRSA_SHA512_MGF1() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha512Mgf1, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
@@ -278,9 +266,7 @@ public class PKSignatureAlgorithmTest extends org.junit.Assert {
 
     @org.junit.Test
     public void testECDSA_RIPEMD160() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
         org.junit.Assume.assumeTrue(ecAlgParamsSupport && ecki != null);
         test_create_signature_enveloping(ecdsaRipemd160, sha1, ecki,
                                          ecKeyPair.getPrivate(), kvks);

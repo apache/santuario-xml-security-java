@@ -303,9 +303,8 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
 
     @Test
     public void testRIPEMD160() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
+
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();

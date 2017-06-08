@@ -258,9 +258,8 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
 
     @Test
     public void testRSA_RIPEMD160() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
+
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
@@ -304,9 +303,8 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
 
     @Test
     public void testRSA_SHA1_MGF1() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
+
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
@@ -350,9 +348,8 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
 
     @Test
     public void testRSA_SHA224_MGF1() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
+
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
@@ -396,9 +393,8 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
 
     @Test
     public void testRSA_SHA256_MGF1() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
+
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
@@ -442,9 +438,8 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
 
     @Test
     public void testRSA_SHA384_MGF1() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
+
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
@@ -488,9 +483,8 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
 
     @Test
     public void testRSA_SHA512_MGF1() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
+
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
@@ -749,9 +743,8 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
 
     @Test
     public void testECDSA_RIPEMD160() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
+
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();

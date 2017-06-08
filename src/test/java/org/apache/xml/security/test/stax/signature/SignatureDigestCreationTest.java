@@ -357,9 +357,8 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
 
     @Test
     public void testRIPEMD160() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
+
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
@@ -415,9 +414,8 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
 
     @Test
     public void testWhirlpool() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
+
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
@@ -473,9 +471,8 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
 
     @Test
     public void testSHA3_224() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
+
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
@@ -531,9 +528,8 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
 
     @Test
     public void testSHA3_256() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
+
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
@@ -589,9 +585,8 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
 
     @Test
     public void testSHA3_384() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
+
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
@@ -647,9 +642,8 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
 
     @Test
     public void testSHA3_512() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
+
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();

@@ -474,9 +474,8 @@ public class SymmetricEncryptionVerificationTest extends Assert {
 
     @Test
     public void testSEED_128() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
+
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -530,9 +529,8 @@ public class SymmetricEncryptionVerificationTest extends Assert {
 
     @Test
     public void testCAMELLIA_128() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
+
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -586,9 +584,8 @@ public class SymmetricEncryptionVerificationTest extends Assert {
 
     @Test
     public void testCAMELLIA_192() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
+
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -642,9 +639,8 @@ public class SymmetricEncryptionVerificationTest extends Assert {
 
     @Test
     public void testCAMELLIA_256() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
+
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(

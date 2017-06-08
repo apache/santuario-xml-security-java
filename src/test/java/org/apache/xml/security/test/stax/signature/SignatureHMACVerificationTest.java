@@ -322,9 +322,8 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
 
     @Test
     public void testRIPEMD160() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
+
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(

@@ -208,9 +208,8 @@ public class HMACSignatureAlgorithmTest extends Assert {
 
     @org.junit.Test
     public void testHMACRIPEMD160() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
+
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(

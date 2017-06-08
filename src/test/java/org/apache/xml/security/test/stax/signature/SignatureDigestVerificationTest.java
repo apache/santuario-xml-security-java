@@ -354,9 +354,8 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
 
     @Test
     public void testRIPEMD160() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
+
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -409,9 +408,8 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
 
     @Test
     public void testWhirlpool() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
+
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -464,9 +462,8 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
 
     @Test
     public void testSHA3_224() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
+
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -519,9 +516,8 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
 
     @Test
     public void testSHA3_256() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
+
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -574,9 +570,8 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
 
     @Test
     public void testSHA3_384() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
+
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -629,9 +624,8 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
 
     @Test
     public void testSHA3_512() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
+
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(

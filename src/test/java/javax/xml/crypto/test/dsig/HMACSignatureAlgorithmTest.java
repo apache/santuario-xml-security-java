@@ -140,9 +140,7 @@ public class HMACSignatureAlgorithmTest extends org.junit.Assert {
 
     @org.junit.Test
     public void testHMACRIPEMD160() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
         test_create_signature_enveloping(ripemd160, sha1, null,
                                          TestUtils.getSecretKey("testkey".getBytes("ASCII")), sks);
     }

@@ -904,9 +904,8 @@ public class XMLCipherTest extends org.junit.Assert {
 
     @org.junit.Test
     public void testEecryptToByteArray() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
+
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(128);
         Key key = keygen.generateKey();

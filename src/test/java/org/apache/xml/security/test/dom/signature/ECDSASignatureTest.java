@@ -97,9 +97,7 @@ public class ECDSASignatureTest extends org.junit.Assert {
 
     @org.junit.Test
     public void testOne() throws Exception {
-        if (Security.getProvider("BC") == null) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(Security.getProvider("BC") != null);
 
         //
         // This test fails with the IBM JDK
@@ -119,9 +117,7 @@ public class ECDSASignatureTest extends org.junit.Assert {
     @org.junit.Test
     @org.junit.Ignore
     public void testTwo() throws Exception {
-        if (Security.getProvider("BC") == null) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(Security.getProvider("BC") != null);
 
         File file =
             makeDataFile("src/test/resources/org/apache/xml/security/samples/input/ecdsaSignature.xml");
@@ -133,9 +129,7 @@ public class ECDSASignatureTest extends org.junit.Assert {
     @org.junit.Test
     @org.junit.Ignore
     public void testThree()  throws Exception {
-        if (Security.getProvider("BC") == null) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(Security.getProvider("BC") != null);
 
         File file = makeDataFile("src/test/resources/at/buergerkarte/testresp.xml");
         try (InputStream is = new FileInputStream(file)) {

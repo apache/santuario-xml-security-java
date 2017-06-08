@@ -508,9 +508,8 @@ public class KeyWrapEncryptionVerificationTest extends Assert {
 
     @Test
     public void testCamellia128KW() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
+
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -571,9 +570,8 @@ public class KeyWrapEncryptionVerificationTest extends Assert {
 
     @Test
     public void testCamellia192KW() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
+
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -634,9 +632,8 @@ public class KeyWrapEncryptionVerificationTest extends Assert {
 
     @Test
     public void testCamellia256KW() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
+
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -697,9 +694,8 @@ public class KeyWrapEncryptionVerificationTest extends Assert {
 
     @Test
     public void testSEED128KW() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
+
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(

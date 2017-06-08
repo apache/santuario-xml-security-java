@@ -154,54 +154,42 @@ public class SignatureDigestMethodTest extends org.junit.Assert {
 
     @org.junit.Test
     public void testRIPEMD160() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha1, ripemd160, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
     @org.junit.Test
     public void testWHIRLPOOL() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha1, whirlpool, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
     @org.junit.Test
     public void testSHA3_224() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha1, sha3_224, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
     @org.junit.Test
     public void testSHA3_256() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha1, sha3_256, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
     @org.junit.Test
     public void testSHA3_384() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha1, sha3_384, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
     @org.junit.Test
     public void testSHA3_512() throws Exception {
-        if (!bcInstalled) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha1, sha3_512, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
