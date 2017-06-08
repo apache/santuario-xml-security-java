@@ -234,7 +234,8 @@ public class Reference extends SignatureElementProxy {
         this.secureValidation = secureValidation;
         this.baseURI = baseURI;
         Element el = XMLUtils.getNextElement(element.getFirstChild());
-        if (Constants._TAG_TRANSFORMS.equals(el.getLocalName())
+
+        if (el != null && Constants._TAG_TRANSFORMS.equals(el.getLocalName())
             && Constants.SignatureSpecNS.equals(el.getNamespaceURI())) {
             transforms = new Transforms(el, this.baseURI);
             transforms.setSecureValidation(secureValidation);
@@ -245,8 +246,16 @@ public class Reference extends SignatureElementProxy {
             }
             el = XMLUtils.getNextElement(el.getNextSibling());
         }
+
         digestMethodElem = el;
+        if (digestMethodElem == null) {
+            throw new XMLSecurityException("signature.Reference.NoDigestMethod");
+        }
+
         digestValueElement = XMLUtils.getNextElement(digestMethodElem.getNextSibling());
+        if (digestValueElement == null) {
+            throw new XMLSecurityException("signature.Reference.NoDigestValue");
+        }
         this.manifest = manifest;
     }
 
