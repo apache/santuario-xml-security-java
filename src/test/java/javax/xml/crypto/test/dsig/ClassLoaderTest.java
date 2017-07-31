@@ -80,12 +80,8 @@ public class ClassLoaderTest extends org.junit.Assert {
             (urls, Thread.currentThread().getContextClassLoader());
         //load security provider using current class loader
         final Provider provider = new XMLDSigRI();
-        AccessController.doPrivileged(new java.security.PrivilegedAction<Object>() {
-            public Object run() {
-                Security.addProvider(provider);
-                return null;
-            }
-        });
+        AccessController.doPrivileged((java.security.PrivilegedAction<Object>)
+            () -> Security.addProvider(provider));
         // get the provider from java.security.Security using URLClassLoader.
         // Need to use introspection to invoke methods to avoid using the
         // current class loader

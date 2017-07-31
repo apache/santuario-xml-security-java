@@ -33,12 +33,8 @@ public final class UtfHelpper {
      * XML document.
      */
     private static final boolean OLD_UTF8 =
-        AccessController.doPrivileged(new PrivilegedAction<Boolean>() {
-            public Boolean run() {
-                return Boolean.getBoolean
-                    ("org.apache.xml.security.c14n.oldUtf8");
-            }
-        });
+        AccessController.doPrivileged((PrivilegedAction<Boolean>)
+            () -> Boolean.getBoolean("org.apache.xml.security.c14n.oldUtf8"));
 
     private UtfHelpper() {
         // complete

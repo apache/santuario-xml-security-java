@@ -42,13 +42,7 @@ public class IgnoreAllErrorHandler implements ErrorHandler {
 
     private static boolean getProperty(final String name) {
         return java.security.AccessController.doPrivileged(
-                new java.security.PrivilegedAction<Boolean>() {
-
-                    @Override
-                    public Boolean run() {
-                        return Boolean.getBoolean(name);
-                    }
-                });
+            (java.security.PrivilegedAction<Boolean>) () -> Boolean.getBoolean(name));
     }
 
     /** {@inheritDoc} */

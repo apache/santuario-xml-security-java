@@ -60,12 +60,8 @@ import org.xml.sax.SAXException;
 public final class XMLUtils {
 
     private static boolean ignoreLineBreaks =
-        AccessController.doPrivileged(new PrivilegedAction<Boolean>() {
-            public Boolean run() {
-                return Boolean.getBoolean
-                    ("org.apache.xml.security.ignoreLineBreaks");
-            }
-        });
+        AccessController.doPrivileged(
+            (PrivilegedAction<Boolean>) () -> Boolean.getBoolean("org.apache.xml.security.ignoreLineBreaks"));
 
     @SuppressWarnings("unchecked")
     private static final WeakObjectPool<DocumentBuilder, ParserConfigurationException> pools[] = new WeakObjectPool[4];

@@ -33,12 +33,8 @@ public final class XMLCipherUtil {
         org.slf4j.LoggerFactory.getLogger(XMLCipherUtil.class);
 
     private static final boolean gcmUseIvParameterSpec =
-        AccessController.doPrivileged(new PrivilegedAction<Boolean>() {
-            public Boolean run() {
-                return Boolean.getBoolean
-                    ("org.apache.xml.security.cipher.gcm.useIvParameterSpec");
-            }
-        });
+        AccessController.doPrivileged((PrivilegedAction<Boolean>)
+            () -> Boolean.getBoolean("org.apache.xml.security.cipher.gcm.useIvParameterSpec"));
 
     /**
      * Build an <code>AlgorithmParameterSpec</code> instance used to initialize a <code>Cipher</code> instance

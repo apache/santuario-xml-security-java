@@ -78,16 +78,16 @@ public class Init {
 
         InputStream is =
             AccessController.doPrivileged(
-                new PrivilegedAction<InputStream>() {
-                    public InputStream run() {
+                (PrivilegedAction<InputStream>)
+                    () -> {
                         String cfile =
                             System.getProperty("org.apache.xml.security.resource.config");
                         if (cfile == null) {
                             return null;
                         }
-                        return getClass().getResourceAsStream(cfile);
+                        return Init.class.getResourceAsStream(cfile);
                     }
-                });
+                );
         if (is == null) {
             dynamicInit();
         } else {

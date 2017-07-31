@@ -120,11 +120,8 @@ public class Reference extends SignatureElementProxy {
      * 3.1.1 of http://www.w3.org/2007/xmlsec/Drafts/xmldsig-core/ for more info.
      */
     private static boolean useC14N11 =
-        AccessController.doPrivileged(new PrivilegedAction<Boolean>() {
-            public Boolean run() {
-                return Boolean.getBoolean("org.apache.xml.security.useC14N11");
-            }
-        });
+        AccessController.doPrivileged((PrivilegedAction<Boolean>)
+            () -> Boolean.getBoolean("org.apache.xml.security.useC14N11"));
 
     private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(Reference.class);
