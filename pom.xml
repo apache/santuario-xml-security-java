@@ -132,24 +132,8 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                 <groupId>org.gaul</groupId>
-                 <artifactId>modernizer-maven-plugin</artifactId>
-                 <version>1.5.0</version>
-                 <configuration>
-                     <javaVersion>${targetJdk}</javaVersion>
-                 </configuration>
-                 <executions>
-                     <execution>
-                         <id>modernizer-check</id>
-                         <phase>verify</phase>
-                         <goals>
-                             <goal>modernizer</goal>
-                         </goals>
-                     </execution>
-                 </executions>
-            </plugin>
+             </plugin>
+        
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

@@ -21,7 +21,6 @@ package org.apache.xml.security.c14n;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -50,7 +49,7 @@ import org.xml.sax.InputSource;
 public class Canonicalizer {
 
     /** The output encoding of canonicalized data */
-    public static final String ENCODING = StandardCharsets.UTF_8.name();
+    public static final String ENCODING = "UTF8";
 
     /**
      * XPath Expression for selecting every node and continuous comments joined

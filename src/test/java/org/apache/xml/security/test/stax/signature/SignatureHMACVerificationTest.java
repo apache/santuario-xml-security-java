@@ -22,7 +22,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
-import java.nio.charset.StandardCharsets;
 import java.security.Provider;
 import java.security.Security;
 import java.util.ArrayList;
@@ -101,7 +100,7 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         Document document = builder.parse(sourceDocument);
 
         // Set the key up
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        byte[] hmacKey = "secret".getBytes("ASCII");
         String signatureAlgorithm = "http://www.w3.org/2000/09/xmldsig#hmac-sha1";
         SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
 
@@ -147,7 +146,7 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         Document document = builder.parse(sourceDocument);
 
         // Set the key up
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        byte[] hmacKey = "secret".getBytes("ASCII");
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#hmac-sha224";
         SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
 
@@ -193,7 +192,7 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         Document document = builder.parse(sourceDocument);
 
         // Set the key up
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        byte[] hmacKey = "secret".getBytes("ASCII");
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#hmac-sha256";
         SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
 
@@ -239,7 +238,7 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         Document document = builder.parse(sourceDocument);
 
         // Set the key up
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        byte[] hmacKey = "secret".getBytes("ASCII");
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#hmac-sha384";
         SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
 
@@ -285,7 +284,7 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         Document document = builder.parse(sourceDocument);
 
         // Set the key up
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        byte[] hmacKey = "secret".getBytes("ASCII");
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#hmac-sha512";
         SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
 
@@ -333,7 +332,7 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         Document document = builder.parse(sourceDocument);
 
         // Set the key up
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        byte[] hmacKey = "secret".getBytes("ASCII");
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#hmac-ripemd160";
         SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
 

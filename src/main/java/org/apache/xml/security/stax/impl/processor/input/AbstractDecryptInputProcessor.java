@@ -54,8 +54,6 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.events.Attribute;
 
 import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -283,7 +281,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                 XMLStreamReader xmlStreamReader =
                         inputProcessorChain.getSecurityContext().<XMLInputFactory>get(
                                 XMLSecurityConstants.XMLINPUTFACTORY).createXMLStreamReader(
-                                new MultiInputStream(prologInputStream, decryptInputStream, epilogInputStream), StandardCharsets.UTF_8.name());
+                                new MultiInputStream(prologInputStream, decryptInputStream, epilogInputStream), "UTF-8");
 
                 //forward to wrapper element
                 forwardToWrapperElement(xmlStreamReader);
@@ -348,7 +346,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
         }
 
         stringBuilder.append('>');
-        return new UnsyncByteArrayInputStream(stringBuilder.toString().getBytes(StandardCharsets.UTF_8));
+        return new UnsyncByteArrayInputStream(stringBuilder.toString().getBytes("UTF-8"));
     }
 
     private InputStream writeWrapperEndElement() throws IOException {
@@ -359,7 +357,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
         stringBuilder.append(':');
         stringBuilder.append(wrapperElementName.getLocalPart());
         stringBuilder.append('>');
-        return new UnsyncByteArrayInputStream(stringBuilder.toString().getBytes(StandardCharsets.UTF_8));
+        return new UnsyncByteArrayInputStream(stringBuilder.toString().getBytes("UTF-8"));
     }
 
     private void forwardToWrapperElement(XMLStreamReader xmlStreamReader) throws XMLStreamException {
@@ -789,8 +787,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                 OutputStream base64OutputStream = new Base64OutputStream(replaceableOuputStream, false);
                 ivSplittingOutputStream.setParentOutputStream(replaceableOuputStream);
                 OutputStreamWriter outputStreamWriter =
-                        new OutputStreamWriter(base64OutputStream,
-                                               Charset.forName(inputProcessorChain.getDocumentContext().getEncoding()));
+                        new OutputStreamWriter(base64OutputStream, inputProcessorChain.getDocumentContext().getEncoding());
 
                 //read the encrypted data from the stream until an end-element occurs and write then
                 //to the decrypter-stream

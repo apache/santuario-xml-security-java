@@ -24,7 +24,6 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
@@ -1113,7 +1112,7 @@ public class XMLCipher {
                 serializedOctets = serializer.serializeToByteArray(element);
             }
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Serialized octets:\n" + new String(serializedOctets, StandardCharsets.UTF_8));
+                LOG.debug("Serialized octets:\n" + new String(serializedOctets, "UTF-8"));
             }
         }
 
@@ -2366,8 +2365,12 @@ public class XMLCipher {
                     EncryptionConstants.EncryptionSpecNS,
                     EncryptionConstants._TAG_OAEPPARAMS).item(0);
             if (null != oaepParamsElement) {
-                String oaepParams = oaepParamsElement.getFirstChild().getNodeValue();
-                result.setOAEPparams(Base64.getMimeDecoder().decode(oaepParams.getBytes(StandardCharsets.UTF_8)));
+                try {
+                    String oaepParams = oaepParamsElement.getFirstChild().getNodeValue();
+                    result.setOAEPparams(Base64.getMimeDecoder().decode(oaepParams.getBytes("UTF-8")));
+                } catch(UnsupportedEncodingException e) {
+                    throw new RuntimeException("UTF-8 not supported", e);
+                }
             }
 
             Element digestElement =
@@ -3577,7 +3580,7 @@ public class XMLCipher {
                     javax.xml.transform.TransformerFactory.newInstance();
             transformerFactory.newTransformer().transform(
                     new javax.xml.transform.stream.StreamSource(
-                            new java.io.ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8))), domResult);
+                            new java.io.ByteArrayInputStream(xml.getBytes("UTF-8"))), domResult);
 
             boolean result = false;
             if (domResult.getNode().getFirstChild().getFirstChild().hasAttributes()

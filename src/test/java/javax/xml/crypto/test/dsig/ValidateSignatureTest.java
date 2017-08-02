@@ -19,7 +19,6 @@
 package javax.xml.crypto.test.dsig;
 
 import java.io.File;
-import java.nio.charset.StandardCharsets;
 import java.security.Security;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -80,7 +79,7 @@ public class ValidateSignatureTest extends org.junit.Assert {
         String file = "signature-external-c14n-xmlatrs.xml";
 
         boolean coreValidity = validator.validate(file,
-            new KeySelectors.SecretKeySelector("secret".getBytes(StandardCharsets.US_ASCII)));
+            new KeySelectors.SecretKeySelector("secret".getBytes("ASCII")));
         assertTrue("Signature failed core validation", coreValidity);
     }
 
@@ -102,7 +101,7 @@ public class ValidateSignatureTest extends org.junit.Assert {
         try {
             validator.validate
                 ("signature-enveloping-hmac-sha1-trunclen-0-attack.xml",
-                new KeySelectors.SecretKeySelector("secret".getBytes(StandardCharsets.US_ASCII)));
+                new KeySelectors.SecretKeySelector("secret".getBytes("ASCII")));
             fail("Expected HMACOutputLength exception");
         } catch (XMLSignatureException xse) {
             // System.out.println(xse.getMessage());
@@ -116,7 +115,7 @@ public class ValidateSignatureTest extends org.junit.Assert {
         try {
             validator.validate
                 ("signature-enveloping-hmac-sha1-trunclen-8-attack.xml",
-                new KeySelectors.SecretKeySelector("secret".getBytes(StandardCharsets.US_ASCII)));
+                new KeySelectors.SecretKeySelector("secret".getBytes("ASCII")));
             fail("Expected HMACOutputLength exception");
         } catch (XMLSignatureException xse) {
             // System.out.println(xse.getMessage());

@@ -96,7 +96,7 @@ public class Santuario273Test extends org.junit.Assert {
             (Node) xPath.evaluate("//ds:SignedInfo[1]", doc, XPathConstants.NODE);
         byte[] output = c14n.canonicalizeSubtree(signedInfo);
 
-        assertEquals( new String(output, java.nio.charset.StandardCharsets.UTF_8), expectedResult);
+        assertEquals( new String(output, "UTF-8"), expectedResult);
     }
 
 }

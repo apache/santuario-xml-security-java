@@ -20,9 +20,6 @@ package org.apache.xml.security.test.dom.interop;
 
 import org.apache.xml.security.test.dom.utils.resolver.OfflineResolver;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
-
-import java.nio.charset.StandardCharsets;
-
 import org.apache.xml.security.signature.XMLSignatureException;
 
 /**
@@ -72,7 +69,7 @@ public class BaltimoreTest extends InteropTestBase {
 
         String filename = merlinsDir15 + "signature-enveloping-hmac-sha1.xml";
         boolean verify = this.verifyHMAC(filename, new OfflineResolver(), false,
-                                         "secret".getBytes(StandardCharsets.US_ASCII));
+                                         "secret".getBytes("ASCII"));
 
         if (!verify) {
             LOG.error("Verification failed for " + filename);
@@ -92,7 +89,7 @@ public class BaltimoreTest extends InteropTestBase {
         String filename = merlinsDir15 + "signature-enveloping-hmac-sha1-40.xml";
         ResourceResolverSpi resolver = new OfflineResolver();
         boolean followManifests = false;
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        byte[] hmacKey = "secret".getBytes("ASCII");
 
         try {
             this.verifyHMAC(filename, resolver, followManifests, hmacKey);
@@ -338,7 +335,7 @@ public class BaltimoreTest extends InteropTestBase {
 
         String filename = merlinsDir23 + "signature-enveloping-hmac-sha1.xml";
         boolean verify = this.verifyHMAC(filename, new OfflineResolver(), false,
-                                         "secret".getBytes(StandardCharsets.US_ASCII));
+                                         "secret".getBytes("ASCII"));
 
         if (!verify) {
             LOG.error("Verification failed for " + filename);
@@ -358,7 +355,7 @@ public class BaltimoreTest extends InteropTestBase {
         String filename = merlinsDir23 + "signature-enveloping-hmac-sha1-40.xml";
         ResourceResolverSpi resolver = new OfflineResolver();
         boolean followManifests = false;
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        byte[] hmacKey = "secret".getBytes("ASCII");
 
         try {
             this.verifyHMAC(filename, resolver, followManifests, hmacKey);

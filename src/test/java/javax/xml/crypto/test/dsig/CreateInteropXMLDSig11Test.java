@@ -18,7 +18,6 @@
  */
 package javax.xml.crypto.test.dsig;
 
-import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.spec.ECGenParameterSpec;
 import java.util.Collections;
@@ -125,7 +124,7 @@ public class CreateInteropXMLDSig11Test extends org.junit.Assert {
         hmacSha512 = fac.newSignatureMethod
             ("http://www.w3.org/2001/04/xmldsig-more#hmac-sha512", null);
         kvks = new KeySelectors.KeyValueKeySelector();
-        sks = new KeySelectors.SecretKeySelector("testkey".getBytes(StandardCharsets.US_ASCII));
+        sks = new KeySelectors.SecretKeySelector("testkey".getBytes("ASCII"));
     }
 
     @org.junit.Test
@@ -264,21 +263,21 @@ public class CreateInteropXMLDSig11Test extends org.junit.Assert {
     public void test_create_enveloping_hmac_sha256() throws Exception {
         test_create_signature_enveloping(hmacSha256, sha1, rsaki,
                                          TestUtils.getSecretKey
-                                         ("testkey".getBytes(StandardCharsets.US_ASCII)), sks);
+                                         ("testkey".getBytes("ASCII")), sks);
     }
 
     @org.junit.Test
     public void test_create_enveloping_hmac_sha384() throws Exception {
         test_create_signature_enveloping(hmacSha384, sha1, rsaki,
                                          TestUtils.getSecretKey
-                                         ("testkey".getBytes(StandardCharsets.US_ASCII)), sks);
+                                         ("testkey".getBytes("ASCII")), sks);
     }
 
     @org.junit.Test
     public void test_create_enveloping_hmac_sha512() throws Exception {
         test_create_signature_enveloping(hmacSha512, sha1, rsaki,
                                          TestUtils.getSecretKey
-                                         ("testkey".getBytes(StandardCharsets.US_ASCII)), sks);
+                                         ("testkey".getBytes("ASCII")), sks);
     }
 
     private void test_create_signature_enveloping(

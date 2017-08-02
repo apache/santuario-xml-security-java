@@ -122,7 +122,7 @@ public class InboundXMLSec {
         inboundSecurityContext.put(XMLSecurityConstants.XMLINPUTFACTORY, xmlInputFactory);
 
         DocumentContextImpl documentContext = new DocumentContextImpl();
-        documentContext.setEncoding(xmlStreamReader.getEncoding() != null ? xmlStreamReader.getEncoding() : java.nio.charset.StandardCharsets.UTF_8.name());
+        documentContext.setEncoding(xmlStreamReader.getEncoding() != null ? xmlStreamReader.getEncoding() : "UTF-8");
         //woodstox 3.2.9 returns null when used with a DOMSource
         Location location = xmlStreamReader.getLocation();
         if (location != null) {

@@ -21,7 +21,6 @@ package org.apache.xml.security.test.dom.c14n.implementations;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 
 import javax.xml.parsers.DocumentBuilder;
 
@@ -66,7 +65,7 @@ public class Santuario191Test extends org.junit.Assert {
         //
         db = XMLUtils.createDocumentBuilder(false);
         Document doc = null;
-        try (InputStream is = new ByteArrayInputStream(INPUT_DATA.getBytes(StandardCharsets.UTF_8))) {
+        try (InputStream is = new ByteArrayInputStream(INPUT_DATA.getBytes("UTF8"))) {
             doc = db.parse(is);
         }
 
@@ -82,7 +81,7 @@ public class Santuario191Test extends org.junit.Assert {
         //
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         out.write(result);
-        assertTrue(EXPECTED_RESULT.equals(out.toString(StandardCharsets.UTF_8.name())));
+        assertTrue(EXPECTED_RESULT.equals(out.toString("UTF8")));
     }
 
 }

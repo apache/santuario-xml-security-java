@@ -27,6 +27,7 @@ import java.util.*;
 
 import javax.xml.stream.XMLStreamException;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.ext.AbstractBufferingOutputProcessor;
 import org.apache.xml.security.stax.ext.AbstractOutputProcessor;
@@ -200,7 +201,7 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
 
         createStartElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsig_SignatureValue, false, null);
         final byte[] signatureValue = signedInfoProcessor.getSignatureValue();
-        createCharactersAndOutputAsEvent(subOutputProcessorChain, Base64.getMimeEncoder().encodeToString(signatureValue));
+        createCharactersAndOutputAsEvent(subOutputProcessorChain, new Base64(76, new byte[]{'\n'}).encodeToString(signatureValue));
         createEndElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsig_SignatureValue);
 
         if (securityProperties.isSignatureGenerateIds()) {

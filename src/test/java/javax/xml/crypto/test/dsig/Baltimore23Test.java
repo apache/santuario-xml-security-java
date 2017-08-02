@@ -23,7 +23,6 @@ package javax.xml.crypto.test.dsig;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.nio.charset.StandardCharsets;
 import java.security.KeyStore;
 import java.security.Security;
 import javax.xml.crypto.KeySelector;
@@ -122,7 +121,7 @@ public class Baltimore23Test extends org.junit.Assert {
         String file = "signature-enveloping-hmac-sha1.xml";
 
         KeySelector ks = new KeySelectors.SecretKeySelector
-            ("secret".getBytes(StandardCharsets.US_ASCII) );
+            ("secret".getBytes("ASCII") );
         SignatureValidator validator = new SignatureValidator(dir);
         boolean coreValidity = validator.validate(file, ks);
         assertTrue("Signature failed core validation", coreValidity);
@@ -133,7 +132,7 @@ public class Baltimore23Test extends org.junit.Assert {
         String file = "signature-enveloping-hmac-sha1-40.xml";
 
         KeySelector ks = new KeySelectors.SecretKeySelector
-            ("secret".getBytes(StandardCharsets.US_ASCII) );
+            ("secret".getBytes("ASCII") );
         try {
             SignatureValidator validator = new SignatureValidator(dir);
             validator.validate(file, ks);

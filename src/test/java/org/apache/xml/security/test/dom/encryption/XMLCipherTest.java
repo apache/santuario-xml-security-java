@@ -23,7 +23,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
-import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.KeyPairGenerator;
 import java.security.KeyPair;
@@ -702,13 +701,13 @@ public class XMLCipherTest extends org.junit.Assert {
 
             // Now the decrypt, with a brand new cipher
             XMLCipher cipherDecrypt = XMLCipher.getInstance();
-            Key key = new SecretKeySpec("abcdefghijklmnop".getBytes(StandardCharsets.US_ASCII), "AES");
+            Key key = new SecretKeySpec("abcdefghijklmnop".getBytes("ASCII"), "AES");
 
             cipherDecrypt.init(XMLCipher.DECRYPT_MODE, key);
             byte[] decryptBytes = cipherDecrypt.decryptToByteArray(ee);
 
             assertEquals("A test encrypted secret",
-                        new String(decryptBytes, StandardCharsets.US_ASCII));
+                        new String(decryptBytes, "ASCII"));
         } else {
             LOG.warn(
                 "Test testSameDocumentCipherReference skipped as "
@@ -735,7 +734,7 @@ public class XMLCipherTest extends org.junit.Assert {
             // Test unused namespaces are preserved
             final String DATA1 = "<ns:root xmlns:ns=\"ns.com\"><ns:elem xmlns:ns2=\"ns2.com\">11</ns:elem></ns:root>";
             Document doc = null;
-            try (InputStream is = new ByteArrayInputStream(DATA1.getBytes(StandardCharsets.UTF_8))) {
+            try (InputStream is = new ByteArrayInputStream(DATA1.getBytes("UTF8"))) {
                 doc = db.parse(is);
             }
             Element elem = (Element)doc.getDocumentElement().getFirstChild();
@@ -761,7 +760,7 @@ public class XMLCipherTest extends org.junit.Assert {
 
             // Test default namespace undeclaration is preserved
             final String DATA2 = "<ns:root xmlns=\"defns.com\" xmlns:ns=\"ns.com\"><elem xmlns=\"\">11</elem></ns:root>";
-            try (InputStream is = new ByteArrayInputStream(DATA2.getBytes(StandardCharsets.UTF_8))) {
+            try (InputStream is = new ByteArrayInputStream(DATA2.getBytes("UTF8"))) {
                 doc = db.parse(is);
             }
             elem = (Element)doc.getDocumentElement().getFirstChild();
@@ -788,7 +787,7 @@ public class XMLCipherTest extends org.junit.Assert {
             // Test comments and PIs are not treated specially when serializing element content.
             // Other c14n algorithms add a newline after comments and PIs, when they are before or after the document element.
             final String DATA3 = "<root><!--comment1--><?pi1 target1?><elem/><!--comment2--><?pi2 target2?></root>";
-            try (InputStream is = new ByteArrayInputStream(DATA3.getBytes(StandardCharsets.UTF_8))) {
+            try (InputStream is = new ByteArrayInputStream(DATA3.getBytes("UTF8"))) {
                 doc = db.parse(is);
             }
             elem = (Element)doc.getDocumentElement();
@@ -854,7 +853,7 @@ public class XMLCipherTest extends org.junit.Assert {
         canon.notReset();
         canon.canonicalizeSubtree(e);
         baos.close();
-        String before = baos.toString(StandardCharsets.UTF_8.name());
+        String before = baos.toString("UTF-8");
 
         byte[] serialized = baos.toByteArray();
         EncryptedData encryptedData = null;
@@ -868,7 +867,7 @@ public class XMLCipherTest extends org.junit.Assert {
         String algorithm = encryptedData.getEncryptionMethod().getAlgorithm();
         assertEquals(XMLCipher.AES_128, algorithm);
         byte[] bytes = dcipher.decryptToByteArray(dcipher.martial(encryptedData));
-        String after = new String(bytes, StandardCharsets.UTF_8);
+        String after = new String(bytes, "UTF-8");
         assertEquals(before, after);
 
         // test with null type
@@ -1004,7 +1003,7 @@ public class XMLCipherTest extends org.junit.Assert {
         baos.write(serBytes);
         baos.close();
 
-        return baos.toString(StandardCharsets.UTF_8.name());
+        return baos.toString("UTF-8");
     }
 
     private Document document() {

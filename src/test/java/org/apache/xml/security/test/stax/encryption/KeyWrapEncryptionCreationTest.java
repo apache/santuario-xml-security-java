@@ -22,7 +22,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
-import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -130,7 +129,7 @@ public class KeyWrapEncryptionCreationTest extends Assert {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -140,7 +139,7 @@ public class KeyWrapEncryptionCreationTest extends Assert {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
@@ -198,7 +197,7 @@ public class KeyWrapEncryptionCreationTest extends Assert {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -208,7 +207,7 @@ public class KeyWrapEncryptionCreationTest extends Assert {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
@@ -266,7 +265,7 @@ public class KeyWrapEncryptionCreationTest extends Assert {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -276,7 +275,7 @@ public class KeyWrapEncryptionCreationTest extends Assert {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
@@ -332,7 +331,7 @@ public class KeyWrapEncryptionCreationTest extends Assert {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -342,7 +341,7 @@ public class KeyWrapEncryptionCreationTest extends Assert {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
@@ -397,7 +396,7 @@ public class KeyWrapEncryptionCreationTest extends Assert {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -407,7 +406,7 @@ public class KeyWrapEncryptionCreationTest extends Assert {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
@@ -462,7 +461,7 @@ public class KeyWrapEncryptionCreationTest extends Assert {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -472,7 +471,7 @@ public class KeyWrapEncryptionCreationTest extends Assert {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
@@ -527,7 +526,7 @@ public class KeyWrapEncryptionCreationTest extends Assert {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -537,7 +536,7 @@ public class KeyWrapEncryptionCreationTest extends Assert {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
@@ -597,7 +596,7 @@ public class KeyWrapEncryptionCreationTest extends Assert {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -607,7 +606,7 @@ public class KeyWrapEncryptionCreationTest extends Assert {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
@@ -667,7 +666,7 @@ public class KeyWrapEncryptionCreationTest extends Assert {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -677,7 +676,7 @@ public class KeyWrapEncryptionCreationTest extends Assert {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
@@ -737,7 +736,7 @@ public class KeyWrapEncryptionCreationTest extends Assert {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -747,7 +746,7 @@ public class KeyWrapEncryptionCreationTest extends Assert {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
@@ -807,7 +806,7 @@ public class KeyWrapEncryptionCreationTest extends Assert {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -817,7 +816,7 @@ public class KeyWrapEncryptionCreationTest extends Assert {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {

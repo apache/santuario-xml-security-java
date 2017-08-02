@@ -19,7 +19,6 @@
 package org.apache.xml.security.test.dom.encryption;
 
 import java.io.File;
-import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
@@ -101,9 +100,9 @@ public class BaltimoreEncTest extends org.junit.Assert {
         nodeCount = countNodes(doc);
 
         // Create the keys
-        jebBytes = "abcdefghijklmnopqrstuvwx".getBytes(StandardCharsets.US_ASCII);
-        jobBytes = "abcdefghijklmnop".getBytes(StandardCharsets.US_ASCII);
-        jedBytes = "abcdefghijklmnopqrstuvwxyz012345".getBytes(StandardCharsets.US_ASCII);
+        jebBytes = "abcdefghijklmnopqrstuvwx".getBytes("ASCII");
+        jobBytes = "abcdefghijklmnop".getBytes("ASCII");
+        jedBytes = "abcdefghijklmnopqrstuvwxyz012345".getBytes("ASCII");
 
         // Certificate information
         rsaCertSerialNumber = "1014918766910";
@@ -615,7 +614,7 @@ public class BaltimoreEncTest extends org.junit.Assert {
      * Check a decrypt of data was OK
      */
     private void checkDecryptedData(byte[] data) throws Exception {
-        String input = new String(data, StandardCharsets.US_ASCII);
+        String input = new String(data, "ASCII");
         assertEquals(testDecryptString, input);
     }
 }

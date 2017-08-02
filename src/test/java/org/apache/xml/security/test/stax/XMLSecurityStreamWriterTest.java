@@ -38,7 +38,6 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -91,8 +90,8 @@ public class XMLSecurityStreamWriterTest extends Assert {
 
         xmlSecurityStreamWriter.setNamespaceContext(namespaceContext);
         stdXmlStreamWriter.setNamespaceContext(namespaceContext);
-        xmlSecurityStreamWriter.writeStartDocument(StandardCharsets.UTF_8.name(), "1.0");
-        stdXmlStreamWriter.writeStartDocument(StandardCharsets.UTF_8.name(), "1.0");
+        xmlSecurityStreamWriter.writeStartDocument("UTF-8", "1.0");
+        stdXmlStreamWriter.writeStartDocument("UTF-8", "1.0");
 
         xmlSecurityStreamWriter.writeDTD("<!DOCTYPE foobar [\n\t<!ENTITY x0 \"hello\">\n]>");
         stdXmlStreamWriter.writeDTD("<!DOCTYPE foobar [\n\t<!ENTITY x0 \"hello\">\n]>");

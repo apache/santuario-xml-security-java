@@ -45,7 +45,6 @@ import javax.xml.xpath.XPathFactory;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.KeyStore;
 import java.security.Security;
@@ -86,7 +85,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -96,7 +95,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
             document = XMLUtils.createDocumentBuilder(false).parse(is);
@@ -142,7 +141,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -192,7 +191,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -202,7 +201,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
             document = XMLUtils.createDocumentBuilder(false).parse(is);
@@ -255,7 +254,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -265,7 +264,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
@@ -330,7 +329,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
 
         InputStream sourceDocument
                 = this.getClass().getClassLoader().getResourceAsStream(
@@ -340,7 +339,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        //System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
+        //System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
@@ -403,7 +402,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
 
         InputStream sourceDocument
                 = this.getClass().getClassLoader().getResourceAsStream(
@@ -413,7 +412,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        //System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
+        //System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
@@ -453,7 +452,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -463,7 +462,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
             document = XMLUtils.createDocumentBuilder(false).parse(is);
@@ -498,7 +497,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -512,14 +511,14 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         sourceDocument = new ByteArrayInputStream(baos.toByteArray());
         outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         baos = new ByteArrayOutputStream();
-        xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
 
         xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
             document = XMLUtils.createDocumentBuilder(false).parse(is);
@@ -561,7 +560,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         properties.setActions(actions);
 
         // Set the key up
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        byte[] hmacKey = "secret".getBytes("ASCII");
         SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2000/09/xmldsig#hmac-sha1");
         properties.setSignatureKey(key);
 
@@ -573,7 +572,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -583,7 +582,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
             document = XMLUtils.createDocumentBuilder(false).parse(is);
@@ -621,7 +620,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -631,7 +630,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
             document = XMLUtils.createDocumentBuilder(false).parse(is);
@@ -681,7 +680,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -691,7 +690,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
             document = XMLUtils.createDocumentBuilder(false).parse(is);
@@ -742,7 +741,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -752,7 +751,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
             document = XMLUtils.createDocumentBuilder(false).parse(is);
@@ -789,7 +788,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -799,7 +798,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
             document = XMLUtils.createDocumentBuilder(false).parse(is);
@@ -837,7 +836,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -847,7 +846,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
             document = XMLUtils.createDocumentBuilder(false).parse(is);
@@ -905,7 +904,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -915,7 +914,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
             document = XMLUtils.createDocumentBuilder(false).parse(is);
@@ -972,7 +971,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -982,7 +981,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
             document = XMLUtils.createDocumentBuilder(false).parse(is);
@@ -1020,7 +1019,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -1030,7 +1029,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
             document = XMLUtils.createDocumentBuilder(false).parse(is);
@@ -1071,7 +1070,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -1081,7 +1080,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
             document = XMLUtils.createDocumentBuilder(false).parse(is);
@@ -1126,7 +1125,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -1136,7 +1135,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
             document = XMLUtils.createDocumentBuilder(false).parse(is);
@@ -1172,7 +1171,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -1182,7 +1181,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
             document = XMLUtils.createDocumentBuilder(false).parse(is);
@@ -1218,7 +1217,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -1228,7 +1227,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
             document = XMLUtils.createDocumentBuilder(false).parse(is);
@@ -1266,7 +1265,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -1276,7 +1275,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
             document = XMLUtils.createDocumentBuilder(false).parse(is);
@@ -1314,7 +1313,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -1324,7 +1323,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
             document = XMLUtils.createDocumentBuilder(false).parse(is);
@@ -1362,7 +1361,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -1372,7 +1371,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
             document = XMLUtils.createDocumentBuilder(false).parse(is);
@@ -1414,7 +1413,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -1424,7 +1423,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        //System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
+        //System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
         Document document =
                 XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
@@ -1469,7 +1468,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -1479,7 +1478,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        //System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
+        //System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
         Document document =
                 XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 

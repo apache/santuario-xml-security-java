@@ -19,7 +19,6 @@
 package javax.xml.crypto.test.dsig;
 
 import java.io.File;
-import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.Security;
@@ -61,7 +60,7 @@ public class InteropXMLDSig11Test extends org.junit.Assert {
             + "interop" + fs + "xmldsig11");
         validator = new SignatureValidator(dir);
         kvks = new KeySelectors.KeyValueKeySelector();
-        sks = new KeySelectors.SecretKeySelector("testkey".getBytes(StandardCharsets.US_ASCII));
+        sks = new KeySelectors.SecretKeySelector("testkey".getBytes("ASCII"));
     }
 
     @org.junit.Test

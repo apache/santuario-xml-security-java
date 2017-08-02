@@ -23,7 +23,6 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 
 import javax.xml.parsers.DocumentBuilder;
 
@@ -199,7 +198,7 @@ public class CreateExclC14nInteropValues {
             + "\n" + "</notIncluded>" + "\n" + "</notIncluded>"
             + "\n" + "</included>";
             Document importDoc = null;
-            try (InputStream is = new ByteArrayInputStream(xmlStr.getBytes(StandardCharsets.UTF_8))) {
+            try (InputStream is = new ByteArrayInputStream(xmlStr.getBytes("UTF8"))) {
                 importDoc = db.parse(is);
             }
 
@@ -234,7 +233,7 @@ public class CreateExclC14nInteropValues {
             + "\n" + "</notIncluded>" + "\n" + "</notIncluded>"
             + "\n" + "</included>";
             Document importDoc = null;
-            try (InputStream is = new ByteArrayInputStream(xmlStr.getBytes(StandardCharsets.UTF_8))) {
+            try (InputStream is = new ByteArrayInputStream(xmlStr.getBytes("UTF8"))) {
                 importDoc = db.parse(is);
             }
 
@@ -269,7 +268,7 @@ public class CreateExclC14nInteropValues {
             + "\n" + "</notIncluded>" + "\n" + "</notIncluded>"
             + "\n" + "</included>";
             Document importDoc = null;
-            try (InputStream is = new ByteArrayInputStream(xmlStr.getBytes(StandardCharsets.UTF_8))) {
+            try (InputStream is = new ByteArrayInputStream(xmlStr.getBytes("UTF8"))) {
                 importDoc = db.parse(is);
             }
 
@@ -305,7 +304,7 @@ public class CreateExclC14nInteropValues {
             + "\n" + "</notIncluded>" + "\n" + "</included>"
             + "\n" + "</included>";
             Document importDoc = null;
-            try (InputStream is = new ByteArrayInputStream(xmlStr.getBytes(StandardCharsets.UTF_8))) {
+            try (InputStream is = new ByteArrayInputStream(xmlStr.getBytes("UTF8"))) {
                 importDoc = db.parse(is);
             }
 
@@ -342,7 +341,7 @@ public class CreateExclC14nInteropValues {
             + "</included>" + "\n" + "</notIncluded>" + "\n"
             + "</included>" + "\n" + "</included>";
             Document importDoc = null;
-            try (InputStream is = new ByteArrayInputStream(xmlStr.getBytes(StandardCharsets.UTF_8))) {
+            try (InputStream is = new ByteArrayInputStream(xmlStr.getBytes("UTF8"))) {
                 importDoc = db.parse(is);
             }
 
@@ -379,7 +378,7 @@ public class CreateExclC14nInteropValues {
             + "</notIncluded>" + "\n" + "</included>" + "\n"
             + "</included>";
             Document importDoc = null;
-            try (InputStream is = new ByteArrayInputStream(xmlStr.getBytes(StandardCharsets.UTF_8))) {
+            try (InputStream is = new ByteArrayInputStream(xmlStr.getBytes("UTF8"))) {
                 importDoc = db.parse(is);
             }
 

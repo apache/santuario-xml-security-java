@@ -20,7 +20,6 @@ package org.apache.xml.security.test.dom.algorithms;
 
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
-import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.Provider;
 import java.security.Security;
@@ -91,7 +90,7 @@ public class HMACSignatureAlgorithmTest extends Assert {
         Document document = builder.parse(sourceDocument);
 
         // Set up the Key
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        byte[] hmacKey = "secret".getBytes("ASCII");
         SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2000/09/xmldsig#hmac-sha1");
 
         List<String> localNames = new ArrayList<>();
@@ -112,7 +111,7 @@ public class HMACSignatureAlgorithmTest extends Assert {
         Document document = builder.parse(sourceDocument);
 
         // Set up the Key
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        byte[] hmacKey = "secret".getBytes("ASCII");
         SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2001/04/xmldsig-more#hmac-md5");
 
         List<String> localNames = new ArrayList<>();
@@ -133,7 +132,7 @@ public class HMACSignatureAlgorithmTest extends Assert {
         Document document = builder.parse(sourceDocument);
 
         // Set up the Key
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        byte[] hmacKey = "secret".getBytes("ASCII");
         SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2001/04/xmldsig-more#hmac-sha224");
 
         List<String> localNames = new ArrayList<>();
@@ -154,7 +153,7 @@ public class HMACSignatureAlgorithmTest extends Assert {
         Document document = builder.parse(sourceDocument);
 
         // Set up the Key
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        byte[] hmacKey = "secret".getBytes("ASCII");
         SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2001/04/xmldsig-more#hmac-sha256");
 
         List<String> localNames = new ArrayList<>();
@@ -175,7 +174,7 @@ public class HMACSignatureAlgorithmTest extends Assert {
         Document document = builder.parse(sourceDocument);
 
         // Set up the Key
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        byte[] hmacKey = "secret".getBytes("ASCII");
         SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2001/04/xmldsig-more#hmac-sha384");
 
         List<String> localNames = new ArrayList<>();
@@ -196,7 +195,7 @@ public class HMACSignatureAlgorithmTest extends Assert {
         Document document = builder.parse(sourceDocument);
 
         // Set up the Key
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        byte[] hmacKey = "secret".getBytes("ASCII");
         SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2001/04/xmldsig-more#hmac-sha512");
 
         List<String> localNames = new ArrayList<>();
@@ -219,7 +218,7 @@ public class HMACSignatureAlgorithmTest extends Assert {
         Document document = builder.parse(sourceDocument);
 
         // Set up the Key
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        byte[] hmacKey = "secret".getBytes("ASCII");
         SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2001/04/xmldsig-more#hmac-ripemd160");
 
         List<String> localNames = new ArrayList<>();

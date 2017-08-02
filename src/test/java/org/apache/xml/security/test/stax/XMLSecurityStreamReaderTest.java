@@ -44,7 +44,6 @@ import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -94,7 +93,7 @@ public class XMLSecurityStreamReaderTest extends Assert {
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new StAXSource(xmlSecurityStreamReader), new StreamResult(baos));
-        XMLAssert.assertXMLEqual(readTestFile(), baos.toString(StandardCharsets.UTF_8.name()));
+        XMLAssert.assertXMLEqual(readTestFile(), baos.toString("UTF-8"));
     }
 
     @Test
@@ -102,7 +101,7 @@ public class XMLSecurityStreamReaderTest extends Assert {
         XMLSecurityProperties securityProperties = new XMLSecurityProperties();
         InboundSecurityContextImpl securityContext = new InboundSecurityContextImpl();
         DocumentContextImpl documentContext = new DocumentContextImpl();
-        documentContext.setEncoding(StandardCharsets.UTF_8.name());
+        documentContext.setEncoding("UTF-8");
         InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(securityContext, documentContext);
         inputProcessorChain.addProcessor(new EventReaderProcessor());
         XMLSecurityStreamReader xmlSecurityStreamReader = new XMLSecurityStreamReader(inputProcessorChain, securityProperties);

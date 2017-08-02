@@ -19,7 +19,6 @@
 package javax.xml.crypto.test.dsig;
 
 import java.lang.reflect.Constructor;
-import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.Provider;
 import java.security.Security;
@@ -101,7 +100,7 @@ public class HMACSignatureAlgorithmTest extends org.junit.Assert {
         hmacSha512 = fac.newSignatureMethod("http://www.w3.org/2001/04/xmldsig-more#hmac-sha512", null);
         ripemd160 = fac.newSignatureMethod("http://www.w3.org/2001/04/xmldsig-more#hmac-ripemd160", null);
 
-        sks = new KeySelectors.SecretKeySelector("testkey".getBytes(StandardCharsets.US_ASCII));
+        sks = new KeySelectors.SecretKeySelector("testkey".getBytes("ASCII"));
     }
 
     @org.junit.AfterClass
@@ -112,38 +111,38 @@ public class HMACSignatureAlgorithmTest extends org.junit.Assert {
     @org.junit.Test
     public void testHMACSHA1() throws Exception {
         test_create_signature_enveloping(hmacSha1, sha1, null,
-                                         TestUtils.getSecretKey("testkey".getBytes(StandardCharsets.US_ASCII)), sks);
+                                         TestUtils.getSecretKey("testkey".getBytes("ASCII")), sks);
     }
 
     @org.junit.Test
     public void testHMACSHA_224() throws Exception {
         test_create_signature_enveloping(hmacSha224, sha1, null,
-                                         TestUtils.getSecretKey("testkey".getBytes(StandardCharsets.US_ASCII)), sks);
+                                         TestUtils.getSecretKey("testkey".getBytes("ASCII")), sks);
     }
 
     @org.junit.Test
     public void testHMACSHA_256() throws Exception {
         test_create_signature_enveloping(hmacSha256, sha1, null,
-                                         TestUtils.getSecretKey("testkey".getBytes(StandardCharsets.US_ASCII)), sks);
+                                         TestUtils.getSecretKey("testkey".getBytes("ASCII")), sks);
     }
 
     @org.junit.Test
     public void testHMACSHA_384() throws Exception {
         test_create_signature_enveloping(hmacSha384, sha1, null,
-                                         TestUtils.getSecretKey("testkey".getBytes(StandardCharsets.US_ASCII)), sks);
+                                         TestUtils.getSecretKey("testkey".getBytes("ASCII")), sks);
     }
 
     @org.junit.Test
     public void testHMACSHA_512() throws Exception {
         test_create_signature_enveloping(hmacSha512, sha1, null,
-                                         TestUtils.getSecretKey("testkey".getBytes(StandardCharsets.US_ASCII)), sks);
+                                         TestUtils.getSecretKey("testkey".getBytes("ASCII")), sks);
     }
 
     @org.junit.Test
     public void testHMACRIPEMD160() throws Exception {
         org.junit.Assume.assumeTrue(bcInstalled);
         test_create_signature_enveloping(ripemd160, sha1, null,
-                                         TestUtils.getSecretKey("testkey".getBytes(StandardCharsets.US_ASCII)), sks);
+                                         TestUtils.getSecretKey("testkey".getBytes("ASCII")), sks);
     }
 
     private void test_create_signature_enveloping(

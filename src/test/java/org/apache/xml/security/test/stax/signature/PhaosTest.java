@@ -50,7 +50,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
-import java.nio.charset.StandardCharsets;
 
 /**
  * This is a testcase to validate all "phaos-xmldsig-three"
@@ -206,7 +205,7 @@ public class PhaosTest extends Assert {
             Document document = builder.parse(sourceDocument);
 
             // Set up the key
-            byte[] hmacKey = "test".getBytes(StandardCharsets.US_ASCII);
+            byte[] hmacKey = "test".getBytes("ASCII");
             SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2000/09/xmldsig#hmac-sha1");
 
             // XMLUtils.outputDOM(document, System.out);
@@ -247,7 +246,7 @@ public class PhaosTest extends Assert {
         Document document = builder.parse(sourceDocument);
 
         // Set up the key
-        byte[] hmacKey = "test".getBytes(StandardCharsets.US_ASCII);
+        byte[] hmacKey = "test".getBytes("ASCII");
         SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2000/09/xmldsig#hmac-sha1");
 
         // XMLUtils.outputDOM(document, System.out);
@@ -283,7 +282,7 @@ public class PhaosTest extends Assert {
         Document document = builder.parse(sourceDocument);
 
         // Set up the key
-        byte[] hmacKey = "test".getBytes(StandardCharsets.US_ASCII);
+        byte[] hmacKey = "test".getBytes("ASCII");
         SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2000/09/xmldsig#hmac-sha1");
 
         // XMLUtils.outputDOM(document, System.out);

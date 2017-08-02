@@ -19,7 +19,6 @@
 package org.apache.xml.security.test.dom.signature;
 
 import java.io.File;
-import java.nio.charset.StandardCharsets;
 
 import javax.crypto.SecretKey;
 
@@ -81,7 +80,7 @@ public class HMACOutputLengthTest extends org.junit.Assert {
                 40, Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS
             );
         try {
-            sig.sign(getSecretKey("secret".getBytes(StandardCharsets.US_ASCII)));
+            sig.sign(getSecretKey("secret".getBytes("ASCII")));
             fail("Expected HMACOutputLength Exception");
         } catch (XMLSignatureException xse) {
             // System.out.println(xse.getMessage());
@@ -104,7 +103,7 @@ public class HMACOutputLengthTest extends org.junit.Assert {
         }
         Element sigElement = (Element) nl.item(0);
         XMLSignature signature = new XMLSignature(sigElement, file.toURI().toString());
-        SecretKey sk = signature.createSecretKey("secret".getBytes(StandardCharsets.US_ASCII));
+        SecretKey sk = signature.createSecretKey("secret".getBytes("ASCII"));
         return signature.checkSignatureValue(sk);
     }
 

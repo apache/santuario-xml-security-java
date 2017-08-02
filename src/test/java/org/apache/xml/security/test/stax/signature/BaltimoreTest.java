@@ -24,7 +24,6 @@ import java.io.InputStream;
 import java.math.BigInteger;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
-import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
@@ -129,7 +128,7 @@ public class BaltimoreTest extends Assert {
         Document document = builder.parse(sourceDocument);
 
         // Set up the Key
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        byte[] hmacKey = "secret".getBytes("ASCII");
         SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2000/09/xmldsig#hmac-sha1");
 
         // XMLUtils.outputDOM(document, System.out);
@@ -169,7 +168,7 @@ public class BaltimoreTest extends Assert {
         Document document = builder.parse(sourceDocument);
 
         // Set up the Key
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        byte[] hmacKey = "secret".getBytes("ASCII");
         SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2000/09/xmldsig#hmac-sha1");
 
         // XMLUtils.outputDOM(document, System.out);
@@ -461,7 +460,7 @@ public class BaltimoreTest extends Assert {
         Document document = builder.parse(sourceDocument);
 
         // Set up the Key
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        byte[] hmacKey = "secret".getBytes("ASCII");
         SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2000/09/xmldsig#hmac-sha1");
 
         // XMLUtils.outputDOM(document, System.out);
@@ -501,7 +500,7 @@ public class BaltimoreTest extends Assert {
         Document document = builder.parse(sourceDocument);
 
         // Set up the Key
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        byte[] hmacKey = "secret".getBytes("ASCII");
         SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2000/09/xmldsig#hmac-sha1");
 
         // XMLUtils.outputDOM(document, System.out);

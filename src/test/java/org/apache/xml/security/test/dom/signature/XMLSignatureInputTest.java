@@ -86,7 +86,7 @@ public class XMLSignatureInputTest extends org.junit.Assert {
     public void testSetOctetStreamGetOctetStream()
         throws IOException, CanonicalizationException, InvalidCanonicalizerException {
         InputStream inputStream =
-            new ByteArrayInputStream(_octetStreamTextInput.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+            new ByteArrayInputStream(_octetStreamTextInput.getBytes("UTF-8"));
         XMLSignatureInput input = new XMLSignatureInput(inputStream);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         InputStream res = input.getOctetStream();
@@ -101,7 +101,7 @@ public class XMLSignatureInputTest extends org.junit.Assert {
         }
 
         byte resBytes[] = baos.toByteArray();
-        String resString = new String(resBytes, java.nio.charset.StandardCharsets.UTF_8);
+        String resString = new String(resBytes, "UTF-8");
 
         assertTrue(resString.equals(_octetStreamTextInput));
     }

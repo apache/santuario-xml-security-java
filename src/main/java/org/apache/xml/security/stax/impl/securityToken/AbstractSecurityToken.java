@@ -24,7 +24,7 @@ import java.security.PublicKey;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +43,7 @@ public abstract class AbstractSecurityToken implements SecurityToken {
     private boolean asymmetric = false;
     private String sha1Identifier;
 
-    protected final Map<String, Key> keyTable = new HashMap<String, Key>();
+    protected final Map<String, Key> keyTable = new Hashtable<String, Key>();
     protected final List<SecurityTokenConstants.TokenUsage> tokenUsages = new ArrayList<SecurityTokenConstants.TokenUsage>();
 
     public AbstractSecurityToken(String id) {
