@@ -21,6 +21,7 @@
  */
 package javax.xml.crypto.test.dsig;
 
+import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.util.*;
 
@@ -101,7 +102,7 @@ public class CreatePhaosXMLDSig3Test extends org.junit.Assert {
         Document doc = db.newDocument();
         DOMSignContext dsc = new DOMSignContext
             (new KeySelectors.SecretKeySelector
-             ("test".getBytes("ASCII")), doc);
+             ("test".getBytes(StandardCharsets.US_ASCII)), doc);
         dsc.putNamespacePrefix(XMLSignature.XMLNS, "dsig");
         URIDereferencer ud = new LocalHttpCacheURIDereferencer();
         dsc.setURIDereferencer(ud);
@@ -111,7 +112,7 @@ public class CreatePhaosXMLDSig3Test extends org.junit.Assert {
 
         DOMValidateContext dvc = new DOMValidateContext
             (new KeySelectors.SecretKeySelector
-             ("test".getBytes("ASCII")), doc);
+             ("test".getBytes(StandardCharsets.US_ASCII)), doc);
         dvc.setURIDereferencer(ud);
 
         XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
@@ -160,7 +161,7 @@ public class CreatePhaosXMLDSig3Test extends org.junit.Assert {
 
         DOMSignContext dsc = new DOMSignContext
             (new KeySelectors.SecretKeySelector
-             ("test".getBytes("ASCII")), player);
+             ("test".getBytes(StandardCharsets.US_ASCII)), player);
         dsc.putNamespacePrefix(XMLSignature.XMLNS, "dsig");
 
         sig.sign(dsc);
@@ -168,7 +169,7 @@ public class CreatePhaosXMLDSig3Test extends org.junit.Assert {
 
         DOMValidateContext dvc = new DOMValidateContext
             (new KeySelectors.SecretKeySelector
-             ("test".getBytes("ASCII")), player.getLastChild());
+             ("test".getBytes(StandardCharsets.US_ASCII)), player.getLastChild());
 
         XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
 

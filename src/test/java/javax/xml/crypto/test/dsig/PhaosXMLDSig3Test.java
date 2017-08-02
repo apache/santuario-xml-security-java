@@ -22,6 +22,7 @@
 package javax.xml.crypto.test.dsig;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.security.Security;
 import javax.xml.crypto.KeySelector;
 import javax.xml.crypto.URIDereferencer;
@@ -101,7 +102,7 @@ public class PhaosXMLDSig3Test extends org.junit.Assert {
         String file = "signature-hmac-sha1-40-c14n-comments-detached.xml";
 
         KeySelector ks = new KeySelectors.SecretKeySelector
-            ("test".getBytes("ASCII") );
+            ("test".getBytes(StandardCharsets.US_ASCII) );
         try {
             validator.validate(file, ks);
             fail("Expected HMACOutputLength Exception");
@@ -117,7 +118,7 @@ public class PhaosXMLDSig3Test extends org.junit.Assert {
         String file = "signature-hmac-sha1-40-exclusive-c14n-comments-detached.xml";
 
         KeySelector ks = new KeySelectors.SecretKeySelector
-            ("test".getBytes("ASCII") );
+            ("test".getBytes(StandardCharsets.US_ASCII) );
         try {
             validator.validate(file, ks);
             fail("Expected HMACOutputLength Exception");
@@ -133,7 +134,7 @@ public class PhaosXMLDSig3Test extends org.junit.Assert {
         String file = "signature-hmac-sha1-exclusive-c14n-comments-detached.xml";
 
         KeySelector ks = new KeySelectors.SecretKeySelector
-            ("test".getBytes("ASCII") );
+            ("test".getBytes(StandardCharsets.US_ASCII) );
         boolean coreValidity = validator.validate(file, ks, ud);
         assertTrue("Signature failed core validation", coreValidity);
     }
@@ -144,7 +145,7 @@ public class PhaosXMLDSig3Test extends org.junit.Assert {
         String file = "signature-hmac-sha1-exclusive-c14n-enveloped.xml";
 
         KeySelector ks = new KeySelectors.SecretKeySelector
-            ("test".getBytes("ASCII") );
+            ("test".getBytes(StandardCharsets.US_ASCII) );
         boolean coreValidity = validator.validate(file, ks);
         assertTrue("Signature failed core validation", coreValidity);
     }

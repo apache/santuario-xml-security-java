@@ -21,6 +21,7 @@ package org.apache.xml.security.test.stax.encryption;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -935,7 +936,7 @@ public class DecryptionTest extends Assert {
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?><ns:root xmlns:ns=\"ns.com\"><ns:elem xmlns:ns2=\"ns2.com\">11</ns:elem></ns:root>";
         DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
         Document document = null;
-        try (InputStream is = new ByteArrayInputStream(DATA1.getBytes("UTF8"))) {
+        try (InputStream is = new ByteArrayInputStream(DATA1.getBytes(StandardCharsets.UTF_8))) {
             document = db.parse(is);
         }
 
@@ -1003,7 +1004,7 @@ public class DecryptionTest extends Assert {
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?><ns:root xmlns=\"defns.com\" xmlns:ns=\"ns.com\"><elem xmlns=\"\">11</elem></ns:root>";
         DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
         Document document = null;
-        try (InputStream is = new ByteArrayInputStream(DATA1.getBytes("UTF8"))) {
+        try (InputStream is = new ByteArrayInputStream(DATA1.getBytes(StandardCharsets.UTF_8))) {
             document = db.parse(is);
         }
 

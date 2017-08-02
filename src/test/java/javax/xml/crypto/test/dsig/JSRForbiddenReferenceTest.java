@@ -19,6 +19,7 @@
 package javax.xml.crypto.test.dsig;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.security.Security;
 
 import javax.xml.crypto.dsig.XMLSignatureException;
@@ -53,7 +54,7 @@ public class JSRForbiddenReferenceTest extends org.junit.Assert {
 
         DOMValidateContext vc =
             validator.getValidateContext(
-                file, new KeySelectors.SecretKeySelector("secret".getBytes("ASCII"))
+                file, new KeySelectors.SecretKeySelector("secret".getBytes(StandardCharsets.US_ASCII))
             );
 
         vc.setProperty("org.apache.jcp.xml.dsig.secureValidation", Boolean.FALSE);

@@ -53,7 +53,7 @@ public class XMLSecStartDocumentImpl extends XMLSecEventBaseImpl implements XMLS
 
     @Override
     public String getCharacterEncodingScheme() {
-        return characterEncodingScheme != null ? characterEncodingScheme : "UTF-8";
+        return characterEncodingScheme != null ? characterEncodingScheme : java.nio.charset.StandardCharsets.UTF_8.name();
     }
 
     @Override

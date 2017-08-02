@@ -1113,7 +1113,7 @@ public class Canonicalizer20010315Test extends org.junit.Assert {
         throws ParserConfigurationException, IOException, SAXException,
         TransformerConfigurationException, TransformerException {
         //String ENCODING_ISO8859_1 = "ISO-8859-1";
-        //String ENCODING_UTF8 = "UTF-8";
+        //String ENCODING_UTF8 = java.nio.charset.StandardCharsets.UTF_8;
         String ENCODING_UTF16 = "UTF-16";
         DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
         Document doc = null;

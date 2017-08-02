@@ -175,7 +175,7 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
                 //spec says (4.2): "The cleartext octet sequence obtained in step 3 is interpreted as UTF-8 encoded character data."
                 xmlEventWriter = new XMLSecurityEventWriter(
                         XMLSecurityConstants.xmlOutputFactoryNonRepairingNs.createXMLStreamWriter(
-                                cipherOutputStream, "UTF-8"));
+                                cipherOutputStream, java.nio.charset.StandardCharsets.UTF_8.name()));
                 //we have to output a fake element to workaround text-only encryption:
                 xmlEventWriter.add(wrapperStartElement);
             } catch (NoSuchPaddingException e) {

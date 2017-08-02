@@ -19,6 +19,7 @@
 package javax.xml.crypto.test.dsig;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.security.Security;
 import javax.xml.crypto.KeySelector;
 
@@ -47,7 +48,7 @@ public class C14N11Test extends org.junit.Assert {
             + "org" + fs + "w3c" + fs + "www" + fs
             + "interop" + fs + "xmldsig" + fs + "c14n11");
         validator = new SignatureValidator(dir);
-        sks = new KeySelectors.SecretKeySelector("secret".getBytes("ASCII"));
+        sks = new KeySelectors.SecretKeySelector("secret".getBytes(StandardCharsets.US_ASCII));
     }
 
     @org.junit.Test

@@ -20,6 +20,7 @@ package org.apache.xml.security.test.dom.c14n.implementations;
 
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 import org.apache.xml.security.c14n.implementations.UtfHelpper;
@@ -30,14 +31,9 @@ public class UtfHelperTest extends org.junit.Assert {
     public void testBug40156() {
         String s = "\u00e4\u00f6\u00fc";
         byte a[] = UtfHelpper.getStringInUtf8(s);
-        try {
-            byte correct[] = s.getBytes("UTF8");
-            boolean equals = Arrays.equals(correct, a);
-            assertTrue(equals);
-        } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        byte correct[] = s.getBytes(StandardCharsets.UTF_8);
+        boolean equals = Arrays.equals(correct, a);
+        assertTrue(equals);
     }
 
     @org.junit.Test
@@ -51,7 +47,7 @@ public class UtfHelperTest extends org.junit.Assert {
         }
 
         // if system property org.apache.xml.security.c14n.oldUtf8=true, can only validate
-        // 16bit chars against String.getBytes("UTF8");
+        // 16bit chars against String.getBytes(StandardCharsets.UTF_8);
         int chunk = Boolean.getBoolean("org.apache.xml.security.c14n.oldUtf8") ? 1 << 16
             : Character.MAX_CODE_POINT + 1;
         int j = 0;
@@ -82,7 +78,7 @@ public class UtfHelperTest extends org.junit.Assert {
         byte a[] = UtfHelpper.getStringInUtf8(str);
         try {
             // System.out.println("chunk:"+j);
-            byte correct[] = str.getBytes("UTF8");
+            byte correct[] = str.getBytes(StandardCharsets.UTF_8);
             assertTrue("UtfHelper.getStringInUtf8 false", Arrays.equals(correct, a));
             assertTrue(
                 "UtfHelper.getStringInUtf8 false",

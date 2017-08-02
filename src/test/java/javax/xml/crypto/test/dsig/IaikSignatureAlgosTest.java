@@ -22,6 +22,7 @@
 package javax.xml.crypto.test.dsig;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.security.Security;
 import javax.xml.crypto.dsig.XMLSignatureException;
 
@@ -74,7 +75,7 @@ public class IaikSignatureAlgosTest extends org.junit.Assert {
 
         try {
             validator.validate(file, new
-                KeySelectors.SecretKeySelector("secret".getBytes("ASCII")));
+                KeySelectors.SecretKeySelector("secret".getBytes(StandardCharsets.US_ASCII)));
             fail("Expected HMACOutputLength Exception");
         } catch (XMLSignatureException xse) {
             // System.out.println(xse.getMessage());
@@ -87,7 +88,7 @@ public class IaikSignatureAlgosTest extends org.junit.Assert {
         String file = "hMACSignature.xml";
 
         boolean coreValidity = validator.validate(file, new
-            KeySelectors.SecretKeySelector("secret".getBytes("ASCII")));
+            KeySelectors.SecretKeySelector("secret".getBytes(StandardCharsets.US_ASCII)));
         assertTrue("Signature failed core validation", coreValidity);
     }
 

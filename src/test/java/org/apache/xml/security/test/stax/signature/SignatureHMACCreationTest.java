@@ -22,6 +22,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
+import java.nio.charset.StandardCharsets;
 import java.security.Provider;
 import java.security.Security;
 import java.util.ArrayList;
@@ -85,7 +86,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         properties.setActions(actions);
 
         // Set the key up
-        byte[] hmacKey = "secret".getBytes("ASCII");
+        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
         String signatureAlgorithm = "http://www.w3.org/2000/09/xmldsig#hmac-sha1";
         SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
         properties.setSignatureKey(key);
@@ -101,7 +102,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -111,7 +112,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
             document = XMLUtils.createDocumentBuilder(false).parse(is);
@@ -130,7 +131,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         properties.setActions(actions);
 
         // Set the key up
-        byte[] hmacKey = "secret".getBytes("ASCII");
+        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#hmac-sha224";
         SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
         properties.setSignatureKey(key);
@@ -146,7 +147,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -156,7 +157,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
             document = XMLUtils.createDocumentBuilder(false).parse(is);
@@ -175,7 +176,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         properties.setActions(actions);
 
         // Set the key up
-        byte[] hmacKey = "secret".getBytes("ASCII");
+        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#hmac-sha256";
         SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
         properties.setSignatureKey(key);
@@ -191,7 +192,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -201,7 +202,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
             document = XMLUtils.createDocumentBuilder(false).parse(is);
@@ -220,7 +221,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         properties.setActions(actions);
 
         // Set the key up
-        byte[] hmacKey = "secret".getBytes("ASCII");
+        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#hmac-sha384";
         SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
         properties.setSignatureKey(key);
@@ -236,7 +237,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -246,7 +247,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
             document = XMLUtils.createDocumentBuilder(false).parse(is);
@@ -265,7 +266,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         properties.setActions(actions);
 
         // Set the key up
-        byte[] hmacKey = "secret".getBytes("ASCII");
+        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#hmac-sha512";
         SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
         properties.setSignatureKey(key);
@@ -281,7 +282,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -291,7 +292,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
             document = XMLUtils.createDocumentBuilder(false).parse(is);
@@ -312,7 +313,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         properties.setActions(actions);
 
         // Set the key up
-        byte[] hmacKey = "secret".getBytes("ASCII");
+        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#hmac-ripemd160";
         SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
         properties.setSignatureKey(key);
@@ -328,7 +329,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -338,7 +339,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
             document = XMLUtils.createDocumentBuilder(false).parse(is);

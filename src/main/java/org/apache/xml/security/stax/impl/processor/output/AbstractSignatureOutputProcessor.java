@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.stax.impl.processor.output;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer20010315_Excl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -125,7 +124,7 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
             throw new XMLSecurityException(e);
         }
 
-        String calculatedDigest = new String(Base64.encodeBase64(digestOutputStream.getDigestValue()));
+        String calculatedDigest = new String(Base64.getMimeEncoder().encodeToString(digestOutputStream.getDigestValue()));
         LOG.debug("Calculated Digest: {}", calculatedDigest);
 
         signaturePartDef.setDigestValue(calculatedDigest);
@@ -289,7 +288,7 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
                         } catch (IOException e) {
                             throw new XMLSecurityException(e);
                         }
-                        String calculatedDigest = new String(Base64.encodeBase64(this.digestOutputStream.getDigestValue()));
+                        String calculatedDigest = Base64.getMimeEncoder().encodeToString(this.digestOutputStream.getDigestValue());
                         LOG.debug("Calculated Digest: {}", calculatedDigest);
                         signaturePartDef.setDigestValue(calculatedDigest);
 

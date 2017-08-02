@@ -90,9 +90,9 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
         boolean equals = java.security.MessageDigest.isEqual(reference, baos.toByteArray());
 
         if (!equals) {
-            System.out.println("Expected:\n" + new String(reference, "UTF-8"));
+            System.out.println("Expected:\n" + new String(reference, java.nio.charset.StandardCharsets.UTF_8));
             System.out.println("");
-            System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
+            System.out.println("Got:\n" + new String(baos.toByteArray(), java.nio.charset.StandardCharsets.UTF_8));
         }
 
         assertTrue(equals);
@@ -117,9 +117,9 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
         boolean equals = java.security.MessageDigest.isEqual(reference, baos.toByteArray());
 
         if (!equals) {
-            System.out.println("Expected:\n" + new String(reference, "UTF-8"));
+            System.out.println("Expected:\n" + new String(reference, java.nio.charset.StandardCharsets.UTF_8));
             System.out.println("");
-            System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
+            System.out.println("Got:\n" + new String(baos.toByteArray(), java.nio.charset.StandardCharsets.UTF_8));
         }
 
         assertTrue(equals);
@@ -144,9 +144,9 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
         boolean equals = java.security.MessageDigest.isEqual(reference, baos.toByteArray());
 
         if (!equals) {
-            System.out.println("Expected:\n" + new String(reference, "UTF-8"));
+            System.out.println("Expected:\n" + new String(reference, java.nio.charset.StandardCharsets.UTF_8));
             System.out.println("");
-            System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
+            System.out.println("Got:\n" + new String(baos.toByteArray(), java.nio.charset.StandardCharsets.UTF_8));
         }
 
         assertTrue(equals);
@@ -171,9 +171,9 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
         boolean equals = java.security.MessageDigest.isEqual(reference, baos.toByteArray());
 
         if (!equals) {
-            System.out.println("Expected:\n" + new String(reference, "UTF-8"));
+            System.out.println("Expected:\n" + new String(reference, java.nio.charset.StandardCharsets.UTF_8));
             System.out.println("");
-            System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
+            System.out.println("Got:\n" + new String(baos.toByteArray(), java.nio.charset.StandardCharsets.UTF_8));
         }
         assertTrue(equals);
     }
@@ -221,7 +221,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
 
         canonicalize(c, new StringReader(XML), new QName("http://schemas.xmlsoap.org/soap/envelope/", "Body"));
 
-        assertEquals(new String(baos.toByteArray(), "UTF-8"), c14nXML);
+        assertEquals(new String(baos.toByteArray(), java.nio.charset.StandardCharsets.UTF_8), c14nXML);
     }
 
     /**
@@ -310,7 +310,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
             c.setOutputStream(baos);
             canonicalize(c, new StringReader(XML), new QName("http://schemas.xmlsoap.org/soap/envelope/", "Body"));
 
-            assertEquals(new String(baos.toByteArray(), "UTF-8"), c14nXML);
+            assertEquals(new String(baos.toByteArray(), java.nio.charset.StandardCharsets.UTF_8), c14nXML);
         }
 
         {
@@ -325,7 +325,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
             c.setOutputStream(baos);
             canonicalize(c, new StringReader(XML), new QName("http://schemas.xmlsoap.org/soap/envelope/", "Body"));
 
-            assertEquals(new String(baos.toByteArray(), "UTF-8"), c14nXML);
+            assertEquals(new String(baos.toByteArray(), java.nio.charset.StandardCharsets.UTF_8), c14nXML);
         }
     }
 
@@ -386,7 +386,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
             c.setOutputStream(baos);
             canonicalize(c, new StringReader(XML), new QName("http://schemas.xmlsoap.org/soap/envelope/", "Body"));
 
-            assertEquals(new String(baos.toByteArray(), "UTF-8"), c14nXML1);
+            assertEquals(new String(baos.toByteArray(), java.nio.charset.StandardCharsets.UTF_8), c14nXML1);
         }
         {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -399,7 +399,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
             c.setOutputStream(baos);
             canonicalize(c, new StringReader(XML), new QName("http://schemas.xmlsoap.org/soap/envelope/", "Body"));
 
-            assertEquals(new String(baos.toByteArray(), "UTF-8"), c14nXML2);
+            assertEquals(new String(baos.toByteArray(), java.nio.charset.StandardCharsets.UTF_8), c14nXML2);
         }
     }
 
@@ -448,7 +448,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
             c.setOutputStream(baos);
             canonicalize(c, new StringReader(XML), new QName("http://schemas.xmlsoap.org/soap/envelope/", "Body"));
 
-            assertEquals(new String(baos.toByteArray(), "UTF-8"), c14nXML);
+            assertEquals(new String(baos.toByteArray(), java.nio.charset.StandardCharsets.UTF_8), c14nXML);
         }
         {
             //exactly the same outcome is expected if #default is not set:
@@ -462,7 +462,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
             c.setOutputStream(baos);
             canonicalize(c, new StringReader(XML), new QName("http://schemas.xmlsoap.org/soap/envelope/", "Body"));
 
-            assertEquals(new String(baos.toByteArray(), "UTF-8"), c14nXML);
+            assertEquals(new String(baos.toByteArray(), java.nio.charset.StandardCharsets.UTF_8), c14nXML);
         }
     }
 
@@ -511,7 +511,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
             c.setOutputStream(baos);
             canonicalize(c, new StringReader(XML), new QName("http://schemas.xmlsoap.org/soap/envelope/", "Body"));
 
-            assertEquals(new String(baos.toByteArray(), "UTF-8"), c14nXML);
+            assertEquals(new String(baos.toByteArray(), java.nio.charset.StandardCharsets.UTF_8), c14nXML);
         }
         {
             //exactly the same outcome is expected if #default is not set:
@@ -525,7 +525,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
             c.setOutputStream(baos);
             canonicalize(c, new StringReader(XML), new QName("http://schemas.xmlsoap.org/soap/envelope/", "Body"));
 
-            assertEquals(new String(baos.toByteArray(), "UTF-8"), c14nXML);
+            assertEquals(new String(baos.toByteArray(), java.nio.charset.StandardCharsets.UTF_8), c14nXML);
         }
     }
 
@@ -572,7 +572,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
         c.setOutputStream(baos);
         canonicalize(c, new StringReader(XML), new QName("http://schemas.xmlsoap.org/soap/envelope/", "Body"));
 
-        assertEquals(new String(baos.toByteArray(), "UTF-8"), c14nXML);
+        assertEquals(new String(baos.toByteArray(), java.nio.charset.StandardCharsets.UTF_8), c14nXML);
     }
 
     @org.junit.Test
@@ -614,7 +614,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
         c.setOutputStream(baos);
         canonicalize(c, new StringReader(XML), new QName("http://schemas.xmlsoap.org/soap/envelope/", "Body"));
 
-        assertEquals(new String(baos.toByteArray(), "UTF-8"), c14nXML);
+        assertEquals(new String(baos.toByteArray(), java.nio.charset.StandardCharsets.UTF_8), c14nXML);
     }
 
     @org.junit.Test
@@ -656,7 +656,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
         c.setOutputStream(baos);
         canonicalize(c, new StringReader(XML), new QName("http://schemas.xmlsoap.org/soap/envelope/", "Body"));
 
-        assertEquals(new String(baos.toByteArray(), "UTF-8"), c14nXML);
+        assertEquals(new String(baos.toByteArray(), java.nio.charset.StandardCharsets.UTF_8), c14nXML);
     }
 
     @org.junit.Test
@@ -698,7 +698,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
         c.setOutputStream(baos);
         canonicalize(c, new StringReader(XML), new QName("http://schemas.xmlsoap.org/soap/envelope/", "Body"));
 
-        assertEquals(new String(baos.toByteArray(), "UTF-8"), c14nXML);
+        assertEquals(new String(baos.toByteArray(), java.nio.charset.StandardCharsets.UTF_8), c14nXML);
     }
 
     @org.junit.Test
@@ -735,7 +735,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
         c.setOutputStream(baos);
         canonicalize(c, new StringReader(XML), new QName("http://xmlsoap.org/Ping", "Ping"));
 
-        assertEquals(new String(baos.toByteArray(), "UTF-8"), c14nXML);
+        assertEquals(new String(baos.toByteArray(), java.nio.charset.StandardCharsets.UTF_8), c14nXML);
     }
 
     private void canonicalize(

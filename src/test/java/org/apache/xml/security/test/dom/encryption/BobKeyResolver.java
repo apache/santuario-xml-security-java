@@ -19,6 +19,7 @@
 package org.apache.xml.security.test.dom.encryption;
 
 import java.security.cert.X509Certificate;
+import java.nio.charset.StandardCharsets;
 import java.security.PublicKey;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
@@ -117,7 +118,7 @@ public class BobKeyResolver extends KeyResolverSpi {
         if (engineCanResolve(element, BaseURI, storage)) {
             try {
                 DESedeKeySpec keySpec =
-                    new DESedeKeySpec("abcdefghijklmnopqrstuvwx".getBytes("ASCII"));
+                    new DESedeKeySpec("abcdefghijklmnopqrstuvwx".getBytes(StandardCharsets.US_ASCII));
                 SecretKeyFactory keyFactory =
                     SecretKeyFactory.getInstance("DESede");
                 SecretKey key = keyFactory.generateSecret(keySpec);
