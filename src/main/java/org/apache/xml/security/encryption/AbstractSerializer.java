@@ -22,6 +22,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -103,7 +104,7 @@ public abstract class AbstractSerializer implements Serializer {
             for (int i = 0; i < content.getLength(); i++) {
                 canon.canonicalizeSubtree(content.item(i));
             }
-            String ret = baos.toString("UTF-8");
+            String ret = baos.toString(StandardCharsets.UTF_8.name());
             baos.reset();
             return ret;
         }
@@ -142,7 +143,7 @@ public abstract class AbstractSerializer implements Serializer {
             canon.setWriter(baos);
             canon.notReset();
             canon.canonicalizeSubtree(node);
-            String ret = baos.toString("UTF-8");
+            String ret = baos.toString(StandardCharsets.UTF_8.name());
             baos.reset();
             return ret;
         }
@@ -183,7 +184,7 @@ public abstract class AbstractSerializer implements Serializer {
     protected static byte[] createContext(byte[] source, Node ctx) throws XMLEncryptionException {
         // Create the context to parse the document against
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(byteArrayOutputStream, "UTF-8");
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(byteArrayOutputStream, StandardCharsets.UTF_8);
             outputStreamWriter.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?><dummy");
 
             // Run through each node up to the document node and find any xmlns: nodes

@@ -22,6 +22,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.KeyStore;
 import java.security.Security;
@@ -386,7 +387,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         Document document = builder.parse(sourceDocument);
 
         // Set up the Key
-        byte[] hmacKey = "secret".getBytes("ASCII");
+        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
         SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2000/09/xmldsig#hmac-sha1");
 
         // Sign using DOM
@@ -466,7 +467,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         Document document = builder.parse(sourceDocument);
 
         // Set up the Key
-        byte[] hmacKey = "secret".getBytes("ASCII");
+        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
         SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2000/09/xmldsig#hmac-sha1");
 
         // Sign using DOM
@@ -496,7 +497,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
 
-        byte[] badKey = "secret2".getBytes("ASCII");
+        byte[] badKey = "secret2".getBytes(StandardCharsets.US_ASCII);
         key = new SecretKeySpec(badKey, "http://www.w3.org/2000/09/xmldsig#hmac-sha1");
         properties.setSignatureVerificationKey(key);
         InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);

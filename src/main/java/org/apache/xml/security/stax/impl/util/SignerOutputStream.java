@@ -19,7 +19,6 @@
 package org.apache.xml.security.stax.impl.util;
 
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.impl.algorithms.SignatureAlgorithm;
@@ -66,12 +65,10 @@ public class SignerOutputStream extends OutputStream {
         try {
             signatureAlgorithm.engineUpdate(arg0, arg1, arg2);
             if (isDebugEnabled) {
-                stringBuilder.append(new String(arg0, arg1, arg2, "UTF-8"));
+                stringBuilder.append(new String(arg0, arg1, arg2, java.nio.charset.StandardCharsets.UTF_8));
             }
         } catch (XMLSecurityException e) {
             throw new RuntimeException(e);
-        } catch (UnsupportedEncodingException e) {
-            LOG.warn(e.toString(), e);//UTF-8 is mandatory actually
         }
     }
 

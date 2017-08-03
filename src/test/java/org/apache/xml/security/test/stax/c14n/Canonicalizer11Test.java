@@ -35,6 +35,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 /**
  */
@@ -244,9 +245,9 @@ public class Canonicalizer11Test extends org.junit.Assert {
         boolean equals = java.security.MessageDigest.isEqual(reference, baos.toByteArray());
 
         if (!equals) {
-            System.out.println("Expected:\n" + new String(reference, "UTF-8"));
+            System.out.println("Expected:\n" + new String(reference, StandardCharsets.UTF_8));
             System.out.println("");
-            System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
+            System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
         }
 
         assertTrue(equals);
@@ -635,7 +636,7 @@ public class Canonicalizer11Test extends org.junit.Assert {
         // if everything is OK, result is true; we do a binary compare, byte by byte
         boolean result = java.security.MessageDigest.isEqual(refBytes, baos.toByteArray());
         if (!result) {
-            assertEquals(new String(baos.toByteArray(), "UTF-8"), new String(refBytes, "UTF-8"));
+            assertEquals(new String(baos.toByteArray(), StandardCharsets.UTF_8), new String(refBytes, StandardCharsets.UTF_8));
         }
         assertTrue(result);
     }
@@ -673,7 +674,7 @@ public class Canonicalizer11Test extends org.junit.Assert {
 //   public static byte[] convertToUTF16(byte input[]) throws Exception {
 //
 //      //String ENCODING_ISO8859_1 = "ISO-8859-1";
-//      //String ENCODING_UTF8 = "UTF-8";
+//      //String ENCODING_UTF8 = java.nio.charset.StandardCharsets.UTF_8;
 //      String ENCODING_UTF16 = "UTF-16";
 //      DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 //      DocumentBuilder db = dbf.newDocumentBuilder();

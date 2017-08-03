@@ -23,6 +23,7 @@ package javax.xml.crypto.test.dsig;
 
 import java.io.*;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.KeyStore;
 import java.security.PublicKey;
@@ -113,7 +114,7 @@ public class CreateBaltimore23Test extends org.junit.Assert {
         rsa = kifac.newKeyInfo(Collections.singletonList
             (kifac.newKeyValue(TestUtils.getPublicKey("RSA"))));
         rsaSha1 = fac.newSignatureMethod(SignatureMethod.RSA_SHA1, null);
-        sks = new KeySelectors.SecretKeySelector("secret".getBytes("ASCII"));
+        sks = new KeySelectors.SecretKeySelector("secret".getBytes(StandardCharsets.US_ASCII));
 
         ud = new LocalHttpCacheURIDereferencer();
     }
@@ -170,7 +171,7 @@ public class CreateBaltimore23Test extends org.junit.Assert {
             (SignatureMethod.HMAC_SHA1, new HMACParameterSpec(40));
         try {
             test_create_signature_enveloping(hmacSha1, null,
-                TestUtils.getSecretKey("secret".getBytes("ASCII")), sks, false);
+                TestUtils.getSecretKey("secret".getBytes(StandardCharsets.US_ASCII)), sks, false);
             fail("Expected HMACOutputLength Exception");
         } catch (XMLSignatureException xse) {
             System.out.println(xse.getMessage());
@@ -184,7 +185,7 @@ public class CreateBaltimore23Test extends org.junit.Assert {
         SignatureMethod hmacSha1 = fac.newSignatureMethod
             (SignatureMethod.HMAC_SHA1, null);
         test_create_signature_enveloping(hmacSha1, null,
-            TestUtils.getSecretKey("secret".getBytes("ASCII")), sks, false);
+            TestUtils.getSecretKey("secret".getBytes(StandardCharsets.US_ASCII)), sks, false);
     }
 
     @org.junit.Test
@@ -288,7 +289,7 @@ public class CreateBaltimore23Test extends org.junit.Assert {
     public void test_create_signature_x509_ski() throws Exception {
         KeyInfo ski = kifac.newKeyInfo(Collections.singletonList
             (kifac.newX509Data(Collections.singletonList
-            ("keyid".getBytes("ASCII")))));
+            ("keyid".getBytes(StandardCharsets.US_ASCII)))));
 
         test_create_signature_external(dsaSha1, ski, signingKey,
             KeySelector.singletonKeySelector(validatingKey), false);

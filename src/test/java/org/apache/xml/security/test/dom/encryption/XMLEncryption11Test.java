@@ -525,7 +525,7 @@ public class XMLEncryption11Test extends org.junit.Assert {
                     "http://www.w3.org/2009/xmlenc11#rsa-oaep",
                     "http://www.w3.org/2001/04/xmlenc#sha512",
                     "http://www.w3.org/2009/xmlenc11#mgf1sha1",
-                    Base64.getMimeDecoder().decode("ZHVtbXkxMjM=".getBytes("UTF-8"))
+                    Base64.getMimeDecoder().decode("ZHVtbXkxMjM=".getBytes(java.nio.charset.StandardCharsets.UTF_8))
                 );
 
             doc =

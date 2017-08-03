@@ -19,7 +19,6 @@
 package org.apache.xml.security.stax.impl.util;
 
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 
 import org.slf4j.Logger;
@@ -62,11 +61,7 @@ public class DigestOutputStream extends OutputStream {
     public void write(byte[] arg0, int arg1, int arg2) {
         messageDigest.update(arg0, arg1, arg2);
         if (isDebugEnabled) {
-            try {
-                stringBuilder.append(new String(arg0, arg1, arg2, "UTF-8"));
-            } catch (UnsupportedEncodingException e) {
-                LOG.warn(e.toString(), e);//UTF-8 is mandatory actually
-            }
+            stringBuilder.append(new String(arg0, arg1, arg2, java.nio.charset.StandardCharsets.UTF_8));
         }
     }
 

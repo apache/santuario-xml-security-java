@@ -19,6 +19,9 @@
 package org.apache.xml.security.test.dom.interop;
 
 import org.apache.xml.security.test.dom.utils.resolver.OfflineResolver;
+
+import java.nio.charset.StandardCharsets;
+
 import org.apache.xml.security.signature.XMLSignatureException;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
 import org.apache.xml.security.utils.resolver.implementations.ResolverAnonymous;
@@ -66,7 +69,7 @@ public class IAIKTest extends InteropTestBase {
             gregorsDir + "signatureAlgorithms/signatures/hMACShortSignature.xml";
         ResourceResolverSpi resolver = new OfflineResolver();
         boolean followManifests = false;
-        byte[] hmacKey = "secret".getBytes("ASCII");
+        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
 
         try {
             this.verifyHMAC(filename, resolver, followManifests, hmacKey);
@@ -93,7 +96,7 @@ public class IAIKTest extends InteropTestBase {
         String filename = gregorsDir + "signatureAlgorithms/signatures/hMACSignature.xml";
         ResourceResolverSpi resolver = new OfflineResolver();
         boolean followManifests = false;
-        byte[] hmacKey = "secret".getBytes("ASCII");
+        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
         boolean verify = false;
 
         try {

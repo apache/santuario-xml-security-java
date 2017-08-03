@@ -20,6 +20,7 @@ package org.apache.xml.security.test.dom.encryption;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 
 import javax.crypto.Cipher;
@@ -114,7 +115,7 @@ public class EncryptContentTest extends org.junit.Assert {
         }
 
         Document doc = null;
-        try (InputStream is = new ByteArrayInputStream(DATA.getBytes("UTF8"))) {
+        try (InputStream is = new ByteArrayInputStream(DATA.getBytes(StandardCharsets.UTF_8))) {
             doc = db.parse(is);
         }
         NodeList dataToEncrypt = doc.getElementsByTagName("user");
@@ -166,7 +167,7 @@ public class EncryptContentTest extends org.junit.Assert {
         }
 
         Document doc = null;
-        try (InputStream is = new ByteArrayInputStream(MULTIPLE_USER_DATA.getBytes("UTF8"))) {
+        try (InputStream is = new ByteArrayInputStream(MULTIPLE_USER_DATA.getBytes(StandardCharsets.UTF_8))) {
             doc = db.parse(is);
         }
         NodeList dataToEncrypt = doc.getElementsByTagName("user");

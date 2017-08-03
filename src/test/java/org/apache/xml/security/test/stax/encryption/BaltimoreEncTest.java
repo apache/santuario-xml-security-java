@@ -22,6 +22,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.spec.PKCS8EncodedKeySpec;
@@ -115,7 +116,7 @@ public class BaltimoreEncTest extends org.junit.Assert {
         Document document = builder.parse(sourceDocument);
 
         // Set up the Key
-        byte[] keyBytes = "abcdefghijklmnopqrstuvwx".getBytes("ASCII");
+        byte[] keyBytes = "abcdefghijklmnopqrstuvwx".getBytes(StandardCharsets.US_ASCII);
         SecretKey secretKey = new SecretKeySpec(keyBytes, "DESede");
 
         // XMLUtils.outputDOM(document, System.out);
@@ -153,7 +154,7 @@ public class BaltimoreEncTest extends org.junit.Assert {
         Document document = builder.parse(sourceDocument);
 
         // Set up the Key
-        byte[] keyBytes = "abcdefghijklmnopqrstuvwxyz012345".getBytes("ASCII");
+        byte[] keyBytes = "abcdefghijklmnopqrstuvwxyz012345".getBytes(StandardCharsets.US_ASCII);
         SecretKey secretKey = new SecretKeySpec(keyBytes, "AES");
 
         // XMLUtils.outputDOM(document, System.out);
@@ -191,7 +192,7 @@ public class BaltimoreEncTest extends org.junit.Assert {
         Document document = builder.parse(sourceDocument);
 
         // Set up the Key
-        byte[] keyBytes = "abcdefghijklmnopqrstuvwx".getBytes("ASCII");
+        byte[] keyBytes = "abcdefghijklmnopqrstuvwx".getBytes(StandardCharsets.US_ASCII);
         SecretKey secretKey = new SecretKeySpec(keyBytes, "AES");
 
         // XMLUtils.outputDOM(document, System.out);
@@ -229,7 +230,7 @@ public class BaltimoreEncTest extends org.junit.Assert {
         Document document = builder.parse(sourceDocument);
 
         // Set up the Key
-        byte[] keyBytes = "abcdefghijklmnop".getBytes("ASCII");
+        byte[] keyBytes = "abcdefghijklmnop".getBytes(StandardCharsets.US_ASCII);
         SecretKey secretKey = new SecretKeySpec(keyBytes, "AES");
 
         // XMLUtils.outputDOM(document, System.out);
@@ -301,7 +302,7 @@ public class BaltimoreEncTest extends org.junit.Assert {
         Document document = builder.parse(sourceDocument);
 
         // Set up the Key
-        byte[] keyBytes = "abcdefghijklmnop".getBytes("ASCII");
+        byte[] keyBytes = "abcdefghijklmnop".getBytes(StandardCharsets.US_ASCII);
         SecretKey secretKey = new SecretKeySpec(keyBytes, "AES");
 
         // XMLUtils.outputDOM(document, System.out);
@@ -337,7 +338,7 @@ public class BaltimoreEncTest extends org.junit.Assert {
         Document document = builder.parse(sourceDocument);
 
         // Set up the Key
-        byte[] keyBytes = "abcdefghijklmnopqrstuvwx".getBytes("ASCII");
+        byte[] keyBytes = "abcdefghijklmnopqrstuvwx".getBytes(StandardCharsets.US_ASCII);
         SecretKey secretKey = new SecretKeySpec(keyBytes, "DESede");
 
         // XMLUtils.outputDOM(document, System.out);
@@ -373,7 +374,7 @@ public class BaltimoreEncTest extends org.junit.Assert {
         Document document = builder.parse(sourceDocument);
 
         // Set up the Key
-        byte[] keyBytes = "abcdefghijklmnopqrstuvwxyz012345".getBytes("ASCII");
+        byte[] keyBytes = "abcdefghijklmnopqrstuvwxyz012345".getBytes(StandardCharsets.US_ASCII);
         SecretKey secretKey = new SecretKeySpec(keyBytes, "AES");
 
         // XMLUtils.outputDOM(document, System.out);

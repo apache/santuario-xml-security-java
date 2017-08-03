@@ -78,7 +78,7 @@ public class EmptyNamespaceTest {
         transformer.setProperties(properties);
 
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            InputStream stream = new ByteArrayInputStream(message.getBytes("UTF-8"))) {
+            InputStream stream = new ByteArrayInputStream(message.getBytes(java.nio.charset.StandardCharsets.UTF_8))) {
             transformer.setOutputStream(outputStream);
 
             transformer.transform(stream);
@@ -101,7 +101,7 @@ public class EmptyNamespaceTest {
         documentBuilderFactory.setValidating(false);
         final DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document document = null;
-        try (InputStream is = new ByteArrayInputStream(message.getBytes("UTF-8"))) {
+        try (InputStream is = new ByteArrayInputStream(message.getBytes(java.nio.charset.StandardCharsets.UTF_8))) {
             document = documentBuilder.parse(is);
         }
 
@@ -109,7 +109,7 @@ public class EmptyNamespaceTest {
         byte[] output =
                 transformer.engineCanonicalizeSubTree(document, inclusiveNamespaces);
 
-        String result = new String(output, "UTF-8");
+        String result = new String(output, java.nio.charset.StandardCharsets.UTF_8);
         Assert.assertEquals(message, result);
     }
 }

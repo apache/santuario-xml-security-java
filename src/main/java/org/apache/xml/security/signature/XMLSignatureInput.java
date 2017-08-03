@@ -23,6 +23,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -581,9 +582,9 @@ public class XMLSignatureInput {
             // if a not-wellformed nodeset exists, put a container around it...
             try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
 
-                baos.write("<container>".getBytes("UTF-8"));
+                baos.write("<container>".getBytes(StandardCharsets.UTF_8));
                 baos.write(this.getBytes());
-                baos.write("</container>".getBytes("UTF-8"));
+                baos.write("</container>".getBytes(StandardCharsets.UTF_8));
 
                 result = baos.toByteArray();
             }

@@ -23,6 +23,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.KeyStore;
 import java.security.PrivateKey;
@@ -343,7 +344,7 @@ public class XMLEncryption11Test extends Assert {
                 "http://www.w3.org/2001/04/xmlenc#sha512",
                 "http://www.w3.org/2009/xmlenc11#mgf1sha1",
                 sessionKey, "http://www.w3.org/2009/xmlenc11#aes256-gcm",
-                Base64.getMimeDecoder().decode("ZHVtbXkxMjM=".getBytes("UTF-8")));
+                Base64.getMimeDecoder().decode("ZHVtbXkxMjM=".getBytes(StandardCharsets.UTF_8)));
         // XMLUtils.outputDOM(ed.getFirstChild(), System.out);
 
         // Perform decryption
@@ -382,7 +383,7 @@ public class XMLEncryption11Test extends Assert {
                 "http://www.w3.org/2001/04/xmlenc#sha512",
                 "http://www.w3.org/2009/xmlenc11#mgf1sha512",
                 sessionKey, "http://www.w3.org/2009/xmlenc11#aes256-gcm",
-                Base64.getMimeDecoder().decode("ZHVtbXkxMjM=".getBytes("UTF-8")));
+                Base64.getMimeDecoder().decode("ZHVtbXkxMjM=".getBytes(StandardCharsets.UTF_8)));
         // XMLUtils.outputDOM(ed.getFirstChild(), System.out);
 
         // Perform decryption
@@ -422,7 +423,7 @@ public class XMLEncryption11Test extends Assert {
                 "http://www.w3.org/2001/04/xmlenc#sha512",
                 "http://www.w3.org/2009/xmlenc11#mgf1sha512",
                 sessionKey, "http://www.w3.org/2009/xmlenc11#aes256-gcm",
-                Base64.getMimeDecoder().decode("ZHVtbXkxMjM=".getBytes("UTF-8")));
+                Base64.getMimeDecoder().decode("ZHVtbXkxMjM=".getBytes(StandardCharsets.UTF_8)));
         // XMLUtils.outputDOM(ed.getFirstChild(), System.out);
 
         NodeList nl = ed.getElementsByTagNameNS("http://www.w3.org/2001/04/xmlenc#", "CipherValue");
@@ -545,7 +546,7 @@ public class XMLEncryption11Test extends Assert {
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(filename);

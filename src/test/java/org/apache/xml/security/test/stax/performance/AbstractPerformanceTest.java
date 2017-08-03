@@ -40,6 +40,7 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.KeyStore;
 import java.security.cert.X509Certificate;
@@ -194,7 +195,7 @@ public abstract class AbstractPerformanceTest {
 
         final File signedFile = new File(getTmpFilePath(), "signature-stax-" + tagCount + ".xml");
         OutputStream outputStream = new FileOutputStream(signedFile);
-        XMLStreamWriter xmlStreamWriter = outboundSignatureXMLSec.processOutMessage(outputStream, "UTF-8");
+        XMLStreamWriter xmlStreamWriter = outboundSignatureXMLSec.processOutMessage(outputStream, StandardCharsets.UTF_8.name());
 
         InputStream inputStream = new FileInputStream(file);
         XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(inputStream);
@@ -256,7 +257,7 @@ public abstract class AbstractPerformanceTest {
 
         final File signedFile = new File(getTmpFilePath(), "encryption-stax-" + tagCount + ".xml");
         OutputStream outputStream = new FileOutputStream(signedFile);
-        XMLStreamWriter xmlStreamWriter = outboundEncryptionXMLSec.processOutMessage(outputStream, "UTF-8");
+        XMLStreamWriter xmlStreamWriter = outboundEncryptionXMLSec.processOutMessage(outputStream, StandardCharsets.UTF_8.name());
 
         InputStream inputStream = new FileInputStream(file);
         XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(inputStream);
