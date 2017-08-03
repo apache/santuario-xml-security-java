@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.stax.impl.processor.output;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 import org.apache.xml.security.stax.securityToken.SecurityTokenProvider;
 import org.slf4j.Logger;
@@ -46,6 +45,7 @@ import java.security.cert.X509Certificate;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.MGF1ParameterSpec;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 /**
@@ -155,7 +155,7 @@ public class XMLEncryptOutputProcessor extends AbstractEncryptOutputProcessor {
                             byte[] oaepParams = getSecurityProperties().getEncryptionKeyTransportOAEPParams();
                             if (oaepParams != null) {
                                 createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_xenc_OAEPparams, false, null);
-                                createCharactersAndOutputAsEvent(outputProcessorChain, Base64.encodeBase64String(oaepParams));
+                                createCharactersAndOutputAsEvent(outputProcessorChain, Base64.getMimeEncoder().encodeToString(oaepParams));
                                 createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_xenc_OAEPparams);
                             }
 
@@ -238,7 +238,7 @@ public class XMLEncryptOutputProcessor extends AbstractEncryptOutputProcessor {
                             }
                             byte[] encryptedEphemeralKey = cipher.wrap(sessionKey);
 
-                            createCharactersAndOutputAsEvent(outputProcessorChain, new Base64(76, new byte[]{'\n'}).encodeToString(encryptedEphemeralKey));
+                            createCharactersAndOutputAsEvent(outputProcessorChain, Base64.getMimeEncoder().encodeToString(encryptedEphemeralKey));
 
                         } catch (NoSuchPaddingException e) {
                             throw new XMLSecurityException(e);
