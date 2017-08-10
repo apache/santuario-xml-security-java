@@ -18,10 +18,7 @@
  */
 package org.apache.xml.security.test.dom.keys.keyresolver;
 
-import java.lang.reflect.Constructor;
-import java.security.Provider;
 import java.security.PublicKey;
-import java.security.Security;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -40,36 +37,14 @@ public class DEREncodedKeyValueResolverTest extends Assert {
     private PublicKey ecKeyControl;
 
     public DEREncodedKeyValueResolverTest() throws Exception {
-        //
-        // If the BouncyCastle provider is not installed, then try to load it
-        // via reflection.
-        //
-        if (Security.getProvider("BC") == null) {
-            Constructor<?> cons = null;
-            try {
-                Class<?> c = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
-                cons = c.getConstructor(new Class[] {});
-            } catch (Exception e) {
-                //ignore
-            }
-            if (cons != null) {
-                Provider provider = (Provider)cons.newInstance();
-                Security.insertProviderAt(provider, 1);
-                ecKeyControl = loadPublicKey("ec.key", "EC");
-            }
-        }
 
         rsaKeyControl = loadPublicKey("rsa.key", "RSA");
         dsaKeyControl = loadPublicKey("dsa.key", "DSA");
+        ecKeyControl = loadPublicKey("ec.key", "EC");
 
         if (!Init.isInitialized()) {
             Init.init();
         }
-    }
-
-    @org.junit.AfterClass
-    public static void cleanup() throws Exception {
-        Security.removeProvider("BC");
     }
 
     @org.junit.Test
@@ -92,10 +67,6 @@ public class DEREncodedKeyValueResolverTest extends Assert {
 
     @org.junit.Test
     public void testECPublicKey() throws Exception {
-        if (ecKeyControl == null) {
-            return;
-        }
-
         Document doc = loadXML("DEREncodedKeyValue-EC.xml");
         Element element = doc.getDocumentElement();
 

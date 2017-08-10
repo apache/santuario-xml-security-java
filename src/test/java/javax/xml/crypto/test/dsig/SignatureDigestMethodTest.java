@@ -18,9 +18,7 @@
  */
 package javax.xml.crypto.test.dsig;
 
-import java.lang.reflect.Constructor;
 import java.security.Key;
-import java.security.Provider;
 import java.security.Security;
 import java.util.Collections;
 
@@ -68,24 +66,6 @@ public class SignatureDigestMethodTest extends org.junit.Assert {
     }
 
     public SignatureDigestMethodTest() throws Exception {
-        //
-        // If the BouncyCastle provider is not installed, then try to load it
-        // via reflection.
-        //
-        if (Security.getProvider("BC") == null) {
-            Constructor<?> cons = null;
-            try {
-                Class<?> c = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
-                cons = c.getConstructor(new Class[] {});
-            } catch (Exception e) {
-                //ignore
-            }
-            if (cons != null) {
-                Provider provider = (Provider)cons.newInstance();
-                Security.insertProviderAt(provider, 2);
-                bcInstalled = true;
-            }
-        }
 
         db = XMLUtils.createDocumentBuilder(false);
         // create common objects
@@ -115,11 +95,6 @@ public class SignatureDigestMethodTest extends org.junit.Assert {
                                   TestUtils.getPublicKey("RSA"))));
 
         kvks = new KeySelectors.KeyValueKeySelector();
-    }
-
-    @org.junit.AfterClass
-    public static void cleanup() throws Exception {
-        Security.removeProvider("BC");
     }
 
     @org.junit.Test

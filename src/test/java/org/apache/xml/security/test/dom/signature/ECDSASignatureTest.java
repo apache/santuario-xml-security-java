@@ -23,11 +23,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.lang.reflect.Constructor;
 import java.security.KeyStore;
 import java.security.PrivateKey;
-import java.security.Provider;
-import java.security.Security;
 import java.security.cert.X509Certificate;
 
 import javax.xml.xpath.XPath;
@@ -61,27 +58,6 @@ public class ECDSASignatureTest extends org.junit.Assert {
     private javax.xml.parsers.DocumentBuilder db;
 
     public ECDSASignatureTest() throws Exception {
-        //
-        // If the BouncyCastle provider is not installed, then try to load it
-        // via reflection. If it is not available, then skip this test as it is
-        // required for elliptic curves
-        //
-        if (Security.getProvider("BC") == null) {
-            Constructor<?> cons = null;
-            try {
-                Class<?> c = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
-                cons = c.getConstructor(new Class[] {});
-            } catch (Exception e) {
-                //ignore
-            }
-            if (cons == null) {
-                // BouncyCastle is not available so just return
-                return;
-            } else {
-                Provider provider = (Provider)cons.newInstance();
-                Security.insertProviderAt(provider, 1);
-            }
-        }
 
         //String id = "http://apache.org/xml/properties/dom/document-class-name";
         //dbf.setAttribute(id, IndexedDocument.class.getName());
@@ -90,15 +66,8 @@ public class ECDSASignatureTest extends org.junit.Assert {
         org.apache.xml.security.Init.init();
     }
 
-    @org.junit.AfterClass
-    public static void cleanup() throws Exception {
-        Security.removeProvider("BC");
-    }
-
     @org.junit.Test
     public void testOne() throws Exception {
-        org.junit.Assume.assumeTrue(Security.getProvider("BC") != null);
-
         //
         // This test fails with the IBM JDK
         //
@@ -117,8 +86,6 @@ public class ECDSASignatureTest extends org.junit.Assert {
     @org.junit.Test
     @org.junit.Ignore
     public void testTwo() throws Exception {
-        org.junit.Assume.assumeTrue(Security.getProvider("BC") != null);
-
         File file =
             makeDataFile("src/test/resources/org/apache/xml/security/samples/input/ecdsaSignature.xml");
         try (InputStream is = new FileInputStream(file)) {
@@ -129,8 +96,6 @@ public class ECDSASignatureTest extends org.junit.Assert {
     @org.junit.Test
     @org.junit.Ignore
     public void testThree()  throws Exception {
-        org.junit.Assume.assumeTrue(Security.getProvider("BC") != null);
-
         File file = makeDataFile("src/test/resources/at/buergerkarte/testresp.xml");
         try (InputStream is = new FileInputStream(file)) {
             doVerify(is);

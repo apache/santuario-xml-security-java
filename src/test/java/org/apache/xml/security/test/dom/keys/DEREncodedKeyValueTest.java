@@ -19,11 +19,8 @@
 package org.apache.xml.security.test.dom.keys;
 
 import java.io.FileInputStream;
-import java.lang.reflect.Constructor;
 import java.security.KeyFactory;
-import java.security.Provider;
 import java.security.PublicKey;
-import java.security.Security;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
@@ -54,32 +51,9 @@ public class DEREncodedKeyValueTest extends Assert {
     public DEREncodedKeyValueTest() throws Exception {
         documentBuilder = XMLUtils.createDocumentBuilder(false);
 
-        //
-        // If the BouncyCastle provider is not installed, then try to load it
-        // via reflection.
-        //
-        if (Security.getProvider("BC") == null) {
-            Constructor<?> cons = null;
-            try {
-                Class<?> c = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
-                cons = c.getConstructor(new Class[] {});
-            } catch (Exception e) {
-                //ignore
-            }
-            if (cons != null) {
-                Provider provider = (Provider)cons.newInstance();
-                Security.insertProviderAt(provider, 1);
-                ecKeyControl = loadPublicKey("ec.key", "EC");
-            }
-        }
-
         rsaKeyControl = loadPublicKey("rsa.key", "RSA");
         dsaKeyControl = loadPublicKey("dsa.key", "DSA");
-    }
-
-    @org.junit.AfterClass
-    public static void cleanup() throws Exception {
-        Security.removeProvider("BC");
+        ecKeyControl = loadPublicKey("ec.key", "EC");
     }
 
     @org.junit.Test
@@ -117,10 +91,6 @@ public class DEREncodedKeyValueTest extends Assert {
 
     @org.junit.Test
     public void testECPublicKeyFromElement() throws Exception {
-        if (ecKeyControl == null) {
-            return;
-        }
-
         Document doc = loadXML("DEREncodedKeyValue-EC.xml");
         NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpec11NS, Constants._TAG_DERENCODEDKEYVALUE);
         Element element = (Element) nl.item(0);
@@ -147,10 +117,6 @@ public class DEREncodedKeyValueTest extends Assert {
 
     @org.junit.Test
     public void testECPublicKeyFromKey() throws Exception {
-        if (ecKeyControl == null) {
-            return;
-        }
-
         DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(documentBuilder.newDocument(), ecKeyControl);
         assertEquals(ecKeyControl, derEncodedKeyValue.getPublicKey());
         assertArrayEquals(ecKeyControl.getEncoded(), derEncodedKeyValue.getBytesFromTextChild());

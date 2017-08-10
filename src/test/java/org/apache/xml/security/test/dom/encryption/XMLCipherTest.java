@@ -22,16 +22,13 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
-import java.lang.reflect.Constructor;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.KeyPairGenerator;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
-import java.security.Provider;
 import java.security.PublicKey;
-import java.security.Security;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -114,31 +111,6 @@ public class XMLCipherTest extends org.junit.Assert {
 
         haveKeyWraps =
             JCEMapper.translateURItoJCEID(EncryptionConstants.ALGO_ID_KEYWRAP_AES128) != null;
-
-        //
-        // If the BouncyCastle provider is not installed, then try to load it
-        // via reflection.
-        //
-        if (Security.getProvider("BC") == null) {
-            Constructor<?> cons = null;
-            try {
-                Class<?> c = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
-                cons = c.getConstructor(new Class[] {});
-            } catch (Exception e) {
-                //ignore
-            }
-            if (cons != null) {
-                Provider provider = (Provider)cons.newInstance();
-                Security.insertProviderAt(provider, 2);
-                bcInstalled = true;
-            }
-        }
-
-    }
-
-    @org.junit.AfterClass
-    public static void cleanup() throws Exception {
-        Security.removeProvider("BC");
     }
 
     /**

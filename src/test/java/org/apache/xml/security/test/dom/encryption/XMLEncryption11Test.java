@@ -19,13 +19,10 @@
 package org.apache.xml.security.test.dom.encryption;
 
 import java.io.File;
-import java.lang.reflect.Constructor;
 import java.security.Key;
 import java.security.KeyStore;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
-import java.security.Provider;
-import java.security.Security;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.Base64;
@@ -78,24 +75,6 @@ public class XMLEncryption11Test extends org.junit.Assert {
      *  Constructor XMLEncryption11Test
      */
     public XMLEncryption11Test() throws Exception {
-        //
-        // If the BouncyCastle provider is not installed, then try to load it
-        // via reflection. If it is not available, then skip this test as it is
-        // required for GCM algorithm support
-        //
-        if (Security.getProvider("BC") == null) {
-            Constructor<?> cons = null;
-            try {
-                Class<?> c = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
-                cons = c.getConstructor(new Class[] {});
-            } catch (Exception e) {
-                //ignore
-            }
-            if (cons != null) {
-                Provider provider = (Provider)cons.newInstance();
-                Security.insertProviderAt(provider, 2);
-            }
-        }
 
         // Create the comparison strings
         String filename =
@@ -134,11 +113,6 @@ public class XMLEncryption11Test extends org.junit.Assert {
                 //
             }
         }
-    }
-
-    @org.junit.AfterClass
-    public static void cleanup() throws Exception {
-        Security.removeProvider("BC");
     }
 
     /**
