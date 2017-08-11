@@ -102,7 +102,7 @@ public class SignatureAlgorithm extends Algorithm {
      * @throws XMLSecurityException
      */
     public SignatureAlgorithm(Element element, String baseURI) throws XMLSecurityException {
-        this(element, baseURI, false);
+        this(element, baseURI, true);
     }
 
     /**

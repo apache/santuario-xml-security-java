@@ -360,7 +360,7 @@ public final class XMLSignature extends SignatureElementProxy {
      */
     public XMLSignature(Element element, String baseURI)
         throws XMLSignatureException, XMLSecurityException {
-        this(element, baseURI, false);
+        this(element, baseURI, true);
     }
 
     /**

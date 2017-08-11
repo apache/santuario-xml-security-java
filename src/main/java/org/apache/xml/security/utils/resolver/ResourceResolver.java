@@ -126,7 +126,7 @@ public class ResourceResolver {
     public static ResourceResolver getInstance(
         Attr uri, String baseURI, List<ResourceResolver> individualResolvers
     ) throws ResourceResolverException {
-        return getInstance(uri, baseURI, individualResolvers, false);
+        return getInstance(uri, baseURI, individualResolvers, true);
     }
 
     /**

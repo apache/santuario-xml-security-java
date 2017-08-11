@@ -159,7 +159,7 @@ public class SignedInfo extends Manifest {
      * Answer</A>
      */
     public SignedInfo(Element element, String baseURI) throws XMLSecurityException {
-        this(element, baseURI, false);
+        this(element, baseURI, true);
     }
 
     /**

@@ -209,7 +209,7 @@ public class Reference extends SignatureElementProxy {
      * @throws XMLSecurityException
      */
     protected Reference(Element element, String baseURI, Manifest manifest) throws XMLSecurityException {
-        this(element, baseURI, manifest, false);
+        this(element, baseURI, manifest, true);
     }
 
     /**

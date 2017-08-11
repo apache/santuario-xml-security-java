@@ -101,7 +101,7 @@ public class PKSignatureAlgorithmTest extends Assert {
 
         sign(XMLSignature.ALGO_ID_SIGNATURE_NOT_RECOMMENDED_RSA_MD5, document, localNames, rsaKeyPair.getPrivate());
         // XMLUtils.outputDOM(document, System.out);
-        verify(document, rsaKeyPair.getPublic(), localNames);
+        verify(document, rsaKeyPair.getPublic(), localNames, false);
     }
 
     @org.junit.Test
@@ -456,6 +456,15 @@ public class PKSignatureAlgorithmTest extends Assert {
         Key key,
         List<String> localNames
     ) throws Exception {
+        verify(document, key, localNames, true);
+    }
+
+    private void verify(
+        Document document,
+        Key key,
+        List<String> localNames,
+        boolean secureValidation
+    ) throws Exception {
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();
         xpath.setNamespaceContext(new DSNamespaceContext());
@@ -473,7 +482,7 @@ public class PKSignatureAlgorithmTest extends Assert {
             signedElement.setIdAttributeNS(null, "Id", true);
         }
 
-        XMLSignature signature = new XMLSignature(sigElement, "");
+        XMLSignature signature = new XMLSignature(sigElement, "", secureValidation);
 
         Assert.assertTrue(signature.checkSignatureValue(key));
     }

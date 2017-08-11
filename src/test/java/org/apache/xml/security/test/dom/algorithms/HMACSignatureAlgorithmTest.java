@@ -120,7 +120,7 @@ public class HMACSignatureAlgorithmTest extends Assert {
 
         sign("http://www.w3.org/2001/04/xmldsig-more#hmac-md5", document, localNames, key);
         // XMLUtils.outputDOM(document, System.out);
-        verify(document, key, localNames);
+        verify(document, key, localNames, false);
     }
 
     @org.junit.Test
@@ -279,6 +279,15 @@ public class HMACSignatureAlgorithmTest extends Assert {
         Key key,
         List<String> localNames
     ) throws Exception {
+        verify(document, key, localNames, true);
+    }
+
+    private void verify(
+        Document document,
+        Key key,
+        List<String> localNames,
+        boolean secureValidation
+    ) throws Exception {
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();
         xpath.setNamespaceContext(new DSNamespaceContext());
@@ -296,7 +305,7 @@ public class HMACSignatureAlgorithmTest extends Assert {
             signedElement.setIdAttributeNS(null, "Id", true);
         }
 
-        XMLSignature signature = new XMLSignature(sigElement, "");
+        XMLSignature signature = new XMLSignature(sigElement, "", secureValidation);
 
         Assert.assertTrue(signature.checkSignatureValue(key));
     }

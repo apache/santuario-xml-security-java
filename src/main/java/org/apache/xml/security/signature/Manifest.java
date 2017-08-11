@@ -95,7 +95,7 @@ public class Manifest extends SignatureElementProxy {
      * @throws XMLSecurityException
      */
     public Manifest(Element element, String baseURI) throws XMLSecurityException {
-        this(element, baseURI, false);
+        this(element, baseURI, true);
 
     }
     /**

@@ -158,7 +158,7 @@ public class IAIKTest extends InteropTestBase {
         boolean verify = false;
 
         try {
-            verify = this.verify(filename, resolver, followManifests);
+            verify = this.verify(filename, resolver, followManifests, false);
         } catch (RuntimeException ex) {
             LOG.error("Verification crashed for " + filename);
 
@@ -187,7 +187,7 @@ public class IAIKTest extends InteropTestBase {
         boolean verify = false;
 
         try {
-            verify = this.verify(filename, resolver, followManifests);
+            verify = this.verify(filename, resolver, followManifests, false     );
         } catch (RuntimeException ex) {
             LOG.error("Verification crashed for " + filename);
 
@@ -306,7 +306,7 @@ public class IAIKTest extends InteropTestBase {
         boolean verify = false;
 
         try {
-            verify = this.verify(filename, resolver, followManifests);
+            verify = this.verify(filename, resolver, followManifests, false);
         } catch (RuntimeException ex) {
             LOG.error("Verification crashed for " + filename);
 
@@ -334,7 +334,7 @@ public class IAIKTest extends InteropTestBase {
         boolean verify = false;
 
         try {
-            verify = this.verify(filename, resolver, followManifests);
+            verify = this.verify(filename, resolver, followManifests, false);
         } catch (RuntimeException ex) {
             LOG.error("Verification crashed for " + filename);
 

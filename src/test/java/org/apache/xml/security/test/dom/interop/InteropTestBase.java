@@ -81,15 +81,13 @@ public class InteropTestBase extends org.junit.Assert {
         return signature.checkSignatureValue(sk);
     }
 
-    /**
-     * Method verify
-     *
-     * @param filename
-     * @param resolver
-     *
-     * @throws Exception
-     */
     public boolean verify(String filename, ResourceResolverSpi resolver, boolean followManifests)
+        throws Exception {
+        return verify(filename, resolver, followManifests, true);
+    }
+
+    public boolean verify(String filename, ResourceResolverSpi resolver,
+                          boolean followManifests, boolean secureValidation)
         throws Exception {
         File f = new File(filename);
         javax.xml.parsers.DocumentBuilder db = XMLUtils.createDocumentBuilder(false, false);
@@ -102,7 +100,7 @@ public class InteropTestBase extends org.junit.Assert {
         String expression = "//ds:Signature[1]";
         Element sigElement =
             (Element) xpath.evaluate(expression, doc, XPathConstants.NODE);
-        XMLSignature signature = new XMLSignature(sigElement, f.toURI().toURL().toString());
+        XMLSignature signature = new XMLSignature(sigElement, f.toURI().toURL().toString(), secureValidation);
 
         if (resolver != null) {
             signature.addResourceResolver(resolver);

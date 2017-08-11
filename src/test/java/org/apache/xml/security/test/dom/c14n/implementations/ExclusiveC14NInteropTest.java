@@ -56,7 +56,7 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
     @org.junit.Test
     public void test_Y1() throws Exception {
 
-        String success = t("src/test/resources/interop/c14n/Y1", "exc-signature.xml");
+        String success = t("src/test/resources/interop/c14n/Y1", "exc-signature.xml", true);
 
         assertTrue(success, success == null);
     }
@@ -69,7 +69,7 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
     @org.junit.Test
     public void test_Y2() throws Exception {
 
-        String success = t("src/test/resources/interop/c14n/Y2", "signature-joseph-exc.xml");
+        String success = t("src/test/resources/interop/c14n/Y2", "signature-joseph-exc.xml", false);
 
         assertTrue(success, success == null);
     }
@@ -82,7 +82,7 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
     @org.junit.Test
     public void test_Y3() throws Exception {
 
-        String success = t("src/test/resources/interop/c14n/Y3", "signature.xml");
+        String success = t("src/test/resources/interop/c14n/Y3", "signature.xml", false);
 
         assertTrue(success, success == null);
     }
@@ -95,7 +95,7 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
     @org.junit.Test
     public void test_Y4() throws Exception {
 
-        String success = t("src/test/resources/interop/c14n/Y4", "signature.xml");
+        String success = t("src/test/resources/interop/c14n/Y4", "signature.xml", true);
 
         assertTrue(success, success == null);
     }
@@ -103,20 +103,12 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
     @org.junit.Test
     public void test_xfilter2() throws Exception {
 
-        String success = t("src/test/resources/interop/xfilter2/merlin-xpath-filter2-three", "sign-spec.xml");
+        String success = t("src/test/resources/interop/xfilter2/merlin-xpath-filter2-three", "sign-spec.xml", true);
 
         assertTrue(success, success == null);
     }
 
-    /**
-     * Method t
-     *
-     * @param directory
-     * @param file
-     *
-     * @throws Exception
-     */
-    private String t(String directory, String file) throws Exception {
+    private String t(String directory, String file, boolean secureValidation) throws Exception {
         String basedir = System.getProperty("basedir");
         if (basedir != null && !"".equals(basedir)) {
             directory = basedir + "/" + directory;
@@ -130,7 +122,7 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
         Element sigElement =
             (Element) doc.getElementsByTagNameNS(Constants.SignatureSpecNS,
                                                  Constants._TAG_SIGNATURE).item(0);
-        XMLSignature signature = new XMLSignature(sigElement, f.toURI().toURL().toString());
+        XMLSignature signature = new XMLSignature(sigElement, f.toURI().toURL().toString(), secureValidation);
         boolean verify =
             signature.checkSignatureValue(signature.getKeyInfo().getPublicKey());
 

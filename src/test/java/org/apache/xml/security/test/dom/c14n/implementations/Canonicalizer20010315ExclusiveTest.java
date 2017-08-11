@@ -109,7 +109,7 @@ public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
             (Element) doc.getElementsByTagNameNS(
                 Constants.SignatureSpecNS, Constants._TAG_SIGNATURE).item(0);
         XMLSignature xmlSignature = new XMLSignature(signatureElement,
-                                                     fileIn.toURI().toURL().toString());
+                                                     fileIn.toURI().toURL().toString(), false);
         boolean verify =
             xmlSignature.checkSignatureValue(xmlSignature.getKeyInfo().getPublicKey());
         int length = xmlSignature.getSignedInfo().getLength();
