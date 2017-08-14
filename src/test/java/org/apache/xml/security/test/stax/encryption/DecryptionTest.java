@@ -21,12 +21,15 @@ package org.apache.xml.security.test.stax.encryption;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.lang.reflect.Constructor;
 import java.security.Key;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.KeyStore;
 import java.security.PrivateKey;
+import java.security.Provider;
 import java.security.PublicKey;
+import java.security.Security;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
@@ -88,10 +91,35 @@ public class DecryptionTest extends Assert {
 
     @Before
     public void setUp() throws Exception {
+
+        //
+        // If the BouncyCastle provider is not installed, then try to load it
+        // via reflection. If it is not available, then skip this test as it is
+        // required for GCM algorithm support
+        //
+        if (Security.getProvider("BC") == null) {
+            Constructor<?> cons = null;
+            try {
+                Class<?> c = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
+                cons = c.getConstructor(new Class[] {});
+            } catch (Exception e) {     //NOPMD
+                //ignore
+            }
+            if (cons != null) {
+                Provider provider = (Provider)cons.newInstance();
+                Security.insertProviderAt(provider, 2);
+            }
+        }
+
         org.apache.xml.security.Init.init();
 
         xmlInputFactory = XMLInputFactory.newInstance();
         xmlInputFactory.setEventAllocator(new XMLSecEventAllocator());
+    }
+
+    @org.junit.AfterClass
+    public static void cleanup() throws Exception {
+        Security.removeProvider("BC");
     }
 
     @Test

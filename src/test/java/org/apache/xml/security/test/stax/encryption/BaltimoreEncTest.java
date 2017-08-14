@@ -22,8 +22,11 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
+import java.lang.reflect.Constructor;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
+import java.security.Provider;
+import java.security.Security;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.HashMap;
 import java.util.Map;
@@ -72,6 +75,25 @@ public class BaltimoreEncTest extends org.junit.Assert {
 
     @Before
     public void setUp() throws Exception {
+        //
+        // If the BouncyCastle provider is not installed, then try to load it
+        // via reflection. If it is not available, then skip this test as it is
+        // required for GCM algorithm support
+        //
+        if (Security.getProvider("BC") == null) {
+            Constructor<?> cons = null;
+            try {
+                Class<?> c = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
+                cons = c.getConstructor(new Class[] {});
+            } catch (Exception e) {     //NOPMD
+                //ignore
+            }
+            if (cons != null) {
+                Provider provider = (Provider)cons.newInstance();
+                Security.insertProviderAt(provider, 2);
+            }
+        }
+
         org.apache.xml.security.Init.init();
 
         xmlInputFactory = XMLInputFactory.newInstance();
@@ -105,6 +127,11 @@ public class BaltimoreEncTest extends org.junit.Assert {
         // Create a key factory
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         rsaKey = keyFactory.generatePrivate(pkcs8Spec);
+    }
+
+    @org.junit.AfterClass
+    public static void cleanup() throws Exception {
+        Security.removeProvider("BC");
     }
 
     @Test
