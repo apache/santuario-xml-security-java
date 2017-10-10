@@ -40,7 +40,9 @@ import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-public class InteropTestBase extends org.junit.Assert {
+import static org.junit.Assert.*;
+
+public class InteropTestBase {
 
     static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(InteropTestBase.class);

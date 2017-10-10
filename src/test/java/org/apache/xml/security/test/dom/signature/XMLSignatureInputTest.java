@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.test.dom.signature;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -32,7 +34,7 @@ import org.apache.xml.security.signature.XMLSignatureInput;
  *
  * @see <A HREF="http://nagoya.apache.org/bugzilla/show_bug.cgi?id=4336">Bug 4336</A>
  */
-public class XMLSignatureInputTest extends org.junit.Assert {
+public class XMLSignatureInputTest {
 
     static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(XMLSignatureInputTest.class);

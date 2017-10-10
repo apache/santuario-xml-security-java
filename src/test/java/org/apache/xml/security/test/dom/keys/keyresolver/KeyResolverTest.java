@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.test.dom.keys.keyresolver;
 
+import static org.junit.Assert.*;
+
 import java.io.FileInputStream;
 import java.math.BigInteger;
 import java.security.KeyFactory;
@@ -64,7 +66,7 @@ import org.w3c.dom.Text;
 /**
  * KeyResolver test.
  */
-public class KeyResolverTest extends org.junit.Assert {
+public class KeyResolverTest {
 
     private static final String BASEDIR = System.getProperty("basedir");
     private static final String SEP = System.getProperty("file.separator");

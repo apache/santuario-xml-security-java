@@ -29,7 +29,9 @@ import org.w3c.dom.*;
 
 import javax.xml.crypto.test.KeySelectors;
 
-public class SecureXSLTTest extends org.junit.Assert {
+import static org.junit.Assert.assertFalse;
+
+public class SecureXSLTTest {
 
     static {
         Security.insertProviderAt

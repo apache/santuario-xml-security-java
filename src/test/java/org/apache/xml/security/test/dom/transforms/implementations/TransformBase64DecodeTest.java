@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.test.dom.transforms.implementations;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
@@ -39,7 +41,7 @@ import org.w3c.dom.Node;
  * Unit test for {@link org.apache.xml.security.transforms.implementations.TransformBase64Decode}
  *
  */
-public class TransformBase64DecodeTest extends org.junit.Assert {
+public class TransformBase64DecodeTest {
 
     static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(TransformBase64DecodeTest.class);

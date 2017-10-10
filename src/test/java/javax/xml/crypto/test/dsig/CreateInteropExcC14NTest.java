@@ -21,6 +21,8 @@
  */
 package javax.xml.crypto.test.dsig;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.*;
 import java.security.*;
 import java.security.cert.Certificate;
@@ -43,7 +45,7 @@ import javax.xml.parsers.DocumentBuilder;
  * but with different keys.
  *
  */
-public class CreateInteropExcC14NTest extends org.junit.Assert {
+public class CreateInteropExcC14NTest {
 
     private XMLSignatureFactory fac;
     private KeyInfoFactory kifac;

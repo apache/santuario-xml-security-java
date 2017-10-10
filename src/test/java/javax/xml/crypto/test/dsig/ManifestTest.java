@@ -21,6 +21,8 @@
  */
 package javax.xml.crypto.test.dsig;
 
+import static org.junit.Assert.*;
+
 import java.util.*;
 import javax.xml.crypto.dsig.*;
 
@@ -28,7 +30,7 @@ import javax.xml.crypto.dsig.*;
  * Unit test for javax.xml.crypto.dsig.Manifest
  *
  */
-public class ManifestTest extends org.junit.Assert {
+public class ManifestTest {
     private XMLSignatureFactory fac;
 
     private static Reference VALID_REF = new

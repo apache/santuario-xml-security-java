@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.test.dom.signature;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
@@ -54,7 +56,7 @@ import org.w3c.dom.Element;
  * Tests that create signatures.
  *
  */
-public class CreateSignatureTest extends org.junit.Assert {
+public class CreateSignatureTest {
 
     static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(CreateSignatureTest.class);

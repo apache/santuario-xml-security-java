@@ -31,6 +31,9 @@ import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLResolver;
 import javax.xml.stream.XMLStreamException;
+
+import static org.junit.Assert.*;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,7 +42,7 @@ import java.nio.charset.StandardCharsets;
 
 /**
  */
-public class Canonicalizer11Test extends org.junit.Assert {
+public class Canonicalizer11Test {
 
     private XMLInputFactory xmlInputFactory;
 

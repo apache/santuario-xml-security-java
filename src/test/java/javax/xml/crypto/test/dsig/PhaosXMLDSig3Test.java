@@ -21,6 +21,8 @@
  */
 package javax.xml.crypto.test.dsig;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.security.Security;
@@ -36,7 +38,7 @@ import javax.xml.crypto.test.KeySelectors;
  * testcases from Phaos
  *
  */
-public class PhaosXMLDSig3Test extends org.junit.Assert {
+public class PhaosXMLDSig3Test {
 
     private SignatureValidator validator;
     private File base;

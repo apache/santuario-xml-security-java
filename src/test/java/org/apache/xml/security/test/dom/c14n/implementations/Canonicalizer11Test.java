@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.test.dom.c14n.implementations;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -48,7 +50,7 @@ import org.xml.sax.SAXException;
  * Unit test for
  * {@link org.apache.xml.security.c14n.implementations.Canonicalizer11}
  */
-public class Canonicalizer11Test extends org.junit.Assert {
+public class Canonicalizer11Test {
 
     static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(Canonicalizer11Test.class);

@@ -29,13 +29,16 @@ import javax.xml.crypto.dsig.spec.XPathType;
 import javax.xml.crypto.dsig.spec.XPathFilterParameterSpec;
 import javax.xml.crypto.dsig.spec.XPathFilter2ParameterSpec;
 import javax.xml.crypto.dsig.spec.XSLTTransformParameterSpec;
+
+import static org.junit.Assert.*;
+
 import java.security.*;
 
 /**
  * Unit test for javax.xml.crypto.dsig.Transform
  *
  */
-public class TransformTest extends org.junit.Assert {
+public class TransformTest {
 
     XMLSignatureFactory factory;
 

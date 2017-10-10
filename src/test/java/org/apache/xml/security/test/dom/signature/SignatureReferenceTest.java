@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.test.dom.signature;
 
+import static org.junit.Assert.*;
+
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.security.KeyStore;
@@ -49,7 +51,7 @@ import org.apache.xml.security.utils.resolver.implementations.ResolverXPointer;
  * Test a Signature and Validation, and check that we have access to the Element(s) that was
  * validated.
  */
-public class SignatureReferenceTest extends org.junit.Assert {
+public class SignatureReferenceTest {
     public static final String DS_NS = "http://www.w3.org/2000/09/xmldsig#";
 
     private static final String BASEDIR =

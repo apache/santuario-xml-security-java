@@ -21,6 +21,8 @@
  */
 package javax.xml.crypto.test;
 
+import static org.junit.Assert.*;
+
 import java.io.*;
 import java.util.*;
 import javax.xml.crypto.*;
@@ -29,7 +31,7 @@ import javax.xml.crypto.*;
  * Unit test for javax.xml.crypto.OctetStreamData
  *
  */
-public class OctetStreamDataTest extends org.junit.Assert {
+public class OctetStreamDataTest {
 
     @org.junit.Test
     public void testConstructor() throws Exception {

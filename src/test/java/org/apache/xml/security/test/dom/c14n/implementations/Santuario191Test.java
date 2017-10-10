@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.test.dom.c14n.implementations;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -37,7 +39,7 @@ import org.apache.xml.security.utils.XMLUtils;
  *
  * An xml:Id attribute is appearing in a child element, contrary to the C14n11 spec.
  */
-public class Santuario191Test extends org.junit.Assert {
+public class Santuario191Test {
 
     private static final String INPUT_DATA =
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"

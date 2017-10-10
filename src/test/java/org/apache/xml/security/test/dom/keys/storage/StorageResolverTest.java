@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.test.dom.keys.storage;
 
+import static org.junit.Assert.*;
+
 import java.io.FileInputStream;
 import java.security.KeyStore;
 import java.security.cert.X509Certificate;
@@ -29,7 +31,7 @@ import org.apache.xml.security.keys.storage.StorageResolver;
 /**
  * KeyStore StorageResolver test.
  */
-public class StorageResolverTest extends org.junit.Assert {
+public class StorageResolverTest {
 
     private static final String BASEDIR =
         System.getProperty("basedir") == null ? "./": System.getProperty("basedir");

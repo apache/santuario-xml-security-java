@@ -56,11 +56,13 @@ import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
+import static org.junit.Assert.assertTrue;
+
 /**
  * Interop test for XML Encryption
  *
  */
-public class BaltimoreEncTest extends org.junit.Assert {
+public class BaltimoreEncTest {
 
     private static String cardNumber;
     private static int nodeCount;

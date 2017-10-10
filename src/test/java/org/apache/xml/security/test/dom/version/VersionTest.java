@@ -18,13 +18,15 @@
  */
 package org.apache.xml.security.test.dom.version;
 
+import static org.junit.Assert.assertTrue;
+
 import java.security.Provider;
 import java.security.Security;
 
 /**
  * Version test.
  */
-public class VersionTest extends org.junit.Assert {
+public class VersionTest {
 
     /**
      * A unit test for the algorithm below to convert a version number

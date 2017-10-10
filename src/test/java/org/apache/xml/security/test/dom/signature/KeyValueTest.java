@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.test.dom.signature;
 
+import static org.junit.Assert.assertNotNull;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.security.PublicKey;
@@ -34,7 +36,7 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 
-public class KeyValueTest extends org.junit.Assert {
+public class KeyValueTest {
 
     private static final String BASEDIR = System.getProperty("basedir");
     private static final String SEP = System.getProperty("file.separator");

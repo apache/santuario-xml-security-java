@@ -21,6 +21,8 @@
  */
 package javax.xml.crypto.test.dsig;
 
+import static org.junit.Assert.*;
+
 import java.security.Security;
 import java.util.*;
 import javax.xml.crypto.dsig.*;
@@ -30,7 +32,7 @@ import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
  * Unit test for javax.xml.crypto.dsig.SignedInfo
  *
  */
-public class SignedInfoTest extends org.junit.Assert {
+public class SignedInfoTest {
     private XMLSignatureFactory fac;
     private CanonicalizationMethod cm;
     private SignatureMethod sm;

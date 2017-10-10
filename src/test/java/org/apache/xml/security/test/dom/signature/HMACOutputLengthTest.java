@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.test.dom.signature;
 
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 
@@ -33,7 +35,7 @@ import org.apache.xml.security.signature.XMLSignatureException;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 
-public class HMACOutputLengthTest extends org.junit.Assert {
+public class HMACOutputLengthTest {
 
     static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger

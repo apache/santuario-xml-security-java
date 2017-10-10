@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.test.dom.keys.content.x509;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.security.cert.CertStore;
@@ -33,7 +35,7 @@ import org.apache.xml.security.keys.content.x509.XMLX509SKI;
 /**
  * Test bugfix 41892: XML Security 1.4.0 does not build with IBM's JDK
  */
-public class XMLX509SKITest extends org.junit.Assert {
+public class XMLX509SKITest {
 
     private static final String BASEDIR = System.getProperty("basedir");
     private static final String SEP = System.getProperty("file.separator");

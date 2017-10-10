@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.test.dom.algorithms;
 
+import static org.junit.Assert.*;
+
 import java.lang.reflect.Constructor;
 import java.security.MessageDigest;
 import java.security.Provider;
@@ -31,7 +33,7 @@ import org.w3c.dom.Document;
 /**
  * A test to make sure that the various digest algorithms are working
  */
-public class DigestAlgorithmTest extends org.junit.Assert {
+public class DigestAlgorithmTest {
 
     static {
         org.apache.xml.security.Init.init();

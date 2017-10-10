@@ -21,6 +21,8 @@
  */
 package javax.xml.crypto.test.dsig;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.security.Security;
 import java.security.cert.CertificateException;
@@ -34,7 +36,7 @@ import javax.xml.crypto.test.KeySelectors;
  * testcases from Baltimore
  *
  */
-public class Baltimore18Test extends org.junit.Assert {
+public class Baltimore18Test {
 
     private File dir;
     private KeySelector cks;

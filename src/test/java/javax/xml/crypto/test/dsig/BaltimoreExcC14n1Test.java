@@ -21,6 +21,8 @@
  */
 package javax.xml.crypto.test.dsig;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.security.Security;
 
@@ -31,7 +33,7 @@ import javax.xml.crypto.test.KeySelectors;
  * testcases from Baltimore
  *
  */
-public class BaltimoreExcC14n1Test extends org.junit.Assert {
+public class BaltimoreExcC14n1Test {
 
     private SignatureValidator validator;
 

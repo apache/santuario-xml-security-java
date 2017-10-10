@@ -21,6 +21,8 @@
  */
 package javax.xml.crypto.test.dsig;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
@@ -37,7 +39,7 @@ import javax.xml.crypto.test.KeySelectors;
  * testcases from Baltimore
  *
  */
-public class Baltimore23Test extends org.junit.Assert {
+public class Baltimore23Test {
 
     private File dir;
     private final URIDereferencer ud;

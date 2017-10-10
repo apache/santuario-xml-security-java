@@ -37,6 +37,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import static org.junit.Assert.*;
+
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
@@ -46,7 +48,7 @@ import java.util.Map;
 
 /**
  */
-public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
+public class Canonicalizer20010315ExclusiveTest {
 
     private XMLInputFactory xmlInputFactory;
 

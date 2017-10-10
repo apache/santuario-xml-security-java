@@ -18,6 +18,8 @@
  */
 package javax.xml.crypto.test.dsig;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.security.Security;
 
@@ -32,7 +34,7 @@ import org.w3c.dom.Element;
 /**
  * This is a test for a wrapping attack.
  */
-public class JSRWrappingAttackTest extends org.junit.Assert {
+public class JSRWrappingAttackTest {
 
     private SignatureValidator validator;
     private File dir;

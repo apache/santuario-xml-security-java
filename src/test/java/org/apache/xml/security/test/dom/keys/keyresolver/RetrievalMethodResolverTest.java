@@ -32,7 +32,7 @@ import org.w3c.dom.Document;
 /**
  * Some tests on attacks against the RetrievalMethodResolver.
  */
-public class RetrievalMethodResolverTest extends org.junit.Assert {
+public class RetrievalMethodResolverTest {
 
     private static final String BASEDIR = System.getProperty("basedir");
     private static final String SEP = System.getProperty("file.separator");

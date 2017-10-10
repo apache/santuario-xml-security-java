@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.test.dom.c14n.implementations;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
@@ -39,7 +41,7 @@ import org.w3c.dom.Node;
  * https://issues.apache.org/jira/browse/SANTUARIO-273
  * "xml:base attribute not processed correctly in C14N11 canonicalization"
  */
-public class Santuario273Test extends org.junit.Assert {
+public class Santuario273Test {
     public static String input = ""
         + "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
         + "<Signature xmlns=\"http://www.w3.org/2000/09/xmldsig#\" xml:base=\"http://www.acme.com/resources/\">\n"

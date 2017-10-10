@@ -51,10 +51,12 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
+import static org.junit.Assert.assertTrue;
+
 /**
  * Test signing using all available PublicKey signing algorithms
  */
-public class PKSignatureAlgorithmTest extends org.junit.Assert {
+public class PKSignatureAlgorithmTest {
 
     private KeySelector kvks;
     private CanonicalizationMethod withoutComments;

@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.test.dom.secure_val;
 
+import static org.junit.Assert.assertNull;
+
 import java.io.FileInputStream;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -31,7 +33,7 @@ import org.w3c.dom.Document;
  * This is a test for a Retrieval Method pointing to another Retrieval Method (forbidden under
  * secure validation).
  */
-public class ForbiddenRetrievalMethodTest extends org.junit.Assert {
+public class ForbiddenRetrievalMethodTest {
 
     private static final String BASEDIR = System.getProperty("basedir");
     private static final String SEP = System.getProperty("file.separator");

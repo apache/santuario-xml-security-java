@@ -34,7 +34,7 @@ import org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI;
  * invokes the XMLSignature API. It tests that there are not provider class
  * loading issues with more than one classloader (see 6380953).
  */
-public class ClassLoaderTest extends org.junit.Assert {
+public class ClassLoaderTest {
 
     private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(ClassLoaderTest.class);

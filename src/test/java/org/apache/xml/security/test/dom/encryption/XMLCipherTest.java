@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.test.dom.encryption;
 
+import static org.junit.Assert.*;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -61,7 +63,7 @@ import org.w3c.dom.NodeList;
 /**
  *
  */
-public class XMLCipherTest extends org.junit.Assert {
+public class XMLCipherTest {
 
     private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(XMLCipherTest.class);

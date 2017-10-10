@@ -18,12 +18,14 @@
  */
 package org.apache.xml.security.test.dom.c14n.helper;
 
+import static org.junit.Assert.assertTrue;
+
 import org.apache.xml.security.c14n.helper.C14nHelper;
 
 
 /**
  */
-public class C14nHelperTest extends org.junit.Assert {
+public class C14nHelperTest {
 
     static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(C14nHelperTest.class);

@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.test.dom.signature;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -54,7 +56,7 @@ import org.xml.sax.SAXException;
  * org.apache.xml.security.samples.signature.CreateEnvelopingSignature</code>
  * </p>
  */
-public class UnknownAlgoSignatureTest extends org.junit.Assert {
+public class UnknownAlgoSignatureTest {
 
     private static final String BASEDIR = System.getProperty("basedir");
     private static final String SEP = System.getProperty("file.separator");

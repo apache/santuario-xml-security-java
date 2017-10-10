@@ -21,6 +21,8 @@
  */
 package javax.xml.crypto.test.dsig.keyinfo;
 
+import static org.junit.Assert.*;
+
 import java.security.Key;
 import java.util.Collections;
 import java.util.List;
@@ -40,7 +42,7 @@ import org.w3c.dom.Element;
  * Unit test for javax.xml.crypto.dsig.keyinfo.KeyInfo
  *
  */
-public class KeyInfoTest extends org.junit.Assert {
+public class KeyInfoTest {
 
     private KeyInfoFactory fac;
 

@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.test.dom.c14n.implementations;
 
+import static org.junit.Assert.*;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -60,7 +62,7 @@ import org.xml.sax.SAXException;
  * {@link org.apache.xml.security.c14n.implementations.Canonicalizer20010315WithXPath}
  *
  */
-public class Canonicalizer20010315Test extends org.junit.Assert {
+public class Canonicalizer20010315Test {
 
     static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(Canonicalizer20010315Test.class);

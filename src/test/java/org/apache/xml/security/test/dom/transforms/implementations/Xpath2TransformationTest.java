@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.test.dom.transforms.implementations;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.ByteArrayInputStream;
 
 import org.apache.xml.security.Init;
@@ -26,7 +28,7 @@ import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Element;
 
-public class Xpath2TransformationTest extends org.junit.Assert {
+public class Xpath2TransformationTest {
 
     static {
         Init.init();

@@ -26,6 +26,8 @@ import javax.xml.crypto.dsig.dom.DOMSignContext;
 import javax.xml.crypto.KeySelector;
 import javax.xml.crypto.URIDereferencer;
 
+import static org.junit.Assert.*;
+
 import java.security.*;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -35,7 +37,7 @@ import org.w3c.dom.Document;
  * Unit test for javax.xml.crypto.dsig.XMLSignContext
  *
  */
-public class XMLSignContextTest extends org.junit.Assert {
+public class XMLSignContextTest {
 
     private XMLSignContext defContext;
     private Key[] KEYS;

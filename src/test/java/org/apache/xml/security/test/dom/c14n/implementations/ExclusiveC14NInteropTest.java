@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.test.dom.c14n.implementations;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 
 import org.apache.xml.security.signature.Reference;

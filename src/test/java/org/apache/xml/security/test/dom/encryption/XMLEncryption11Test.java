@@ -53,6 +53,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import static org.junit.Assert.assertTrue;
+
 /**
  * This is a set of tests that use the test vectors associated with the W3C XML Encryption 1.1 specification:
  *
@@ -62,7 +64,7 @@ import org.w3c.dom.Node;
  *
  * TODO As of now all of the KeyWrapping tests are supported, but none of the KeyAgreement tests.
  */
-public class XMLEncryption11Test extends org.junit.Assert {
+public class XMLEncryption11Test {
 
     private static String cardNumber;
     private static int nodeCount = 0;

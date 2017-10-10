@@ -28,6 +28,8 @@ import javax.xml.crypto.dsig.dom.DOMValidateContext;
 import javax.xml.crypto.dsig.keyinfo.*;
 import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 
+import static org.junit.Assert.*;
+
 import java.security.*;
 import java.util.*;
 
@@ -79,7 +81,7 @@ import org.w3c.dom.Document;
  * </Signature>
  *
  */
-public class DetachedTest extends org.junit.Assert {
+public class DetachedTest {
 
     static {
         Security.insertProviderAt

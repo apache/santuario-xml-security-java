@@ -44,7 +44,7 @@ import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
 /**
  * A test-case for Bugzilla bug 45744 - "XPath transform and xml-stylesheet".
  */
-public class ProcessingInstructionTest extends org.junit.Assert {
+public class ProcessingInstructionTest {
 
     static {
         org.apache.xml.security.Init.init();

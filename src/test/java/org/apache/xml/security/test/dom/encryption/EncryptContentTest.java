@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.test.dom.encryption;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -42,7 +44,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class EncryptContentTest extends org.junit.Assert {
+public class EncryptContentTest {
 
     static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(EncryptContentTest.class);

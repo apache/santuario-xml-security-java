@@ -18,6 +18,8 @@
  */
 package javax.xml.crypto.test.dsig;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.security.Security;
 
@@ -32,7 +34,7 @@ import org.w3c.dom.Element;
 /**
  * This is a test for a forbidden number of references when secure validation is enabled.
  */
-public class JSRForbiddenRefCountTest extends org.junit.Assert {
+public class JSRForbiddenRefCountTest {
 
     static {
         Security.insertProviderAt(new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI(), 1);

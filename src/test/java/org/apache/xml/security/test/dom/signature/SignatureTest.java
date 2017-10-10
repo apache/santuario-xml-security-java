@@ -19,6 +19,9 @@
 package org.apache.xml.security.test.dom.signature;
 
 import java.io.InputStream;
+
+import static org.junit.Assert.assertTrue;
+
 import java.io.FileInputStream;
 import java.security.KeyStore;
 import java.security.PrivateKey;
@@ -38,7 +41,7 @@ import org.apache.xml.security.utils.resolver.implementations.ResolverXPointer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-public class SignatureTest extends org.junit.Assert {
+public class SignatureTest {
     public static final String DS_NS = "http://www.w3.org/2000/09/xmldsig#";
 
     private static final String BASEDIR =

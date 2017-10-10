@@ -45,10 +45,12 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
+import static org.junit.Assert.assertTrue;
+
 /**
  * Test signing using all available digest methods
  */
-public class SignatureDigestMethodTest extends org.junit.Assert {
+public class SignatureDigestMethodTest {
 
     private KeySelector kvks;
     private CanonicalizationMethod withoutComments;

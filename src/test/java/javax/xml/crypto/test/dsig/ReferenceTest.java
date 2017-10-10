@@ -21,6 +21,8 @@
  */
 package javax.xml.crypto.test.dsig;
 
+import static org.junit.Assert.*;
+
 import java.io.*;
 import java.security.MessageDigest;
 import java.security.Security;
@@ -38,7 +40,7 @@ import org.w3c.dom.Document;
  * Unit test for javax.xml.crypto.dsig.Reference
  *
  */
-public class ReferenceTest extends org.junit.Assert {
+public class ReferenceTest {
     private XMLSignatureFactory fac;
     private KeyInfoFactory kifac;
     private DigestMethod dmSHA1;

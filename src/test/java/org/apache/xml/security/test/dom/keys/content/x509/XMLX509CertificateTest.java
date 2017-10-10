@@ -32,7 +32,7 @@ import org.apache.xml.security.utils.XMLUtils;
  * Certificate parsing test.
  *
  */
-public class XMLX509CertificateTest extends org.junit.Assert {
+public class XMLX509CertificateTest {
 
     private static final String BASEDIR =
         System.getProperty("basedir") == null ? "./": System.getProperty("basedir");

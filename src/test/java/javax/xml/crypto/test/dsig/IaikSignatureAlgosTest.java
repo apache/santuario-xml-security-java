@@ -21,6 +21,8 @@
  */
 package javax.xml.crypto.test.dsig;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.security.Security;
@@ -33,7 +35,7 @@ import javax.xml.crypto.test.KeySelectors;
  * testcases from IAIK
  *
  */
-public class IaikSignatureAlgosTest extends org.junit.Assert {
+public class IaikSignatureAlgosTest {
 
     private SignatureValidator validator;
 

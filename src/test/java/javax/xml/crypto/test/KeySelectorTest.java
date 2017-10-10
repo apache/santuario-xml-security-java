@@ -22,6 +22,9 @@
 package javax.xml.crypto.test;
 
 import java.util.*;
+
+import static org.junit.Assert.assertTrue;
+
 import java.security.Key;
 import java.security.cert.X509Certificate;
 import javax.xml.crypto.*;
@@ -32,7 +35,7 @@ import javax.xml.crypto.dsig.*;
  * Unit test for javax.xml.crypto.KeySelector
  *
  */
-public class KeySelectorTest extends org.junit.Assert {
+public class KeySelectorTest {
     private Key key;
     private KeySelector selector1;
 

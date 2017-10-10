@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.test.dom.c14n.implementations;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -58,7 +60,7 @@ import org.xml.sax.SAXException;
 
 /**
  */
-public class Canonicalizer20010315ExclusiveTest extends org.junit.Assert {
+public class Canonicalizer20010315ExclusiveTest {
 
     static {
         org.apache.xml.security.Init.init();

@@ -21,6 +21,8 @@
  */
 package javax.xml.crypto.test.dsig;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.security.Security;
@@ -34,7 +36,7 @@ import javax.xml.crypto.test.KeySelectors;
  * testcases from IAIK
  *
  */
-public class IaikCoreFeaturesTest extends org.junit.Assert {
+public class IaikCoreFeaturesTest {
 
     private SignatureValidator validator;
     private String base;

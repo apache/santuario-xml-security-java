@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.test.dom.utils.resolver;
 
+import static org.junit.Assert.fail;
+
 import java.io.File;
 
 import org.apache.xml.security.utils.XMLUtils;
@@ -29,7 +31,7 @@ import org.w3c.dom.Document;
  * Unit test for {@link org.apache.xml.security.utils.resolver.ResourceResolver}
  *
  */
-public class ResourceResolverTest extends org.junit.Assert {
+public class ResourceResolverTest {
 
     static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger

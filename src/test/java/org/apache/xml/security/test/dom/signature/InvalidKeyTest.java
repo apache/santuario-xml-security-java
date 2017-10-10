@@ -35,7 +35,7 @@ import org.w3c.dom.Node;
  * fixed: "No installed provider supports this key" when checking a RSA
  * signature against a DSA key before RSA key.
  */
-public class InvalidKeyTest extends org.junit.Assert {
+public class InvalidKeyTest {
 
     private static final String BASEDIR =
         System.getProperty("basedir") == null ? "./": System.getProperty("basedir");

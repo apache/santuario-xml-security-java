@@ -21,6 +21,8 @@
  */
 package javax.xml.crypto.test.dsig;
 
+import static org.junit.Assert.*;
+
 import java.io.*;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
@@ -60,7 +62,7 @@ import javax.xml.crypto.test.KeySelectors;
  * different keys and X.509 data.
  *
  */
-public class CreateBaltimore23Test extends org.junit.Assert {
+public class CreateBaltimore23Test {
 
     private XMLSignatureFactory fac;
     private KeyInfoFactory kifac;

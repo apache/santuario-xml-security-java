@@ -51,7 +51,7 @@ import org.w3c.dom.Document;
 /**
  * Interop test for exclusive canonical XML.
  */
-public class ExclusiveC14NInteropTest extends org.junit.Assert {
+public class ExclusiveC14NInteropTest {
 
     // Define the Keys
     private static final String DSA_Y =

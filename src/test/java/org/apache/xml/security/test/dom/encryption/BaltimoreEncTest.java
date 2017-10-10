@@ -56,11 +56,13 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import static org.junit.Assert.*;
+
 /**
  * Interop test for XML Encryption
  *
  */
-public class BaltimoreEncTest extends org.junit.Assert {
+public class BaltimoreEncTest {
 
     private static String cardNumber;
     private static String rsaCertSerialNumber;

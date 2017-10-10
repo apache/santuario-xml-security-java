@@ -36,7 +36,7 @@ import org.apache.xml.security.transforms.Transform;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.XMLUtils;
 
-public class TransformXSLTTest extends org.junit.Assert {
+public class TransformXSLTTest {
 
     private static final String BASEDIR =
         System.getProperty("basedir") == null ? "./": System.getProperty("basedir");

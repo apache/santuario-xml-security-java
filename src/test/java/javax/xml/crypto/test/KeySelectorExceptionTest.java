@@ -21,6 +21,8 @@
  */
 package javax.xml.crypto.test;
 
+import static org.junit.Assert.*;
+
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.Arrays;
@@ -30,7 +32,7 @@ import javax.xml.crypto.KeySelectorException;
  * Unit test for javax.xml.crypto.KeySelectorException
  *
  */
-public class KeySelectorExceptionTest extends org.junit.Assert {
+public class KeySelectorExceptionTest {
 
     @org.junit.Test
     public void testConstructor() {

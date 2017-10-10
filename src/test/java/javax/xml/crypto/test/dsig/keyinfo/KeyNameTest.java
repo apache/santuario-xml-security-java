@@ -21,13 +21,15 @@
  */
 package javax.xml.crypto.test.dsig.keyinfo;
 
+import static org.junit.Assert.*;
+
 import javax.xml.crypto.dsig.keyinfo.*;
 
 /**
  * Unit test for javax.xml.crypto.dsig.keyinfo.KeyName
  *
  */
-public class KeyNameTest extends org.junit.Assert {
+public class KeyNameTest {
 
     private KeyInfoFactory fac;
 

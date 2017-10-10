@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.test.dom.secure_val;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 
 import org.apache.xml.security.signature.Manifest;

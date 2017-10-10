@@ -21,13 +21,15 @@
  */
 package javax.xml.crypto.test.dsig.keyinfo;
 
+import static org.junit.Assert.*;
+
 import javax.xml.crypto.dsig.keyinfo.*;
 
 /**
  * Unit test for javax.xml.crypto.dsig.keyinfo.RetrievalMethod
  *
  */
-public class RetrievalMethodTest extends org.junit.Assert {
+public class RetrievalMethodTest {
 
     private KeyInfoFactory fac;
 

@@ -47,10 +47,12 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
+import static org.junit.Assert.assertTrue;
+
 /**
  * Test signing using all available HMAC signing algorithms
  */
-public class HMACSignatureAlgorithmTest extends org.junit.Assert {
+public class HMACSignatureAlgorithmTest {
 
     private KeySelector sks;
     private CanonicalizationMethod withoutComments;

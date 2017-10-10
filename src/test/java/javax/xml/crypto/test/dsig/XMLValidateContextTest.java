@@ -24,6 +24,9 @@ package javax.xml.crypto.test.dsig;
 import javax.xml.crypto.*;
 import javax.xml.crypto.dsig.dom.DOMValidateContext;
 import javax.xml.crypto.dsig.*;
+
+import static org.junit.Assert.*;
+
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -31,7 +34,7 @@ import javax.crypto.spec.SecretKeySpec;
  * Unit test for javax.xml.crypto.dsig.XMLValidateContext
  *
  */
-public class XMLValidateContextTest extends org.junit.Assert {
+public class XMLValidateContextTest {
 
     private XMLValidateContext defContext;
     private KeySelector[] KEY_SELECTORS;

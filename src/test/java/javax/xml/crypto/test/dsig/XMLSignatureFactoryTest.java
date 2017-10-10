@@ -21,6 +21,8 @@
  */
 package javax.xml.crypto.test.dsig;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.security.NoSuchProviderException;
 import java.security.Provider;
@@ -40,7 +42,7 @@ import org.w3c.dom.NodeList;
  * Unit test for javax.xml.crypto.dsig.XMLSignatureFactory
  *
  */
-public class XMLSignatureFactoryTest extends org.junit.Assert {
+public class XMLSignatureFactoryTest {
 
     XMLSignatureFactory factory;
 

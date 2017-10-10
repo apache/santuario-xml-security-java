@@ -21,6 +21,8 @@
  */
 package javax.xml.crypto.test.dsig.keyinfo;
 
+import static org.junit.Assert.*;
+
 import java.security.*;
 import javax.xml.crypto.dsig.keyinfo.*;
 
@@ -28,7 +30,7 @@ import javax.xml.crypto.dsig.keyinfo.*;
  * Unit test for javax.xml.crypto.dsig.keyinfo.KeyValue
  *
  */
-public class KeyValueTest extends org.junit.Assert {
+public class KeyValueTest {
 
     private static final String[] ALGOS = { "DSA", "RSA" };
     private KeyInfoFactory fac;

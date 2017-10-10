@@ -21,6 +21,8 @@
  */
 package javax.xml.crypto.test.dsig;
 
+import static org.junit.Assert.*;
+
 import java.io.*;
 import java.util.*;
 import java.security.*;
@@ -41,7 +43,7 @@ import org.w3c.dom.*;
  * Unit test for javax.xml.crypto.dsig.XMLSignature
  *
  */
-public class XMLSignatureTest extends org.junit.Assert {
+public class XMLSignatureTest {
     private XMLSignatureFactory fac;
     private KeyInfoFactory kifac;
     private SignedInfo defSi;

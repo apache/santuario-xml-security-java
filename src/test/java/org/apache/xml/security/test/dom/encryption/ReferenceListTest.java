@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.test.dom.encryption;
 
+import static org.junit.Assert.*;
+
 import java.util.Iterator;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -30,7 +32,7 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-public class ReferenceListTest extends org.junit.Assert {
+public class ReferenceListTest {
 
     static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(ReferenceListTest.class);

@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.test.dom.signature;
 
+import static org.junit.Assert.assertNull;
+
 import java.io.File;
 import java.io.FileInputStream;
 
@@ -32,7 +34,7 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 
-public class NoKeyInfoTest extends org.junit.Assert {
+public class NoKeyInfoTest {
 
     private static final String BASEDIR = System.getProperty("basedir");
     private static final String SEP = System.getProperty("file.separator");

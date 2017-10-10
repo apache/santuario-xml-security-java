@@ -41,11 +41,13 @@ import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Element;
 
+import static org.junit.Assert.assertTrue;
+
 /**
  * Tests that creates and verifies ECDSA signatures.
  *
  */
-public class ECDSASignatureTest extends org.junit.Assert {
+public class ECDSASignatureTest {
 
     private static final String BASEDIR = System.getProperty("basedir");
     private static final String SEP = System.getProperty("file.separator");

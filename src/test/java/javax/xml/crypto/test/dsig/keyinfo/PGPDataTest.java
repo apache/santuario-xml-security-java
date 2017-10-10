@@ -21,6 +21,8 @@
  */
 package javax.xml.crypto.test.dsig.keyinfo;
 
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -31,7 +33,7 @@ import javax.xml.crypto.dsig.keyinfo.*;
  * Unit test for javax.xml.crypto.dsig.keyinfo.PGPData
  *
  */
-public class PGPDataTest extends org.junit.Assert {
+public class PGPDataTest {
 
     private KeyInfoFactory fac;
     private byte[][] values = {

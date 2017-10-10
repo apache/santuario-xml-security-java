@@ -22,13 +22,16 @@
 package javax.xml.crypto.test.dsig;
 
 import javax.xml.crypto.dsig.*;
+
+import static org.junit.Assert.*;
+
 import java.security.*;
 
 /**
  * Unit test for javax.xml.crypto.dsig.SignatureMethod
  *
  */
-public class SignatureMethodTest extends org.junit.Assert {
+public class SignatureMethodTest {
 
     XMLSignatureFactory factory;
 

@@ -21,6 +21,8 @@
  */
 package javax.xml.crypto.test.dsig;
 
+import static org.junit.Assert.*;
+
 import java.util.*;
 import javax.xml.crypto.XMLStructure;
 import javax.xml.crypto.dsig.*;
@@ -29,7 +31,7 @@ import javax.xml.crypto.dsig.*;
  * Unit test for javax.xml.crypto.dsig.SignatureProperty
  *
  */
-public class SignaturePropertyTest extends org.junit.Assert {
+public class SignaturePropertyTest {
 
     private XMLSignatureFactory factory;
     private String target = "target";

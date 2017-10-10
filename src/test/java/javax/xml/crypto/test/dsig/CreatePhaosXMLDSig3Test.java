@@ -21,6 +21,8 @@
  */
 package javax.xml.crypto.test.dsig;
 
+import static org.junit.Assert.*;
+
 import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.util.*;
@@ -42,7 +44,7 @@ import javax.xml.parsers.DocumentBuilder;
  * the exc-c14n vectors.
  *
  */
-public class CreatePhaosXMLDSig3Test extends org.junit.Assert {
+public class CreatePhaosXMLDSig3Test {
 
     private XMLSignatureFactory fac;
     private DocumentBuilder db;

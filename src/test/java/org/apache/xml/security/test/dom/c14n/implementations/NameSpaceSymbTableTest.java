@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.test.dom.c14n.implementations;
 
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +28,7 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 
-public class NameSpaceSymbTableTest extends org.junit.Assert {
+public class NameSpaceSymbTableTest {
     static Attr node1, node2;
     static {
         try {

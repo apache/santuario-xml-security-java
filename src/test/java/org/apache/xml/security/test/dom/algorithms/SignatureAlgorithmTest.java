@@ -27,7 +27,7 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 
-public class SignatureAlgorithmTest extends org.junit.Assert {
+public class SignatureAlgorithmTest {
 
     static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(SignatureAlgorithmTest.class);

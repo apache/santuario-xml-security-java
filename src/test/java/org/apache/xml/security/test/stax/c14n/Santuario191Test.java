@@ -28,6 +28,9 @@ import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
+
+import static org.junit.Assert.assertEquals;
+
 import java.io.ByteArrayOutputStream;
 import java.io.StringReader;
 
@@ -38,7 +41,7 @@ import java.io.StringReader;
  * <p></p>
  * An xml:Id attribute is appearing in a child element, contrary to the C14n11 spec.
  */
-public class Santuario191Test extends org.junit.Assert {
+public class Santuario191Test {
 
     private static final String INPUT_DATA =
             "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"

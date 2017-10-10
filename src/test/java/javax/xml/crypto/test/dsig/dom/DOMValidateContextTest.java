@@ -21,6 +21,8 @@
  */
 package javax.xml.crypto.test.dsig.dom;
 
+import static org.junit.Assert.*;
+
 import java.io.*;
 import javax.xml.crypto.dsig.dom.DOMValidateContext;
 
@@ -30,7 +32,7 @@ import javax.xml.crypto.test.dsig.TestUtils;
  * Unit test for javax.xml.crypto.dsig.dom.DOMValidateContext
  *
  */
-public class DOMValidateContextTest extends org.junit.Assert {
+public class DOMValidateContextTest {
     private DOMValidateContext domVC;
 
     public DOMValidateContextTest() throws Exception {

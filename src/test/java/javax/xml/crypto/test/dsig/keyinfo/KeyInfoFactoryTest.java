@@ -21,6 +21,8 @@
  */
 package javax.xml.crypto.test.dsig.keyinfo;
 
+import static org.junit.Assert.*;
+
 import java.math.BigInteger;
 import java.util.*;
 import java.security.KeyException;
@@ -32,7 +34,7 @@ import javax.xml.crypto.*;
  * Unit test for javax.xml.crypto.dsig.keyinfo.KeyInfoFactory
  *
  */
-public class KeyInfoFactoryTest extends org.junit.Assert {
+public class KeyInfoFactoryTest {
 
     KeyInfoFactory factory;
 

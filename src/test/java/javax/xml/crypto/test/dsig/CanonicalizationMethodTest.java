@@ -21,6 +21,8 @@
  */
 package javax.xml.crypto.test.dsig;
 
+import static org.junit.Assert.*;
+
 import java.security.*;
 import java.security.spec.AlgorithmParameterSpec;
 import javax.xml.crypto.dsig.*;
@@ -31,7 +33,7 @@ import javax.xml.crypto.dsig.spec.ExcC14NParameterSpec;
  * Unit test for javax.xml.crypto.dsig.CanonicalizationMethod
  *
  */
-public class CanonicalizationMethodTest extends org.junit.Assert {
+public class CanonicalizationMethodTest {
 
     XMLSignatureFactory factory;
 

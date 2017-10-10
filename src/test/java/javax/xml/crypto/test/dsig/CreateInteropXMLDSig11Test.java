@@ -36,11 +36,13 @@ import org.w3c.dom.*;
 
 import javax.xml.crypto.test.KeySelectors;
 
+import static org.junit.Assert.assertTrue;
+
 /**
  * This is a testcase to generate all the W3C xmldsig XMLDSig11 testcases.
  *
  */
-public class CreateInteropXMLDSig11Test extends org.junit.Assert {
+public class CreateInteropXMLDSig11Test {
 
     private KeySelector kvks, sks;
     private CanonicalizationMethod withoutComments;

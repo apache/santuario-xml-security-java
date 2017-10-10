@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.test.dom.c14n.implementations;
 
+import static org.junit.Assert.*;
+
 import java.io.FileInputStream;
 import java.security.KeyStore;
 import java.security.PrivateKey;
@@ -38,7 +40,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-public class Bug45961Test extends org.junit.Assert {
+public class Bug45961Test {
 
     private static final String OBJECT_ID = "Object";
     private static final String MOCK_CANONICALIZATION_METHOD =

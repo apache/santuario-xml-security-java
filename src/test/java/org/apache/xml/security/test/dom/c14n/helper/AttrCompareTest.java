@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.test.dom.c14n.helper;
 
+import static org.junit.Assert.*;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -34,7 +36,7 @@ import org.w3c.dom.NamedNodeMap;
  * Unit test for {@link org.apache.xml.security.c14n.AttrCompare#compare}
  *
  */
-public class AttrCompareTest extends org.junit.Assert {
+public class AttrCompareTest {
 
     static {
         org.apache.xml.security.Init.init();

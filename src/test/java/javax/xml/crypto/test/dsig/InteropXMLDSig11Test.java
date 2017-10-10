@@ -27,11 +27,13 @@ import javax.xml.crypto.KeySelector;
 
 import javax.xml.crypto.test.KeySelectors;
 
+import static org.junit.Assert.assertTrue;
+
 /**
  * This is a testcase to validate all the W3C xmldsig XMLDSig11 testcases.
  *
  */
-public class InteropXMLDSig11Test extends org.junit.Assert {
+public class InteropXMLDSig11Test {
 
     private SignatureValidator validator;
     private File dir;

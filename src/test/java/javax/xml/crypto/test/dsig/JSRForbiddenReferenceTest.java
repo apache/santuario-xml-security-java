@@ -18,6 +18,8 @@
  */
 package javax.xml.crypto.test.dsig;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.security.Security;
@@ -29,7 +31,7 @@ import javax.xml.crypto.test.KeySelectors;
 /**
  * This is a test for a forbidden Reference algorithm when secure validation is enabled.
  */
-public class JSRForbiddenReferenceTest extends org.junit.Assert {
+public class JSRForbiddenReferenceTest {
 
     private SignatureValidator validator;
     private File dir;

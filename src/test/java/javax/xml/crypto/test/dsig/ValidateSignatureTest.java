@@ -18,6 +18,8 @@
  */
 package javax.xml.crypto.test.dsig;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.security.Security;
@@ -39,7 +41,7 @@ import javax.xml.crypto.dsig.dom.DOMValidateContext;
  * This is a testcase that validates various signatures
  *
  */
-public class ValidateSignatureTest extends org.junit.Assert {
+public class ValidateSignatureTest {
 
     private SignatureValidator validator;
     private File dir;
