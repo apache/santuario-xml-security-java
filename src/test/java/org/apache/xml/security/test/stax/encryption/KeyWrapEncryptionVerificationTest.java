@@ -56,7 +56,7 @@ import org.apache.xml.security.test.stax.utils.StAX2DOM;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -67,18 +67,13 @@ import org.w3c.dom.NodeList;
  */
 public class KeyWrapEncryptionVerificationTest extends Assert {
 
-    private boolean bcInstalled;
+    private static boolean bcInstalled;
+    private static KeyPair rsaKeyPair;
     private XMLInputFactory xmlInputFactory;
     private TransformerFactory transformerFactory = TransformerFactory.newInstance();
-    private KeyPair rsaKeyPair;
 
-    @Before
-    public void setUp() throws Exception {
-        org.apache.xml.security.Init.init();
-
-        xmlInputFactory = XMLInputFactory.newInstance();
-        xmlInputFactory.setEventAllocator(new XMLSecEventAllocator());
-
+    @BeforeClass
+    public static void setup() throws Exception {
         //
         // If the BouncyCastle provider is not installed, then try to load it
         // via reflection.
@@ -88,7 +83,7 @@ public class KeyWrapEncryptionVerificationTest extends Assert {
             try {
                 Class<?> c = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
                 cons = c.getConstructor(new Class[] {});
-            } catch (Exception e) {     //NOPMD
+            } catch (Exception e) {
                 //ignore
             }
             if (cons != null) {
@@ -99,6 +94,13 @@ public class KeyWrapEncryptionVerificationTest extends Assert {
         }
 
         rsaKeyPair = KeyPairGenerator.getInstance("RSA").genKeyPair();
+    }
+
+    public KeyWrapEncryptionVerificationTest() throws Exception {
+        org.apache.xml.security.Init.init();
+
+        xmlInputFactory = XMLInputFactory.newInstance();
+        xmlInputFactory.setEventAllocator(new XMLSecEventAllocator());
     }
 
     @org.junit.AfterClass

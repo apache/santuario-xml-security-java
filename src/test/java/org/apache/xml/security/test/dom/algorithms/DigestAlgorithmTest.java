@@ -33,6 +33,8 @@ import org.w3c.dom.Document;
  */
 public class DigestAlgorithmTest extends org.junit.Assert {
 
+    private static boolean bcInstalled;
+
     static {
         org.apache.xml.security.Init.init();
     }
@@ -53,6 +55,7 @@ public class DigestAlgorithmTest extends org.junit.Assert {
             if (cons != null) {
                 Provider provider = (Provider)cons.newInstance();
                 Security.insertProviderAt(provider, 2);
+                bcInstalled = true;
             }
         }
     }
@@ -172,10 +175,7 @@ public class DigestAlgorithmTest extends org.junit.Assert {
 
     @org.junit.Test
     public void testRIPEMD160() throws Exception {
-        // This only works with BouncyCastle
-        if (Security.getProvider("BC") == null) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
         Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
 
         MessageDigestAlgorithm digestAlgorithm =
@@ -194,10 +194,7 @@ public class DigestAlgorithmTest extends org.junit.Assert {
 
     @org.junit.Test
     public void testWhirlpool() throws Exception {
-        // This only works with BouncyCastle
-        if (Security.getProvider("BC") == null) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
         Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
 
         MessageDigestAlgorithm digestAlgorithm =
@@ -216,10 +213,7 @@ public class DigestAlgorithmTest extends org.junit.Assert {
 
     @org.junit.Test
     public void testSHA3_224() throws Exception {
-        // This only works with BouncyCastle
-        if (Security.getProvider("BC") == null) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
         Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
 
         MessageDigestAlgorithm digestAlgorithm =
@@ -238,10 +232,7 @@ public class DigestAlgorithmTest extends org.junit.Assert {
 
     @org.junit.Test
     public void testSHA3_256() throws Exception {
-        // This only works with BouncyCastle
-        if (Security.getProvider("BC") == null) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
         Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
 
         MessageDigestAlgorithm digestAlgorithm =
@@ -260,10 +251,7 @@ public class DigestAlgorithmTest extends org.junit.Assert {
 
     @org.junit.Test
     public void testSHA3_384() throws Exception {
-        // This only works with BouncyCastle
-        if (Security.getProvider("BC") == null) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
         Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
 
         MessageDigestAlgorithm digestAlgorithm =
@@ -282,10 +270,7 @@ public class DigestAlgorithmTest extends org.junit.Assert {
 
     @org.junit.Test
     public void testSHA3_512() throws Exception {
-        // This only works with BouncyCastle
-        if (Security.getProvider("BC") == null) {
-            return;
-        }
+        org.junit.Assume.assumeTrue(bcInstalled);
         Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
 
         MessageDigestAlgorithm digestAlgorithm =

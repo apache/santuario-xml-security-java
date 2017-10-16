@@ -41,6 +41,7 @@ import org.apache.xml.security.stax.ext.XMLSecurityProperties;
 import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
@@ -49,10 +50,11 @@ import org.w3c.dom.Document;
  */
 public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
 
-    private boolean bcInstalled;
-    private KeyPair rsaKeyPair, ecKeyPair;
+    private static boolean bcInstalled;
+    private static KeyPair rsaKeyPair, ecKeyPair;
 
-    public PKSignatureCreationTest() throws Exception {
+    @BeforeClass
+    public static void setup() throws Exception {
         //
         // If the BouncyCastle provider is not installed, then try to load it
         // via reflection.

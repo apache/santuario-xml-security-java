@@ -45,7 +45,7 @@ import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -56,16 +56,11 @@ import org.w3c.dom.NodeList;
  */
 public class SymmetricEncryptionCreationTest extends Assert {
 
+    private static boolean bcInstalled;
     private XMLInputFactory xmlInputFactory;
-    private boolean bcInstalled;
 
-    @Before
-    public void setUp() throws Exception {
-        org.apache.xml.security.Init.init();
-
-        xmlInputFactory = XMLInputFactory.newInstance();
-        xmlInputFactory.setEventAllocator(new XMLSecEventAllocator());
-
+    @BeforeClass
+    public static void setup() throws Exception {
         //
         // If the BouncyCastle provider is not installed, then try to load it
         // via reflection.
@@ -75,7 +70,7 @@ public class SymmetricEncryptionCreationTest extends Assert {
             try {
                 Class<?> c = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
                 cons = c.getConstructor(new Class[] {});
-            } catch (Exception e) {     //NOPMD
+            } catch (Exception e) {
                 //ignore
             }
             if (cons != null) {
@@ -84,6 +79,13 @@ public class SymmetricEncryptionCreationTest extends Assert {
                 bcInstalled = true;
             }
         }
+    }
+
+    public SymmetricEncryptionCreationTest() throws Exception {
+        org.apache.xml.security.Init.init();
+
+        xmlInputFactory = XMLInputFactory.newInstance();
+        xmlInputFactory.setEventAllocator(new XMLSecEventAllocator());
     }
 
     @org.junit.AfterClass

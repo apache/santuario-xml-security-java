@@ -39,6 +39,7 @@ import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -48,14 +49,15 @@ import org.w3c.dom.NodeList;
  */
 public class PKSignatureAlgorithmTest extends Assert {
 
-    private KeyPair rsaKeyPair, ecKeyPair;
-    private boolean bcInstalled;
+    private static KeyPair rsaKeyPair, ecKeyPair;
+    private static boolean bcInstalled;
 
     static {
         org.apache.xml.security.Init.init();
     }
 
-    public PKSignatureAlgorithmTest() throws Exception {
+    @BeforeClass
+    public static void setup() throws Exception {
         //
         // If the BouncyCastle provider is not installed, then try to load it
         // via reflection.

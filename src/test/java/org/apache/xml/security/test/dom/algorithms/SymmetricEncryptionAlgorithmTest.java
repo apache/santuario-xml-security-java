@@ -38,6 +38,7 @@ import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -47,13 +48,14 @@ import org.w3c.dom.NodeList;
  */
 public class SymmetricEncryptionAlgorithmTest extends Assert {
 
-    private boolean bcInstalled;
+    private static boolean bcInstalled;
 
     static {
         org.apache.xml.security.Init.init();
     }
 
-    public SymmetricEncryptionAlgorithmTest() throws Exception {
+    @BeforeClass
+    public static void setup() throws Exception {
         //
         // If the BouncyCastle provider is not installed, then try to load it
         // via reflection.
@@ -63,12 +65,13 @@ public class SymmetricEncryptionAlgorithmTest extends Assert {
             try {
                 Class<?> c = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
                 cons = c.getConstructor(new Class[] {});
-            } catch (Exception e) {     //NOPMD
+            } catch (Exception e) {
                 //ignore
             }
             if (cons != null) {
                 Provider provider = (Provider)cons.newInstance();
                 Security.insertProviderAt(provider, 2);
+                bcInstalled = true;
             }
         }
     }
