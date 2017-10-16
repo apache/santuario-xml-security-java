@@ -214,7 +214,8 @@ public class Canonicalizer11Test {
      *
      * @see <A HREF="http://www.w3.org/TR/2007/CR-xml-c14n11-20070621/#Example-DocSubsetsXMLAttrs">the example from the spec</A>
      */
-    // @Test
+    @Test
+    @org.junit.Ignore
     public void test38() throws Exception {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

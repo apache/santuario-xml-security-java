@@ -50,6 +50,7 @@ public class SecureXSLTTest {
         testSignature(new File(baseDir, "signature1.xml"));
     }
 
+    @org.junit.Test
     public void testSignature2() throws Exception {
 
         String fs = System.getProperty("file.separator");
@@ -61,6 +62,7 @@ public class SecureXSLTTest {
         testSignature(new File(baseDir, "signature2.xml"));
     }
 
+    @org.junit.Test
     public void testSignature3() throws Exception {
 
         String fs = System.getProperty("file.separator");

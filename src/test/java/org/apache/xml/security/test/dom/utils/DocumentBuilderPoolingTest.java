@@ -39,7 +39,6 @@ public class DocumentBuilderPoolingTest {
     public void testEquals() throws Exception {
         DocumentBuilder documentBuilder = XMLUtils.createDocumentBuilder(true);
         assertEquals(documentBuilder, documentBuilder);
-        assertSame(documentBuilder, documentBuilder);
     }
 
     @Test
