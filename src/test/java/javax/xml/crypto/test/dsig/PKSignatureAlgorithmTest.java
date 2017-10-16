@@ -47,6 +47,7 @@ import javax.xml.crypto.test.KeySelectors;
 import javax.xml.parsers.DocumentBuilder;
 
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.BeforeClass;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
@@ -69,14 +70,15 @@ public class PKSignatureAlgorithmTest {
     private KeyPair rsaKeyPair, ecKeyPair;
     private KeyInfo rsaki, ecki;
     private boolean ecAlgParamsSupport = true;
-    private boolean bcInstalled;
+    private static boolean bcInstalled;
 
     static {
         Security.insertProviderAt
             (new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI(), 1);
     }
 
-    public PKSignatureAlgorithmTest() throws Exception {
+    @BeforeClass
+    public static void setup() throws Exception {
         //
         // If the BouncyCastle provider is not installed, then try to load it
         // via reflection.
@@ -95,6 +97,9 @@ public class PKSignatureAlgorithmTest {
                 bcInstalled = true;
             }
         }
+    }
+
+    public PKSignatureAlgorithmTest() throws Exception {
 
         // check if EC AlgorithmParameters is supported - this is needed
         // for marshalling ECKeyValue elements

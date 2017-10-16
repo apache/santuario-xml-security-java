@@ -41,6 +41,7 @@ import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.stax.ext.XMLSecurityProperties;
 import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
@@ -49,9 +50,10 @@ import org.w3c.dom.Document;
  */
 public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
 
-    private boolean bcInstalled;
+    private static boolean bcInstalled;
 
-    public SignatureHMACCreationTest() throws Exception {
+    @BeforeClass
+    public static void setup() throws Exception {
         //
         // If the BouncyCastle provider is not installed, then try to load it
         // via reflection.
@@ -61,7 +63,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
             try {
                 Class<?> c = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
                 cons = c.getConstructor(new Class[] {});
-            } catch (Exception e) {     //NOPMD
+            } catch (Exception e) {
                 //ignore
             }
             if (cons != null) {

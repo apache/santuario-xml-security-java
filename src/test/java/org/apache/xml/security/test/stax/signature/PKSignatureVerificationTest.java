@@ -43,7 +43,7 @@ import org.apache.xml.security.stax.ext.XMLSecurityProperties;
 import org.apache.xml.security.test.stax.utils.StAX2DOM;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.utils.XMLUtils;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
@@ -51,21 +51,13 @@ import org.w3c.dom.Document;
  * A set of test-cases for Signature verification with various PublicKey algorithms
  */
 public class PKSignatureVerificationTest extends AbstractSignatureVerificationTest {
-
-    private boolean bcInstalled;
+    private static KeyPair rsaKeyPair, ecKeyPair;
+    private static boolean bcInstalled;
     private XMLInputFactory xmlInputFactory;
     private TransformerFactory transformerFactory = TransformerFactory.newInstance();
-    private KeyPair rsaKeyPair, ecKeyPair;
 
-    @Before
-    public void setUp() throws Exception {
-        Init.init(PKSignatureVerificationTest.class.getClassLoader().getResource("security-config.xml").toURI(),
-                this.getClass());
-        org.apache.xml.security.Init.init();
-
-        xmlInputFactory = XMLInputFactory.newInstance();
-        xmlInputFactory.setEventAllocator(new XMLSecEventAllocator());
-
+    @BeforeClass
+    public static void setup() throws Exception {
         //
         // If the BouncyCastle provider is not installed, then try to load it
         // via reflection.
@@ -75,7 +67,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
             try {
                 Class<?> c = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
                 cons = c.getConstructor(new Class[] {});
-            } catch (Exception e) {     //NOPMD
+            } catch (Exception e) {
                 //ignore
             }
             if (cons != null) {
@@ -90,6 +82,15 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         rsaKeyPair = rsaKpg.genKeyPair();
 
         ecKeyPair = KeyPairGenerator.getInstance("EC").genKeyPair();
+    }
+
+    public PKSignatureVerificationTest() throws Exception {
+        Init.init(PKSignatureVerificationTest.class.getClassLoader().getResource("security-config.xml").toURI(),
+                this.getClass());
+        org.apache.xml.security.Init.init();
+
+        xmlInputFactory = XMLInputFactory.newInstance();
+        xmlInputFactory.setEventAllocator(new XMLSecEventAllocator());
     }
 
     @org.junit.AfterClass

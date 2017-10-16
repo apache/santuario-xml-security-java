@@ -43,6 +43,7 @@ import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -52,14 +53,15 @@ import org.w3c.dom.NodeList;
  */
 public class KeyWrapEncryptionAlgorithmTest extends Assert {
 
-    private KeyPair rsaKeyPair;
-    private boolean bcInstalled;
+    private static KeyPair rsaKeyPair;
+    private static boolean bcInstalled;
 
     static {
         org.apache.xml.security.Init.init();
     }
 
-    public KeyWrapEncryptionAlgorithmTest() throws Exception {
+    @BeforeClass
+    public static void setup() throws Exception {
         //
         // If the BouncyCastle provider is not installed, then try to load it
         // via reflection.

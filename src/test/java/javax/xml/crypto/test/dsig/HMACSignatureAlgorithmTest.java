@@ -54,20 +54,21 @@ import static org.junit.Assert.assertTrue;
  */
 public class HMACSignatureAlgorithmTest {
 
+    private static boolean bcInstalled;
     private KeySelector sks;
     private CanonicalizationMethod withoutComments;
     private DigestMethod sha1;
     private SignatureMethod hmacSha1, hmacSha224, hmacSha256, hmacSha384, hmacSha512, ripemd160;
     private XMLSignatureFactory fac;
     private DocumentBuilder db;
-    private boolean bcInstalled;
 
     static {
         Security.insertProviderAt
             (new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI(), 1);
     }
 
-    public HMACSignatureAlgorithmTest() throws Exception {
+    @org.junit.BeforeClass
+    public static void setup() throws Exception {
         //
         // If the BouncyCastle provider is not installed, then try to load it
         // via reflection.
@@ -86,6 +87,9 @@ public class HMACSignatureAlgorithmTest {
                 bcInstalled = true;
             }
         }
+    }
+
+    public HMACSignatureAlgorithmTest() throws Exception {
 
         db = XMLUtils.createDocumentBuilder(false);
         // create common objects
