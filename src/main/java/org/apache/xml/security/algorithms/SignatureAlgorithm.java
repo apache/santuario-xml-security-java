@@ -153,7 +153,13 @@ public class SignatureAlgorithm extends Algorithm {
                 throw new XMLSignatureException("algorithms.NoSuchAlgorithmNoEx", exArgs);
             }
             return implementingClass.newInstance();
-        }  catch (IllegalAccessException | InstantiationException | NullPointerException ex) {
+        }  catch (IllegalAccessException ex) {
+            Object exArgs[] = { algorithmURI, ex.getMessage() };
+            throw new XMLSignatureException(ex, "algorithms.NoSuchAlgorithm", exArgs);
+        }  catch (InstantiationException ex) {
+            Object exArgs[] = { algorithmURI, ex.getMessage() };
+            throw new XMLSignatureException(ex, "algorithms.NoSuchAlgorithm", exArgs);
+        }  catch (NullPointerException ex) {
             Object exArgs[] = { algorithmURI, ex.getMessage() };
             throw new XMLSignatureException(ex, "algorithms.NoSuchAlgorithm", exArgs);
         }

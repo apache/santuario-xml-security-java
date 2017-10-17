@@ -322,7 +322,7 @@ public class PKSignatureAlgorithmTest extends Assert {
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
 
-        List<String> localNames = new ArrayList<>();
+        List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
 
         sign(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA3_224_MGF1, document, localNames, rsaKeyPair.getPrivate());
@@ -341,7 +341,7 @@ public class PKSignatureAlgorithmTest extends Assert {
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
 
-        List<String> localNames = new ArrayList<>();
+        List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
 
         sign(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA3_256_MGF1, document, localNames, rsaKeyPair.getPrivate());
@@ -360,7 +360,7 @@ public class PKSignatureAlgorithmTest extends Assert {
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
 
-        List<String> localNames = new ArrayList<>();
+        List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
 
         sign(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA3_384_MGF1, document, localNames, rsaKeyPair.getPrivate());
@@ -379,7 +379,7 @@ public class PKSignatureAlgorithmTest extends Assert {
         DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = builder.parse(sourceDocument);
 
-        List<String> localNames = new ArrayList<>();
+        List<String> localNames = new ArrayList<String>();
         localNames.add("PaymentInfo");
 
         sign(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA3_512_MGF1, document, localNames, rsaKeyPair.getPrivate());
