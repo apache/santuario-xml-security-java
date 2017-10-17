@@ -450,4 +450,84 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
             return XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA512_MGF1;
         }
     }
+
+    /**
+     * Class SignatureRSA3_SHA224MGF1
+     */
+    public static class SignatureRSASHA3_224MGF1 extends SignatureBaseRSA {
+
+        /**
+         * Constructor SignatureRSASHA3_224MGF1
+         *
+         * @throws XMLSignatureException
+         */
+        public SignatureRSASHA3_224MGF1() throws XMLSignatureException {
+            super();
+        }
+
+        /** {@inheritDoc} */
+        public String engineGetURI() {
+            return XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA3_224_MGF1;
+        }
+    }
+
+    /**
+     * Class SignatureRSA3_SHA256MGF1
+     */
+    public static class SignatureRSASHA3_256MGF1 extends SignatureBaseRSA {
+
+        /**
+         * Constructor SignatureRSASHA3_256MGF1
+         *
+         * @throws XMLSignatureException
+         */
+        public SignatureRSASHA3_256MGF1() throws XMLSignatureException {
+            super();
+        }
+
+        /** {@inheritDoc} */
+        public String engineGetURI() {
+            return XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA3_256_MGF1;
+        }
+    }
+
+    /**
+     * Class SignatureRSA3_SHA384MGF1
+     */
+    public static class SignatureRSASHA3_384MGF1 extends SignatureBaseRSA {
+
+        /**
+         * Constructor SignatureRSASHA3_384MGF1
+         *
+         * @throws XMLSignatureException
+         */
+        public SignatureRSASHA3_384MGF1() throws XMLSignatureException {
+            super();
+        }
+
+        /** {@inheritDoc} */
+        public String engineGetURI() {
+            return XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA3_384_MGF1;
+        }
+    }
+
+    /**
+     * Class SignatureRSASHA3_512MGF1
+     */
+    public static class SignatureRSASHA3_512MGF1 extends SignatureBaseRSA {
+
+        /**
+         * Constructor SignatureRSASHA3_512MGF1
+         *
+         * @throws XMLSignatureException
+         */
+        public SignatureRSASHA3_512MGF1() throws XMLSignatureException {
+            super();
+        }
+
+        /** {@inheritDoc} */
+        public String engineGetURI() {
+            return XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA3_512_MGF1;
+        }
+    }
 }

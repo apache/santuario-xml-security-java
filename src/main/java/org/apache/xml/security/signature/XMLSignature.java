@@ -135,6 +135,22 @@ public final class XMLSignature extends SignatureElementProxy {
     public static final String ALGO_ID_SIGNATURE_RSA_SHA512_MGF1 =
         Constants.XML_DSIG_NS_MORE_07_05 + "sha512-rsa-MGF1";
 
+    /** Signature - Optional RSAwithSHA3_224andMGF1 */
+    public static final String ALGO_ID_SIGNATURE_RSA_SHA3_224_MGF1 =
+        Constants.XML_DSIG_NS_MORE_07_05 + "sha3-224-rsa-MGF1";
+
+    /** Signature - Optional RSAwithSHA3_256andMGF1 */
+    public static final String ALGO_ID_SIGNATURE_RSA_SHA3_256_MGF1 =
+        Constants.XML_DSIG_NS_MORE_07_05 + "sha3-256-rsa-MGF1";
+
+    /** Signature - Optional RSAwithSHA3_384andMGF1 */
+    public static final String ALGO_ID_SIGNATURE_RSA_SHA3_384_MGF1 =
+        Constants.XML_DSIG_NS_MORE_07_05 + "sha3-384-rsa-MGF1";
+
+    /** Signature - Optional RSAwithSHA3_512andMGF1 */
+    public static final String ALGO_ID_SIGNATURE_RSA_SHA3_512_MGF1 =
+        Constants.XML_DSIG_NS_MORE_07_05 + "sha3-512-rsa-MGF1";
+
     /** HMAC - NOT Recommended HMAC-MD5 */
     public static final String ALGO_ID_MAC_HMAC_NOT_RECOMMENDED_MD5 =
         Constants.MoreAlgorithmsSpecNS + "hmac-md5";

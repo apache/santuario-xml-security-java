@@ -109,6 +109,15 @@
       <SignatureAlgorithm URI="http://www.w3.org/2007/05/xmldsig-more#sha512-rsa-MGF1"
                           JAVACLASS="org.apache.xml.security.algorithms.implementations.SignatureBaseRSA$SignatureRSASHA512MGF1" />
                           
+      <SignatureAlgorithm URI="http://www.w3.org/2007/05/xmldsig-more#sha3-224-rsa-MGF1"
+                          JAVACLASS="org.apache.xml.security.algorithms.implementations.SignatureBaseRSA$SignatureRSASHA3_224MGF1" />
+      <SignatureAlgorithm URI="http://www.w3.org/2007/05/xmldsig-more#sha3-256-rsa-MGF1"
+                          JAVACLASS="org.apache.xml.security.algorithms.implementations.SignatureBaseRSA$SignatureRSASHA3_256MGF1" />
+      <SignatureAlgorithm URI="http://www.w3.org/2007/05/xmldsig-more#sha3-384-rsa-MGF1"
+                          JAVACLASS="org.apache.xml.security.algorithms.implementations.SignatureBaseRSA$SignatureRSASHA3_384MGF1" />
+      <SignatureAlgorithm URI="http://www.w3.org/2007/05/xmldsig-more#sha3-512-rsa-MGF1"
+                          JAVACLASS="org.apache.xml.security.algorithms.implementations.SignatureBaseRSA$SignatureRSASHA3_512MGF1" />
+                          
       <SignatureAlgorithm URI="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1"
                           JAVACLASS="org.apache.xml.security.algorithms.implementations.SignatureECDSA$SignatureECDSASHA1" />
       <SignatureAlgorithm URI="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha224"
