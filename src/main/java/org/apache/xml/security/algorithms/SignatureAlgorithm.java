@@ -148,14 +148,12 @@ public class SignatureAlgorithm extends Algorithm {
                 log.debug("Create URI \"" + algorithmURI + "\" class \""
                    + implementingClass + "\"");
             }
+            if (implementingClass == null) {
+                Object exArgs[] = { algorithmURI };
+                throw new XMLSignatureException("algorithms.NoSuchAlgorithmNoEx", exArgs);
+            }
             return implementingClass.newInstance();
-        }  catch (IllegalAccessException ex) {
-            Object exArgs[] = { algorithmURI, ex.getMessage() };
-            throw new XMLSignatureException(ex, "algorithms.NoSuchAlgorithm", exArgs);
-        } catch (InstantiationException ex) {
-            Object exArgs[] = { algorithmURI, ex.getMessage() };
-            throw new XMLSignatureException(ex, "algorithms.NoSuchAlgorithm", exArgs);
-        } catch (NullPointerException ex) {
+        }  catch (IllegalAccessException | InstantiationException | NullPointerException ex) {
             Object exArgs[] = { algorithmURI, ex.getMessage() };
             throw new XMLSignatureException(ex, "algorithms.NoSuchAlgorithm", exArgs);
         }
@@ -429,6 +427,18 @@ public class SignatureAlgorithm extends Algorithm {
         );
         algorithmHash.put(
             XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA512_MGF1, SignatureBaseRSA.SignatureRSASHA512MGF1.class
+        );
+        algorithmHash.put(
+            XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA3_224_MGF1, SignatureBaseRSA.SignatureRSASHA3_224MGF1.class
+        );
+        algorithmHash.put(
+            XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA3_256_MGF1, SignatureBaseRSA.SignatureRSASHA3_256MGF1.class
+        );
+        algorithmHash.put(
+            XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA3_384_MGF1, SignatureBaseRSA.SignatureRSASHA3_384MGF1.class
+        );
+        algorithmHash.put(
+            XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA3_512_MGF1, SignatureBaseRSA.SignatureRSASHA3_512MGF1.class
         );
         algorithmHash.put(
             XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA1, SignatureECDSA.SignatureECDSASHA1.class
