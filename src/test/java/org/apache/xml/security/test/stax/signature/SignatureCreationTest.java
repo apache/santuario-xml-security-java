@@ -289,7 +289,20 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         signAtSpecificPosition(999);
     }
 
+    @Test
+    public void testSignAtSpecificPositionViaQName() throws Exception {
+        signAtSpecificPosition(0, new QName("urn:example:po", "PurchaseOrder"), true);
+        signAtSpecificPosition(0, new QName("urn:example:po", "Items"), true);
+        signAtSpecificPosition(0, new QName("urn:example:po", "Items"), false);
+        signAtSpecificPosition(0, new QName("urn:example:po", "ShippingAddress"), true);
+        signAtSpecificPosition(0, new QName("urn:example:po", "ShippingAddress"), false);
+    }
+
     private void signAtSpecificPosition(int position) throws Exception {
+        signAtSpecificPosition(position, null, false);
+    }
+
+    private void signAtSpecificPosition(int position, QName positionQName, boolean start) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
@@ -298,6 +311,8 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         // Specify the signature position
         properties.setSignaturePosition(position);
+        properties.setSignaturePositionQName(positionQName);
+        properties.setSignaturePositionStart(start);
 
         // Set the key up
         KeyStore keyStore = KeyStore.getInstance("jks");
@@ -341,15 +356,32 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         //find first child element:
         Node childNode = XMLUtils.getNextElement(document.getDocumentElement().getFirstChild());
 
-        int expectedPosition = position < 0 ? 0 : position;
-        int curPos = 0;
-        while (curPos != expectedPosition) {
-            Node node = XMLUtils.getNextElement(childNode.getNextSibling());
-            curPos++;
-            if (node != null) {
-                childNode = node;
-            } else {
-                break;
+        if (positionQName != null) {
+            // Find the Signature node inside the desired QName
+            String localName = positionQName.getLocalPart();
+            if (!"PurchaseOrder".equals(localName)) {
+                String namespace = positionQName.getNamespaceURI();
+                while (childNode != null && !(childNode.getLocalName().equals(localName)
+                    && childNode.getNamespaceURI().equals(namespace))) {
+                    childNode = XMLUtils.getNextElement(childNode.getNextSibling());
+                }
+                if (start) {
+                    childNode = childNode.getFirstChild();
+                } else {
+                    childNode = childNode.getNextSibling();
+                }
+            }
+        } else {
+            int expectedPosition = position < 0 ? 0 : position;
+            int curPos = 0;
+            while (curPos != expectedPosition) {
+                Node node = XMLUtils.getNextElement(childNode.getNextSibling());
+                curPos++;
+                if (node != null) {
+                    childNode = node;
+                } else {
+                    break;
+                }
             }
         }
 
