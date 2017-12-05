@@ -76,6 +76,9 @@ public class XMLSecurityProperties {
     private boolean signatureGenerateIds = true;
     private boolean signatureIncludeDigestTransform = true;
 
+    private QName signaturePositionQName;
+    private boolean signaturePositionStart = false;
+
     public XMLSecurityProperties() {
     }
 
@@ -112,6 +115,16 @@ public class XMLSecurityProperties {
         this.keyNameMap.putAll(xmlSecurityProperties.keyNameMap);
         this.signatureGenerateIds = xmlSecurityProperties.signatureGenerateIds;
         this.signatureIncludeDigestTransform = xmlSecurityProperties.signatureIncludeDigestTransform;
+        this.signaturePositionQName = xmlSecurityProperties.signaturePositionQName;
+        this.signaturePositionStart = xmlSecurityProperties.signaturePositionStart;
+    }
+
+    public boolean isSignaturePositionStart() {
+        return signaturePositionStart;
+    }
+
+    public void setSignaturePositionStart(boolean signaturePositionStart) {
+        this.signaturePositionStart = signaturePositionStart;
     }
 
     public SecurityTokenConstants.KeyIdentifier getSignatureKeyIdentifier() {
@@ -492,5 +505,13 @@ public class XMLSecurityProperties {
      */
     public void setSignatureIncludeDigestTransform(boolean signatureIncludeDigestTransform) {
         this.signatureIncludeDigestTransform = signatureIncludeDigestTransform;
+    }
+
+    public QName getSignaturePositionQName() {
+        return signaturePositionQName;
+    }
+
+    public void setSignaturePositionQName(QName signaturePositionQName) {
+        this.signaturePositionQName = signaturePositionQName;
     }
 }
