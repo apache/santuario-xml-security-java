@@ -143,7 +143,7 @@ public class XalanXPathAPI implements XPathAPI {
 
     private XPath createXPath(String str, PrefixResolver prefixResolver) throws TransformerException {
         XPath xpath = null;
-        Class<?>[] classes = new Class[]{String.class, SourceLocator.class, PrefixResolver.class, int.class,
+        Class<?>[] classes = new Class<?>[]{String.class, SourceLocator.class, PrefixResolver.class, int.class,
                                       ErrorListener.class, FunctionTable.class};
         Object[] objects =
             new Object[]{str, null, prefixResolver, XPath.SELECT, null, funcTable};
