@@ -741,7 +741,6 @@ public final class XMLSignature extends SignatureElementProxy {
 
                 // Get the canonicalized (normalized) SignedInfo
                 si.signInOctetStream(bos);
-                bos.close();
                 // retrieve the byte[] from the stored signature
                 sigBytes = this.getSignatureValue();
             } catch (IOException ex) {
