@@ -236,8 +236,6 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
             }
 
             this.canonData = new ByteArrayInputStream(signedInfoBytes);
-
-            os.close();
         } catch (TransformException te) {
             throw new XMLSignatureException(te);
         } catch (IOException e) {
