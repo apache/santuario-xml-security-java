@@ -349,7 +349,7 @@
                     AlgorithmClass="Mac"
                     RequirementLevel="NOT RECOMMENDED"
                     SpecificationURL="http://www.ietf.org/internet-drafts/draft-eastlake-xmldsig-uri-02.txt"
-                    KeyLength="128"
+                    KeyLength="0"
                     RequiredKey="HmacMD5"
                     JCEName="HmacMD5"/>
 
@@ -358,7 +358,7 @@
                     AlgorithmClass="Mac"
                     RequirementLevel="OPTIONAL"
                     SpecificationURL="http://www.ietf.org/internet-drafts/draft-eastlake-xmldsig-uri-02.txt"
-                    KeyLength="160"
+                    KeyLength="0"
                     RequiredKey="HMACRIPEMD160"
                     JCEName="HMACRIPEMD160"/>
 
@@ -366,7 +366,7 @@
                     Description="Message Authentication code using SHA1"
                     AlgorithmClass="Mac"
                     RequirementLevel="REQUIRED"
-                    KeyLength="160"
+                    KeyLength="0"
                     RequiredKey="HmacSHA1"
                     JCEName="HmacSHA1"/>
 
@@ -374,7 +374,7 @@
                     Description="Message Authentication code using SHA-224"
                     AlgorithmClass="Mac"
                     RequirementLevel="OPTIONAL"
-                    KeyLength="224"
+                    KeyLength="0"
                     RequiredKey="HmacSHA224"
                     JCEName="HmacSHA224"/>
                     
@@ -383,7 +383,7 @@
                     AlgorithmClass="Mac"
                     RequirementLevel="OPTIONAL"
                     SpecificationURL="http://www.ietf.org/internet-drafts/draft-eastlake-xmldsig-uri-02.txt"
-                    KeyLength="256"
+                    KeyLength="0"
                     RequiredKey="HmacSHA256"
                     JCEName="HmacSHA256"/>
 
@@ -392,7 +392,7 @@
                     AlgorithmClass="Mac"
                     RequirementLevel="OPTIONAL"
                     SpecificationURL="http://www.ietf.org/internet-drafts/draft-eastlake-xmldsig-uri-02.txt"
-                    KeyLength="384"
+                    KeyLength="0"
                     RequiredKey="HmacSHA384"
                     JCEName="HmacSHA384"/>
 
@@ -401,7 +401,7 @@
                     AlgorithmClass="Mac"
                     RequirementLevel="OPTIONAL"
                     SpecificationURL="http://www.ietf.org/internet-drafts/draft-eastlake-xmldsig-uri-02.txt"
-                    KeyLength="512"
+                    KeyLength="0"
                     RequiredKey="HmacSHA512"
                     JCEName="HmacSHA512"/>
 

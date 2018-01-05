@@ -373,7 +373,7 @@
                     AlgorithmClass="Mac"
                     RequirementLevel="NOT RECOMMENDED"
                     SpecificationURL="http://www.ietf.org/rfc/rfc4051.txt"
-                    KeyLength="128"
+                    KeyLength="0"
                     JCEName="HmacMD5"/>
 
          <Algorithm URI="http://www.w3.org/2001/04/xmldsig-more#hmac-ripemd160"
@@ -381,14 +381,14 @@
                     AlgorithmClass="Mac"
                     RequirementLevel="OPTIONAL"
                     SpecificationURL="http://www.ietf.org/rfc/rfc4051.txt"
-                    KeyLength="160"
+                    KeyLength="0"
                     JCEName="HMACRIPEMD160"/>
 
          <Algorithm URI="http://www.w3.org/2000/09/xmldsig#hmac-sha1"
                     Description="Message Authentication code using SHA1"
                     AlgorithmClass="Mac"
                     RequirementLevel="REQUIRED"
-                    KeyLength="160"
+                    KeyLength="0"
                     JCEName="HmacSHA1"/>
                     
          <Algorithm URI="http://www.w3.org/2001/04/xmldsig-more#hmac-sha224"
@@ -396,7 +396,7 @@
                     AlgorithmClass="Mac"
                     RequirementLevel="OPTIONAL"
                     SpecificationURL="http://www.ietf.org/rfc/rfc4051.txt"
-                    KeyLength="224"
+                    KeyLength="0"
                     JCEName="HmacSHA224"/>
 
          <Algorithm URI="http://www.w3.org/2001/04/xmldsig-more#hmac-sha256"
@@ -404,7 +404,7 @@
                     AlgorithmClass="Mac"
                     RequirementLevel="OPTIONAL"
                     SpecificationURL="http://www.ietf.org/rfc/rfc4051.txt"
-                    KeyLength="256"
+                    KeyLength="0"
                     JCEName="HmacSHA256"/>
 
          <Algorithm URI="http://www.w3.org/2001/04/xmldsig-more#hmac-sha384"
@@ -412,7 +412,7 @@
                     AlgorithmClass="Mac"
                     RequirementLevel="OPTIONAL"
                     SpecificationURL="http://www.ietf.org/rfc/rfc4051.txt"
-                    KeyLength="384"
+                    KeyLength="0"
                     JCEName="HmacSHA384"/>
 
          <Algorithm URI="http://www.w3.org/2001/04/xmldsig-more#hmac-sha512"
@@ -420,7 +420,7 @@
                     AlgorithmClass="Mac"
                     RequirementLevel="OPTIONAL"
                     SpecificationURL="http://www.ietf.org/rfc/rfc4051.txt"
-                    KeyLength="512"
+                    KeyLength="0"
                     JCEName="HmacSHA512"/>
 
          <!-- Block encryption Algorithms -->

@@ -205,31 +205,31 @@ public class JCEMapper {
         );
         algorithmsMap.put(
             XMLSignature.ALGO_ID_MAC_HMAC_NOT_RECOMMENDED_MD5,
-            new Algorithm("", "HmacMD5", "Mac", 128, 0)
+            new Algorithm("", "HmacMD5", "Mac", 0, 0)
         );
         algorithmsMap.put(
             XMLSignature.ALGO_ID_MAC_HMAC_RIPEMD160,
-            new Algorithm("", "HMACRIPEMD160", "Mac", 160, 0)
+            new Algorithm("", "HMACRIPEMD160", "Mac", 0, 0)
         );
         algorithmsMap.put(
             XMLSignature.ALGO_ID_MAC_HMAC_SHA1,
-            new Algorithm("", "HmacSHA1", "Mac", 160, 0)
+            new Algorithm("", "HmacSHA1", "Mac", 0, 0)
         );
         algorithmsMap.put(
             XMLSignature.ALGO_ID_MAC_HMAC_SHA224,
-            new Algorithm("", "HmacSHA224", "Mac", 224, 0)
+            new Algorithm("", "HmacSHA224", "Mac", 0, 0)
         );
         algorithmsMap.put(
             XMLSignature.ALGO_ID_MAC_HMAC_SHA256,
-            new Algorithm("", "HmacSHA256", "Mac", 256, 0)
+            new Algorithm("", "HmacSHA256", "Mac", 0, 0)
         );
         algorithmsMap.put(
             XMLSignature.ALGO_ID_MAC_HMAC_SHA384,
-            new Algorithm("", "HmacSHA384", "Mac", 384, 0)
+            new Algorithm("", "HmacSHA384", "Mac", 0, 0)
         );
         algorithmsMap.put(
             XMLSignature.ALGO_ID_MAC_HMAC_SHA512,
-            new Algorithm("", "HmacSHA512", "Mac", 512, 0)
+            new Algorithm("", "HmacSHA512", "Mac", 0, 0)
         );
         // Encryption algorithms
         algorithmsMap.put(
