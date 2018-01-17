@@ -100,7 +100,9 @@ public class XmlSecTest {
             publicKey = signingCert.getPublicKey();
             privateKey = (PrivateKey) ks.getKey("mullan", "changeit".toCharArray());
         } else {
-            KeyPair keyPair = KeyPairGenerator.getInstance("DSA").generateKeyPair();
+            KeyPairGenerator kpg = KeyPairGenerator.getInstance("DSA");
+            kpg.initialize(1024);
+            KeyPair keyPair = kpg.generateKeyPair();
             publicKey = keyPair.getPublic();
             privateKey = keyPair.getPrivate();
         }
