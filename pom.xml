@@ -506,7 +506,6 @@
 
     <properties>
         <xml.apis.version>1.4.01</xml.apis.version>
-        <oldxmlsec.version>2.0.7</oldxmlsec.version>
         <slf4j.version>1.7.25</slf4j.version>
         <xalan.version>2.7.2</xalan.version>
         <xerces.version>2.11.0</xerces.version>
