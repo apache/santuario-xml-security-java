@@ -63,7 +63,7 @@ public class XMLSecStartDocumentImpl extends XMLSecEventBaseImpl implements XMLS
 
     @Override
     public boolean isStandalone() {
-        return isStandAlone != null ? isStandAlone : false;
+        return isStandAlone != null && isStandAlone;
     }
 
     @Override

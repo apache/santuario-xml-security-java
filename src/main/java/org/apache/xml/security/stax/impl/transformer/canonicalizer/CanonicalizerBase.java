@@ -326,7 +326,7 @@ public abstract class CanonicalizerBase extends TransformIdentity {
 
                     break;
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
-                    outputPItoWriter(((XMLSecProcessingInstruction) xmlSecEvent), outputStream, currentDocumentLevel);
+                    outputPItoWriter((XMLSecProcessingInstruction) xmlSecEvent, outputStream, currentDocumentLevel);
                     break;
                 case XMLStreamConstants.CHARACTERS:
                     if (currentDocumentLevel == DocumentLevel.NODE_NOT_BEFORE_OR_AFTER_DOCUMENT_ELEMENT) {
@@ -335,7 +335,7 @@ public abstract class CanonicalizerBase extends TransformIdentity {
                     break;
                 case XMLStreamConstants.COMMENT:
                     if (includeComments) {
-                        outputCommentToWriter(((XMLSecComment) xmlSecEvent), outputStream, currentDocumentLevel);
+                        outputCommentToWriter((XMLSecComment) xmlSecEvent, outputStream, currentDocumentLevel);
                     }
                     break;
                 case XMLStreamConstants.SPACE:

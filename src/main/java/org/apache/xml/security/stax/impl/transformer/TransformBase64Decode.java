@@ -97,7 +97,7 @@ public class TransformBase64Decode extends TransformIdentity {
                                             base64OutputStream = new Base64OutputStream(byteArrayOutputStream, false);
                                         }
                                         try {
-                                            base64OutputStream.write(((byte[]) object));
+                                            base64OutputStream.write((byte[]) object);
                                         } catch (IOException e) {
                                             throw new XMLStreamException(e);
                                         }
@@ -142,7 +142,7 @@ public class TransformBase64Decode extends TransformIdentity {
                                             base64OutputStream = new Base64OutputStream(byteArrayOutputStream, false);
                                         }
                                         try {
-                                            base64OutputStream.write(((byte[]) object));
+                                            base64OutputStream.write((byte[]) object);
                                         } catch (IOException e) {
                                             throw new XMLStreamException(e);
                                         }
