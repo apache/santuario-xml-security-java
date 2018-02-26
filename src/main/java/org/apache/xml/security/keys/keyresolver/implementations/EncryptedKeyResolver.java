@@ -106,11 +106,11 @@ public class EncryptedKeyResolver extends KeyResolverSpi {
     public SecretKey engineLookupAndResolveSecretKey(
         Element element, String baseURI, StorageResolver storage
     ) {
-        LOG.debug("EncryptedKeyResolver - Can I resolve {}", element.getTagName());
-
         if (element == null) {
             return null;
         }
+
+        LOG.debug("EncryptedKeyResolver - Can I resolve {}", element.getTagName());
 
         SecretKey key = null;
         boolean isEncryptedKey =
