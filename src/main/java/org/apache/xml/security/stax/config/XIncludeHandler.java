@@ -152,6 +152,7 @@ public class XIncludeHandler extends DefaultHandler {
                 try {
                     XMLReader xmlReader = XMLReaderFactory.createXMLReader();
                     SAXTransformerFactory saxTransformerFactory = (SAXTransformerFactory) SAXTransformerFactory.newInstance();
+                    saxTransformerFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
                     TransformerHandler transformerHandler = saxTransformerFactory.newTransformerHandler();
                     transformerHandler.setResult(domResult);
                     xmlReader.setContentHandler(new XIncludeHandler(transformerHandler, uriDocMap));
@@ -173,10 +174,10 @@ public class XIncludeHandler extends DefaultHandler {
 
             SAXResult saxResult = new SAXResult(this);
             skipEvents = true;
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer;
             try {
-                transformer = transformerFactory.newTransformer();
+                TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                transformerFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
+                Transformer transformer = transformerFactory.newTransformer();
                 if (xpointer == null) {
                     transformer.transform(new DOMSource(document, document.getDocumentURI()), saxResult);
                 } else {
