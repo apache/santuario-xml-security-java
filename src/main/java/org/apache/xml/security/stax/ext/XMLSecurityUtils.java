@@ -369,7 +369,7 @@ public class XMLSecurityUtils {
         if (xmlSecStartElement == null) {
             return Collections.emptySet();
         }
-        Set<String> prefixes = new HashSet<>();
+        Set<String> prefixes = new TreeSet<>();
 
         XMLSecStartElement parentXMXmlSecStartElement = xmlSecStartElement.getParentXMLSecStartElement();
         if (parentXMXmlSecStartElement != null) {
