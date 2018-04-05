@@ -719,12 +719,17 @@ public class Reference extends SignatureElementProxy {
             return getPreCalculatedDigest(input);
         }
 
+        cacheDereferencedElement(input);
+
         MessageDigestAlgorithm mda = this.getMessageDigestAlgorithm();
         mda.reset();
 
         try (DigesterOutputStream diOs = new DigesterOutputStream(mda);
             OutputStream os = new UnsyncBufferedOutputStream(diOs)) {
-            XMLSignatureInput output = this.dereferenceURIandPerformTransforms(os);
+
+            XMLSignatureInput output = this.getContentsAfterTransformation(input, os);
+            this.transformsOutput = output;
+
             // if signing and c14n11 property == true explicitly add
             // C14N11 transform if needed
             if (Reference.useC14N11 && !validating && !output.isOutputStreamSet()
