@@ -82,7 +82,7 @@ public class XMLSecurityStreamWriterTest extends Assert {
             }
 
             @Override
-            public Iterator<?> getPrefixes(String namespaceURI) {
+            public Iterator<String> getPrefixes(String namespaceURI) {
                 List<String> ns = new ArrayList<>();
                 ns.add(getPrefix(namespaceURI));
                 return ns.iterator();

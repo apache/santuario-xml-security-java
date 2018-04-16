@@ -427,9 +427,9 @@
             </build>
          </profile>
          <profile>
-            <id>jdk19</id>
+            <id>jdk19-plus</id>
             <activation>
-                <jdk>9</jdk>
+                <jdk>[9,)</jdk>
             </activation>
             <build>
                 <pluginManagement>
