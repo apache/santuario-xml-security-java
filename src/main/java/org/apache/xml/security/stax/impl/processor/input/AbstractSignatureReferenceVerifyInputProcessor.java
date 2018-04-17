@@ -21,6 +21,7 @@ package org.apache.xml.security.stax.impl.processor.input;
 import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer20010315_Excl;
 import org.apache.xml.security.stax.securityToken.InboundSecurityToken;
 import org.apache.xml.security.utils.UnsyncBufferedOutputStream;
+import org.apache.xml.security.utils.XMLUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.xml.security.binding.excc14n.InclusiveNamespaces;
@@ -383,8 +384,8 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
 
     protected void compareDigest(byte[] calculatedDigest, ReferenceType referenceType) throws XMLSecurityException {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Calculated Digest: {}", Base64.getMimeEncoder().encodeToString(calculatedDigest));
-            LOG.debug("Stored Digest: {}", Base64.getMimeEncoder().encodeToString(referenceType.getDigestValue()));
+            LOG.debug("Calculated Digest: {}", XMLUtils.encodeToString(calculatedDigest));
+            LOG.debug("Stored Digest: {}", XMLUtils.encodeToString(referenceType.getDigestValue()));
         }
 
         if (!MessageDigest.isEqual(referenceType.getDigestValue(), calculatedDigest)) {

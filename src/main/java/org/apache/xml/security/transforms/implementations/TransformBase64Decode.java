@@ -20,7 +20,6 @@ package org.apache.xml.security.transforms.implementations;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Base64;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -105,12 +104,12 @@ public class TransformBase64Decode extends TransformSpi {
             StringBuilder sb = new StringBuilder();
             traverseElement((Element)el, sb);
             if (os == null) {
-                byte[] decodedBytes = Base64.getMimeDecoder().decode(sb.toString());
+                byte[] decodedBytes = XMLUtils.decode(sb.toString());
                 XMLSignatureInput output = new XMLSignatureInput(decodedBytes);
                 output.setSecureValidation(secureValidation);
                 return output;
             }
-            byte[] bytes = Base64.getMimeDecoder().decode(sb.toString());
+            byte[] bytes = XMLUtils.decode(sb.toString());
             os.write(bytes);
             XMLSignatureInput output = new XMLSignatureInput((byte[])null);
             output.setSecureValidation(secureValidation);
@@ -121,17 +120,17 @@ public class TransformBase64Decode extends TransformSpi {
         if (input.isOctetStream() || input.isNodeSet()) {
             if (os == null) {
                 byte[] base64Bytes = input.getBytes();
-                byte[] decodedBytes = Base64.getMimeDecoder().decode(base64Bytes);
+                byte[] decodedBytes = XMLUtils.decode(base64Bytes);
                 XMLSignatureInput output = new XMLSignatureInput(decodedBytes);
                 output.setSecureValidation(secureValidation);
                 return output;
             }
             if (input.isByteArray() || input.isNodeSet()) {
-                byte[] bytes = Base64.getMimeDecoder().decode(input.getBytes());
+                byte[] bytes = XMLUtils.decode(input.getBytes());
                 os.write(bytes);
             } else {
                 byte[] inputBytes = JavaUtils.getBytesFromStream(input.getOctetStreamReal());
-                byte[] bytes = Base64.getMimeDecoder().decode(inputBytes);
+                byte[] bytes = XMLUtils.decode(inputBytes);
                 os.write(bytes);
             }
             XMLSignatureInput output = new XMLSignatureInput((byte[])null);
@@ -149,7 +148,7 @@ public class TransformBase64Decode extends TransformSpi {
             Element rootNode = doc.getDocumentElement();
             StringBuilder sb = new StringBuilder();
             traverseElement(rootNode, sb);
-            byte[] decodedBytes = Base64.getMimeDecoder().decode(sb.toString());
+            byte[] decodedBytes = XMLUtils.decode(sb.toString());
             XMLSignatureInput output = new XMLSignatureInput(decodedBytes);
             output.setSecureValidation(secureValidation);
             return output;

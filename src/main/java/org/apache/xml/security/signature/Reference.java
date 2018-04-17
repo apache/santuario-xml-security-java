@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import java.util.Base64;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -392,7 +391,7 @@ public class Reference extends SignatureElementProxy {
             n = n.getNextSibling();
         }
 
-        String base64codedValue = Base64.getMimeEncoder().encodeToString(digestValue);
+        String base64codedValue = XMLUtils.encodeToString(digestValue);
         Text t = createText(base64codedValue);
 
         digestValueElement.appendChild(t);
@@ -773,7 +772,7 @@ public class Reference extends SignatureElementProxy {
             throws ReferenceNotInitializedException {
         LOG.debug("Verifying element with pre-calculated digest");
         String preCalculatedDigest = input.getPreCalculatedDigest();
-        return Base64.getMimeDecoder().decode(preCalculatedDigest);
+        return XMLUtils.decode(preCalculatedDigest);
     }
 
     /**
@@ -791,7 +790,7 @@ public class Reference extends SignatureElementProxy {
             );
         }
         String content = XMLUtils.getFullTextChildrenFromElement(digestValueElement);
-        return Base64.getMimeDecoder().decode(content);
+        return XMLUtils.decode(content);
     }
 
 
@@ -810,8 +809,8 @@ public class Reference extends SignatureElementProxy {
 
         if (!equal) {
             LOG.warn("Verification failed for URI \"" + this.getURI() + "\"");
-            LOG.warn("Expected Digest: " + Base64.getMimeEncoder().encodeToString(elemDig));
-            LOG.warn("Actual Digest: " + Base64.getMimeEncoder().encodeToString(calcDig));
+            LOG.warn("Expected Digest: " + XMLUtils.encodeToString(elemDig));
+            LOG.warn("Actual Digest: " + XMLUtils.encodeToString(calcDig));
         } else {
             LOG.debug("Verification successful for URI \"{}\"", this.getURI());
         }

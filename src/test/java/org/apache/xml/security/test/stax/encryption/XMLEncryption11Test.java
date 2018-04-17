@@ -28,7 +28,6 @@ import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -317,7 +316,7 @@ public class XMLEncryption11Test extends Assert {
                 "http://www.w3.org/2001/04/xmlenc#sha512",
                 "http://www.w3.org/2009/xmlenc11#mgf1sha1",
                 sessionKey, "http://www.w3.org/2009/xmlenc11#aes256-gcm",
-                Base64.getMimeDecoder().decode("ZHVtbXkxMjM=".getBytes(StandardCharsets.UTF_8)));
+                XMLUtils.decode("ZHVtbXkxMjM=".getBytes(StandardCharsets.UTF_8)));
         // XMLUtils.outputDOM(ed.getFirstChild(), System.out);
 
         // Perform decryption
@@ -356,7 +355,7 @@ public class XMLEncryption11Test extends Assert {
                 "http://www.w3.org/2001/04/xmlenc#sha512",
                 "http://www.w3.org/2009/xmlenc11#mgf1sha512",
                 sessionKey, "http://www.w3.org/2009/xmlenc11#aes256-gcm",
-                Base64.getMimeDecoder().decode("ZHVtbXkxMjM=".getBytes(StandardCharsets.UTF_8)));
+                XMLUtils.decode("ZHVtbXkxMjM=".getBytes(StandardCharsets.UTF_8)));
         // XMLUtils.outputDOM(ed.getFirstChild(), System.out);
 
         // Perform decryption
@@ -396,7 +395,7 @@ public class XMLEncryption11Test extends Assert {
                 "http://www.w3.org/2001/04/xmlenc#sha512",
                 "http://www.w3.org/2009/xmlenc11#mgf1sha512",
                 sessionKey, "http://www.w3.org/2009/xmlenc11#aes256-gcm",
-                Base64.getMimeDecoder().decode("ZHVtbXkxMjM=".getBytes(StandardCharsets.UTF_8)));
+                XMLUtils.decode("ZHVtbXkxMjM=".getBytes(StandardCharsets.UTF_8)));
         // XMLUtils.outputDOM(ed.getFirstChild(), System.out);
 
         NodeList nl = ed.getElementsByTagNameNS("http://www.w3.org/2001/04/xmlenc#", "CipherValue");
@@ -555,7 +554,7 @@ public class XMLEncryption11Test extends Assert {
             NodeList oaepParamsElements = document.getElementsByTagNameNS(XMLSecurityConstants.NS_XMLENC, "OAEPparams");
             Assert.assertEquals(1, oaepParamsElements.getLength());
             String content = XMLUtils.getFullTextChildrenFromElement((Element) oaepParamsElements.item(0));
-            Assert.assertArrayEquals(oaepParams, Base64.getMimeDecoder().decode(content));
+            Assert.assertArrayEquals(oaepParams, XMLUtils.decode(content));
         }
         return document;
     }

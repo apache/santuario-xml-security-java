@@ -20,7 +20,6 @@ package org.apache.xml.security.utils;
 
 import java.math.BigInteger;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.Base64;
 import java.util.Map;
 
 import org.apache.xml.security.exceptions.XMLSecurityException;
@@ -263,7 +262,7 @@ public abstract class ElementProxy {
             Element e = XMLUtils.createElementInSignatureSpace(getDocument(), localname);
 
             byte[] bytes = XMLUtils.getBytes(bi, bi.bitLength());
-            String encodedInt = Base64.getMimeEncoder().encodeToString(bytes);
+            String encodedInt = XMLUtils.encodeToString(bytes);
 
             Document doc = e.getOwnerDocument();
             Text text = doc.createTextNode(encodedInt);
@@ -288,7 +287,7 @@ public abstract class ElementProxy {
     public void addBase64Element(byte[] bytes, String localname) {
         if (bytes != null) {
             Element el = XMLUtils.createElementInSignatureSpace(getDocument(), localname);
-            Text text = getDocument().createTextNode(Base64.getMimeEncoder().encodeToString(bytes));
+            Text text = getDocument().createTextNode(XMLUtils.encodeToString(bytes));
 
             el.appendChild(text);
 
@@ -322,8 +321,8 @@ public abstract class ElementProxy {
     public void addBase64Text(byte[] bytes) {
         if (bytes != null) {
             Text t = XMLUtils.ignoreLineBreaks()
-                ? createText(Base64.getMimeEncoder().encodeToString(bytes))
-                : createText("\n" + Base64.getMimeEncoder().encodeToString(bytes) + "\n");
+                ? createText(XMLUtils.encodeToString(bytes))
+                : createText("\n" + XMLUtils.encodeToString(bytes) + "\n");
             appendSelf(t);
         }
     }
@@ -363,7 +362,7 @@ public abstract class ElementProxy {
     public BigInteger getBigIntegerFromChildElement(
         String localname, String namespace
     ) {
-        return new BigInteger(1, Base64.getMimeDecoder().decode(
+        return new BigInteger(1, XMLUtils.decode(
             XMLUtils.selectNodeText(
                 getFirstChild(), namespace, localname, 0
             ).getNodeValue()
@@ -392,7 +391,7 @@ public abstract class ElementProxy {
      * @throws XMLSecurityException
      */
     public byte[] getBytesFromTextChild() throws XMLSecurityException {
-        return Base64.getMimeDecoder().decode(getTextFromTextChild());
+        return XMLUtils.decode(getTextFromTextChild());
     }
 
     /**
@@ -480,7 +479,7 @@ public abstract class ElementProxy {
         JavaUtils.checkRegisterPermission();
         setNamespacePrefix(namespace, prefix);
     }
-    
+
     private static void setNamespacePrefix(String namespace, String prefix)
         throws XMLSecurityException {
         if (prefixMappings.containsValue(prefix)) {

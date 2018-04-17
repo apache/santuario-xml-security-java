@@ -19,9 +19,9 @@
 package org.apache.xml.security.encryption;
 
 import java.io.IOException;
-import java.util.Base64;
 
 import org.apache.xml.security.c14n.CanonicalizationException;
+import org.apache.xml.security.utils.XMLUtils;
 import org.apache.xml.security.utils.resolver.ResourceResolver;
 import org.apache.xml.security.utils.resolver.ResourceResolverException;
 import org.apache.xml.security.signature.XMLSignatureInput;
@@ -167,6 +167,6 @@ public class XMLCipherInput {
 
         LOG.debug("Encrypted octets:\n{}", base64EncodedEncryptedOctets);
 
-        return Base64.getMimeDecoder().decode(base64EncodedEncryptedOctets);
+        return XMLUtils.decode(base64EncodedEncryptedOctets);
     }
 }

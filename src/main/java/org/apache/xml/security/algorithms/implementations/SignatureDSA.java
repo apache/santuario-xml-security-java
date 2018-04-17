@@ -29,7 +29,6 @@ import java.security.Signature;
 import java.security.SignatureException;
 import java.security.interfaces.DSAKey;
 import java.security.spec.AlgorithmParameterSpec;
-import java.util.Base64;
 
 import org.apache.xml.security.algorithms.JCEMapper;
 import org.apache.xml.security.algorithms.SignatureAlgorithmSpi;
@@ -37,6 +36,7 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.JavaUtils;
+import org.apache.xml.security.utils.XMLUtils;
 
 public class SignatureDSA extends SignatureAlgorithmSpi {
 
@@ -105,7 +105,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
         throws XMLSignatureException {
         try {
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Called DSA.verify() on " + Base64.getMimeEncoder().encodeToString(signature));
+                LOG.debug("Called DSA.verify() on " + XMLUtils.encodeToString(signature));
             }
 
             byte[] jcebytes = JavaUtils.convertDsaXMLDSIGtoASN1(signature,

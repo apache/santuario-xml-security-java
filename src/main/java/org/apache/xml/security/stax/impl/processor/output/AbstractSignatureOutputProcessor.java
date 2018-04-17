@@ -31,6 +31,7 @@ import org.apache.xml.security.stax.impl.SignaturePartDef;
 import org.apache.xml.security.stax.impl.transformer.TransformIdentity;
 import org.apache.xml.security.stax.impl.util.DigestOutputStream;
 import org.apache.xml.security.utils.UnsyncBufferedOutputStream;
+import org.apache.xml.security.utils.XMLUtils;
 
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
@@ -125,7 +126,7 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
         }
 
         String calculatedDigest =
-            Base64.getMimeEncoder().encodeToString(digestOutputStream.getDigestValue());
+            XMLUtils.encodeToString(digestOutputStream.getDigestValue());
         LOG.debug("Calculated Digest: {}", calculatedDigest);
 
         signaturePartDef.setDigestValue(calculatedDigest);
@@ -290,7 +291,7 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
                             throw new XMLSecurityException(e);
                         }
                         String calculatedDigest =
-                            Base64.getMimeEncoder().encodeToString(this.digestOutputStream.getDigestValue());
+                            XMLUtils.encodeToString(this.digestOutputStream.getDigestValue());
                         LOG.debug("Calculated Digest: {}", calculatedDigest);
                         signaturePartDef.setDigestValue(calculatedDigest);
 

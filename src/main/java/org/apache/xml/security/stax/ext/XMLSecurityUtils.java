@@ -32,6 +32,7 @@ import org.apache.xml.security.stax.securityEvent.*;
 import org.apache.xml.security.stax.securityToken.InboundSecurityToken;
 import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 import org.apache.xml.security.utils.ClassLoaderUtils;
+import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.ls.LSInput;
 import org.w3c.dom.ls.LSResourceResolver;
 import org.xml.sax.SAXException;
@@ -204,10 +205,10 @@ public class XMLSecurityUtils {
             RSAPublicKey rsaPublicKey = (RSAPublicKey) publicKey;
             abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_RSAKeyValue, false, null);
             abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_Modulus, false, null);
-            abstractOutputProcessor.createCharactersAndOutputAsEvent(outputProcessorChain, Base64.getMimeEncoder().encodeToString(rsaPublicKey.getModulus().toByteArray()));
+            abstractOutputProcessor.createCharactersAndOutputAsEvent(outputProcessorChain, XMLUtils.encodeToString(rsaPublicKey.getModulus().toByteArray()));
             abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_Modulus);
             abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_Exponent, false, null);
-            abstractOutputProcessor.createCharactersAndOutputAsEvent(outputProcessorChain, Base64.getMimeEncoder().encodeToString(rsaPublicKey.getPublicExponent().toByteArray()));
+            abstractOutputProcessor.createCharactersAndOutputAsEvent(outputProcessorChain, XMLUtils.encodeToString(rsaPublicKey.getPublicExponent().toByteArray()));
             abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_Exponent);
             abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_RSAKeyValue);
         } else if ("DSA".equals(algorithm)) {
@@ -215,19 +216,19 @@ public class XMLSecurityUtils {
             BigInteger j = dsaPublicKey.getParams().getP().subtract(BigInteger.ONE).divide(dsaPublicKey.getParams().getQ());
             abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_DSAKeyValue, false, null);
             abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_P, false, null);
-            abstractOutputProcessor.createCharactersAndOutputAsEvent(outputProcessorChain, Base64.getMimeEncoder().encodeToString(dsaPublicKey.getParams().getP().toByteArray()));
+            abstractOutputProcessor.createCharactersAndOutputAsEvent(outputProcessorChain, XMLUtils.encodeToString(dsaPublicKey.getParams().getP().toByteArray()));
             abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_P);
             abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_Q, false, null);
-            abstractOutputProcessor.createCharactersAndOutputAsEvent(outputProcessorChain, Base64.getMimeEncoder().encodeToString(dsaPublicKey.getParams().getQ().toByteArray()));
+            abstractOutputProcessor.createCharactersAndOutputAsEvent(outputProcessorChain, XMLUtils.encodeToString(dsaPublicKey.getParams().getQ().toByteArray()));
             abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_Q);
             abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_G, false, null);
-            abstractOutputProcessor.createCharactersAndOutputAsEvent(outputProcessorChain, Base64.getMimeEncoder().encodeToString(dsaPublicKey.getParams().getG().toByteArray()));
+            abstractOutputProcessor.createCharactersAndOutputAsEvent(outputProcessorChain, XMLUtils.encodeToString(dsaPublicKey.getParams().getG().toByteArray()));
             abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_G);
             abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_Y, false, null);
-            abstractOutputProcessor.createCharactersAndOutputAsEvent(outputProcessorChain, Base64.getMimeEncoder().encodeToString(dsaPublicKey.getY().toByteArray()));
+            abstractOutputProcessor.createCharactersAndOutputAsEvent(outputProcessorChain, XMLUtils.encodeToString(dsaPublicKey.getY().toByteArray()));
             abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_Y);
             abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_J, false, null);
-            abstractOutputProcessor.createCharactersAndOutputAsEvent(outputProcessorChain, Base64.getMimeEncoder().encodeToString(j.toByteArray()));
+            abstractOutputProcessor.createCharactersAndOutputAsEvent(outputProcessorChain, XMLUtils.encodeToString(j.toByteArray()));
             abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_J);
             abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_DSAKeyValue);
         } else if ("EC".equals(algorithm)) {
@@ -239,7 +240,7 @@ public class XMLSecurityUtils {
             abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig11_NamedCurve, false, attributes);
             abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig11_NamedCurve);
             abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig11_PublicKey, false, null);
-            abstractOutputProcessor.createCharactersAndOutputAsEvent(outputProcessorChain, Base64.getMimeEncoder().encodeToString(ECDSAUtils.encodePoint(ecPublicKey.getW(), ecPublicKey.getParams().getCurve())));
+            abstractOutputProcessor.createCharactersAndOutputAsEvent(outputProcessorChain, XMLUtils.encodeToString(ECDSAUtils.encodePoint(ecPublicKey.getW(), ecPublicKey.getParams().getCurve())));
             abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig11_PublicKey);
             abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig11_ECKeyValue);
         }
@@ -266,7 +267,7 @@ public class XMLSecurityUtils {
 
         abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509SKI, false, null);
         byte[] data = XMLX509SKI.getSKIBytesFromCert(x509Certificates[0]);
-        abstractOutputProcessor.createCharactersAndOutputAsEvent(outputProcessorChain, Base64.getMimeEncoder().encodeToString(data));
+        abstractOutputProcessor.createCharactersAndOutputAsEvent(outputProcessorChain, XMLUtils.encodeToString(data));
         abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509SKI);
 
         abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509Data);
@@ -290,7 +291,7 @@ public class XMLSecurityUtils {
         } catch (CertificateEncodingException e) {
             throw new XMLSecurityException(e);
         }
-        abstractOutputProcessor.createCharactersAndOutputAsEvent(outputProcessorChain, Base64.getMimeEncoder().encodeToString(data));
+        abstractOutputProcessor.createCharactersAndOutputAsEvent(outputProcessorChain, XMLUtils.encodeToString(data));
         abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509Certificate);
 
         abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509Data);

@@ -21,6 +21,7 @@ package org.apache.xml.security.stax.impl.processor.input;
 import org.apache.xml.security.stax.securityToken.InboundSecurityToken;
 import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 import org.apache.xml.security.stax.securityToken.SecurityTokenProvider;
+import org.apache.xml.security.utils.XMLUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.xml.security.binding.xmldsig.DigestMethodType;
@@ -46,7 +47,6 @@ import javax.xml.bind.JAXBElement;
 
 import java.security.*;
 import java.security.spec.MGF1ParameterSpec;
-import java.util.Base64;
 import java.util.Deque;
 
 /**
@@ -232,7 +232,7 @@ public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHand
 
                         byte[] sha1Bytes =
                             generateDigest(encryptedKeyType.getCipherData().getCipherValue());
-                        String sha1Identifier = Base64.getMimeEncoder().encodeToString(sha1Bytes);
+                        String sha1Identifier = XMLUtils.encodeToString(sha1Bytes);
                         super.setSha1Identifier(sha1Identifier);
 
                         try {

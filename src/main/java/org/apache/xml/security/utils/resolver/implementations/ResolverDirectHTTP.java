@@ -29,9 +29,9 @@ import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 
 import org.apache.xml.security.signature.XMLSignatureInput;
+import org.apache.xml.security.utils.XMLUtils;
 import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.apache.xml.security.utils.resolver.ResourceResolverException;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
@@ -118,7 +118,7 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
                     urlConnection = openConnection(url);
 
                     String password = user + ":" + pass;
-                    String encodedPassword = Base64.getMimeEncoder().encodeToString(password.getBytes(StandardCharsets.ISO_8859_1));
+                    String encodedPassword = XMLUtils.encodeToString(password.getBytes(StandardCharsets.ISO_8859_1));
 
                     // set authentication property in the http header
                     urlConnection.setRequestProperty("Authorization",
@@ -183,7 +183,7 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
 
             if (proxyUser != null && proxyPass != null) {
                 String password = proxyUser + ":" + proxyPass;
-                String authString = "Basic " + Base64.getMimeEncoder().encodeToString(password.getBytes(StandardCharsets.ISO_8859_1));
+                String authString = "Basic " + XMLUtils.encodeToString(password.getBytes(StandardCharsets.ISO_8859_1));
 
                 urlConnection.setRequestProperty("Proxy-Authorization", authString);
             }

@@ -33,7 +33,6 @@ import java.security.NoSuchProviderException;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.MGF1ParameterSpec;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -1179,7 +1178,7 @@ public class XMLCipher {
         byte[] finalEncryptedBytes = new byte[iv.length + encryptedBytes.length];
         System.arraycopy(iv, 0, finalEncryptedBytes, 0, iv.length);
         System.arraycopy(encryptedBytes, 0, finalEncryptedBytes, iv.length, encryptedBytes.length);
-        String base64EncodedEncryptedOctets = Base64.getMimeEncoder().encodeToString(finalEncryptedBytes);
+        String base64EncodedEncryptedOctets = XMLUtils.encodeToString(finalEncryptedBytes);
 
         LOG.debug("Encrypted octets:\n{}", base64EncodedEncryptedOctets);
         LOG.debug("Encrypted octets length = {}", base64EncodedEncryptedOctets.length());
@@ -1365,7 +1364,7 @@ public class XMLCipher {
             throw new XMLEncryptionException(e);
         }
 
-        String base64EncodedEncryptedOctets = Base64.getMimeEncoder().encodeToString(encryptedBytes);
+        String base64EncodedEncryptedOctets = XMLUtils.encodeToString(encryptedBytes);
         LOG.debug("Encrypted key octets:\n{}", base64EncodedEncryptedOctets);
         LOG.debug("Encrypted key octets length = {}", base64EncodedEncryptedOctets.length());
 
@@ -2367,7 +2366,7 @@ public class XMLCipher {
                     EncryptionConstants._TAG_OAEPPARAMS).item(0);
             if (null != oaepParamsElement) {
                 String oaepParams = oaepParamsElement.getFirstChild().getNodeValue();
-                result.setOAEPparams(Base64.getMimeDecoder().decode(oaepParams.getBytes(StandardCharsets.UTF_8)));
+                result.setOAEPparams(XMLUtils.decode(oaepParams.getBytes(StandardCharsets.UTF_8)));
             }
 
             Element digestElement =
@@ -3143,7 +3142,7 @@ public class XMLCipher {
                             contextDocument, EncryptionConstants._TAG_OAEPPARAMS
                         );
                     oaepElement.appendChild(contextDocument.createTextNode(
-                        Base64.getMimeEncoder().encodeToString(oaepParams)));
+                        XMLUtils.encodeToString(oaepParams)));
                     result.appendChild(oaepElement);
                 }
                 if (digestAlgorithm != null) {

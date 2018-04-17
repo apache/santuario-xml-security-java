@@ -238,7 +238,7 @@ public final class DOMReference extends DOMStructure
         // unmarshal DigestValue
         Element dvElem = DOMUtils.getNextSiblingElement(dmElem, "DigestValue", XMLSignature.XMLNS);
         String content = XMLUtils.getFullTextChildrenFromElement(dvElem);
-        this.digestValue = Base64.getMimeDecoder().decode(content);
+        this.digestValue = XMLUtils.decode(content);
 
         // check for extra elements
         if (DOMUtils.getNextSiblingElement(dvElem) != null) {
@@ -325,7 +325,7 @@ public final class DOMReference extends DOMStructure
         LOG.debug("Adding digestValueElem");
         xwriter.writeStartElement(dsPrefix, "DigestValue", XMLSignature.XMLNS);
         if (digestValue != null) {
-            xwriter.writeCharacters(Base64.getMimeEncoder().encodeToString(digestValue));
+            xwriter.writeCharacters(XMLUtils.encodeToString(digestValue));
         }
         xwriter.writeEndElement(); // "DigestValue"
         xwriter.writeEndElement(); // "Reference"
@@ -343,7 +343,7 @@ public final class DOMReference extends DOMStructure
         digestValue = transform(data, signContext);
 
         // insert digestValue into DigestValue element
-        String encodedDV = Base64.getMimeEncoder().encodeToString(digestValue);
+        String encodedDV = XMLUtils.encodeToString(digestValue);
         LOG.debug("Reference object uri = {}", uri);
         Element digestElem = DOMUtils.getLastChildElement(refElem);
         if (digestElem == null) {
@@ -371,8 +371,8 @@ public final class DOMReference extends DOMStructure
         calcDigestValue = transform(data, validateContext);
 
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Expected digest: " + Base64.getMimeEncoder().encodeToString(digestValue));
-            LOG.debug("Actual digest: " + Base64.getMimeEncoder().encodeToString(calcDigestValue));
+            LOG.debug("Expected digest: " + XMLUtils.encodeToString(digestValue));
+            LOG.debug("Actual digest: " + XMLUtils.encodeToString(calcDigestValue));
         }
 
         validationStatus = Arrays.equals(digestValue, calcDigestValue);

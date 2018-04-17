@@ -47,6 +47,7 @@ import org.apache.xml.security.stax.securityToken.OutboundSecurityToken;
 import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 import org.apache.xml.security.stax.securityToken.SecurityTokenProvider;
 import org.apache.xml.security.utils.UnsyncBufferedOutputStream;
+import org.apache.xml.security.utils.XMLUtils;
 
 /**
  */
@@ -200,7 +201,7 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
 
         createStartElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsig_SignatureValue, false, null);
         final byte[] signatureValue = signedInfoProcessor.getSignatureValue();
-        createCharactersAndOutputAsEvent(subOutputProcessorChain, Base64.getMimeEncoder().encodeToString(signatureValue));
+        createCharactersAndOutputAsEvent(subOutputProcessorChain, XMLUtils.encodeToString(signatureValue));
         createEndElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsig_SignatureValue);
 
         if (securityProperties.isSignatureGenerateIds()) {

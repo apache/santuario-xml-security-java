@@ -20,6 +20,7 @@ package org.apache.xml.security.stax.impl.processor.output;
 
 import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 import org.apache.xml.security.stax.securityToken.SecurityTokenProvider;
+import org.apache.xml.security.utils.XMLUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.xml.security.exceptions.XMLSecurityException;
@@ -45,7 +46,6 @@ import java.security.cert.X509Certificate;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.MGF1ParameterSpec;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
 /**
@@ -155,7 +155,7 @@ public class XMLEncryptOutputProcessor extends AbstractEncryptOutputProcessor {
                             byte[] oaepParams = getSecurityProperties().getEncryptionKeyTransportOAEPParams();
                             if (oaepParams != null) {
                                 createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_xenc_OAEPparams, false, null);
-                                createCharactersAndOutputAsEvent(outputProcessorChain, Base64.getMimeEncoder().encodeToString(oaepParams));
+                                createCharactersAndOutputAsEvent(outputProcessorChain, XMLUtils.encodeToString(oaepParams));
                                 createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_xenc_OAEPparams);
                             }
 
@@ -238,7 +238,7 @@ public class XMLEncryptOutputProcessor extends AbstractEncryptOutputProcessor {
                             }
                             byte[] encryptedEphemeralKey = cipher.wrap(sessionKey);
 
-                            createCharactersAndOutputAsEvent(outputProcessorChain, Base64.getMimeEncoder().encodeToString(encryptedEphemeralKey));
+                            createCharactersAndOutputAsEvent(outputProcessorChain, XMLUtils.encodeToString(encryptedEphemeralKey));
 
                         } catch (NoSuchPaddingException e) {
                             throw new XMLSecurityException(e);

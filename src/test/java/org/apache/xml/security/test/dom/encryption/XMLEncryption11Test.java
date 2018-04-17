@@ -25,7 +25,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -501,7 +500,7 @@ public class XMLEncryption11Test {
                     "http://www.w3.org/2009/xmlenc11#rsa-oaep",
                     "http://www.w3.org/2001/04/xmlenc#sha512",
                     "http://www.w3.org/2009/xmlenc11#mgf1sha1",
-                    Base64.getMimeDecoder().decode("ZHVtbXkxMjM=".getBytes(java.nio.charset.StandardCharsets.UTF_8))
+                    XMLUtils.decode("ZHVtbXkxMjM=".getBytes(java.nio.charset.StandardCharsets.UTF_8))
                 );
 
             doc =

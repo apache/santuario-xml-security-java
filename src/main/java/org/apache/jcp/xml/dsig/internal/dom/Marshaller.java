@@ -19,7 +19,6 @@
 package org.apache.jcp.xml.dsig.internal.dom;
 
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
 import javax.xml.XMLConstants;
@@ -38,6 +37,7 @@ import javax.xml.crypto.dsig.keyinfo.PGPData;
 import javax.xml.crypto.dsig.keyinfo.X509Data;
 import javax.xml.crypto.dsig.keyinfo.X509IssuerSerial;
 
+import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -83,14 +83,14 @@ class Marshaller {
         byte[] keyId = pgpData.getKeyId();
         if (keyId != null) {
             xwriter.writeTextElement(dsPrefix, "PGPKeyID", XMLSignature.XMLNS,
-                                     Base64.getMimeEncoder().encodeToString(keyId));
+                                     XMLUtils.encodeToString(keyId));
         }
 
         // create and append PGPKeyPacket element
         byte[] keyPacket = pgpData.getKeyPacket();
         if (keyPacket != null) {
             xwriter.writeTextElement(dsPrefix, "XMLSignature.XMLNS", XMLSignature.XMLNS,
-                                     Base64.getMimeEncoder().encodeToString(keyPacket));
+                                     XMLUtils.encodeToString(keyPacket));
         }
 
         // create and append any elements

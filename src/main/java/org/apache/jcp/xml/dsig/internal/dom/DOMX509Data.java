@@ -109,7 +109,7 @@ public final class DOMX509Data extends BaseStructure implements X509Data {
                     newContent.add(childElem.getFirstChild().getNodeValue());
                 } else if ("X509SKI".equals(localName) && XMLSignature.XMLNS.equals(namespace)) {
                     String content = XMLUtils.getFullTextChildrenFromElement(childElem);
-                    newContent.add(Base64.getMimeDecoder().decode(content));
+                    newContent.add(XMLUtils.decode(content));
                 } else if ("X509CRL".equals(localName) && XMLSignature.XMLNS.equals(namespace)) {
                     newContent.add(unmarshalX509CRL(childElem));
                 } else {
@@ -153,7 +153,7 @@ public final class DOMX509Data extends BaseStructure implements X509Data {
     private static void marshalSKI(XmlWriter xwriter, byte[] skid, String dsPrefix)
     {
         xwriter.writeTextElement(dsPrefix, "X509SKI", XMLSignature.XMLNS,
-                                 Base64.getMimeEncoder().encodeToString(skid));
+                                 XMLUtils.encodeToString(skid));
     }
 
     private static void marshalSubjectName(XmlWriter xwriter, String name, String dsPrefix)
@@ -167,7 +167,7 @@ public final class DOMX509Data extends BaseStructure implements X509Data {
         try {
             byte[] encoded = cert.getEncoded();
             xwriter.writeTextElement(dsPrefix, "X509Certificate", XMLSignature.XMLNS,
-                                     Base64.getMimeEncoder().encodeToString(encoded));
+                                     XMLUtils.encodeToString(encoded));
         } catch (CertificateEncodingException e) {
             throw new MarshalException("Error encoding X509Certificate", e);
         }
@@ -179,7 +179,7 @@ public final class DOMX509Data extends BaseStructure implements X509Data {
         try {
             byte[] encoded = crl.getEncoded();
             xwriter.writeTextElement(dsPrefix, "X509CRL", XMLSignature.XMLNS,
-                                     Base64.getMimeEncoder().encodeToString(encoded));
+                                     XMLUtils.encodeToString(encoded));
         } catch (CRLException e) {
             throw new MarshalException("Error encoding X509CRL", e);
         }
@@ -214,7 +214,7 @@ public final class DOMX509Data extends BaseStructure implements X509Data {
                 cf = CertificateFactory.getInstance("X.509");
             }
             String content = XMLUtils.getFullTextChildrenFromElement(elem);
-            return new ByteArrayInputStream(Base64.getMimeDecoder().decode(content));
+            return new ByteArrayInputStream(XMLUtils.decode(content));
         } catch (CertificateException e) {
             throw new MarshalException("Cannot create CertificateFactory", e);
         }

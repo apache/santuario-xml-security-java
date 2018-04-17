@@ -24,7 +24,6 @@ import java.io.FileInputStream;
 import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.Base64;
 
 import org.w3c.dom.Document;
 
@@ -54,7 +53,7 @@ public class KeyLoader {
 
     public static PublicKey loadPublicKey(String filePath, String algorithm) throws Exception {
         String fileData = new String(JavaUtils.getBytesFromFile(getControlFilePath(filePath)));
-        byte[] keyBytes = Base64.getMimeDecoder().decode(fileData);
+        byte[] keyBytes = XMLUtils.decode(fileData);
         KeyFactory kf = KeyFactory.getInstance(algorithm);
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
         return kf.generatePublic(keySpec);
