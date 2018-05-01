@@ -126,6 +126,7 @@ public class XMLSecurityConstants {
     public static final String NS_DSIG_MORE ="http://www.w3.org/2001/04/xmldsig-more#";
     public static final String NS_DSIG11 = "http://www.w3.org/2009/xmldsig11#";
     public static final String NS_WSSE11 = "http://docs.oasis-open.org/wss/oasis-wss-wssecurity-secext-1.1.xsd";
+    public static final String NS_XOP = "http://www.w3.org/2004/08/xop/include";
 
     public static final String PREFIX_XENC = "xenc";
     public static final String PREFIX_XENC11 = "xenc11";
@@ -247,6 +248,8 @@ public class XMLSecurityConstants {
     public static final String NS_C14N_EXCL_WITH_COMMENTS = NS_C14N_EXCL_OMIT_COMMENTS + "WithComments";
     public static final String NS_C14N11_OMIT_COMMENTS = "http://www.w3.org/2006/12/xml-c14n11";
     public static final String NS_C14N11_WITH_COMMENTS = NS_C14N11_OMIT_COMMENTS + "#WithComments";
+
+    public static final QName TAG_XOP_INCLUDE = new QName(NS_XOP, "Include", "xop");
 
     public static final String PROP_USE_THIS_TOKEN_ID_FOR_SIGNATURE = "PROP_USE_THIS_TOKEN_ID_FOR_SIGNATURE";
     public static final String PROP_USE_THIS_TOKEN_ID_FOR_ENCRYPTION = "PROP_USE_THIS_TOKEN_ID_FOR_ENCRYPTION";

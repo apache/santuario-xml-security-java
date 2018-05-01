@@ -18,6 +18,7 @@
  */
 package org.apache.xml.security.stax.impl.processor.input;
 
+import java.io.InputStream;
 import java.util.List;
 
 import javax.crypto.Cipher;
@@ -83,6 +84,12 @@ public class XMLDecryptInputProcessor extends AbstractDecryptInputProcessor {
     @Override
     protected void handleCipherReference(InputProcessorChain inputProcessorChain, EncryptedDataType encryptedDataType,
                                          Cipher cipher, InboundSecurityToken inboundSecurityToken) throws XMLSecurityException {
+        throw new XMLSecurityException("errorMessages.NotYetImplementedException");
+    }
+
+    @Override
+    protected InputStream handleXOPInclude(InputProcessorChain inputProcessorChain, EncryptedDataType encryptedDataType, String href,
+                                           Cipher cipher, InboundSecurityToken inboundSecurityToken) throws XMLSecurityException {
         throw new XMLSecurityException("errorMessages.NotYetImplementedException");
     }
 

@@ -30,6 +30,7 @@ import org.apache.xml.security.binding.xmlenc.EncryptedDataType;
 import org.apache.xml.security.binding.xmlenc.EncryptedKeyType;
 import org.apache.xml.security.binding.xmlenc.ReferenceList;
 import org.apache.xml.security.binding.xmlenc.ReferenceType;
+import org.apache.xml.security.binding.xop.Include;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.config.ConfigurationProperties;
 import org.apache.xml.security.stax.config.JCEAlgorithmMapper;
@@ -216,15 +217,6 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                         : subInputProcessorChain.processEvent();
                 }
 
-                //create a new Thread for streaming decryption
-                DecryptionThread decryptionThread =
-                        new DecryptionThread(subInputProcessorChain, isSecurityHeaderEvent);
-                Key decryptionKey =
-                    inboundSecurityToken.getSecretKey(algorithmURI, XMLSecurityConstants.Enc, encryptedDataType.getId());
-                decryptionKey = XMLSecurityUtils.prepareSecretKey(algorithmURI, decryptionKey.getEncoded());
-                decryptionThread.setSecretKey(decryptionKey);
-                decryptionThread.setSymmetricCipher(symCipher);
-                decryptionThread.setIvLength(ivLength);
                 XMLSecStartElement parentXMLSecStartElement = xmlSecStartElement.getParentXMLSecStartElement();
                 if (encryptedHeader) {
                     parentXMLSecStartElement = parentXMLSecStartElement.getParentXMLSecStartElement();
@@ -250,19 +242,64 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                             inboundSecurityToken, encryptedDataType);
                 }
 
-                Thread thread = new Thread(decryptionThread);
-                thread.setPriority(Thread.NORM_PRIORITY + 1);
-                thread.setName("decryption thread");
-                //when an exception in the decryption thread occurs, we want to forward them:
-                thread.setUncaughtExceptionHandler(decryptedEventReaderInputProcessor);
+                // Process the next event - we need to do this in case it's an xop:Include tag as we handle this
+                // differently compared to the usual inlined bytes. Note this only works if we have a single xop:Include
+                // chile element
+                XMLSecEvent nextEvent = null;
+                subInputProcessorChain.reset();
+                if (isSecurityHeaderEvent) {
+                    nextEvent = subInputProcessorChain.processHeaderEvent();
+                } else {
+                    nextEvent = subInputProcessorChain.processEvent();
+                }
 
-                decryptedEventReaderInputProcessor.setDecryptionThread(thread);
+                InputStream decryptInputStream = null;
+                if (nextEvent.isStartElement() && nextEvent.asStartElement().getName().equals(XMLSecurityConstants.TAG_XOP_INCLUDE)) {
+                    try {
+                        // Unmarshal the XOP Include Element
+                        Deque<XMLSecEvent> xmlSecEvents = new ArrayDeque<XMLSecEvent>();
+                        xmlSecEvents.push(nextEvent);
+                        xmlSecEvents.push(XMLSecEventFactory.createXmlSecEndElement(XMLSecurityConstants.TAG_XOP_INCLUDE));
 
-                //we have to start the thread before we call decryptionThread.getPipedInputStream().
-                //Otherwise we will end in a deadlock, because the StAX reader expects already data.
-                //@See some lines below:
-                LOG.debug("Starting decryption thread");
-                thread.start();
+                        Unmarshaller unmarshaller =
+                                XMLSecurityConstants.getJaxbUnmarshaller(getSecurityProperties().isDisableSchemaValidation());
+                        @SuppressWarnings("unchecked")
+                        JAXBElement<Include> includeJAXBElement =
+                                (JAXBElement<Include>) unmarshaller.unmarshal(new XMLSecurityEventReader(xmlSecEvents, 0));
+                        Include include = includeJAXBElement.getValue();
+                        String href = include.getHref();
+
+                        decryptInputStream =
+                            handleXOPInclude(inputProcessorChain, encryptedDataType, href, symCipher, inboundSecurityToken);
+                    } catch (JAXBException e) {
+                        throw new XMLSecurityException(e);
+                    }
+                } else {
+                    //create a new Thread for streaming decryption
+                    DecryptionThread decryptionThread = new DecryptionThread(subInputProcessorChain, isSecurityHeaderEvent, nextEvent);
+                    Key decryptionKey =
+                        inboundSecurityToken.getSecretKey(algorithmURI, XMLSecurityConstants.Enc, encryptedDataType.getId());
+                    decryptionKey = XMLSecurityUtils.prepareSecretKey(algorithmURI, decryptionKey.getEncoded());
+                    decryptionThread.setSecretKey(decryptionKey);
+                    decryptionThread.setSymmetricCipher(symCipher);
+                    decryptionThread.setIvLength(ivLength);
+
+                    Thread thread = new Thread(decryptionThread);
+                    thread.setPriority(Thread.NORM_PRIORITY + 1);
+                    thread.setName("decryption thread");
+                    //when an exception in the decryption thread occurs, we want to forward them:
+                    thread.setUncaughtExceptionHandler(decryptedEventReaderInputProcessor);
+
+                    decryptedEventReaderInputProcessor.setDecryptionThread(thread);
+
+                    //we have to start the thread before we call decryptionThread.getPipedInputStream().
+                    //Otherwise we will end in a deadlock, because the StAX reader expects already data.
+                    //@See some lines below:
+                    LOG.debug("Starting decryption thread");
+                    thread.start();
+
+                    decryptInputStream = decryptionThread.getPipedInputStream();
+                }
 
                 InputStream prologInputStream;
                 InputStream epilogInputStream;
@@ -275,7 +312,6 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                     throw new XMLSecurityException(e);
                 }
 
-                InputStream decryptInputStream = decryptionThread.getPipedInputStream();
                 decryptInputStream = applyTransforms(referenceType, decryptInputStream);
 
                 //spec says (4.2): "The cleartext octet sequence obtained in step 3 is
@@ -523,6 +559,10 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                                                   EncryptedDataType encryptedDataType, Cipher cipher,
                                                   InboundSecurityToken inboundSecurityToken) throws XMLSecurityException;
 
+    protected abstract InputStream handleXOPInclude(InputProcessorChain inputProcessorChain,
+                                                  EncryptedDataType encryptedDataType, String href, Cipher cipher,
+                                                  InboundSecurityToken inboundSecurityToken) throws XMLSecurityException;
+
     protected ReferenceType matchesReferenceId(XMLSecStartElement xmlSecStartElement) {
         Attribute refId = getReferenceIDAttribute(xmlSecStartElement);
         if (refId != null) {
@@ -668,14 +708,16 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                             xmlSecEvent = inputProcessorChain.processEvent();
                         }
 
-                        //wait until the decryption thread dies...
-                        try {
-                            decryptionThread.join();
-                        } catch (InterruptedException e) {
-                            throw new XMLStreamException(e);
+                        if (decryptionThread != null) {
+                            //wait until the decryption thread dies...
+                            try {
+                                decryptionThread.join();
+                            } catch (InterruptedException e) {
+                                throw new XMLStreamException(e);
+                            }
+                            //...and test again for an exception in the decryption thread.
+                            testAndThrowUncaughtException();
                         }
-                        //...and test again for an exception in the decryption thread.
-                        testAndThrowUncaughtException();
                         inputProcessorChain.removeProcessor(this);
                     }
                     break;
@@ -719,12 +761,15 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
         private Cipher symmetricCipher;
         private int ivLength;
         private Key secretKey;
+        private final XMLSecEvent firstEvent;
 
         protected DecryptionThread(InputProcessorChain inputProcessorChain,
-                                   boolean header) throws XMLStreamException, XMLSecurityException {
+                                   boolean header,
+                                   XMLSecEvent firstEvent) throws XMLStreamException, XMLSecurityException {
 
             this.inputProcessorChain = inputProcessorChain;
             this.header = header;
+            this.firstEvent = firstEvent;
 
             //prepare the piped streams and connect them:
             this.pipedInputStream = new PipedInputStream(8192 * 5);
@@ -794,10 +839,9 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
 
                 //read the encrypted data from the stream until an end-element occurs and write then
                 //to the decrypter-stream
+                XMLSecEvent xmlSecEvent = firstEvent;
                 exitLoop:
-                while (true) {
-                    XMLSecEvent xmlSecEvent = processNextEvent();
-
+                do {
                     switch (xmlSecEvent.getEventType()) {
                         case XMLStreamConstants.END_ELEMENT:
                             //this must be the CipherValue EndElement.
@@ -812,7 +856,9 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                                     new Object[] {XMLSecurityUtils.getXMLEventAsString(xmlSecEvent)}
                             );
                     }
-                }
+
+                    xmlSecEvent = processNextEvent();
+                } while (true);
 
                 //close to get Cipher.doFinal() called
                 outputStreamWriter.close();

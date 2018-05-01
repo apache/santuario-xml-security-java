@@ -26,8 +26,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.xml.security.binding.xmldsig.DigestMethodType;
 import org.apache.xml.security.binding.xmldsig.KeyInfoType;
+import org.apache.xml.security.binding.xmlenc.CipherValueType;
 import org.apache.xml.security.binding.xmlenc.EncryptedKeyType;
 import org.apache.xml.security.binding.xmlenc11.MGFType;
+import org.apache.xml.security.binding.xop.Include;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.config.JCEAlgorithmMapper;
 import org.apache.xml.security.stax.ext.*;
@@ -47,6 +49,7 @@ import javax.xml.bind.JAXBElement;
 
 import java.security.*;
 import java.security.spec.MGF1ParameterSpec;
+import java.util.Base64;
 import java.util.Deque;
 
 /**
@@ -215,7 +218,9 @@ public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHand
                                 cipher.init(Cipher.UNWRAP_MODE, wrappingSecurityToken.getSecretKey(algorithmURI, algorithmUsage, correlationID));
                             }
                             if (encryptedKeyType.getCipherData() == null
-                                    || encryptedKeyType.getCipherData().getCipherValue() == null) {
+                                    || encryptedKeyType.getCipherData().getCipherValue() == null
+                                    || encryptedKeyType.getCipherData().getCipherValue().getContent() == null
+                                    || encryptedKeyType.getCipherData().getCipherValue().getContent().isEmpty()) {
                                 throw new XMLSecurityException("stax.encryption.noCipherValue");
                             }
                         } catch (NoSuchPaddingException e) {
@@ -230,13 +235,13 @@ public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHand
                             throw new XMLSecurityException(e);
                         }
 
-                        byte[] sha1Bytes =
-                            generateDigest(encryptedKeyType.getCipherData().getCipherValue());
+                        byte[] encryptedBytes = getEncryptedBytes(encryptedKeyType.getCipherData().getCipherValue());
+                        byte[] sha1Bytes = generateDigest(encryptedBytes);
                         String sha1Identifier = XMLUtils.encodeToString(sha1Bytes);
                         super.setSha1Identifier(sha1Identifier);
 
                         try {
-                            Key key = cipher.unwrap(encryptedKeyType.getCipherData().getCipherValue(),
+                            Key key = cipher.unwrap(encryptedBytes,
                                     jceName,
                                     Cipher.SECRET_KEY);
                             return this.decryptedKey = key.getEncoded();
@@ -255,6 +260,27 @@ public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHand
                 this.securityToken.setElementPath(responsibleXMLSecStartXMLEvent.getElementPath());
                 this.securityToken.setXMLSecEvent(responsibleXMLSecStartXMLEvent);
                 return this.securityToken;
+            }
+
+            private byte[] getEncryptedBytes(CipherValueType cipherValue) throws XMLSecurityException {
+
+                StringBuilder sb = new StringBuilder();
+
+                for (Object obj : cipherValue.getContent()) {
+                    if (obj instanceof String) {
+                        sb.append((String)obj);
+                    } else if (obj instanceof JAXBElement<?>) {
+                        JAXBElement<?> element = (JAXBElement<?>)obj;
+                        if (XMLSecurityConstants.TAG_XOP_INCLUDE.equals(element.getName())) {
+                            Include include = (Include)element.getValue();
+                            if (include != null && include.getHref() != null && include.getHref().startsWith("cid:")) {
+                                return getBytesFromAttachment(include.getHref(), securityProperties);
+                            }
+                        }
+                    }
+                }
+
+                return Base64.getMimeDecoder().decode(sb.toString());
             }
 
             @Override
@@ -290,6 +316,10 @@ public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHand
                                        final EncryptedKeyType encryptedKeyType,
                                        final XMLSecurityProperties securityProperties) throws XMLSecurityException {
         // do nothing
+    }
+
+    protected byte[] getBytesFromAttachment(String xopUri, final XMLSecurityProperties securityProperties) throws XMLSecurityException {
+        throw new XMLSecurityException("errorMessages.NotYetImplementedException");
     }
 
     /*

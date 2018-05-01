@@ -57,7 +57,8 @@ public class XMLSec {
                             org.apache.xml.security.binding.xmlenc11.ObjectFactory.class,
                             org.apache.xml.security.binding.xmldsig.ObjectFactory.class,
                             org.apache.xml.security.binding.xmldsig11.ObjectFactory.class,
-                            org.apache.xml.security.binding.excc14n.ObjectFactory.class
+                            org.apache.xml.security.binding.excc14n.ObjectFactory.class,
+                            org.apache.xml.security.binding.xop.ObjectFactory.class
                         )
                 );
 
