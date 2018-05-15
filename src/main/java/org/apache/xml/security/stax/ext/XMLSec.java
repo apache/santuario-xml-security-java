@@ -162,7 +162,7 @@ public class XMLSec {
                 if (securityProperties.getSignatureCanonicalizationAlgorithm() == null) {
                     securityProperties.setSignatureCanonicalizationAlgorithm(XMLSecurityConstants.NS_C14N_EXCL_OMIT_COMMENTS);
                 }
-                if (securityProperties.getSignatureKeyIdentifier() == null) {
+                if (securityProperties.getSignatureKeyIdentifiers().isEmpty()) {
                     securityProperties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_IssuerSerial);
                 }
             } else if (XMLSecurityConstants.ENCRYPT.equals(action)) {

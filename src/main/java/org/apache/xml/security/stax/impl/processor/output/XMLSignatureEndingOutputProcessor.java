@@ -154,26 +154,45 @@ public class XMLSignatureEndingOutputProcessor extends AbstractSignatureEndingOu
             OutboundSecurityToken securityToken,
             boolean useSingleCertificate)
             throws XMLStreamException, XMLSecurityException {
-        SecurityTokenConstants.KeyIdentifier keyIdentifier = getSecurityProperties().getSignatureKeyIdentifier();
-
         X509Certificate[] x509Certificates = securityToken.getX509Certificates();
         if (x509Certificates != null) {
-            if (keyIdentifier == null || SecurityTokenConstants.KeyIdentifier_IssuerSerial.equals(keyIdentifier)) {
+            if (getSecurityProperties().getSignatureKeyIdentifiers().isEmpty()) {
                 XMLSecurityUtils.createX509IssuerSerialStructure(this, outputProcessorChain, x509Certificates);
-            } else if (SecurityTokenConstants.KeyIdentifier_KeyValue.equals(keyIdentifier)) {
-                XMLSecurityUtils.createKeyValueTokenStructure(this, outputProcessorChain, x509Certificates);
-            } else if (SecurityTokenConstants.KeyIdentifier_SkiKeyIdentifier.equals(keyIdentifier)) {
-                XMLSecurityUtils.createX509SubjectKeyIdentifierStructure(this, outputProcessorChain, x509Certificates);
-            } else if (SecurityTokenConstants.KeyIdentifier_X509KeyIdentifier.equals(keyIdentifier)) {
-                XMLSecurityUtils.createX509CertificateStructure(this, outputProcessorChain, x509Certificates);
-            } else if (SecurityTokenConstants.KeyIdentifier_X509SubjectName.equals(keyIdentifier)) {
-                XMLSecurityUtils.createX509SubjectNameStructure(this, outputProcessorChain, x509Certificates);
-            } else if (SecurityTokenConstants.KeyIdentifier_KeyName.equals(keyIdentifier)) {
-                String keyName = getSecurityProperties().getSignatureKeyName();
-                XMLSecurityUtils.createKeyNameTokenStructure(this, outputProcessorChain, keyName);
             } else {
-                throw new XMLSecurityException("stax.unsupportedToken",
-                                               new Object[] {keyIdentifier});
+                List<SecurityTokenConstants.KeyIdentifier> keyIdentifiers = getSecurityProperties().getSignatureKeyIdentifiers();
+                // KeyName
+                if (keyIdentifiers.remove(SecurityTokenConstants.KeyIdentifier_KeyName)) {
+                    String keyName = getSecurityProperties().getSignatureKeyName();
+                    XMLSecurityUtils.createKeyNameTokenStructure(this, outputProcessorChain, keyName);
+                }
+
+                // KeyValue
+                if (keyIdentifiers.remove(SecurityTokenConstants.KeyIdentifier_KeyValue)) {
+                    XMLSecurityUtils.createKeyValueTokenStructure(this, outputProcessorChain, x509Certificates);
+                }
+
+                // X509Data
+                if (!keyIdentifiers.isEmpty()) {
+                    createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509Data, true, null);
+
+                    for (SecurityTokenConstants.KeyIdentifier keyIdentifier : keyIdentifiers) {
+                        if (SecurityTokenConstants.KeyIdentifier_IssuerSerial.equals(keyIdentifier)) {
+                            XMLSecurityUtils.createX509IssuerSerialStructure(this, outputProcessorChain, x509Certificates, false);
+                        } else if (SecurityTokenConstants.KeyIdentifier_SkiKeyIdentifier.equals(keyIdentifier)) {
+                            XMLSecurityUtils.createX509SubjectKeyIdentifierStructure(this, outputProcessorChain, x509Certificates, false);
+                        } else if (SecurityTokenConstants.KeyIdentifier_X509KeyIdentifier.equals(keyIdentifier)) {
+                            XMLSecurityUtils.createX509CertificateStructure(this, outputProcessorChain, x509Certificates, false);
+                        } else if (SecurityTokenConstants.KeyIdentifier_X509SubjectName.equals(keyIdentifier)) {
+                            XMLSecurityUtils.createX509SubjectNameStructure(this, outputProcessorChain, x509Certificates, false);
+                        } else if (!(SecurityTokenConstants.KeyIdentifier_KeyName.equals(keyIdentifier)
+                            || SecurityTokenConstants.KeyIdentifier_KeyValue.equals(keyIdentifier))) {
+                            throw new XMLSecurityException("stax.unsupportedToken",
+                                                           new Object[] {keyIdentifier});
+                        }
+                    }
+
+                    createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509Data);
+                }
             }
         } else if (securityToken.getPublicKey() != null) {
             XMLSecurityUtils.createKeyValueTokenStructure(this, outputProcessorChain, securityToken.getPublicKey());

@@ -61,7 +61,7 @@ public class XMLSecurityProperties {
     private Key signatureKey;
     private X509Certificate[] signatureCerts;
     private boolean addExcC14NInclusivePrefixes = false;
-    private SecurityTokenConstants.KeyIdentifier signatureKeyIdentifier;
+    private List<SecurityTokenConstants.KeyIdentifier> signatureKeyIdentifiers = new ArrayList<>();
     private String signatureKeyName;
     private boolean useSingleCert = true;
 
@@ -105,7 +105,7 @@ public class XMLSecurityProperties {
         this.signatureKey = xmlSecurityProperties.signatureKey;
         this.signatureCerts = xmlSecurityProperties.signatureCerts;
         this.addExcC14NInclusivePrefixes = xmlSecurityProperties.addExcC14NInclusivePrefixes;
-        this.signatureKeyIdentifier = xmlSecurityProperties.signatureKeyIdentifier;
+        this.signatureKeyIdentifiers.addAll(xmlSecurityProperties.signatureKeyIdentifiers);
         this.useSingleCert = xmlSecurityProperties.useSingleCert;
         this.signatureVerificationKey = xmlSecurityProperties.signatureVerificationKey;
         this.signaturePosition = xmlSecurityProperties.signaturePosition;
@@ -127,12 +127,26 @@ public class XMLSecurityProperties {
         this.signaturePositionStart = signaturePositionStart;
     }
 
+    @Deprecated
     public SecurityTokenConstants.KeyIdentifier getSignatureKeyIdentifier() {
-        return signatureKeyIdentifier;
+        if (signatureKeyIdentifiers.isEmpty()) {
+            return null;
+        }
+        return signatureKeyIdentifiers.get(0);
+    }
+
+    public List<SecurityTokenConstants.KeyIdentifier> getSignatureKeyIdentifiers() {
+        return new ArrayList<>(signatureKeyIdentifiers);
     }
 
     public void setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier signatureKeyIdentifier) {
-        this.signatureKeyIdentifier = signatureKeyIdentifier;
+        signatureKeyIdentifiers.clear();
+        signatureKeyIdentifiers.add(signatureKeyIdentifier);
+    }
+
+    public void setSignatureKeyIdentifiers(List<SecurityTokenConstants.KeyIdentifier> signatureKeyIdentifiers) {
+        this.signatureKeyIdentifiers.clear();
+        this.signatureKeyIdentifiers.addAll(signatureKeyIdentifiers);
     }
 
     /**

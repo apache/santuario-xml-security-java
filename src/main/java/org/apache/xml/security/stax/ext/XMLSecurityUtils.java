@@ -249,8 +249,16 @@ public class XMLSecurityUtils {
     }
 
     public static void createX509SubjectKeyIdentifierStructure(AbstractOutputProcessor abstractOutputProcessor,
+                                                               OutputProcessorChain outputProcessorChain,
+                                                               X509Certificate[] x509Certificates)
+                                                           throws XMLSecurityException, XMLStreamException {
+        createX509SubjectKeyIdentifierStructure(abstractOutputProcessor, outputProcessorChain, x509Certificates, true);
+    }
+
+    public static void createX509SubjectKeyIdentifierStructure(AbstractOutputProcessor abstractOutputProcessor,
             OutputProcessorChain outputProcessorChain,
-            X509Certificate[] x509Certificates)
+            X509Certificate[] x509Certificates,
+            boolean outputX509Data)
         throws XMLSecurityException, XMLStreamException {
         if (x509Certificates == null || x509Certificates.length == 0) {
             throw new XMLSecurityException("stax.signature.publicKeyOrCertificateMissing");
@@ -263,26 +271,40 @@ public class XMLSecurityUtils {
                                            new Object[]{version});
         }
 
-        abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509Data, true, null);
+        if (outputX509Data) {
+            abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509Data, true, null);
+        }
 
         abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509SKI, false, null);
         byte[] data = XMLX509SKI.getSKIBytesFromCert(x509Certificates[0]);
         abstractOutputProcessor.createCharactersAndOutputAsEvent(outputProcessorChain, XMLUtils.encodeToString(data));
         abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509SKI);
 
-        abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509Data);
+        if (outputX509Data) {
+            abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509Data);
+        }
+    }
+
+    public static void createX509CertificateStructure(AbstractOutputProcessor abstractOutputProcessor,
+                                                      OutputProcessorChain outputProcessorChain,
+                                                      X509Certificate[] x509Certificates)
+                                                  throws XMLSecurityException, XMLStreamException {
+        createX509CertificateStructure(abstractOutputProcessor, outputProcessorChain, x509Certificates, true);
     }
 
     public static void createX509CertificateStructure(AbstractOutputProcessor abstractOutputProcessor,
             OutputProcessorChain outputProcessorChain,
-            X509Certificate[] x509Certificates)
+            X509Certificate[] x509Certificates,
+            boolean outputX509Data)
         throws XMLSecurityException, XMLStreamException {
 
         if (x509Certificates == null || x509Certificates.length == 0) {
             throw new XMLSecurityException("stax.signature.publicKeyOrCertificateMissing");
         }
 
-        abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509Data, true, null);
+        if (outputX509Data) {
+            abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509Data, true, null);
+        }
 
         abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509Certificate, false, null);
         byte[] data;
@@ -294,37 +316,60 @@ public class XMLSecurityUtils {
         abstractOutputProcessor.createCharactersAndOutputAsEvent(outputProcessorChain, XMLUtils.encodeToString(data));
         abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509Certificate);
 
-        abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509Data);
+        if (outputX509Data) {
+            abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509Data);
+        }
+    }
+
+    public static void createX509SubjectNameStructure(AbstractOutputProcessor abstractOutputProcessor,
+                                                      OutputProcessorChain outputProcessorChain,
+                                                      X509Certificate[] x509Certificates)
+                                                  throws XMLSecurityException, XMLStreamException {
+        createX509SubjectNameStructure(abstractOutputProcessor, outputProcessorChain, x509Certificates, true);
     }
 
     public static void createX509SubjectNameStructure(AbstractOutputProcessor abstractOutputProcessor,
             OutputProcessorChain outputProcessorChain,
-            X509Certificate[] x509Certificates)
+            X509Certificate[] x509Certificates,
+            boolean outputX509Data)
         throws XMLSecurityException, XMLStreamException {
 
         if (x509Certificates == null || x509Certificates.length == 0) {
             throw new XMLSecurityException("stax.signature.publicKeyOrCertificateMissing");
         }
 
-        abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509Data, true, null);
+        if (outputX509Data) {
+            abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509Data, true, null);
+        }
 
         abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509SubjectName, false, null);
         String subjectName = x509Certificates[0].getSubjectX500Principal().getName();
         abstractOutputProcessor.createCharactersAndOutputAsEvent(outputProcessorChain, subjectName);
         abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509SubjectName);
 
-        abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509Data);
+        if (outputX509Data) {
+            abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509Data);
+        }
     }
 
     public static void createX509IssuerSerialStructure(AbstractOutputProcessor abstractOutputProcessor,
-            OutputProcessorChain outputProcessorChain, X509Certificate[] x509Certificates)
+                                                       OutputProcessorChain outputProcessorChain, X509Certificate[] x509Certificates)
+                                                       throws XMLStreamException, XMLSecurityException {
+        createX509IssuerSerialStructure(abstractOutputProcessor, outputProcessorChain, x509Certificates, true);
+    }
+
+    public static void createX509IssuerSerialStructure(AbstractOutputProcessor abstractOutputProcessor,
+            OutputProcessorChain outputProcessorChain, X509Certificate[] x509Certificates,
+            boolean outputX509Data)
             throws XMLStreamException, XMLSecurityException {
 
         if (x509Certificates == null || x509Certificates.length == 0) {
             throw new XMLSecurityException("stax.signature.publicKeyOrCertificateMissing");
         }
 
-        abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509Data, true, null);
+        if (outputX509Data) {
+            abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509Data, true, null);
+        }
         abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509IssuerSerial, false, null);
         abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509IssuerName, false, null);
         abstractOutputProcessor.createCharactersAndOutputAsEvent(outputProcessorChain, x509Certificates[0].getIssuerX500Principal().getName());
@@ -333,7 +378,9 @@ public class XMLSecurityUtils {
         abstractOutputProcessor.createCharactersAndOutputAsEvent(outputProcessorChain, x509Certificates[0].getSerialNumber().toString());
         abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509SerialNumber);
         abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509IssuerSerial);
-        abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509Data);
+        if (outputX509Data) {
+            abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509Data);
+        }
     }
 
     @SuppressWarnings("unchecked")

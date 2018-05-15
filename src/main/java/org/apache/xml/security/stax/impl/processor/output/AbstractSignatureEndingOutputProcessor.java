@@ -211,8 +211,7 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
             attributes = Collections.emptyList();
         }
 
-        if (!SecurityTokenConstants.KeyIdentifier_NoKeyInfo.equals(
-            getSecurityProperties().getSignatureKeyIdentifier())) {
+        if (!getSecurityProperties().getSignatureKeyIdentifiers().contains(SecurityTokenConstants.KeyIdentifier_NoKeyInfo)) {
             createStartElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsig_KeyInfo, false, attributes);
             createKeyInfoStructureForSignature(subOutputProcessorChain, wrappingSecurityToken, getSecurityProperties().isUseSingleCert());
             createEndElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsig_KeyInfo);
