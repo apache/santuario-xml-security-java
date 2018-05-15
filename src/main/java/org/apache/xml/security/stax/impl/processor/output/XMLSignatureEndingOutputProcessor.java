@@ -55,10 +55,10 @@ public class XMLSignatureEndingOutputProcessor extends AbstractSignatureEndingOu
 
     @Override
     protected SignedInfoProcessor newSignedInfoProcessor(
-            SignatureAlgorithm signatureAlgorithm, XMLSecStartElement xmlSecStartElement,
+            SignatureAlgorithm signatureAlgorithm, String signatureId, XMLSecStartElement xmlSecStartElement,
             OutputProcessorChain outputProcessorChain) throws XMLSecurityException {
 
-        this.signedInfoProcessor = new SignedInfoProcessor(signatureAlgorithm, xmlSecStartElement);
+        this.signedInfoProcessor = new SignedInfoProcessor(signatureAlgorithm, signatureId, xmlSecStartElement);
         this.signedInfoProcessor.setXMLSecurityProperties(getSecurityProperties());
         this.signedInfoProcessor.setAction(getAction());
         this.signedInfoProcessor.addAfterProcessor(XMLSignatureEndingOutputProcessor.class.getName());
@@ -71,6 +71,7 @@ public class XMLSignatureEndingOutputProcessor extends AbstractSignatureEndingOu
         super.processHeaderEvent(outputProcessorChain);
         SignatureValueSecurityEvent signatureValueSecurityEvent = new SignatureValueSecurityEvent();
         signatureValueSecurityEvent.setSignatureValue(this.signedInfoProcessor.getSignatureValue());
+        signatureValueSecurityEvent.setCorrelationID(this.signedInfoProcessor.getSignatureId());
         outputProcessorChain.getSecurityContext().registerSecurityEvent(signatureValueSecurityEvent);
     }
 

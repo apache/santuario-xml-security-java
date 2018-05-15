@@ -31,15 +31,19 @@ import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.config.JCEAlgorithmMapper;
-import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
-import org.apache.xml.security.stax.securityToken.SecurityTokenProvider;
-import org.apache.xml.security.stax.impl.*;
+import org.apache.xml.security.stax.impl.DocumentContextImpl;
+import org.apache.xml.security.stax.impl.OutboundSecurityContextImpl;
+import org.apache.xml.security.stax.impl.OutputProcessorChainImpl;
+import org.apache.xml.security.stax.impl.XMLSecurityStreamWriter;
 import org.apache.xml.security.stax.impl.processor.output.FinalOutputProcessor;
 import org.apache.xml.security.stax.impl.processor.output.XMLEncryptOutputProcessor;
 import org.apache.xml.security.stax.impl.processor.output.XMLSignatureOutputProcessor;
 import org.apache.xml.security.stax.impl.securityToken.GenericOutboundSecurityToken;
-import org.apache.xml.security.stax.securityToken.OutboundSecurityToken;
 import org.apache.xml.security.stax.impl.util.IDGenerator;
+import org.apache.xml.security.stax.securityEvent.SecurityEventListener;
+import org.apache.xml.security.stax.securityToken.OutboundSecurityToken;
+import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
+import org.apache.xml.security.stax.securityToken.SecurityTokenProvider;
 
 /**
  * Outbound Streaming-XML-Security
@@ -63,7 +67,7 @@ public class OutboundXMLSec {
      * @throws XMLSecurityException thrown when a Security failure occurs
      */
     public XMLStreamWriter processOutMessage(OutputStream outputStream, String encoding) throws XMLSecurityException {
-        return processOutMessage((Object)outputStream, encoding);
+        return processOutMessage((Object)outputStream, encoding, null);
     }
 
     /**
@@ -75,11 +79,27 @@ public class OutboundXMLSec {
      * @throws XMLSecurityException thrown when a Security failure occurs
      */
     public XMLStreamWriter processOutMessage(XMLStreamWriter xmlStreamWriter, String encoding) throws XMLSecurityException {
-        return processOutMessage((Object)xmlStreamWriter, encoding);
+        return processOutMessage((Object)xmlStreamWriter, encoding, null);
     }
 
-    private XMLStreamWriter processOutMessage(Object output, String encoding) throws XMLSecurityException {
+    public XMLStreamWriter processOutMessage(OutputStream outputStream, String encoding,
+                                             SecurityEventListener eventListener) throws XMLSecurityException {
+        return processOutMessage((Object)outputStream, encoding, eventListener);
+    }
+
+    public XMLStreamWriter processOutMessage(XMLStreamWriter xmlStreamWriter, String encoding,
+                                             SecurityEventListener eventListener) throws XMLSecurityException {
+        return processOutMessage((Object) xmlStreamWriter, encoding, eventListener);
+    }
+
+    private XMLStreamWriter processOutMessage(
+        Object output, String encoding, SecurityEventListener eventListener) throws XMLSecurityException {
         final OutboundSecurityContextImpl outboundSecurityContext = new OutboundSecurityContextImpl();
+
+        if (eventListener != null) {
+            outboundSecurityContext.addSecurityEventListener(eventListener);
+        }
+
         final DocumentContextImpl documentContext = new DocumentContextImpl();
         documentContext.setEncoding(encoding);
 

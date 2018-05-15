@@ -102,9 +102,11 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
         OutputProcessorChain subOutputProcessorChain = outputProcessorChain.createSubChain(this);
 
         List<XMLSecAttribute> attributes = new ArrayList<>(1);
+        String signatureId = null;
         if (securityProperties.isSignatureGenerateIds()) {
             attributes = new ArrayList<>(1);
-            attributes.add(createAttribute(XMLSecurityConstants.ATT_NULL_Id, IDGenerator.generateID(null)));
+            signatureId = IDGenerator.generateID(null);
+            attributes.add(createAttribute(XMLSecurityConstants.ATT_NULL_Id, signatureId));
         } else {
             attributes = Collections.emptyList();
         }
@@ -144,7 +146,8 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
         }
         signatureAlgorithm.engineInitSign(key);
 
-        SignedInfoProcessor signedInfoProcessor = newSignedInfoProcessor(signatureAlgorithm, signatureElement, subOutputProcessorChain);
+        SignedInfoProcessor signedInfoProcessor =
+            newSignedInfoProcessor(signatureAlgorithm, signatureId, signatureElement, subOutputProcessorChain);
         createStartElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsig_SignedInfo, false, null);
 
         attributes = new ArrayList<>(1);
@@ -220,7 +223,8 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
     }
 
     protected abstract SignedInfoProcessor newSignedInfoProcessor(
-            SignatureAlgorithm signatureAlgorithm, XMLSecStartElement xmlSecStartElement, OutputProcessorChain outputProcessorChain)
+            SignatureAlgorithm signatureAlgorithm, String signatureId,
+            XMLSecStartElement xmlSecStartElement, OutputProcessorChain outputProcessorChain)
             throws XMLSecurityException;
 
     protected abstract void createTransformsStructureForSignature(
@@ -242,12 +246,14 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
         private String inclusiveNamespacePrefixes;
         private SignatureAlgorithm signatureAlgorithm;
         private XMLSecStartElement xmlSecStartElement;
+        private String signatureId;
 
-        public SignedInfoProcessor(SignatureAlgorithm signatureAlgorithm, XMLSecStartElement xmlSecStartElement)
+        public SignedInfoProcessor(SignatureAlgorithm signatureAlgorithm, String signatureId, XMLSecStartElement xmlSecStartElement)
                 throws XMLSecurityException {
             super();
             this.signatureAlgorithm = signatureAlgorithm;
             this.xmlSecStartElement = xmlSecStartElement;
+            this.signatureId = signatureId;
         }
 
         @Override
@@ -298,6 +304,10 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
             } catch (XMLStreamException e) {
                 throw new XMLSecurityException(e);
             }
+        }
+
+        public String getSignatureId() {
+            return signatureId;
         }
 
         public String getInclusiveNamespacePrefixes() {
