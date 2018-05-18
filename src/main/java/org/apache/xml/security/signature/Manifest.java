@@ -19,6 +19,8 @@
 package org.apache.xml.security.signature;
 
 import java.io.IOException;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -52,12 +54,17 @@ import org.xml.sax.SAXException;
 public class Manifest extends SignatureElementProxy {
 
     /**
-     * The maximum number of references per Manifest, if secure validation is enabled.
+     * The default maximum number of references per Manifest, if secure validation is enabled.
      */
     public static final int MAXIMUM_REFERENCE_COUNT = 30;
 
     private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(Manifest.class);
+
+    private static Integer referenceCount =
+        AccessController.doPrivileged(
+            (PrivilegedAction<Integer>) () -> Integer.parseInt(System.getProperty("org.apache.xml.security.maxReferences",
+                                                                Integer.toString(MAXIMUM_REFERENCE_COUNT))));
 
     /** Field references */
     private List<Reference> references;
@@ -131,8 +138,8 @@ public class Manifest extends SignatureElementProxy {
                                    I18n.translate("xml.WrongContent", exArgs));
         }
 
-        if (secureValidation && le > MAXIMUM_REFERENCE_COUNT) {
-            Object exArgs[] = { le, MAXIMUM_REFERENCE_COUNT };
+        if (secureValidation && le > referenceCount) {
+            Object exArgs[] = { le, referenceCount };
 
             throw new XMLSecurityException("signature.tooManyReferences", exArgs);
         }
@@ -313,8 +320,8 @@ public class Manifest extends SignatureElementProxy {
         if (referencesEl.length == 0) {
             throw new XMLSecurityException("empty", new Object[]{"References are empty"});
         }
-        if (secureValidation && referencesEl.length > MAXIMUM_REFERENCE_COUNT) {
-            Object exArgs[] = { referencesEl.length, MAXIMUM_REFERENCE_COUNT };
+        if (secureValidation && referencesEl.length > referenceCount) {
+            Object exArgs[] = { referencesEl.length, referenceCount };
 
             throw new XMLSecurityException("signature.tooManyReferences", exArgs);
         }
