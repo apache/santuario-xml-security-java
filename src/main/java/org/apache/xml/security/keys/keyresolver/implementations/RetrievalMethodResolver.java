@@ -309,7 +309,7 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
         }		
         return resource;
     }
-
+   
     /**
      * Method engineResolveSecretKey
      * @inheritDoc

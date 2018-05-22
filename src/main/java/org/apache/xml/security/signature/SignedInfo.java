@@ -21,7 +21,6 @@ package org.apache.xml.security.signature;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.parsers.ParserConfigurationException;
@@ -31,9 +30,9 @@ import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.c14n.InvalidCanonicalizerException;
 import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.transforms.params.InclusiveNamespaces;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
+import org.apache.xml.security.transforms.params.InclusiveNamespaces;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -211,18 +210,17 @@ public class SignedInfo extends Manifest {
                 c14nizer.setSecureValidation(secureValidation);
 
                 byte[] c14nizedBytes = c14nizer.canonicalizeSubtree(element);
-                javax.xml.parsers.DocumentBuilder db =
-                    XMLUtils.createDocumentBuilder(false, secureValidation);
-                try {
-                    Document newdoc = db.parse(new ByteArrayInputStream(
-                            c14nizedBytes));
-                    Node imported = element.getOwnerDocument().importNode(
-                            newdoc.getDocumentElement(), true);
-                    element.getParentNode().replaceChild(imported, element);
-                    return (Element) imported;
-                } finally {
-                    XMLUtils.repoolDocumentBuilder(db);
-                }
+
+                javax.xml.parsers.DocumentBuilder db = 
+                    XMLUtils.createDocumentBuilder(false, secureValidation);        
+                Document newdoc =
+                    db.parse(new ByteArrayInputStream(c14nizedBytes));
+                Node imported = 
+                    element.getOwnerDocument().importNode(newdoc.getDocumentElement(), true);
+
+                element.getParentNode().replaceChild(imported, element);
+
+                return (Element) imported;
             } catch (ParserConfigurationException ex) {
                 throw new XMLSecurityException(ex);
             } catch (IOException ex) {

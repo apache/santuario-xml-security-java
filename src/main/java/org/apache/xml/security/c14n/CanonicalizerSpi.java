@@ -61,12 +61,7 @@ public abstract class CanonicalizerSpi {
 
         DocumentBuilder db = XMLUtils.createDocumentBuilder(false, secureValidation);
 
-        Document document;
-        try {
-            document = db.parse(in);
-        } finally {
-            XMLUtils.repoolDocumentBuilder(db);
-        }
+        Document document = db.parse(in);
         return this.engineCanonicalizeSubTree(document);
     }
 

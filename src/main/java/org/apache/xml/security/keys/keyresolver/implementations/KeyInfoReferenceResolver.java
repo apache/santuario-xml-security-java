@@ -271,4 +271,5 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
         }
         return e;
     }
+
 }

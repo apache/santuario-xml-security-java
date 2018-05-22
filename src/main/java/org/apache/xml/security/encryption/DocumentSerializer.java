@@ -67,9 +67,8 @@ public class DocumentSerializer extends AbstractSerializer {
      * @throws XMLEncryptionException
      */
     private Node deserialize(Node ctx, InputSource inputSource) throws XMLEncryptionException {
-        DocumentBuilder db = null;
         try {
-            db = XMLUtils.createDocumentBuilder(false, secureValidation);
+            DocumentBuilder db = XMLUtils.createDocumentBuilder(false, secureValidation);
             Document d = db.parse(inputSource);
 
             Document contextDocument = null;
@@ -95,10 +94,6 @@ public class DocumentSerializer extends AbstractSerializer {
             throw new XMLEncryptionException(pce);
         } catch (IOException ioe) {
             throw new XMLEncryptionException(ioe);
-        } finally {
-            if (db != null) {
-                XMLUtils.repoolDocumentBuilder(db);
-            }
         }
     }
 
