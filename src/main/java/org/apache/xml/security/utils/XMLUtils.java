@@ -59,6 +59,15 @@ public final class XMLUtils {
             }
         });
 
+    @SuppressWarnings("unchecked")
+    private static final ThreadLocal<DocumentBuilder> tl[][] = new ThreadLocal[2][2];
+    static {
+        tl[0][0] = new MyThreadLocal(false, false);
+        tl[0][1] = new MyThreadLocal(false, true);
+        tl[1][0] = new MyThreadLocal(true, false);
+        tl[1][1] = new MyThreadLocal(true, true);
+    }
+
     private static volatile String dsPrefix = "ds";
     private static volatile String ds11Prefix = "dsig11";
     private static volatile String xencPrefix = "xenc";
@@ -1052,15 +1061,9 @@ public final class XMLUtils {
     public static DocumentBuilder createDocumentBuilder(
         boolean validating, boolean disAllowDocTypeDeclarations
     ) throws ParserConfigurationException {
-        DocumentBuilderFactory dfactory = DocumentBuilderFactory.newInstance();
-        dfactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
-        if (disAllowDocTypeDeclarations) {
-            dfactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-        }
-        dfactory.setValidating(validating);        
-        dfactory.setNamespaceAware(true);
-        
-        return dfactory.newDocumentBuilder();
+        DocumentBuilder documentBuilder = tl[validating ? 1 : 0][disAllowDocTypeDeclarations ? 1 : 0].get();
+        documentBuilder.reset();
+        return documentBuilder;
     }
 
     /**
@@ -1071,6 +1074,33 @@ public final class XMLUtils {
     @Deprecated
     public static boolean repoolDocumentBuilder(DocumentBuilder db) {
         return true;
+    }
+
+    private static final class MyThreadLocal extends ThreadLocal<DocumentBuilder> {
+        private final boolean validating;
+        private final boolean disAllowDocTypeDeclarations;
+
+        public MyThreadLocal(boolean validating, boolean disAllowDocTypeDeclarations) {
+            this.validating = validating;
+            this.disAllowDocTypeDeclarations = disAllowDocTypeDeclarations;
+        }
+
+        @Override
+        protected DocumentBuilder initialValue() {
+            DocumentBuilderFactory dfactory = DocumentBuilderFactory.newInstance();
+            try {
+                dfactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
+                if (disAllowDocTypeDeclarations) {
+                    dfactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+                }
+                dfactory.setValidating(validating);
+                dfactory.setNamespaceAware(true);
+
+                return dfactory.newDocumentBuilder();
+            } catch (ParserConfigurationException e) {
+               throw new RuntimeException(e);
+            }
+        }
     }
 
 }
