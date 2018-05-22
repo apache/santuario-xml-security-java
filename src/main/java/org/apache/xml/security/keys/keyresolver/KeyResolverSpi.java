@@ -262,7 +262,6 @@ public abstract class KeyResolverSpi {
         this.globalResolver = globalResolver;
     }
 
-
     /**
      * Parses a byte array and returns the parsed Element.
      *
@@ -271,9 +270,8 @@ public abstract class KeyResolverSpi {
      * @throws KeyResolverException if something goes wrong
      */
     protected static Element getDocFromBytes(byte[] bytes, boolean secureValidation) throws KeyResolverException {
-        DocumentBuilder db = null;
         try (InputStream is = new ByteArrayInputStream(bytes)) {
-            db = XMLUtils.createDocumentBuilder(false, secureValidation);
+            DocumentBuilder db = XMLUtils.createDocumentBuilder(false, secureValidation);
             Document doc = db.parse(is);
             return doc.getDocumentElement();
         } catch (SAXException ex) {
@@ -282,10 +280,6 @@ public abstract class KeyResolverSpi {
             throw new KeyResolverException(ex);
         } catch (ParserConfigurationException ex) {
             throw new KeyResolverException(ex);
-        } finally {
-            if (db != null) {
-                XMLUtils.repoolDocumentBuilder(db);
-            }
         }
     }
 

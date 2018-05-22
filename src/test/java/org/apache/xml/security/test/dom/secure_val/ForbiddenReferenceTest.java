@@ -73,7 +73,6 @@ public class ForbiddenReferenceTest extends InteropTestBase {
 
         javax.xml.parsers.DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
         org.w3c.dom.Document doc = db.parse(f);
-        XMLUtils.repoolDocumentBuilder(db);
 
         Element manifestElement =
             (Element) doc.getElementsByTagNameNS(Constants.SignatureSpecNS,
