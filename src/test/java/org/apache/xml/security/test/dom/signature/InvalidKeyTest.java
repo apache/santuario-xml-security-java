@@ -65,7 +65,7 @@ public class InvalidKeyTest {
         FileInputStream is = new FileInputStream(BASEDIR + SEP +
             "src/test/resources/org/apache/xml/security/samples/input/test-assertion.xml");
 
-        Document e = XMLUtils.createDocumentBuilder(false).parse(is);
+        Document e = XMLUtils.parse(is, false);
 
         Node assertion = e.getFirstChild();
         while (!(assertion instanceof Element)) {

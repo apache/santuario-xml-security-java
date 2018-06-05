@@ -37,7 +37,6 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESedeKeySpec;
 import javax.crypto.spec.SecretKeySpec;
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -99,8 +98,7 @@ public class DecryptionTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         // Set up the Key
         SecretKey secretKey = generateSecretKey();
@@ -134,7 +132,7 @@ public class DecryptionTest extends Assert {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        document = StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -155,8 +153,7 @@ public class DecryptionTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         // Set up the Key
         SecretKey secretKey = generateSecretKey();
@@ -193,7 +190,7 @@ public class DecryptionTest extends Assert {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        document = StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -213,8 +210,7 @@ public class DecryptionTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
@@ -253,7 +249,7 @@ public class DecryptionTest extends Assert {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        document = StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -273,8 +269,7 @@ public class DecryptionTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         // Set up the Key
         SecretKey secretKey = generateSecretKey();
@@ -312,7 +307,7 @@ public class DecryptionTest extends Assert {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        document = StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -340,8 +335,7 @@ public class DecryptionTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         // Set up the Key
         byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes();
@@ -384,7 +378,7 @@ public class DecryptionTest extends Assert {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        document = StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -410,8 +404,7 @@ public class DecryptionTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         // Set up the Key
         KeyPairGenerator rsaKeygen = KeyPairGenerator.getInstance("RSA");
@@ -456,7 +449,7 @@ public class DecryptionTest extends Assert {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        document = StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -478,8 +471,7 @@ public class DecryptionTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         // Set up the Key
         KeyPairGenerator rsaKeygen = KeyPairGenerator.getInstance("RSA");
@@ -524,7 +516,7 @@ public class DecryptionTest extends Assert {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        document = StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -550,8 +542,7 @@ public class DecryptionTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         // Set up the Key
         byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes();
@@ -596,7 +587,7 @@ public class DecryptionTest extends Assert {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        document = StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -618,8 +609,7 @@ public class DecryptionTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         // Set up the Key
         byte[] passPhrase = "24 Bytes per DESede key!".getBytes();
@@ -659,7 +649,7 @@ public class DecryptionTest extends Assert {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        document = StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -679,8 +669,7 @@ public class DecryptionTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         // Set up the Key
         byte[] bits128 = {
@@ -722,7 +711,7 @@ public class DecryptionTest extends Assert {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        document = StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -742,8 +731,7 @@ public class DecryptionTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         // Set up the Key
         byte[] bits192 = {
@@ -787,7 +775,7 @@ public class DecryptionTest extends Assert {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        document = StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -807,8 +795,7 @@ public class DecryptionTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         // Set up the Key
         byte[] bits256 = {
@@ -854,7 +841,7 @@ public class DecryptionTest extends Assert {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        document = StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -876,8 +863,7 @@ public class DecryptionTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         // Set up the Key
         byte[] passPhrase = "24 Bytes per DESede key!".getBytes();
@@ -917,7 +903,7 @@ public class DecryptionTest extends Assert {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        document = StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -934,10 +920,9 @@ public class DecryptionTest extends Assert {
     public void testPhysicalRepresentation() throws Exception {
         final String DATA1 =
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?><ns:root xmlns:ns=\"ns.com\"><ns:elem xmlns:ns2=\"ns2.com\">11</ns:elem></ns:root>";
-        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(DATA1.getBytes(StandardCharsets.UTF_8))) {
-            document = db.parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         // Set up the Key
@@ -977,7 +962,7 @@ public class DecryptionTest extends Assert {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        document = StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
 
         // Check the element decrypted ok
         nodeList = document.getElementsByTagNameNS("ns.com", "elem");
@@ -1002,10 +987,9 @@ public class DecryptionTest extends Assert {
     public void testPhysicalRepresentation2() throws Exception {
         final String DATA1 =
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?><ns:root xmlns=\"defns.com\" xmlns:ns=\"ns.com\"><elem xmlns=\"\">11</elem></ns:root>";
-        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(DATA1.getBytes(StandardCharsets.UTF_8))) {
-            document = db.parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         // Set up the Key
@@ -1045,7 +1029,7 @@ public class DecryptionTest extends Assert {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        document = StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
 
         // Check the element decrypted ok
         nodeList = document.getElementsByTagNameNS("", "elem");
@@ -1272,8 +1256,7 @@ public class DecryptionTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         for (int i = 0; i < 7; i++) {
             NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -1310,7 +1293,7 @@ public class DecryptionTest extends Assert {
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         try {
-            document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+            document = StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
             fail("Exception expected");
         } catch (XMLStreamException e) {
             assertTrue(e.getCause() instanceof XMLSecurityException);
@@ -1325,8 +1308,7 @@ public class DecryptionTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         // Set up the Key
         KeyPairGenerator rsaKeygen = KeyPairGenerator.getInstance("RSA");
@@ -1392,7 +1374,7 @@ public class DecryptionTest extends Assert {
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         try {
-            document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+            document = StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
         } catch (XMLStreamException e) {
             Assert.assertFalse(e.getMessage().contains("Unwrapping failed"));
         }
@@ -1404,8 +1386,7 @@ public class DecryptionTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
@@ -1453,7 +1434,7 @@ public class DecryptionTest extends Assert {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        document = StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -1466,8 +1447,7 @@ public class DecryptionTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
@@ -1525,7 +1505,7 @@ public class DecryptionTest extends Assert {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        document = StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -1538,8 +1518,7 @@ public class DecryptionTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
@@ -1597,7 +1576,7 @@ public class DecryptionTest extends Assert {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        document = StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -1610,8 +1589,7 @@ public class DecryptionTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
@@ -1669,7 +1647,7 @@ public class DecryptionTest extends Assert {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        document = StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -1690,8 +1668,7 @@ public class DecryptionTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
@@ -1749,7 +1726,7 @@ public class DecryptionTest extends Assert {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        document = StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -1762,8 +1739,7 @@ public class DecryptionTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
@@ -1812,7 +1788,7 @@ public class DecryptionTest extends Assert {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        document = StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -1825,8 +1801,7 @@ public class DecryptionTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         // Set up the Key
         SecretKey secretKey = generateSecretKey();
@@ -1864,7 +1839,7 @@ public class DecryptionTest extends Assert {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        document = StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -1887,8 +1862,7 @@ public class DecryptionTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         // Set up the Key
         SecretKey secretKey = generateSecretKey();
@@ -1926,7 +1900,7 @@ public class DecryptionTest extends Assert {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        document = StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -1946,8 +1920,7 @@ public class DecryptionTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         // Set up the Key
         SecretKey secretKey = generateSecretKey();
@@ -1985,7 +1958,7 @@ public class DecryptionTest extends Assert {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        document = StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "PurchaseOrder");

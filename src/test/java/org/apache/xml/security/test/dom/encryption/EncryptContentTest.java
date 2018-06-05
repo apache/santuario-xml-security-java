@@ -30,7 +30,6 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESedeKeySpec;
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.transform.TransformerFactory;
 
 import org.apache.xml.security.algorithms.JCEMapper;
@@ -71,13 +70,11 @@ public class EncryptContentTest {
         "  </user>\n" +
         "</users>\n";
 
-    private DocumentBuilder db;
     private SecretKey secretKey;
     private boolean haveISOPadding;
 
     public EncryptContentTest() throws Exception {
         org.apache.xml.security.Init.init();
-        db = XMLUtils.createDocumentBuilder(false);
 
         byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes();
         DESedeKeySpec keySpec = new DESedeKeySpec(bits192);
@@ -118,7 +115,7 @@ public class EncryptContentTest {
 
         Document doc = null;
         try (InputStream is = new ByteArrayInputStream(DATA.getBytes(StandardCharsets.UTF_8))) {
-            doc = db.parse(is);
+            doc = XMLUtils.parse(is, false);
         }
         NodeList dataToEncrypt = doc.getElementsByTagName("user");
 
@@ -170,7 +167,7 @@ public class EncryptContentTest {
 
         Document doc = null;
         try (InputStream is = new ByteArrayInputStream(MULTIPLE_USER_DATA.getBytes(StandardCharsets.UTF_8))) {
-            doc = db.parse(is);
+            doc = XMLUtils.parse(is, false);
         }
         NodeList dataToEncrypt = doc.getElementsByTagName("user");
 

@@ -27,7 +27,6 @@ import java.security.cert.X509Certificate;
 import java.util.HashMap;
 
 import javax.crypto.SecretKey;
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.xml.security.keys.storage.StorageResolver;
@@ -271,8 +270,7 @@ public abstract class KeyResolverSpi {
      */
     protected static Element getDocFromBytes(byte[] bytes, boolean secureValidation) throws KeyResolverException {
         try (InputStream is = new ByteArrayInputStream(bytes)) {
-            DocumentBuilder db = XMLUtils.createDocumentBuilder(false, secureValidation);
-            Document doc = db.parse(is);
+            Document doc = XMLUtils.parse(is, false, secureValidation);
             return doc.getDocumentElement();
         } catch (SAXException ex) {
             throw new KeyResolverException(ex);

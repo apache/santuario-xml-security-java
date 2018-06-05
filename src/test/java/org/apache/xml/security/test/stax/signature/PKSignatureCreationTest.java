@@ -123,7 +123,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         // Verify using DOM
@@ -166,7 +166,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         // Verify using DOM
@@ -209,7 +209,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         // Verify using DOM
@@ -252,7 +252,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         // Verify using DOM
@@ -297,7 +297,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         // Verify using DOM
@@ -342,7 +342,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         // Verify using DOM
@@ -387,7 +387,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         // Verify using DOM
@@ -432,7 +432,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         // Verify using DOM
@@ -477,7 +477,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         // Verify using DOM
@@ -522,7 +522,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         // Verify using DOM
@@ -565,7 +565,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         // Verify using DOM
@@ -608,7 +608,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         // Verify using DOM
@@ -651,7 +651,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         // Verify using DOM
@@ -694,7 +694,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         // Verify using DOM
@@ -737,7 +737,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         // Verify using DOM
@@ -782,7 +782,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         // Verify using DOM

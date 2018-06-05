@@ -146,7 +146,7 @@ public class KeyWrapEncryptionCreationTest extends Assert {
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
@@ -214,7 +214,7 @@ public class KeyWrapEncryptionCreationTest extends Assert {
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
@@ -282,7 +282,7 @@ public class KeyWrapEncryptionCreationTest extends Assert {
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
@@ -348,7 +348,7 @@ public class KeyWrapEncryptionCreationTest extends Assert {
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
@@ -413,7 +413,7 @@ public class KeyWrapEncryptionCreationTest extends Assert {
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
@@ -478,7 +478,7 @@ public class KeyWrapEncryptionCreationTest extends Assert {
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
@@ -543,7 +543,7 @@ public class KeyWrapEncryptionCreationTest extends Assert {
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
@@ -613,7 +613,7 @@ public class KeyWrapEncryptionCreationTest extends Assert {
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
@@ -683,7 +683,7 @@ public class KeyWrapEncryptionCreationTest extends Assert {
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
@@ -753,7 +753,7 @@ public class KeyWrapEncryptionCreationTest extends Assert {
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
@@ -823,7 +823,7 @@ public class KeyWrapEncryptionCreationTest extends Assert {
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");

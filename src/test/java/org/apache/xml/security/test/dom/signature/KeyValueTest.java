@@ -24,8 +24,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.security.PublicKey;
 
-import javax.xml.parsers.DocumentBuilder;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -41,14 +39,8 @@ public class KeyValueTest {
     private static final String BASEDIR = System.getProperty("basedir");
     private static final String SEP = System.getProperty("file.separator");
 
-    private DocumentBuilder db;
-
     static {
         Init.init();
-    }
-
-    public KeyValueTest() throws Exception {
-        db = XMLUtils.createDocumentBuilder(false);
     }
 
     @org.junit.Test
@@ -61,7 +53,7 @@ public class KeyValueTest {
         } else {
             f = new File(filename);
         }
-        Document doc = db.parse(new FileInputStream(f));
+        Document doc = XMLUtils.parse(new FileInputStream(f), false);
         NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpecNS, "Signature");
         XMLSignature sig = new XMLSignature
             ((Element) nl.item(0), f.toURI().toURL().toString());

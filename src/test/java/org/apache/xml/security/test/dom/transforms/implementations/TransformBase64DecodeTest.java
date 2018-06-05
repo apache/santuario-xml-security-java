@@ -23,7 +23,6 @@ import static org.junit.Assert.assertTrue;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -110,13 +109,10 @@ public class TransformBase64DecodeTest {
             + "</Object>\n"
             ;
         //J+
-        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
-
-        db.setErrorHandler(new org.apache.xml.security.utils.IgnoreAllErrorHandler());
 
         Document doc = null;
         try (InputStream is = new ByteArrayInputStream(input.getBytes())) {
-            doc = db.parse(is);
+            doc = XMLUtils.parse(is, false, true, true);
         }
         //XMLUtils.circumventBug2650(doc);
 
@@ -145,8 +141,7 @@ public class TransformBase64DecodeTest {
     }
 
     private static Document createDocument() throws ParserConfigurationException {
-        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
-        Document doc = db.newDocument();
+        Document doc = XMLUtils.newDocument(false);
 
         if (doc == null) {
             throw new RuntimeException("Could not create a Document");

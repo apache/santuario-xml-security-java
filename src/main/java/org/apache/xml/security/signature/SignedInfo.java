@@ -210,10 +210,8 @@ public class SignedInfo extends Manifest {
                 c14nizer.setSecureValidation(secureValidation);
 
                 byte[] c14nizedBytes = c14nizer.canonicalizeSubtree(element);
-                javax.xml.parsers.DocumentBuilder db =
-                    XMLUtils.createDocumentBuilder(false, secureValidation);
                 try (InputStream is = new ByteArrayInputStream(c14nizedBytes)) {
-                    Document newdoc = db.parse(is);
+                    Document newdoc = XMLUtils.parse(is, false, secureValidation);
                     Node imported = element.getOwnerDocument().importNode(
                             newdoc.getDocumentElement(), true);
                     element.getParentNode().replaceChild(imported, element);

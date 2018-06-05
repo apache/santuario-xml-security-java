@@ -102,7 +102,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         //first child element must be the dsig:Signature @see SANTUARIO-324:
@@ -160,7 +160,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         // Check Signature bytes
@@ -261,7 +261,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         //first child element must be the dsig:Signature @see SANTUARIO-324:
@@ -325,7 +325,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         //first child element must be the dsig:Signature @see SANTUARIO-324:
@@ -415,7 +415,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         //find first child element:
@@ -505,7 +505,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         // Verify using DOM
@@ -554,7 +554,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         // Verify using DOM
@@ -610,7 +610,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         // Verify using DOM
@@ -674,7 +674,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         // Verify using DOM
@@ -722,7 +722,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         // Verify using DOM
@@ -782,7 +782,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         // Verify using DOM
@@ -843,7 +843,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         // Verify using DOM
@@ -890,7 +890,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         // Verify using DOM
@@ -938,7 +938,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_CanonicalizationMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_CanonicalizationMethod.getLocalPart());
@@ -1006,7 +1006,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_CanonicalizationMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_CanonicalizationMethod.getLocalPart());
@@ -1073,7 +1073,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         // Verify using DOM
@@ -1121,7 +1121,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_c14nExcl_InclusiveNamespaces.getNamespaceURI(), XMLSecurityConstants.TAG_c14nExcl_InclusiveNamespaces.getLocalPart());
@@ -1172,7 +1172,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         // Verify using DOM
@@ -1227,7 +1227,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         // Verify using DOM
@@ -1273,7 +1273,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         // Verify using DOM
@@ -1319,7 +1319,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         // Verify using DOM
@@ -1369,7 +1369,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         // Verify using DOM
@@ -1417,7 +1417,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         // Verify using DOM
@@ -1465,7 +1465,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         // Verify using DOM
@@ -1513,7 +1513,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.parse(is, false);
         }
 
         NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_KeyName.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_KeyName.getLocalPart());
@@ -1564,7 +1564,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         //System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document =
-                XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
+                XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
 
         NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_KeyName.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_KeyName.getLocalPart());
         assertEquals(1, nodeList.getLength());
@@ -1619,7 +1619,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         //System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document =
-                XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
+                XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
 
         NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_KeyName.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_KeyName.getLocalPart());
         assertEquals(1, nodeList.getLength());

@@ -233,7 +233,7 @@ public class Canonicalizer20010315ExclusiveTest {
      */
     @org.junit.Test
     public void test24Aexcl() throws Exception {
-        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
+        Document doc = XMLUtils.newDocument(false);
         Element local = doc.createElementNS("foo:bar", "dsig:local");
         Element test = doc.createElementNS("http://example.net", "etsi:test");
         Element elem2 = doc.createElementNS("http://example.net", "etsi:elem2");

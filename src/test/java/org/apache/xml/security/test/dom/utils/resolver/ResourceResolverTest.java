@@ -49,7 +49,7 @@ public class ResourceResolverTest {
         String className =
             "org.apache.xml.security.test.dom.utils.resolver.OfflineResolver";
         ResourceResolver.registerAtStart(className);
-        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
+        Document doc = XMLUtils.newDocument(false);
         Attr uriAttr = doc.createAttribute("URI");
         uriAttr.setValue("http://www.apache.org");
         ResourceResolver res =
@@ -73,7 +73,7 @@ public class ResourceResolverTest {
 
     @org.junit.Test
     public void testLocalFileWithEmptyBaseURI() throws Exception {
-        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
+        Document doc = XMLUtils.newDocument(false);
         Attr uriAttr = doc.createAttribute("URI");
         String basedir = System.getProperty("basedir");
         String file = new File(basedir, "pom.xml").toURI().toString();
