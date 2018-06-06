@@ -318,7 +318,7 @@ public class Canonicalizer20010315Test {
 //      dfactory.setNamespaceAware(true);
 //
 //      DocumentBuilder db = dfactory.newDocumentBuilder();
-//      Document doc = XMLUtils.newDocument(false);
+//      Document doc = db.newDocument();
 //
 //      xpath = XMLUtils.createElementInSignatureSpace(doc, Constants._TAG_XPATH);
 //

@@ -33,7 +33,7 @@ public class XMLX509IssuerSerialTest {
     private Document doc;
 
     public XMLX509IssuerSerialTest() throws Exception {
-        doc = XMLUtils.newDocument(false);
+        doc = XMLUtils.createDocumentBuilder(false).newDocument();
     }
 
     @org.junit.Test

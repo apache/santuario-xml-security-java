@@ -19,7 +19,6 @@
 package org.apache.xml.security.test.dom.interop;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
 import java.util.Iterator;
@@ -61,7 +60,8 @@ public class InteropTestBase {
         String filename, ResourceResolverSpi resolver, boolean followManifests, byte[] hmacKey
     ) throws Exception {
         File f = new File(filename);
-        org.w3c.dom.Document doc = XMLUtils.parse(new FileInputStream(f), false, false);
+        javax.xml.parsers.DocumentBuilder db = XMLUtils.createDocumentBuilder(false, false);
+        org.w3c.dom.Document doc = db.parse(new java.io.FileInputStream(f));
 
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();
@@ -92,7 +92,8 @@ public class InteropTestBase {
                           boolean followManifests, boolean secureValidation)
         throws Exception {
         File f = new File(filename);
-        org.w3c.dom.Document doc = XMLUtils.parse(new FileInputStream(f), false, false);
+        javax.xml.parsers.DocumentBuilder db = XMLUtils.createDocumentBuilder(false, false);
+        org.w3c.dom.Document doc = db.parse(f);
 
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();

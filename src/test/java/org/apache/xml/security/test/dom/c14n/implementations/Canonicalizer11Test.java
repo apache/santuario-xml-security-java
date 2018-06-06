@@ -28,7 +28,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPath;
@@ -42,6 +41,7 @@ import org.apache.xml.security.c14n.InvalidCanonicalizerException;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.utils.IgnoreAllErrorHandler;
 import org.apache.xml.security.utils.JavaUtils;
+import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -357,20 +357,17 @@ public class Canonicalizer11Test {
         ParserConfigurationException, CanonicalizationException,
         InvalidCanonicalizerException, TransformerException, XPathExpressionException {
 
+        DocumentBuilder documentBuilder = XMLUtils.createDocumentBuilder(validating, false);
+
+        // throw away all warnings and errors
+        documentBuilder.setErrorHandler(new IgnoreAllErrorHandler());
+
         // org.xml.sax.EntityResolver resolver = new TestVectorResolver();
         // documentBuilder.setEntityResolver(resolver);
         // Document doc = documentBuilder.parse(resolver.resolveEntity(null, fileIn));
 
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        dbf.setNamespaceAware(true);
-        dbf.setFeature(javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING, true);
-        dbf.setValidating(validating);
-
-        DocumentBuilder documentBuilder = dbf.newDocumentBuilder();
-
-        // throw away all warnings and errors
-        documentBuilder.setErrorHandler(new IgnoreAllErrorHandler());
         Document doc = documentBuilder.parse(fileIn);
+
 
         Canonicalizer c14n = Canonicalizer.getInstance(c14nURI);
         byte c14nBytes[] = null;

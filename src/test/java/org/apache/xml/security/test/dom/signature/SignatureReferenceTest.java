@@ -28,6 +28,7 @@ import java.security.PublicKey;
 import java.util.Enumeration;
 
 import javax.xml.crypto.dsig.DigestMethod;
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
@@ -95,7 +96,8 @@ public class SignatureReferenceTest {
     // See SANTUARIO-465
     @org.junit.Test
     public void testNoReferenceChildren() throws ParserConfigurationException, XMLSecurityException {
-        Document doc = XMLUtils.newDocument(true, false);
+        DocumentBuilder db = XMLUtils.createDocumentBuilder(true);
+        Document doc = db.newDocument();
         Element referenceElement = doc.createElementNS(Constants.SignatureSpecNS, "Reference");
         referenceElement.setAttributeNS(null, "URI", "#_12345");
 
@@ -166,7 +168,8 @@ public class SignatureReferenceTest {
     }
 
     private Document getOriginalDocument() throws Throwable {
-        Document doc = XMLUtils.newDocument(false);
+        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+        Document doc = db.newDocument();
 
         Element rootElement = doc.createElementNS("http://ns.example.org/", "root");
         rootElement.appendChild(doc.createTextNode("Hello World!"));

@@ -139,7 +139,8 @@ public class PreCalculatedDigestSignatureTest {
     }
 
     private XMLSignature createXmlSignature() throws ParserConfigurationException, XMLSecurityException {
-        Document signatureDocument = XMLUtils.newDocument(false);
+        DocumentBuilder documentBuilder = createDocumentBuilder();
+        Document signatureDocument = documentBuilder.newDocument();
         Element root = createSignatureRoot(signatureDocument);
 
         String baseURI = "";

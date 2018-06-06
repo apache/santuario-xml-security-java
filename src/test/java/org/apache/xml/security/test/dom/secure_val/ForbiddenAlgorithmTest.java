@@ -21,7 +21,6 @@ package org.apache.xml.security.test.dom.secure_val;
 import static org.junit.Assert.*;
 
 import java.io.File;
-import java.io.FileInputStream;
 
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
@@ -74,7 +73,8 @@ public class ForbiddenAlgorithmTest extends InteropTestBase {
 
         File f = new File(directory + "/" + file);
 
-        org.w3c.dom.Document doc = XMLUtils.parse(new FileInputStream(f), false, false);
+        javax.xml.parsers.DocumentBuilder db = XMLUtils.createDocumentBuilder(false, false);
+        org.w3c.dom.Document doc = db.parse(f);
 
         Element sigElement =
             (Element) doc.getElementsByTagNameNS(Constants.SignatureSpecNS,

@@ -134,7 +134,7 @@ public class DetachedTest {
 
             // Create an XMLSignContext and set the
             // DSA PrivateKey for signing
-            Document doc = XMLUtils.newDocument(false);
+            Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
             DOMSignContext signContext = new DOMSignContext(kp.getPrivate(), doc);
             signContext.putNamespacePrefix(XMLSignature.XMLNS, "ds");
 

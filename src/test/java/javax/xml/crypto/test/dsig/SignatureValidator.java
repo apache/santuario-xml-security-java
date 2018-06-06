@@ -52,7 +52,7 @@ public class SignatureValidator {
 
     public DOMValidateContext getValidateContext(String fn, KeySelector ks)
         throws Exception {
-        Document doc = XMLUtils.parse(new FileInputStream(new File(dir, fn)), false, false);
+        Document doc = XMLUtils.createDocumentBuilder(false, false).parse(new File(dir, fn));
         Element sigElement = getSignatureElement(doc);
         if (sigElement == null) {
             throw new Exception("Couldn't find signature Element");

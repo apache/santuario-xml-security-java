@@ -23,6 +23,8 @@ import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
 
+import javax.xml.parsers.DocumentBuilder;
+
 import org.apache.xml.security.keys.content.DEREncodedKeyValue;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.JavaUtils;
@@ -37,6 +39,8 @@ public class DEREncodedKeyValueTest extends Assert {
     private static final String BASEDIR = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
     private static final String SEP = System.getProperty("file.separator");
 
+    private DocumentBuilder documentBuilder;
+
     private PublicKey rsaKeyControl;
     private PublicKey dsaKeyControl;
     private PublicKey ecKeyControl;
@@ -44,6 +48,8 @@ public class DEREncodedKeyValueTest extends Assert {
     private final String idControl = "abc123";
 
     public DEREncodedKeyValueTest() throws Exception {
+        documentBuilder = XMLUtils.createDocumentBuilder(false);
+
         rsaKeyControl = loadPublicKey("rsa.key", "RSA");
         dsaKeyControl = loadPublicKey("dsa.key", "DSA");
         ecKeyControl = loadPublicKey("ec.key", "EC");
@@ -51,7 +57,7 @@ public class DEREncodedKeyValueTest extends Assert {
 
     @org.junit.Test
     public void testSchema() throws Exception {
-        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(XMLUtils.newDocument(false), rsaKeyControl);
+        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(documentBuilder.newDocument(), rsaKeyControl);
         Element element = derEncodedKeyValue.getElement();
 
         assertEquals("http://www.w3.org/2009/xmldsig11#", element.getNamespaceURI());
@@ -96,28 +102,28 @@ public class DEREncodedKeyValueTest extends Assert {
 
     @org.junit.Test
     public void testRSAPublicKeyFromKey() throws Exception {
-        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(XMLUtils.newDocument(false), rsaKeyControl);
+        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(documentBuilder.newDocument(), rsaKeyControl);
         assertEquals(rsaKeyControl, derEncodedKeyValue.getPublicKey());
         assertArrayEquals(rsaKeyControl.getEncoded(), derEncodedKeyValue.getBytesFromTextChild());
     }
 
     @org.junit.Test
     public void testDSAPublicKeyFromKey() throws Exception {
-        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(XMLUtils.newDocument(false), dsaKeyControl);
+        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(documentBuilder.newDocument(), dsaKeyControl);
         assertEquals(dsaKeyControl, derEncodedKeyValue.getPublicKey());
         assertArrayEquals(dsaKeyControl.getEncoded(), derEncodedKeyValue.getBytesFromTextChild());
     }
 
     @org.junit.Test
     public void testECPublicKeyFromKey() throws Exception {
-        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(XMLUtils.newDocument(false), ecKeyControl);
+        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(documentBuilder.newDocument(), ecKeyControl);
         assertEquals(ecKeyControl, derEncodedKeyValue.getPublicKey());
         assertArrayEquals(ecKeyControl.getEncoded(), derEncodedKeyValue.getBytesFromTextChild());
     }
 
     @org.junit.Test
     public void testId() throws Exception {
-        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(XMLUtils.newDocument(false), rsaKeyControl);
+        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(documentBuilder.newDocument(), rsaKeyControl);
         assertEquals("", derEncodedKeyValue.getId());
         assertNull(derEncodedKeyValue.getElement().getAttributeNodeNS(null, Constants._ATT_ID));
 
@@ -140,7 +146,7 @@ public class DEREncodedKeyValueTest extends Assert {
     }
 
     private Document loadXML(String fileName) throws Exception {
-        return XMLUtils.parse(new FileInputStream(getControlFilePath(fileName)), false);
+        return documentBuilder.parse(new FileInputStream(getControlFilePath(fileName)));
     }
 
     private PublicKey loadPublicKey(String filePath, String algorithm) throws Exception {

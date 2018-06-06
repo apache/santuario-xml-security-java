@@ -38,6 +38,7 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.*;
 
 import javax.xml.crypto.test.KeySelectors;
+import javax.xml.parsers.DocumentBuilder;
 
 /**
  * Test that recreates interop exc C14N test vectors
@@ -48,6 +49,7 @@ public class CreateInteropExcC14NTest {
 
     private XMLSignatureFactory fac;
     private KeyInfoFactory kifac;
+    private DocumentBuilder db;
     private KeyStore ks;
     private Key signingKey;
     private PublicKey validatingKey;
@@ -61,6 +63,7 @@ public class CreateInteropExcC14NTest {
         fac = XMLSignatureFactory.getInstance
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
         kifac = fac.getKeyInfoFactory();
+        db = XMLUtils.createDocumentBuilder(false);
 
         // get key & self-signed certificate from keystore
         String base = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
@@ -135,7 +138,7 @@ public class CreateInteropExcC14NTest {
         KeyInfo ki = kifac.newKeyInfo(kits);
 
         // create Objects
-        Document doc = XMLUtils.newDocument(false);
+        Document doc = db.newDocument();
         Element baz = doc.createElementNS("urn:bar", "bar:Baz");
         Comment com = doc.createComment(" comment ");
         baz.appendChild(com);

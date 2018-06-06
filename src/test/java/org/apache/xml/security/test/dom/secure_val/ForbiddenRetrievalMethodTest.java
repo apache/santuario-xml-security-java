@@ -22,6 +22,8 @@ import static org.junit.Assert.assertNull;
 
 import java.io.FileInputStream;
 
+import javax.xml.parsers.DocumentBuilder;
+
 import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
@@ -50,7 +52,8 @@ public class ForbiddenRetrievalMethodTest {
             fis = new FileInputStream(filename);
         }
 
-        Document doc = XMLUtils.parse(fis, false);
+        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+        Document doc = db.parse(fis);
 
         KeyInfo keyInfo = new KeyInfo(doc.getDocumentElement(), null);
         keyInfo.setSecureValidation(true);

@@ -99,7 +99,7 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.parse(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         // Verify using DOM
@@ -150,7 +150,7 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.parse(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         // Verify using DOM
@@ -207,7 +207,7 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
 
             Document document = null;
             try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-                document = XMLUtils.parse(is, false);
+                document = XMLUtils.createDocumentBuilder(false).parse(is);
             }
 
             // Verify using DOM
@@ -254,7 +254,7 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.parse(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("http://www.w3.org/2000/09/xmldsig#", "Reference");

@@ -22,6 +22,8 @@ import static org.junit.Assert.*;
 
 import java.util.Iterator;
 
+import javax.xml.parsers.DocumentBuilder;
+
 import org.apache.xml.security.encryption.Reference;
 import org.apache.xml.security.encryption.ReferenceList;
 import org.apache.xml.security.encryption.XMLCipher;
@@ -35,13 +37,16 @@ public class ReferenceListTest {
     static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(ReferenceListTest.class);
 
+    private DocumentBuilder db;
+
     public ReferenceListTest() throws Exception {
         org.apache.xml.security.Init.init();
+        db = XMLUtils.createDocumentBuilder(false);
     }
 
     @org.junit.Test
     public void testReferenceList() throws Exception {
-        Document doc = XMLUtils.newDocument(false);
+        Document doc = db.newDocument();
 
         XMLCipher dataCipher = XMLCipher.getInstance();
         dataCipher.init(XMLCipher.DECRYPT_MODE, null);

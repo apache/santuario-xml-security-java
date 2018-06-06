@@ -33,6 +33,7 @@ import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -90,7 +91,8 @@ public class BaltimoreEncTest {
         }
         File f = new File(filename);
 
-        Document doc = XMLUtils.parse(new java.io.FileInputStream(f), false);
+        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+        Document doc = db.parse(new java.io.FileInputStream(f));
 
         cardNumber = retrieveCCNumber(doc);
 
@@ -390,7 +392,8 @@ public class BaltimoreEncTest {
         }
         File f = new File(filename);
 
-        Document doc = XMLUtils.parse(new java.io.FileInputStream(f), false);
+        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+        Document doc = db.parse(new java.io.FileInputStream(f));
 
         // Now we have the document, lets build the XMLCipher element
         Element ee = null;
@@ -429,7 +432,8 @@ public class BaltimoreEncTest {
         }
         File f = new File(filename);
 
-        Document doc = XMLUtils.parse(new java.io.FileInputStream(f), false);
+        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+        Document doc = db.parse(new java.io.FileInputStream(f));
 
         // Now we have the document, lets build the XMLCipher element
         Element ee = null;

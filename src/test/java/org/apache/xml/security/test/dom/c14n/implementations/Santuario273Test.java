@@ -23,6 +23,7 @@ import static org.junit.Assert.assertEquals;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
@@ -78,9 +79,12 @@ public class Santuario273Test {
 
     @org.junit.Test
     public void testC14n11Base() throws Exception {
+        DocumentBuilder documentBuilder = XMLUtils.createDocumentBuilder(true);
+
+        documentBuilder.setErrorHandler(new org.apache.xml.security.utils.IgnoreAllErrorHandler());
         Document doc = null;
         try (InputStream is = new ByteArrayInputStream(input.getBytes())) {
-            doc = XMLUtils.parse(is, true, true, true);
+            doc = documentBuilder.parse(is);
         }
 
         Canonicalizer c14n =

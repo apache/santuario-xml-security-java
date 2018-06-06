@@ -310,7 +310,7 @@ public class XMLSignatureTest {
         File f = new File(base + "/src/test/resources/javax/xml/crypto/dsig/" +
             "signature-enveloping-rsa-template.xml");
 
-        Document doc = XMLUtils.parse(new FileInputStream(f), false);
+        Document doc = XMLUtils.createDocumentBuilder(false).parse(new FileInputStream(f));
 
         // Find Signature element
         NodeList nl =
@@ -386,7 +386,7 @@ public class XMLSignatureTest {
         SignatureMethod sm = fac.newSignatureMethod(DSA_SHA256, null);
         SignedInfo si = createSignedInfo(sm);
         KeyInfo ki = kifac.newKeyInfo(Collections.singletonList
-            (kifac.newKeyValue(TestUtils.getPublicKey("DSA", 2048))));
+            (kifac.newKeyValue((PublicKey)TestUtils.getPublicKey("DSA", 2048))));
         XMLSignature sig = fac.newXMLSignature(si, ki, objs, id, sigValueId);
         Document doc = TestUtils.newDocument();
         XMLSignContext signContext =

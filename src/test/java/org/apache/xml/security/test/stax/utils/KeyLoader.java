@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.test.stax.utils;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.FileInputStream;
 import java.security.KeyFactory;
 import java.security.PublicKey;
@@ -31,6 +33,16 @@ import org.apache.xml.security.utils.XMLUtils;
 public class KeyLoader {
     private static final String BASEDIR = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
     private static final String SEP = System.getProperty("file.separator");
+
+    private static DocumentBuilder documentBuilder;
+
+    static {
+        try {
+            documentBuilder = XMLUtils.createDocumentBuilder(false);
+        } catch (ParserConfigurationException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     private static String getControlFilePath(String fileName) {
         return BASEDIR + SEP + "src" + SEP + "test" + SEP + "resources" +
@@ -48,7 +60,7 @@ public class KeyLoader {
     }
 
     public static Document loadXML(String fileName) throws Exception {
-        return XMLUtils.parse(new FileInputStream(getControlFilePath(fileName)), false);
+        return documentBuilder.parse(new FileInputStream(getControlFilePath(fileName)));
     }
 
 }

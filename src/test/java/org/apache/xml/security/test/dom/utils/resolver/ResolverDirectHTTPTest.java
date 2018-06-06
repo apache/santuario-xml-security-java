@@ -49,7 +49,7 @@ public class ResolverDirectHTTPTest extends Assert {
 
     @Test
     public void testBug40783() throws Exception {
-        Document doc = XMLUtils.newDocument(false);
+        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
         Attr uri = doc.createAttribute("id");
         uri.setNodeValue("urn:ddd:uuu");
         doc.createElement("test").setAttributeNode(uri);
@@ -64,7 +64,7 @@ public class ResolverDirectHTTPTest extends Assert {
     @Test
     @Ignore
     public void testProxyAuth() throws Exception {
-        Document doc = XMLUtils.newDocument(false);
+        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
         Attr uri = doc.createAttribute("URI");
         uri.setNodeValue(url);
 
@@ -81,7 +81,7 @@ public class ResolverDirectHTTPTest extends Assert {
     @Test
     @Ignore
     public void testProxyAuthWithWrongPassword() throws Exception {
-        Document doc = XMLUtils.newDocument(false);
+        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
         Attr uri = doc.createAttribute("URI");
         uri.setNodeValue(url);
 
@@ -103,7 +103,7 @@ public class ResolverDirectHTTPTest extends Assert {
     @Test
     @Ignore
     public void testServerAuth() throws Exception {
-        Document doc = XMLUtils.newDocument(false);
+        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
         Attr uri = doc.createAttribute("URI");
         uri.setNodeValue(url);
 
@@ -118,7 +118,7 @@ public class ResolverDirectHTTPTest extends Assert {
     @Test
     @Ignore
     public void testServerAuthWithWrongPassword() throws Exception {
-        Document doc = XMLUtils.newDocument(false);
+        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
         Attr uri = doc.createAttribute("URI");
         uri.setNodeValue(url);
 
@@ -138,7 +138,7 @@ public class ResolverDirectHTTPTest extends Assert {
     @Test
     @Ignore
     public void testProxyAndServerAuth() throws Exception {
-        Document doc = XMLUtils.newDocument(false);
+        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
         Attr uri = doc.createAttribute("URI");
         uri.setNodeValue(url);
 

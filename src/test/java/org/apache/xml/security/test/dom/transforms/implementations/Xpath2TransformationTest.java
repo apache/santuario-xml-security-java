@@ -129,9 +129,10 @@ public class Xpath2TransformationTest {
         "      </edoc:ObjectContent>\n" +
         "   </edoc:Object>";
 
+        javax.xml.parsers.DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
         org.w3c.dom.Document doc = null;
         try (ByteArrayInputStream is = new ByteArrayInputStream(sig.getBytes())) {
-            doc = XMLUtils.parse(is, false);
+            doc = db.parse(is);
         }
         Element sigElement =
             (Element) doc.getElementsByTagNameNS(

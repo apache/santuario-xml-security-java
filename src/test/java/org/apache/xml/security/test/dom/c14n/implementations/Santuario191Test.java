@@ -25,6 +25,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
+import javax.xml.parsers.DocumentBuilder;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.apache.xml.security.c14n.implementations.Canonicalizer11_OmitComments;
@@ -53,6 +55,8 @@ public class Santuario191Test {
       + "    <user2>Bob</user2>"
       + "</data>";
 
+    private DocumentBuilder db;
+
     static {
         org.apache.xml.security.Init.init();
     }
@@ -62,9 +66,10 @@ public class Santuario191Test {
         //
         // Parse the Data
         //
+        db = XMLUtils.createDocumentBuilder(false);
         Document doc = null;
         try (InputStream is = new ByteArrayInputStream(INPUT_DATA.getBytes(StandardCharsets.UTF_8))) {
-            doc = XMLUtils.parse(is, false);
+            doc = db.parse(is);
         }
 
         //

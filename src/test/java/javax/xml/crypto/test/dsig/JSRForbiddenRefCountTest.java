@@ -21,7 +21,6 @@ package javax.xml.crypto.test.dsig;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.security.Security;
 
 import javax.xml.crypto.MarshalException;
@@ -73,7 +72,8 @@ public class JSRForbiddenRefCountTest {
 
         File f = new File(directory + "/" + file);
 
-        org.w3c.dom.Document doc = XMLUtils.parse(new FileInputStream(f), false);
+        javax.xml.parsers.DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+        org.w3c.dom.Document doc = db.parse(f);
 
         return (Element) doc.getElementsByTagNameNS(Constants.SignatureSpecNS,
                                                  Constants._TAG_SIGNEDINFO).item(0);

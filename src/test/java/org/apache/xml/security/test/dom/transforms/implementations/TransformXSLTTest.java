@@ -88,7 +88,7 @@ public class TransformXSLTTest {
 
     private static Document getDocument(File file)
         throws ParserConfigurationException, SAXException, IOException {
-        return XMLUtils.parse(new FileInputStream(file), false);
+        return XMLUtils.createDocumentBuilder(false).parse(new FileInputStream(file));
     }
 
 }
