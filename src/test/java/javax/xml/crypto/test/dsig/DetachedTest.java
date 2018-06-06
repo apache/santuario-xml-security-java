@@ -133,7 +133,7 @@ public class DetachedTest extends org.junit.Assert {
 
             // Create an XMLSignContext and set the
             // DSA PrivateKey for signing
-            Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
+            Document doc = XMLUtils.newDocument(false);
             DOMSignContext signContext = new DOMSignContext(kp.getPrivate(), doc);
             signContext.putNamespacePrefix(XMLSignature.XMLNS, "ds");
 

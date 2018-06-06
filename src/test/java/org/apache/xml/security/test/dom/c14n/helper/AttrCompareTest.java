@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.test.dom.c14n.helper;
 
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.xml.security.c14n.helper.AttrCompare;
@@ -217,9 +216,7 @@ public class AttrCompareTest extends org.junit.Assert {
     private static Document createDoc(
         String documentElement
     ) throws ParserConfigurationException {
-        DocumentBuilder documentBuilder = XMLUtils.createDocumentBuilder(false);
-
-        Document doc = documentBuilder.newDocument();
+        Document doc = XMLUtils.newDocument(false);
         Element root = doc.createElementNS(null, documentElement);
 
         doc.appendChild(root);

@@ -49,7 +49,7 @@ public class ResolverDirectHTTPTest extends Assert {
 
     @Test
     public void testBug40783() throws Exception {
-        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
+        Document doc = XMLUtils.newDocument(false);
         Attr uri = doc.createAttribute("id");
         uri.setNodeValue("urn:ddd:uuu");
         doc.createElement("test").setAttributeNode(uri);
@@ -64,7 +64,7 @@ public class ResolverDirectHTTPTest extends Assert {
     @Test
     @Ignore
     public void testProxyAuth() throws Exception {
-        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
+        Document doc = XMLUtils.newDocument(false);
         Attr uri = doc.createAttribute("URI");
         uri.setNodeValue(url);
 
@@ -73,7 +73,7 @@ public class ResolverDirectHTTPTest extends Assert {
         resolverDirectHTTP.engineSetProperty("http.proxy.port", proxyPort);
         resolverDirectHTTP.engineSetProperty("http.proxy.username", proxyUsername);
         resolverDirectHTTP.engineSetProperty("http.proxy.password", proxyPassword);
-        ResourceResolverContext context = 
+        ResourceResolverContext context =
             new ResourceResolverContext(uri, url, true);
         resolverDirectHTTP.engineResolveURI(context);
     }
@@ -81,7 +81,7 @@ public class ResolverDirectHTTPTest extends Assert {
     @Test
     @Ignore
     public void testProxyAuthWithWrongPassword() throws Exception {
-        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
+        Document doc = XMLUtils.newDocument(false);
         Attr uri = doc.createAttribute("URI");
         uri.setNodeValue(url);
 
@@ -90,7 +90,7 @@ public class ResolverDirectHTTPTest extends Assert {
         resolverDirectHTTP.engineSetProperty("http.proxy.port", proxyPort);
         resolverDirectHTTP.engineSetProperty("http.proxy.username", proxyUsername);
         resolverDirectHTTP.engineSetProperty("http.proxy.password", "wrongPassword");
-        ResourceResolverContext context = 
+        ResourceResolverContext context =
             new ResourceResolverContext(uri, url, true);
         try {
             resolverDirectHTTP.engineResolveURI(context);
@@ -103,14 +103,14 @@ public class ResolverDirectHTTPTest extends Assert {
     @Test
     @Ignore
     public void testServerAuth() throws Exception {
-        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
+        Document doc = XMLUtils.newDocument(false);
         Attr uri = doc.createAttribute("URI");
         uri.setNodeValue(url);
 
         ResolverDirectHTTP resolverDirectHTTP = new ResolverDirectHTTP();
         resolverDirectHTTP.engineSetProperty("http.basic.username", serverUsername);
         resolverDirectHTTP.engineSetProperty("http.basic.password", serverPassword);
-        ResourceResolverContext context = 
+        ResourceResolverContext context =
             new ResourceResolverContext(uri, url, true);
         resolverDirectHTTP.engineResolveURI(context);
     }
@@ -118,14 +118,14 @@ public class ResolverDirectHTTPTest extends Assert {
     @Test
     @Ignore
     public void testServerAuthWithWrongPassword() throws Exception {
-        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
+        Document doc = XMLUtils.newDocument(false);
         Attr uri = doc.createAttribute("URI");
         uri.setNodeValue(url);
 
         ResolverDirectHTTP resolverDirectHTTP = new ResolverDirectHTTP();
         resolverDirectHTTP.engineSetProperty("http.basic.username", serverUsername);
         resolverDirectHTTP.engineSetProperty("http.basic.password", "wrongPassword");
-        ResourceResolverContext context = 
+        ResourceResolverContext context =
             new ResourceResolverContext(uri, url, true);
         try {
             resolverDirectHTTP.engineResolveURI(context);
@@ -138,7 +138,7 @@ public class ResolverDirectHTTPTest extends Assert {
     @Test
     @Ignore
     public void testProxyAndServerAuth() throws Exception {
-        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
+        Document doc = XMLUtils.newDocument(false);
         Attr uri = doc.createAttribute("URI");
         uri.setNodeValue(url);
 
@@ -149,7 +149,7 @@ public class ResolverDirectHTTPTest extends Assert {
         resolverDirectHTTP.engineSetProperty("http.proxy.password", proxyPassword);
         resolverDirectHTTP.engineSetProperty("http.basic.username", serverUsername);
         resolverDirectHTTP.engineSetProperty("http.basic.password", serverPassword);
-        ResourceResolverContext context = 
+        ResourceResolverContext context =
             new ResourceResolverContext(uri, url, true);
         resolverDirectHTTP.engineResolveURI(context);
     }

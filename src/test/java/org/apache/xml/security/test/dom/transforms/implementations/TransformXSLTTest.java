@@ -88,7 +88,7 @@ public class TransformXSLTTest extends org.junit.Assert {
 
     private static Document getDocument(File file)
         throws ParserConfigurationException, SAXException, IOException {
-        return XMLUtils.createDocumentBuilder(false).parse(new FileInputStream(file));
+        return XMLUtils.parse(new FileInputStream(file), false);
     }
 
 }

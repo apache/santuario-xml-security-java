@@ -24,7 +24,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.cert.X509Certificate;
 
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
@@ -63,9 +62,8 @@ public class ProcessingInstructionTest extends org.junit.Assert {
     @org.junit.Test
     public void testProcessingInstruction() throws Exception {
         String signatureFileName = dir + "upp_sign.xml";
-        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
         File f = new File(signatureFileName);
-        Document doc = db.parse(new FileInputStream(f));
+        Document doc = XMLUtils.parse(new FileInputStream(f), false);
 
         Node obj =
             doc.getElementsByTagNameNS("http://uri.etsi.org/01903/v1.3.2#", "QualifyingProperties").item(0);

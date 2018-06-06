@@ -28,7 +28,6 @@ import java.util.List;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
@@ -87,8 +86,7 @@ public class SymmetricEncryptionAlgorithmTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
@@ -120,8 +118,7 @@ public class SymmetricEncryptionAlgorithmTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
@@ -153,8 +150,7 @@ public class SymmetricEncryptionAlgorithmTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
@@ -186,8 +182,7 @@ public class SymmetricEncryptionAlgorithmTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
@@ -219,8 +214,7 @@ public class SymmetricEncryptionAlgorithmTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
@@ -252,8 +246,7 @@ public class SymmetricEncryptionAlgorithmTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
@@ -285,8 +278,7 @@ public class SymmetricEncryptionAlgorithmTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("DESede");
@@ -320,8 +312,7 @@ public class SymmetricEncryptionAlgorithmTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("SEED");
@@ -356,8 +347,7 @@ public class SymmetricEncryptionAlgorithmTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("Camellia");
@@ -392,8 +382,7 @@ public class SymmetricEncryptionAlgorithmTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("Camellia");
@@ -428,8 +417,7 @@ public class SymmetricEncryptionAlgorithmTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("Camellia");

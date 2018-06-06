@@ -44,7 +44,6 @@ import javax.xml.crypto.dsig.dom.DOMSignContext;
 import javax.xml.crypto.dsig.dom.DOMValidateContext;
 import javax.xml.crypto.dsig.keyinfo.*;
 import javax.xml.crypto.dsig.spec.*;
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -64,7 +63,6 @@ public class CreateBaltimore23Test extends org.junit.Assert {
 
     private XMLSignatureFactory fac;
     private KeyInfoFactory kifac;
-    private DocumentBuilder db;
     private CanonicalizationMethod withoutComments;
     private Transform withComments;
     private SignatureMethod dsaSha1, rsaSha1;
@@ -87,7 +85,6 @@ public class CreateBaltimore23Test extends org.junit.Assert {
         fac = XMLSignatureFactory.getInstance
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
         kifac = fac.getKeyInfoFactory();
-        db = XMLUtils.createDocumentBuilder(false);
 
         // get key & self-signed certificate from keystore
         String fs = System.getProperty("file.separator");
@@ -133,7 +130,7 @@ public class CreateBaltimore23Test extends org.junit.Assert {
         // create XMLSignature
         XMLSignature sig = fac.newXMLSignature(si, dsa);
 
-        Document doc = db.newDocument();
+        Document doc = XMLUtils.newDocument(false);
         Element envelope = doc.createElementNS
             ("http://example.org/envelope", "Envelope");
         envelope.setAttributeNS
@@ -432,7 +429,7 @@ public class CreateBaltimore23Test extends org.junit.Assert {
             (Transform.XPATH, xpf)));
         KeyInfo ki = kifac.newKeyInfo(Collections.singletonList(rm), null);
 
-        Document doc = db.newDocument();
+        Document doc = XMLUtils.newDocument(false);
 
         // create objects
         List<XMLObject> objs = new ArrayList<XMLObject>();
@@ -493,7 +490,7 @@ public class CreateBaltimore23Test extends org.junit.Assert {
           + "    </html>\n"
           + "  </xsl:template>\n"
           + "</xsl:stylesheet>\n";
-        Document docxslt = db.parse(new ByteArrayInputStream(xslt.getBytes()));
+        Document docxslt = XMLUtils.parse(new ByteArrayInputStream(xslt.getBytes()), false);
         Node xslElem = docxslt.getDocumentElement();
 
         manTrans.add(fac.newTransform(Transform.XSLT,
@@ -594,8 +591,7 @@ public class CreateBaltimore23Test extends org.junit.Assert {
 
         // read document back into DOM tree
         try {
-            doc = XMLUtils.createDocumentBuilder(false).parse
-                (new InputSource(new StringReader(sw.toString())));
+            doc = XMLUtils.parse(new InputSource(new StringReader(sw.toString())), false);
         } catch (SAXParseException spe) {
             System.err.println("line:" + spe.getLineNumber());
             System.err.println("xml:" + sw.toString());
@@ -655,7 +651,7 @@ public class CreateBaltimore23Test extends org.junit.Assert {
         SignedInfo si = fac.newSignedInfo(withoutComments, sm,
             Collections.singletonList(ref));
 
-        Document doc = db.newDocument();
+        Document doc = XMLUtils.newDocument(false);
 
         // create XMLSignature
         XMLSignature sig = fac.newXMLSignature(si, ki);
@@ -708,7 +704,7 @@ public class CreateBaltimore23Test extends org.junit.Assert {
         SignedInfo si = fac.newSignedInfo(withoutComments, sm,
             Collections.singletonList(ref));
 
-        Document doc = db.newDocument();
+        Document doc = XMLUtils.newDocument(false);
         // create Objects
         XMLObject obj = fac.newXMLObject(Collections.singletonList
             (new DOMStructure(doc.createTextNode("some text"))),

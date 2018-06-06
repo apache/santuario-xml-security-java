@@ -25,8 +25,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.xml.parsers.DocumentBuilder;
-
 import org.apache.xml.security.c14n.implementations.Canonicalizer11_OmitComments;
 import org.apache.xml.security.c14n.implementations.Canonicalizer11_WithComments;
 import org.apache.xml.security.c14n.implementations.Canonicalizer20010315ExclOmitComments;
@@ -256,7 +254,6 @@ public class Canonicalizer {
         InputSource in = new InputSource(bais);
 
         // needs to validate for ID attribute normalization
-        DocumentBuilder db = XMLUtils.createDocumentBuilder(true, secureValidation);
 
         /*
          * for some of the test vectors from the specification,
@@ -279,9 +276,8 @@ public class Canonicalizer {
          * though the document type declaration is not retained in the
          * canonical form.
          */
-        db.setErrorHandler(new org.apache.xml.security.utils.IgnoreAllErrorHandler());
 
-        Document document = db.parse(in);
+        Document document = XMLUtils.parse(in, true, secureValidation, true);
         return this.canonicalizeSubtree(document);
     }
 

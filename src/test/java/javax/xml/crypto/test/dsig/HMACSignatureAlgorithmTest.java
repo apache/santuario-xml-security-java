@@ -39,7 +39,6 @@ import javax.xml.crypto.dsig.dom.DOMValidateContext;
 import javax.xml.crypto.dsig.keyinfo.KeyInfo;
 import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 import javax.xml.crypto.test.KeySelectors;
-import javax.xml.parsers.DocumentBuilder;
 
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
@@ -57,7 +56,6 @@ public class HMACSignatureAlgorithmTest extends org.junit.Assert {
     private DigestMethod sha1;
     private SignatureMethod hmacSha1, hmacSha224, hmacSha256, hmacSha384, hmacSha512, ripemd160;
     private XMLSignatureFactory fac;
-    private DocumentBuilder db;
 
     static {
         Security.insertProviderAt
@@ -88,7 +86,6 @@ public class HMACSignatureAlgorithmTest extends org.junit.Assert {
 
     public HMACSignatureAlgorithmTest() throws Exception {
 
-        db = XMLUtils.createDocumentBuilder(false);
         // create common objects
         fac = XMLSignatureFactory.getInstance("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
         withoutComments = fac.newCanonicalizationMethod
@@ -163,7 +160,7 @@ public class HMACSignatureAlgorithmTest extends org.junit.Assert {
         SignedInfo si = fac.newSignedInfo(withoutComments, sm,
                                           Collections.singletonList(ref));
 
-        Document doc = db.newDocument();
+        Document doc = XMLUtils.newDocument(false);
         // create Objects
         Element webElem = doc.createElementNS(null, "Web");
         Text text = doc.createTextNode("up up and away");

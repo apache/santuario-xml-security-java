@@ -26,8 +26,6 @@ import java.security.PublicKey;
 import java.security.Security;
 import java.security.spec.X509EncodedKeySpec;
 
-import javax.xml.parsers.DocumentBuilder;
-
 import org.apache.xml.security.keys.content.DEREncodedKeyValue;
 import org.apache.xml.security.utils.Base64;
 import org.apache.xml.security.utils.Constants;
@@ -43,8 +41,6 @@ public class DEREncodedKeyValueTest extends Assert {
     private static final String BASEDIR = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
     private static final String SEP = System.getProperty("file.separator");
 
-    private DocumentBuilder documentBuilder;
-
     private PublicKey rsaKeyControl;
     private PublicKey dsaKeyControl;
     private PublicKey ecKeyControl;
@@ -52,7 +48,6 @@ public class DEREncodedKeyValueTest extends Assert {
     private final String idControl = "abc123";
 
     public DEREncodedKeyValueTest() throws Exception {
-        documentBuilder = XMLUtils.createDocumentBuilder(false);
 
         //
         // If the BouncyCastle provider is not installed, then try to load it
@@ -84,7 +79,7 @@ public class DEREncodedKeyValueTest extends Assert {
 
     @org.junit.Test
     public void testSchema() throws Exception {
-        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(documentBuilder.newDocument(), rsaKeyControl);
+        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(XMLUtils.newDocument(false), rsaKeyControl);
         Element element = derEncodedKeyValue.getElement();
 
         assertEquals("http://www.w3.org/2009/xmldsig11#", element.getNamespaceURI());
@@ -133,14 +128,14 @@ public class DEREncodedKeyValueTest extends Assert {
 
     @org.junit.Test
     public void testRSAPublicKeyFromKey() throws Exception {
-        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(documentBuilder.newDocument(), rsaKeyControl);
+        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(XMLUtils.newDocument(false), rsaKeyControl);
         assertEquals(rsaKeyControl, derEncodedKeyValue.getPublicKey());
         assertArrayEquals(rsaKeyControl.getEncoded(), derEncodedKeyValue.getBytesFromTextChild());
     }
 
     @org.junit.Test
     public void testDSAPublicKeyFromKey() throws Exception {
-        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(documentBuilder.newDocument(), dsaKeyControl);
+        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(XMLUtils.newDocument(false), dsaKeyControl);
         assertEquals(dsaKeyControl, derEncodedKeyValue.getPublicKey());
         assertArrayEquals(dsaKeyControl.getEncoded(), derEncodedKeyValue.getBytesFromTextChild());
     }
@@ -151,14 +146,14 @@ public class DEREncodedKeyValueTest extends Assert {
             return;
         }
 
-        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(documentBuilder.newDocument(), ecKeyControl);
+        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(XMLUtils.newDocument(false), ecKeyControl);
         assertEquals(ecKeyControl, derEncodedKeyValue.getPublicKey());
         assertArrayEquals(ecKeyControl.getEncoded(), derEncodedKeyValue.getBytesFromTextChild());
     }
 
     @org.junit.Test
     public void testId() throws Exception {
-        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(documentBuilder.newDocument(), rsaKeyControl);
+        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(XMLUtils.newDocument(false), rsaKeyControl);
         assertEquals("", derEncodedKeyValue.getId());
         assertNull(derEncodedKeyValue.getElement().getAttributeNodeNS(null, Constants._ATT_ID));
 
@@ -181,7 +176,7 @@ public class DEREncodedKeyValueTest extends Assert {
     }
 
     private Document loadXML(String fileName) throws Exception {
-        return documentBuilder.parse(new FileInputStream(getControlFilePath(fileName)));
+        return XMLUtils.parse(new FileInputStream(getControlFilePath(fileName)), false);
     }
 
     private PublicKey loadPublicKey(String filePath, String algorithm) throws Exception {

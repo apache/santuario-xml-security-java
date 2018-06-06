@@ -110,8 +110,7 @@ public class EncryptionCreationTest extends Assert {
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
-        Document document =
-            XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
+        Document document = XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
         Assert.assertEquals(nodeList.getLength(), 1);
@@ -167,8 +166,7 @@ public class EncryptionCreationTest extends Assert {
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
-        Document document =
-            XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
+        Document document = XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -256,8 +254,7 @@ public class EncryptionCreationTest extends Assert {
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
-        Document document =
-            XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
+        Document document = XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
         Assert.assertEquals(nodeList.getLength(), 0);
@@ -313,8 +310,7 @@ public class EncryptionCreationTest extends Assert {
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
-        Document document =
-            XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
+        Document document = XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
         Assert.assertEquals(nodeList.getLength(), 1);
@@ -372,8 +368,7 @@ public class EncryptionCreationTest extends Assert {
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
-        Document document =
-            XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
+        Document document = XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
         Assert.assertEquals(nodeList.getLength(), 1);
@@ -428,8 +423,7 @@ public class EncryptionCreationTest extends Assert {
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
-        Document document =
-            XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
+        Document document = XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
         Assert.assertEquals(nodeList.getLength(), 0);
@@ -495,8 +489,7 @@ public class EncryptionCreationTest extends Assert {
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
-        Document document =
-            XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
+        Document document = XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
         Assert.assertEquals(nodeList.getLength(), 0);
@@ -562,8 +555,7 @@ public class EncryptionCreationTest extends Assert {
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
-        Document document =
-            XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
+        Document document = XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
         Assert.assertEquals(nodeList.getLength(), 0);
@@ -630,8 +622,7 @@ public class EncryptionCreationTest extends Assert {
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
-        Document document =
-                XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
+        Document document = XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
         Assert.assertEquals(nodeList.getLength(), 0);
@@ -700,8 +691,7 @@ public class EncryptionCreationTest extends Assert {
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
-        Document document =
-            XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
+        Document document = XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -761,8 +751,7 @@ public class EncryptionCreationTest extends Assert {
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
-        Document document =
-            XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
+        Document document = XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
         Assert.assertEquals(nodeList.getLength(), 0);
@@ -830,8 +819,7 @@ public class EncryptionCreationTest extends Assert {
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
-        Document document =
-            XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
+        Document document = XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
         Assert.assertEquals(nodeList.getLength(), 0);
@@ -907,8 +895,7 @@ public class EncryptionCreationTest extends Assert {
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
-        Document document =
-            XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
+        Document document = XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
         Assert.assertEquals(nodeList.getLength(), 0);
@@ -976,8 +963,7 @@ public class EncryptionCreationTest extends Assert {
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
-        Document document =
-            XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
+        Document document = XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
         Assert.assertEquals(nodeList.getLength(), 0);
@@ -1045,8 +1031,7 @@ public class EncryptionCreationTest extends Assert {
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
-        Document document =
-            XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
+        Document document = XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
         Assert.assertEquals(nodeList.getLength(), 0);
@@ -1108,8 +1093,7 @@ public class EncryptionCreationTest extends Assert {
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
-        Document document =
-            XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
+        Document document = XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
         Assert.assertEquals(nodeList.getLength(), 0);
@@ -1167,8 +1151,7 @@ public class EncryptionCreationTest extends Assert {
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
-        Document document =
-            XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
+        Document document = XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
         Assert.assertEquals(nodeList.getLength(), 0);
@@ -1228,8 +1211,7 @@ public class EncryptionCreationTest extends Assert {
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
-        Document document =
-            XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
+        Document document = XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
         Assert.assertEquals(nodeList.getLength(), 0);
@@ -1291,8 +1273,7 @@ public class EncryptionCreationTest extends Assert {
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
-        Document document =
-            XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
+        Document document = XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
         Assert.assertEquals(nodeList.getLength(), 0);
@@ -1357,7 +1338,7 @@ public class EncryptionCreationTest extends Assert {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
         Document document =
-            XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
+            XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
         Assert.assertEquals(nodeList.getLength(), 0);
@@ -1417,8 +1398,7 @@ public class EncryptionCreationTest extends Assert {
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
-        Document document =
-            XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
+        Document document = XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
         Assert.assertEquals(nodeList.getLength(), 0);
@@ -1477,8 +1457,7 @@ public class EncryptionCreationTest extends Assert {
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
-        Document document =
-            XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
+        Document document = XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
 
         NodeList nodeList = document.getElementsByTagNameNS("ns.com", "elem");
         Assert.assertEquals(nodeList.getLength(), 0);
@@ -1537,8 +1516,7 @@ public class EncryptionCreationTest extends Assert {
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
-        Document document =
-            XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
+        Document document = XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
 
         NodeList nodeList = document.getElementsByTagNameNS("", "elem");
         Assert.assertEquals(nodeList.getLength(), 0);
@@ -1595,8 +1573,7 @@ public class EncryptionCreationTest extends Assert {
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
-        Document document =
-            XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
+        Document document = XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
         Assert.assertEquals(nodeList.getLength(), 0);

@@ -29,7 +29,6 @@ import java.util.List;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.TransformerFactory;
@@ -98,8 +97,7 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         // Set the key up
         byte[] hmacKey = "secret".getBytes("ASCII");
@@ -132,7 +130,7 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
     }
 
     @Test
@@ -141,8 +139,7 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         // Set the key up
         byte[] hmacKey = "secret".getBytes("ASCII");
@@ -175,7 +172,7 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
     }
 
     @Test
@@ -184,8 +181,7 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         // Set the key up
         byte[] hmacKey = "secret".getBytes("ASCII");
@@ -218,7 +214,7 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
     }
 
     @Test
@@ -227,8 +223,7 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         // Set the key up
         byte[] hmacKey = "secret".getBytes("ASCII");
@@ -261,7 +256,7 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
     }
 
     @Test
@@ -270,8 +265,7 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         // Set the key up
         byte[] hmacKey = "secret".getBytes("ASCII");
@@ -304,7 +298,7 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
     }
 
     @Test
@@ -316,8 +310,7 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.parse(sourceDocument, false);
 
         // Set the key up
         byte[] hmacKey = "secret".getBytes("ASCII");
@@ -350,7 +343,7 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
     }
 
 }

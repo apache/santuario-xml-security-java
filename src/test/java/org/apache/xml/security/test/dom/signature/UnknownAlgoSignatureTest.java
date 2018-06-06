@@ -28,7 +28,6 @@ import java.security.PublicKey;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPath;
@@ -165,9 +164,7 @@ public class UnknownAlgoSignatureTest extends org.junit.Assert {
 
     public static Document getDocument(File file)
         throws ParserConfigurationException, SAXException, IOException {
-        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
-        Document doc = db.parse(new FileInputStream(file));
-        return doc;
+        return XMLUtils.parse(new FileInputStream(file), false);
     }
 
 }

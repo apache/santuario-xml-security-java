@@ -19,6 +19,7 @@
 package org.apache.xml.security.utils;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -45,6 +46,8 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  * DOM and XML accessibility and comfort functions.
@@ -61,8 +64,8 @@ public final class XMLUtils {
             }
         });
 
-    private static final Map<ClassLoader, DocumentBuilder[][]> DOCUMENT_BUILDERS =
-        Collections.synchronizedMap(new WeakHashMap<ClassLoader, DocumentBuilder[][]>());
+    private static final Map<ClassLoader, DocumentBuilder[]> DOCUMENT_BUILDERS =
+        Collections.synchronizedMap(new WeakHashMap<ClassLoader, DocumentBuilder[]>());
 
     private static volatile String dsPrefix = "ds";
     private static volatile String ds11Prefix = "dsig11";
@@ -152,7 +155,7 @@ public final class XMLUtils {
         if (rootNode == exclude) {
             return;
         }
-        switch (rootNode.getNodeType()) {   	   		   	   			
+        switch (rootNode.getNodeType()) {
         case Node.ELEMENT_NODE:
             result.add(rootNode);
             Element el = (Element)rootNode;
@@ -164,7 +167,7 @@ public final class XMLUtils {
                 }
             }
             //no return keep working
-        case Node.DOCUMENT_NODE:   	   			
+        case Node.DOCUMENT_NODE:
             for (Node r = rootNode.getFirstChild(); r != null; r = r.getNextSibling()) {
                 if (r.getNodeType() == Node.TEXT_NODE) {
                     result.add(r);
@@ -604,8 +607,8 @@ public final class XMLUtils {
                 if (!element.hasChildNodes()) {
                     break;
                 }
-                if (element.hasAttributes()) {            	
-                    NamedNodeMap attributes = element.getAttributes();         	
+                if (element.hasAttributes()) {
+                    NamedNodeMap attributes = element.getAttributes();
                     int attributesLength = attributes.getLength();
 
                     for (Node child = element.getFirstChild(); child!=null;
@@ -627,7 +630,7 @@ public final class XMLUtils {
                             }
                             childElement.setAttributeNS(namespaceNs,
                                                         currentAttr.getName(),
-                                                        currentAttr.getNodeValue());         					
+                                                        currentAttr.getNodeValue());
                         }
                     }
                 }
@@ -1050,16 +1053,61 @@ public final class XMLUtils {
         return true;
     }
 
+    public static Document parse(InputStream inputStream, boolean validating)
+        throws SAXException, IOException, ParserConfigurationException {
+        return parse(inputStream, validating, true, false);
+    }
+
+    public static Document parse(InputStream inputStream, boolean validating, boolean disAllowDocTypeDeclarations)
+        throws SAXException, IOException, ParserConfigurationException {
+        return parse(inputStream, validating, disAllowDocTypeDeclarations, false);
+    }
+
+    public static Document parse(InputStream inputStream, boolean validating,
+                                 boolean disAllowDocTypeDeclarations, boolean ignoreAllErrors)
+        throws SAXException, IOException, ParserConfigurationException {
+        return getDocumentBuilder(validating, disAllowDocTypeDeclarations, ignoreAllErrors).parse(inputStream);
+    }
+
+    public static Document parse(InputSource inputSource, boolean validating)
+        throws SAXException, IOException, ParserConfigurationException {
+        return parse(inputSource, validating, true, false);
+    }
+
+    public static Document parse(InputSource inputSource, boolean validating, boolean disAllowDocTypeDeclarations)
+        throws SAXException, IOException, ParserConfigurationException {
+        return parse(inputSource, validating, disAllowDocTypeDeclarations, false);
+    }
+
+    public static Document parse(InputSource inputSource, boolean validating,
+                                 boolean disAllowDocTypeDeclarations, boolean ignoreAllErrors)
+        throws SAXException, IOException, ParserConfigurationException {
+        return getDocumentBuilder(validating, disAllowDocTypeDeclarations, ignoreAllErrors).parse(inputSource);
+    }
+
+    public static Document newDocument(boolean validating) throws ParserConfigurationException {
+        return newDocument(validating, true, false);
+    }
+
+    public static Document newDocument(boolean validating, boolean disAllowDocTypeDeclarations) throws ParserConfigurationException {
+        return newDocument(validating, disAllowDocTypeDeclarations, false);
+    }
+
+    public static Document newDocument(boolean validating, boolean disAllowDocTypeDeclarations,
+                                       boolean ignoreAllErrors) throws ParserConfigurationException {
+        return getDocumentBuilder(validating, disAllowDocTypeDeclarations, ignoreAllErrors).newDocument();
+    }
+
+    @Deprecated
     public static DocumentBuilder createDocumentBuilder(boolean validating) throws ParserConfigurationException {
         return createDocumentBuilder(validating, true);
     }
 
+    @Deprecated
     public static DocumentBuilder createDocumentBuilder(
         boolean validating, boolean disAllowDocTypeDeclarations
     ) throws ParserConfigurationException {
-        DocumentBuilder db = getDocumentBuilder(validating, disAllowDocTypeDeclarations);
-        db.reset();
-        return db;
+        return newDocumentBuilder(validating, disAllowDocTypeDeclarations, false);
     }
 
     /**
@@ -1072,31 +1120,38 @@ public final class XMLUtils {
         return true;
     }
 
-    private static DocumentBuilder getDocumentBuilder(boolean validating, boolean disAllowDocTypeDeclarations) throws ParserConfigurationException {
+    private static DocumentBuilder getDocumentBuilder(boolean validating, boolean disAllowDocTypeDeclarations,
+                                                      boolean ignoreAllErrors) throws ParserConfigurationException {
         ClassLoader loader = getContextClassLoader();
         if (loader == null) {
             loader = getClassLoader(XMLUtils.class);
         }
         if (loader == null) {
-            return newDocumentBuilder(validating, disAllowDocTypeDeclarations);
+            return newDocumentBuilder(validating, disAllowDocTypeDeclarations, ignoreAllErrors);
         }
 
-        DocumentBuilder[][] cacheValue = DOCUMENT_BUILDERS.get(loader);
+        DocumentBuilder[] cacheValue = DOCUMENT_BUILDERS.get(loader);
         if (cacheValue == null) {
-            cacheValue = new DocumentBuilder[2][2];
+            cacheValue = new DocumentBuilder[8];
             DOCUMENT_BUILDERS.put(loader, cacheValue);
         }
 
-        DocumentBuilder db = cacheValue[validating ? 1 : 0][disAllowDocTypeDeclarations ? 1 : 0];
+        int cacheIndex = getPoolsIndex(validating, disAllowDocTypeDeclarations, ignoreAllErrors);
+        DocumentBuilder db = cacheValue[cacheIndex];
         if (db == null) {
-            db = newDocumentBuilder(validating, disAllowDocTypeDeclarations);
-            cacheValue[validating ? 1 : 0][disAllowDocTypeDeclarations ? 1 : 0] = db;
+            db = newDocumentBuilder(validating, disAllowDocTypeDeclarations, ignoreAllErrors);
+            cacheValue[cacheIndex] = db;
         }
 
         return db;
     }
 
-    private static DocumentBuilder newDocumentBuilder(boolean validating, boolean disAllowDocTypeDeclarations) throws ParserConfigurationException {
+    private static int getPoolsIndex(boolean validating, boolean disAllowDocTypeDeclarations, boolean ignoreAllErrors) {
+        return (ignoreAllErrors ? 4 : 0) + (validating ? 2 : 0) + (disAllowDocTypeDeclarations ? 1 : 0);
+    }
+
+    private static DocumentBuilder newDocumentBuilder(boolean validating, boolean disAllowDocTypeDeclarations,
+                                                      boolean ignoreAllErrors) throws ParserConfigurationException {
         DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
         f.setNamespaceAware(true);
         f.setFeature(javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING, true);
@@ -1104,7 +1159,12 @@ public final class XMLUtils {
             f.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
         }
         f.setValidating(validating);
-        return f.newDocumentBuilder();
+
+        DocumentBuilder db = f.newDocumentBuilder();
+        if (ignoreAllErrors) {
+            db.setErrorHandler(new IgnoreAllErrorHandler());
+        }
+        return db;
     }
 
     private static ClassLoader getContextClassLoader() {

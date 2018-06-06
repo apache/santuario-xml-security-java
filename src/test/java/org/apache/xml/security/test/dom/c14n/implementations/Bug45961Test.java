@@ -23,8 +23,6 @@ import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 
-import javax.xml.parsers.DocumentBuilder;
-
 import org.apache.xml.security.Init;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.keys.KeyInfo;
@@ -45,14 +43,12 @@ public class Bug45961Test extends org.junit.Assert {
         MockCanonicalizationMethod.MOCK_CANONICALIZATION_METHOD;
     private static final char[] PASSWORD = "changeit".toCharArray();
     private static final String ALIAS = "mullan";
-    private DocumentBuilder _builder;
     private ObjectContainer object;
 
     public Bug45961Test() throws Exception {
         Init.init();
         Canonicalizer.register(MOCK_CANONICALIZATION_METHOD,
                                MockCanonicalizationMethod.class.getName());
-        _builder = XMLUtils.createDocumentBuilder(false);
     }
 
     @org.junit.Test
@@ -82,7 +78,7 @@ public class Bug45961Test extends org.junit.Assert {
         X509Certificate signingCert = (X509Certificate) ks
         .getCertificate(ALIAS);
 
-        Document document = _builder.newDocument();
+        Document document = XMLUtils.newDocument(false);
 
         XMLSignature signature = new XMLSignature(document, null,
                                                   XMLSignature.ALGO_ID_SIGNATURE_DSA,

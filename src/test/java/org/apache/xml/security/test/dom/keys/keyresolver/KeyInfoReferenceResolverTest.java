@@ -25,8 +25,6 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.security.spec.X509EncodedKeySpec;
 
-import javax.xml.parsers.DocumentBuilder;
-
 import org.apache.xml.security.Init;
 import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.utils.Base64;
@@ -43,11 +41,7 @@ public class KeyInfoReferenceResolverTest extends Assert {
     private static final String BASEDIR = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
     private static final String SEP = System.getProperty("file.separator");
 
-    private DocumentBuilder documentBuilder;
-
     public KeyInfoReferenceResolverTest() throws Exception {
-        documentBuilder = XMLUtils.createDocumentBuilder(false);
-
         if (!Init.isInitialized()) {
             Init.init();
         }
@@ -138,7 +132,7 @@ public class KeyInfoReferenceResolverTest extends Assert {
     }
 
     private Document loadXML(String fileName) throws Exception {
-        return documentBuilder.parse(new FileInputStream(getControlFilePath(fileName)));
+        return XMLUtils.parse(new FileInputStream(getControlFilePath(fileName)), false);
     }
 
     private PublicKey loadPublicKey(String filePath, String algorithm) throws Exception {

@@ -22,6 +22,7 @@
 package javax.xml.crypto.test.dsig;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.security.NoSuchProviderException;
 import java.security.Provider;
 import java.security.Security;
@@ -30,7 +31,6 @@ import javax.xml.crypto.dsig.keyinfo.*;
 import javax.xml.crypto.*;
 import javax.xml.crypto.dsig.*;
 import javax.xml.crypto.dsig.dom.DOMValidateContext;
-import javax.xml.parsers.DocumentBuilder;
 
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
@@ -153,13 +153,12 @@ public class XMLSignatureFactoryTest extends org.junit.Assert {
                  " for wrong inputs");
         }
 
-        DocumentBuilder docBuilder = XMLUtils.createDocumentBuilder(false, false);
         String fs = System.getProperty("file.separator");
         String base = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
         File dir = new File(base + fs +
             "src/test/resources" + fs + "ie" + fs + "baltimore" + fs + "merlin-examples",
             "merlin-xmldsig-twenty-three");
-        Document doc = docBuilder.parse(new File(dir, "signature.xml"));
+        Document doc = XMLUtils.parse(new FileInputStream(new File(dir, "signature.xml")), false, false);
         NodeList nl = doc.getElementsByTagName("KeyInfo");
         try {
             stuff = factory.unmarshalXMLSignature

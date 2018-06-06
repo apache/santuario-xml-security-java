@@ -25,8 +25,6 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Enumeration;
 
-import javax.xml.parsers.DocumentBuilder;
-
 import org.apache.xml.security.Init;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
@@ -170,8 +168,7 @@ public class SignatureTest extends org.junit.Assert {
     }
 
     private Document getOriginalDocument() throws Throwable {
-        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
-        Document doc = db.newDocument();
+        Document doc = XMLUtils.newDocument(false);
 
         Element rootElement = doc.createElementNS("http://ns.example.org/", "root");
         rootElement.appendChild(doc.createTextNode("Hello World!"));

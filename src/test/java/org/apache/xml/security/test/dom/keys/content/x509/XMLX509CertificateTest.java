@@ -46,7 +46,7 @@ public class XMLX509CertificateTest extends org.junit.Assert {
             SEP + "signature-x509-crt.xml");
 
         FileInputStream fis = new FileInputStream(f);
-        Document doc = XMLUtils.createDocumentBuilder(false).parse(fis);
+        Document doc = XMLUtils.parse(fis, false);
         NodeList nl = doc.getElementsByTagNameNS
                 (Constants.SignatureSpecNS, "X509Certificate");
         XMLX509Certificate xmlCert =

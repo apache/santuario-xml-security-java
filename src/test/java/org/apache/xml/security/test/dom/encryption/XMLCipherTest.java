@@ -22,6 +22,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.lang.reflect.Constructor;
+import java.io.FileInputStream;
 import java.security.Key;
 import java.security.KeyPairGenerator;
 import java.security.KeyPair;
@@ -38,7 +39,6 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESedeKeySpec;
 import javax.crypto.spec.SecretKeySpec;
-import javax.xml.parsers.DocumentBuilder;
 
 import org.apache.xml.security.algorithms.JCEMapper;
 import org.apache.xml.security.c14n.Canonicalizer;
@@ -651,9 +651,8 @@ public class XMLCipherTest extends org.junit.Assert {
     public void testSameDocumentCipherReference() throws Exception {
 
         if (haveISOPadding) {
-            DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
 
-            Document d = db.newDocument();
+            Document d = XMLUtils.newDocument(false);
 
             Element docElement = d.createElement("EncryptedDoc");
             d.appendChild(docElement);
@@ -724,7 +723,6 @@ public class XMLCipherTest extends org.junit.Assert {
     public void testPhysicalRepresentation() throws Exception {
 
         if (haveISOPadding) {
-            DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
 
             byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes();
             DESedeKeySpec keySpec = new DESedeKeySpec(bits192);
@@ -734,7 +732,7 @@ public class XMLCipherTest extends org.junit.Assert {
             // Test inherited namespaces don't add extra attributes
             // Test unused namespaces are preserved
             final String DATA1 = "<ns:root xmlns:ns=\"ns.com\"><ns:elem xmlns:ns2=\"ns2.com\">11</ns:elem></ns:root>";
-            Document doc = db.parse(new ByteArrayInputStream(DATA1.getBytes("UTF8")));
+            Document doc = XMLUtils.parse(new ByteArrayInputStream(DATA1.getBytes("UTF8")), false);
             Element elem = (Element)doc.getDocumentElement().getFirstChild();
 
             XMLCipher dataCipher = XMLCipher.getInstance(XMLCipher.TRIPLEDES);
@@ -758,7 +756,7 @@ public class XMLCipherTest extends org.junit.Assert {
 
             // Test default namespace undeclaration is preserved
             final String DATA2 = "<ns:root xmlns=\"defns.com\" xmlns:ns=\"ns.com\"><elem xmlns=\"\">11</elem></ns:root>";
-            doc = db.parse(new ByteArrayInputStream(DATA2.getBytes("UTF8")));
+            doc = XMLUtils.parse(new ByteArrayInputStream(DATA2.getBytes("UTF8")), false);
             elem = (Element)doc.getDocumentElement().getFirstChild();
 
             dataCipher = XMLCipher.getInstance(XMLCipher.TRIPLEDES);
@@ -783,8 +781,9 @@ public class XMLCipherTest extends org.junit.Assert {
             // Test comments and PIs are not treated specially when serializing element content.
             // Other c14n algorithms add a newline after comments and PIs, when they are before or after the document element.
             final String DATA3 = "<root><!--comment1--><?pi1 target1?><elem/><!--comment2--><?pi2 target2?></root>";
-            doc = db.parse(new ByteArrayInputStream(DATA3.getBytes("UTF8")));
-            elem = (Element)doc.getDocumentElement();
+
+            doc = XMLUtils.parse(new ByteArrayInputStream(DATA3.getBytes("UTF8")), false);
+            elem = doc.getDocumentElement();
 
             dataCipher = XMLCipher.getInstance(XMLCipher.TRIPLEDES);
             dataCipher.init(XMLCipher.ENCRYPT_MODE, secretKey);
@@ -877,8 +876,7 @@ public class XMLCipherTest extends org.junit.Assert {
         }
         File f = new File(filename);
 
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(f);
+        Document document = XMLUtils.parse(new FileInputStream(f), false);
 
         XMLCipher keyCipher = XMLCipher.getInstance();
         keyCipher.init(XMLCipher.UNWRAP_MODE, null);
@@ -1002,9 +1000,8 @@ public class XMLCipherTest extends org.junit.Assert {
     private Document document() {
         Document d = null;
         try {
-            DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
             File f = new File(documentName);
-            d = db.parse(f);
+            d = XMLUtils.parse(new FileInputStream(f), false);
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(-1);

@@ -280,7 +280,7 @@ public class Canonicalizer11Test extends org.junit.Assert {
 //      dfactory.setNamespaceAware(true);
 //
 //      DocumentBuilder db = dfactory.newDocumentBuilder();
-//      Document doc = db.newDocument();
+//      Document doc = XMLUtils.newDocument(false);
 //
 //      xpath = XMLUtils.createElementInSignatureSpace(doc, Constants._TAG_XPATH);
 //

@@ -19,6 +19,7 @@
 package org.apache.xml.security.test.dom.signature;
 
 import java.io.File;
+import java.io.FileInputStream;
 
 import javax.crypto.SecretKey;
 
@@ -73,7 +74,7 @@ public class HMACOutputLengthTest extends org.junit.Assert {
 
     @org.junit.Test
     public void test_generate_hmac_sha1_40() throws Exception {
-        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
+        Document doc = XMLUtils.newDocument(false);
         XMLSignature sig =
             new XMLSignature(
                 doc, null, XMLSignature.ALGO_ID_MAC_HMAC_SHA1,
@@ -95,7 +96,7 @@ public class HMACOutputLengthTest extends org.junit.Assert {
             new File(BASEDIR + SEP + "src/test/resources" + SEP + "javax" + SEP + "xml"
                      + SEP + "crypto" + SEP + "dsig" + SEP, data);
 
-        Document doc = XMLUtils.createDocumentBuilder(false).parse(file);
+        Document doc = XMLUtils.parse(new FileInputStream(file), false);
         NodeList nl =
             doc.getElementsByTagNameNS(Constants.SignatureSpecNS, "Signature");
         if (nl.getLength() == 0) {
