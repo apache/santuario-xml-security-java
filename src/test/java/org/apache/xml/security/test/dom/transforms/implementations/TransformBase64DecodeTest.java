@@ -20,6 +20,7 @@ package org.apache.xml.security.test.dom.transforms.implementations;
 
 import java.io.ByteArrayInputStream;
 
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -103,8 +104,11 @@ public class TransformBase64DecodeTest extends org.junit.Assert {
             + "</Object>\n"
             ;
         //J+
+        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
 
-        Document doc = XMLUtils.parse(new ByteArrayInputStream(input.getBytes()), false, true, true);
+        db.setErrorHandler(new org.apache.xml.security.utils.IgnoreAllErrorHandler());
+
+        Document doc = db.parse(new ByteArrayInputStream(input.getBytes()));
         //XMLUtils.circumventBug2650(doc);
 
         XPathFactory xpf = XPathFactory.newInstance();
@@ -132,7 +136,8 @@ public class TransformBase64DecodeTest extends org.junit.Assert {
     }
 
     private static Document createDocument() throws ParserConfigurationException {
-        Document doc = XMLUtils.newDocument(false);
+        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+        Document doc = db.newDocument();
 
         if (doc == null) {
             throw new RuntimeException("Could not create a Document");

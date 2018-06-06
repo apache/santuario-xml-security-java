@@ -20,6 +20,7 @@ package org.apache.xml.security.test.dom.c14n.implementations;
 
 import java.io.ByteArrayInputStream;
 
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
@@ -75,9 +76,12 @@ public class Santuario273Test extends org.junit.Assert {
 
     @org.junit.Test
     public void testC14n11Base() throws Exception {
+        DocumentBuilder documentBuilder = XMLUtils.createDocumentBuilder(true);
+
+        documentBuilder.setErrorHandler(new org.apache.xml.security.utils.IgnoreAllErrorHandler());
         byte inputBytes[] = input.getBytes();
         Document doc =
-            XMLUtils.parse(new ByteArrayInputStream(inputBytes), true, true, true);
+            documentBuilder.parse(new ByteArrayInputStream(inputBytes));
 
         Canonicalizer c14n =
             Canonicalizer.getInstance(Canonicalizer.ALGO_ID_C14N11_OMIT_COMMENTS);

@@ -29,6 +29,7 @@ import java.security.Security;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.TransformerFactory;
@@ -103,7 +104,8 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         String signatureAlgorithm = "http://www.w3.org/2000/09/xmldsig#rsa-sha1";
         List<String> localNames = new ArrayList<String>();
@@ -131,7 +133,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
 
     @Test
@@ -140,7 +142,8 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256";
         List<String> localNames = new ArrayList<String>();
@@ -168,7 +171,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
 
     @Test
@@ -177,7 +180,8 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha384";
         List<String> localNames = new ArrayList<String>();
@@ -205,7 +209,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
 
     @Test
@@ -214,7 +218,8 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha512";
         List<String> localNames = new ArrayList<String>();
@@ -242,7 +247,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
 
     @Test
@@ -254,7 +259,8 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-ripemd160";
         List<String> localNames = new ArrayList<String>();
@@ -282,7 +288,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
 
     @Test
@@ -294,7 +300,8 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         String signatureAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha1-rsa-MGF1";
         List<String> localNames = new ArrayList<String>();
@@ -322,7 +329,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
 
     @Test
@@ -334,7 +341,8 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         String signatureAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha224-rsa-MGF1";
         List<String> localNames = new ArrayList<String>();
@@ -362,7 +370,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
 
     @Test
@@ -374,7 +382,8 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         String signatureAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha256-rsa-MGF1";
         List<String> localNames = new ArrayList<String>();
@@ -402,7 +411,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
 
     @Test
@@ -414,7 +423,8 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         String signatureAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha384-rsa-MGF1";
         List<String> localNames = new ArrayList<String>();
@@ -442,7 +452,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
 
     @Test
@@ -454,7 +464,8 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         String signatureAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha512-rsa-MGF1";
         List<String> localNames = new ArrayList<String>();
@@ -482,7 +493,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
 
     @Test
@@ -491,7 +502,8 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1";
         List<String> localNames = new ArrayList<String>();
@@ -519,7 +531,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
 
     @Test
@@ -528,7 +540,8 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha224";
         List<String> localNames = new ArrayList<String>();
@@ -556,7 +569,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
 
     @Test
@@ -565,7 +578,8 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256";
         List<String> localNames = new ArrayList<String>();
@@ -593,7 +607,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
 
     @Test
@@ -602,7 +616,8 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha384";
         List<String> localNames = new ArrayList<String>();
@@ -630,7 +645,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
 
     @Test
@@ -639,7 +654,8 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512";
         List<String> localNames = new ArrayList<String>();
@@ -667,7 +683,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
 
     @Test
@@ -679,7 +695,8 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         String signatureAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#ecdsa-ripemd160";
         List<String> localNames = new ArrayList<String>();
@@ -707,7 +724,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
 
 

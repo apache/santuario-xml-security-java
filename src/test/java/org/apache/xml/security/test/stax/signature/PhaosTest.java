@@ -37,6 +37,7 @@ import org.w3c.dom.Document;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -89,7 +90,8 @@ public class PhaosTest extends Assert {
             InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "com/phaos/phaos-xmldsig-three/signature-dsa-detached.xml");
-            Document document = XMLUtils.parse(sourceDocument, false);
+            DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+            Document document = builder.parse(sourceDocument);
 
             // XMLUtils.outputDOM(document, System.out);
 
@@ -107,7 +109,7 @@ public class PhaosTest extends Assert {
             XMLStreamReader securityStreamReader =
                     inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-            StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
         } finally {
             TestUtils.switchAllowNotSameDocumentReferences(false);
             HttpRequestRedirectorProxy.stopHttpEngine();
@@ -121,7 +123,8 @@ public class PhaosTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "com/phaos/phaos-xmldsig-three/signature-dsa-enveloped.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -139,7 +142,7 @@ public class PhaosTest extends Assert {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
 
     @Test
@@ -148,7 +151,8 @@ public class PhaosTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "com/phaos/phaos-xmldsig-three/signature-dsa-enveloping.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -166,7 +170,7 @@ public class PhaosTest extends Assert {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
 
     // See SANTUARIO-319
@@ -188,7 +192,8 @@ public class PhaosTest extends Assert {
             InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "com/phaos/phaos-xmldsig-three/signature-hmac-sha1-exclusive-c14n-comments-detached.xml");
-            Document document = XMLUtils.parse(sourceDocument, false);
+            DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+            Document document = builder.parse(sourceDocument);
 
             // Set up the key
             byte[] hmacKey = "test".getBytes("ASCII");
@@ -211,7 +216,7 @@ public class PhaosTest extends Assert {
             XMLStreamReader securityStreamReader =
                     inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-            StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
         } finally {
             TestUtils.switchAllowNotSameDocumentReferences(false);
             HttpRequestRedirectorProxy.stopHttpEngine();
@@ -225,7 +230,8 @@ public class PhaosTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "com/phaos/phaos-xmldsig-three/signature-hmac-sha1-exclusive-c14n-enveloped.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // Set up the key
         byte[] hmacKey = "test".getBytes("ASCII");
@@ -248,7 +254,7 @@ public class PhaosTest extends Assert {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
 
     @Test
@@ -257,7 +263,8 @@ public class PhaosTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "com/phaos/phaos-xmldsig-three/signature-rsa-detached-b64-transform.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // Set up the key
         byte[] hmacKey = "test".getBytes("ASCII");
@@ -282,7 +289,7 @@ public class PhaosTest extends Assert {
 
         try {
             TestUtils.switchDoNotThrowExceptionForManifests(true);
-            StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
         } finally {
             TestUtils.switchDoNotThrowExceptionForManifests(false);
         }
@@ -307,7 +314,8 @@ public class PhaosTest extends Assert {
             InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "com/phaos/phaos-xmldsig-three/signature-rsa-detached.xml");
-            Document document = XMLUtils.parse(sourceDocument, false);
+            DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+            Document document = builder.parse(sourceDocument);
 
             // XMLUtils.outputDOM(document, System.out);
 
@@ -325,7 +333,7 @@ public class PhaosTest extends Assert {
             XMLStreamReader securityStreamReader =
                     inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-            StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
         } finally {
             TestUtils.switchAllowNotSameDocumentReferences(false);
             HttpRequestRedirectorProxy.stopHttpEngine();
@@ -339,7 +347,8 @@ public class PhaosTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "com/phaos/phaos-xmldsig-three/signature-rsa-enveloped-bad-digest-val.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -356,7 +365,7 @@ public class PhaosTest extends Assert {
         TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
         XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
         try {
-            StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
             fail("Failure expected on a bad digest");
         } catch (XMLStreamException ex) {
             Assert.assertTrue(ex.getCause() instanceof XMLSecurityException);
@@ -371,7 +380,8 @@ public class PhaosTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "com/phaos/phaos-xmldsig-three/signature-rsa-enveloped.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -389,7 +399,7 @@ public class PhaosTest extends Assert {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
 
     @Test
@@ -398,7 +408,8 @@ public class PhaosTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "com/phaos/phaos-xmldsig-three/signature-rsa-enveloping.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -416,7 +427,7 @@ public class PhaosTest extends Assert {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
 
 }

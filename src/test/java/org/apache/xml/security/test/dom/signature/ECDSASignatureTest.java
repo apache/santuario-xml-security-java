@@ -59,6 +59,8 @@ public class ECDSASignatureTest extends org.junit.Assert {
 
     private KeyStore keyStore;
 
+    private javax.xml.parsers.DocumentBuilder db;
+
     public ECDSASignatureTest() throws Exception {
         //
         // If the BouncyCastle provider is not installed, then try to load it
@@ -84,6 +86,8 @@ public class ECDSASignatureTest extends org.junit.Assert {
 
         //String id = "http://apache.org/xml/properties/dom/document-class-name";
         //dbf.setAttribute(id, IndexedDocument.class.getName());
+
+        db = XMLUtils.createDocumentBuilder(false);
         org.apache.xml.security.Init.init();
     }
 
@@ -143,7 +147,7 @@ public class ECDSASignatureTest extends org.junit.Assert {
     private byte[] doSign() throws Exception {
         PrivateKey privateKey =
             (PrivateKey)keyStore.getKey("ECDSA", ECDSA_JKS_PASSWORD.toCharArray());
-        org.w3c.dom.Document doc = XMLUtils.newDocument(false);
+        org.w3c.dom.Document doc = db.newDocument();
         doc.appendChild(doc.createComment(" Comment before "));
         Element root = doc.createElementNS("", "RootElement");
 
@@ -183,7 +187,7 @@ public class ECDSASignatureTest extends org.junit.Assert {
     }
 
     private void doVerify(InputStream is) throws Exception {
-        org.w3c.dom.Document doc = XMLUtils.parse(is, false);
+        org.w3c.dom.Document doc = this.db.parse(is);
 
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();

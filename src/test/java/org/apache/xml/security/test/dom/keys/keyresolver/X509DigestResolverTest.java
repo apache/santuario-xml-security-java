@@ -22,6 +22,8 @@ import java.io.FileInputStream;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 
+import javax.xml.parsers.DocumentBuilder;
+
 import org.apache.xml.security.Init;
 import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.keys.storage.StorageResolver;
@@ -36,11 +38,15 @@ public class X509DigestResolverTest extends Assert {
     private static final String BASEDIR = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
     private static final String SEP = System.getProperty("file.separator");
 
+    private DocumentBuilder documentBuilder;
+
     private X509Certificate certControl;
 
     private StorageResolver storageResolver;
 
     public X509DigestResolverTest() throws Exception {
+        documentBuilder = XMLUtils.createDocumentBuilder(false);
+
         certControl = loadCertificate("cert-X509Digest.crt");
 
         storageResolver = new StorageResolver(new SingleCertificateResolver(certControl));
@@ -77,7 +83,7 @@ public class X509DigestResolverTest extends Assert {
     }
 
     private Document loadXML(String fileName) throws Exception {
-        return XMLUtils.parse(new FileInputStream(getControlFilePath(fileName)), false);
+        return documentBuilder.parse(new FileInputStream(getControlFilePath(fileName)));
     }
 
     private X509Certificate loadCertificate(String fileName) throws Exception {

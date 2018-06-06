@@ -23,7 +23,6 @@ package javax.xml.crypto.test.dsig;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -63,6 +62,7 @@ import javax.xml.crypto.dsig.dom.DOMValidateContext;
 import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 import javax.xml.crypto.dsig.spec.DigestMethodParameterSpec;
 import javax.xml.crypto.dsig.spec.SignatureMethodParameterSpec;
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
 import javax.xml.transform.Transformer;
@@ -216,7 +216,8 @@ public class TestUtils {
 
     public static Document newDocument() {
         try {
-            return XMLUtils.newDocument(false);
+            DocumentBuilder docBuilder = XMLUtils.createDocumentBuilder(false);
+            return docBuilder.newDocument();
         } catch (Exception ex) {
             return null;
         }
@@ -235,7 +236,8 @@ public class TestUtils {
                                                        String tag)
         throws Exception {
         if (type.equalsIgnoreCase("dom")) {
-            Document doc = XMLUtils.parse(new FileInputStream(input), false, false);
+            DocumentBuilder docBuilder = XMLUtils.createDocumentBuilder(false, false);
+            Document doc = docBuilder.parse(input);
             if (tag == null) {
                 return new DOMValidateContext
                     (TestUtils.getPublicKey("RSA", 512),
@@ -343,7 +345,7 @@ public class TestUtils {
         private byte[] data = null;
 
         public OctetStreamURIDereferencer(byte[] in) {
-            data = in.clone();
+            data = (byte[]) in.clone();
         }
 
         public Data dereference(URIReference ref, XMLCryptoContext ctxt) {

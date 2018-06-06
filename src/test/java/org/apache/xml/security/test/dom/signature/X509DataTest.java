@@ -36,53 +36,55 @@ public class X509DataTest extends org.junit.Assert {
     private static final String BASEDIR = System.getProperty("basedir");
 
     KeyStore ks = null;
-
+    
     @org.junit.Test
     public void testAddX509SubjectName() throws Exception {
         Init.init();
 
-        Document doc = XMLUtils.newDocument(false);
+        javax.xml.parsers.DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+        Document doc = db.newDocument();
         XMLSignature sig = new XMLSignature(doc, "", XMLSignature.ALGO_ID_SIGNATURE_DSA);
-
+        
         doc.appendChild(sig.getElement());
         sig.addDocument("");
-
-        //Add in the KeyInfo for the certificate that we used the private key of
-        X509Certificate cert = getCertificate();
+        
+        //Add in the KeyInfo for the certificate that we used the private key of	         
+        X509Certificate cert =getCertificate();
         sig.addKeyInfo(cert);
         sig.addKeyInfo(cert.getPublicKey());
-
+        
         // Add these three lines
         org.apache.xml.security.keys.KeyInfo ki = sig.getKeyInfo();
         ki.itemX509Data(0).addSubjectName(cert.getSubjectX500Principal().getName());
         ki.itemX509Data(0).addIssuerSerial(cert.getIssuerX500Principal().getName(), cert.getSerialNumber());
-
+        
         sig.sign(getPrivateKey());
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         XMLUtils.outputDOM(doc, os);
         XMLSignature newSig = getSignature(os.toByteArray());
-
+        
         assertNotNull(newSig.getKeyInfo().itemX509Data(0));
         assertEquals(cert.getSubjectX500Principal().getName(),
                      newSig.getKeyInfo().itemX509Data(0).itemSubjectName(0).getSubjectName());
         assertEquals(cert.getIssuerX500Principal().getName(),
                      newSig.getKeyInfo().itemX509Data(0).itemIssuerSerial(0).getIssuerName());
     }
-
+    
     private XMLSignature getSignature(byte[] s) throws Exception {
 
-        Document doc = XMLUtils.parse(new ByteArrayInputStream(s), false);
+        javax.xml.parsers.DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+        Document doc = db.parse(new ByteArrayInputStream(s));
         Element el = (Element)doc.getFirstChild();
         return new XMLSignature(el, "");
     }
-
+    
     private KeyStore getKeyStore() throws Exception {
         if (ks != null) {
             return ks;
         }
         String keystoreType = "JKS";
         String keystoreFile = "src/test/resources/org/apache/xml/security/samples/input/keystore.jks";
-        String keystorePass = "xmlsecurity";
+        String keystorePass = "xmlsecurity";        
         ks = KeyStore.getInstance(keystoreType);
         FileInputStream fis = null;
         if (BASEDIR != null && !"".equals(BASEDIR)) {
@@ -94,18 +96,18 @@ public class X509DataTest extends org.junit.Assert {
         ks.load(fis, keystorePass.toCharArray());
         return ks;
     }
-
+    
     private X509Certificate getCertificate() throws Exception {
-        String certificateAlias = "test";
+        String certificateAlias = "test";       
         X509Certificate cert =
             (X509Certificate) getKeyStore().getCertificate(certificateAlias);
         return cert;
     }
-
+    
     private PrivateKey getPrivateKey() throws Exception {
         String privateKeyAlias = "test";
-        String privateKeyPass = "xmlsecurity";
-        PrivateKey privateKey =
+        String privateKeyPass = "xmlsecurity";      
+        PrivateKey privateKey = 
             (PrivateKey) getKeyStore().getKey(privateKeyAlias, privateKeyPass.toCharArray());
         return privateKey;
     }

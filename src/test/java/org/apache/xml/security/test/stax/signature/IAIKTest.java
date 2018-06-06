@@ -33,6 +33,7 @@ import java.security.spec.RSAPublicKeySpec;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -106,7 +107,8 @@ public class IAIKTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "at/iaik/ixsil/signatureAlgorithms/signatures/hMACSignature.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // Set up the Key
         byte[] hmacKey = "secret".getBytes("ASCII");
@@ -129,7 +131,7 @@ public class IAIKTest extends Assert {
         XMLStreamReader securityStreamReader =
             inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
         // Check the SecurityEvents
         checkSignatureToken(securityEventListener, key, SecurityTokenConstants.KeyIdentifier_NoKeyInfo);
@@ -141,7 +143,8 @@ public class IAIKTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "at/iaik/ixsil/signatureAlgorithms/signatures/hMACShortSignature.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // Set up the Key
         byte[] hmacKey = "secret".getBytes("ASCII");
@@ -163,7 +166,7 @@ public class IAIKTest extends Assert {
         XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
 
         try {
-            StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
             fail("Failure expected on a short HMAC length");
         } catch (XMLStreamException ex) {
             Assert.assertTrue(ex.getCause() instanceof XMLSecurityException);
@@ -177,7 +180,8 @@ public class IAIKTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "at/iaik/ixsil/signatureAlgorithms/signatures/dSASignature.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -195,7 +199,7 @@ public class IAIKTest extends Assert {
         XMLStreamReader securityStreamReader =
             inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
         // Check the SecurityEvents
         checkSignatureToken(securityEventListener, getPublicKey("DSA"),
@@ -208,7 +212,8 @@ public class IAIKTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "at/iaik/ixsil/signatureAlgorithms/signatures/rSASignature.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -226,7 +231,7 @@ public class IAIKTest extends Assert {
         XMLStreamReader securityStreamReader =
             inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
         // Check the SecurityEvents
         checkSignatureToken(securityEventListener, getPublicKey("RSA"),
@@ -257,7 +262,7 @@ public class IAIKTest extends Assert {
 
         try {
             TestUtils.switchAllowNotSameDocumentReferences(true);
-            StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
         } finally {
             TestUtils.switchAllowNotSameDocumentReferences(false);
         }
@@ -291,7 +296,7 @@ public class IAIKTest extends Assert {
 
         try {
             TestUtils.switchAllowNotSameDocumentReferences(true);
-            StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
         } finally {
             TestUtils.switchAllowNotSameDocumentReferences(false);
         }
@@ -307,7 +312,8 @@ public class IAIKTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "at/iaik/ixsil/transforms/signatures/envelopedSignatureSignature.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // Set up the Key
         Key publicKey = getPublicKey("RSA");
@@ -329,7 +335,7 @@ public class IAIKTest extends Assert {
         XMLStreamReader securityStreamReader =
             inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
         // Check the SecurityEvents
         checkSignatureToken(securityEventListener, getPublicKey("RSA"),

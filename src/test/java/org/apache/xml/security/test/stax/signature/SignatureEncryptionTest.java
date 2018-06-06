@@ -97,8 +97,9 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
-        Document document = XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
+        Document document =
+                XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
         // Decrypt using DOM API
         Document doc =
@@ -163,8 +164,9 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
-        Document document = XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
+        Document document =
+                XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
         // Decrypt using DOM API
         Document doc =
@@ -237,8 +239,9 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
-        Document document = XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
+        Document document =
+                XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
         // Decrypt using DOM API
         Document doc =
@@ -311,8 +314,9 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
-        Document document = XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
+        Document document =
+                XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
         // Decrypt using DOM API
         Document doc =
@@ -385,8 +389,9 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
-        Document document = XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
+        Document document =
+                XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
@@ -485,7 +490,7 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, testSecurityEventListener);
 
-        Document document = StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+        Document document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
         // javax.xml.transform.Transformer transformer = TransformerFactory.newInstance().newTransformer();
         // transformer.transform(new DOMSource(document), new StreamResult(System.out));

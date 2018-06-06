@@ -26,6 +26,7 @@ import java.security.cert.X509Certificate;
 import java.util.HashMap;
 
 import javax.crypto.SecretKey;
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.xml.security.keys.storage.StorageResolver;
@@ -112,7 +113,7 @@ public abstract class KeyResolverSpi {
         KeyResolverSpi tmp = this;
         if (globalResolver) {
             try {
-                tmp = getClass().newInstance();
+                tmp = getClass().newInstance();    	
             } catch (InstantiationException e) {
                 throw new KeyResolverException(e, "");
             } catch (IllegalAccessException e) {
@@ -191,7 +192,7 @@ public abstract class KeyResolverSpi {
         if (!tmp.engineCanResolve(element, baseURI, storage)) {
             return null;
         }
-        return tmp.engineResolveSecretKey(element, baseURI, storage);
+        return tmp.engineResolveSecretKey(element, baseURI, storage);   		
     }
 
     /**
@@ -268,8 +269,10 @@ public abstract class KeyResolverSpi {
      * @throws KeyResolverException if something goes wrong
      */
     protected static Element getDocFromBytes(byte[] bytes, boolean secureValidation) throws KeyResolverException {
+        DocumentBuilder db = null;
         try {
-            Document doc = XMLUtils.parse(new ByteArrayInputStream(bytes), false, secureValidation);
+            db = XMLUtils.createDocumentBuilder(false, secureValidation);
+            Document doc = db.parse(new ByteArrayInputStream(bytes));
             return doc.getDocumentElement();
         } catch (SAXException ex) {
             throw new KeyResolverException(ex);

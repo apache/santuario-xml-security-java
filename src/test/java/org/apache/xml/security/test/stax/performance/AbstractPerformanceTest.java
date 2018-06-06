@@ -33,6 +33,7 @@ import org.w3c.dom.Element;
 
 import javax.crypto.KeyGenerator;
 import javax.xml.namespace.QName;
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamReader;
@@ -224,7 +225,8 @@ public abstract class AbstractPerformanceTest {
 
     protected void doDOMSignatureOutbound(File file, int tagCount) throws Exception {
 
-        Document document = XMLUtils.parse(new FileInputStream(file), false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(file);
 
         XMLSignature sig = new XMLSignature(document, "", "http://www.w3.org/2000/09/xmldsig#rsa-sha1");
         Element root = document.getDocumentElement();
@@ -243,7 +245,8 @@ public abstract class AbstractPerformanceTest {
 
     protected void doDOMSignatureInbound(File file, int tagCount) throws Exception {
 
-        Document document = XMLUtils.parse(new FileInputStream(file), false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(file);
 
         Element signatureElement = (Element) document.getElementsByTagNameNS("http://www.w3.org/2000/09/xmldsig#", "Signature").item(0);
         ((Element) signatureElement.getParentNode()).setIdAttributeNS(null, "Id", true);
@@ -284,7 +287,8 @@ public abstract class AbstractPerformanceTest {
 
     protected void doDOMEncryptionOutbound(File file, int tagCount) throws Exception {
 
-        Document document = XMLUtils.parse(new FileInputStream(file), false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(file);
 
         XMLCipher cipher = XMLCipher.getInstance("http://www.w3.org/2001/04/xmlenc#aes256-cbc");
         cipher.init(XMLCipher.ENCRYPT_MODE, encryptionSymKey);
@@ -295,7 +299,8 @@ public abstract class AbstractPerformanceTest {
 
     protected void doDOMDecryptionInbound(File file, int tagCount) throws Exception {
 
-        Document document = XMLUtils.parse(new FileInputStream(file), false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(file);
 
         XMLCipher cipher = XMLCipher.getInstance("http://www.w3.org/2001/04/xmlenc#aes256-cbc");
         cipher.init(XMLCipher.DECRYPT_MODE, encryptionSymKey);

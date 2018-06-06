@@ -33,6 +33,7 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.*;
 
 import javax.xml.crypto.test.KeySelectors;
+import javax.xml.parsers.DocumentBuilder;
 
 /**
  * Test that recreates Phaos XMLDSig-3 test vectors
@@ -44,6 +45,7 @@ import javax.xml.crypto.test.KeySelectors;
 public class CreatePhaosXMLDSig3Test extends org.junit.Assert {
 
     private XMLSignatureFactory fac;
+    private DocumentBuilder db;
 
     static {
         Security.insertProviderAt
@@ -53,6 +55,7 @@ public class CreatePhaosXMLDSig3Test extends org.junit.Assert {
     public CreatePhaosXMLDSig3Test() throws Exception {
         fac = XMLSignatureFactory.getInstance
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
+        db = XMLUtils.createDocumentBuilder(false);
     }
 
     @org.junit.Test
@@ -96,7 +99,7 @@ public class CreatePhaosXMLDSig3Test extends org.junit.Assert {
         // create XMLSignature
         XMLSignature sig = fac.newXMLSignature(si, null);
 
-        Document doc = XMLUtils.newDocument(false);
+        Document doc = db.newDocument();
         DOMSignContext dsc = new DOMSignContext
             (new KeySelectors.SecretKeySelector
              ("test".getBytes("ASCII")), doc);
@@ -139,7 +142,7 @@ public class CreatePhaosXMLDSig3Test extends org.junit.Assert {
         // create XMLSignature
         XMLSignature sig = fac.newXMLSignature(si, null);
 
-        Document doc = XMLUtils.newDocument(false);
+        Document doc = db.newDocument();
         Element player = doc.createElementNS(null, "player");
         player.setAttributeNS(null, "bats", "left");
         player.setAttributeNS(null, "id", "10012");

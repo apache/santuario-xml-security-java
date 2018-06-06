@@ -61,9 +61,11 @@ public class CreateSignatureTest extends org.junit.Assert {
     private static final String BASEDIR = System.getProperty("basedir");
     private static final String SEP = System.getProperty("file.separator");
 
-    private KeyPair kp;
+    private KeyPair kp = null;
+    private javax.xml.parsers.DocumentBuilder db;
 
     public CreateSignatureTest() throws Exception {
+        db = XMLUtils.createDocumentBuilder(false);
         org.apache.xml.security.Init.init();
         kp = KeyPairGenerator.getInstance("RSA").genKeyPair();
     }
@@ -74,7 +76,7 @@ public class CreateSignatureTest extends org.junit.Assert {
      */
     @org.junit.Test
     public void testEmptyNodeSet() throws Exception {
-        Document doc = XMLUtils.newDocument(false);
+        Document doc = db.newDocument();
         Element envelope = doc.createElementNS("http://www.usps.gov/", "Envelope");
         envelope.appendChild(doc.createTextNode("\n"));
         doc.appendChild(envelope);
@@ -149,7 +151,7 @@ public class CreateSignatureTest extends org.junit.Assert {
 
     @org.junit.Test
     public void testXFilter2Signature() throws Exception {
-        Document doc = XMLUtils.newDocument(false);
+        Document doc = db.newDocument();
         doc.appendChild(doc.createComment(" Comment before "));
         Element root = doc.createElementNS("", "RootElement");
 
@@ -191,7 +193,7 @@ public class CreateSignatureTest extends org.junit.Assert {
         String signedDoc = new String(bos.toByteArray());
 
         // Now Verify
-        doc = XMLUtils.parse(new ByteArrayInputStream(signedDoc.getBytes()), false);
+        doc = db.parse(new ByteArrayInputStream(signedDoc.getBytes()));
 
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();
@@ -209,7 +211,7 @@ public class CreateSignatureTest extends org.junit.Assert {
     public void testCanonicalizedOctetStream() throws Exception {
         String signedXML = doSign();
 
-        Document doc = XMLUtils.parse(new ByteArrayInputStream(signedXML.getBytes()), false);
+        Document doc = db.parse(new ByteArrayInputStream(signedXML.getBytes()));
 
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();
@@ -244,9 +246,10 @@ public class CreateSignatureTest extends org.junit.Assert {
         assertTrue(si.verify(false));
     }
 
+
     private String doSign() throws Exception {
         PrivateKey privateKey = kp.getPrivate();
-        Document doc = XMLUtils.newDocument(false);
+        Document doc = db.newDocument();
         doc.appendChild(doc.createComment(" Comment before "));
         Element root = doc.createElementNS("", "RootElement");
 
@@ -291,7 +294,7 @@ public class CreateSignatureTest extends org.junit.Assert {
         }
         ks.load(fis, "changeit".toCharArray());
         PrivateKey privateKey = (PrivateKey) ks.getKey("mullan", "changeit".toCharArray());
-        Document doc = XMLUtils.newDocument(false);
+        Document doc = db.newDocument();
         X509Certificate signingCert = (X509Certificate) ks.getCertificate("mullan");
         doc.appendChild(doc.createComment(" Comment before "));
         Element root = doc.createElementNS("", "RootElement");
@@ -328,7 +331,7 @@ public class CreateSignatureTest extends org.junit.Assert {
     }
 
     private void doVerify(String signedXML) throws Exception {
-        Document doc = XMLUtils.parse(new ByteArrayInputStream(signedXML.getBytes()), false);
+        Document doc = db.parse(new ByteArrayInputStream(signedXML.getBytes()));
 
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();

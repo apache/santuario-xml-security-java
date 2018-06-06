@@ -128,7 +128,8 @@ public class SymmetricEncryptionCreationTest extends Assert {
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
-        Document document = XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
+        Document document =
+            XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
         Assert.assertEquals(nodeList.getLength(), 0);
@@ -186,7 +187,8 @@ public class SymmetricEncryptionCreationTest extends Assert {
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
-        Document document = XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
+        Document document =
+            XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
         Assert.assertEquals(nodeList.getLength(), 0);
@@ -244,7 +246,8 @@ public class SymmetricEncryptionCreationTest extends Assert {
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
-        Document document = XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
+        Document document =
+            XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
         Assert.assertEquals(nodeList.getLength(), 0);
@@ -302,7 +305,8 @@ public class SymmetricEncryptionCreationTest extends Assert {
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
-        Document document = XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
+        Document document =
+            XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
         Assert.assertEquals(nodeList.getLength(), 0);
@@ -360,7 +364,8 @@ public class SymmetricEncryptionCreationTest extends Assert {
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
-        Document document = XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
+        Document document =
+            XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
         Assert.assertEquals(nodeList.getLength(), 0);
@@ -418,7 +423,8 @@ public class SymmetricEncryptionCreationTest extends Assert {
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
-        Document document = XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
+        Document document =
+            XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
         Assert.assertEquals(nodeList.getLength(), 0);
@@ -475,7 +481,8 @@ public class SymmetricEncryptionCreationTest extends Assert {
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
-        Document document = XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
+        Document document =
+            XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
         Assert.assertEquals(nodeList.getLength(), 0);
@@ -536,7 +543,8 @@ public class SymmetricEncryptionCreationTest extends Assert {
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
-        Document document = XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
+        Document document =
+            XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
         Assert.assertEquals(nodeList.getLength(), 0);
@@ -596,7 +604,8 @@ public class SymmetricEncryptionCreationTest extends Assert {
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
-        Document document = XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
+        Document document =
+            XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
         Assert.assertEquals(nodeList.getLength(), 0);
@@ -656,7 +665,8 @@ public class SymmetricEncryptionCreationTest extends Assert {
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
-        Document document = XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
+        Document document =
+            XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
         Assert.assertEquals(nodeList.getLength(), 0);
@@ -716,7 +726,8 @@ public class SymmetricEncryptionCreationTest extends Assert {
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), "UTF-8"));
 
-        Document document = XMLUtils.parse(new ByteArrayInputStream(baos.toByteArray()), false);
+        Document document =
+            XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
         Assert.assertEquals(nodeList.getLength(), 0);

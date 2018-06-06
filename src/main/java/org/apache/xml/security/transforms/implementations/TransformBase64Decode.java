@@ -102,7 +102,7 @@ public class TransformBase64Decode extends TransformSpi {
         try {
             if (input.isElement()) {
                 Node el = input.getSubNode();
-                if (input.getSubNode().getNodeType() == Node.TEXT_NODE) {
+                if (input.getSubNode().getNodeType() == Node.TEXT_NODE) {         	
                     el = el.getParentNode();
                 }
                 StringBuilder sb = new StringBuilder();
@@ -143,7 +143,7 @@ public class TransformBase64Decode extends TransformSpi {
                 //Exceptional case there is current not text case testing this(Before it was a
                 //a common case).
                 Document doc =
-                    XMLUtils.parse(input.getOctetStream(), false, secureValidation);
+                    XMLUtils.createDocumentBuilder(false, secureValidation).parse(input.getOctetStream());
 
                 Element rootNode = doc.getDocumentElement();
                 StringBuilder sb = new StringBuilder();

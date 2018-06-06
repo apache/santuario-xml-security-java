@@ -114,7 +114,7 @@ public class KeyInfoTest extends org.junit.Assert {
             fail("Should raise a NullPointerException");
         } catch (NullPointerException npe) {}
 
-        Document doc = XMLUtils.newDocument(false);
+        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
         Element elem = doc.createElementNS("http://acme.org", "parent");
         doc.appendChild(elem);
         DOMStructure parent = new DOMStructure(elem);
@@ -134,7 +134,7 @@ public class KeyInfoTest extends org.junit.Assert {
         }
 
         // check if key info is inserted before nextSibling
-        doc = XMLUtils.newDocument(false);
+        doc = XMLUtils.createDocumentBuilder(false).newDocument();
         elem = doc.createElementNS("http://acme.org", "parent");
         doc.appendChild(elem);
         Element nextSib = doc.createElementNS("http://acme.org", "nextSib");

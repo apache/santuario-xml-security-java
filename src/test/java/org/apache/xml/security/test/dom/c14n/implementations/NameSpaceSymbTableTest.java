@@ -30,7 +30,7 @@ public class NameSpaceSymbTableTest extends org.junit.Assert {
     static Attr node1,node2;
     static {
         try {
-            Document doc = XMLUtils.newDocument(false);
+            Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
             node1 = doc.createAttributeNS("a","b");
             node2 = doc.createAttributeNS("b","c");
         } catch (Exception e) {

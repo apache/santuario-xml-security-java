@@ -28,6 +28,7 @@ import javax.xml.crypto.dsig.*;
 import javax.xml.crypto.dsig.dom.*;
 import javax.xml.crypto.dsig.keyinfo.*;
 import javax.xml.crypto.dsig.spec.*;
+import javax.xml.parsers.DocumentBuilder;
 
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.*;
@@ -49,6 +50,7 @@ public class CreateInteropXMLDSig11Test extends org.junit.Assert {
                             hmacSha384, hmacSha512;
     private KeyInfo p256ki, p384ki, p521ki, rsaki, rsa2048ki;
     private XMLSignatureFactory fac;
+    private DocumentBuilder db;
     private KeyPair p256, p384, p521, rsa2048;
     private boolean ecSupport = true;
 
@@ -78,6 +80,7 @@ public class CreateInteropXMLDSig11Test extends org.junit.Assert {
         rsakpg.initialize(2048);
         rsa2048 = rsakpg.generateKeyPair();
 
+        db = XMLUtils.createDocumentBuilder(false);
         // create common objects
         fac = XMLSignatureFactory.getInstance("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
         KeyInfoFactory kifac = fac.getKeyInfoFactory();
@@ -290,7 +293,7 @@ public class CreateInteropXMLDSig11Test extends org.junit.Assert {
         SignedInfo si = fac.newSignedInfo(withoutComments, sm,
                                           Collections.singletonList(ref));
 
-        Document doc = XMLUtils.newDocument(false);
+        Document doc = db.newDocument();
         // create Objects
         Element webElem = doc.createElementNS(null, "Web");
         Text text = doc.createTextNode("up up and away");

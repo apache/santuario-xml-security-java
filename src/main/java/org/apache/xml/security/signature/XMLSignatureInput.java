@@ -28,6 +28,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.xml.security.c14n.CanonicalizationException;
@@ -540,7 +541,7 @@ public class XMLSignatureInput {
     /**
      * @param filter
      */
-    public void addNodeFilter(NodeFilter filter) {
+    public void addNodeFilter(NodeFilter filter) {	
         if (isOctetStream()) {
             try {
                 convertToNodes();
@@ -569,9 +570,12 @@ public class XMLSignatureInput {
 
     void convertToNodes() throws CanonicalizationException,
         ParserConfigurationException, IOException, SAXException {
+        DocumentBuilder db = XMLUtils.createDocumentBuilder(false, secureValidation);
         // select all nodes, also the comments.
         try {
-            Document doc = XMLUtils.parse(this.getOctetStream(), false, secureValidation, true);
+            db.setErrorHandler(new org.apache.xml.security.utils.IgnoreAllErrorHandler());
+
+            Document doc = db.parse(this.getOctetStream());
             this.subNode = doc;
         } catch (SAXException ex) {
             // if a not-wellformed nodeset exists, put a container around it...
@@ -581,9 +585,9 @@ public class XMLSignatureInput {
             baos.write(this.getBytes());
             baos.write("</container>".getBytes("UTF-8"));
 
-            byte[] result = baos.toByteArray();
-            Document document = XMLUtils.parse(new ByteArrayInputStream(result), false, secureValidation, true);
-            this.subNode = document.getDocumentElement().getFirstChild().getFirstChild();
+            byte result[] = baos.toByteArray();
+            Document document = db.parse(new ByteArrayInputStream(result));
+            this.subNode = document.getDocumentElement().getFirstChild().getFirstChild();				
         } finally {
             if (this.inputOctetStreamProxy != null) {
                 this.inputOctetStreamProxy.close();

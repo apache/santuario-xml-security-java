@@ -36,6 +36,7 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.*;
 
 import javax.xml.crypto.test.KeySelectors;
+import javax.xml.parsers.DocumentBuilder;
 
 /**
  * Test that recreates merlin-xpath-filter2-three test vectors
@@ -47,6 +48,7 @@ public class CreateInteropXFilter2Test extends org.junit.Assert {
 
     private XMLSignatureFactory fac;
     private KeyInfoFactory kifac;
+    private DocumentBuilder db;
     private KeyStore ks;
     private Key signingKey;
     private PublicKey validatingKey;
@@ -61,6 +63,7 @@ public class CreateInteropXFilter2Test extends org.junit.Assert {
         fac = XMLSignatureFactory.getInstance
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
         kifac = fac.getKeyInfoFactory();
+        db = XMLUtils.createDocumentBuilder(false);
 
         // get key & self-signed certificate from keystore
         String fs = System.getProperty("file.separator");
@@ -124,7 +127,7 @@ public class CreateInteropXFilter2Test extends org.junit.Assert {
         XMLSignature sig = fac.newXMLSignature
             (si, ki, null, null, "signature-value");
 
-        Document doc = XMLUtils.newDocument(false);
+        Document doc = db.newDocument();
         Element tbs1 = doc.createElementNS(null, "ToBeSigned");
         Comment tbs1Com = doc.createComment(" comment ");
         Element tbs1Data = doc.createElementNS(null, "Data");

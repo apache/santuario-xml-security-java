@@ -37,6 +37,7 @@ import java.security.spec.RSAPublicKeySpec;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -123,7 +124,8 @@ public class BaltimoreTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmldsig-fifteen/signature-enveloping-hmac-sha1.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // Set up the Key
         byte[] hmacKey = "secret".getBytes("ASCII");
@@ -146,7 +148,7 @@ public class BaltimoreTest extends Assert {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
         // Check the SecurityEvents
         checkSignatureToken(securityEventListener, key,
@@ -159,7 +161,8 @@ public class BaltimoreTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmldsig-fifteen/signature-enveloping-hmac-sha1-40.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // Set up the Key
         byte[] hmacKey = "secret".getBytes("ASCII");
@@ -181,7 +184,7 @@ public class BaltimoreTest extends Assert {
         XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
 
         try {
-            StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
             fail("Failure expected on a short HMAC length");
         } catch (XMLStreamException ex) {
             Assert.assertTrue(ex.getCause() instanceof XMLSecurityException);
@@ -196,7 +199,8 @@ public class BaltimoreTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmldsig-fifteen/signature-enveloped-dsa.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -214,7 +218,7 @@ public class BaltimoreTest extends Assert {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
         // Check the SecurityEvents
         checkSignatureToken(securityEventListener, getPublicKey("DSA", 15),
@@ -227,7 +231,8 @@ public class BaltimoreTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmldsig-fifteen/signature-enveloping-b64-dsa.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -245,7 +250,7 @@ public class BaltimoreTest extends Assert {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
         // Check the SecurityEvents
         checkSignatureToken(securityEventListener, getPublicKey("DSA", 15),
@@ -258,7 +263,8 @@ public class BaltimoreTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmldsig-fifteen/signature-enveloping-dsa.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -276,7 +282,7 @@ public class BaltimoreTest extends Assert {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
         // Check the SecurityEvents
         checkSignatureToken(securityEventListener, getPublicKey("DSA", 15),
@@ -289,7 +295,8 @@ public class BaltimoreTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmldsig-fifteen/signature-enveloping-rsa.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -307,7 +314,7 @@ public class BaltimoreTest extends Assert {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
         // Check the SecurityEvents
         checkSignatureToken(securityEventListener, getPublicKey("RSA", 15),
@@ -332,7 +339,8 @@ public class BaltimoreTest extends Assert {
             InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-fifteen/signature-external-b64-dsa.xml");
-            Document document = XMLUtils.parse(sourceDocument, false);
+            DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+            Document document = builder.parse(sourceDocument);
 
             // Set up the Key
             Key publicKey = getPublicKey("DSA", 15);
@@ -354,7 +362,7 @@ public class BaltimoreTest extends Assert {
             XMLStreamReader securityStreamReader =
                     inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-            StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
             // Check the SecurityEvents
             checkSignatureToken(securityEventListener, getPublicKey("DSA", 15),
@@ -384,7 +392,8 @@ public class BaltimoreTest extends Assert {
             InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-fifteen/signature-external-dsa.xml");
-            Document document = XMLUtils.parse(sourceDocument, false);
+            DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+            Document document = builder.parse(sourceDocument);
 
             // Set up the Key
             Key publicKey = getPublicKey("DSA", 15);
@@ -406,7 +415,7 @@ public class BaltimoreTest extends Assert {
             XMLStreamReader securityStreamReader =
                     inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-            StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
             // Check the SecurityEvents
             checkSignatureToken(securityEventListener, getPublicKey("DSA", 15),
@@ -423,7 +432,8 @@ public class BaltimoreTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-enveloping-hmac-sha1.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // Set up the Key
         byte[] hmacKey = "secret".getBytes("ASCII");
@@ -446,7 +456,7 @@ public class BaltimoreTest extends Assert {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
         // Check the SecurityEvents
         checkSignatureToken(securityEventListener, key,
@@ -459,7 +469,8 @@ public class BaltimoreTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-enveloping-hmac-sha1-40.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // Set up the Key
         byte[] hmacKey = "secret".getBytes("ASCII");
@@ -481,7 +492,7 @@ public class BaltimoreTest extends Assert {
         XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
 
         try {
-            StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
             fail("Failure expected on a short HMAC length");
         } catch (XMLStreamException ex) {
             Assert.assertTrue(ex.getCause() instanceof XMLSecurityException);
@@ -496,7 +507,8 @@ public class BaltimoreTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-enveloped-dsa.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // Set up the Key
         Key publicKey = getPublicKey("DSA", 23);
@@ -518,7 +530,7 @@ public class BaltimoreTest extends Assert {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
         // Check the SecurityEvents
         checkSignatureToken(securityEventListener, getPublicKey("DSA", 23),
@@ -531,7 +543,8 @@ public class BaltimoreTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-enveloping-b64-dsa.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // Set up the Key
         Key publicKey = getPublicKey("DSA", 23);
@@ -553,7 +566,7 @@ public class BaltimoreTest extends Assert {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
         // Check the SecurityEvents
         checkSignatureToken(securityEventListener, getPublicKey("DSA", 23),
@@ -566,7 +579,8 @@ public class BaltimoreTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-enveloping-dsa.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -584,7 +598,7 @@ public class BaltimoreTest extends Assert {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
         // Check the SecurityEvents
         checkSignatureToken(securityEventListener, getPublicKey("DSA", 23),
@@ -597,7 +611,8 @@ public class BaltimoreTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-enveloping-rsa.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -615,7 +630,7 @@ public class BaltimoreTest extends Assert {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
         // Check the SecurityEvents
         checkSignatureToken(securityEventListener, getPublicKey("RSA", 23),
@@ -641,7 +656,8 @@ public class BaltimoreTest extends Assert {
             InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-external-b64-dsa.xml");
-            Document document = XMLUtils.parse(sourceDocument, false);
+            DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+            Document document = builder.parse(sourceDocument);
 
             // Set up the Key
             Key publicKey = getPublicKey("DSA", 23);
@@ -663,7 +679,7 @@ public class BaltimoreTest extends Assert {
             XMLStreamReader securityStreamReader =
                     inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-            StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
             // Check the SecurityEvents
             checkSignatureToken(securityEventListener, getPublicKey("RSA", 23),
@@ -693,7 +709,8 @@ public class BaltimoreTest extends Assert {
             InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-external-dsa.xml");
-            Document document = XMLUtils.parse(sourceDocument, false);
+            DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+            Document document = builder.parse(sourceDocument);
 
             // Set up the Key
             Key publicKey = getPublicKey("DSA", 23);
@@ -715,7 +732,7 @@ public class BaltimoreTest extends Assert {
             XMLStreamReader securityStreamReader =
                     inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-            StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
             // Check the SecurityEvents
             checkSignatureToken(securityEventListener, getPublicKey("RSA", 23),
@@ -745,7 +762,8 @@ public class BaltimoreTest extends Assert {
             InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-keyname.xml");
-            Document document = XMLUtils.parse(sourceDocument, false);
+            DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+            Document document = builder.parse(sourceDocument);
 
             // Set up the Key
             CertificateFactory cf = CertificateFactory.getInstance("X509");
@@ -772,7 +790,7 @@ public class BaltimoreTest extends Assert {
             XMLStreamReader securityStreamReader =
                     inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-            StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
             // Check the SecurityEvents
             checkSignatureToken(securityEventListener, cert.getPublicKey(),
@@ -802,7 +820,8 @@ public class BaltimoreTest extends Assert {
             InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-retrievalmethod-rawx509crt.xml");
-            Document document = XMLUtils.parse(sourceDocument, false);
+            DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+            Document document = builder.parse(sourceDocument);
 
             // Set up the Key
             CertificateFactory cf = CertificateFactory.getInstance("X509");
@@ -827,7 +846,7 @@ public class BaltimoreTest extends Assert {
             InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
             XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
 
-            StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
         } finally {
             TestUtils.switchAllowNotSameDocumentReferences(false);
             HttpRequestRedirectorProxy.stopHttpEngine();
@@ -853,7 +872,8 @@ public class BaltimoreTest extends Assert {
             InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-x509-crt-crl.xml");
-            Document document = XMLUtils.parse(sourceDocument, false);
+            DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+            Document document = builder.parse(sourceDocument);
 
             // XMLUtils.outputDOM(document, System.out);
 
@@ -869,7 +889,7 @@ public class BaltimoreTest extends Assert {
             InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
             XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
 
-            StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
         } finally {
             TestUtils.switchAllowNotSameDocumentReferences(false);
             HttpRequestRedirectorProxy.stopHttpEngine();
@@ -895,7 +915,8 @@ public class BaltimoreTest extends Assert {
             InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-x509-crt.xml");
-            Document document = XMLUtils.parse(sourceDocument, false);
+            DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+            Document document = builder.parse(sourceDocument);
 
             // XMLUtils.outputDOM(document, System.out);
 
@@ -911,7 +932,7 @@ public class BaltimoreTest extends Assert {
             InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
             XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
 
-            StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
         } finally {
             TestUtils.switchAllowNotSameDocumentReferences(false);
             HttpRequestRedirectorProxy.stopHttpEngine();
@@ -937,7 +958,8 @@ public class BaltimoreTest extends Assert {
             InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-x509-is.xml");
-            Document document = XMLUtils.parse(sourceDocument, false);
+            DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+            Document document = builder.parse(sourceDocument);
 
             // XMLUtils.outputDOM(document, System.out);
 
@@ -964,7 +986,7 @@ public class BaltimoreTest extends Assert {
             XMLStreamReader securityStreamReader =
                     inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-            StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
             // Check the SecurityEvents
             checkSignatureToken(securityEventListener, cert.getPublicKey(),
@@ -994,7 +1016,8 @@ public class BaltimoreTest extends Assert {
             InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-x509-ski.xml");
-            Document document = XMLUtils.parse(sourceDocument, false);
+            DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+            Document document = builder.parse(sourceDocument);
 
             // XMLUtils.outputDOM(document, System.out);
 
@@ -1019,7 +1042,7 @@ public class BaltimoreTest extends Assert {
             InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
             XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
 
-            StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
         } finally {
             TestUtils.switchAllowNotSameDocumentReferences(false);
             HttpRequestRedirectorProxy.stopHttpEngine();
@@ -1045,7 +1068,8 @@ public class BaltimoreTest extends Assert {
             InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-x509-sn.xml");
-            Document document = XMLUtils.parse(sourceDocument, false);
+            DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+            Document document = builder.parse(sourceDocument);
 
             // XMLUtils.outputDOM(document, System.out);
 
@@ -1072,7 +1096,7 @@ public class BaltimoreTest extends Assert {
             XMLStreamReader securityStreamReader =
                     inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-            StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
             // Check the SecurityEvents
             checkSignatureToken(securityEventListener, cert.getPublicKey(),
@@ -1089,7 +1113,8 @@ public class BaltimoreTest extends Assert {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-exc-c14n-one/exc-signature.xml");
-        Document document = XMLUtils.parse(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -1105,7 +1130,7 @@ public class BaltimoreTest extends Assert {
         InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
         XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
 
-        StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
 
     @Test
@@ -1126,7 +1151,8 @@ public class BaltimoreTest extends Assert {
             InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/signature-keyname.xml");
-            Document document = XMLUtils.parse(sourceDocument, false);
+            DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+            Document document = builder.parse(sourceDocument);
 
             // Set up the Key
             CertificateFactory cf = CertificateFactory.getInstance("X509");
@@ -1153,7 +1179,7 @@ public class BaltimoreTest extends Assert {
             XMLStreamReader securityStreamReader =
                     inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-            StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
             // Check the SecurityEvents
             checkSignatureToken(securityEventListener, cert.getPublicKey(),
@@ -1183,7 +1209,8 @@ public class BaltimoreTest extends Assert {
             InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/signature-retrievalmethod-rawx509crt.xml");
-            Document document = XMLUtils.parse(sourceDocument, false);
+            DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+            Document document = builder.parse(sourceDocument);
 
             // Set up the Key
             CertificateFactory cf = CertificateFactory.getInstance("X509");
@@ -1208,7 +1235,7 @@ public class BaltimoreTest extends Assert {
             InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
             XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
 
-            StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
         } finally {
             TestUtils.switchAllowNotSameDocumentReferences(false);
             HttpRequestRedirectorProxy.stopHttpEngine();
@@ -1234,7 +1261,8 @@ public class BaltimoreTest extends Assert {
             InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/signature-x509-crt-crl.xml");
-            Document document = XMLUtils.parse(sourceDocument, false);
+            DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+            Document document = builder.parse(sourceDocument);
 
             // XMLUtils.outputDOM(document, System.out);
 
@@ -1250,7 +1278,7 @@ public class BaltimoreTest extends Assert {
             InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
             XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
 
-            StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
         } finally {
             TestUtils.switchAllowNotSameDocumentReferences(false);
             HttpRequestRedirectorProxy.stopHttpEngine();
@@ -1276,7 +1304,8 @@ public class BaltimoreTest extends Assert {
             InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/signature-x509-crt.xml");
-            Document document = XMLUtils.parse(sourceDocument, false);
+            DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+            Document document = builder.parse(sourceDocument);
 
             // XMLUtils.outputDOM(document, System.out);
 
@@ -1292,7 +1321,7 @@ public class BaltimoreTest extends Assert {
             InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
             XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
 
-            StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
         } finally {
             TestUtils.switchAllowNotSameDocumentReferences(false);
             HttpRequestRedirectorProxy.stopHttpEngine();
@@ -1318,7 +1347,8 @@ public class BaltimoreTest extends Assert {
             InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/signature-x509-is.xml");
-            Document document = XMLUtils.parse(sourceDocument, false);
+            DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+            Document document = builder.parse(sourceDocument);
 
             // XMLUtils.outputDOM(document, System.out);
 
@@ -1345,7 +1375,7 @@ public class BaltimoreTest extends Assert {
             XMLStreamReader securityStreamReader =
                     inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-            StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
             // Check the SecurityEvents
             checkSignatureToken(securityEventListener, cert.getPublicKey(),
@@ -1375,7 +1405,8 @@ public class BaltimoreTest extends Assert {
             InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/signature-x509-ski.xml");
-            Document document = XMLUtils.parse(sourceDocument, false);
+            DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+            Document document = builder.parse(sourceDocument);
 
             // XMLUtils.outputDOM(document, System.out);
 
@@ -1400,7 +1431,7 @@ public class BaltimoreTest extends Assert {
             InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
             XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
 
-            StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
         } finally {
             TestUtils.switchAllowNotSameDocumentReferences(false);
             HttpRequestRedirectorProxy.stopHttpEngine();
@@ -1426,7 +1457,8 @@ public class BaltimoreTest extends Assert {
             InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/signature-x509-sn.xml");
-            Document document = XMLUtils.parse(sourceDocument, false);
+            DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+            Document document = builder.parse(sourceDocument);
 
             // XMLUtils.outputDOM(document, System.out);
 
@@ -1453,7 +1485,7 @@ public class BaltimoreTest extends Assert {
             XMLStreamReader securityStreamReader =
                     inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-            StAX2DOM.readDoc(XMLUtils.newDocument(false), securityStreamReader);
+            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
             // Check the SecurityEvents
             checkSignatureToken(securityEventListener, cert.getPublicKey(),

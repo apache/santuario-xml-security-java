@@ -19,7 +19,6 @@
 package org.apache.xml.security.test.dom.secure_val;
 
 import java.io.File;
-import java.io.FileInputStream;
 
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.Manifest;
@@ -70,7 +69,8 @@ public class ForbiddenRefCountTest extends InteropTestBase {
 
         File f = new File(directory + "/" + file);
 
-        org.w3c.dom.Document doc = XMLUtils.parse(new FileInputStream(f), false);
+        javax.xml.parsers.DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+        org.w3c.dom.Document doc = db.parse(f);
 
         Element manifestElement =
             (Element) doc.getElementsByTagNameNS(Constants.SignatureSpecNS,
