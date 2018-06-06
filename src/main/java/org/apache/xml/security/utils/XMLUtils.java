@@ -25,14 +25,12 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.WeakHashMap;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -57,9 +55,15 @@ public final class XMLUtils {
     private static boolean ignoreLineBreaks =
         AccessController.doPrivileged(
             (PrivilegedAction<Boolean>) () -> Boolean.getBoolean("org.apache.xml.security.ignoreLineBreaks"));
-
-    private static final Map<ClassLoader, DocumentBuilder[][]> DOCUMENT_BUILDERS =
-        Collections.synchronizedMap(new WeakHashMap<ClassLoader, DocumentBuilder[][]>());
+    
+    @SuppressWarnings("unchecked")
+    private static final ThreadLocal<DocumentBuilder> tl[][] = new ThreadLocal[2][2];
+    static {
+        tl[0][0] = new MyThreadLocal(false, false);
+        tl[0][1] = new MyThreadLocal(false, true);
+        tl[1][0] = new MyThreadLocal(true, false);
+        tl[1][1] = new MyThreadLocal(true, true);
+    }
 
     private static volatile String dsPrefix = "ds";
     private static volatile String ds11Prefix = "dsig11";
@@ -1057,9 +1061,9 @@ public final class XMLUtils {
     public static DocumentBuilder createDocumentBuilder(
         boolean validating, boolean disAllowDocTypeDeclarations
     ) throws ParserConfigurationException {
-        DocumentBuilder db = getDocumentBuilder(validating, disAllowDocTypeDeclarations);
-        db.reset();
-        return db;
+        DocumentBuilder documentBuilder = tl[validating ? 1 : 0][disAllowDocTypeDeclarations ? 1 : 0].get();
+        documentBuilder.reset();
+        return documentBuilder;
     }
 
     /**
@@ -1116,64 +1120,32 @@ public final class XMLUtils {
 
         return resizedBytes;
     }
+    
+    private static final class MyThreadLocal extends ThreadLocal<DocumentBuilder> {
+        private final boolean validating;
+        private final boolean disAllowDocTypeDeclarations;
 
-    private static DocumentBuilder getDocumentBuilder(boolean validating, boolean disAllowDocTypeDeclarations) throws ParserConfigurationException {
-        ClassLoader loader = getContextClassLoader();
-        if (loader == null) {
-            loader = getClassLoader(XMLUtils.class);
-        }
-        if (loader == null) {
-            return newDocumentBuilder(validating, disAllowDocTypeDeclarations);
-        }
-
-        DocumentBuilder[][] cacheValue = DOCUMENT_BUILDERS.get(loader);
-        if (cacheValue == null) {
-            cacheValue = new DocumentBuilder[2][2];
-            DOCUMENT_BUILDERS.put(loader, cacheValue);
+        public MyThreadLocal(boolean validating, boolean disAllowDocTypeDeclarations) {
+            this.validating = validating;
+            this.disAllowDocTypeDeclarations = disAllowDocTypeDeclarations;
         }
 
-        DocumentBuilder db = cacheValue[validating ? 1 : 0][disAllowDocTypeDeclarations ? 1 : 0];
-        if (db == null) {
-            db = newDocumentBuilder(validating, disAllowDocTypeDeclarations);
-            cacheValue[validating ? 1 : 0][disAllowDocTypeDeclarations ? 1 : 0] = db;
-        }
-
-        return db;
-    }
-
-    private static DocumentBuilder newDocumentBuilder(boolean validating, boolean disAllowDocTypeDeclarations) throws ParserConfigurationException {
-        DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
-        f.setNamespaceAware(true);
-        f.setFeature(javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING, true);
-        if (disAllowDocTypeDeclarations) {
-            f.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-        }
-        f.setValidating(validating);
-        return f.newDocumentBuilder();
-    }
-
-    private static ClassLoader getContextClassLoader() {
-        final SecurityManager sm = System.getSecurityManager();
-        if (sm != null) {
-            return AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() {
-                public ClassLoader run() {
-                    return Thread.currentThread().getContextClassLoader();
+        @Override
+        protected DocumentBuilder initialValue() {
+            try {
+                DocumentBuilderFactory dfactory = DocumentBuilderFactory.newInstance();
+                dfactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
+                if (disAllowDocTypeDeclarations) {
+                    dfactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
                 }
-            });
+                dfactory.setValidating(validating);        
+                dfactory.setNamespaceAware(true);
+                
+                return dfactory.newDocumentBuilder();
+            } catch (ParserConfigurationException e) {
+                throw new RuntimeException(e);
+            }
         }
-        return Thread.currentThread().getContextClassLoader();
-    }
-
-    private static ClassLoader getClassLoader(final Class<?> clazz) {
-        final SecurityManager sm = System.getSecurityManager();
-        if (sm != null) {
-            return AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() {
-                public ClassLoader run() {
-                    return clazz.getClassLoader();
-                }
-            });
-        }
-        return clazz.getClassLoader();
     }
 
 }
