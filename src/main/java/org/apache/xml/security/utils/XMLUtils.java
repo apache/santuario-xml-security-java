@@ -55,15 +55,6 @@ public final class XMLUtils {
     private static boolean ignoreLineBreaks =
         AccessController.doPrivileged(
             (PrivilegedAction<Boolean>) () -> Boolean.getBoolean("org.apache.xml.security.ignoreLineBreaks"));
-    
-    @SuppressWarnings("unchecked")
-    private static final ThreadLocal<DocumentBuilder> tl[][] = new ThreadLocal[2][2];
-    static {
-        tl[0][0] = new MyThreadLocal(false, false);
-        tl[0][1] = new MyThreadLocal(false, true);
-        tl[1][0] = new MyThreadLocal(true, false);
-        tl[1][1] = new MyThreadLocal(true, true);
-    }
 
     private static volatile String dsPrefix = "ds";
     private static volatile String ds11Prefix = "dsig11";
@@ -1061,10 +1052,17 @@ public final class XMLUtils {
     public static DocumentBuilder createDocumentBuilder(
         boolean validating, boolean disAllowDocTypeDeclarations
     ) throws ParserConfigurationException {
-        DocumentBuilder documentBuilder = tl[validating ? 1 : 0][disAllowDocTypeDeclarations ? 1 : 0].get();
-        documentBuilder.reset();
-        return documentBuilder;
+        DocumentBuilderFactory dfactory = DocumentBuilderFactory.newInstance();
+        dfactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
+        if (disAllowDocTypeDeclarations) {
+            dfactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+        }
+        dfactory.setValidating(validating);        
+        dfactory.setNamespaceAware(true);
+        
+        return dfactory.newDocumentBuilder();
     }
+
 
     /**
      * Return this document builder to be reused
@@ -1119,33 +1117,6 @@ public final class XMLUtils {
         System.arraycopy(bigBytes, startSrc, resizedBytes, startDst, bigLen);
 
         return resizedBytes;
-    }
-    
-    private static final class MyThreadLocal extends ThreadLocal<DocumentBuilder> {
-        private final boolean validating;
-        private final boolean disAllowDocTypeDeclarations;
-
-        public MyThreadLocal(boolean validating, boolean disAllowDocTypeDeclarations) {
-            this.validating = validating;
-            this.disAllowDocTypeDeclarations = disAllowDocTypeDeclarations;
-        }
-
-        @Override
-        protected DocumentBuilder initialValue() {
-            try {
-                DocumentBuilderFactory dfactory = DocumentBuilderFactory.newInstance();
-                dfactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
-                if (disAllowDocTypeDeclarations) {
-                    dfactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-                }
-                dfactory.setValidating(validating);        
-                dfactory.setNamespaceAware(true);
-                
-                return dfactory.newDocumentBuilder();
-            } catch (ParserConfigurationException e) {
-                throw new RuntimeException(e);
-            }
-        }
     }
 
 }
