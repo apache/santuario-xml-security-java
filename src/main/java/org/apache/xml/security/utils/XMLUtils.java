@@ -18,7 +18,9 @@
  */
 package org.apache.xml.security.utils;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigInteger;
 import java.security.AccessController;
@@ -34,17 +36,23 @@ import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.validation.Schema;
 
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.c14n.InvalidCanonicalizerException;
 import org.w3c.dom.Attr;
+import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  * DOM and XML accessibility and comfort functions.
@@ -55,14 +63,14 @@ public final class XMLUtils {
     private static boolean ignoreLineBreaks =
         AccessController.doPrivileged(
             (PrivilegedAction<Boolean>) () -> Boolean.getBoolean("org.apache.xml.security.ignoreLineBreaks"));
-    
+
     @SuppressWarnings("unchecked")
-    private static final ThreadLocal<DocumentBuilder> tl[][] = new ThreadLocal[2][2];
+    private static final WeakObjectPool<DocumentBuilder, ParserConfigurationException> pools[] = new WeakObjectPool[4];
     static {
-        tl[0][0] = new MyThreadLocal(false, false);
-        tl[0][1] = new MyThreadLocal(false, true);
-        tl[1][0] = new MyThreadLocal(true, false);
-        tl[1][1] = new MyThreadLocal(true, true);
+        pools[0] = new DocumentBuilderPool(false, false);
+        pools[1] = new DocumentBuilderPool(false, true);
+        pools[2] = new DocumentBuilderPool(true, false);
+        pools[3] = new DocumentBuilderPool(true, true);
     }
 
     private static volatile String dsPrefix = "ds";
@@ -1061,19 +1069,25 @@ public final class XMLUtils {
     public static DocumentBuilder createDocumentBuilder(
         boolean validating, boolean disAllowDocTypeDeclarations
     ) throws ParserConfigurationException {
-        DocumentBuilder documentBuilder = tl[validating ? 1 : 0][disAllowDocTypeDeclarations ? 1 : 0].get();
-        documentBuilder.reset();
-        return documentBuilder;
+        int idx = getPoolsIndex(validating, disAllowDocTypeDeclarations);
+        return pools[idx].getObject();
     }
+
 
     /**
      * Return this document builder to be reused
      * @param db DocumentBuilder returned from any of {@link #createDocumentBuilder} methods.
      * @return whether it was successfully returned to the pool
      */
-    @Deprecated
     public static boolean repoolDocumentBuilder(DocumentBuilder db) {
-        return true;
+        if (!(db instanceof DocumentBuilderProxy)) {
+            return false;
+        }
+        db.reset();
+        boolean disAllowDocTypeDeclarations =
+            ((DocumentBuilderProxy)db).disAllowDocTypeDeclarations();
+        int idx = getPoolsIndex(db.isValidating(), disAllowDocTypeDeclarations);
+        return pools[idx].repool(db);
     }
 
     /**
@@ -1120,32 +1134,122 @@ public final class XMLUtils {
 
         return resizedBytes;
     }
-    
-    private static final class MyThreadLocal extends ThreadLocal<DocumentBuilder> {
-        private final boolean validating;
+
+    /**
+     * We need this proxy wrapping DocumentBuilder to record the value
+     * passed to disAllowDoctypeDeclarations.  It's needed to figure out
+     * on which pool to return.
+     */
+    private static class DocumentBuilderProxy extends DocumentBuilder {
+        private final DocumentBuilder delegate;
         private final boolean disAllowDocTypeDeclarations;
 
-        public MyThreadLocal(boolean validating, boolean disAllowDocTypeDeclarations) {
+        private DocumentBuilderProxy(DocumentBuilder actual, boolean disAllowDocTypeDeclarations) {
+            delegate = actual;
+            this.disAllowDocTypeDeclarations = disAllowDocTypeDeclarations;
+        }
+
+        boolean disAllowDocTypeDeclarations() {
+            return disAllowDocTypeDeclarations;
+        }
+
+        public void reset() {
+            delegate.reset();
+        }
+
+        public Document parse(InputStream is) throws SAXException, IOException {
+            return delegate.parse(is);
+        }
+
+        public Document parse(InputStream is, String systemId)
+                throws SAXException, IOException {
+            return delegate.parse(is, systemId);
+        }
+
+        public Document parse(String uri) throws SAXException, IOException {
+            return delegate.parse(uri);
+        }
+
+        public Document parse(File f) throws SAXException, IOException {
+            return delegate.parse(f);
+        }
+
+        public Schema getSchema() {
+            return delegate.getSchema();
+        }
+
+        public boolean isXIncludeAware() {
+            return delegate.isXIncludeAware();
+        }
+
+        @Override
+        public Document parse(InputSource is) throws SAXException, IOException {
+            return delegate.parse(is);
+        }
+
+        @Override
+        public boolean isNamespaceAware() {
+            return delegate.isNamespaceAware();
+        }
+
+        @Override
+        public boolean isValidating() {
+            return delegate.isValidating();
+        }
+
+        @Override
+        public void setEntityResolver(EntityResolver er) {
+            delegate.setEntityResolver(er);
+        }
+
+        @Override
+        public void setErrorHandler(ErrorHandler eh) {
+            delegate.setErrorHandler(eh);
+        }
+
+        @Override
+        public Document newDocument() {
+            return delegate.newDocument();
+        }
+
+        @Override
+        public DOMImplementation getDOMImplementation() {
+            return delegate.getDOMImplementation();
+        }
+
+    }
+
+    private static final class DocumentBuilderPool
+        extends WeakObjectPool<DocumentBuilder, ParserConfigurationException> {
+
+        private final boolean validating, disAllowDocTypeDeclarations;
+
+        public DocumentBuilderPool(boolean validating, boolean disAllowDocTypeDeclarations) {
             this.validating = validating;
             this.disAllowDocTypeDeclarations = disAllowDocTypeDeclarations;
         }
 
         @Override
-        protected DocumentBuilder initialValue() {
-            try {
-                DocumentBuilderFactory dfactory = DocumentBuilderFactory.newInstance();
-                dfactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
-                if (disAllowDocTypeDeclarations) {
-                    dfactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-                }
-                dfactory.setValidating(validating);        
-                dfactory.setNamespaceAware(true);
-                
-                return dfactory.newDocumentBuilder();
-            } catch (ParserConfigurationException e) {
-                throw new RuntimeException(e);
+        protected DocumentBuilder createObject() throws ParserConfigurationException {
+            DocumentBuilderFactory dfactory = DocumentBuilderFactory.newInstance();
+            dfactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
+            if (disAllowDocTypeDeclarations) {
+                dfactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
             }
+            dfactory.setValidating(validating);
+            dfactory.setNamespaceAware(true);
+            return new DocumentBuilderProxy(dfactory.newDocumentBuilder(), disAllowDocTypeDeclarations);
         }
+    }
+
+    /**
+     * Maps the two boolean configuration options for the factories to the array index for the WeakObjectPool
+     * @param validating
+     * @param disAllowDocTypeDeclarations
+     * @return the index to the {@link #pools}
+     */
+    private static int getPoolsIndex(boolean validating, boolean disAllowDocTypeDeclarations) {
+        return (validating ? 2 : 0) + (disAllowDocTypeDeclarations ? 1 : 0);
     }
 
 }

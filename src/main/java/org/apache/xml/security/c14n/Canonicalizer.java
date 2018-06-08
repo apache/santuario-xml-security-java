@@ -282,7 +282,11 @@ public class Canonicalizer {
              */
             db.setErrorHandler(new org.apache.xml.security.utils.IgnoreAllErrorHandler());
 
-            document = db.parse(in);
+            try {
+                document = db.parse(in);
+            } finally {
+                XMLUtils.repoolDocumentBuilder(db);
+            }
         }
         return this.canonicalizeSubtree(document);
     }

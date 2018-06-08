@@ -22,6 +22,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.parsers.ParserConfigurationException;
@@ -31,9 +32,9 @@ import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.c14n.InvalidCanonicalizerException;
 import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.transforms.params.InclusiveNamespaces;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
-import org.apache.xml.security.transforms.params.InclusiveNamespaces;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -218,6 +219,8 @@ public class SignedInfo extends Manifest {
                             newdoc.getDocumentElement(), true);
                     element.getParentNode().replaceChild(imported, element);
                     return (Element) imported;
+                } finally {
+                    XMLUtils.repoolDocumentBuilder(db);
                 }
             } catch (ParserConfigurationException ex) {
                 throw new XMLSecurityException(ex);
