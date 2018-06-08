@@ -125,6 +125,8 @@ public class SignatureReferenceTest extends org.junit.Assert {
         referenceElement.appendChild(digestValue);
 
         new WrappedReference(referenceElement, "_54321", null);
+
+        XMLUtils.repoolDocumentBuilder(db);
     }
 
     /**

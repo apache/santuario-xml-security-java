@@ -35,13 +35,25 @@ import java.io.ByteArrayInputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.Provider;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
-import javax.xml.crypto.*;
-import javax.xml.crypto.dsig.*;
+import javax.xml.crypto.Data;
+import javax.xml.crypto.MarshalException;
+import javax.xml.crypto.NodeSetData;
+import javax.xml.crypto.URIDereferencer;
+import javax.xml.crypto.URIReferenceException;
+import javax.xml.crypto.XMLCryptoContext;
+import javax.xml.crypto.XMLStructure;
 import javax.xml.crypto.dom.DOMURIReference;
+import javax.xml.crypto.dsig.Transform;
+import javax.xml.crypto.dsig.XMLSignature;
 import javax.xml.crypto.dsig.keyinfo.RetrievalMethod;
-import javax.xml.parsers.*;
+import javax.xml.parsers.DocumentBuilder;
+
+import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -254,11 +266,11 @@ public final class DOMRetrievalMethod extends DOMStructure
     public XMLStructure dereferenceAsXMLStructure(XMLCryptoContext context)
         throws URIReferenceException
     {
+        DocumentBuilder db = null;
+        boolean secVal = Utils.secureValidation(context);
         try {
             ApacheData data = (ApacheData)dereference(context);
-            boolean secVal = Utils.secureValidation(context);
-            DocumentBuilder db = 
-                org.apache.xml.security.utils.XMLUtils.createDocumentBuilder(false, secVal);
+            db = XMLUtils.createDocumentBuilder(false, secVal);
             Document doc = db.parse(new ByteArrayInputStream
                 (data.getXMLSignatureInput().getBytes()));
             Element kiElem = doc.getDocumentElement();
@@ -270,6 +282,10 @@ public final class DOMRetrievalMethod extends DOMStructure
             }
         } catch (Exception e) {
             throw new URIReferenceException(e);
+        } finally {
+            if (db != null) {
+                XMLUtils.repoolDocumentBuilder(db);
+            }
         }
     }
 

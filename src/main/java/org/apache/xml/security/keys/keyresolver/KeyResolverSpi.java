@@ -261,6 +261,7 @@ public abstract class KeyResolverSpi {
         this.globalResolver = globalResolver;
     }
 
+
     /**
      * Parses a byte array and returns the parsed Element.
      *
@@ -280,6 +281,10 @@ public abstract class KeyResolverSpi {
             throw new KeyResolverException(ex);
         } catch (ParserConfigurationException ex) {
             throw new KeyResolverException(ex);
+        } finally {
+            if (db != null) {
+                XMLUtils.repoolDocumentBuilder(db);
+            }
         }
     }
 
