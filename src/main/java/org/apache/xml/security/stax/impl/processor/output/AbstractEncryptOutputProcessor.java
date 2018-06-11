@@ -31,6 +31,7 @@ import org.apache.xml.security.stax.ext.stax.*;
 import org.apache.xml.security.stax.impl.EncryptionPartDef;
 import org.apache.xml.security.stax.impl.XMLSecurityEventWriter;
 import org.apache.xml.security.stax.impl.util.TrimmerOutputStream;
+import org.apache.xml.security.utils.XMLUtils;
 
 import javax.crypto.Cipher;
 import javax.crypto.CipherOutputStream;
@@ -162,8 +163,12 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
                 symmetricCipher.init(Cipher.ENCRYPT_MODE, encryptionPartDef.getSymmetricKey(), parameterSpec);
 
                 characterEventGeneratorOutputStream = new CharacterEventGeneratorOutputStream();
-                Base64OutputStream base64EncoderStream =
-                        new Base64OutputStream(characterEventGeneratorOutputStream, true);
+                Base64OutputStream base64EncoderStream = null;
+                if (XMLUtils.isIgnoreLineBreaks()) {
+                    base64EncoderStream = new Base64OutputStream(characterEventGeneratorOutputStream, true, 0, null);
+                } else {
+                    base64EncoderStream = new Base64OutputStream(characterEventGeneratorOutputStream, true);
+                }
                 base64EncoderStream.write(iv);
 
                 OutputStream outputStream = new CipherOutputStream(base64EncoderStream, symmetricCipher);

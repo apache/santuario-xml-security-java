@@ -549,6 +549,10 @@ public final class XMLUtils {
         return Base64.getMimeDecoder().decode(encodedBytes);
     }
 
+    public static boolean isIgnoreLineBreaks() {
+        return ignoreLineBreaks;
+    }
+
     /**
      * Method convertNodelistToSet
      *
