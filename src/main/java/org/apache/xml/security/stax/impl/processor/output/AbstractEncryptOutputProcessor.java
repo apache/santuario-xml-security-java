@@ -403,7 +403,7 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
     }
 
     private char[] byteToCharArray(byte[]  bytes, int off, int len) {
-        char[] chars = new char[len];
+        char[] chars = new char[len - off];
         for (int i = off; i < len; i++) {
             chars[i] = (char)bytes[i];
         }
