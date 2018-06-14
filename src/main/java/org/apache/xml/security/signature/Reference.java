@@ -581,7 +581,7 @@ public class Reference extends SignatureElementProxy {
     }
 
     /**
-     * This method only works works after a call to verify.
+     * This method only works after a call to verify.
      * @return the transformed output(i.e. what is going to be digested).
      */
     public XMLSignatureInput getTransformsOutput() {
