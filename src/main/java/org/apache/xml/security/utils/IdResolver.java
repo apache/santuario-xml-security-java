@@ -29,6 +29,7 @@ import org.w3c.dom.Element;
  * IdResolver.
  * @deprecated
  */
+@Deprecated
 public class IdResolver {
 
     private IdResolver() {
