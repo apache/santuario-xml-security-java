@@ -28,7 +28,7 @@ import org.apache.xml.security.keys.content.MgmtData;
 import org.apache.xml.security.keys.content.X509Data;
 
 /**
- * Utility class for for <CODE>org.apache.xml.security.keys</CODE> package.
+ * Utility class for {@code org.apache.xml.security.keys} package.
  *
  */
 public final class KeyUtils {
