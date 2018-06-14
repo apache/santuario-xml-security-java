@@ -53,7 +53,7 @@ import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
  * </PRE>
  *
  * @see <A HREF="http://www.javaworld.com/javaworld/javatips/jw-javatip42_p.html">Java Tip 42: Write Java apps that work with proxy-based firewalls</A>
- * @see <A HREF="http://java.sun.com/j2se/1.4/docs/guide/net/properties.html">SUN J2SE docs for network properties</A>
+ * @see <A HREF="https://docs.oracle.com/javase/8/docs/technotes/guides/net/properties.html">JDK docs for network properties</A>
  * @see <A HREF="http://metalab.unc.edu/javafaq/javafaq.html#proxy">The JAVA FAQ Question 9.5: How do I make Java work with a proxy server?</A>
  */
 public class ResolverDirectHTTP extends ResourceResolverSpi {
