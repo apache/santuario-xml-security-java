@@ -133,76 +133,76 @@ public final class XMLDSigRI extends Provider {
                 MECH_TYPE.put("MechanismType", "DOM");
 
                 putService(new ProviderService(p, "XMLSignatureFactory",
-                    "DOM", "org.jcp.xml.dsig.internal.dom.DOMXMLSignatureFactory"));
+                    "DOM", "org.apache.jcp.xml.dsig.internal.dom.DOMXMLSignatureFactory"));
 
                 putService(new ProviderService(p, "KeyInfoFactory",
-                    "DOM", "org.jcp.xml.dsig.internal.dom.DOMKeyInfoFactory"));
+                    "DOM", "org.apache.jcp.xml.dsig.internal.dom.DOMKeyInfoFactory"));
 
 
                 // Inclusive C14N
                 putService(new ProviderService(p, "TransformService",
                     CanonicalizationMethod.INCLUSIVE,
-                    "org.jcp.xml.dsig.internal.dom.DOMCanonicalXMLC14NMethod",
+                    "org.apache.jcp.xml.dsig.internal.dom.DOMCanonicalXMLC14NMethod",
                     new String[] {"INCLUSIVE"}, MECH_TYPE));
 
                 // InclusiveWithComments C14N
                 putService(new ProviderService(p, "TransformService",
                     CanonicalizationMethod.INCLUSIVE_WITH_COMMENTS,
-                    "org.jcp.xml.dsig.internal.dom.DOMCanonicalXMLC14NMethod",
+                    "org.apache.jcp.xml.dsig.internal.dom.DOMCanonicalXMLC14NMethod",
                     new String[] {"INCLUSIVE_WITH_COMMENTS"}, MECH_TYPE));
 
                 // Inclusive C14N 1.1
                 putService(new ProviderService(p, "TransformService",
                     "http://www.w3.org/2006/12/xml-c14n11",
-                    "org.jcp.xml.dsig.internal.dom.DOMCanonicalXMLC14N11Method",
+                    "org.apache.jcp.xml.dsig.internal.dom.DOMCanonicalXMLC14N11Method",
                     null, MECH_TYPE));
 
                 // InclusiveWithComments C14N 1.1
                 putService(new ProviderService(p, "TransformService",
                     "http://www.w3.org/2006/12/xml-c14n11#WithComments",
-                    "org.jcp.xml.dsig.internal.dom.DOMCanonicalXMLC14N11Method",
+                    "org.apache.jcp.xml.dsig.internal.dom.DOMCanonicalXMLC14N11Method",
                     null, MECH_TYPE));
 
                 // Exclusive C14N
                 putService(new ProviderService(p, "TransformService",
                     CanonicalizationMethod.EXCLUSIVE,
-                    "org.jcp.xml.dsig.internal.dom.DOMExcC14NMethod",
+                    "org.apache.jcp.xml.dsig.internal.dom.DOMExcC14NMethod",
                     new String[] {"EXCLUSIVE"}, MECH_TYPE));
 
                 // ExclusiveWithComments C14N
                 putService(new ProviderService(p, "TransformService",
                     CanonicalizationMethod.EXCLUSIVE_WITH_COMMENTS,
-                    "org.jcp.xml.dsig.internal.dom.DOMExcC14NMethod",
+                    "org.apache.jcp.xml.dsig.internal.dom.DOMExcC14NMethod",
                     new String[] {"EXCLUSIVE_WITH_COMMENTS"}, MECH_TYPE));
 
                 // Base64 Transform
                 putService(new ProviderService(p, "TransformService",
                     Transform.BASE64,
-                    "org.jcp.xml.dsig.internal.dom.DOMBase64Transform",
+                    "org.apache.jcp.xml.dsig.internal.dom.DOMBase64Transform",
                     new String[] {"BASE64"}, MECH_TYPE));
 
                 // Enveloped Transform
                 putService(new ProviderService(p, "TransformService",
                     Transform.ENVELOPED,
-                    "org.jcp.xml.dsig.internal.dom.DOMEnvelopedTransform",
+                    "org.apache.jcp.xml.dsig.internal.dom.DOMEnvelopedTransform",
                     new String[] {"ENVELOPED"}, MECH_TYPE));
 
                 // XPath2 Transform
                 putService(new ProviderService(p, "TransformService",
                     Transform.XPATH2,
-                    "org.jcp.xml.dsig.internal.dom.DOMXPathFilter2Transform",
+                    "org.apache.jcp.xml.dsig.internal.dom.DOMXPathFilter2Transform",
                     new String[] {"XPATH2"}, MECH_TYPE));
 
                 // XPath Transform
                 putService(new ProviderService(p, "TransformService",
                     Transform.XPATH,
-                    "org.jcp.xml.dsig.internal.dom.DOMXPathTransform",
+                    "org.apache.jcp.xml.dsig.internal.dom.DOMXPathTransform",
                     new String[] {"XPATH"}, MECH_TYPE));
 
                 // XSLT Transform
                 putService(new ProviderService(p, "TransformService",
                     Transform.XSLT,
-                    "org.jcp.xml.dsig.internal.dom.DOMXSLTTransform",
+                    "org.apache.jcp.xml.dsig.internal.dom.DOMXSLTTransform",
                     new String[] {"XSLT"}, MECH_TYPE));
                 return null;
             }
