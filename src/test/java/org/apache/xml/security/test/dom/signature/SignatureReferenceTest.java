@@ -20,29 +20,42 @@ package org.apache.xml.security.test.dom.signature;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Enumeration;
+import java.util.List;
 
 import javax.xml.crypto.dsig.DigestMethod;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.signature.Manifest;
 import org.apache.xml.security.signature.Reference;
 import org.apache.xml.security.signature.SignedInfo;
+import org.apache.xml.security.signature.VerifiedReference;
 import org.apache.xml.security.signature.XMLSignature;
+import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.signature.reference.ReferenceData;
 import org.apache.xml.security.signature.reference.ReferenceNodeSetData;
+import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.transforms.Transforms;
+import org.apache.xml.security.utils.Base64;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.ElementProxy;
 import org.apache.xml.security.utils.XMLUtils;
+import org.apache.xml.security.utils.resolver.ResourceResolverContext;
+import org.apache.xml.security.utils.resolver.ResourceResolverException;
+import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
 import org.apache.xml.security.utils.resolver.implementations.ResolverXPointer;
 
 /**
@@ -129,6 +142,56 @@ public class SignatureReferenceTest extends org.junit.Assert {
         XMLUtils.repoolDocumentBuilder(db);
     }
 
+    @org.junit.Test
+    public void testManifestReferences() throws Throwable {
+
+        XPathFactory xpf = XPathFactory.newInstance();
+        XPath xPath = xpf.newXPath();
+        xPath.setNamespaceContext(new DSNamespaceContext());
+
+        InputStream sourceDocument =
+            this.getClass().getClassLoader().getResourceAsStream(
+                    "at/iaik/ixsil/coreFeatures/signatures/manifestSignature.xml");
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false, false);
+        Document document = builder.parse(sourceDocument);
+
+        String expression = "//dsig:Signature[1]";
+        Element sigElement =
+            (Element) xPath.evaluate(expression, document, XPathConstants.NODE);
+
+        XMLSignature signatureToVerify = new XMLSignature(sigElement, "");
+
+        KeyInfo ki = signatureToVerify.getKeyInfo();
+        PublicKey publicKey = ki.getPublicKey();
+
+        boolean signResult = signatureToVerify.checkSignatureValue(publicKey);
+        assertTrue(signResult);
+
+        List<VerifiedReference> verifiedReferences = signatureToVerify.getSignedInfo().getVerificationResults();
+        assertEquals(verifiedReferences.size(), 1);
+        assertEquals("#manifest", verifiedReferences.get(0).getUri());
+        assertTrue(verifiedReferences.get(0).isValid());
+        assertTrue(verifiedReferences.get(0).getManifestReferences().isEmpty());
+
+        signatureToVerify = new XMLSignature(sigElement, "");
+        signatureToVerify.addResourceResolver(new DummyResourceResolver());
+        signatureToVerify.setFollowNestedManifests(true);
+
+        signResult = signatureToVerify.checkSignatureValue(publicKey);
+        assertFalse(signResult);
+
+        verifiedReferences = signatureToVerify.getSignedInfo().getVerificationResults();
+        assertEquals(verifiedReferences.size(), 1);
+        assertEquals("#manifest", verifiedReferences.get(0).getUri());
+        assertTrue(verifiedReferences.get(0).isValid());
+
+        assertEquals(1, verifiedReferences.get(0).getManifestReferences().size());
+        assertEquals("../samples/sampleXMLData.xml", verifiedReferences.get(0).getManifestReferences().get(0).getUri());
+        assertFalse(verifiedReferences.get(0).getManifestReferences().get(0).isValid());
+
+        XMLUtils.repoolDocumentBuilder(builder);
+    }
+
     /**
      * Loads the 'localhost' keystore from the test keystore.
      *
@@ -200,5 +263,28 @@ public class SignatureReferenceTest extends org.junit.Assert {
         public WrappedReference(Element element, String baseURI, Manifest manifest) throws XMLSecurityException {
             super(element, baseURI, manifest);
         }
+    }
+
+    private static class DummyResourceResolver extends ResourceResolverSpi {
+
+        @Override
+        public XMLSignatureInput engineResolveURI(ResourceResolverContext context)
+            throws ResourceResolverException {
+            try {
+                XMLSignatureInput result = new XMLSignatureInput(Base64.encode("xyz".getBytes("UTF-8")));
+
+                result.setSourceURI(context.uriToResolve);
+
+                return result;
+            } catch (UnsupportedEncodingException e) {
+                throw new ResourceResolverException(e, context.uriToResolve, context.baseUri, "generic.EmptyMessage");
+            }
+        }
+
+        @Override
+        public boolean engineCanResolveURI(ResourceResolverContext context) {
+            return context.uriToResolve.endsWith("sampleXMLData.xml");
+        }
+
     }
 }
