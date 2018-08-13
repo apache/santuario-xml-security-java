@@ -341,6 +341,19 @@
                         <minSeverity>${minSeverity}</minSeverity>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <groupId>org.owasp</groupId>
+                    <artifactId>dependency-check-maven</artifactId>
+                    <version>${maven-owasp-plugin-version}</version>
+                    <executions>
+                        <execution>
+                            <phase>validate</phase>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
 
             </plugins>
         </pluginManagement>
@@ -502,6 +515,18 @@
                 </repository>
             </repositories>
         </profile>
+        <profile>
+            <id>dependencycheck</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.owasp</groupId>
+                        <artifactId>dependency-check-maven</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
     </profiles>
 
     <properties>
@@ -520,6 +545,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <targetJdk>1.8</targetJdk>
         <clirr.version>2.8</clirr.version>
+        <maven-owasp-plugin-version>3.3.1</maven-owasp-plugin-version>
 
         <!-- Allow Clirr severity to be overriden by the command-line option -DminSeverity=level -->
         <minSeverity>info</minSeverity>
@@ -638,6 +664,11 @@
                 <configuration>
                     <minSeverity>${minSeverity}</minSeverity>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.owasp</groupId>
+                <artifactId>dependency-check-maven</artifactId>
+                <version>${maven-owasp-plugin-version}</version>
             </plugin>
         </plugins>
     </reporting>
