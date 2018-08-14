@@ -30,6 +30,7 @@ import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.security.SecureRandom;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.MGF1ParameterSpec;
 import java.util.ArrayList;
@@ -1318,6 +1319,28 @@ public class XMLCipher {
         String mgfAlgorithm,
         byte[] oaepParams
     ) throws XMLEncryptionException {
+        return encryptKey(doc, key, mgfAlgorithm, oaepParams, null);
+    }
+
+    /**
+     * Encrypts a key to an EncryptedKey structure
+     *
+     * @param doc the Context document that will be used to general DOM
+     * @param key Key to encrypt (will use previously set KEK to
+     * perform encryption
+     * @param mgfAlgorithm The xenc11 MGF Algorithm to use
+     * @param oaepParams The OAEPParams to use
+     * @param random The SecureRandom instance to use when initializing the Cipher
+     * @return the <code>EncryptedKey</code>
+     * @throws XMLEncryptionException
+     */
+    public EncryptedKey encryptKey(
+        Document doc,
+        Key key,
+        String mgfAlgorithm,
+        byte[] oaepParams,
+        SecureRandom random
+    ) throws XMLEncryptionException {
         LOG.debug("Encrypting key ...");
 
         if (null == key) {
@@ -1350,10 +1373,18 @@ public class XMLCipher {
                 constructOAEPParameters(
                     algorithm, digestAlg, mgfAlgorithm, oaepParams
                 );
-            if (oaepParameters == null) {
-                c.init(Cipher.WRAP_MODE, this.key);
+            if (random != null) {
+                if (oaepParameters == null) {
+                    c.init(Cipher.WRAP_MODE, this.key, random);
+                } else {
+                    c.init(Cipher.WRAP_MODE, this.key, oaepParameters, random);
+                }
             } else {
-                c.init(Cipher.WRAP_MODE, this.key, oaepParameters);
+                if (oaepParameters == null) {
+                    c.init(Cipher.WRAP_MODE, this.key);
+                } else {
+                    c.init(Cipher.WRAP_MODE, this.key, oaepParameters);
+                }
             }
             encryptedBytes = c.wrap(key);
         } catch (InvalidKeyException ike) {

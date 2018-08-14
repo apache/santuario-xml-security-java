@@ -23,6 +23,7 @@ import java.security.Key;
 import java.security.KeyStore;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
+import java.security.SecureRandom;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.HashMap;
@@ -204,6 +205,72 @@ public class XMLEncryption11Test {
                     sessionKey,
                     "http://www.w3.org/2009/xmlenc11#aes128-gcm"
                 );
+            // XMLUtils.outputDOM(doc.getFirstChild(), System.out);
+
+            // Perform decryption
+            Document dd = decryptElement(doc, rsaKey, (X509Certificate)cert);
+            // XMLUtils.outputDOM(dd.getFirstChild(), System.out);
+            checkDecryptedDoc(dd, true);
+        } else {
+            LOG.warn(
+                "Skipping testRSA2048 as necessary "
+                + "crypto algorithms are not available"
+            );
+        }
+    }
+
+    /**
+     * rsa-oaep-mgf1p, Digest:SHA256, MGF:SHA1, PSource: None
+     */
+    @org.junit.Test
+    public void testKeyWrappingRSA2048EncryptDecryptWithSecureRandom() throws Exception {
+        if (haveISOPadding) {
+            String keystore =
+                "src/test/resources/org/w3c/www/interop/xmlenc-core-11/RSA-2048_SHA256WithRSA.jks";
+            String basedir = System.getProperty("basedir");
+            if (basedir != null && !"".equals(basedir)) {
+                keystore = basedir + "/" + keystore;
+            }
+
+            KeyStore keyStore = KeyStore.getInstance("jks");
+            keyStore.load(new java.io.FileInputStream(keystore), "passwd".toCharArray());
+
+            Certificate cert = keyStore.getCertificate("importkey");
+
+            KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
+                keyStore.getEntry("importkey", new KeyStore.PasswordProtection("passwd".toCharArray()));
+            PrivateKey rsaKey = pkEntry.getPrivateKey();
+
+            // Perform encryption
+            String filename = "src/test/resources/org/w3c/www/interop/xmlenc-core-11/plaintext.xml";
+            if (basedir != null && !"".equals(basedir)) {
+                filename = basedir + "/" + filename;
+            }
+            File f = new File(filename);
+
+            DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+            Document doc = db.parse(new java.io.FileInputStream(f));
+
+            Key sessionKey = getSessionKey("http://www.w3.org/2009/xmlenc11#aes128-gcm");
+            EncryptedKey encryptedKey =
+                createEncryptedKey(
+                                   doc,
+                                   (X509Certificate)cert,
+                                   sessionKey,
+                                   "http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p",
+                                   "http://www.w3.org/2000/09/xmldsig#sha1",
+                                   null,
+                                   null,
+                                   new SecureRandom()
+                    );
+
+            doc =
+                encryptDocument(
+                                doc,
+                                encryptedKey,
+                                sessionKey,
+                                "http://www.w3.org/2009/xmlenc11#aes128-gcm"
+                    );
             // XMLUtils.outputDOM(doc.getFirstChild(), System.out);
 
             // Perform decryption
@@ -601,11 +668,25 @@ public class XMLEncryption11Test {
         String mgfAlgorithm,
         byte[] oaepParams
     ) throws Exception {
+        return createEncryptedKey(doc, rsaCert, sessionKey, encryptionMethod,
+                                  digestMethod, mgfAlgorithm, oaepParams, null);
+    }
+
+    private EncryptedKey createEncryptedKey(
+        Document doc,
+        X509Certificate rsaCert,
+        Key sessionKey,
+        String encryptionMethod,
+        String digestMethod,
+        String mgfAlgorithm,
+        byte[] oaepParams,
+        SecureRandom random
+    ) throws Exception {
         // Create the XMLCipher element
         XMLCipher cipher = XMLCipher.getInstance(encryptionMethod, null, digestMethod);
 
         cipher.init(XMLCipher.WRAP_MODE, rsaCert.getPublicKey());
-        EncryptedKey encryptedKey = cipher.encryptKey(doc, sessionKey, mgfAlgorithm, oaepParams);
+        EncryptedKey encryptedKey = cipher.encryptKey(doc, sessionKey, mgfAlgorithm, oaepParams, random);
 
         KeyInfo builderKeyInfo = encryptedKey.getKeyInfo();
         if (builderKeyInfo == null) {
