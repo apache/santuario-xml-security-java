@@ -223,6 +223,7 @@
                               org.apache.xpath*;resolution:=optional;version="[2.7,3)",
                               *
                         </Import-Package>
+                        <Automatic-Module-Name>org.apache.santuario.xmlsec</Automatic-Module-Name>
                     </instructions>
                 </configuration>
             </plugin>
