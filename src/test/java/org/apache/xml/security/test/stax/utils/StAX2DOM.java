@@ -18,9 +18,10 @@
  */
 package org.apache.xml.security.test.stax.utils;
 
+import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.*;
 
-import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.Location;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
@@ -31,11 +32,11 @@ import javax.xml.stream.XMLStreamReader;
 public class StAX2DOM {
     static final String XML_NS = "http://www.w3.org/2000/xmlns/";
 
-    public static Document readDoc(DocumentBuilder documentBuilder, XMLStreamReader xmlStreamReader) throws XMLStreamException {
+    public static Document readDoc(XMLStreamReader xmlStreamReader) throws XMLStreamException, ParserConfigurationException {
         //skip possible text at the beginning of a document and go directly to the root tag
         while (xmlStreamReader.hasNext() && xmlStreamReader.next() != XMLStreamConstants.START_ELEMENT) {       //NOPMD
         }
-        Document document = documentBuilder.newDocument();
+        Document document = XMLUtils.newDocument();
         StAX2DOM.readDocElements(document, document, xmlStreamReader, false, false);
         xmlStreamReader.close();
         return document;

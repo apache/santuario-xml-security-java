@@ -1066,6 +1066,81 @@ public final class XMLUtils {
         return true;
     }
 
+    public static Document newDocument() throws ParserConfigurationException {
+        DocumentBuilder documentBuilder = createDocumentBuilder(false);
+        Document doc = documentBuilder.newDocument();
+        repoolDocumentBuilder(documentBuilder);
+        return doc;
+    }
+
+    public static Document read(InputStream inputStream, boolean validating) throws ParserConfigurationException, SAXException, IOException {
+        return read(inputStream, validating, true);
+    }
+
+    public static Document read(InputStream inputStream, boolean validating, boolean disAllowDocTypeDeclarations) throws ParserConfigurationException, SAXException, IOException {
+        return read(inputStream, validating, disAllowDocTypeDeclarations, null);
+    }
+
+    public static Document read(InputStream inputStream, boolean validating, boolean disAllowDocTypeDeclarations, ErrorHandler errorHandler)
+        throws ParserConfigurationException, SAXException, IOException {
+        DocumentBuilder documentBuilder = createDocumentBuilder(validating, disAllowDocTypeDeclarations);
+        if (errorHandler != null) {
+            documentBuilder.setErrorHandler(errorHandler);
+        }
+        Document doc = documentBuilder.parse(inputStream);
+        if (errorHandler != null) {
+            documentBuilder.setErrorHandler(null);
+        }
+        repoolDocumentBuilder(documentBuilder);
+        return doc;
+    }
+
+    public static Document read(String uri, boolean validating, boolean disAllowDocTypeDeclarations, ErrorHandler errorHandler)
+        throws ParserConfigurationException, SAXException, IOException {
+        DocumentBuilder documentBuilder = createDocumentBuilder(validating, disAllowDocTypeDeclarations);
+        if (errorHandler != null) {
+            documentBuilder.setErrorHandler(errorHandler);
+        }
+        Document doc = documentBuilder.parse(uri);
+        if (errorHandler != null) {
+            documentBuilder.setErrorHandler(null);
+        }
+        repoolDocumentBuilder(documentBuilder);
+        return doc;
+    }
+
+    public static Document read(InputSource inputSource, boolean validating) throws ParserConfigurationException, SAXException, IOException {
+        return read(inputSource, validating, true, (EntityResolver)null);
+    }
+
+    public static Document read(InputSource inputSource, boolean validating, boolean disAllowDocTypeDeclarations, EntityResolver resolver)
+        throws ParserConfigurationException, SAXException, IOException {
+        DocumentBuilder documentBuilder = createDocumentBuilder(validating, disAllowDocTypeDeclarations);
+        if (resolver != null) {
+            documentBuilder.setEntityResolver(resolver);
+        }
+        Document doc = documentBuilder.parse(inputSource);
+        if (resolver != null) {
+            documentBuilder.setEntityResolver(null);
+        }
+        repoolDocumentBuilder(documentBuilder);
+        return doc;
+    }
+
+    public static Document read(InputSource inputSource, boolean validating, boolean disAllowDocTypeDeclarations, ErrorHandler errorHandler)
+        throws ParserConfigurationException, SAXException, IOException {
+        DocumentBuilder documentBuilder = createDocumentBuilder(validating, disAllowDocTypeDeclarations);
+        if (errorHandler != null) {
+            documentBuilder.setErrorHandler(errorHandler);
+        }
+        Document doc = documentBuilder.parse(inputSource);
+        if (errorHandler != null) {
+            documentBuilder.setErrorHandler(null);
+        }
+        repoolDocumentBuilder(documentBuilder);
+        return doc;
+    }
+
     public static DocumentBuilder createDocumentBuilder(boolean validating) throws ParserConfigurationException {
         return createDocumentBuilder(validating, true);
     }

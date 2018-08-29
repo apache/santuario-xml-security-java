@@ -21,8 +21,6 @@ package org.apache.xml.security.test.dom.keys.keyresolver;
 import java.io.FileInputStream;
 import java.security.Security;
 
-import javax.xml.parsers.DocumentBuilder;
-
 import org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI;
 import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.utils.XMLUtils;
@@ -52,8 +50,7 @@ public class RetrievalMethodResolverTest {
             fis = new FileInputStream(filename);
         }
 
-        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
-        Document doc = db.parse(fis);
+        Document doc = XMLUtils.read(fis, false);
 
         KeyInfo keyInfo = new KeyInfo(doc.getDocumentElement(), null);
 
@@ -72,8 +69,7 @@ public class RetrievalMethodResolverTest {
             fis = new FileInputStream(filename);
         }
 
-        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
-        Document doc = db.parse(fis);
+        Document doc = XMLUtils.read(fis, false);
 
         KeyInfo keyInfo = new KeyInfo(doc.getDocumentElement(), null);
 

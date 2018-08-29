@@ -33,7 +33,6 @@ import java.util.Map;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -91,8 +90,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
         KeyStore keyStore = KeyStore.getInstance("jks");
@@ -132,7 +130,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        document = StAX2DOM.readDoc(securityStreamReader);
 
         // Check the SecurityEvents
         checkSecurityEvents(securityEventListener);
@@ -170,8 +168,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
         KeyStore keyStore = KeyStore.getInstance("jks");
@@ -212,7 +209,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         XMLStreamReader securityStreamReader =
             inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        document = StAX2DOM.readDoc(securityStreamReader);
 
         // Check the SecurityEvents
         checkSecurityEvents(securityEventListener);
@@ -256,8 +253,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
         KeyStore keyStore = KeyStore.getInstance("jks");
@@ -307,7 +303,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
             inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         try {
-            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+            StAX2DOM.readDoc(securityStreamReader);
         } catch (XMLStreamException ex) {
             Assert.assertEquals("Multiple signatures are not supported.", ex.getCause().getMessage());
         }
@@ -319,8 +315,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
         KeyStore keyStore = KeyStore.getInstance("jks");
@@ -373,7 +368,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        StAX2DOM.readDoc(securityStreamReader);
     }
 
 
@@ -383,8 +378,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
         byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
@@ -422,7 +416,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         XMLStreamReader securityStreamReader =
             inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        document = StAX2DOM.readDoc(securityStreamReader);
 
         // Check the SecurityEvents
         checkSecurityEvents(securityEventListener,
@@ -463,8 +457,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
         byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
@@ -504,7 +497,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
 
         try {
-            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+            StAX2DOM.readDoc(securityStreamReader);
             fail("Failure expected on a bad key");
         } catch (XMLStreamException ex) {
             Assert.assertTrue(ex.getCause() instanceof XMLSecurityException);
@@ -530,8 +523,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
         KeyStore keyStore = KeyStore.getInstance("jks");
@@ -572,7 +564,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         XMLStreamReader securityStreamReader =
             inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        document = StAX2DOM.readDoc(securityStreamReader);
 
         // Check the SecurityEvents
         checkSecurityEvents(securityEventListener,
@@ -613,8 +605,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
         KeyStore keyStore = KeyStore.getInstance("jks");
@@ -655,7 +646,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         XMLStreamReader securityStreamReader =
             inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        document = StAX2DOM.readDoc(securityStreamReader);
 
         // Check the SecurityEvents
         checkSecurityEvents(securityEventListener,
@@ -696,8 +687,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
         KeyStore keyStore = KeyStore.getInstance("jks");
@@ -738,7 +728,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         XMLStreamReader securityStreamReader =
             inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        document = StAX2DOM.readDoc(securityStreamReader);
 
         // Check the SecurityEvents
         checkSecurityEvents(securityEventListener,
@@ -779,8 +769,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
         KeyStore keyStore = KeyStore.getInstance("jks");
@@ -821,7 +810,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         XMLStreamReader securityStreamReader =
             inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        document = StAX2DOM.readDoc(securityStreamReader);
 
         // Check the SecurityEvents
         checkSecurityEvents(securityEventListener,
@@ -862,8 +851,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
         KeyStore keyStore = KeyStore.getInstance("jks");
@@ -909,7 +897,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        document = StAX2DOM.readDoc(securityStreamReader);
 
         // Check the SecurityEvents
         checkSecurityEvents(securityEventListener);
@@ -947,8 +935,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
         KeyStore keyStore = KeyStore.getInstance("jks");
@@ -992,7 +979,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        document = StAX2DOM.readDoc(securityStreamReader);
 
         // Check the SecurityEvents
         checkSecurityEvents(securityEventListener);
@@ -1038,8 +1025,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
         KeyStore keyStore = KeyStore.getInstance("JCEKS");
@@ -1083,7 +1069,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        document = StAX2DOM.readDoc(securityStreamReader);
 
         // Check the SecurityEvents
         checkSecurityEvents(securityEventListener);
@@ -1121,8 +1107,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
         KeyStore keyStore = KeyStore.getInstance("jks");
@@ -1163,7 +1148,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        document = StAX2DOM.readDoc(securityStreamReader);
 
         // Check the SecurityEvents
         checkSecurityEvents(securityEventListener);
@@ -1201,8 +1186,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext-base64.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
         KeyStore keyStore = KeyStore.getInstance("jks");
@@ -1243,7 +1227,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        document = StAX2DOM.readDoc(securityStreamReader);
 
         SignedElementSecurityEvent signedElementSecurityEvent = securityEventListener.getSecurityEvent(SecurityEventConstants.SignedElement);
         X509TokenSecurityEvent x509TokenSecurityEvent = securityEventListener.getSecurityEvent(SecurityEventConstants.X509Token);
@@ -1275,8 +1259,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
         KeyStore keyStore = KeyStore.getInstance("jks");
@@ -1319,7 +1302,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         int oldval = 0;
         try {
             oldval = TestUtils.changeValueOfMaximumAllowedReferencesPerManifest(2);
-            document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+            document = StAX2DOM.readDoc(securityStreamReader);
             fail("Exception expected");
         } catch (XMLStreamException e) {
             assertTrue(e.getCause() instanceof XMLSecurityException);
@@ -1337,8 +1320,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
         KeyStore keyStore = KeyStore.getInstance("jks");
@@ -1379,7 +1361,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         int oldval = 0;
         try {
             oldval = TestUtils.changeValueOfMaximumAllowedTransformsPerReference(0);
-            document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+            document = StAX2DOM.readDoc(securityStreamReader);
             fail("Exception expected");
         } catch (XMLStreamException e) {
             assertTrue(e.getCause() instanceof XMLSecurityException);
@@ -1397,8 +1379,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
         KeyStore keyStore = KeyStore.getInstance("jks");
@@ -1437,7 +1418,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         try {
-            document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+            document = StAX2DOM.readDoc(securityStreamReader);
             fail("Exception expected");
         } catch (XMLStreamException e) {
             assertTrue(e.getCause() instanceof XMLSecurityException);
@@ -1460,8 +1441,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
         KeyStore keyStore = KeyStore.getInstance("jks");
@@ -1501,7 +1481,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
 
         try {
             TestUtils.switchAllowMD5Algorithm(true);
-            document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+            document = StAX2DOM.readDoc(securityStreamReader);
         } finally {
             TestUtils.switchAllowMD5Algorithm(false);
         }
@@ -1520,8 +1500,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
         KeyStore keyStore = KeyStore.getInstance("jks");
@@ -1562,7 +1541,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         int oldval = 0;
         try {
             oldval = TestUtils.changeValueOfMaximumAllowedXMLStructureDepth(5);
-            document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+            document = StAX2DOM.readDoc(securityStreamReader);
             fail("Exception expected");
         } catch (XMLStreamException e) {
             assertTrue(e.getCause() instanceof XMLSecurityException);
@@ -1591,8 +1570,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
         KeyStore keyStore = KeyStore.getInstance("jks");
@@ -1633,7 +1611,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
         XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
 
-        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        StAX2DOM.readDoc(securityStreamReader);
     }
 
     @Test
@@ -1642,8 +1620,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
         KeyStore keyStore = KeyStore.getInstance("jks");
@@ -1687,7 +1664,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         try {
-            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+            StAX2DOM.readDoc(securityStreamReader);
             fail("Failure expected on a modified document");
         } catch (XMLStreamException ex) {
             Assert.assertTrue(ex.getMessage().contains("Invalid digest of reference"));
@@ -1700,8 +1677,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
         KeyStore keyStore = KeyStore.getInstance("jks");
@@ -1752,7 +1728,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         try {
-            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+            StAX2DOM.readDoc(securityStreamReader);
             fail("Failure expected on a modified document");
         } catch (XMLStreamException ex) {
             Assert.assertTrue(ex.getMessage().contains("Invalid digest of reference"));
@@ -1765,8 +1741,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
         KeyStore keyStore = KeyStore.getInstance("jks");
@@ -1823,7 +1798,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         try {
-            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+            StAX2DOM.readDoc(securityStreamReader);
             fail("Failure expected on a modified document");
         } catch (XMLStreamException ex) {
             Assert.assertTrue(ex.getMessage().contains("Invalid digest of reference"));
@@ -1836,8 +1811,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
         KeyStore keyStore = KeyStore.getInstance("jks");
@@ -1901,7 +1875,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         try {
-            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+            StAX2DOM.readDoc(securityStreamReader);
             fail("Failure expected on a modified document");
         } catch (XMLStreamException ex) {
             Assert.assertTrue(ex.getMessage().contains("Invalid digest of reference"));

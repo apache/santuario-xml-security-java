@@ -20,8 +20,6 @@ package org.apache.xml.security.test.dom.keys;
 
 import java.io.FileInputStream;
 
-import javax.xml.parsers.DocumentBuilder;
-
 import org.apache.xml.security.keys.content.KeyInfoReference;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
@@ -35,18 +33,12 @@ public class KeyInfoReferenceTest extends Assert {
     private static final String BASEDIR = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
     private static final String SEP = System.getProperty("file.separator");
 
-    private DocumentBuilder documentBuilder;
-
     private final String idControl = "abc123";
     private final String uriControl = "http://www.example.org/keyinfo.xml";
 
-    public KeyInfoReferenceTest() throws Exception {
-        documentBuilder = XMLUtils.createDocumentBuilder(false);
-    }
-
     @org.junit.Test
     public void testSchema() throws Exception {
-        KeyInfoReference keyInfoReference = new KeyInfoReference(documentBuilder.newDocument(), uriControl);
+        KeyInfoReference keyInfoReference = new KeyInfoReference(XMLUtils.newDocument(), uriControl);
         Element element = keyInfoReference.getElement();
 
         assertEquals("http://www.w3.org/2009/xmldsig11#", element.getNamespaceURI());
@@ -66,13 +58,13 @@ public class KeyInfoReferenceTest extends Assert {
 
     @org.junit.Test
     public void testURIOnConstruction() throws Exception {
-        KeyInfoReference keyInfoReference = new KeyInfoReference(documentBuilder.newDocument(), uriControl);
+        KeyInfoReference keyInfoReference = new KeyInfoReference(XMLUtils.newDocument(), uriControl);
         assertEquals(uriControl, keyInfoReference.getURI());
     }
 
     @org.junit.Test
     public void testId() throws Exception {
-        KeyInfoReference keyInfoReference = new KeyInfoReference(documentBuilder.newDocument(), uriControl);
+        KeyInfoReference keyInfoReference = new KeyInfoReference(XMLUtils.newDocument(), uriControl);
         assertEquals("", keyInfoReference.getId());
         assertNull(keyInfoReference.getElement().getAttributeNodeNS(null, Constants._ATT_ID));
 
@@ -95,7 +87,7 @@ public class KeyInfoReferenceTest extends Assert {
     }
 
     private Document loadXML(String fileName) throws Exception {
-        return documentBuilder.parse(new FileInputStream(getControlFilePath(fileName)));
+        return XMLUtils.read(new FileInputStream(getControlFilePath(fileName)), false);
     }
 
 }

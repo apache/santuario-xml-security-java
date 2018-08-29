@@ -22,7 +22,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.TransformerFactory;
@@ -67,8 +66,7 @@ public class RSASecurityTest extends AbstractSignatureVerificationTest {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "com/rsasecurity/bdournaee/certj201_enveloping.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.read(sourceDocument, false);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -89,7 +87,7 @@ public class RSASecurityTest extends AbstractSignatureVerificationTest {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        StAX2DOM.readDoc(securityStreamReader);
 
         // Check the SecurityEvents
         checkSignatureToken(securityEventListener, null, null,
@@ -103,8 +101,7 @@ public class RSASecurityTest extends AbstractSignatureVerificationTest {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "com/rsasecurity/bdournaee/certj201_enveloped.xml");
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
-        Document document = builder.parse(sourceDocument);
+        Document document = XMLUtils.read(sourceDocument, false);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -125,7 +122,7 @@ public class RSASecurityTest extends AbstractSignatureVerificationTest {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        StAX2DOM.readDoc(securityStreamReader);
 
         // Check the SecurityEvents
         checkSignatureToken(securityEventListener, null, null,

@@ -21,6 +21,7 @@ package javax.xml.crypto.test.dsig;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.security.Security;
 
 import javax.xml.crypto.dsig.XMLSignatureException;
@@ -57,7 +58,7 @@ public class JSRWrappingAttackTest {
     public void testWrappingAttack() throws Exception {
         String file = "manifestSignatureWrapping.xml";
 
-        Document doc = XMLUtils.createDocumentBuilder(false, false).parse(new File(dir, file));
+        Document doc = XMLUtils.read(new FileInputStream(new File(dir, file)), false, false);
         Element sigElement = SignatureValidator.getSignatureElement(doc);
         if (sigElement == null) {
             throw new Exception("Couldn't find signature Element");

@@ -20,8 +20,6 @@ package org.apache.xml.security.test.dom.utils;
 
 import java.io.StringReader;
 
-import javax.xml.parsers.DocumentBuilder;
-
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.Test;
 import org.xml.sax.InputSource;
@@ -38,9 +36,7 @@ public class XMLUtilsPerformanceTest extends AbstractBenchmark {
     @Test
     public void testCreateDocumentBuilder() throws Exception {
         InputSource inputSource = new InputSource(new StringReader("<xml>123</xml>"));
-        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
-        db.parse(inputSource);
-        XMLUtils.repoolDocumentBuilder(db);
+        XMLUtils.read(inputSource, false);
     }
 
 }

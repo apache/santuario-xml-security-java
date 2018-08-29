@@ -21,6 +21,7 @@ package org.apache.xml.security.test.dom.secure_val;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.FileInputStream;
 
 import org.apache.xml.security.signature.Manifest;
 import org.apache.xml.security.signature.MissingResourceFailureException;
@@ -71,9 +72,7 @@ public class ForbiddenReferenceTest extends InteropTestBase {
 
         File f = new File(directory + "/" + file);
 
-        javax.xml.parsers.DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
-        org.w3c.dom.Document doc = db.parse(f);
-        XMLUtils.repoolDocumentBuilder(db);
+        org.w3c.dom.Document doc = XMLUtils.read(new FileInputStream(f), false);
 
         Element manifestElement =
             (Element) doc.getElementsByTagNameNS(Constants.SignatureSpecNS,
