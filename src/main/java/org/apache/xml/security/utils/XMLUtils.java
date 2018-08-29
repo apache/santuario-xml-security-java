@@ -1113,6 +1113,11 @@ public final class XMLUtils {
         return read(inputSource, validating, true, (EntityResolver)null);
     }
 
+    public static Document read(InputSource inputSource, boolean validating, boolean disAllowDocTypeDeclarations)
+        throws ParserConfigurationException, SAXException, IOException {
+        return read(inputSource, validating, disAllowDocTypeDeclarations, (EntityResolver)null);
+    }
+
     public static Document read(InputSource inputSource, boolean validating, boolean disAllowDocTypeDeclarations, EntityResolver resolver)
         throws ParserConfigurationException, SAXException, IOException {
         DocumentBuilder documentBuilder = createDocumentBuilder(validating, disAllowDocTypeDeclarations);
@@ -1141,11 +1146,11 @@ public final class XMLUtils {
         return doc;
     }
 
-    public static DocumentBuilder createDocumentBuilder(boolean validating) throws ParserConfigurationException {
+    private static DocumentBuilder createDocumentBuilder(boolean validating) throws ParserConfigurationException {
         return createDocumentBuilder(validating, true);
     }
 
-    public static DocumentBuilder createDocumentBuilder(
+    private static DocumentBuilder createDocumentBuilder(
         boolean validating, boolean disAllowDocTypeDeclarations
     ) throws ParserConfigurationException {
         int idx = getPoolsIndex(validating, disAllowDocTypeDeclarations);
@@ -1153,12 +1158,7 @@ public final class XMLUtils {
     }
 
 
-    /**
-     * Return this document builder to be reused
-     * @param db DocumentBuilder returned from any of {@link #createDocumentBuilder} methods.
-     * @return whether it was successfully returned to the pool
-     */
-    public static boolean repoolDocumentBuilder(DocumentBuilder db) {
+    private static boolean repoolDocumentBuilder(DocumentBuilder db) {
         if (!(db instanceof DocumentBuilderProxy)) {
             return false;
         }
