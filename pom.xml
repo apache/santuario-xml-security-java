@@ -228,15 +228,10 @@
                 </configuration>
             </plugin>
             
-            <!--
-            TODO when maven-jaxb2-plugin supports Java 9 properly then
-            uncomment this and remove the code:
-              src/main/java/org/apache/xml/security/binding/
-              src/main/java/org/apache/xml/security/configuration/
             <plugin>
                 <groupId>org.jvnet.jaxb2.maven2</groupId>
                 <artifactId>maven-jaxb2-plugin</artifactId>
-                <version>0.13.2</version>
+                <version>0.14.0</version>
                 <executions>
                     <execution>
                         <id>bindings</id>
@@ -264,14 +259,15 @@
                                 <bindingInclude>xenc.xjb</bindingInclude>
                                 <bindingInclude>xenc11.xjb</bindingInclude>
                                 <bindingInclude>security-config.xjb</bindingInclude>
+                                <bindingInclude>xop.xjb</bindingInclude>
                             </bindingIncludes>
                             <catalog>${basedir}/src/main/resources/bindings/bindings.cat</catalog>
                             <forceRegenerate>false</forceRegenerate>
                             <episode>true</episode>
                             <specVersion>2.1</specVersion>
                             <extension>true</extension>
-                             disable schema validation since the validation code
-                            doesn't respect the catalog and will do online lookups :-(
+                            <!-- disable schema validation since the validation code
+                            doesn't respect the catalog and will do online lookups :-( -->
                             <strict>false</strict>
                             <args>
                                 <arg>-npa</arg>
@@ -280,7 +276,6 @@
                     </execution>
                 </executions>
             </plugin>
-            -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
