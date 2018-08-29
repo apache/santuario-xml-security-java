@@ -435,11 +435,7 @@ public class Canonicalizer20010315Test {
 //      Canonicalizer c14n =
 //         Canonicalizer.getInstance(Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS);
 //      byte c14nBytes[] = c14n.canonicalize(utf16);
-//      org.xml.sax.EntityResolver resolver = new TestVectorResolver();
-//      InputStream refStream = resolver.resolveEntity(
-//         null,
-//            prefix + "/in/testTranslationFromUTF16toUTF8.xml")
-//               .getByteStream();
+//      InputStream refStream = new FileInputStream(prefix + "/in/testTranslationFromUTF16toUTF8.xml");
 //      byte refBytes[] = JavaUtils.getBytesFromStream(refStream);
 //      boolean equal = java.security.MessageDigest.isEqual(refBytes, c14nBytes);
 //
