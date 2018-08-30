@@ -37,7 +37,6 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
@@ -119,7 +118,7 @@ public class PreCalculatedDigestSignatureTest {
         assertTrue(signature.checkSignatureValue(signingCert));
     }
 
-    private XMLSignature openSignature(String signatureFile) throws ParserConfigurationException, SAXException, IOException, XMLSecurityException {
+    private XMLSignature openSignature(String signatureFile) throws Exception {
         Document document = XMLUtils.read(new FileInputStream(new File(signatureFile)), false);
         Element root = document.getDocumentElement();
         Element signatureDocument = (Element) root.getFirstChild();

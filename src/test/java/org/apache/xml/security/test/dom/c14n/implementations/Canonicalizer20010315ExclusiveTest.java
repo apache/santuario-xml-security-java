@@ -18,33 +18,25 @@
  */
 package org.apache.xml.security.test.dom.c14n.implementations;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.StringReader;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-import org.apache.xml.security.c14n.CanonicalizationException;
-import org.apache.xml.security.c14n.InvalidCanonicalizerException;
 import org.apache.xml.security.c14n.implementations.Canonicalizer20010315;
 import org.apache.xml.security.c14n.implementations.Canonicalizer20010315Excl;
 import org.apache.xml.security.c14n.implementations.Canonicalizer20010315ExclOmitComments;
 import org.apache.xml.security.c14n.implementations.Canonicalizer20010315ExclWithComments;
 import org.apache.xml.security.c14n.implementations.Canonicalizer20010315WithComments;
-import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
-import org.apache.xml.security.signature.XMLSignatureException;
 import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.utils.Constants;
@@ -55,7 +47,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 
 /**
@@ -73,25 +64,9 @@ public class Canonicalizer20010315ExclusiveTest {
 
     /**
      * Method testA
-     *
-     * @throws CanonicalizationException
-     * @throws FileNotFoundException
-     * @throws IOException
-     * @throws InvalidCanonicalizerException
-     * @throws ParserConfigurationException
-     * @throws SAXException
-     * @throws TransformerException
-     * @throws XMLSecurityException
-     * @throws XMLSignatureException
-     * @throws org.apache.xml.security.keys.keyresolver.KeyResolverException
      */
     @org.junit.Test
-    public void testA()
-        throws IOException, FileNotFoundException, SAXException,
-        ParserConfigurationException, CanonicalizationException,
-        InvalidCanonicalizerException, TransformerException,
-        XMLSignatureException, XMLSecurityException,
-        org.apache.xml.security.keys.keyresolver.KeyResolverException {
+    public void testA() throws Exception {
 
         File fileIn = new File(getAbsolutePath(
             "src/test/resources/ie/baltimore/merlin-examples/ec-merlin-iaikTests-two/signature.xml"));
@@ -125,23 +100,9 @@ public class Canonicalizer20010315ExclusiveTest {
 
     /**
      * Method test221
-     *
-     * @throws CanonicalizationException
-     * @throws FileNotFoundException
-     * @throws IOException
-     * @throws InvalidCanonicalizerException
-     * @throws ParserConfigurationException
-     * @throws SAXException
-     * @throws TransformerException
-     * @throws XMLSecurityException
-     * @throws XMLSignatureException
      */
     @org.junit.Test
-    public void test221()
-        throws IOException, FileNotFoundException, SAXException,
-        ParserConfigurationException, CanonicalizationException,
-        InvalidCanonicalizerException, TransformerException,
-        XMLSignatureException, XMLSecurityException {
+    public void test221() throws Exception {
 
         Document doc =
             XMLUtils.read(
@@ -160,23 +121,9 @@ public class Canonicalizer20010315ExclusiveTest {
 
     /**
      * Method test222
-     *
-     * @throws CanonicalizationException
-     * @throws FileNotFoundException
-     * @throws IOException
-     * @throws InvalidCanonicalizerException
-     * @throws ParserConfigurationException
-     * @throws SAXException
-     * @throws TransformerException
-     * @throws XMLSecurityException
-     * @throws XMLSignatureException
      */
     @org.junit.Test
-    public void test222()
-        throws IOException, FileNotFoundException, SAXException,
-        ParserConfigurationException, CanonicalizationException,
-        InvalidCanonicalizerException, TransformerException,
-        XMLSignatureException, XMLSecurityException {
+    public void test222() throws Exception {
         Document doc =
             XMLUtils.read(new FileInputStream(getAbsolutePath(
                 "src/test/resources/org/apache/xml/security/c14n/inExcl/example2_2_2.xml")
@@ -193,23 +140,9 @@ public class Canonicalizer20010315ExclusiveTest {
 
     /**
      * Method test221excl
-     *
-     * @throws CanonicalizationException
-     * @throws FileNotFoundException
-     * @throws IOException
-     * @throws InvalidCanonicalizerException
-     * @throws ParserConfigurationException
-     * @throws SAXException
-     * @throws TransformerException
-     * @throws XMLSecurityException
-     * @throws XMLSignatureException
      */
     @org.junit.Test
-    public void test221excl()
-        throws IOException, FileNotFoundException, SAXException,
-        ParserConfigurationException, CanonicalizationException,
-        InvalidCanonicalizerException, TransformerException,
-        XMLSignatureException, XMLSecurityException {
+    public void test221excl() throws Exception {
         Document doc =
             XMLUtils.read(new FileInputStream(getAbsolutePath(
                 "src/test/resources/org/apache/xml/security/c14n/inExcl/example2_2_1.xml")),
@@ -226,23 +159,9 @@ public class Canonicalizer20010315ExclusiveTest {
 
     /**
      * Method test222excl
-     *
-     * @throws CanonicalizationException
-     * @throws FileNotFoundException
-     * @throws IOException
-     * @throws InvalidCanonicalizerException
-     * @throws ParserConfigurationException
-     * @throws SAXException
-     * @throws TransformerException
-     * @throws XMLSecurityException
-     * @throws XMLSignatureException
      */
     @org.junit.Test
-    public void test222excl()
-        throws IOException, FileNotFoundException, SAXException,
-        ParserConfigurationException, CanonicalizationException,
-        InvalidCanonicalizerException, TransformerException,
-        XMLSignatureException, XMLSecurityException {
+    public void test222excl() throws Exception {
         Document doc =
             XMLUtils.read(new FileInputStream(getAbsolutePath(
                 "src/test/resources/org/apache/xml/security/c14n/inExcl/example2_2_2.xml")),
@@ -261,24 +180,9 @@ public class Canonicalizer20010315ExclusiveTest {
      * Method test223excl
      *
      * Provided by Gabriel McGoldrick - see e-mail of 21/11/03
-     *
-     * @throws CanonicalizationException
-     * @throws FileNotFoundException
-     * @throws IOException
-     * @throws InvalidCanonicalizerException
-     * @throws ParserConfigurationException
-     * @throws SAXException
-     * @throws TransformerException
-     * @throws XMLSecurityException
-     * @throws XMLSignatureException
-     * @throws XPathExpressionException
      */
     @org.junit.Test
-    public void test223excl()
-        throws IOException, FileNotFoundException, SAXException,
-        ParserConfigurationException, CanonicalizationException,
-        InvalidCanonicalizerException, TransformerException,
-        XMLSignatureException, XMLSecurityException, XPathExpressionException {
+    public void test223excl() throws Exception {
         Document doc =
             XMLUtils.read(new FileInputStream(getAbsolutePath(
                 "src/test/resources/org/apache/xml/security/c14n/inExcl/example2_2_3.xml")),
