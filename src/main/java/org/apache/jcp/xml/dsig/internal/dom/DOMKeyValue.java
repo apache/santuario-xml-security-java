@@ -520,7 +520,7 @@ public abstract class DOMKeyValue<K extends PublicKey> extends BaseStructure imp
             ECPoint ecPoint = null;
 
             try {
-                String content = XMLUtils.getFullTextChildrenFromElement(curElem);
+                String content = XMLUtils.getFullTextChildrenFromNode(curElem);
                 ecPoint = decodePoint(XMLUtils.decode(content),
                                       ecParams.getCurve());
             } catch (IOException ioe) {

@@ -108,7 +108,7 @@ public final class DOMX509Data extends BaseStructure implements X509Data {
                 } else if ("X509SubjectName".equals(localName) && XMLSignature.XMLNS.equals(namespace)) {
                     newContent.add(childElem.getFirstChild().getNodeValue());
                 } else if ("X509SKI".equals(localName) && XMLSignature.XMLNS.equals(namespace)) {
-                    String content = XMLUtils.getFullTextChildrenFromElement(childElem);
+                    String content = XMLUtils.getFullTextChildrenFromNode(childElem);
                     newContent.add(XMLUtils.decode(content));
                 } else if ("X509CRL".equals(localName) && XMLSignature.XMLNS.equals(namespace)) {
                     newContent.add(unmarshalX509CRL(childElem));
@@ -213,7 +213,7 @@ public final class DOMX509Data extends BaseStructure implements X509Data {
             if (cf == null) {
                 cf = CertificateFactory.getInstance("X.509");
             }
-            String content = XMLUtils.getFullTextChildrenFromElement(elem);
+            String content = XMLUtils.getFullTextChildrenFromNode(elem);
             return new ByteArrayInputStream(XMLUtils.decode(content));
         } catch (CertificateException e) {
             throw new MarshalException("Cannot create CertificateFactory", e);

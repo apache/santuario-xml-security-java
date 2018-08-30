@@ -490,7 +490,7 @@ public final class DOMXMLSignature extends DOMStructure
             throws MarshalException
         {
             // base64 decode signatureValue
-            String content = XMLUtils.getFullTextChildrenFromElement(sigValueElem);
+            String content = XMLUtils.getFullTextChildrenFromNode(sigValueElem);
             value = XMLUtils.decode(content);
 
             id = DOMUtils.getIdAttributeValue(sigValueElem, "Id");

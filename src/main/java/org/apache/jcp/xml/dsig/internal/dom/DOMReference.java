@@ -237,7 +237,7 @@ public final class DOMReference extends DOMStructure
 
         // unmarshal DigestValue
         Element dvElem = DOMUtils.getNextSiblingElement(dmElem, "DigestValue", XMLSignature.XMLNS);
-        String content = XMLUtils.getFullTextChildrenFromElement(dvElem);
+        String content = XMLUtils.getFullTextChildrenFromNode(dvElem);
         this.digestValue = XMLUtils.decode(content);
 
         // check for extra elements

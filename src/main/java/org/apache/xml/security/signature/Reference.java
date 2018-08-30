@@ -789,7 +789,7 @@ public class Reference extends SignatureElementProxy {
                 "signature.Verification.NoSignatureElement", exArgs
             );
         }
-        String content = XMLUtils.getFullTextChildrenFromElement(digestValueElement);
+        String content = XMLUtils.getFullTextChildrenFromNode(digestValueElement);
         return XMLUtils.decode(content);
     }
 
