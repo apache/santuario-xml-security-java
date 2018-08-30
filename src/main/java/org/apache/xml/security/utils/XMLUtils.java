@@ -268,11 +268,6 @@ public final class XMLUtils {
         }
     }
 
-    @Deprecated
-    public static String getFullTextChildrenFromElement(Element element) {
-        return getFullTextChildrenFromNode(element);
-    }
-
     /**
      * Method getFullTextChildrenFromNode
      *
@@ -729,62 +724,6 @@ public final class XMLUtils {
             sibling = sibling.getNextSibling();
         }
         return null;
-    }
-
-
-    /**
-     * @param sibling
-     * @param nodeName
-     * @param number
-     * @return nodes with the constrain
-     */
-    public static Text selectDsNodeText(Node sibling, String nodeName, int number) {
-        Node n = selectDsNode(sibling, nodeName, number);
-        if (n == null) {
-            return null;
-        }
-        n = n.getFirstChild();
-        while (n != null && n.getNodeType() != Node.TEXT_NODE) {
-            n = n.getNextSibling();
-        }
-        return (Text)n;
-    }
-
-    /**
-     * @param sibling
-     * @param nodeName
-     * @param number
-     * @return nodes with the constrain
-     */
-    public static Text selectDs11NodeText(Node sibling, String nodeName, int number) {
-        Node n = selectDs11Node(sibling, nodeName, number);
-        if (n == null) {
-            return null;
-        }
-        n = n.getFirstChild();
-        while (n != null && n.getNodeType() != Node.TEXT_NODE) {
-            n = n.getNextSibling();
-        }
-        return (Text)n;
-    }
-
-    /**
-     * @param sibling
-     * @param uri
-     * @param nodeName
-     * @param number
-     * @return nodes with the constrain
-     */
-    public static Text selectNodeText(Node sibling, String uri, String nodeName, int number) {
-        Node n = selectNode(sibling, uri, nodeName, number);
-        if (n == null) {
-            return null;
-        }
-        n = n.getFirstChild();
-        while (n != null && n.getNodeType() != Node.TEXT_NODE) {
-            n = n.getNextSibling();
-        }
-        return (Text)n;
     }
 
     /**
