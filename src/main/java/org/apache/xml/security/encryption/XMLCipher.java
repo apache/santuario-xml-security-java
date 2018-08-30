@@ -2220,7 +2220,7 @@ public class XMLCipher {
          * @return a new CipherValue
          */
         CipherValue newCipherValue(Element element) {
-            String value = XMLUtils.getFullTextChildrenFromElement(element);
+            String value = XMLUtils.getFullTextChildrenFromNode(element);
 
             return newCipherValue(value);
         }

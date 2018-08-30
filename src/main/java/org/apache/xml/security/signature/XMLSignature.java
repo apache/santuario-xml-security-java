@@ -499,7 +499,7 @@ public final class XMLSignature extends SignatureElementProxy {
      * @throws XMLSignatureException If there is no content
      */
     public byte[] getSignatureValue() throws XMLSignatureException {
-        String content = XMLUtils.getFullTextChildrenFromElement(signatureValueElement);
+        String content = XMLUtils.getFullTextChildrenFromNode(signatureValueElement);
         return XMLUtils.decode(content);
     }
 

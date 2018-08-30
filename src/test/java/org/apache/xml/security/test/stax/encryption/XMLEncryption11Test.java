@@ -553,7 +553,7 @@ public class XMLEncryption11Test extends Assert {
         if (oaepParams != null) {
             NodeList oaepParamsElements = document.getElementsByTagNameNS(XMLSecurityConstants.NS_XMLENC, "OAEPparams");
             Assert.assertEquals(1, oaepParamsElements.getLength());
-            String content = XMLUtils.getFullTextChildrenFromElement((Element) oaepParamsElements.item(0));
+            String content = XMLUtils.getFullTextChildrenFromNode(oaepParamsElements.item(0));
             Assert.assertArrayEquals(oaepParams, XMLUtils.decode(content));
         }
         return document;

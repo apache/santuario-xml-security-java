@@ -362,11 +362,12 @@ public abstract class ElementProxy {
     public BigInteger getBigIntegerFromChildElement(
         String localname, String namespace
     ) {
-        return new BigInteger(1, XMLUtils.decode(
-            XMLUtils.selectNodeText(
-                getFirstChild(), namespace, localname, 0
-            ).getNodeValue()
-        ));
+        Node n = XMLUtils.selectNode(getFirstChild(), namespace, localname, 0);
+        if (n != null) {
+            return new BigInteger(1, XMLUtils.decode(XMLUtils.getFullTextChildrenFromNode(n)));
+        }
+
+        return null;
     }
 
     /**
@@ -401,7 +402,7 @@ public abstract class ElementProxy {
      *    element
      */
     public String getTextFromTextChild() {
-        return XMLUtils.getFullTextChildrenFromElement(getElement());
+        return XMLUtils.getFullTextChildrenFromNode(getElement());
     }
 
     /**
