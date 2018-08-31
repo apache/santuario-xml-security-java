@@ -57,7 +57,7 @@ public abstract class CanonicalizerSpi {
         try (java.io.InputStream bais = new ByteArrayInputStream(inputBytes)) {
             InputSource in = new InputSource(bais);
 
-            document = XMLUtils.read(in, false, secureValidation);
+            document = XMLUtils.read(in, secureValidation);
         }
         return this.engineCanonicalizeSubTree(document);
     }

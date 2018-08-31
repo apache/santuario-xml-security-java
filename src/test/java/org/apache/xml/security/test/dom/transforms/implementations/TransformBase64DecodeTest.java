@@ -112,7 +112,7 @@ public class TransformBase64DecodeTest {
 
         Document doc = null;
         try (InputStream is = new ByteArrayInputStream(input.getBytes())) {
-            doc = XMLUtils.read(is, false, false, new org.apache.xml.security.utils.IgnoreAllErrorHandler());
+            doc = XMLUtils.read(is, false);
         }
         //XMLUtils.circumventBug2650(doc);
 

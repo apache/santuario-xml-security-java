@@ -233,7 +233,7 @@ public class TestUtils {
                                                        String tag)
         throws Exception {
         if (type.equalsIgnoreCase("dom")) {
-            Document doc = XMLUtils.read(new FileInputStream(input), false, false);
+            Document doc = XMLUtils.read(new FileInputStream(input), false);
             if (tag == null) {
                 return new DOMValidateContext
                     (TestUtils.getPublicKey("RSA", 512),

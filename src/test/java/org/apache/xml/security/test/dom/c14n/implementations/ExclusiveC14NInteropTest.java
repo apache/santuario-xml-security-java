@@ -119,7 +119,7 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
 
         File f = new File(directory + "/" + file);
 
-        org.w3c.dom.Document doc = XMLUtils.read(new FileInputStream(f), false, false);
+        org.w3c.dom.Document doc = XMLUtils.read(new FileInputStream(f), false);
 
         Element sigElement =
             (Element) doc.getElementsByTagNameNS(Constants.SignatureSpecNS,
