@@ -20,6 +20,10 @@ package org.apache.xml.security.test.dom.utils;
 
 import java.io.StringReader;
 
+import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.Test;
 import org.xml.sax.InputSource;
@@ -34,9 +38,22 @@ public class XMLUtilsPerformanceTest extends AbstractBenchmark {
 
     @BenchmarkOptions(callgc = false, benchmarkRounds = 100000, warmupRounds = 100)
     @Test
-    public void testCreateDocumentBuilder() throws Exception {
+    public void testXMLUtils() throws Exception {
         InputSource inputSource = new InputSource(new StringReader("<xml>123</xml>"));
         XMLUtils.read(inputSource, false);
+    }
+
+    @BenchmarkOptions(callgc = false, benchmarkRounds = 100000, warmupRounds = 100)
+    @Test
+    public void testCreateDocumentBuilder() throws Exception {
+        DocumentBuilderFactory dfactory = DocumentBuilderFactory.newInstance();
+        dfactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
+        dfactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+        dfactory.setNamespaceAware(true);
+        DocumentBuilder documentBuilder = dfactory.newDocumentBuilder();
+
+        InputSource inputSource = new InputSource(new StringReader("<xml>123</xml>"));
+        documentBuilder.parse(inputSource);
     }
 
 }
