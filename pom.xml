@@ -515,7 +515,7 @@
         <bcprov.version>1.60</bcprov.version>
         <xmlunit.version>1.6</xmlunit.version>
         <commons.codec.version>1.11</commons.codec.version>
-        <woodstox.core.version>5.1.0</woodstox.core.version>
+        <woodstox.core.version>5.0.3</woodstox.core.version>
         <jetty.version>9.4.8.v20171121</jetty.version>
         <xmlsec.jaxb.context.class />
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
