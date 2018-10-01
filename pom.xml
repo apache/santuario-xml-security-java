@@ -157,23 +157,18 @@
                 <configuration>
                     <source>${targetJdk}</source>
                     <target>${targetJdk}</target>
-                    <compilerId>javac-with-errorprone</compilerId>
-                    <forceJavacCompilerUse>true</forceJavacCompilerUse>
+                    <compilerArgs>
+                        <arg>-XDcompilePolicy=simple</arg>
+                        <arg>-Xplugin:ErrorProne</arg>
+                    </compilerArgs>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>com.google.errorprone</groupId>
+                            <artifactId>error_prone_core</artifactId>
+                            <version>2.3.2-SNAPSHOT</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.codehaus.plexus</groupId>
-                        <artifactId>plexus-compiler-javac-errorprone</artifactId>
-                        <version>2.8</version>
-                    </dependency>
-                    <!-- override plexus-compiler-javac-errorprone's dependency on
-                         Error Prone with the latest version -->
-                    <dependency>
-                        <groupId>com.google.errorprone</groupId>
-                        <artifactId>error_prone_core</artifactId>
-                        <version>2.1.1</version>
-                    </dependency>
-                </dependencies>
             </plugin>
             
             <plugin>
@@ -411,6 +406,16 @@
                         </plugin>
                         <plugin>
                             <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-compiler-plugin</artifactId>
+                            <configuration>
+                                <fork>true</fork>
+                                <compilerArgs combine.children="append">
+                                    <arg>-J-Xbootclasspath/p:${settings.localRepository}/com/google/errorprone/javac/9+181-r4173-1/javac-9+181-r4173-1.jar</arg>
+                                </compilerArgs>
+                            </configuration>
+                        </plugin>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
                             <artifactId>maven-surefire-plugin</artifactId>
                             <version>2.21.0</version>
                             <configuration>
@@ -449,8 +454,6 @@
                             <configuration>
                                 <additionalJOptions>
                                     <additionalJOption>-Xdoclint:none</additionalJOption>
-                                    <additionalJOption>--add-modules</additionalJOption>
-                                    <additionalJOption>java.xml.bind</additionalJOption>
                                 </additionalJOptions>
                             </configuration>
                         </plugin>
@@ -469,7 +472,7 @@
                                     <exclude>**/PerformanceMemoryTest.java</exclude>
                                     <exclude>**/PerformanceTimingTest.java</exclude>
                                 </excludes>
-                                <argLine>-Xmx2000m --add-modules java.xml.bind --add-opens java.base/java.lang.reflect=ALL-UNNAMED</argLine>
+                                <argLine>-Xmx2000m --add-opens java.base/java.lang.reflect=ALL-UNNAMED</argLine>
                                 <systemPropertyVariables>
                                     <product.version>${project.version}</product.version>
                                     <log4j.configuration>log4j-xmlsec.xml</log4j.configuration>
@@ -480,6 +483,30 @@
                     </plugins>
                 </pluginManagement>
              </build>
+             <dependencies>
+                 <dependency>
+                     <groupId>javax.activation</groupId>
+                     <artifactId>activation</artifactId>
+                     <version>1.1.1</version>
+                 </dependency>
+                 <dependency>
+                     <groupId>javax.xml.bind</groupId>
+                     <artifactId>jaxb-api</artifactId>
+                     <version>2.2.11</version>
+                 </dependency>
+                 <dependency>
+                     <groupId>com.sun.xml.bind</groupId>
+                     <artifactId>jaxb-impl</artifactId>
+                     <scope>test</scope>
+                     <version>2.2.11</version>
+                 </dependency>
+                 <dependency>
+                     <groupId>com.sun.xml.bind</groupId>
+                     <artifactId>jaxb-core</artifactId>
+                     <scope>test</scope>
+                     <version>2.2.11</version>
+                 </dependency>
+             </dependencies>
          </profile>
         <profile>
             <!-- Profile for testing with EclipseLink MOXy based JAXB implementation -->
@@ -636,6 +663,21 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <!-- Remove when we pick up errorpone 2.3.2 -->
+    <repositories>
+        <repository>
+            <id>Sonatype</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <name>Sonatype Snapshot Repo</name>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+    </repositories>
 
     <distributionManagement>
         <repository>
