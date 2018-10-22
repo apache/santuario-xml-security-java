@@ -82,7 +82,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
     private final String uuid = IDGenerator.generateID(null);
     private final QName wrapperElementName = new QName("http://dummy", "dummy", uuid);
 
-    private final ArrayDeque<XMLSecEvent> tmpXmlEventList = new ArrayDeque<XMLSecEvent>();
+    private final ArrayDeque<XMLSecEvent> tmpXmlEventList = new ArrayDeque<>();
 
     public AbstractDecryptInputProcessor(XMLSecurityProperties securityProperties) throws XMLSecurityException {
         super(securityProperties);
@@ -257,7 +257,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                 if (nextEvent.isStartElement() && nextEvent.asStartElement().getName().equals(XMLSecurityConstants.TAG_XOP_INCLUDE)) {
                     try {
                         // Unmarshal the XOP Include Element
-                        Deque<XMLSecEvent> xmlSecEvents = new ArrayDeque<XMLSecEvent>();
+                        Deque<XMLSecEvent> xmlSecEvents = new ArrayDeque<>();
                         xmlSecEvents.push(nextEvent);
                         xmlSecEvents.push(XMLSecEventFactory.createXmlSecEndElement(XMLSecurityConstants.TAG_XOP_INCLUDE));
 
@@ -467,7 +467,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
             boolean isSecurityHeaderEvent, XMLSecEvent xmlSecEvent, InputProcessorChain subInputProcessorChain)
             throws XMLStreamException, XMLSecurityException {
 
-        Deque<XMLSecEvent> xmlSecEvents = new ArrayDeque<XMLSecEvent>();
+        Deque<XMLSecEvent> xmlSecEvents = new ArrayDeque<>();
         xmlSecEvents.push(xmlSecEvent);
         XMLSecEvent encryptedDataXMLSecEvent;
         int count = 0;

@@ -141,7 +141,7 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
             return;
         }
         // result will contain the attrs which have to be output
-        SortedSet<Attr> result = new TreeSet<Attr>(COMPARE);
+        SortedSet<Attr> result = new TreeSet<>(COMPARE);
 
         if (element.hasAttributes()) {
             NamedNodeMap attrs = element.getAttributes();
@@ -209,7 +209,7 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
         // result will contain the attrs which have to be output
         xmlattrStack.push(ns.getLevel());
         boolean isRealVisible = isVisibleDO(element, ns.getLevel()) == 1;
-        SortedSet<Attr> result = new TreeSet<Attr>(COMPARE);
+        SortedSet<Attr> result = new TreeSet<>(COMPARE);
 
         if (element.hasAttributes()) {
             NamedNodeMap attrs = element.getAttributes();

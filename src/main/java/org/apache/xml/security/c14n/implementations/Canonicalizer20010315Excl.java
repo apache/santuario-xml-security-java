@@ -161,11 +161,11 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
                                            Map<String, byte[]> cache)
         throws CanonicalizationException, DOMException, IOException {
         // result will contain the attrs which have to be output
-        SortedSet<Attr> result = new TreeSet<Attr>(COMPARE);
+        SortedSet<Attr> result = new TreeSet<>(COMPARE);
 
         // The prefix visibly utilized (in the attribute or in the name) in
         // the element
-        SortedSet<String> visiblyUtilized = new TreeSet<String>();
+        SortedSet<String> visiblyUtilized = new TreeSet<>();
         if (inclusiveNSSet != null && !inclusiveNSSet.isEmpty()) {
             visiblyUtilized.addAll(inclusiveNSSet);
         }
@@ -238,7 +238,7 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
                                     Map<String, byte[]> cache)
         throws CanonicalizationException, DOMException, IOException {
         // result will contain the attrs which have to be output
-        SortedSet<Attr> result = new TreeSet<Attr>(COMPARE);
+        SortedSet<Attr> result = new TreeSet<>(COMPARE);
 
         // The prefix visibly utilized (in the attribute or in the name) in
         // the element
@@ -246,7 +246,7 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
         // It's the output selected.
         boolean isOutputElement = isVisibleDO(element, ns.getLevel()) == 1;
         if (isOutputElement) {
-            visiblyUtilized = new TreeSet<String>();
+            visiblyUtilized = new TreeSet<>();
             if (inclusiveNSSet != null && !inclusiveNSSet.isEmpty()) {
                 visiblyUtilized.addAll(inclusiveNSSet);
             }

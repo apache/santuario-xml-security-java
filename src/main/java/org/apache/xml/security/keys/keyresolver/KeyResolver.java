@@ -53,7 +53,7 @@ public class KeyResolver {
         org.slf4j.LoggerFactory.getLogger(KeyResolver.class);
 
     /** Field resolverVector */
-    private static List<KeyResolver> resolverVector = new CopyOnWriteArrayList<KeyResolver>();
+    private static List<KeyResolver> resolverVector = new CopyOnWriteArrayList<>();
 
     /** Field resolverSpi */
     private final KeyResolverSpi resolverSpi;

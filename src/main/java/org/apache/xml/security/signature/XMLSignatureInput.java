@@ -225,12 +225,12 @@ public class XMLSignatureInput {
             if (circumvent) {
                 XMLUtils.circumventBug2650(XMLUtils.getOwnerDocument(subNode));
             }
-            inputNodeSet = new LinkedHashSet<Node>();
+            inputNodeSet = new LinkedHashSet<>();
             XMLUtils.getSet(subNode, inputNodeSet, excludeNode, excludeComments);
             return inputNodeSet;
         } else if (isOctetStream()) {
             convertToNodes();
-            Set<Node> result = new LinkedHashSet<Node>();
+            Set<Node> result = new LinkedHashSet<>();
             XMLUtils.getSet(subNode, result, null, false);
             return result;
         }

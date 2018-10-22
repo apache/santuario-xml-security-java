@@ -184,7 +184,7 @@ public class XMLSecurityInputProcessor extends AbstractInputProcessor {
      */
     public class InternalBufferProcessor extends AbstractInputProcessor {
 
-        private final ArrayDeque<XMLSecEvent> xmlSecEventList = new ArrayDeque<XMLSecEvent>();
+        private final ArrayDeque<XMLSecEvent> xmlSecEventList = new ArrayDeque<>();
 
         InternalBufferProcessor(XMLSecurityProperties securityProperties) {
             super(securityProperties);

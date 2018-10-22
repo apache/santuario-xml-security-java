@@ -64,7 +64,7 @@ public abstract class CanonicalizerBase extends TransformIdentity {
     }
 
     private static final Map<String, byte[]> cache = new WeakHashMap<String, byte[]>();
-    private final C14NStack<XMLSecEvent> outputStack = new C14NStack<XMLSecEvent>();
+    private final C14NStack<XMLSecEvent> outputStack = new C14NStack<>();
     private boolean includeComments = false;
     private DocumentLevel currentDocumentLevel = DocumentLevel.NODE_BEFORE_DOCUMENT_ELEMENT;
 

@@ -146,7 +146,7 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
                                                    SignatureType signatureType, Deque<XMLSecEvent> eventDeque, int index
     ) throws XMLSecurityException {
 
-        Deque<XMLSecEvent> signedInfoDeque = new ArrayDeque<XMLSecEvent>();
+        Deque<XMLSecEvent> signedInfoDeque = new ArrayDeque<>();
 
         try (UnsyncByteArrayOutputStream unsynchronizedByteArrayOutputStream = new UnsyncByteArrayOutputStream()) {
             Transformer transformer = XMLSecurityUtils.getTransformer(

@@ -380,7 +380,7 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
      */
     public class CharacterEventGeneratorOutputStream extends OutputStream {
 
-        private final Deque<XMLSecCharacters> charactersBuffer = new ArrayDeque<XMLSecCharacters>();
+        private final Deque<XMLSecCharacters> charactersBuffer = new ArrayDeque<>();
 
         public Deque<XMLSecCharacters> getCharactersBuffer() {
             return charactersBuffer;

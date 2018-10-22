@@ -43,7 +43,7 @@ public class XMLSecurityEventReaderTest extends Assert {
             xmlInputFactory.createXMLStreamReader(this.getClass().getClassLoader().getResourceAsStream(
                 "org/apache/xml/security/c14n/inExcl/plain-soap-1.1.xml"));
 
-        Deque<XMLSecEvent> xmlSecEventDeque = new ArrayDeque<XMLSecEvent>();
+        Deque<XMLSecEvent> xmlSecEventDeque = new ArrayDeque<>();
         do {
             xmlSecEventDeque.push(XMLSecEventFactory.allocate(xmlStreamReader, null));
             xmlStreamReader.next();
@@ -82,7 +82,7 @@ public class XMLSecurityEventReaderTest extends Assert {
             xmlInputFactory.createXMLStreamReader(this.getClass().getClassLoader().getResourceAsStream(
                 "org/apache/xml/security/c14n/inExcl/plain-soap-1.1.xml"));
 
-        Deque<XMLSecEvent> xmlSecEventDeque = new ArrayDeque<XMLSecEvent>();
+        Deque<XMLSecEvent> xmlSecEventDeque = new ArrayDeque<>();
         do {
             xmlSecEventDeque.push(XMLSecEventFactory.allocate(xmlStreamReader, null));
             xmlStreamReader.next();

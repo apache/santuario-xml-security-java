@@ -219,7 +219,7 @@ public class PerformanceMemoryTest extends AbstractPerformanceTest {
         private long memoryDiff;
         private volatile boolean stop = false;
 
-        private List<Integer> memory = new LinkedList<Integer>();
+        private List<Integer> memory = new LinkedList<>();
 
         MemorySamplerThread(long memoryDiff) {
             this.memoryDiff = memoryDiff;

@@ -68,10 +68,10 @@ public class ApacheNodeSetData implements ApacheData, NodeSetData {
                 (XMLUtils.getOwnerDocument(xi.getSubNode()));
         }
 
-        Set<Node> inputSet = new LinkedHashSet<Node>();
+        Set<Node> inputSet = new LinkedHashSet<>();
         XMLUtils.getSet(xi.getSubNode(), inputSet,
                         null, !xi.isExcludeComments());
-        Set<Node> nodeSet = new LinkedHashSet<Node>();
+        Set<Node> nodeSet = new LinkedHashSet<>();
         for (Node currentNode : inputSet) {
             Iterator<NodeFilter> it = nodeFilters.iterator();
             boolean skipNode = false;

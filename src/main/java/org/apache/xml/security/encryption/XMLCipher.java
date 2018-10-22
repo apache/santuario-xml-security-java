@@ -2544,7 +2544,7 @@ public class XMLCipher {
              * @param algorithm
              */
             public AgreementMethodImpl(String algorithm) {
-                agreementMethodInformation = new LinkedList<Element>();
+                agreementMethodInformation = new LinkedList<>();
                 URI tmpAlgorithm = null;
                 try {
                     tmpAlgorithm = new URI(algorithm);
@@ -3092,7 +3092,7 @@ public class XMLCipher {
                     new IllegalArgumentException().initCause(ex);
                 }
                 this.algorithm = tmpAlgorithm.toString();
-                encryptionMethodInformation = new LinkedList<Element>();
+                encryptionMethodInformation = new LinkedList<>();
             }
 
             /** {@inheritDoc} */
@@ -3217,7 +3217,7 @@ public class XMLCipher {
              * Constructor.
              */
             public EncryptionPropertiesImpl() {
-                encryptionProperties = new LinkedList<EncryptionProperty>();
+                encryptionProperties = new LinkedList<>();
             }
 
             /** {@inheritDoc} */
@@ -3272,7 +3272,7 @@ public class XMLCipher {
              * Constructor.
              */
             public EncryptionPropertyImpl() {
-                encryptionInformation = new LinkedList<Element>();
+                encryptionInformation = new LinkedList<>();
             }
 
             /** {@inheritDoc} */
@@ -3446,7 +3446,7 @@ public class XMLCipher {
                 } else {
                     throw new IllegalArgumentException();
                 }
-                references = new LinkedList<Reference>();
+                references = new LinkedList<>();
             }
 
             /** {@inheritDoc} */
@@ -3517,7 +3517,7 @@ public class XMLCipher {
 
                 ReferenceImpl(String uri) {
                     this.uri = uri;
-                    referenceInformation = new LinkedList<Element>();
+                    referenceInformation = new LinkedList<>();
                 }
 
                 /** {@inheritDoc} */

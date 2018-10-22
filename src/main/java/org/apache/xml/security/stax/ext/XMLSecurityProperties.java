@@ -46,7 +46,7 @@ public class XMLSecurityProperties {
     private String encryptionKeyTransportDigestAlgorithm;
     private String encryptionKeyTransportMGFAlgorithm;
     private byte[] encryptionKeyTransportOAEPParams;
-    private final List<SecurePart> encryptionParts = new LinkedList<SecurePart>();
+    private final List<SecurePart> encryptionParts = new LinkedList<>();
     private Key encryptionKey;
     private Key encryptionTransportKey;
     private SecurityTokenConstants.KeyIdentifier encryptionKeyIdentifier;
@@ -54,7 +54,7 @@ public class XMLSecurityProperties {
 
     private Key decryptionKey;
 
-    private final List<SecurePart> signatureParts = new LinkedList<SecurePart>();
+    private final List<SecurePart> signatureParts = new LinkedList<>();
     private String signatureAlgorithm;
     private String signatureDigestAlgorithm;
     private String signatureCanonicalizationAlgorithm;
