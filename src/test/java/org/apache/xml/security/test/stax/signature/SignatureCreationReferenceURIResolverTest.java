@@ -59,7 +59,7 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
     public void testSignatureCreationWithExternalFilesystemXMLReference() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
@@ -110,7 +110,7 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
     public void testSignatureCreationWithExternalFilesystemBinaryReference() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
@@ -171,7 +171,7 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
 
             // Set up the Configuration
             XMLSecurityProperties properties = new XMLSecurityProperties();
-            List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
+            List<XMLSecurityConstants.Action> actions = new ArrayList<>();
             actions.add(XMLSecurityConstants.SIGNATURE);
             properties.setActions(actions);
 
@@ -221,7 +221,7 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
     public void testSignatureCreationWithSameDocumentXPointerIdApostropheReference() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 

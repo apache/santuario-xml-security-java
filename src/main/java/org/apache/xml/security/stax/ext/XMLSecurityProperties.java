@@ -38,7 +38,7 @@ public class XMLSecurityProperties {
     private boolean skipDocumentEvents = false;
     private boolean disableSchemaValidation = false;
 
-    private List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
+    private List<XMLSecurityConstants.Action> actions = new ArrayList<>();
 
     private X509Certificate encryptionUseThisCertificate;
     private String encryptionSymAlgorithm;
@@ -409,7 +409,7 @@ public class XMLSecurityProperties {
 
     public void addAction(XMLSecurityConstants.Action action) {
         if (actions == null) {
-            actions = new ArrayList<XMLSecurityConstants.Action>();
+            actions = new ArrayList<>();
         }
         actions.add(action);
     }

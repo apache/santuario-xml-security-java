@@ -138,7 +138,7 @@ public abstract class AbstractPerformanceTest {
 
     protected void setUpOutboundSignatureXMLSec() throws XMLSecurityException {
         XMLSecurityProperties xmlSecurityProperties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         xmlSecurityProperties.setActions(actions);
         xmlSecurityProperties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_X509KeyIdentifier);
@@ -169,7 +169,7 @@ public abstract class AbstractPerformanceTest {
 
     protected void setUpOutboundEncryptionXMLSec() throws XMLSecurityException {
         XMLSecurityProperties xmlSecurityProperties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPT);
         xmlSecurityProperties.setActions(actions);
         xmlSecurityProperties.setEncryptionKey(encryptionSymKey);

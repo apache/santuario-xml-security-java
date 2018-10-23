@@ -57,7 +57,7 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
     public void testSignatureEncryption() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         actions.add(XMLSecurityConstants.ENCRYPT);
         properties.setActions(actions);
@@ -126,7 +126,7 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
     public void testSignatureEncryptionSameElement() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         actions.add(XMLSecurityConstants.ENCRYPT);
         properties.setActions(actions);
@@ -195,7 +195,7 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
     public void testEnvelopedSignatureEncryptionElement() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         actions.add(XMLSecurityConstants.ENCRYPT);
         properties.setActions(actions);
@@ -272,7 +272,7 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
     public void testEnvelopedSignatureEncryptionContent() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         actions.add(XMLSecurityConstants.ENCRYPT);
         properties.setActions(actions);
@@ -349,7 +349,7 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
     public void testEncryptionSignature() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPT);
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
