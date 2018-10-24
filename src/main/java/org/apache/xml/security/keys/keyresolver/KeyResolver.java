@@ -91,7 +91,7 @@ public class KeyResolver {
     ) throws KeyResolverException {
         for (KeyResolver resolver : resolverVector) {
             if (resolver == null) {
-                Object exArgs[] = {
+                Object[] exArgs = {
                                    element != null
                                        && element.getNodeType() == Node.ELEMENT_NODE
                                        ? element.getTagName() : "null"
@@ -107,7 +107,7 @@ public class KeyResolver {
             }
         }
 
-        Object exArgs[] = {
+        Object[] exArgs = {
                            element != null && element.getNodeType() == Node.ELEMENT_NODE
                            ? element.getTagName() : "null"
                           };
@@ -130,7 +130,7 @@ public class KeyResolver {
     ) throws KeyResolverException {
         for (KeyResolver resolver : resolverVector) {
             if (resolver == null) {
-                Object exArgs[] = {
+                Object[] exArgs = {
                                    element != null
                                        && element.getNodeType() == Node.ELEMENT_NODE
                                        ? element.getTagName() : "null"
@@ -146,7 +146,7 @@ public class KeyResolver {
             }
         }
 
-        Object exArgs[] = {
+        Object[] exArgs = {
                            element != null && element.getNodeType() == Node.ELEMENT_NODE
                            ? element.getTagName() : "null"
                           };

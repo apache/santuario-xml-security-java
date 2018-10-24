@@ -567,8 +567,8 @@ public class Canonicalizer11Test {
 //
 //      NodeList nodes =
 //         xpathAPI.selectNodeList(doc, "(//*[local-name()='included'] | //@*[parent::node()[local-name()='included']])");
-//      byte result[] = c14nizer.canonicalizeXPathNodeSet(nodes);
-//      byte defined[] = definedOutput.getBytes();
+//      byte[] result = c14nizer.canonicalizeXPathNodeSet(nodes);
+//      byte[] defined = definedOutput.getBytes();
 //      assertEquals(definedOutput, new String(result));
 //      return java.security.MessageDigest.isEqual(defined, result);
 //   }
@@ -597,8 +597,8 @@ public class Canonicalizer11Test {
         }
 
         // org.xml.sax.InputSource refIs = resolver.resolveEntity(null, fileRef);
-        // byte refBytes[] = JavaUtils.getBytesFromStream(refIs.getByteStream());
-        byte refBytes[] = getBytesFromResource(fileRef);
+        // byte[] refBytes = JavaUtils.getBytesFromStream(refIs.getByteStream());
+        byte[] refBytes = getBytesFromResource(fileRef);
 
         // if everything is OK, result is true; we do a binary compare, byte by byte
         boolean result = java.security.MessageDigest.isEqual(refBytes, baos.toByteArray());
@@ -614,7 +614,7 @@ public class Canonicalizer11Test {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         InputStream inputStream = resource.openStream();
         try {
-            byte buf[] = new byte[1024];
+            byte[] buf = new byte[1024];
             int len;
             while ((len = inputStream.read(buf)) > 0) {
                 baos.write(buf, 0, len);
@@ -638,7 +638,7 @@ public class Canonicalizer11Test {
 //    * @throws javax.xml.transform.TransformerConfigurationException
 //    * @throws javax.xml.transform.TransformerException
 //    */
-//   public static byte[] convertToUTF16(byte input[]) throws Exception {
+//   public static byte[] convertToUTF16(byte[] input) throws Exception {
 //
 //      //String ENCODING_ISO8859_1 = "ISO-8859-1";
 //      //String ENCODING_UTF8 = java.nio.charset.StandardCharsets.UTF_8;

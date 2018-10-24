@@ -96,7 +96,7 @@ public class XMLX509Certificate extends SignatureElementProxy implements XMLX509
      * @throws XMLSecurityException
      */
     public X509Certificate getX509Certificate() throws XMLSecurityException {
-        byte certbytes[] = this.getCertificateBytes();
+        byte[] certbytes = this.getCertificateBytes();
         try (InputStream is = new ByteArrayInputStream(certbytes)) {
             CertificateFactory certFact =
                 CertificateFactory.getInstance(XMLX509Certificate.JCA_CERT_ID);

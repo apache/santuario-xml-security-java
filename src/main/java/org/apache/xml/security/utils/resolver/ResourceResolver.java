@@ -97,7 +97,7 @@ public class ResourceResolver {
                     if (context.secureValidation
                         && (resolverTmp.resolverSpi instanceof ResolverLocalFilesystem
                             || resolverTmp.resolverSpi instanceof ResolverDirectHTTP)) {
-                        Object exArgs[] = { resolverTmp.resolverSpi.getClass().getName() };
+                        Object[] exArgs = { resolverTmp.resolverSpi.getClass().getName() };
                         throw new ResourceResolverException(
                             "signature.Reference.ForbiddenResolver", exArgs, context.uriToResolve, context.baseUri
                         );
@@ -107,7 +107,7 @@ public class ResourceResolver {
             }
         }
 
-        Object exArgs[] = { context.uriToResolve != null
+        Object[] exArgs = { context.uriToResolve != null
                 ? context.uriToResolve : "null", context.baseUri };
 
         throw new ResourceResolverException("utils.resolver.noClass", exArgs, context.uriToResolve, context.baseUri);

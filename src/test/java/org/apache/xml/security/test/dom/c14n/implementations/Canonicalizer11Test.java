@@ -247,7 +247,7 @@ public class Canonicalizer11Test {
         Document doc = XMLUtils.read(fileIn, false);
 
         Canonicalizer c14n = Canonicalizer.getInstance(c14nURI);
-        byte c14nBytes[] = null;
+        byte[] c14nBytes = null;
 
         if (xpath == null) {
             c14nBytes = c14n.canonicalizeSubtree(doc);
@@ -266,8 +266,8 @@ public class Canonicalizer11Test {
         }
 
         // org.xml.sax.InputSource refIs = resolver.resolveEntity(null, fileRef);
-        // byte refBytes[] = JavaUtils.getBytesFromStream(refIs.getByteStream());
-        byte refBytes[] = JavaUtils.getBytesFromFile(fileRef);
+        // byte[] refBytes = JavaUtils.getBytesFromStream(refIs.getByteStream());
+        byte[] refBytes = JavaUtils.getBytesFromFile(fileRef);
 
         // if everything is OK, result is true; we do a binary compare, byte by byte
         boolean result = java.security.MessageDigest.isEqual(refBytes, c14nBytes);

@@ -164,7 +164,7 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
                         //Render the ns definition
                         result.add((Attr)n);
                         if (C14nHelper.namespaceIsRelative(attribute)) {
-                            Object exArgs[] = { element.getTagName(), NName, attribute.getNodeValue() };
+                            Object[] exArgs = { element.getTagName(), NName, attribute.getNodeValue() };
                             throw new CanonicalizationException(
                                 "c14n.Canonicalizer.RelativeNamespace", exArgs
                             );
@@ -249,7 +249,7 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
                             if (n != null) {
                                 result.add((Attr)n);
                                 if (C14nHelper.namespaceIsRelative(attribute)) {
-                                    Object exArgs[] = { element.getTagName(), NName, attribute.getNodeValue() };
+                                    Object[] exArgs = { element.getTagName(), NName, attribute.getNodeValue() };
                                     throw new CanonicalizationException(
                                         "c14n.Canonicalizer.RelativeNamespace", exArgs
                                     );

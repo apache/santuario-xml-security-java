@@ -42,7 +42,7 @@ public class TransformTest {
 
     XMLSignatureFactory factory;
 
-    private static final String TRANSFORM_ALGOS[] = {
+    private static final String[] TRANSFORM_ALGOS = {
         Transform.BASE64,
         Transform.ENVELOPED,
         Transform.XPATH,

@@ -53,7 +53,7 @@ public class InvalidSignatureValueException extends XMLSignatureException {
      * @param msgID
      * @param exArgs
      */
-    public InvalidSignatureValueException(String msgID, Object exArgs[]) {
+    public InvalidSignatureValueException(String msgID, Object[] exArgs) {
         super(msgID, exArgs);
     }
 
@@ -79,7 +79,7 @@ public class InvalidSignatureValueException extends XMLSignatureException {
      * @param msgID
      * @param exArgs
      */
-    public InvalidSignatureValueException(Exception originalException, String msgID, Object exArgs[]) {
+    public InvalidSignatureValueException(Exception originalException, String msgID, Object[] exArgs) {
         super(originalException, msgID, exArgs);
     }
 

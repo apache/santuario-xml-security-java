@@ -234,7 +234,7 @@ public class KeySelectors {
                 case MATCH_SUBJECT_KEY_ID:
                     byte[] extension = c.getExtensionValue("2.5.29.14");
                     if (extension != null) {
-                        byte extVal[] = new byte[extension.length - 4];
+                        byte[] extVal = new byte[extension.length - 4];
                         System.arraycopy(extension, 4, extVal, 0, extVal.length);
 
                         if (Arrays.equals(extVal, (byte[]) value)) {

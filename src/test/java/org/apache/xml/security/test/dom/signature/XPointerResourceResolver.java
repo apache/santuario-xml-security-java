@@ -75,7 +75,7 @@ public class XPointerResourceResolver extends ResourceResolverSpi {
             return false;
         }
 
-        String parts[] = xpURI.substring(1).split("\\s");
+        String[] parts = xpURI.substring(1).split("\\s");
 
         // plain ID reference.
         if (parts.length == 1 && !parts[0].startsWith(XNS_OPEN)) {
@@ -116,7 +116,7 @@ public class XPointerResourceResolver extends ResourceResolverSpi {
             return null;
         }
 
-        String parts[] = xpURI.substring(1).split("\\s");
+        String[] parts = xpURI.substring(1).split("\\s");
 
         int i = 0;
         Map<String, String> namespaces = new HashMap<>();

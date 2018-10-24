@@ -193,7 +193,7 @@ public class Init {
                             Canonicalizer.register(uri, javaClass);
                             LOG.debug("Canonicalizer.register({}, {})", uri, javaClass);
                         } catch (ClassNotFoundException e) {
-                            Object exArgs[] = { uri, javaClass };
+                            Object[] exArgs = { uri, javaClass };
                             LOG.error(I18n.translate("algorithm.classDoesNotExist", exArgs));
                         }
                     }
@@ -211,7 +211,7 @@ public class Init {
                             Transform.register(uri, javaClass);
                             LOG.debug("Transform.register({}, {})", uri, javaClass);
                         } catch (ClassNotFoundException e) {
-                            Object exArgs[] = { uri, javaClass };
+                            Object[] exArgs = { uri, javaClass };
 
                             LOG.error(I18n.translate("algorithm.classDoesNotExist", exArgs));
                         } catch (NoClassDefFoundError ex) {
@@ -247,7 +247,7 @@ public class Init {
                             SignatureAlgorithm.register(uri, javaClass);
                             LOG.debug("SignatureAlgorithm.register({}, {})", uri, javaClass);
                         } catch (ClassNotFoundException e) {
-                            Object exArgs[] = { uri, javaClass };
+                            Object[] exArgs = { uri, javaClass };
 
                             LOG.error(I18n.translate("algorithm.classDoesNotExist", exArgs));
                         }

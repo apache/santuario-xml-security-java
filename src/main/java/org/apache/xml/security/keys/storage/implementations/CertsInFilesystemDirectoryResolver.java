@@ -190,7 +190,7 @@ public class CertsInFilesystemDirectoryResolver extends StorageResolverSpi {
      * @param unused
      * @throws Exception
      */
-    public static void main(String unused[]) throws Exception {
+    public static void main(String[] unused) throws Exception {
 
         CertsInFilesystemDirectoryResolver krs =
             new CertsInFilesystemDirectoryResolver(

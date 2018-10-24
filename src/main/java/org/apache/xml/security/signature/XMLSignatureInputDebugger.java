@@ -291,7 +291,7 @@ public class XMLSignatureInputDebugger {
             }
 
             Arrays.sort(attrs2, ATTR_COMPARE);
-            Object attrs3[] = attrs2;
+            Object[] attrs3 = attrs2;
 
             for (int i = 0; i < attrsLength; i++) {
                 Attr a = (Attr) attrs3[i];

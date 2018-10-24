@@ -76,7 +76,7 @@ public class X509IssuerSerialResolver extends KeyResolverSpi {
         }
         try {
             if (storage == null) {
-                Object exArgs[] = { Constants._TAG_X509ISSUERSERIAL };
+                Object[] exArgs = { Constants._TAG_X509ISSUERSERIAL };
                 KeyResolverException ex =
                     new KeyResolverException("KeyResolver.needStorageResolver", exArgs);
 

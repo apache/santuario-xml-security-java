@@ -105,7 +105,7 @@ public class XPath2FilterContainer extends ElementProxy implements TransformPara
         if (!filterStr.equals(XPath2FilterContainer._ATT_FILTER_VALUE_INTERSECT)
             && !filterStr.equals(XPath2FilterContainer._ATT_FILTER_VALUE_SUBTRACT)
             && !filterStr.equals(XPath2FilterContainer._ATT_FILTER_VALUE_UNION)) {
-            Object exArgs[] = { XPath2FilterContainer._ATT_FILTER, filterStr,
+            Object[] exArgs = { XPath2FilterContainer._ATT_FILTER, filterStr,
                                 XPath2FilterContainer._ATT_FILTER_VALUE_INTERSECT
                                 + ", "
                                 + XPath2FilterContainer._ATT_FILTER_VALUE_SUBTRACT

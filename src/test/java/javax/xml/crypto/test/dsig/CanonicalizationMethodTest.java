@@ -42,7 +42,7 @@ public class CanonicalizationMethodTest {
             (new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI(), 1);
     }
 
-    private static final String C14N_ALGOS[] = {
+    private static final String[] C14N_ALGOS = {
         CanonicalizationMethod.INCLUSIVE_WITH_COMMENTS,
         CanonicalizationMethod.INCLUSIVE,
         CanonicalizationMethod.EXCLUSIVE_WITH_COMMENTS,

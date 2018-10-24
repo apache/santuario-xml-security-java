@@ -60,14 +60,14 @@ public class MissingResourceFailureException extends XMLSignatureException {
      * @param exArgs
      * @see #getReference
      */
-    public MissingResourceFailureException(Reference reference, String msgID, Object exArgs[]) {
+    public MissingResourceFailureException(Reference reference, String msgID, Object[] exArgs) {
         super(msgID, exArgs);
 
         this.uninitializedReference = reference;
     }
 
     @Deprecated
-    public MissingResourceFailureException(String msgID, Object exArgs[], Reference reference) {
+    public MissingResourceFailureException(String msgID, Object[] exArgs, Reference reference) {
         this(reference, msgID, exArgs);
     }
 
@@ -104,7 +104,7 @@ public class MissingResourceFailureException extends XMLSignatureException {
      * @see #getReference
      */
     public MissingResourceFailureException(
-        Exception originalException, Reference reference, String msgID, Object exArgs[]
+        Exception originalException, Reference reference, String msgID, Object[] exArgs
     ) {
         super(originalException, msgID, exArgs);
 
@@ -113,7 +113,7 @@ public class MissingResourceFailureException extends XMLSignatureException {
 
     @Deprecated
     public MissingResourceFailureException(
-        String msgID, Object exArgs[], Exception originalException, Reference reference
+        String msgID, Object[] exArgs, Exception originalException, Reference reference
     ) {
         this(originalException, reference, msgID, exArgs);
     }

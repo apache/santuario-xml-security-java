@@ -778,7 +778,7 @@ public class Canonicalizer20010315ExclusiveTest {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         InputStream inputStream = resource.openStream();
         try {
-            byte buf[] = new byte[1024];
+            byte[] buf = new byte[1024];
             int len;
             while ((len = inputStream.read(buf)) > 0) {
                 baos.write(buf, 0, len);

@@ -73,7 +73,7 @@ public class ResolverXPointer extends ResourceResolverSpi {
             if (context.secureValidation) {
                 Element start = context.attr.getOwnerDocument().getDocumentElement();
                 if (!XMLUtils.protectAgainstWrappingAttack(start, id)) {
-                    Object exArgs[] = { id };
+                    Object[] exArgs = { id };
                     throw new ResourceResolverException(
                         "signature.Verification.MultipleIDs", exArgs, context.uriToResolve, context.baseUri
                     );
@@ -81,7 +81,7 @@ public class ResolverXPointer extends ResourceResolverSpi {
             }
 
             if (resultNode == null) {
-                Object exArgs[] = { id };
+                Object[] exArgs = { id };
 
                 throw new ResourceResolverException(
                     "signature.Verification.MissingID", exArgs, context.uriToResolve, context.baseUri

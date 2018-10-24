@@ -35,7 +35,7 @@ public class SignatureMethodTest {
 
     XMLSignatureFactory factory;
 
-    private static final String SIG_ALGOS[] = {
+    private static final String[] SIG_ALGOS = {
         SignatureMethod.DSA_SHA1,
         SignatureMethod.RSA_SHA1,
         SignatureMethod.HMAC_SHA1

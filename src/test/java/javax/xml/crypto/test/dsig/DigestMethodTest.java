@@ -35,7 +35,7 @@ public class DigestMethodTest {
 
     private XMLSignatureFactory factory;
 
-    private static final String MD_ALGOS[] = {
+    private static final String[] MD_ALGOS = {
         DigestMethod.SHA1
     };
 

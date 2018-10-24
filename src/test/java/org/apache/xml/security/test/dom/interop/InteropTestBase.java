@@ -77,7 +77,7 @@ public class InteropTestBase {
         }
         signature.setFollowNestedManifests(followManifests);
 
-        byte keybytes[] = hmacKey;
+        byte[] keybytes = hmacKey;
         javax.crypto.SecretKey sk = signature.createSecretKey(keybytes);
 
         return signature.checkSignatureValue(sk);

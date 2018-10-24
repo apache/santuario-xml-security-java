@@ -133,14 +133,14 @@ public class Manifest extends SignatureElementProxy {
         int le = this.referencesEl.length;
         if (le == 0) {
             // At least one Reference must be present. Bad.
-            Object exArgs[] = { Constants._TAG_REFERENCE, Constants._TAG_MANIFEST };
+            Object[] exArgs = { Constants._TAG_REFERENCE, Constants._TAG_MANIFEST };
 
             throw new DOMException(DOMException.WRONG_DOCUMENT_ERR,
                                    I18n.translate("xml.WrongContent", exArgs));
         }
 
         if (secureValidation && le > referenceCount) {
-            Object exArgs[] = { le, referenceCount };
+            Object[] exArgs = { le, referenceCount };
 
             throw new XMLSecurityException("signature.tooManyReferences", exArgs);
         }
@@ -322,7 +322,7 @@ public class Manifest extends SignatureElementProxy {
             throw new XMLSecurityException("empty", new Object[]{"References are empty"});
         }
         if (secureValidation && referencesEl.length > referenceCount) {
-            Object exArgs[] = { referencesEl.length, referenceCount };
+            Object[] exArgs = { referencesEl.length, referenceCount };
 
             throw new XMLSecurityException("signature.tooManyReferences", exArgs);
         }
@@ -410,7 +410,7 @@ public class Manifest extends SignatureElementProxy {
 
                 verificationResults.add(new VerifiedReference(currentRefVerified, currentRef.getURI(), manifestReferences));
             } catch (ReferenceNotInitializedException ex) {
-                Object exArgs[] = { currentRef.getURI() };
+                Object[] exArgs = { currentRef.getURI() };
 
                 throw new MissingResourceFailureException(
                     ex, currentRef, "signature.Verification.Reference.NoInput", exArgs
@@ -432,7 +432,7 @@ public class Manifest extends SignatureElementProxy {
      */
     public boolean getVerificationResult(int index) throws XMLSecurityException {
         if (index < 0 || index > this.getLength() - 1) {
-            Object exArgs[] = { Integer.toString(index), Integer.toString(this.getLength()) };
+            Object[] exArgs = { Integer.toString(index), Integer.toString(this.getLength()) };
             Exception e =
                 new IndexOutOfBoundsException(
                     I18n.translate("signature.Verification.IndexOutOfBounds", exArgs)

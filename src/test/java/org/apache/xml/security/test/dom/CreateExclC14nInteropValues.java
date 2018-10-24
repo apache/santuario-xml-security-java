@@ -46,7 +46,7 @@ public class CreateExclC14nInteropValues {
      * @param unused
      * @throws Exception
      */
-    public static void main(String unused[]) throws Exception {
+    public static void main(String[] unused) throws Exception {
 
         org.apache.xml.security.Init.init();
 

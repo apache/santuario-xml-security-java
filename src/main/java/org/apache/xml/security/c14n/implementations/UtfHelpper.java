@@ -207,7 +207,7 @@ public final class UtfHelpper {
                 continue;
             }
             if (!expanded) {
-                byte newResult[] = new byte[6*length];
+                byte[] newResult = new byte[6*length];
                 System.arraycopy(result, 0, newResult, 0, out);
                 result = newResult;
                 expanded = true;
@@ -252,7 +252,7 @@ public final class UtfHelpper {
             }
         }
         if (expanded) {
-            byte newResult[] = new byte[out];
+            byte[] newResult = new byte[out];
             System.arraycopy(result, 0, newResult, 0, out);
             result = newResult;
         }

@@ -99,7 +99,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
                 supplied = publicKey.getClass().getName();
             }
             String needed = PublicKey.class.getName();
-            Object exArgs[] = { supplied, needed };
+            Object[] exArgs = { supplied, needed };
 
             throw new XMLSignatureException("algorithms.WrongKeyForThisOperation", exArgs);
         }
@@ -140,7 +140,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
                 supplied = privateKey.getClass().getName();
             }
             String needed = PrivateKey.class.getName();
-            Object exArgs[] = { supplied, needed };
+            Object[] exArgs = { supplied, needed };
 
             throw new XMLSignatureException("algorithms.WrongKeyForThisOperation", exArgs);
         }
@@ -180,7 +180,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
     }
 
     /** {@inheritDoc} */
-    protected void engineUpdate(byte buf[], int offset, int len) throws XMLSignatureException {
+    protected void engineUpdate(byte[] buf, int offset, int len) throws XMLSignatureException {
         try {
             this.signatureAlgorithm.update(buf, offset, len);
         } catch (SignatureException ex) {

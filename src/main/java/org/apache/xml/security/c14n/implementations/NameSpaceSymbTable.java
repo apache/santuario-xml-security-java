@@ -366,7 +366,7 @@ class SymbMap implements Cloneable {
      */
     protected void rehash(int newCapacity) {
         int oldCapacity = keys.length;
-        String oldKeys[] = keys;
+        String[] oldKeys = keys;
         NameSpaceSymbEntry oldVals[] = entries;
 
         keys = new String[newCapacity];

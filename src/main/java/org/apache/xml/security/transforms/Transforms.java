@@ -137,7 +137,7 @@ public class Transforms extends SignatureElementProxy {
 
         if (numberOfTransformElems == 0) {
             // At least one Transform element must be present. Bad.
-            Object exArgs[] = { Constants._TAG_TRANSFORM, Constants._TAG_TRANSFORMS };
+            Object[] exArgs = { Constants._TAG_TRANSFORM, Constants._TAG_TRANSFORMS };
 
             throw new TransformationException("xml.WrongContent", exArgs);
         }
@@ -280,7 +280,7 @@ public class Transforms extends SignatureElementProxy {
     private void checkSecureValidation(Transform transform) throws TransformationException {
         String uri = transform.getURI();
         if (secureValidation && Transforms.TRANSFORM_XSLT.equals(uri)) {
-            Object exArgs[] = { uri };
+            Object[] exArgs = { uri };
 
             throw new TransformationException(
                 "signature.Transform.ForbiddenTransform", exArgs

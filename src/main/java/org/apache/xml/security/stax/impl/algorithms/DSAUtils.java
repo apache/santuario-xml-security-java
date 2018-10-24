@@ -33,7 +33,7 @@ public class DSAUtils {
      * @throws java.io.IOException
      * @see <A HREF="http://www.w3.org/TR/xmldsig-core/#dsa-sha1">6.4.1 DSA</A>
      */
-    public static byte[] convertASN1toXMLDSIG(byte asn1Bytes[]) throws IOException {
+    public static byte[] convertASN1toXMLDSIG(byte[] asn1Bytes) throws IOException {
         return org.apache.xml.security.algorithms.implementations.ECDSAUtils.convertASN1toXMLDSIG(asn1Bytes);
     }
 
@@ -47,7 +47,7 @@ public class DSAUtils {
      * @throws IOException
      * @see <A HREF="http://www.w3.org/TR/xmldsig-core/#dsa-sha1">6.4.1 DSA</A>
      */
-    public static byte[] convertXMLDSIGtoASN1(byte xmldsigBytes[]) throws IOException {
+    public static byte[] convertXMLDSIGtoASN1(byte[] xmldsigBytes) throws IOException {
         return org.apache.xml.security.algorithms.implementations.ECDSAUtils.convertXMLDSIGtoASN1(xmldsigBytes);
     }
 }

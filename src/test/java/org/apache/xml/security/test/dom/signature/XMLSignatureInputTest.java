@@ -95,14 +95,14 @@ public class XMLSignatureInputTest {
         int off = 0;
 
         while (res.available() > 0) {
-            byte array[] = new byte[1024];
+            byte[] array = new byte[1024];
             int len = res.read(array);
 
             baos.write(array, off, len);
             off += len;
         }
 
-        byte resBytes[] = baos.toByteArray();
+        byte[] resBytes = baos.toByteArray();
         String resString = new String(resBytes, java.nio.charset.StandardCharsets.UTF_8);
 
         assertTrue(resString.equals(_octetStreamTextInput));

@@ -377,7 +377,7 @@ public class Base64 {
         int numberQuartet = fewerThan24bits != 0L ? numberTriplets + 1 : numberTriplets;
         int quartesPerLine = length / 4;
         int numberLines = (numberQuartet - 1) / quartesPerLine;
-        char encodedData[] = null;
+        char[] encodedData = null;
 
         encodedData = new char[numberQuartet * 4 + numberLines * 2];
 
@@ -508,7 +508,7 @@ public class Base64 {
             return new byte[0];
         }
 
-        byte decodedData[] = null;
+        byte[] decodedData = null;
         byte b1 = 0, b2 = 0, b3 = 0, b4 = 0;
 
         int i = 0;
@@ -623,7 +623,7 @@ public class Base64 {
             return;
         }
 
-        //byte decodedData[] = null;
+        //byte[] decodedData = null;
         byte b1 = 0, b2 = 0, b3 = 0, b4 = 0;
 
         int i = 0;
@@ -690,7 +690,7 @@ public class Base64 {
      */
     public static final void decode(InputStream is, OutputStream os)
         throws Base64DecodingException, IOException {
-        //byte decodedData[] = null;
+        //byte[] decodedData = null;
         byte b1 = 0, b2 = 0, b3 = 0, b4 = 0;
 
         int index = 0;

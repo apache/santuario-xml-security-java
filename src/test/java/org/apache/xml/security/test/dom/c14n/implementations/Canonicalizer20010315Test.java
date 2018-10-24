@@ -423,9 +423,9 @@ public class Canonicalizer20010315Test {
         NodeList nodes = (NodeList)xPath.evaluate(xpath, doc, XPathConstants.NODESET);
         Canonicalizer c14n =
             Canonicalizer.getInstance(Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS);
-        byte c14nBytes[] = c14n.canonicalizeXPathNodeSet(nodes);
+        byte[] c14nBytes = c14n.canonicalizeXPathNodeSet(nodes);
         InputStream refStream = new FileInputStream(fileRef);
-        byte refBytes[] = JavaUtils.getBytesFromStream(refStream);
+        byte[] refBytes = JavaUtils.getBytesFromStream(refStream);
         assertEquals(new String(refBytes),new String(c14nBytes));
     }
 
@@ -486,12 +486,12 @@ public class Canonicalizer20010315Test {
     public void testTranslationFromUTF16toUTF8() throws Exception {
         String val =
             "<UTF16>The german &amp;auml (which is Unicode &amp;#xE4;):  &quot;&#xE4;&quot;</UTF16>";
-        byte utf16[] = convertToUTF16(val.getBytes());
+        byte[] utf16 = convertToUTF16(val.getBytes());
         Canonicalizer c14n =
             Canonicalizer.getInstance(Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS);
-        byte c14nBytes[] = c14n.canonicalize(utf16);
+        byte[] c14nBytes = c14n.canonicalize(utf16);
         InputStream refStream = new FileInputStream(prefix + "/in/testTranslationFromUTF16toUTF8.xml");
-        byte refBytes[] = JavaUtils.getBytesFromStream(refStream);
+        byte[] refBytes = JavaUtils.getBytesFromStream(refStream);
         boolean equal = java.security.MessageDigest.isEqual(refBytes, c14nBytes);
 
         assertTrue("Parser does not translate to UCS character domain", equal);
@@ -683,8 +683,8 @@ public class Canonicalizer20010315Test {
         NodeList nodes =
             (NodeList)xPath.evaluate(xpath, doc, XPathConstants.NODESET);
 
-        byte result[] = c14nizer.canonicalizeXPathNodeSet(nodes);
-        byte defined[] = definedOutput.getBytes();
+        byte[] result = c14nizer.canonicalizeXPathNodeSet(nodes);
+        byte[] defined = definedOutput.getBytes();
         assertEquals(definedOutput, new String(result));
         return java.security.MessageDigest.isEqual(defined, result);
     }
@@ -714,7 +714,7 @@ public class Canonicalizer20010315Test {
 
 
         Canonicalizer c14n = Canonicalizer.getInstance(c14nURI);
-        byte c14nBytes[] = null;
+        byte[] c14nBytes = null;
 
         if (xpath == null) {
             c14nBytes = c14n.canonicalizeSubtree(doc);
@@ -733,8 +733,8 @@ public class Canonicalizer20010315Test {
         }
 
         // org.xml.sax.InputSource refIs = resolver.resolveEntity(null, fileRef);
-        // byte refBytes[] = JavaUtils.getBytesFromStream(refIs.getByteStream());
-        byte refBytes[] = JavaUtils.getBytesFromFile(fileRef);
+        // byte[] refBytes = JavaUtils.getBytesFromStream(refIs.getByteStream());
+        byte[] refBytes = JavaUtils.getBytesFromFile(fileRef);
 
         // if everything is OK, result is true; we do a binary compare, byte by byte
         boolean result = java.security.MessageDigest.isEqual(refBytes, c14nBytes);
@@ -763,7 +763,7 @@ public class Canonicalizer20010315Test {
      *
      * @param input
      */
-    public static byte[] convertToUTF16(byte input[]) throws Exception {
+    public static byte[] convertToUTF16(byte[] input) throws Exception {
         //String ENCODING_ISO8859_1 = "ISO-8859-1";
         //String ENCODING_UTF8 = java.nio.charset.StandardCharsets.UTF_8;
         String ENCODING_UTF16 = "UTF-16";

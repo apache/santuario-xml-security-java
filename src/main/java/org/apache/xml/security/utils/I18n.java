@@ -107,7 +107,7 @@ public class I18n {
      */
     public static String getExceptionMessage(String msgID, Exception originalException) {
         try {
-            Object exArgs[] = { originalException.getMessage() };
+            Object[] exArgs = { originalException.getMessage() };
             return MessageFormat.format(resourceBundle.getString(msgID), exArgs);
         } catch (Throwable t) {
             if (org.apache.xml.security.Init.isInitialized()) {
@@ -129,7 +129,7 @@ public class I18n {
      * @param exArgs
      * @return message translated
      */
-    public static String getExceptionMessage(String msgID, Object exArgs[]) {
+    public static String getExceptionMessage(String msgID, Object[] exArgs) {
         try {
             return MessageFormat.format(resourceBundle.getString(msgID), exArgs);
         } catch (Throwable t) {

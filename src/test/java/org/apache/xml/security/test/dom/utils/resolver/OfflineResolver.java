@@ -118,7 +118,7 @@ public class OfflineResolver extends ResourceResolverSpi {
 
                 return result;
             } else {
-                Object exArgs[] = {"The URI " + URI + " is not configured for offline work" };
+                Object[] exArgs = {"The URI " + URI + " is not configured for offline work" };
 
                 throw new ResourceResolverException(
                     "generic.EmptyMessage", exArgs, context.uriToResolve, context.baseUri

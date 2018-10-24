@@ -92,7 +92,7 @@ public class X509SubjectNameResolver extends KeyResolverSpi {
 
         try {
             if (storage == null) {
-                Object exArgs[] = { Constants._TAG_X509SUBJECTNAME };
+                Object[] exArgs = { Constants._TAG_X509SUBJECTNAME };
                 KeyResolverException ex =
                     new KeyResolverException("KeyResolver.needStorageResolver", exArgs);
 

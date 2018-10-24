@@ -193,7 +193,7 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
                     && C14nHelper.namespaceIsRelative(NNodeValue)) {
                     // The default mapping for xml must not be output.
                     // New definition check if it is relative.
-                    Object exArgs[] = {element.getTagName(), NName, attribute.getNodeValue()};
+                    Object[] exArgs = {element.getTagName(), NName, attribute.getNodeValue()};
                     throw new CanonicalizationException(
                         "c14n.Canonicalizer.RelativeNamespace", exArgs
                     );
@@ -282,7 +282,7 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
                         if (n != null) {
                             result.add((Attr)n);
                             if (C14nHelper.namespaceIsRelative(attribute)) {
-                                Object exArgs[] = { element.getTagName(), NName, attribute.getNodeValue() };
+                                Object[] exArgs = { element.getTagName(), NName, attribute.getNodeValue() };
                                 throw new CanonicalizationException(
                                     "c14n.Canonicalizer.RelativeNamespace", exArgs
                                 );
@@ -293,7 +293,7 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
                     if (ns.addMapping(NName, NNodeValue, attribute)
                         && C14nHelper.namespaceIsRelative(NNodeValue)) {
                         // New definition check if it is relative
-                        Object exArgs[] = { element.getTagName(), NName, attribute.getNodeValue() };
+                        Object[] exArgs = { element.getTagName(), NName, attribute.getNodeValue() };
                         throw new CanonicalizationException(
                             "c14n.Canonicalizer.RelativeNamespace", exArgs
                         );

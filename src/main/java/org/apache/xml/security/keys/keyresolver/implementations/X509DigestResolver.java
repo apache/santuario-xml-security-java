@@ -158,7 +158,7 @@ public class X509DigestResolver extends KeyResolverSpi {
      */
     private void checkStorage(StorageResolver storage) throws KeyResolverException {
         if (storage == null) {
-            Object exArgs[] = { Constants._TAG_X509DIGEST };
+            Object[] exArgs = { Constants._TAG_X509DIGEST };
             KeyResolverException ex = new KeyResolverException("KeyResolver.needStorageResolver", exArgs);
             LOG.debug("", ex);
             throw ex;

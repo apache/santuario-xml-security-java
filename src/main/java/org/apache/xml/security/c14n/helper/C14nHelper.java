@@ -101,7 +101,7 @@ public final class C14nHelper {
         if ((definesDefaultNS || definesNonDefaultNS) && namespaceIsRelative(attr)) {
             String parentName = attr.getOwnerElement().getTagName();
             String attrValue = attr.getValue();
-            Object exArgs[] = { parentName, nodeAttrName, attrValue };
+            Object[] exArgs = { parentName, nodeAttrName, attrValue };
 
             throw new CanonicalizationException(
                 "c14n.Canonicalizer.RelativeNamespace", exArgs
@@ -119,7 +119,7 @@ public final class C14nHelper {
     public static void checkTraversability(Document document)
         throws CanonicalizationException {
         if (!document.isSupported("Traversal", "2.0")) {
-            Object exArgs[] = {document.getImplementation().getClass().getName() };
+            Object[] exArgs = {document.getImplementation().getClass().getName() };
 
             throw new CanonicalizationException(
                 "c14n.Canonicalizer.TraversalNotSupported", exArgs

@@ -243,7 +243,7 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
             e = getDocumentElement(resource.getNodeSet());
         } else {
             // Retrieved resource is an inputStream
-            byte inputBytes[] = resource.getBytes();
+            byte[] inputBytes = resource.getBytes();
             e = getDocFromBytes(inputBytes, secureValidation);
             // otherwise, we parse the resource, create an Element and delegate
             LOG.debug("we have to parse {} bytes", inputBytes.length);
@@ -253,7 +253,7 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
 
     private static X509Certificate getRawCertificate(XMLSignatureInput resource)
         throws CanonicalizationException, IOException, CertificateException {
-        byte inputBytes[] = resource.getBytes();
+        byte[] inputBytes = resource.getBytes();
         // if the resource stores a raw certificate, we have to handle it
         CertificateFactory certFact =
             CertificateFactory.getInstance(XMLX509Certificate.JCA_CERT_ID);

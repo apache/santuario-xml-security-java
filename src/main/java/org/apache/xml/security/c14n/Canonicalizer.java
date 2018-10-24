@@ -113,7 +113,7 @@ public class Canonicalizer {
             canonicalizerSpi = implementingClass.newInstance();
             canonicalizerSpi.reset = true;
         } catch (Exception e) {
-            Object exArgs[] = { algorithmURI };
+            Object[] exArgs = { algorithmURI };
             throw new InvalidCanonicalizerException(
                 e, "signature.Canonicalizer.UnknownCanonicalizer", exArgs
             );
@@ -150,7 +150,7 @@ public class Canonicalizer {
             canonicalizerHash.get(algorithmURI);
 
         if (registeredClass != null)  {
-            Object exArgs[] = { algorithmURI, registeredClass };
+            Object[] exArgs = { algorithmURI, registeredClass };
             throw new AlgorithmAlreadyRegisteredException("algorithm.alreadyRegistered", exArgs);
         }
 
@@ -176,7 +176,7 @@ public class Canonicalizer {
         Class<? extends CanonicalizerSpi> registeredClass = canonicalizerHash.get(algorithmURI);
 
         if (registeredClass != null)  {
-            Object exArgs[] = { algorithmURI, registeredClass };
+            Object[] exArgs = { algorithmURI, registeredClass };
             throw new AlgorithmAlreadyRegisteredException("algorithm.alreadyRegistered", exArgs);
         }
 

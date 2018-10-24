@@ -74,7 +74,7 @@ public class ResolverFragment extends ResourceResolverSpi {
 
             selectedElem = doc.getElementById(id);
             if (selectedElem == null) {
-                Object exArgs[] = { id };
+                Object[] exArgs = { id };
                 throw new ResourceResolverException(
                     "signature.Verification.MissingID", exArgs, context.uriToResolve, context.baseUri
                 );
@@ -82,7 +82,7 @@ public class ResolverFragment extends ResourceResolverSpi {
             if (context.secureValidation) {
                 Element start = context.attr.getOwnerDocument().getDocumentElement();
                 if (!XMLUtils.protectAgainstWrappingAttack(start, id)) {
-                    Object exArgs[] = { id };
+                    Object[] exArgs = { id };
                     throw new ResourceResolverException(
                         "signature.Verification.MultipleIDs", exArgs, context.uriToResolve, context.baseUri
                     );

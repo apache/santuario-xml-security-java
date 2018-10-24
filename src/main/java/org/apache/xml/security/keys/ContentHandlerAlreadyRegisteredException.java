@@ -50,7 +50,7 @@ public class ContentHandlerAlreadyRegisteredException extends XMLSecurityExcepti
      * @param msgID
      * @param exArgs
      */
-    public ContentHandlerAlreadyRegisteredException(String msgID, Object exArgs[]) {
+    public ContentHandlerAlreadyRegisteredException(String msgID, Object[] exArgs) {
         super(msgID, exArgs);
     }
 
@@ -77,7 +77,7 @@ public class ContentHandlerAlreadyRegisteredException extends XMLSecurityExcepti
      * @param exArgs
      */
     public ContentHandlerAlreadyRegisteredException(
-        Exception originalException, String msgID, Object exArgs[]
+        Exception originalException, String msgID, Object[] exArgs
     ) {
         super(originalException, msgID, exArgs);
     }

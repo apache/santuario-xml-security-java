@@ -234,7 +234,7 @@ public class Reference extends SignatureElementProxy {
             transforms = new Transforms(el, this.baseURI);
             transforms.setSecureValidation(secureValidation);
             if (secureValidation && transforms.getLength() > MAXIMUM_TRANSFORM_COUNT) {
-                Object exArgs[] = { transforms.getLength(), MAXIMUM_TRANSFORM_COUNT };
+                Object[] exArgs = { transforms.getLength(), MAXIMUM_TRANSFORM_COUNT };
 
                 throw new XMLSecurityException("signature.tooManyTransforms", exArgs);
             }
@@ -273,7 +273,7 @@ public class Reference extends SignatureElementProxy {
         }
 
         if (secureValidation && MessageDigestAlgorithm.ALGO_ID_DIGEST_NOT_RECOMMENDED_MD5.equals(uri)) {
-            Object exArgs[] = { uri };
+            Object[] exArgs = { uri };
 
             throw new XMLSignatureException("signature.signatureAlgorithm", exArgs);
         }

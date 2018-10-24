@@ -63,7 +63,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
      * @see <A HREF="http://www.w3.org/TR/xmldsig-core/#dsa-sha1">6.4.1 DSA</A>
      * @see <A HREF="ftp://ftp.rfc-editor.org/in-notes/rfc4050.txt">3.3. ECDSA Signatures</A>
      */
-    public static byte[] convertASN1toXMLDSIG(byte asn1Bytes[]) throws IOException {
+    public static byte[] convertASN1toXMLDSIG(byte[] asn1Bytes) throws IOException {
         return ECDSAUtils.convertASN1toXMLDSIG(asn1Bytes);
     }
 
@@ -80,7 +80,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
      * @see <A HREF="http://www.w3.org/TR/xmldsig-core/#dsa-sha1">6.4.1 DSA</A>
      * @see <A HREF="ftp://ftp.rfc-editor.org/in-notes/rfc4050.txt">3.3. ECDSA Signatures</A>
      */
-    public static byte[] convertXMLDSIGtoASN1(byte xmldsigBytes[]) throws IOException {
+    public static byte[] convertXMLDSIGtoASN1(byte[] xmldsigBytes) throws IOException {
         return ECDSAUtils.convertXMLDSIGtoASN1(xmldsigBytes);
     }
 
@@ -148,7 +148,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
                 supplied = publicKey.getClass().getName();
             }
             String needed = PublicKey.class.getName();
-            Object exArgs[] = { supplied, needed };
+            Object[] exArgs = { supplied, needed };
 
             throw new XMLSignatureException("algorithms.WrongKeyForThisOperation", exArgs);
         }
@@ -174,7 +174,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
     /** {@inheritDoc} */
     protected byte[] engineSign() throws XMLSignatureException {
         try {
-            byte jcebytes[] = this.signatureAlgorithm.sign();
+            byte[] jcebytes = this.signatureAlgorithm.sign();
 
             return SignatureECDSA.convertASN1toXMLDSIG(jcebytes);
         } catch (SignatureException ex) {
@@ -193,7 +193,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
                 supplied = privateKey.getClass().getName();
             }
             String needed = PrivateKey.class.getName();
-            Object exArgs[] = { supplied, needed };
+            Object[] exArgs = { supplied, needed };
 
             throw new XMLSignatureException("algorithms.WrongKeyForThisOperation", exArgs);
         }
@@ -233,7 +233,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
     }
 
     /** {@inheritDoc} */
-    protected void engineUpdate(byte buf[], int offset, int len) throws XMLSignatureException {
+    protected void engineUpdate(byte[] buf, int offset, int len) throws XMLSignatureException {
         try {
             this.signatureAlgorithm.update(buf, offset, len);
         } catch (SignatureException ex) {

@@ -32,7 +32,7 @@ public interface SignatureAlgorithm {
 
     void engineUpdate(byte input) throws XMLSecurityException;
 
-    void engineUpdate(byte buf[], int offset, int len) throws XMLSecurityException;
+    void engineUpdate(byte[] buf, int offset, int len) throws XMLSecurityException;
 
     void engineInitSign(Key signingKey) throws XMLSecurityException;
 
