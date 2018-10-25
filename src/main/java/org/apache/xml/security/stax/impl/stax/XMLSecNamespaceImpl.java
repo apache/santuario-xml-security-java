@@ -36,7 +36,7 @@ import java.util.WeakHashMap;
 public class XMLSecNamespaceImpl extends XMLSecEventBaseImpl implements XMLSecNamespace {
 
     private static final Map<String, Map<String, XMLSecNamespace>> xmlSecNamespaceMap =
-            new WeakHashMap<String, Map<String, XMLSecNamespace>>();
+            new WeakHashMap<>();
 
     private String prefix;
     private final String uri;

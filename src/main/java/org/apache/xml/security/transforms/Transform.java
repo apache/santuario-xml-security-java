@@ -70,7 +70,7 @@ public final class Transform extends SignatureElementProxy {
 
     /** All available Transform classes are registered here */
     private static Map<String, Class<? extends TransformSpi>> transformSpiHash =
-        new ConcurrentHashMap<String, Class<? extends TransformSpi>>();
+        new ConcurrentHashMap<>();
 
     private final TransformSpi transformSpi;
     private boolean secureValidation;

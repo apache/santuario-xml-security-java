@@ -51,7 +51,7 @@ public class SignatureAlgorithm extends Algorithm {
 
     /** All available algorithm classes are registered here */
     private static Map<String, Class<? extends SignatureAlgorithmSpi>> algorithmHash =
-        new ConcurrentHashMap<String, Class<? extends SignatureAlgorithmSpi>>();
+        new ConcurrentHashMap<>();
 
     /** Field signatureAlgorithm */
     private final SignatureAlgorithmSpi signatureAlgorithm;

@@ -94,7 +94,7 @@ public class Canonicalizer {
         "http://santuario.apache.org/c14n/physical";
 
     private static Map<String, Class<? extends CanonicalizerSpi>> canonicalizerHash =
-        new ConcurrentHashMap<String, Class<? extends CanonicalizerSpi>>();
+        new ConcurrentHashMap<>();
 
     private final CanonicalizerSpi canonicalizerSpi;
     private boolean secureValidation;
