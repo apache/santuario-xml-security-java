@@ -88,8 +88,8 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
                     "secureProcessing.MaximumAllowedReferencesPerManifest",
                     new Object[] {referencesTypeList.size(), maximumAllowedReferencesPerManifest});
         }
-        sameDocumentReferences = new ArrayList<KeyValue<ResourceResolver, ReferenceType>>(referencesTypeList.size());
-        externalReferences = new ArrayList<KeyValue<ResourceResolver, ReferenceType>>(referencesTypeList.size());
+        sameDocumentReferences = new ArrayList<>(referencesTypeList.size());
+        externalReferences = new ArrayList<>(referencesTypeList.size());
         processedReferences = new ArrayList<>(referencesTypeList.size());
 
         Iterator<ReferenceType> referenceTypeIterator = referencesTypeList.iterator();

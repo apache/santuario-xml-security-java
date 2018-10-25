@@ -36,8 +36,8 @@ public class PerformanceTimingTest extends AbstractPerformanceTest {
     private static final int runs = 40;
     private static final int xmlResizeFactor = 1000;
 
-    private static Map<Integer, File> signedFiles = new TreeMap<Integer, File>();
-    private static Map<Integer, File> encryptedFiles = new TreeMap<Integer, File>();
+    private static Map<Integer, File> signedFiles = new TreeMap<>();
+    private static Map<Integer, File> encryptedFiles = new TreeMap<>();
 
 
     @Override

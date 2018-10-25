@@ -68,7 +68,7 @@ public class XMLSecNamespaceImpl extends XMLSecEventBaseImpl implements XMLSecNa
                 return xmlSecNamespace;
             }
         } else {
-            nsMap = new WeakHashMap<String, XMLSecNamespace>();
+            nsMap = new WeakHashMap<>();
             XMLSecNamespace xmlSecNamespace = new XMLSecNamespaceImpl(prefixToUse, uriToUse);
             nsMap.put(uriToUse, xmlSecNamespace);
             xmlSecNamespaceMap.put(prefixToUse, nsMap);

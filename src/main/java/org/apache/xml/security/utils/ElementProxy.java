@@ -51,7 +51,7 @@ public abstract class ElementProxy {
     private Document wrappedDoc;
 
     /** Field prefixMappings */
-    private static Map<String, String> prefixMappings = new ConcurrentHashMap<String, String>();
+    private static Map<String, String> prefixMappings = new ConcurrentHashMap<>();
 
     /**
      * Constructor ElementProxy
