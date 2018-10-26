@@ -249,7 +249,7 @@ class Marshaller {
     };
 
     private static final List<XmlWriter.ToMarshal<? extends XMLStructure>> MARSHALLERS =
-        new ArrayList<XmlWriter.ToMarshal<? extends XMLStructure>>();
+        new ArrayList<>();
 
     static {
         MARSHALLERS.add(Marshal_KeyName);
