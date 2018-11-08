@@ -40,7 +40,9 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
+import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -77,6 +79,7 @@ public class XMLEncryption11Test extends Assert {
     private int nodeCount;
 
     private XMLInputFactory xmlInputFactory;
+    private TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
     @Before
     public void setUp() throws Exception {
@@ -447,8 +450,12 @@ public class XMLEncryption11Test extends Assert {
         InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
         TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
 
+        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        transformer.transform(new DOMSource(doc), new StreamResult(baos));
+
         final XMLStreamReader xmlStreamReader =
-                xmlInputFactory.createXMLStreamReader(new DOMSource(doc));
+            xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
 
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
