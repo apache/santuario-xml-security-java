@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.utils;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -36,21 +35,17 @@ import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.validation.Schema;
 
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.c14n.InvalidCanonicalizerException;
 import org.w3c.dom.Attr;
-import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
-import org.xml.sax.EntityResolver;
-import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -1011,7 +1006,7 @@ public final class XMLUtils {
     public static Document newDocument() throws ParserConfigurationException {
         DocumentBuilder documentBuilder = createDocumentBuilder(true);
         Document doc = documentBuilder.newDocument();
-        repoolDocumentBuilder(documentBuilder);
+        repoolDocumentBuilder(documentBuilder, true);
         return doc;
     }
 
@@ -1022,7 +1017,7 @@ public final class XMLUtils {
     public static Document read(InputStream inputStream, boolean disAllowDocTypeDeclarations) throws ParserConfigurationException, SAXException, IOException {
         DocumentBuilder documentBuilder = createDocumentBuilder(disAllowDocTypeDeclarations);
         Document doc = documentBuilder.parse(inputStream);
-        repoolDocumentBuilder(documentBuilder);
+        repoolDocumentBuilder(documentBuilder, disAllowDocTypeDeclarations);
         return doc;
     }
 
@@ -1030,7 +1025,7 @@ public final class XMLUtils {
         throws ParserConfigurationException, SAXException, IOException {
         DocumentBuilder documentBuilder = createDocumentBuilder(disAllowDocTypeDeclarations);
         Document doc = documentBuilder.parse(uri);
-        repoolDocumentBuilder(documentBuilder);
+        repoolDocumentBuilder(documentBuilder, disAllowDocTypeDeclarations);
         return doc;
     }
 
@@ -1042,7 +1037,7 @@ public final class XMLUtils {
         throws ParserConfigurationException, SAXException, IOException {
         DocumentBuilder documentBuilder = createDocumentBuilder(disAllowDocTypeDeclarations);
         Document doc = documentBuilder.parse(inputSource);
-        repoolDocumentBuilder(documentBuilder);
+        repoolDocumentBuilder(documentBuilder, disAllowDocTypeDeclarations);
         return doc;
     }
 
@@ -1054,13 +1049,8 @@ public final class XMLUtils {
     }
 
 
-    private static boolean repoolDocumentBuilder(DocumentBuilder db) {
-        if (!(db instanceof DocumentBuilderProxy)) {
-            return false;
-        }
+    private static boolean repoolDocumentBuilder(DocumentBuilder db, boolean disAllowDocTypeDeclarations) {
         db.reset();
-        boolean disAllowDocTypeDeclarations =
-            ((DocumentBuilderProxy)db).disAllowDocTypeDeclarations();
         int idx = getPoolsIndex(disAllowDocTypeDeclarations);
         return pools[idx].repool(db);
     }
@@ -1110,90 +1100,6 @@ public final class XMLUtils {
         return resizedBytes;
     }
 
-    /**
-     * We need this proxy wrapping DocumentBuilder to record the value
-     * passed to disAllowDoctypeDeclarations.  It's needed to figure out
-     * on which pool to return.
-     */
-    private static class DocumentBuilderProxy extends DocumentBuilder {
-        private final DocumentBuilder delegate;
-        private final boolean disAllowDocTypeDeclarations;
-
-        private DocumentBuilderProxy(DocumentBuilder actual, boolean disAllowDocTypeDeclarations) {
-            delegate = actual;
-            this.disAllowDocTypeDeclarations = disAllowDocTypeDeclarations;
-        }
-
-        boolean disAllowDocTypeDeclarations() {
-            return disAllowDocTypeDeclarations;
-        }
-
-        public void reset() {
-            delegate.reset();
-        }
-
-        public Document parse(InputStream is) throws SAXException, IOException {
-            return delegate.parse(is);
-        }
-
-        public Document parse(InputStream is, String systemId)
-                throws SAXException, IOException {
-            return delegate.parse(is, systemId);
-        }
-
-        public Document parse(String uri) throws SAXException, IOException {
-            return delegate.parse(uri);
-        }
-
-        public Document parse(File f) throws SAXException, IOException {
-            return delegate.parse(f);
-        }
-
-        public Schema getSchema() {
-            return delegate.getSchema();
-        }
-
-        public boolean isXIncludeAware() {
-            return delegate.isXIncludeAware();
-        }
-
-        @Override
-        public Document parse(InputSource is) throws SAXException, IOException {
-            return delegate.parse(is);
-        }
-
-        @Override
-        public boolean isNamespaceAware() {
-            return delegate.isNamespaceAware();
-        }
-
-        @Override
-        public boolean isValidating() {
-            return delegate.isValidating();
-        }
-
-        @Override
-        public void setEntityResolver(EntityResolver er) {
-            delegate.setEntityResolver(er);
-        }
-
-        @Override
-        public void setErrorHandler(ErrorHandler eh) {
-            delegate.setErrorHandler(eh);
-        }
-
-        @Override
-        public Document newDocument() {
-            return delegate.newDocument();
-        }
-
-        @Override
-        public DOMImplementation getDOMImplementation() {
-            return delegate.getDOMImplementation();
-        }
-
-    }
-
     private static final class DocumentBuilderPool
         extends WeakObjectPool<DocumentBuilder, ParserConfigurationException> {
 
@@ -1211,7 +1117,7 @@ public final class XMLUtils {
                 dfactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
             }
             dfactory.setNamespaceAware(true);
-            return new DocumentBuilderProxy(dfactory.newDocumentBuilder(), disAllowDocTypeDeclarations);
+            return dfactory.newDocumentBuilder();
         }
     }
 
