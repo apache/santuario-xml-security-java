@@ -39,7 +39,7 @@ public class UncategorizedTest extends Assert {
     public void testConfigurationLoadFromUrl() throws Exception {
         URL url =
             this.getClass().getClassLoader().getResource(
-                "org/apache/xml/security/c14n/in/31_input.xml");
+                "org/apache/xml/security/c14n/in/32_input.xml");
         try {
             Init.init(url.toURI(), this.getClass());
             Assert.fail();

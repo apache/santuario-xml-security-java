@@ -60,6 +60,8 @@ public class Init {
                 final UnmarshallerHandler unmarshallerHandler = unmarshaller.getUnmarshallerHandler();
 
                 SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
+                saxParserFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
+                saxParserFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
                 saxParserFactory.setXIncludeAware(false);
                 saxParserFactory.setNamespaceAware(true);
                 SAXParser saxParser = saxParserFactory.newSAXParser();
