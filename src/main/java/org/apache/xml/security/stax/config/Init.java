@@ -54,6 +54,7 @@ public class Init {
                 JAXBContext jaxbContext = JAXBContext.newInstance(ObjectFactory.class);
                 final Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
                 SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+                schemaFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
                 Schema schema = schemaFactory.newSchema(
                         ClassLoaderUtils.getResource("schemas/security-config.xsd", Init.class));
                 unmarshaller.setSchema(schema);
