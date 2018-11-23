@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.stream.XMLStreamException;
 
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.CanonicalizerSpi;
@@ -160,11 +161,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
                 }
             }
             return null;
-        } catch (ParserConfigurationException ex) {
-            throw new CanonicalizationException(ex);
-        } catch (IOException ex) {
-            throw new CanonicalizationException(ex);
-        } catch (SAXException ex) {
+        } catch (ParserConfigurationException | IOException | SAXException | XMLStreamException ex) {
             throw new CanonicalizationException(ex);
         }
     }
@@ -654,7 +651,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
         throws CanonicalizationException, DOMException, IOException;
 
     abstract void circumventBugIfNeeded(XMLSignatureInput input)
-        throws CanonicalizationException, ParserConfigurationException, IOException, SAXException;
+        throws CanonicalizationException, ParserConfigurationException, IOException, SAXException, XMLStreamException;
 
     /**
      * Outputs an Attribute to the internal Writer.

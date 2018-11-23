@@ -28,6 +28,7 @@ import java.util.HashMap;
 
 import javax.crypto.SecretKey;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.stream.XMLStreamException;
 
 import org.apache.xml.security.keys.storage.StorageResolver;
 import org.apache.xml.security.utils.XMLUtils;
@@ -273,11 +274,7 @@ public abstract class KeyResolverSpi {
         try (InputStream is = new ByteArrayInputStream(bytes)) {
             Document doc = XMLUtils.read(is, secureValidation);
             return doc.getDocumentElement();
-        } catch (SAXException ex) {
-            throw new KeyResolverException(ex);
-        } catch (IOException ex) {
-            throw new KeyResolverException(ex);
-        } catch (ParserConfigurationException ex) {
+        } catch (ParserConfigurationException | IOException | SAXException | XMLStreamException ex) {
             throw new KeyResolverException(ex);
         }
     }
