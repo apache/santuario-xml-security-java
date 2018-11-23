@@ -32,7 +32,6 @@ import java.util.ListIterator;
 import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.stream.XMLStreamException;
 
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.exceptions.XMLSecurityException;
@@ -127,9 +126,7 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
              LOG.debug("ParserConfigurationException", e);
          } catch (SAXException e) {
              LOG.debug("SAXException", e);
-         } catch (XMLStreamException e) {
-             LOG.debug("XMLStreamException", e);
-        }
+         }
          return null;
     }
 
@@ -187,8 +184,6 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
             LOG.debug("ParserConfigurationException", e);
         } catch (SAXException e) {
             LOG.debug("SAXException", e);
-        } catch (XMLStreamException e) {
-            LOG.debug("XMLStreamException", e);
         }
         return null;
     }
@@ -239,7 +234,7 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
 
     private static Element obtainReferenceElement(XMLSignatureInput resource, boolean secureValidation)
         throws CanonicalizationException, ParserConfigurationException,
-        IOException, SAXException, KeyResolverException, XMLStreamException {
+        IOException, SAXException, KeyResolverException {
         Element e;
         if (resource.isElement()){
             e = (Element) resource.getSubNode();

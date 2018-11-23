@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.stream.XMLStreamException;
 
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.signature.XMLSignatureInput;
@@ -156,8 +155,6 @@ public class TransformBase64Decode extends TransformSpi {
         } catch (ParserConfigurationException e) {
             throw new TransformationException(e, "c14n.Canonicalizer.Exception");
         } catch (SAXException e) {
-            throw new TransformationException(e, "SAX exception");
-        } catch (XMLStreamException e) {
             throw new TransformationException(e, "SAX exception");
         }
     }

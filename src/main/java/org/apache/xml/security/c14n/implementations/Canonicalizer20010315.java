@@ -26,7 +26,6 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.stream.XMLStreamException;
 
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.helper.C14nHelper;
@@ -297,7 +296,7 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
     }
 
     protected void circumventBugIfNeeded(XMLSignatureInput input)
-        throws CanonicalizationException, ParserConfigurationException, IOException, SAXException, XMLStreamException {
+        throws CanonicalizationException, ParserConfigurationException, IOException, SAXException {
         if (!input.isNeedsToBeExpanded()) {
             return;
         }

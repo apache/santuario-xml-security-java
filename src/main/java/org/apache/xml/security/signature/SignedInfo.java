@@ -26,7 +26,6 @@ import java.io.OutputStream;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.stream.XMLStreamException;
 
 import org.apache.xml.security.algorithms.SignatureAlgorithm;
 import org.apache.xml.security.c14n.CanonicalizationException;
@@ -219,7 +218,11 @@ public class SignedInfo extends Manifest {
                     element.getParentNode().replaceChild(imported, element);
                     return (Element) imported;
                 }
-            } catch (ParserConfigurationException | IOException | SAXException | XMLStreamException ex) {
+            } catch (ParserConfigurationException ex) {
+                throw new XMLSecurityException(ex);
+            } catch (IOException ex) {
+                throw new XMLSecurityException(ex);
+            } catch (SAXException ex) {
                 throw new XMLSecurityException(ex);
             }
         }

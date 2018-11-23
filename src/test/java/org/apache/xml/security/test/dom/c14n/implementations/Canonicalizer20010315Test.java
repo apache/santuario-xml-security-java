@@ -42,7 +42,6 @@ import javax.xml.xpath.XPathFactory;
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
-import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.utils.JavaUtils;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
@@ -711,8 +710,7 @@ public class Canonicalizer20010315Test {
         Map<String, String> namespaces
     ) throws Exception {
 
-        String systemId = "target/test-classes/org/apache/xml/security/c14n/in/xyz";
-        Document doc = TestUtils.read(fileIn, systemId, false);
+        Document doc = XMLUtils.read(fileIn, false);
 
 
         Canonicalizer c14n = Canonicalizer.getInstance(c14nURI);

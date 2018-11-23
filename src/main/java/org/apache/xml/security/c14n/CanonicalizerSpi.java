@@ -22,8 +22,6 @@ import java.io.ByteArrayInputStream;
 import java.io.OutputStream;
 import java.util.Set;
 
-import javax.xml.stream.XMLStreamException;
-
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -50,11 +48,10 @@ public abstract class CanonicalizerSpi {
      * @throws java.io.IOException
      * @throws javax.xml.parsers.ParserConfigurationException
      * @throws org.xml.sax.SAXException
-     * @throws XMLStreamException
      */
     public byte[] engineCanonicalize(byte[] inputBytes)
         throws javax.xml.parsers.ParserConfigurationException, java.io.IOException,
-        org.xml.sax.SAXException, CanonicalizationException, XMLStreamException {
+        org.xml.sax.SAXException, CanonicalizationException {
 
         Document document = null;
         try (java.io.InputStream bais = new ByteArrayInputStream(inputBytes)) {
