@@ -597,7 +597,7 @@ public class BaltimoreEncTest {
 
         String cc = retrieveCCNumber(d);
         LOG.debug("Retrieved Credit Card : " + cc);
-        assertTrue(cc, cc!= null && cc.equals(cardNumber));
+        assertTrue(cardNumber.equals(cc));
 
         // Test cc numbers
         if (doNodeCheck) {

@@ -18,7 +18,7 @@
  */
 package org.apache.xml.security.test.dom.c14n.implementations;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNull;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -61,7 +61,7 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
 
         String success = t("src/test/resources/interop/c14n/Y1", "exc-signature.xml", true);
 
-        assertTrue(success, success == null);
+        assertNull(success);
     }
 
     /**
@@ -74,7 +74,7 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
 
         String success = t("src/test/resources/interop/c14n/Y2", "signature-joseph-exc.xml", false);
 
-        assertTrue(success, success == null);
+        assertNull(success);
     }
 
     /**
@@ -87,7 +87,7 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
 
         String success = t("src/test/resources/interop/c14n/Y3", "signature.xml", false);
 
-        assertTrue(success, success == null);
+        assertNull(success);
     }
 
     /**
@@ -100,7 +100,7 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
 
         String success = t("src/test/resources/interop/c14n/Y4", "signature.xml", true);
 
-        assertTrue(success, success == null);
+        assertNull(success);
     }
 
     @org.junit.Test
@@ -108,7 +108,7 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
 
         String success = t("src/test/resources/interop/xfilter2/merlin-xpath-filter2-three", "sign-spec.xml", true);
 
-        assertTrue(success, success == null);
+        assertNull(success);
     }
 
     private String t(String directory, String file, boolean secureValidation) throws Exception {

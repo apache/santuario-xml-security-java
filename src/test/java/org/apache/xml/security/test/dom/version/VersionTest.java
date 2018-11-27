@@ -18,6 +18,7 @@
  */
 package org.apache.xml.security.test.dom.version;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.security.Provider;
@@ -49,10 +50,10 @@ public class VersionTest {
         Security.addProvider(new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
 
         Provider provider = Security.getProvider("ApacheXMLDSig");
-        assertTrue(provider != null);
+        assertNotNull(provider);
 
         String version = System.getProperty("product.version");
-        assertTrue(version != null);
+        assertNotNull(version);
 
         version = convertVersion(version);
 

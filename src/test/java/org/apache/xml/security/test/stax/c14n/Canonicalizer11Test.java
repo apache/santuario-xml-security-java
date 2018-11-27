@@ -327,7 +327,7 @@ public class Canonicalizer11Test {
             c14nAndCompare(fileIn, fileIn, true);
             fail();
         } catch (XMLStreamException cex) {
-            assertTrue(cex != null);
+            assertNotNull(cex);
         }
     }
 
