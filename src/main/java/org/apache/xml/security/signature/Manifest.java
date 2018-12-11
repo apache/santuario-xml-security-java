@@ -316,8 +316,8 @@ public class Manifest extends SignatureElementProxy {
                 );
         }
         LOG.debug("verify {} References", referencesEl.length);
-        LOG.debug("I am {} requested to follow nested Manifests", (followManifests
-            ? "" : "not"));
+        LOG.debug("I am {} requested to follow nested Manifests", followManifests
+            ? "" : "not");
         if (referencesEl.length == 0) {
             throw new XMLSecurityException("empty", new Object[]{"References are empty"});
         }

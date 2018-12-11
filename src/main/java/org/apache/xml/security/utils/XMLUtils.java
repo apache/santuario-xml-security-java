@@ -1127,7 +1127,7 @@ public final class XMLUtils {
      * @return the index to the {@link #pools}
      */
     private static int getPoolsIndex(boolean disAllowDocTypeDeclarations) {
-        return (disAllowDocTypeDeclarations ? 1 : 0);
+        return disAllowDocTypeDeclarations ? 1 : 0;
     }
 
 }

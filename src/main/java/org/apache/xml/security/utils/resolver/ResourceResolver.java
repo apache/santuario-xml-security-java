@@ -145,7 +145,7 @@ public class ResourceResolver {
     ) throws ResourceResolverException {
         LOG.debug(
             "I was asked to create a ResourceResolver and got {}",
-            (individualResolvers == null ? 0 : individualResolvers.size())
+            individualResolvers == null ? 0 : individualResolvers.size()
         );
 
         ResourceResolverContext context = new ResourceResolverContext(uri, baseURI, secureValidation);

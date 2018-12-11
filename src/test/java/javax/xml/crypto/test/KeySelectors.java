@@ -281,13 +281,13 @@ public class KeySelectors {
                             // assume KeyName contains subject DN and search
                             // collection of certs for match
                             List<X509Certificate> result = match(MATCH_SUBJECT, name, certs);
-                            int numOfMatches = (result == null? 0 : result.size());
+                            int numOfMatches = result == null ? 0 : result.size();
                             if (numOfMatches != 1) {
                                 throw new KeySelectorException
                                     ((numOfMatches == 0 ? "No":"More than one") +
                                      " match found");
                             }
-                            pk = ((X509Certificate)result.get(0)).getPublicKey();
+                            pk = result.get(0).getPublicKey();
                         }
                         return new SimpleKSResult(pk);
                     } else if (xmlStructure instanceof RetrievalMethod) {
@@ -331,14 +331,14 @@ public class KeySelectors {
                                 throw new KeySelectorException("Unsupported X509Data: " + obj);
                             }
                         }
-                        int numOfMatches = (result == null ? 0 : result.size());
+                        int numOfMatches = result == null ? 0 : result.size();
                         if (numOfMatches != 1) {
                             throw new KeySelectorException
-                                ((numOfMatches==0?"No":"More than one") +
+                                ((numOfMatches == 0 ? "No" : "More than one") +
                                  " match found");
+
                         }
-                        return new SimpleKSResult(((X509Certificate)
-                                          result.get(0)).getPublicKey());
+                        return new SimpleKSResult(result.get(0).getPublicKey());
                     }
                 } catch (Exception ex) {
                     throw new KeySelectorException(ex);

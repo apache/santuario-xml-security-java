@@ -63,13 +63,13 @@ public final class XMLDSigRI extends Provider {
         ProviderService(Provider p, String type, String algo, String cn,
             String[] aliases) {
             super(p, type, algo, cn,
-                (aliases == null? null : Arrays.asList(aliases)), null);
+                aliases == null ? null : Arrays.asList(aliases), null);
         }
 
         ProviderService(Provider p, String type, String algo, String cn,
             String[] aliases, HashMap<String, String> attrs) {
             super(p, type, algo, cn,
-                  (aliases == null? null : Arrays.asList(aliases)), attrs);
+                  aliases == null ? null : Arrays.asList(aliases), attrs);
         }
 
         @Override
