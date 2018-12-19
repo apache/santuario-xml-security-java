@@ -29,12 +29,16 @@ import org.apache.xml.security.stax.securityToken.InboundSecurityToken;
 import org.apache.xml.security.utils.UnsyncBufferedOutputStream;
 import org.apache.xml.security.utils.UnsyncByteArrayInputStream;
 import org.apache.xml.security.utils.UnsyncByteArrayOutputStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 import org.apache.xml.security.stax.ext.stax.XMLSecEventFactory;
 import org.apache.xml.security.stax.impl.algorithms.SignatureAlgorithm;
 import org.apache.xml.security.stax.impl.algorithms.SignatureAlgorithmFactory;
 import org.apache.xml.security.stax.impl.util.*;
 
+import javax.security.auth.DestroyFailedException;
+import javax.security.auth.Destroyable;
 import javax.xml.bind.JAXBElement;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
@@ -51,6 +55,8 @@ import java.util.*;
 /**
  */
 public abstract class AbstractSignatureInputHandler extends AbstractInputSecurityHeaderHandler {
+
+    private static final transient Logger LOG = LoggerFactory.getLogger(AbstractSignatureInputHandler.class);
 
     @Override
     public void handle(final InputProcessorChain inputProcessorChain, final XMLSecurityProperties securityProperties,
@@ -334,6 +340,15 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
                 throw new XMLSecurityException(e);
             } catch (NoSuchProviderException e) {
                 throw new XMLSecurityException(e);
+            }
+
+            // Clean the secret key from memory now that we're done with it
+            if (verifyKey instanceof Destroyable) {
+                try {
+                    ((Destroyable)verifyKey).destroy();
+                } catch (DestroyFailedException e) {
+                    LOG.debug("Error destroying key: {}", e.getMessage());
+                }
             }
         }
 

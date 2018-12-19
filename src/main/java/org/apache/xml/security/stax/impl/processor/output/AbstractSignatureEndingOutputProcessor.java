@@ -25,6 +25,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.util.*;
 
+import javax.security.auth.DestroyFailedException;
+import javax.security.auth.Destroyable;
 import javax.xml.stream.XMLStreamException;
 
 import org.apache.xml.security.exceptions.XMLSecurityException;
@@ -48,10 +50,14 @@ import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 import org.apache.xml.security.stax.securityToken.SecurityTokenProvider;
 import org.apache.xml.security.utils.UnsyncBufferedOutputStream;
 import org.apache.xml.security.utils.XMLUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  */
 public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBufferingOutputProcessor {
+
+    private static final transient Logger LOG = LoggerFactory.getLogger(AbstractSignatureEndingOutputProcessor.class);
 
     private List<SignaturePartDef> signaturePartDefList;
 
@@ -220,6 +226,15 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
             createEndElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsig_KeyInfo);
         }
         createEndElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsig_Signature);
+
+        // Clean the secret key from memory now that we're done with it
+        if (key instanceof Destroyable) {
+            try {
+                ((Destroyable)key).destroy();
+            } catch (DestroyFailedException e) {
+                LOG.debug("Error destroying key: {}", e.getMessage());
+            }
+        }
     }
 
     protected abstract SignedInfoProcessor newSignedInfoProcessor(

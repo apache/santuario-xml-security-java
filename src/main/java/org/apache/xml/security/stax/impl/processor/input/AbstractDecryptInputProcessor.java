@@ -44,6 +44,8 @@ import org.apache.xml.security.stax.securityToken.SecurityTokenFactory;
 import org.apache.xml.security.stax.impl.util.*;
 
 import javax.crypto.*;
+import javax.security.auth.DestroyFailedException;
+import javax.security.auth.Destroyable;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -862,6 +864,16 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
 
                 //close to get Cipher.doFinal() called
                 outputStreamWriter.close();
+
+                // Clean the secret key from memory now that we're done with it
+                if (secretKey instanceof Destroyable) {
+                    try {
+                        ((Destroyable)secretKey).destroy();
+                    } catch (DestroyFailedException e) {
+                        LOG.debug("Error destroying key: {}", e.getMessage());
+                    }
+                }
+
                 LOG.debug("Decryption thread finished");
 
             } catch (Exception e) {
