@@ -568,7 +568,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <targetJdk>1.8</targetJdk>
         <clirr.version>2.8</clirr.version>
-        <maven-owasp-plugin-version>4.0.1</maven-owasp-plugin-version>
+        <maven-owasp-plugin-version>4.0.2</maven-owasp-plugin-version>
 
         <!-- Allow Clirr severity to be overriden by the command-line option -DminSeverity=level -->
         <minSeverity>info</minSeverity>
