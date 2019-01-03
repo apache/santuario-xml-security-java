@@ -21,7 +21,6 @@
  */
 package javax.xml.crypto.test.dsig;
 
-import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -30,6 +29,8 @@ import javax.xml.crypto.*;
 
 import javax.xml.crypto.dsig.XMLSignatureFactory;
 import javax.xml.crypto.test.KeySelectors;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * This is a testcase to validate all "coreFeatures"

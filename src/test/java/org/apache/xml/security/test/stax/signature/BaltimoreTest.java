@@ -66,17 +66,22 @@ import org.apache.xml.security.test.stax.utils.TestUtils;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.utils.XMLUtils;
 import org.apache.xml.security.utils.resolver.implementations.ResolverDirectHTTP;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 
 /**
  * This test is to ensure interoperability with the examples provided by Merlin Huges
  * from Baltimore using KeyTools XML. These test vectors are located in the directory
  * <CODE>data/ie/baltimore/merlin-examples/</CODE>.
  */
-public class BaltimoreTest extends Assert {
+public class BaltimoreTest {
 
     // Define the Keys
     private static final String DSA_Y_15 =
@@ -191,8 +196,8 @@ public class BaltimoreTest extends Assert {
             StAX2DOM.readDoc(securityStreamReader);
             fail("Failure expected on a short HMAC length");
         } catch (XMLStreamException ex) {
-            Assert.assertTrue(ex.getCause() instanceof XMLSecurityException);
-            Assert.assertEquals("INVALID signature -- core validation failed.", ex.getCause().getMessage());
+            assertTrue(ex.getCause() instanceof XMLSecurityException);
+            assertEquals("INVALID signature -- core validation failed.", ex.getCause().getMessage());
         }
     }
 
@@ -515,8 +520,8 @@ public class BaltimoreTest extends Assert {
             StAX2DOM.readDoc(securityStreamReader);
             fail("Failure expected on a short HMAC length");
         } catch (XMLStreamException ex) {
-            Assert.assertTrue(ex.getCause() instanceof XMLSecurityException);
-            Assert.assertEquals("INVALID signature -- core validation failed.", ex.getCause().getMessage());
+            assertTrue(ex.getCause() instanceof XMLSecurityException);
+            assertEquals("INVALID signature -- core validation failed.", ex.getCause().getMessage());
         }
     }
 

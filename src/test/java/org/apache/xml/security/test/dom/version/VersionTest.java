@@ -18,11 +18,12 @@
  */
 package org.apache.xml.security.test.dom.version;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.security.Provider;
 import java.security.Security;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Version test.

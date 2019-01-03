@@ -60,17 +60,22 @@ import org.apache.xml.security.test.stax.utils.StAX2DOM;
 import org.apache.xml.security.test.stax.utils.TestUtils;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.utils.XMLUtils;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 
 /**
  * This test is to ensure interoperability with the examples provided by the IAIK
  * XML Signature implementation. Thanks to Gregor Karlinger who provided these
  * test vectors. They are located in the directory <CODE>data/at/iaik/ixsil/</CODE>.
  */
-public class IAIKTest extends Assert {
+public class IAIKTest {
 
     // Define the Keys
     private static final String DSA_Y =
@@ -170,8 +175,8 @@ public class IAIKTest extends Assert {
             StAX2DOM.readDoc(securityStreamReader);
             fail("Failure expected on a short HMAC length");
         } catch (XMLStreamException ex) {
-            Assert.assertTrue(ex.getCause() instanceof XMLSecurityException);
-            Assert.assertEquals("INVALID signature -- core validation failed.", ex.getCause().getMessage());
+            assertTrue(ex.getCause() instanceof XMLSecurityException);
+            assertEquals("INVALID signature -- core validation failed.", ex.getCause().getMessage());
         }
     }
 

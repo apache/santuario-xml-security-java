@@ -29,10 +29,11 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 
-import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayOutputStream;
 import java.io.StringReader;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * This is a test for Santuario-191:

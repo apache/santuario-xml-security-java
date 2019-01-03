@@ -21,13 +21,19 @@
  */
 package javax.xml.crypto.test.dsig;
 
-import static org.junit.Assert.*;
 
 import java.security.*;
 import java.security.spec.AlgorithmParameterSpec;
 import javax.xml.crypto.dsig.*;
 import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 import javax.xml.crypto.dsig.spec.ExcC14NParameterSpec;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 
 /**
  * Unit test for javax.xml.crypto.dsig.CanonicalizationMethod

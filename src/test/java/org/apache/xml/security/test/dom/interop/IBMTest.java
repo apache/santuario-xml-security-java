@@ -18,13 +18,14 @@
  */
 package org.apache.xml.security.test.dom.interop;
 
-import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
 import org.apache.xml.security.test.dom.utils.resolver.OfflineResolver;
 import org.apache.xml.security.utils.JavaUtils;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
+
+import static org.junit.Assert.assertTrue;
 
 
 /**

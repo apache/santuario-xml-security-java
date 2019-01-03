@@ -44,6 +44,7 @@ import org.w3c.dom.Element;
 
 import static org.junit.Assert.assertTrue;
 
+
 /**
  * Tests creating and validating an XML Signature with an XPath Transform.
  * Tests bug #44617.

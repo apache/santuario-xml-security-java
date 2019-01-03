@@ -24,14 +24,17 @@ import org.apache.xml.security.utils.resolver.ResourceResolver;
 import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.apache.xml.security.utils.resolver.ResourceResolverException;
 import org.apache.xml.security.utils.resolver.implementations.ResolverDirectHTTP;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 
-public class ResolverDirectHTTPTest extends Assert {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+
+public class ResolverDirectHTTPTest {
 
     //change these properties to match your environment
     private static final String url = "http://www.apache.org";
@@ -94,9 +97,9 @@ public class ResolverDirectHTTPTest extends Assert {
             new ResourceResolverContext(uri, url, true);
         try {
             resolverDirectHTTP.engineResolveURI(context);
-            Assert.fail("Expected ResourceResolverException");
+            fail("Expected ResourceResolverException");
         } catch (ResourceResolverException e) {
-            Assert.assertEquals("Server returned HTTP response code: 407 for URL: " + url, e.getMessage());
+            assertEquals("Server returned HTTP response code: 407 for URL: " + url, e.getMessage());
         }
     }
 
@@ -129,9 +132,9 @@ public class ResolverDirectHTTPTest extends Assert {
             new ResourceResolverContext(uri, url, true);
         try {
             resolverDirectHTTP.engineResolveURI(context);
-            Assert.fail("Expected ResourceResolverException");
+            fail("Expected ResourceResolverException");
         } catch (ResourceResolverException e) {
-            Assert.assertEquals("Server returned HTTP response code: 401 for URL: " + url, e.getMessage());
+            assertEquals("Server returned HTTP response code: 401 for URL: " + url, e.getMessage());
         }
     }
 

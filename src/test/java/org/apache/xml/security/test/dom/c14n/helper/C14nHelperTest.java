@@ -18,9 +18,10 @@
  */
 package org.apache.xml.security.test.dom.c14n.helper;
 
-import static org.junit.Assert.assertTrue;
 
 import org.apache.xml.security.c14n.helper.C14nHelper;
+
+import static org.junit.Assert.assertTrue;
 
 
 /**

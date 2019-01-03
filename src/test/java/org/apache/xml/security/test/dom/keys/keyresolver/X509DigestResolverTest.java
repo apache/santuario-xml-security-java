@@ -27,11 +27,14 @@ import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.keys.storage.StorageResolver;
 import org.apache.xml.security.keys.storage.implementations.SingleCertificateResolver;
 import org.apache.xml.security.utils.XMLUtils;
-import org.junit.Assert;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-public class X509DigestResolverTest extends Assert {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
+
+public class X509DigestResolverTest {
 
     private static final String BASEDIR = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
     private static final String SEP = System.getProperty("file.separator");

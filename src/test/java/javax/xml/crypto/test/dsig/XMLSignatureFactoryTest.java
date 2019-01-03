@@ -21,7 +21,6 @@
  */
 package javax.xml.crypto.test.dsig;
 
-import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,6 +36,12 @@ import javax.xml.crypto.dsig.dom.DOMValidateContext;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 
 /**
  * Unit test for javax.xml.crypto.dsig.XMLSignatureFactory

@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.test.dom.c14n.implementations;
 
-import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +26,13 @@ import org.apache.xml.security.c14n.implementations.NameSpaceSymbTable;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 
 public class NameSpaceSymbTableTest {
     static Attr node1, node2;

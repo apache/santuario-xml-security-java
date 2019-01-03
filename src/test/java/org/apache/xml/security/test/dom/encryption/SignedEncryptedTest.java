@@ -26,7 +26,6 @@ import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -48,9 +47,11 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.UUID;
 
+import static org.junit.Assert.assertTrue;
+
 /**
  */
-public class SignedEncryptedTest extends Assert {
+public class SignedEncryptedTest {
 
     private static final String SAMPLE_MSG = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
             + "<SOAP-ENV:Envelope "
@@ -155,6 +156,6 @@ public class SignedEncryptedTest extends Assert {
         deCipher.doFinal(document, element, true);
 
         XMLSignature xmlSignatureVerifier = new XMLSignature(sigElement, "");
-        Assert.assertTrue(xmlSignatureVerifier.checkSignatureValue(pub));
+        assertTrue(xmlSignatureVerifier.checkSignatureValue(pub));
     }
 }

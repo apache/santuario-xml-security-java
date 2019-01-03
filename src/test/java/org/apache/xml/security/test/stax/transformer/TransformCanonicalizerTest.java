@@ -26,7 +26,6 @@ import org.apache.xml.security.stax.ext.XMLSecurityUtils;
 import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer20010315_OmitCommentsTransformer;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -40,9 +39,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Map;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 /**
  */
-public class TransformCanonicalizerTest extends Assert {
+public class TransformCanonicalizerTest {
 
     private XMLInputFactory xmlInputFactory;
 
@@ -80,7 +82,7 @@ public class TransformCanonicalizerTest extends Assert {
 
             @Override
             public void transform(XMLSecEvent xmlSecEvent) throws XMLStreamException {
-                Assert.fail("unexpected call to transform(XMLSecEvent");
+                fail("unexpected call to transform(XMLSecEvent");
             }
 
             @Override
@@ -110,7 +112,7 @@ public class TransformCanonicalizerTest extends Assert {
 
         canonicalizerTransformer.doFinal();
 
-        Assert.assertEquals(554, byteArrayOutputStream.size());
+        assertEquals(554, byteArrayOutputStream.size());
     }
 
     @Test
@@ -139,7 +141,7 @@ public class TransformCanonicalizerTest extends Assert {
 
             @Override
             public void transform(XMLSecEvent xmlSecEvent) throws XMLStreamException {
-                Assert.fail("unexpected call to transform(XMLSecEvent");
+                fail("unexpected call to transform(XMLSecEvent");
             }
 
             @Override
@@ -169,7 +171,7 @@ public class TransformCanonicalizerTest extends Assert {
 
         canonicalizerTransformer.doFinal();
 
-        Assert.assertEquals(554, byteArrayOutputStream.size());
+        assertEquals(554, byteArrayOutputStream.size());
     }
 
     @Test
@@ -189,7 +191,7 @@ public class TransformCanonicalizerTest extends Assert {
         }
 
         canonicalizerTransformer.doFinal();
-        Assert.assertEquals(554, byteArrayOutputStream.size());
+        assertEquals(554, byteArrayOutputStream.size());
     }
 
     @Test
@@ -201,7 +203,7 @@ public class TransformCanonicalizerTest extends Assert {
         canonicalizerTransformer.transform(this.getClass().getClassLoader().getResourceAsStream(
                 "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext-base64.xml"));
 
-        Assert.assertEquals(554, byteArrayOutputStream.size());
+        assertEquals(554, byteArrayOutputStream.size());
     }
 
     @Test
@@ -229,7 +231,7 @@ public class TransformCanonicalizerTest extends Assert {
 
             @Override
             public void transform(XMLSecEvent xmlSecEvent) throws XMLStreamException {
-                Assert.fail("unexpected call to transform(XMLSecEvent");
+                fail("unexpected call to transform(XMLSecEvent");
             }
 
             @Override
@@ -253,7 +255,7 @@ public class TransformCanonicalizerTest extends Assert {
 
         canonicalizerTransformer.doFinal();
 
-        Assert.assertEquals(554, byteArrayOutputStream.size());
+        assertEquals(554, byteArrayOutputStream.size());
     }
 
     @Test
@@ -281,7 +283,7 @@ public class TransformCanonicalizerTest extends Assert {
 
             @Override
             public void transform(XMLSecEvent xmlSecEvent) throws XMLStreamException {
-                Assert.fail("unexpected call to transform(XMLSecEvent");
+                fail("unexpected call to transform(XMLSecEvent");
             }
 
             @Override
@@ -305,6 +307,6 @@ public class TransformCanonicalizerTest extends Assert {
 
         canonicalizerTransformer.doFinal();
 
-        Assert.assertEquals(554, byteArrayOutputStream.size());
+        assertEquals(554, byteArrayOutputStream.size());
     }
 }

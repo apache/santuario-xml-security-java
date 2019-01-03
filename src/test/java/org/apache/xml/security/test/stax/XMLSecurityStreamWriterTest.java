@@ -21,7 +21,6 @@ package org.apache.xml.security.test.stax;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.config.Init;
 import org.apache.xml.security.stax.impl.OutboundSecurityContextImpl;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -41,9 +40,11 @@ import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  */
-public class XMLSecurityStreamWriterTest extends Assert {
+public class XMLSecurityStreamWriterTest {
 
     @Before
     public void setUp() throws Exception {
@@ -175,7 +176,7 @@ public class XMLSecurityStreamWriterTest extends Assert {
         xmlSecurityStreamWriter.writeProcessingInstruction("PI", "there");
         stdXmlStreamWriter.writeProcessingInstruction("PI", "there");
 
-        Assert.assertEquals(xmlSecurityStreamWriter.getPrefix("test4ns"), stdXmlStreamWriter.getPrefix("test4ns"));
+        assertEquals(xmlSecurityStreamWriter.getPrefix("test4ns"), stdXmlStreamWriter.getPrefix("test4ns"));
 
         stdXmlStreamWriter.close();
         xmlSecurityStreamWriter.close();

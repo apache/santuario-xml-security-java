@@ -25,7 +25,9 @@ import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.securityEvent.SecurityEvent;
 import org.apache.xml.security.stax.securityEvent.SecurityEventConstants.Event;
 import org.apache.xml.security.stax.securityEvent.SecurityEventListener;
-import org.junit.Assert;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class TestSecurityEventListener implements SecurityEventListener {
     private List<SecurityEvent> events = new ArrayList<>();
@@ -34,8 +36,8 @@ public class TestSecurityEventListener implements SecurityEventListener {
     public void registerSecurityEvent(SecurityEvent securityEvent)
             throws XMLSecurityException {
 
-        Assert.assertNotNull("CorrelationID of SecurityEvent is null: " + securityEvent.getSecurityEventType(), securityEvent.getCorrelationID());
-        Assert.assertTrue("CorrelationID of SecurityEvent is empty: " + securityEvent.getSecurityEventType(), securityEvent.getCorrelationID().length() > 0);
+        assertNotNull("CorrelationID of SecurityEvent is null: " + securityEvent.getSecurityEventType(), securityEvent.getCorrelationID());
+        assertTrue("CorrelationID of SecurityEvent is empty: " + securityEvent.getSecurityEventType(), securityEvent.getCorrelationID().length() > 0);
         events.add(securityEvent);
     }
 

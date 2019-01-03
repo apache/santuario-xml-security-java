@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.test.dom.signature;
 
-import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -33,6 +32,8 @@ import org.apache.xml.security.keys.content.KeyValue;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
+
+import static org.junit.Assert.assertNotNull;
 
 public class KeyValueTest {
 

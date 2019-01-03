@@ -18,13 +18,14 @@
  */
 package org.apache.xml.security.test.dom.secure_val;
 
-import static org.junit.Assert.assertNull;
 
 import java.io.FileInputStream;
 
 import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
+
+import static org.junit.Assert.assertNull;
 
 
 /**

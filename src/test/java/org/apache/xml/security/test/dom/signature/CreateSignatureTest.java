@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.test.dom.signature;
 
-import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -51,6 +50,8 @@ import org.apache.xml.security.utils.ElementProxy;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests that create signatures.

@@ -21,7 +21,6 @@
  */
 package javax.xml.crypto.test.dsig;
 
-import static org.junit.Assert.*;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
@@ -32,6 +31,11 @@ import javax.xml.crypto.dsig.XMLSignatureException;
 import javax.xml.crypto.dsig.dom.DOMValidateContext;
 
 import javax.xml.crypto.test.KeySelectors;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 
 /**
  * This is a testcase to validate all "phaos-xmldsig-three"

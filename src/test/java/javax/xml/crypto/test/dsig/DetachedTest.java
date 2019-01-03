@@ -28,13 +28,16 @@ import javax.xml.crypto.dsig.dom.DOMValidateContext;
 import javax.xml.crypto.dsig.keyinfo.*;
 import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 
-import static org.junit.Assert.*;
 
 import java.security.*;
 import java.util.*;
 
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
+
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 
 /**
  * This is a simple example of generating and validating a Detached XML

@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.test.dom.c14n.implementations;
 
-import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -33,6 +32,8 @@ import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * This is a test for Santuario-273:

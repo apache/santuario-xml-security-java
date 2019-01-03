@@ -18,8 +18,6 @@
  */
 package org.apache.xml.security.test.dom.secure_val;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -39,6 +37,9 @@ import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 
 /**

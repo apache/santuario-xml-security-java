@@ -21,11 +21,16 @@
  */
 package javax.xml.crypto.test.dsig;
 
-import static org.junit.Assert.*;
 
 import java.util.*;
 import javax.xml.crypto.XMLStructure;
 import javax.xml.crypto.dsig.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 
 /**
  * Unit test for javax.xml.crypto.dsig.XMLObject

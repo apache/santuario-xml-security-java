@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.test.dom.algorithms;
 
-import static org.junit.Assert.*;
 
 import java.lang.reflect.Constructor;
 import java.security.MessageDigest;
@@ -29,6 +28,11 @@ import java.util.Arrays;
 import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 
 /**
  * A test to make sure that the various digest algorithms are working

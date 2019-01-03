@@ -21,7 +21,6 @@
  */
 package javax.xml.crypto.test.dsig;
 
-import static org.junit.Assert.*;
 
 import java.io.*;
 import java.util.*;
@@ -38,6 +37,12 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 
 /**
  * Unit test for javax.xml.crypto.dsig.XMLSignature

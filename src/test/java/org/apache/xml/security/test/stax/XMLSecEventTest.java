@@ -21,7 +21,6 @@ package org.apache.xml.security.test.stax;
 import org.apache.xml.security.stax.ext.stax.*;
 import org.apache.xml.security.stax.impl.XMLSecurityEventReader;
 import org.apache.xml.security.stax.impl.stax.*;
-import org.junit.Assert;
 import org.junit.Test;
 
 import javax.xml.namespace.QName;
@@ -33,41 +32,43 @@ import java.io.StringWriter;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  */
-public class XMLSecEventTest extends Assert {
+public class XMLSecEventTest {
 
     @Test
     public void testWriteCharactersEncoded() throws Exception {
         StringWriter stringWriter = new StringWriter();
         XMLSecCharacters xmlSecCharacters = new XMLSecCharactersImpl("test", false, false, false, null);
         xmlSecCharacters.writeAsEncodedUnicode(stringWriter);
-        Assert.assertEquals("test", stringWriter.toString());
+        assertEquals("test", stringWriter.toString());
 
         stringWriter = new StringWriter();
         xmlSecCharacters = new XMLSecCharactersImpl("<", false, false, false, null);
         xmlSecCharacters.writeAsEncodedUnicode(stringWriter);
-        Assert.assertEquals("&lt;", stringWriter.toString());
+        assertEquals("&lt;", stringWriter.toString());
 
         stringWriter = new StringWriter();
         xmlSecCharacters = new XMLSecCharactersImpl(">", false, false, false, null);
         xmlSecCharacters.writeAsEncodedUnicode(stringWriter);
-        Assert.assertEquals("&gt;", stringWriter.toString());
+        assertEquals("&gt;", stringWriter.toString());
 
         stringWriter = new StringWriter();
         xmlSecCharacters = new XMLSecCharactersImpl("&", false, false, false, null);
         xmlSecCharacters.writeAsEncodedUnicode(stringWriter);
-        Assert.assertEquals("&amp;", stringWriter.toString());
+        assertEquals("&amp;", stringWriter.toString());
 
         stringWriter = new StringWriter();
         xmlSecCharacters = new XMLSecCharactersImpl("<&>", false, false, false, null);
         xmlSecCharacters.writeAsEncodedUnicode(stringWriter);
-        Assert.assertEquals("&lt;&amp;&gt;", stringWriter.toString());
+        assertEquals("&lt;&amp;&gt;", stringWriter.toString());
 
         stringWriter = new StringWriter();
         xmlSecCharacters = new XMLSecCharactersImpl(" < & > ", false, false, false, null);
         xmlSecCharacters.writeAsEncodedUnicode(stringWriter);
-        Assert.assertEquals(" &lt; &amp; &gt; ", stringWriter.toString());
+        assertEquals(" &lt; &amp; &gt; ", stringWriter.toString());
     }
 
     @Test
@@ -75,22 +76,22 @@ public class XMLSecEventTest extends Assert {
         StringWriter stringWriter = new StringWriter();
         XMLSecAttribute xmlSecAttribute = new XMLSecAttributeImpl(new QName("test", "test", "test"), "test");
         xmlSecAttribute.writeAsEncodedUnicode(stringWriter);
-        Assert.assertEquals("test:test=\"test\"", stringWriter.toString());
+        assertEquals("test:test=\"test\"", stringWriter.toString());
 
         stringWriter = new StringWriter();
         xmlSecAttribute = new XMLSecAttributeImpl(new QName("test"), "\"");
         xmlSecAttribute.writeAsEncodedUnicode(stringWriter);
-        Assert.assertEquals("test=\"&quot;\"", stringWriter.toString());
+        assertEquals("test=\"&quot;\"", stringWriter.toString());
 
         stringWriter = new StringWriter();
         xmlSecAttribute = new XMLSecAttributeImpl(new QName("test"), "&");
         xmlSecAttribute.writeAsEncodedUnicode(stringWriter);
-        Assert.assertEquals("test=\"&amp;\"", stringWriter.toString());
+        assertEquals("test=\"&amp;\"", stringWriter.toString());
 
         stringWriter = new StringWriter();
         xmlSecAttribute = new XMLSecAttributeImpl(new QName("test"), " & \" > < ");
         xmlSecAttribute.writeAsEncodedUnicode(stringWriter);
-        Assert.assertEquals("test=\" &amp; &quot; > < \"", stringWriter.toString());
+        assertEquals("test=\" &amp; &quot; > < \"", stringWriter.toString());
     }
 
     @Test
@@ -98,7 +99,7 @@ public class XMLSecEventTest extends Assert {
         StringWriter stringWriter = new StringWriter();
         XMLSecComment xmlSecAttribute = new XMLSecCommentImpl(" < > & \" '", null);
         xmlSecAttribute.writeAsEncodedUnicode(stringWriter);
-        Assert.assertEquals("<!-- < > & \" '-->", stringWriter.toString());
+        assertEquals("<!-- < > & \" '-->", stringWriter.toString());
     }
 
     @Test
@@ -106,7 +107,7 @@ public class XMLSecEventTest extends Assert {
         StringWriter stringWriter = new StringWriter();
         XMLSecEntityDeclaration xmlSecEntityDeclaration = new XMLSecEntityDeclarationImpl("test");
         xmlSecEntityDeclaration.writeAsEncodedUnicode(stringWriter);
-        Assert.assertEquals("<!ENTITY test \"\">", stringWriter.toString());
+        assertEquals("<!ENTITY test \"\">", stringWriter.toString());
     }
 
     @Test
@@ -114,7 +115,7 @@ public class XMLSecEventTest extends Assert {
         StringWriter stringWriter = new StringWriter();
         XMLSecEntityReference xmlSecEntityReference = new XMLSecEntityReferenceImpl("test", null, null);
         xmlSecEntityReference.writeAsEncodedUnicode(stringWriter);
-        Assert.assertEquals("&test;", stringWriter.toString());
+        assertEquals("&test;", stringWriter.toString());
     }
 
     @Test
@@ -122,22 +123,22 @@ public class XMLSecEventTest extends Assert {
         StringWriter stringWriter = new StringWriter();
         XMLSecNamespace xmlSecNamespace = XMLSecNamespaceImpl.getInstance("test", "test");
         xmlSecNamespace.writeAsEncodedUnicode(stringWriter);
-        Assert.assertEquals("xmlns:test=\"test\"", stringWriter.toString());
+        assertEquals("xmlns:test=\"test\"", stringWriter.toString());
 
         stringWriter = new StringWriter();
         xmlSecNamespace = XMLSecNamespaceImpl.getInstance("", "\"");
         xmlSecNamespace.writeAsEncodedUnicode(stringWriter);
-        Assert.assertEquals("xmlns=\"&quot;\"", stringWriter.toString());
+        assertEquals("xmlns=\"&quot;\"", stringWriter.toString());
 
         stringWriter = new StringWriter();
         xmlSecNamespace = XMLSecNamespaceImpl.getInstance("test", "&");
         xmlSecNamespace.writeAsEncodedUnicode(stringWriter);
-        Assert.assertEquals("xmlns:test=\"&amp;\"", stringWriter.toString());
+        assertEquals("xmlns:test=\"&amp;\"", stringWriter.toString());
 
         stringWriter = new StringWriter();
         xmlSecNamespace = XMLSecNamespaceImpl.getInstance("test", " & \" > < ");
         xmlSecNamespace.writeAsEncodedUnicode(stringWriter);
-        Assert.assertEquals("xmlns:test=\" &amp; &quot; > < \"", stringWriter.toString());
+        assertEquals("xmlns:test=\" &amp; &quot; > < \"", stringWriter.toString());
     }
 
     @Test
@@ -146,7 +147,7 @@ public class XMLSecEventTest extends Assert {
         XMLSecProcessingInstruction xmlSecProcessingInstruction =
                 new XMLSecProcessingInstructionImpl("test", "test", null);
         xmlSecProcessingInstruction.writeAsEncodedUnicode(stringWriter);
-        Assert.assertEquals("<?test test?>", stringWriter.toString());
+        assertEquals("<?test test?>", stringWriter.toString());
     }
 
     @Test
@@ -180,6 +181,6 @@ public class XMLSecEventTest extends Assert {
             secXmlEvent.writeAsEncodedUnicode(secWriter);
         }
 
-        Assert.assertEquals(secWriter.toString(), stdWriter.toString());
+        assertEquals(secWriter.toString(), stdWriter.toString());
     }
 }

@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.test.dom.c14n.implementations;
 
-import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
@@ -26,6 +25,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 import org.apache.xml.security.c14n.implementations.UtfHelpper;
+
+import static org.junit.Assert.assertTrue;
 
 public class UtfHelperTest {
 

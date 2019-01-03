@@ -21,12 +21,13 @@
  */
 package javax.xml.crypto.test.dsig;
 
-import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.security.Security;
 
 import javax.xml.crypto.test.KeySelectors;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * This is a testcase to validate the "merlin-xpath-filter2-three" testcases

@@ -30,7 +30,6 @@ import org.apache.xml.security.test.stax.utils.TestUtils;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.utils.XMLUtils;
 import org.apache.xml.security.utils.resolver.implementations.ResolverDirectHTTP;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -51,11 +50,16 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.nio.charset.StandardCharsets;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+
 /**
  * This is a testcase to validate all "phaos-xmldsig-three"
  * testcases from Phaos
  */
-public class PhaosTest extends Assert {
+public class PhaosTest {
 
     private XMLInputFactory xmlInputFactory;
     private TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -384,8 +388,8 @@ public class PhaosTest extends Assert {
             StAX2DOM.readDoc(securityStreamReader);
             fail("Failure expected on a bad digest");
         } catch (XMLStreamException ex) {
-            Assert.assertTrue(ex.getCause() instanceof XMLSecurityException);
-            Assert.assertEquals("INVALID signature -- core validation failed.", ex.getCause().getMessage());
+            assertTrue(ex.getCause() instanceof XMLSecurityException);
+            assertEquals("INVALID signature -- core validation failed.", ex.getCause().getMessage());
         }
     }
 

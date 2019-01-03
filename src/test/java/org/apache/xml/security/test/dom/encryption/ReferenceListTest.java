@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.test.dom.encryption;
 
-import static org.junit.Assert.*;
 
 import java.util.Iterator;
 
@@ -29,6 +28,11 @@ import org.apache.xml.security.utils.EncryptionConstants;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 
 public class ReferenceListTest {
 

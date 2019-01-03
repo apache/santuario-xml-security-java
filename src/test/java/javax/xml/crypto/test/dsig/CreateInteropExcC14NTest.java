@@ -21,7 +21,6 @@
  */
 package javax.xml.crypto.test.dsig;
 
-import static org.junit.Assert.assertTrue;
 
 import java.io.*;
 import java.security.*;
@@ -38,6 +37,8 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.*;
 
 import javax.xml.crypto.test.KeySelectors;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test that recreates interop exc C14N test vectors

@@ -64,16 +64,21 @@ import org.apache.xml.security.test.stax.utils.StAX2DOM;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
 import org.apache.xml.security.utils.XMLUtils;
-import org.junit.Assert;
 import org.junit.Before;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+
 /**
  */
-public class XMLEncryption11Test extends Assert {
+public class XMLEncryption11Test {
 
     private String cardNumber;
     private int nodeCount;
@@ -408,12 +413,12 @@ public class XMLEncryption11Test extends Assert {
         // Perform decryption
         try {
             decryptElementStAX(ed, rsaKey);
-            Assert.fail("Exception expected");
+            fail("Exception expected");
         } catch (XMLStreamException e) {
-            Assert.assertTrue(e.getCause() instanceof IOException);
-            Assert.assertTrue(e.getCause().getCause() instanceof BadPaddingException);
+            assertTrue(e.getCause() instanceof IOException);
+            assertTrue(e.getCause().getCause() instanceof BadPaddingException);
             String cause = e.getCause().getCause().getMessage();
-            Assert.assertTrue("mac check in GCM failed".equals(cause) || "Tag mismatch!".equals(cause));
+            assertTrue("mac check in GCM failed".equals(cause) || "Tag mismatch!".equals(cause));
         }
     }
 
@@ -537,28 +542,28 @@ public class XMLEncryption11Test extends Assert {
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         NodeList encryptionMethodElements = document.getElementsByTagNameNS(XMLSecurityConstants.NS_XMLENC, "EncryptionMethod");
-        Assert.assertEquals(2, encryptionMethodElements.getLength());
-        Assert.assertEquals(encryptionMethodAlgo, ((Element) encryptionMethodElements.item(0)).getAttribute("Algorithm"));
-        Assert.assertEquals(encryptedKeyAlgo, ((Element) encryptionMethodElements.item(1)).getAttribute("Algorithm"));
+        assertEquals(2, encryptionMethodElements.getLength());
+        assertEquals(encryptionMethodAlgo, ((Element) encryptionMethodElements.item(0)).getAttribute("Algorithm"));
+        assertEquals(encryptedKeyAlgo, ((Element) encryptionMethodElements.item(1)).getAttribute("Algorithm"));
 
         if (digestMethodAlgo != null) {
             NodeList digestMethodElements = document.getElementsByTagNameNS(XMLSecurityConstants.NS_DSIG, "DigestMethod");
-            Assert.assertEquals(1, digestMethodElements.getLength());
-            Assert.assertEquals(digestMethodAlgo, ((Element) digestMethodElements.item(0)).getAttribute("Algorithm"));
+            assertEquals(1, digestMethodElements.getLength());
+            assertEquals(digestMethodAlgo, ((Element) digestMethodElements.item(0)).getAttribute("Algorithm"));
         }
         if (mgfAlgo != null) {
             NodeList mfgElements = document.getElementsByTagNameNS(XMLSecurityConstants.NS_XMLENC11, "MGF");
-            Assert.assertEquals(1, mfgElements.getLength());
-            Assert.assertEquals(mgfAlgo, ((Element) mfgElements.item(0)).getAttribute("Algorithm"));
+            assertEquals(1, mfgElements.getLength());
+            assertEquals(mgfAlgo, ((Element) mfgElements.item(0)).getAttribute("Algorithm"));
         }
         if (oaepParams != null) {
             NodeList oaepParamsElements = document.getElementsByTagNameNS(XMLSecurityConstants.NS_XMLENC, "OAEPparams");
-            Assert.assertEquals(1, oaepParamsElements.getLength());
+            assertEquals(1, oaepParamsElements.getLength());
             String content = XMLUtils.getFullTextChildrenFromNode(oaepParamsElements.item(0));
-            Assert.assertArrayEquals(oaepParams, XMLUtils.decode(content));
+            assertArrayEquals(oaepParams, XMLUtils.decode(content));
         }
         return document;
     }

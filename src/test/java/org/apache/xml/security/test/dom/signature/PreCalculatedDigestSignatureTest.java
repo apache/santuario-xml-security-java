@@ -50,6 +50,7 @@ import java.security.cert.X509Certificate;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+
 public class PreCalculatedDigestSignatureTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(PreCalculatedDigestSignatureTest.class);

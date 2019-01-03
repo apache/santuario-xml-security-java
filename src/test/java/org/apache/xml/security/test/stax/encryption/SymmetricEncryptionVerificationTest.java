@@ -53,17 +53,20 @@ import org.apache.xml.security.test.stax.signature.TestSecurityEventListener;
 import org.apache.xml.security.test.stax.utils.StAX2DOM;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.utils.XMLUtils;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 /**
  * A test to make sure that the various Symmetric Encryption algorithms are working
  */
-public class SymmetricEncryptionVerificationTest extends Assert {
+public class SymmetricEncryptionVerificationTest {
 
     private static boolean bcInstalled;
     private XMLInputFactory xmlInputFactory;
@@ -126,7 +129,7 @@ public class SymmetricEncryptionVerificationTest extends Assert {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -152,7 +155,7 @@ public class SymmetricEncryptionVerificationTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -178,7 +181,7 @@ public class SymmetricEncryptionVerificationTest extends Assert {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -204,7 +207,7 @@ public class SymmetricEncryptionVerificationTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -230,7 +233,7 @@ public class SymmetricEncryptionVerificationTest extends Assert {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -256,7 +259,7 @@ public class SymmetricEncryptionVerificationTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -282,7 +285,7 @@ public class SymmetricEncryptionVerificationTest extends Assert {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -308,7 +311,7 @@ public class SymmetricEncryptionVerificationTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -334,7 +337,7 @@ public class SymmetricEncryptionVerificationTest extends Assert {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -360,7 +363,7 @@ public class SymmetricEncryptionVerificationTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -386,7 +389,7 @@ public class SymmetricEncryptionVerificationTest extends Assert {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -412,7 +415,7 @@ public class SymmetricEncryptionVerificationTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -437,7 +440,7 @@ public class SymmetricEncryptionVerificationTest extends Assert {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -463,7 +466,7 @@ public class SymmetricEncryptionVerificationTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -491,7 +494,7 @@ public class SymmetricEncryptionVerificationTest extends Assert {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -517,7 +520,7 @@ public class SymmetricEncryptionVerificationTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -545,7 +548,7 @@ public class SymmetricEncryptionVerificationTest extends Assert {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -571,7 +574,7 @@ public class SymmetricEncryptionVerificationTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -599,7 +602,7 @@ public class SymmetricEncryptionVerificationTest extends Assert {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -625,7 +628,7 @@ public class SymmetricEncryptionVerificationTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -653,7 +656,7 @@ public class SymmetricEncryptionVerificationTest extends Assert {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -679,7 +682,7 @@ public class SymmetricEncryptionVerificationTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
     }
 
     private void encryptUsingDOM(
@@ -750,7 +753,7 @@ public class SymmetricEncryptionVerificationTest extends Assert {
             String expression = "//*[local-name()='" + localName + "']";
             Element elementToEncrypt =
                     (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
-            Assert.assertNotNull(elementToEncrypt);
+            assertNotNull(elementToEncrypt);
 
             document = cipher.doFinal(document, elementToEncrypt, content);
         }
@@ -759,7 +762,7 @@ public class SymmetricEncryptionVerificationTest extends Assert {
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        Assert.assertTrue(nodeList.getLength() > 0);
+        assertTrue(nodeList.getLength() > 0);
     }
 
 }

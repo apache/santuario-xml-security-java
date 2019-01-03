@@ -32,7 +32,6 @@ import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
-import org.junit.Assert;
 import org.junit.Before;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -49,9 +48,15 @@ import java.security.cert.X509Certificate;
 import java.util.List;
 import java.util.UUID;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+
 /**
  */
-public class AbstractSignatureVerificationTest extends Assert {
+public class AbstractSignatureVerificationTest {
 
     protected static String BASEDIR;
 
@@ -224,7 +229,7 @@ public class AbstractSignatureVerificationTest extends Assert {
                     (NodeList) xpath.evaluate(expression, document, XPathConstants.NODESET);
             for (int i = 0; i < elementsToSign.getLength(); i++) {
                 Element elementToSign = (Element)elementsToSign.item(i);
-                Assert.assertNotNull(elementToSign);
+                assertNotNull(elementToSign);
                 String id = UUID.randomUUID().toString();
                 elementToSign.setAttributeNS(null, "Id", id);
                 elementToSign.setIdAttributeNS(null, "Id", true);
@@ -256,7 +261,7 @@ public class AbstractSignatureVerificationTest extends Assert {
         String expression = "//ds:Signature[1]";
         Element sigElement =
                 (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
-        Assert.assertNotNull(sigElement);
+        assertNotNull(sigElement);
 
         return sig;
     }

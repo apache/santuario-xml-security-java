@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.test.dom.c14n.implementations;
 
-import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -29,6 +28,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.apache.xml.security.c14n.implementations.Canonicalizer11_OmitComments;
 import org.apache.xml.security.utils.XMLUtils;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * This is a test for Santuario-191:

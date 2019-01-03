@@ -54,6 +54,7 @@ import org.w3c.dom.Node;
 
 import static org.junit.Assert.assertTrue;
 
+
 /**
  * This is a set of tests that use the test vectors associated with the W3C XML Encryption 1.1 specification:
  *

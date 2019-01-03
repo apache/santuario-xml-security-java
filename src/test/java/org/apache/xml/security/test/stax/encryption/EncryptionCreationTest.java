@@ -54,7 +54,6 @@ import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
 import org.apache.xml.security.utils.XMLUtils;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Attr;
@@ -62,11 +61,17 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+
 /**
  * A set of test-cases for Encryption.
  *
  */
-public class EncryptionCreationTest extends Assert {
+public class EncryptionCreationTest {
 
     private XMLInputFactory xmlInputFactory;
 
@@ -115,17 +120,17 @@ public class EncryptionCreationTest extends Assert {
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Check the CreditCard encrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
         Document doc =
@@ -133,7 +138,7 @@ public class EncryptionCreationTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -175,13 +180,13 @@ public class EncryptionCreationTest extends Assert {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
         Document doc =
@@ -189,7 +194,7 @@ public class EncryptionCreationTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -221,10 +226,10 @@ public class EncryptionCreationTest extends Assert {
         try {
             XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
             xmlStreamWriter.close();
-            Assert.fail("Exception expected");
+            fail("Exception expected");
         } catch (XMLStreamException e) {
-            Assert.assertTrue(e.getCause() instanceof XMLSecurityException);
-            Assert.assertEquals("Part to encrypt not found: {urn:example:po}NotExistingElement", e.getCause().getMessage());
+            assertTrue(e.getCause() instanceof XMLSecurityException);
+            assertEquals("Part to encrypt not found: {urn:example:po}NotExistingElement", e.getCause().getMessage());
         }
     }
 
@@ -265,17 +270,17 @@ public class EncryptionCreationTest extends Assert {
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // Check the CreditCard encrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
         Document doc =
@@ -283,7 +288,7 @@ public class EncryptionCreationTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -324,17 +329,17 @@ public class EncryptionCreationTest extends Assert {
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Check the CreditCard encrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
         Document doc =
@@ -342,7 +347,7 @@ public class EncryptionCreationTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -385,17 +390,17 @@ public class EncryptionCreationTest extends Assert {
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Check the CreditCard encrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        Assert.assertEquals(nodeList.getLength(), 2);
+        assertEquals(nodeList.getLength(), 2);
     }
 
     // Test encryption using a generated AES 128 bit key that is encrypted using a AES 192 bit key.
@@ -443,17 +448,17 @@ public class EncryptionCreationTest extends Assert {
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // Check the CreditCard encrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
         Document doc =
@@ -461,7 +466,7 @@ public class EncryptionCreationTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
     }
 
     // Test encryption using a generated AES 256 bit key that is encrypted using an RSA key.
@@ -512,17 +517,17 @@ public class EncryptionCreationTest extends Assert {
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // Check the CreditCard encrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
         Document doc =
@@ -530,7 +535,7 @@ public class EncryptionCreationTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -581,17 +586,17 @@ public class EncryptionCreationTest extends Assert {
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // Check the CreditCard encrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
         Document doc =
@@ -599,7 +604,7 @@ public class EncryptionCreationTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -651,17 +656,17 @@ public class EncryptionCreationTest extends Assert {
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // Check the CreditCard encrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
         );
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
         Document doc =
@@ -669,7 +674,7 @@ public class EncryptionCreationTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -724,13 +729,13 @@ public class EncryptionCreationTest extends Assert {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        Assert.assertEquals(nodeList.getLength(), 2);
+        assertEquals(nodeList.getLength(), 2);
 
         // Decrypt using DOM API
         decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#tripledes-cbc", null, priv, document);
@@ -786,17 +791,17 @@ public class EncryptionCreationTest extends Assert {
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // Check the CreditCard encrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
         Document doc =
@@ -804,7 +809,7 @@ public class EncryptionCreationTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -857,17 +862,17 @@ public class EncryptionCreationTest extends Assert {
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // Check the CreditCard encrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
         Document doc =
@@ -875,7 +880,7 @@ public class EncryptionCreationTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -936,17 +941,17 @@ public class EncryptionCreationTest extends Assert {
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // Check the CreditCard encrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
         Document doc =
@@ -954,7 +959,7 @@ public class EncryptionCreationTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -1007,17 +1012,17 @@ public class EncryptionCreationTest extends Assert {
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // Check the CreditCard encrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
         Document doc =
@@ -1025,7 +1030,7 @@ public class EncryptionCreationTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -1078,17 +1083,17 @@ public class EncryptionCreationTest extends Assert {
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // Check the CreditCard encrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
         Document doc =
@@ -1096,7 +1101,7 @@ public class EncryptionCreationTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
     }
 
     // Test encryption using a generated AES 192 bit key that is encrypted using a 3DES key.
@@ -1143,17 +1148,17 @@ public class EncryptionCreationTest extends Assert {
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // Check the CreditCard encrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
         Document doc =
@@ -1161,7 +1166,7 @@ public class EncryptionCreationTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -1204,17 +1209,17 @@ public class EncryptionCreationTest extends Assert {
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // Check the CreditCard encrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
         Document doc =
@@ -1222,7 +1227,7 @@ public class EncryptionCreationTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -1267,17 +1272,17 @@ public class EncryptionCreationTest extends Assert {
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // Check the CreditCard encrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
         Document doc =
@@ -1285,7 +1290,7 @@ public class EncryptionCreationTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -1332,17 +1337,17 @@ public class EncryptionCreationTest extends Assert {
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // Check the CreditCard encrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
         Document doc =
@@ -1350,7 +1355,7 @@ public class EncryptionCreationTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -1397,17 +1402,17 @@ public class EncryptionCreationTest extends Assert {
             XMLUtils.read(new ByteArrayInputStream(baos.toByteArray()), false);
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // Check the CreditCard encrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
         Document doc =
@@ -1415,7 +1420,7 @@ public class EncryptionCreationTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
     }
 
     // Test case for when the entire document is encrypted and decrypted
@@ -1460,17 +1465,17 @@ public class EncryptionCreationTest extends Assert {
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // Check the CreditCard encrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
         Document doc =
@@ -1478,7 +1483,7 @@ public class EncryptionCreationTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
     }
 
     // Test physical representation of decrypted element, see SANTUARIO-309
@@ -1523,13 +1528,13 @@ public class EncryptionCreationTest extends Assert {
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("ns.com", "elem");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
         Document doc =
@@ -1586,13 +1591,13 @@ public class EncryptionCreationTest extends Assert {
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("", "elem");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
         Document doc =
@@ -1646,17 +1651,17 @@ public class EncryptionCreationTest extends Assert {
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // Check the CreditCard encrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
         Document doc =
@@ -1664,7 +1669,7 @@ public class EncryptionCreationTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
     }
 
     /**

@@ -46,6 +46,7 @@ import org.w3c.dom.Text;
 
 import static org.junit.Assert.assertTrue;
 
+
 /**
  * Test signing using all available digest methods
  */

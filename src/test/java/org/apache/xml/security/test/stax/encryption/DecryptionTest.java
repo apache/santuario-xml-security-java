@@ -70,16 +70,23 @@ import org.apache.xml.security.test.stax.signature.TestSecurityEventListener;
 import org.apache.xml.security.test.stax.utils.StAX2DOM;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.utils.XMLUtils;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 
 /**
  * A set of test-cases for Decryption.
  *
  */
-public class DecryptionTest extends Assert {
+public class DecryptionTest {
 
     private XMLInputFactory xmlInputFactory;
     private TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -113,7 +120,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -136,7 +143,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Check the SecurityEvents
         checkEncryptedElementSecurityEvents(securityEventListener);
@@ -168,7 +175,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -194,7 +201,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Check the SecurityEvents
         checkEncryptedContentSecurityEvents(securityEventListener);
@@ -227,7 +234,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -253,7 +260,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Check the SecurityEvents
         checkEncryptedElementSecurityEvents(securityEventListener);
@@ -285,7 +292,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -311,11 +318,11 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Check the ShippingAddress decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "ShippingAddress");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Check the SecurityEvents
         checkMultipleEncryptedElementSecurityEvents(securityEventListener);
@@ -356,7 +363,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -382,7 +389,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Check the SecurityEvents
         checkEncryptedContentSecurityEvents(securityEventListener);
@@ -427,7 +434,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -453,7 +460,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(1, nodeList.getLength());
+        assertEquals(1, nodeList.getLength());
 
         // Check the SecurityEvents
         checkEncryptedContentSecurityEvents(securityEventListener);
@@ -494,7 +501,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -520,7 +527,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(1, nodeList.getLength());
+        assertEquals(1, nodeList.getLength());
 
         // Check the SecurityEvents
         checkEncryptedContentSecurityEvents(securityEventListener);
@@ -565,7 +572,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -591,7 +598,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Check the SecurityEvents
         checkEncryptedContentSecurityEvents(securityEventListener);
@@ -627,7 +634,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -653,7 +660,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Check the SecurityEvents
         checkEncryptedElementSecurityEvents(securityEventListener);
@@ -689,7 +696,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -715,7 +722,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Check the SecurityEvents
         checkEncryptedElementSecurityEvents(securityEventListener);
@@ -753,7 +760,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -779,7 +786,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Check the SecurityEvents
         checkEncryptedElementSecurityEvents(securityEventListener);
@@ -819,7 +826,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -845,7 +852,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Check the SecurityEvents
         checkEncryptedElementSecurityEvents(securityEventListener);
@@ -881,7 +888,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -907,7 +914,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Check the SecurityEvents
         checkEncryptionToken(securityEventListener, null, secretKey,
@@ -941,7 +948,7 @@ public class DecryptionTest extends Assert {
 
         // Check the element encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("ns.com", "elem");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -966,7 +973,7 @@ public class DecryptionTest extends Assert {
 
         // Check the element decrypted ok
         nodeList = document.getElementsByTagNameNS("ns.com", "elem");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         Element decrElem = (Element)document.getDocumentElement().getFirstChild();
         assertEquals("ns:elem", decrElem.getNodeName());
@@ -1008,7 +1015,7 @@ public class DecryptionTest extends Assert {
 
         // Check the element encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("", "elem");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -1033,7 +1040,7 @@ public class DecryptionTest extends Assert {
 
         // Check the element decrypted ok
         nodeList = document.getElementsByTagNameNS("", "elem");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         Element decrElem = (Element)document.getDocumentElement().getFirstChild();
         assertEquals("elem", decrElem.getNodeName());
@@ -1146,7 +1153,7 @@ public class DecryptionTest extends Assert {
             String expression = "//*[local-name()='" + localName + "']";
             Element elementToEncrypt =
                     (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
-            Assert.assertNotNull(elementToEncrypt);
+            assertNotNull(elementToEncrypt);
 
             document = cipher.doFinal(document, elementToEncrypt, content);
         }
@@ -1155,7 +1162,7 @@ public class DecryptionTest extends Assert {
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        Assert.assertTrue(nodeList.getLength() > 0);
+        assertTrue(nodeList.getLength() > 0);
     }
 
     protected void checkEncryptedElementSecurityEvents(TestSecurityEventListener securityEventListener) {
@@ -1331,13 +1338,13 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         NodeList cipherValues = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_CipherValue.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_CipherValue.getLocalPart());
         Element cipherValueElement = (Element)cipherValues.item(0);
-        Assert.assertEquals(
+        assertEquals(
                 cipherValueElement.getParentNode().getParentNode().getLocalName(),
                 XMLSecurityConstants.TAG_xenc_EncryptedKey.getLocalPart());
 
@@ -1376,7 +1383,7 @@ public class DecryptionTest extends Assert {
         try {
             document = StAX2DOM.readDoc(securityStreamReader);
         } catch (XMLStreamException e) {
-            Assert.assertFalse(e.getMessage().contains("Unwrapping failed"));
+            assertFalse(e.getMessage().contains("Unwrapping failed"));
         }
     }
 
@@ -1413,7 +1420,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -1438,7 +1445,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -1484,7 +1491,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -1509,7 +1516,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -1554,7 +1561,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -1580,7 +1587,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -1625,7 +1632,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -1651,7 +1658,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -1704,7 +1711,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -1730,7 +1737,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -1766,7 +1773,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -1792,7 +1799,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -1816,7 +1823,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -1845,7 +1852,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Check the SecurityEvents
         checkEncryptedElementSecurityEvents(securityEventListener);
@@ -1877,7 +1884,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -1904,7 +1911,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Check the SecurityEvents
         checkEncryptedContentSecurityEvents(securityEventListener);
@@ -1935,7 +1942,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PurchaseOrder");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -1962,7 +1969,7 @@ public class DecryptionTest extends Assert {
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "PurchaseOrder");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Check the SecurityEvents
         EncryptedElementSecurityEvent encryptedElementEvent =

@@ -45,11 +45,14 @@ import org.apache.xml.security.test.stax.utils.HttpRequestRedirectorProxy;
 import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
 import org.apache.xml.security.utils.XMLUtils;
 import org.apache.xml.security.utils.resolver.implementations.ResolverDirectHTTP;
-import org.junit.Assert;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  */
@@ -258,11 +261,11 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("http://www.w3.org/2000/09/xmldsig#", "Reference");
-        Assert.assertEquals(1, nodeList.getLength());
+        assertEquals(1, nodeList.getLength());
 
         String uri = ((Element) nodeList.item(0)).getAttribute("URI");
-        Assert.assertNotNull(uri);
-        Assert.assertTrue(uri.startsWith("#xpointer"));
+        assertNotNull(uri);
+        assertTrue(uri.startsWith("#xpointer"));
 
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());

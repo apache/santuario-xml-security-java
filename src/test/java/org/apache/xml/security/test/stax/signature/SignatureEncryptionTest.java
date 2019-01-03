@@ -24,7 +24,6 @@ import org.apache.xml.security.stax.securityEvent.SecurityEventConstants;
 import org.apache.xml.security.test.stax.utils.StAX2DOM;
 import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
 import org.apache.xml.security.utils.XMLUtils;
-import org.junit.Assert;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -47,6 +46,9 @@ import java.security.PublicKey;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * A set of test-cases for Signature + Encryption.
@@ -110,7 +112,7 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
 
         // Check the CreditCard decrypted ok
         NodeList nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
@@ -118,8 +120,8 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
         TestSecurityEventListener testSecurityEventListener =
                 verifyUsingStAX(baos.toByteArray(), encryptionKey, cert.getPublicKey());
 
-        Assert.assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.SignedElement).size());
-        Assert.assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.ContentEncrypted).size());
+        assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.SignedElement).size());
+        assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.ContentEncrypted).size());
     }
 
     @Test
@@ -179,7 +181,7 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
 
         // Check the CreditCard decrypted ok
         NodeList nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
@@ -187,8 +189,8 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
         TestSecurityEventListener testSecurityEventListener =
                 verifyUsingStAX(baos.toByteArray(), encryptionKey, cert.getPublicKey());
 
-        Assert.assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.SignedElement).size());
-        Assert.assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.EncryptedElement).size());
+        assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.SignedElement).size());
+        assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.EncryptedElement).size());
     }
 
     @Test
@@ -256,7 +258,7 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
 
         // Check the CreditCard decrypted ok
         NodeList nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
@@ -264,8 +266,8 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
         TestSecurityEventListener testSecurityEventListener =
                 verifyUsingStAX(baos.toByteArray(), encryptionKey, cert.getPublicKey());
 
-        Assert.assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.SignedElement).size());
-        Assert.assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.EncryptedElement).size());
+        assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.SignedElement).size());
+        assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.EncryptedElement).size());
     }
 
     @Test
@@ -333,7 +335,7 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
 
         // Check the CreditCard decrypted ok
         NodeList nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
@@ -341,8 +343,8 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
         TestSecurityEventListener testSecurityEventListener =
                 verifyUsingStAX(baos.toByteArray(), encryptionKey, cert.getPublicKey());
 
-        Assert.assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.SignedElement).size());
-        Assert.assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.ContentEncrypted).size());
+        assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.SignedElement).size());
+        assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.ContentEncrypted).size());
     }
 
     @Test
@@ -413,13 +415,13 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
 
         // Check the CreditCard decrypted ok
         NodeList nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        Assert.assertEquals(nodeList.getLength(), 1);
+        assertEquals(nodeList.getLength(), 1);
 
         TestSecurityEventListener testSecurityEventListener =
                 verifyUsingStAX(baos.toByteArray(), encryptionKey, cert.getPublicKey());
 
-        Assert.assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.SignedElement).size());
-        Assert.assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.ContentEncrypted).size());
+        assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.SignedElement).size());
+        assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.ContentEncrypted).size());
     }
 
     @Test
@@ -441,9 +443,9 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
 
         try {
             verifyUsingStAX(sourceDocument, encryptionKey, cert.getPublicKey());
-            Assert.fail("Exception expected");
+            fail("Exception expected");
         } catch (XMLStreamException e) {
-            Assert.assertEquals("Unsecured message. Neither a Signature nor a EncryptedData element found.",
+            assertEquals("Unsecured message. Neither a Signature nor a EncryptedData element found.",
                     e.getCause().getMessage());
         }
     }
@@ -509,7 +511,7 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
         // transformer.transform(new DOMSource(document), new StreamResult(System.out));
 
         NodeList nodeList = document.getElementsByTagNameNS("http://www.w3.org/2001/04/xmlenc#", "EncryptedData");
-        Assert.assertEquals(nodeList.getLength(), 0);
+        assertEquals(nodeList.getLength(), 0);
 
         return testSecurityEventListener;
     }

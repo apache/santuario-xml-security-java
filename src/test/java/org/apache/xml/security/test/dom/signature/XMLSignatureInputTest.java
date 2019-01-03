@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.test.dom.signature;
 
-import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -28,6 +27,8 @@ import java.io.InputStream;
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.InvalidCanonicalizerException;
 import org.apache.xml.security.signature.XMLSignatureInput;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * Unit test for {@link org.apache.xml.security.signature.XMLSignatureInput}

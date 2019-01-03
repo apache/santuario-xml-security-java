@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.test.dom.c14n.helper;
 
-import static org.junit.Assert.*;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -29,6 +28,11 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 
 
 /**
@@ -226,5 +230,3 @@ public class AttrCompareTest {
     }
 
 }
-
-

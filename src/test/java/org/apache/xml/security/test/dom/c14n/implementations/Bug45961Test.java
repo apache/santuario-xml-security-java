@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.test.dom.c14n.implementations;
 
-import static org.junit.Assert.*;
 
 import java.io.FileInputStream;
 import java.security.KeyStore;
@@ -37,6 +36,10 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+
 
 public class Bug45961Test {
 

@@ -31,6 +31,7 @@ import javax.xml.crypto.test.KeySelectors;
 
 import static org.junit.Assert.assertFalse;
 
+
 public class SecureXSLTTest {
 
     static {

@@ -59,11 +59,15 @@ import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.transforms.Transform;
 import org.apache.xml.security.transforms.implementations.TransformC14N;
 import org.apache.xml.security.utils.XMLUtils;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 
 /**
  * A set of test-cases for Signature verification.
@@ -156,9 +160,9 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
             }
         }
 
-        Assert.assertEquals(4, signatureSecurityEvents.size());
-        Assert.assertEquals(3, signedElementSecurityEvents.size());
-        Assert.assertEquals(securityEventListener.getSecurityEvents().size(),
+        assertEquals(4, signatureSecurityEvents.size());
+        assertEquals(3, signedElementSecurityEvents.size());
+        assertEquals(securityEventListener.getSecurityEvents().size(),
                 signatureSecurityEvents.size() + signedElementSecurityEvents.size());
     }
 
@@ -218,7 +222,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
                             SecurityTokenConstants.KeyIdentifier_X509KeyIdentifier);
 
         List<SignedElementSecurityEvent> signedElementSecurityEventList = securityEventListener.getSecurityEvents(SecurityEventConstants.SignedElement);
-        Assert.assertEquals(2, signedElementSecurityEventList.size());
+        assertEquals(2, signedElementSecurityEventList.size());
         X509TokenSecurityEvent x509TokenSecurityEvent = securityEventListener.getSecurityEvent(SecurityEventConstants.X509Token);
         String signedElementCorrelationID1 = signedElementSecurityEventList.get(0).getCorrelationID();
         String signedElementCorrelationID2 = signedElementSecurityEventList.get(1).getCorrelationID();
@@ -240,10 +244,10 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
             }
         }
 
-        Assert.assertEquals(4, signatureSecurityEvents.size());
-        Assert.assertEquals(3, signedElementSecurityEvents1.size());
-        Assert.assertEquals(3, signedElementSecurityEvents2.size());
-        Assert.assertEquals(securityEventListener.getSecurityEvents().size(),
+        assertEquals(4, signatureSecurityEvents.size());
+        assertEquals(3, signedElementSecurityEvents1.size());
+        assertEquals(3, signedElementSecurityEvents2.size());
+        assertEquals(securityEventListener.getSecurityEvents().size(),
                 signatureSecurityEvents.size() + signedElementSecurityEvents1.size() + signedElementSecurityEvents2.size());
     }
 
@@ -305,7 +309,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         try {
             StAX2DOM.readDoc(securityStreamReader);
         } catch (XMLStreamException ex) {
-            Assert.assertEquals("Multiple signatures are not supported.", ex.getCause().getMessage());
+            assertEquals("Multiple signatures are not supported.", ex.getCause().getMessage());
         }
     }
 
@@ -445,9 +449,9 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
             }
         }
 
-        Assert.assertEquals(4, signatureSecurityEvents.size());
-        Assert.assertEquals(3, signedElementSecurityEvents.size());
-        Assert.assertEquals(securityEventListener.getSecurityEvents().size(),
+        assertEquals(4, signatureSecurityEvents.size());
+        assertEquals(3, signedElementSecurityEvents.size());
+        assertEquals(securityEventListener.getSecurityEvents().size(),
                 signatureSecurityEvents.size() + signedElementSecurityEvents.size());
     }
 
@@ -500,8 +504,8 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
             StAX2DOM.readDoc(securityStreamReader);
             fail("Failure expected on a bad key");
         } catch (XMLStreamException ex) {
-            Assert.assertTrue(ex.getCause() instanceof XMLSecurityException);
-            Assert.assertEquals("INVALID signature -- core validation failed.", ex.getCause().getMessage());
+            assertTrue(ex.getCause() instanceof XMLSecurityException);
+            assertEquals("INVALID signature -- core validation failed.", ex.getCause().getMessage());
         }
     }
 
@@ -593,9 +597,9 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
             }
         }
 
-        Assert.assertEquals(4, signatureSecurityEvents.size());
-        Assert.assertEquals(3, signedElementSecurityEvents.size());
-        Assert.assertEquals(securityEventListener.getSecurityEvents().size(),
+        assertEquals(4, signatureSecurityEvents.size());
+        assertEquals(3, signedElementSecurityEvents.size());
+        assertEquals(securityEventListener.getSecurityEvents().size(),
                 signatureSecurityEvents.size() + signedElementSecurityEvents.size());
     }
 
@@ -675,9 +679,9 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
             }
         }
 
-        Assert.assertEquals(4, signatureSecurityEvents.size());
-        Assert.assertEquals(3, signedElementSecurityEvents.size());
-        Assert.assertEquals(securityEventListener.getSecurityEvents().size(),
+        assertEquals(4, signatureSecurityEvents.size());
+        assertEquals(3, signedElementSecurityEvents.size());
+        assertEquals(securityEventListener.getSecurityEvents().size(),
                 signatureSecurityEvents.size() + signedElementSecurityEvents.size());
     }
 
@@ -757,9 +761,9 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
             }
         }
 
-        Assert.assertEquals(4, signatureSecurityEvents.size());
-        Assert.assertEquals(3, signedElementSecurityEvents.size());
-        Assert.assertEquals(securityEventListener.getSecurityEvents().size(),
+        assertEquals(4, signatureSecurityEvents.size());
+        assertEquals(3, signedElementSecurityEvents.size());
+        assertEquals(securityEventListener.getSecurityEvents().size(),
                 signatureSecurityEvents.size() + signedElementSecurityEvents.size());
     }
 
@@ -839,9 +843,9 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
             }
         }
 
-        Assert.assertEquals(4, signatureSecurityEvents.size());
-        Assert.assertEquals(3, signedElementSecurityEvents.size());
-        Assert.assertEquals(securityEventListener.getSecurityEvents().size(),
+        assertEquals(4, signatureSecurityEvents.size());
+        assertEquals(3, signedElementSecurityEvents.size());
+        assertEquals(securityEventListener.getSecurityEvents().size(),
                 signatureSecurityEvents.size() + signedElementSecurityEvents.size());
     }
 
@@ -923,9 +927,9 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
             }
         }
 
-        Assert.assertEquals(4, signatureSecurityEvents.size());
-        Assert.assertEquals(3, signedElementSecurityEvents.size());
-        Assert.assertEquals(securityEventListener.getSecurityEvents().size(),
+        assertEquals(4, signatureSecurityEvents.size());
+        assertEquals(3, signedElementSecurityEvents.size());
+        assertEquals(securityEventListener.getSecurityEvents().size(),
                 signatureSecurityEvents.size() + signedElementSecurityEvents.size());
     }
 
@@ -1005,9 +1009,9 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
             }
         }
 
-        Assert.assertEquals(4, signatureSecurityEvents.size());
-        Assert.assertEquals(3, signedElementSecurityEvents.size());
-        Assert.assertEquals(securityEventListener.getSecurityEvents().size(),
+        assertEquals(4, signatureSecurityEvents.size());
+        assertEquals(3, signedElementSecurityEvents.size());
+        assertEquals(securityEventListener.getSecurityEvents().size(),
                 signatureSecurityEvents.size() + signedElementSecurityEvents.size());
     }
 
@@ -1095,9 +1099,9 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
             }
         }
 
-        Assert.assertEquals(4, signatureSecurityEvents.size());
-        Assert.assertEquals(3, signedElementSecurityEvents.size());
-        Assert.assertEquals(securityEventListener.getSecurityEvents().size(),
+        assertEquals(4, signatureSecurityEvents.size());
+        assertEquals(3, signedElementSecurityEvents.size());
+        assertEquals(securityEventListener.getSecurityEvents().size(),
                 signatureSecurityEvents.size() + signedElementSecurityEvents.size());
     }
 
@@ -1174,9 +1178,9 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
             }
         }
 
-        Assert.assertEquals(4, signatureSecurityEvents.size());
-        Assert.assertEquals(3, signedElementSecurityEvents.size());
-        Assert.assertEquals(securityEventListener.getSecurityEvents().size(),
+        assertEquals(4, signatureSecurityEvents.size());
+        assertEquals(3, signedElementSecurityEvents.size());
+        assertEquals(securityEventListener.getSecurityEvents().size(),
                 signatureSecurityEvents.size() + signedElementSecurityEvents.size());
     }
 
@@ -1247,9 +1251,9 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
             }
         }
 
-        Assert.assertEquals(4, signatureSecurityEvents.size());
-        Assert.assertEquals(3, signedElementSecurityEvents.size());
-        Assert.assertEquals(securityEventListener.getSecurityEvents().size(),
+        assertEquals(4, signatureSecurityEvents.size());
+        assertEquals(3, signedElementSecurityEvents.size());
+        assertEquals(securityEventListener.getSecurityEvents().size(),
                 signatureSecurityEvents.size() + signedElementSecurityEvents.size());
     }
 
@@ -1667,7 +1671,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
             StAX2DOM.readDoc(securityStreamReader);
             fail("Failure expected on a modified document");
         } catch (XMLStreamException ex) {
-            Assert.assertTrue(ex.getMessage().contains("Invalid digest of reference"));
+            assertTrue(ex.getMessage().contains("Invalid digest of reference"));
         }
     }
 
@@ -1731,7 +1735,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
             StAX2DOM.readDoc(securityStreamReader);
             fail("Failure expected on a modified document");
         } catch (XMLStreamException ex) {
-            Assert.assertTrue(ex.getMessage().contains("Invalid digest of reference"));
+            assertTrue(ex.getMessage().contains("Invalid digest of reference"));
         }
     }
 
@@ -1801,7 +1805,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
             StAX2DOM.readDoc(securityStreamReader);
             fail("Failure expected on a modified document");
         } catch (XMLStreamException ex) {
-            Assert.assertTrue(ex.getMessage().contains("Invalid digest of reference"));
+            assertTrue(ex.getMessage().contains("Invalid digest of reference"));
         }
     }
 
@@ -1878,7 +1882,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
             StAX2DOM.readDoc(securityStreamReader);
             fail("Failure expected on a modified document");
         } catch (XMLStreamException ex) {
-            Assert.assertTrue(ex.getMessage().contains("Invalid digest of reference"));
+            assertTrue(ex.getMessage().contains("Invalid digest of reference"));
         }
     }
 }

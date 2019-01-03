@@ -46,9 +46,10 @@ import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.stax.ext.XMLSecurityProperties;
 import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
 import org.apache.xml.security.utils.XMLUtils;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * A set of test-cases for Signature creation with various digest algorithms
@@ -130,9 +131,9 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         }
 
         NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
-        Assert.assertEquals(1, nodeList.getLength());
+        assertEquals(1, nodeList.getLength());
         Element element = (Element)nodeList.item(0);
-        Assert.assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
+        assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
@@ -185,9 +186,9 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         }
 
         NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
-        Assert.assertEquals(1, nodeList.getLength());
+        assertEquals(1, nodeList.getLength());
         Element element = (Element)nodeList.item(0);
-        Assert.assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
+        assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
@@ -240,9 +241,9 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         }
 
         NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
-        Assert.assertEquals(1, nodeList.getLength());
+        assertEquals(1, nodeList.getLength());
         Element element = (Element)nodeList.item(0);
-        Assert.assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
+        assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
@@ -295,9 +296,9 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         }
 
         NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
-        Assert.assertEquals(1, nodeList.getLength());
+        assertEquals(1, nodeList.getLength());
         Element element = (Element)nodeList.item(0);
-        Assert.assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
+        assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
@@ -350,9 +351,9 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         }
 
         NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
-        Assert.assertEquals(1, nodeList.getLength());
+        assertEquals(1, nodeList.getLength());
         Element element = (Element)nodeList.item(0);
-        Assert.assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
+        assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
@@ -407,9 +408,9 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         }
 
         NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
-        Assert.assertEquals(1, nodeList.getLength());
+        assertEquals(1, nodeList.getLength());
         Element element = (Element)nodeList.item(0);
-        Assert.assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
+        assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
@@ -464,9 +465,9 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         }
 
         NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
-        Assert.assertEquals(1, nodeList.getLength());
+        assertEquals(1, nodeList.getLength());
         Element element = (Element)nodeList.item(0);
-        Assert.assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
+        assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
@@ -521,9 +522,9 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         }
 
         NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
-        Assert.assertEquals(1, nodeList.getLength());
+        assertEquals(1, nodeList.getLength());
         Element element = (Element)nodeList.item(0);
-        Assert.assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
+        assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
@@ -578,9 +579,9 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         }
 
         NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
-        Assert.assertEquals(1, nodeList.getLength());
+        assertEquals(1, nodeList.getLength());
         Element element = (Element)nodeList.item(0);
-        Assert.assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
+        assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
@@ -635,9 +636,9 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         }
 
         NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
-        Assert.assertEquals(1, nodeList.getLength());
+        assertEquals(1, nodeList.getLength());
         Element element = (Element)nodeList.item(0);
-        Assert.assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
+        assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
@@ -692,9 +693,9 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         }
 
         NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
-        Assert.assertEquals(1, nodeList.getLength());
+        assertEquals(1, nodeList.getLength());
         Element element = (Element)nodeList.item(0);
-        Assert.assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
+        assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());

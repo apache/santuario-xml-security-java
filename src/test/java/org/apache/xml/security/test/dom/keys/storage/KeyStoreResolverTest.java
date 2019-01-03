@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.test.dom.keys.storage;
 
-import static org.junit.Assert.*;
 
 import java.io.FileInputStream;
 import java.security.KeyStore;
@@ -27,6 +26,11 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import org.apache.xml.security.keys.storage.implementations.KeyStoreResolver;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.fail;
+
 
 /**
  * KeyStore StorageResolver test.

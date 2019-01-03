@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.test.dom.signature;
 
-import static org.junit.Assert.*;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -56,6 +55,13 @@ import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.apache.xml.security.utils.resolver.ResourceResolverException;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
 import org.apache.xml.security.utils.resolver.implementations.ResolverXPointer;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 
 /**
  * Test a Signature and Validation, and check that we have access to the Element(s) that was

@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.test.dom.keys.keyresolver;
 
-import static org.junit.Assert.*;
 
 import java.io.FileInputStream;
 import java.math.BigInteger;
@@ -61,6 +60,10 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 
 /**
  * KeyResolver test.

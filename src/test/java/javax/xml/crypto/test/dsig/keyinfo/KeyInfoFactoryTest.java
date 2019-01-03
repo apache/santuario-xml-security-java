@@ -21,7 +21,6 @@
  */
 package javax.xml.crypto.test.dsig.keyinfo;
 
-import static org.junit.Assert.*;
 
 import java.math.BigInteger;
 import java.util.*;
@@ -29,6 +28,12 @@ import java.security.KeyException;
 import java.security.PublicKey;
 import javax.xml.crypto.dsig.keyinfo.*;
 import javax.xml.crypto.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 
 /**
  * Unit test for javax.xml.crypto.dsig.keyinfo.KeyInfoFactory

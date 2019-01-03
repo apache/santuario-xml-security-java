@@ -18,7 +18,6 @@
  */
 package javax.xml.crypto.test.dsig;
 
-import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,6 +30,8 @@ import org.apache.jcp.xml.dsig.internal.dom.DOMSignedInfo;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Element;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * This is a test for a forbidden number of references when secure validation is enabled.

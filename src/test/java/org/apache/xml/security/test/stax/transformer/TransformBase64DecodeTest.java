@@ -26,7 +26,6 @@ import org.apache.xml.security.stax.ext.XMLSecurityUtils;
 import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 import org.apache.xml.security.stax.impl.transformer.TransformBase64Decode;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -43,9 +42,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 /**
  */
-public class TransformBase64DecodeTest extends Assert {
+public class TransformBase64DecodeTest {
 
     private XMLInputFactory xmlInputFactory;
 
@@ -88,7 +90,7 @@ public class TransformBase64DecodeTest extends Assert {
 
             @Override
             public void transform(InputStream inputStream) throws XMLStreamException {
-                Assert.fail("unexpected call to transform(InputStream");
+                fail("unexpected call to transform(InputStream");
             }
 
             @Override
@@ -119,7 +121,7 @@ public class TransformBase64DecodeTest extends Assert {
 
         transformBase64Decode.doFinal();
 
-        Assert.assertEquals(16, xmlSecEvents.size());
+        assertEquals(16, xmlSecEvents.size());
     }
 
     @Test
@@ -148,7 +150,7 @@ public class TransformBase64DecodeTest extends Assert {
 
             @Override
             public void transform(XMLSecEvent xmlSecEvent) throws XMLStreamException {
-                Assert.fail("unexpected call to transform(XMLSecEvent");
+                fail("unexpected call to transform(XMLSecEvent");
             }
 
             @Override
@@ -188,7 +190,7 @@ public class TransformBase64DecodeTest extends Assert {
 
         transformBase64Decode.doFinal();
 
-        Assert.assertEquals(153, byteArrayOutputStream.size());
+        assertEquals(153, byteArrayOutputStream.size());
     }
 
     @Test
@@ -219,7 +221,7 @@ public class TransformBase64DecodeTest extends Assert {
 
         transformBase64Decode.doFinal();
 
-        Assert.assertEquals(153, byteArrayOutputStream.size());
+        assertEquals(153, byteArrayOutputStream.size());
     }
 
     @Test
@@ -231,7 +233,7 @@ public class TransformBase64DecodeTest extends Assert {
         transformBase64Decode.transform(this.getClass().getClassLoader().getResourceAsStream(
                 "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/xml-stylesheet.b64"));
 
-        Assert.assertEquals(13132, byteArrayOutputStream.size());
+        assertEquals(13132, byteArrayOutputStream.size());
     }
 
     @Test
@@ -264,7 +266,7 @@ public class TransformBase64DecodeTest extends Assert {
 
             @Override
             public void transform(InputStream inputStream) throws XMLStreamException {
-                Assert.fail("unexpected call to transform(InputStream");
+                fail("unexpected call to transform(InputStream");
             }
 
             @Override
@@ -279,7 +281,7 @@ public class TransformBase64DecodeTest extends Assert {
 
         transformBase64Decode.doFinal();
 
-        Assert.assertEquals(44, xmlSecEvents.size());
+        assertEquals(44, xmlSecEvents.size());
     }
 
     @Test
@@ -307,7 +309,7 @@ public class TransformBase64DecodeTest extends Assert {
 
             @Override
             public void transform(XMLSecEvent xmlSecEvent) throws XMLStreamException {
-                Assert.fail("unexpected call to transform(XMLSecEvent");
+                fail("unexpected call to transform(XMLSecEvent");
             }
 
             @Override
@@ -331,6 +333,6 @@ public class TransformBase64DecodeTest extends Assert {
 
         transformBase64Decode.doFinal();
 
-        Assert.assertEquals(615, byteArrayOutputStream.size());
+        assertEquals(615, byteArrayOutputStream.size());
     }
 }

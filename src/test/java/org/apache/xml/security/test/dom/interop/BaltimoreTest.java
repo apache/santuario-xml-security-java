@@ -21,11 +21,15 @@ package org.apache.xml.security.test.dom.interop;
 import org.apache.xml.security.test.dom.utils.resolver.OfflineResolver;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
 
-import static org.junit.Assert.*;
 
 import java.nio.charset.StandardCharsets;
 
 import org.apache.xml.security.signature.XMLSignatureException;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 
 /**
  * This test is to ensure interoperability with the examples provided by Merlin Huges

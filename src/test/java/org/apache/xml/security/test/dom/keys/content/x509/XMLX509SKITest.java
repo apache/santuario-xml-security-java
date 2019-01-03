@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.test.dom.keys.content.x509;
 
-import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,6 +30,8 @@ import java.util.Collection;
 import java.util.Collections;
 
 import org.apache.xml.security.keys.content.x509.XMLX509SKI;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test bugfix 41892: XML Security 1.4.0 does not build with IBM's JDK

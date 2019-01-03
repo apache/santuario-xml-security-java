@@ -49,10 +49,11 @@ import org.apache.xml.security.test.stax.utils.StAX2DOM;
 import org.apache.xml.security.test.stax.utils.TestUtils;
 import org.apache.xml.security.utils.XMLUtils;
 import org.apache.xml.security.utils.resolver.implementations.ResolverDirectHTTP;
-import org.junit.Assert;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import static org.junit.Assert.assertNotNull;
 
 /**
  */
@@ -297,7 +298,7 @@ public class SignatureVerificationReferenceURIResolverTest extends AbstractSigna
         String expression = "//*[local-name()='ShippingAddress']";
         Element elementToSign =
                 (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
-        Assert.assertNotNull(elementToSign);
+        assertNotNull(elementToSign);
         String id = UUID.randomUUID().toString();
         elementToSign.setAttributeNS(null, "Id", id);
         elementToSign.setIdAttributeNS(null, "Id", true);
@@ -370,7 +371,7 @@ public class SignatureVerificationReferenceURIResolverTest extends AbstractSigna
         String expression = "//*[local-name()='ShippingAddress']";
         Element elementToSign =
                 (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
-        Assert.assertNotNull(elementToSign);
+        assertNotNull(elementToSign);
         String id = UUID.randomUUID().toString();
         elementToSign.setAttributeNS(null, "Id", id);
         elementToSign.setIdAttributeNS(null, "Id", true);

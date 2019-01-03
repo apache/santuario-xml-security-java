@@ -23,7 +23,6 @@ import org.apache.xml.security.c14n.implementations.Canonicalizer20010315ExclOmi
 import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer20010315_Excl;
 import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer20010315_ExclOmitCommentsTransformer;
 import org.apache.xml.security.utils.XMLUtils;
-import org.junit.Assert;
 import org.w3c.dom.Document;
 
 import java.io.ByteArrayInputStream;
@@ -33,6 +32,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
 
 public class EmptyNamespaceTest {
 
@@ -84,7 +85,7 @@ public class EmptyNamespaceTest {
             transformer.doFinal();
 
             String result = outputStream.toString();
-            Assert.assertEquals(message, result);
+            assertEquals(message, result);
         }
     }
 
@@ -105,6 +106,6 @@ public class EmptyNamespaceTest {
                 transformer.engineCanonicalizeSubTree(document, inclusiveNamespaces);
 
         String result = new String(output, java.nio.charset.StandardCharsets.UTF_8);
-        Assert.assertEquals(message, result);
+        assertEquals(message, result);
     }
 }

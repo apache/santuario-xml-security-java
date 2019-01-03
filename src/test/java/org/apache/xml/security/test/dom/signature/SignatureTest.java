@@ -20,7 +20,6 @@ package org.apache.xml.security.test.dom.signature;
 
 import java.io.InputStream;
 
-import static org.junit.Assert.assertTrue;
 
 import java.io.FileInputStream;
 import java.security.KeyStore;
@@ -38,6 +37,8 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.apache.xml.security.utils.resolver.implementations.ResolverXPointer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import static org.junit.Assert.assertTrue;
 
 public class SignatureTest {
     public static final String DS_NS = "http://www.w3.org/2000/09/xmldsig#";

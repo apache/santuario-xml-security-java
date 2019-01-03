@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.test.dom.utils.resolver;
 
-import static org.junit.Assert.fail;
 
 import java.io.File;
 
@@ -26,6 +25,8 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.apache.xml.security.utils.resolver.ResourceResolver;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
+
+import static org.junit.Assert.fail;
 
 /**
  * Unit test for {@link org.apache.xml.security.utils.resolver.ResourceResolver}

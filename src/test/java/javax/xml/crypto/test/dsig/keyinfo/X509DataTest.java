@@ -24,11 +24,15 @@ package javax.xml.crypto.test.dsig.keyinfo;
 import java.util.*;
 import java.security.cert.X509Certificate;
 
-import static org.junit.Assert.*;
 
 import java.security.cert.X509CRL;
 import javax.xml.crypto.*;
 import javax.xml.crypto.dsig.keyinfo.*;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 
 /**
  * Unit test for javax.xml.crypto.dsig.keyinfo.X509Data

@@ -57,6 +57,7 @@ import org.w3c.dom.Node;
 
 import static org.junit.Assert.assertTrue;
 
+
 /**
  * Interop test for XML Encryption
  *

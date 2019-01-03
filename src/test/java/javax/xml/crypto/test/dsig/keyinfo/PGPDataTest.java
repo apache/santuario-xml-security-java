@@ -21,13 +21,17 @@
  */
 package javax.xml.crypto.test.dsig.keyinfo;
 
-import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.xml.crypto.*;
 import javax.xml.crypto.dsig.keyinfo.*;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 
 /**
  * Unit test for javax.xml.crypto.dsig.keyinfo.PGPData

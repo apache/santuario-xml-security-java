@@ -21,7 +21,6 @@
  */
 package javax.xml.crypto.test.dsig;
 
-import static org.junit.Assert.*;
 
 import java.io.*;
 import java.math.BigInteger;
@@ -55,6 +54,10 @@ import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 
 import javax.xml.crypto.test.KeySelectors;
+
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 
 /**
  * Test that recreates merlin-xmldsig-twenty-three test vectors but with

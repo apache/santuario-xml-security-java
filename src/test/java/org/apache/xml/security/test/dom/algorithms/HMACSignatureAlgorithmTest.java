@@ -38,16 +38,18 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.XMLUtils;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 /**
  * A test to make sure that the various Signature HMAC algorithms are working
  */
-public class HMACSignatureAlgorithmTest extends Assert {
+public class HMACSignatureAlgorithmTest {
 
     static {
         org.apache.xml.security.Init.init();
@@ -246,7 +248,7 @@ public class HMACSignatureAlgorithmTest extends Assert {
                     (NodeList) xpath.evaluate(expression, document, XPathConstants.NODESET);
             for (int i = 0; i < elementsToSign.getLength(); i++) {
                 Element elementToSign = (Element)elementsToSign.item(i);
-                Assert.assertNotNull(elementToSign);
+                assertNotNull(elementToSign);
                 String id = UUID.randomUUID().toString();
                 elementToSign.setAttributeNS(null, "Id", id);
                 elementToSign.setIdAttributeNS(null, "Id", true);
@@ -263,7 +265,7 @@ public class HMACSignatureAlgorithmTest extends Assert {
         String expression = "//ds:Signature[1]";
         Element sigElement =
                 (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
-        Assert.assertNotNull(sigElement);
+        assertNotNull(sigElement);
 
         return sig;
     }
@@ -289,19 +291,19 @@ public class HMACSignatureAlgorithmTest extends Assert {
         String expression = "//dsig:Signature[1]";
         Element sigElement =
             (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
-        Assert.assertNotNull(sigElement);
+        assertNotNull(sigElement);
 
         for (String name : localNames) {
             expression = "//*[local-name()='" + name + "']";
             Element signedElement =
                 (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
-            Assert.assertNotNull(signedElement);
+            assertNotNull(signedElement);
             signedElement.setIdAttributeNS(null, "Id", true);
         }
 
         XMLSignature signature = new XMLSignature(sigElement, "", secureValidation);
 
-        Assert.assertTrue(signature.checkSignatureValue(key));
+        assertTrue(signature.checkSignatureValue(key));
     }
 
 }

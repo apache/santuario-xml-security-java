@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.test.stax;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import org.apache.xml.security.stax.impl.util.IVSplittingOutputStream;
@@ -29,9 +28,12 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import java.io.ByteArrayOutputStream;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 /**
  */
-public class IVSplittingOutputStreamTest extends Assert {
+public class IVSplittingOutputStreamTest {
 
     private final String testString = "Within this class we test if the IVSplittingOutputStream works correctly under different conditions";
 
@@ -55,10 +57,10 @@ public class IVSplittingOutputStreamTest extends Assert {
         }
         replaceableOuputStream.close();
 
-        Assert.assertEquals(new String(ivSplittingOutputStream.getIv()), testString.substring(0, ivSize));
-        Assert.assertEquals(new String(byteArrayOutputStream.toByteArray()), testString.substring(ivSize));
-        Assert.assertEquals(new String(ivSplittingOutputStream.getIv()) + new String(byteArrayOutputStream.toByteArray()), testString);
-        Assert.assertTrue(ivSplittingOutputStream.isIVComplete());
+        assertEquals(new String(ivSplittingOutputStream.getIv()), testString.substring(0, ivSize));
+        assertEquals(new String(byteArrayOutputStream.toByteArray()), testString.substring(ivSize));
+        assertEquals(new String(ivSplittingOutputStream.getIv()) + new String(byteArrayOutputStream.toByteArray()), testString);
+        assertTrue(ivSplittingOutputStream.isIVComplete());
     }
 
     @Test
@@ -78,10 +80,10 @@ public class IVSplittingOutputStreamTest extends Assert {
         replaceableOuputStream.write(testString.getBytes());
         replaceableOuputStream.close();
 
-        Assert.assertEquals(new String(ivSplittingOutputStream.getIv()), testString.substring(0, ivSize));
-        Assert.assertEquals(new String(byteArrayOutputStream.toByteArray()), testString.substring(ivSize));
-        Assert.assertEquals(new String(ivSplittingOutputStream.getIv()) + new String(byteArrayOutputStream.toByteArray()), testString);
-        Assert.assertTrue(ivSplittingOutputStream.isIVComplete());
+        assertEquals(new String(ivSplittingOutputStream.getIv()), testString.substring(0, ivSize));
+        assertEquals(new String(byteArrayOutputStream.toByteArray()), testString.substring(ivSize));
+        assertEquals(new String(ivSplittingOutputStream.getIv()) + new String(byteArrayOutputStream.toByteArray()), testString);
+        assertTrue(ivSplittingOutputStream.isIVComplete());
     }
 
     @Test
@@ -107,10 +109,10 @@ public class IVSplittingOutputStreamTest extends Assert {
         replaceableOuputStream.write(testBytes, testBytes.length - testBytes.length % ivSize, testBytes.length % ivSize);
         replaceableOuputStream.close();
 
-        Assert.assertEquals(new String(ivSplittingOutputStream.getIv()), testString.substring(0, ivSize));
-        Assert.assertEquals(new String(byteArrayOutputStream.toByteArray()), testString.substring(ivSize));
-        Assert.assertEquals(new String(ivSplittingOutputStream.getIv()) + new String(byteArrayOutputStream.toByteArray()), testString);
-        Assert.assertTrue(ivSplittingOutputStream.isIVComplete());
+        assertEquals(new String(ivSplittingOutputStream.getIv()), testString.substring(0, ivSize));
+        assertEquals(new String(byteArrayOutputStream.toByteArray()), testString.substring(ivSize));
+        assertEquals(new String(ivSplittingOutputStream.getIv()) + new String(byteArrayOutputStream.toByteArray()), testString);
+        assertTrue(ivSplittingOutputStream.isIVComplete());
     }
 
     @Test
@@ -134,10 +136,10 @@ public class IVSplittingOutputStreamTest extends Assert {
         replaceableOuputStream.write(testBytes, testBytes.length - ivSize, ivSize);
         replaceableOuputStream.close();
 
-        Assert.assertEquals(new String(ivSplittingOutputStream.getIv()), testString.substring(0, ivSize));
-        Assert.assertEquals(new String(byteArrayOutputStream.toByteArray()), testString.substring(ivSize));
-        Assert.assertEquals(new String(ivSplittingOutputStream.getIv()) + new String(byteArrayOutputStream.toByteArray()), testString);
-        Assert.assertTrue(ivSplittingOutputStream.isIVComplete());
+        assertEquals(new String(ivSplittingOutputStream.getIv()), testString.substring(0, ivSize));
+        assertEquals(new String(byteArrayOutputStream.toByteArray()), testString.substring(ivSize));
+        assertEquals(new String(ivSplittingOutputStream.getIv()) + new String(byteArrayOutputStream.toByteArray()), testString);
+        assertTrue(ivSplittingOutputStream.isIVComplete());
     }
 
     @Test
@@ -163,9 +165,9 @@ public class IVSplittingOutputStreamTest extends Assert {
         replaceableOuputStream.write(testBytes, testBytes.length - testBytes.length % 4, testBytes.length % 4);
         replaceableOuputStream.close();
 
-        Assert.assertEquals(new String(ivSplittingOutputStream.getIv()), testString.substring(0, ivSize));
-        Assert.assertEquals(new String(byteArrayOutputStream.toByteArray()), testString.substring(ivSize));
-        Assert.assertEquals(new String(ivSplittingOutputStream.getIv()) + new String(byteArrayOutputStream.toByteArray()), testString);
-        Assert.assertTrue(ivSplittingOutputStream.isIVComplete());
+        assertEquals(new String(ivSplittingOutputStream.getIv()), testString.substring(0, ivSize));
+        assertEquals(new String(byteArrayOutputStream.toByteArray()), testString.substring(ivSize));
+        assertEquals(new String(ivSplittingOutputStream.getIv()) + new String(byteArrayOutputStream.toByteArray()), testString);
+        assertTrue(ivSplittingOutputStream.isIVComplete());
     }
 }

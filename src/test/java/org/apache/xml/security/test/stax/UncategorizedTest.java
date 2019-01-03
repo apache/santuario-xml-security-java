@@ -19,7 +19,6 @@
 package org.apache.xml.security.test.stax;
 
 import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.junit.Assert;
 import org.junit.Test;
 import org.apache.xml.security.stax.config.Init;
 import org.apache.xml.security.stax.ext.XMLSec;
@@ -31,9 +30,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 /**
  */
-public class UncategorizedTest extends Assert {
+public class UncategorizedTest {
 
     @Test
     public void testConfigurationLoadFromUrl() throws Exception {
@@ -42,9 +44,9 @@ public class UncategorizedTest extends Assert {
                 "org/apache/xml/security/c14n/in/32_input.xml");
         try {
             Init.init(url.toURI(), this.getClass());
-            Assert.fail();
+            fail();
         } catch (XMLSecurityException e) {
-            Assert.assertTrue(e.getMessage().contains("Cannot find the declaration of element 'doc'."));
+            assertTrue(e.getMessage().contains("Cannot find the declaration of element 'doc'."));
         }
     }
 
@@ -64,9 +66,9 @@ public class UncategorizedTest extends Assert {
 
         try {
             XMLSec.getOutboundXMLSec(properties);
-            Assert.fail();
+            fail();
         } catch (XMLSecurityConfigurationException ex) {
-            Assert.assertTrue(ex.getMessage().contains("Duplicate Actions are not allowed"));
+            assertTrue(ex.getMessage().contains("Duplicate Actions are not allowed"));
         }
     }
 }

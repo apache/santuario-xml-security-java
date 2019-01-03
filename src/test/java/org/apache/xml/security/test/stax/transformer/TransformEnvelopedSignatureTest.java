@@ -26,7 +26,6 @@ import org.apache.xml.security.stax.ext.XMLSecurityUtils;
 import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 import org.apache.xml.security.stax.impl.transformer.TransformEnvelopedSignature;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -42,9 +41,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 /**
  */
-public class TransformEnvelopedSignatureTest extends Assert {
+public class TransformEnvelopedSignatureTest {
 
     private XMLInputFactory xmlInputFactory;
 
@@ -87,7 +89,7 @@ public class TransformEnvelopedSignatureTest extends Assert {
 
             @Override
             public void transform(InputStream inputStream) throws XMLStreamException {
-                Assert.fail("unexpected call to transform(InputStream");
+                fail("unexpected call to transform(InputStream");
             }
 
             @Override
@@ -108,7 +110,7 @@ public class TransformEnvelopedSignatureTest extends Assert {
 
         transformEnvelopedSignature.doFinal();
 
-        Assert.assertEquals(19, xmlSecEvents.size());
+        assertEquals(19, xmlSecEvents.size());
     }
 
     @Test
@@ -137,7 +139,7 @@ public class TransformEnvelopedSignatureTest extends Assert {
 
             @Override
             public void transform(XMLSecEvent xmlSecEvent) throws XMLStreamException {
-                Assert.fail("unexpected call to transform(XMLSecEvent");
+                fail("unexpected call to transform(XMLSecEvent");
             }
 
             @Override
@@ -167,7 +169,7 @@ public class TransformEnvelopedSignatureTest extends Assert {
 
         transformEnvelopedSignature.doFinal();
 
-        Assert.assertEquals(207, byteArrayOutputStream.size());
+        assertEquals(207, byteArrayOutputStream.size());
     }
 
     @Test
@@ -188,6 +190,6 @@ public class TransformEnvelopedSignatureTest extends Assert {
 
         transformEnvelopedSignature.doFinal();
 
-        Assert.assertEquals(207, byteArrayOutputStream.size());
+        assertEquals(207, byteArrayOutputStream.size());
     }
 }

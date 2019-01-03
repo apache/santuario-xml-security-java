@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.test.dom.transforms.implementations;
 
-import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -35,6 +34,8 @@ import org.apache.xml.security.transforms.implementations.TransformBase64Decode;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * Unit test for {@link org.apache.xml.security.transforms.implementations.TransformBase64Decode}

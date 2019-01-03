@@ -25,12 +25,12 @@ import org.w3c.dom.Element;
 
 import org.apache.xml.security.Init;
 import org.apache.xml.security.keys.KeyInfo;
-import org.junit.Assert;
 
 import static org.apache.xml.security.test.stax.utils.KeyLoader.loadPublicKey;
 import static org.apache.xml.security.test.stax.utils.KeyLoader.loadXML;
+import static org.junit.Assert.assertEquals;
 
-public class DEREncodedKeyValueResolverTest extends Assert {
+public class DEREncodedKeyValueResolverTest {
 
     private PublicKey rsaKeyControl;
     private PublicKey dsaKeyControl;

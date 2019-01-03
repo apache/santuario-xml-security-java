@@ -18,16 +18,17 @@
  */
 package org.apache.xml.security.test.stax;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import org.apache.xml.security.stax.impl.util.TrimmerOutputStream;
 
 import java.io.ByteArrayOutputStream;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  */
-public class TrimmerOutputStreamTest extends Assert {
+public class TrimmerOutputStreamTest {
 
     private final String testString = "Within this class we test if the TrimmerOutputStream works correctly under different conditions";
 
@@ -42,8 +43,8 @@ public class TrimmerOutputStreamTest extends Assert {
         }
         trimmerOutputStream.close();
 
-        Assert.assertEquals(baos.size(), testStringBytes.length - 7);
-        Assert.assertEquals(baos.toString(), testString);
+        assertEquals(baos.size(), testStringBytes.length - 7);
+        assertEquals(baos.toString(), testString);
     }
 
     @Test
@@ -71,7 +72,7 @@ public class TrimmerOutputStreamTest extends Assert {
         trimmerOutputStream.write(testStringBytes, written, testStringBytes.length - written);
         trimmerOutputStream.close();
 
-        Assert.assertEquals(baos.size(), testStringBytes.length - 7);
-        Assert.assertEquals(baos.toString(), stringBuffer.toString().substring(3, stringBuffer.length() - 4));
+        assertEquals(baos.size(), testStringBytes.length - 7);
+        assertEquals(baos.toString(), stringBuffer.toString().substring(3, stringBuffer.length() - 4));
     }
 }

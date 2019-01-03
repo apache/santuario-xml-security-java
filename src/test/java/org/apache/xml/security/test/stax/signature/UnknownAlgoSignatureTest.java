@@ -39,10 +39,14 @@ import org.apache.xml.security.stax.ext.XMLSecurityProperties;
 import org.apache.xml.security.test.stax.utils.StAX2DOM;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.utils.XMLUtils;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 
 /**
  * Tests cases where signature algorithms are unknown.
@@ -51,7 +55,7 @@ import org.w3c.dom.Document;
  * org.apache.xml.security.samples.signature.CreateEnvelopingSignature</code>
  * </p>
  */
-public class UnknownAlgoSignatureTest extends Assert {
+public class UnknownAlgoSignatureTest {
 
     private XMLInputFactory xmlInputFactory;
     private TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -141,8 +145,8 @@ public class UnknownAlgoSignatureTest extends Assert {
             StAX2DOM.readDoc(securityStreamReader);
             fail("Failure expected on a bad c14n algorithm");
         } catch (XMLStreamException ex) {
-            Assert.assertTrue(ex.getCause() instanceof XMLSecurityException);
-            Assert.assertEquals("Unknown transformation. No handler installed for URI http://www.apache.org/bad-c14n-algo", ex.getCause().getMessage());
+            assertTrue(ex.getCause() instanceof XMLSecurityException);
+            assertEquals("Unknown transformation. No handler installed for URI http://www.apache.org/bad-c14n-algo", ex.getCause().getMessage());
         }
 
         // XMLUtils.outputDOM(document, System.out);
@@ -186,8 +190,8 @@ public class UnknownAlgoSignatureTest extends Assert {
             StAX2DOM.readDoc(securityStreamReader);
             fail("Failure expected on a bad signature algorithm");
         } catch (XMLStreamException ex) {
-            Assert.assertTrue(ex.getCause() instanceof XMLSecurityException);
-            Assert.assertEquals("The algorithm URI \"http://www.apache.org/bad-sig-algo\" could not be mapped to a JCE algorithm",
+            assertTrue(ex.getCause() instanceof XMLSecurityException);
+            assertEquals("The algorithm URI \"http://www.apache.org/bad-sig-algo\" could not be mapped to a JCE algorithm",
                     ex.getCause().getMessage());
         }
 
@@ -232,8 +236,8 @@ public class UnknownAlgoSignatureTest extends Assert {
             StAX2DOM.readDoc(securityStreamReader);
             fail("Failure expected on a bad transform algorithm");
         } catch (XMLStreamException ex) {
-            Assert.assertTrue(ex.getCause() instanceof XMLSecurityException);
-            Assert.assertEquals("INVALID signature -- core validation failed.", ex.getCause().getMessage());
+            assertTrue(ex.getCause() instanceof XMLSecurityException);
+            assertEquals("INVALID signature -- core validation failed.", ex.getCause().getMessage());
         }
 
         // XMLUtils.outputDOM(document, System.out);

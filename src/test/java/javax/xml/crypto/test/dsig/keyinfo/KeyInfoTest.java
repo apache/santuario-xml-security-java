@@ -21,7 +21,6 @@
  */
 package javax.xml.crypto.test.dsig.keyinfo;
 
-import static org.junit.Assert.*;
 
 import java.security.Key;
 import java.util.Collections;
@@ -37,6 +36,12 @@ import org.apache.jcp.xml.dsig.internal.dom.DOMUtils;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 
 /**
  * Unit test for javax.xml.crypto.dsig.keyinfo.KeyInfo

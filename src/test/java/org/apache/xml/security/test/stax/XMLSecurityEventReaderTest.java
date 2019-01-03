@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.test.stax;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
@@ -32,9 +31,13 @@ import javax.xml.stream.events.XMLEvent;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+
 /**
  */
-public class XMLSecurityEventReaderTest extends Assert {
+public class XMLSecurityEventReaderTest {
 
     @Test
     public void testConformness() throws Exception {
@@ -57,22 +60,22 @@ public class XMLSecurityEventReaderTest extends Assert {
             xmlInputFactory.createXMLEventReader(this.getClass().getClassLoader().getResourceAsStream(
                 "org/apache/xml/security/c14n/inExcl/plain-soap-1.1.xml"));
         while (xmlEventReader.hasNext()) {
-            Assert.assertEquals(xmlEventReader.hasNext(), xmlSecurityEventReader.hasNext());
+            assertEquals(xmlEventReader.hasNext(), xmlSecurityEventReader.hasNext());
             XMLEvent stdXmlEvent = xmlEventReader.nextEvent();
             XMLEvent secXmlEvent = xmlSecurityEventReader.nextEvent();
-            Assert.assertEquals(stdXmlEvent.getEventType(), secXmlEvent.getEventType());
+            assertEquals(stdXmlEvent.getEventType(), secXmlEvent.getEventType());
 
             XMLEvent stdPeekedXMLEvent = xmlEventReader.peek();
             XMLEvent secPeekedXMLEvent = xmlSecurityEventReader.peek();
             if (stdPeekedXMLEvent == null) {
-                Assert.assertNull(secPeekedXMLEvent);
+                assertNull(secPeekedXMLEvent);
             } else {
-                Assert.assertEquals(stdPeekedXMLEvent.getEventType(), secPeekedXMLEvent.getEventType());
+                assertEquals(stdPeekedXMLEvent.getEventType(), secPeekedXMLEvent.getEventType());
             }
         }
 
-        Assert.assertFalse(xmlEventReader.hasNext());
-        Assert.assertFalse(xmlSecurityEventReader.hasNext());
+        assertFalse(xmlEventReader.hasNext());
+        assertFalse(xmlSecurityEventReader.hasNext());
     }
 
     @Test
@@ -106,18 +109,18 @@ public class XMLSecurityEventReaderTest extends Assert {
             }
 
             XMLEvent secXmlEvent = xmlSecurityEventReader.nextEvent();
-            Assert.assertEquals(stdXmlEvent.getEventType(), secXmlEvent.getEventType());
+            assertEquals(stdXmlEvent.getEventType(), secXmlEvent.getEventType());
 
             XMLEvent stdPeekedXMLEvent = xmlEventReader.peek();
             XMLEvent secPeekedXMLEvent = xmlSecurityEventReader.peek();
             if (stdPeekedXMLEvent == null) {
-                Assert.assertNull(secPeekedXMLEvent);
+                assertNull(secPeekedXMLEvent);
             } else {
-                Assert.assertEquals(stdPeekedXMLEvent.getEventType(), secPeekedXMLEvent.getEventType());
+                assertEquals(stdPeekedXMLEvent.getEventType(), secPeekedXMLEvent.getEventType());
             }
         }
 
-        Assert.assertFalse(xmlEventReader.hasNext());
-        Assert.assertFalse(xmlSecurityEventReader.hasNext());
+        assertFalse(xmlEventReader.hasNext());
+        assertFalse(xmlSecurityEventReader.hasNext());
     }
 }
