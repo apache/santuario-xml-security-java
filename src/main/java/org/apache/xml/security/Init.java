@@ -18,6 +18,7 @@
  */
 package org.apache.xml.security;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -90,6 +91,11 @@ public class Init {
             dynamicInit();
         } else {
             fileInit(is);
+            try {
+                is.close();
+            } catch (IOException ex) {
+                LOG.warn(ex.getMessage());
+            }
         }
 
         alreadyInitialized = true;
