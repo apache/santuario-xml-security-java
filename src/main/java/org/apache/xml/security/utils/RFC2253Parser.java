@@ -68,7 +68,7 @@ public class RFC2253Parser {
      */
     public static String normalize(String dn, boolean toXml) {
         //if empty string
-        if (dn == null || dn.equals("")) {
+        if (dn == null || dn.isEmpty()) {
             return "";
         }
 
