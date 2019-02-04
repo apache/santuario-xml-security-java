@@ -115,8 +115,7 @@ public class OutboundXMLSec {
 
                 configureSignatureKeys(outboundSecurityContext);
                 List<SecurePart> signatureParts = securityProperties.getSignatureSecureParts();
-                for (int j = 0; j < signatureParts.size(); j++) {
-                    SecurePart securePart = signatureParts.get(j);
+                for (SecurePart securePart : signatureParts) {
                     if (securePart.getIdToSign() == null && securePart.getName() != null) {
                         outputProcessorChain.getSecurityContext().putAsMap(
                                 XMLSecurityConstants.SIGNATURE_PARTS,
@@ -140,8 +139,7 @@ public class OutboundXMLSec {
 
                 configureEncryptionKeys(outboundSecurityContext);
                 List<SecurePart> encryptionParts = securityProperties.getEncryptionSecureParts();
-                for (int j = 0; j < encryptionParts.size(); j++) {
-                    SecurePart securePart = encryptionParts.get(j);
+                for (SecurePart securePart : encryptionParts) {
                     if (securePart.getIdToSign() == null && securePart.getName() != null) {
                         outputProcessorChain.getSecurityContext().putAsMap(
                                 XMLSecurityConstants.ENCRYPTION_PARTS,
