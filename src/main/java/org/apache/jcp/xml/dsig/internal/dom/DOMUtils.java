@@ -461,8 +461,7 @@ public final class DOMUtils {
 
     public static boolean isNamespace(Node node)
     {
-        final short nodeType = node.getNodeType();
-        if (nodeType == Node.ATTRIBUTE_NODE) {
+        if (Node.ATTRIBUTE_NODE == node.getNodeType()) {
             final String namespaceURI = node.getNamespaceURI();
             return XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI);
         }

@@ -178,7 +178,6 @@ public class XMLSignatureFactoryTest {
             assertNotNull(stuff);
         } catch (MarshalException ex) {
             fail("Unmarshal failed: " + ex.getMessage());
-            ex.printStackTrace();
         }
     }
 

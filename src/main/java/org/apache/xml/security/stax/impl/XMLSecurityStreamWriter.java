@@ -486,7 +486,7 @@ public class XMLSecurityStreamWriter implements XMLStreamWriter {
         private NamespaceContext parentNamespaceContext;
         private List<String> prefixNsList = Collections.emptyList();
 
-        private NSContext(NamespaceContext parentNamespaceContext) {
+        NSContext(NamespaceContext parentNamespaceContext) {
             this.parentNamespaceContext = parentNamespaceContext;
         }
 

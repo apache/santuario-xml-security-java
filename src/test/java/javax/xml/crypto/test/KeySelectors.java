@@ -365,7 +365,7 @@ public class KeySelectors {
         public static String dumpArray(byte[] in) {
             int numDumped = 0;
             StringBuilder buf = new StringBuilder(512);
-            buf.append("{");
+            buf.append('{');
             for (int i = 0;i < (in.length / numBytesPerRow); i++) {
                 for (int j=0; j < (numBytesPerRow); j++) {
                     buf.append("(byte)0x");
@@ -377,10 +377,10 @@ public class KeySelectors {
             while (numDumped < in.length) {
                 buf.append("(byte)0x");
                 buf.append(getHex(in[numDumped]));
-                buf.append(" ");
+                buf.append(' ');
                 numDumped += 1;
             }
-            buf.append("}");
+            buf.append('}');
             return buf.toString();
         }
     }

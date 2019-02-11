@@ -351,8 +351,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
         stringBuilder.append(wrapperElementName.getPrefix());
         stringBuilder.append(':');
         stringBuilder.append(wrapperElementName.getLocalPart());
-        stringBuilder.append(' ');
-        stringBuilder.append("xmlns:");
+        stringBuilder.append(" xmlns:");
         stringBuilder.append(wrapperElementName.getPrefix());
         stringBuilder.append("=\"");
         stringBuilder.append(wrapperElementName.getNamespaceURI());
@@ -374,13 +373,13 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                 if (prefix == null || prefix.isEmpty()) {
                     stringBuilder.append("xmlns=\"");
                     stringBuilder.append(uri);
-                    stringBuilder.append("\"");
+                    stringBuilder.append('\"');
                 } else {
                     stringBuilder.append("xmlns:");
                     stringBuilder.append(prefix);
                     stringBuilder.append("=\"");
                     stringBuilder.append(uri);
-                    stringBuilder.append("\"");
+                    stringBuilder.append('\"');
                 }
             }
         }

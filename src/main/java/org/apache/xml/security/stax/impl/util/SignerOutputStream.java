@@ -33,7 +33,7 @@ public class SignerOutputStream extends OutputStream {
     protected static final transient boolean isDebugEnabled = LOG.isDebugEnabled();
 
     private final SignatureAlgorithm signatureAlgorithm;
-    private StringBuilder stringBuilder;
+    private StringBuilder stringBuilder; //NOPMD
 
     public SignerOutputStream(SignatureAlgorithm signatureAlgorithm) {
         this.signatureAlgorithm = signatureAlgorithm;

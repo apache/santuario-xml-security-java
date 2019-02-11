@@ -54,7 +54,7 @@ public final class ClassLoaderUtils {
      */
     public static URL getResource(String resourceName, Class<?> callingClass) {
         URL url = Thread.currentThread().getContextClassLoader().getResource(resourceName);
-        if (url == null && resourceName.startsWith("/")) {
+        if (url == null && resourceName.charAt(0) == '/') {
             //certain classloaders need it without the leading /
             url =
                 Thread.currentThread().getContextClassLoader().getResource(
@@ -69,7 +69,7 @@ public final class ClassLoaderUtils {
         if (url == null) {
             url = cluClassloader.getResource(resourceName);
         }
-        if (url == null && resourceName.startsWith("/")) {
+        if (url == null && resourceName.charAt(0) == '/') {
             //certain classloaders need it without the leading /
             url = cluClassloader.getResource(resourceName.substring(1));
         }
@@ -122,7 +122,7 @@ public final class ClassLoaderUtils {
             LOG.debug(e.getMessage(), e);
             //ignore
         }
-        if (!urls.hasMoreElements() && resourceName.startsWith("/")) {
+        if (!urls.hasMoreElements() && resourceName.charAt(0) == '/') {
             //certain classloaders need it without the leading /
             try {
                 urls =
@@ -147,7 +147,7 @@ public final class ClassLoaderUtils {
                 // ignore
             }
         }
-        if (!urls.hasMoreElements() && resourceName.startsWith("/")) {
+        if (!urls.hasMoreElements() && resourceName.charAt(0) == '/') {
             //certain classloaders need it without the leading /
             try {
                 urls = cluClassloader.getResources(resourceName.substring(1));

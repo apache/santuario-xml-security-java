@@ -218,7 +218,7 @@ class XmlAttrStack {
                         tquery = bquery;
                     }
                 } else {
-                    if (rpath.startsWith("/")) {
+                    if (rpath.charAt(0) == '/') {
                         tpath = removeDotSegments(rpath);
                     } else {
                         if (bauthority != null && bpath.length() == 0) {
@@ -259,7 +259,7 @@ class XmlAttrStack {
         // If the input buffer starts with a root slash "/" then move this
         // character to the output buffer.
         if (input.charAt(0) == '/') {
-            output.append("/");
+            output.append('/');
             input = input.substring(1);
         }
 
@@ -305,7 +305,7 @@ class XmlAttrStack {
             } else if (input.startsWith("/../")) {
                 input = input.substring(3);
                 if (output.length() == 0) {
-                    output.append("/");
+                    output.append('/');
                 } else if (output.toString().endsWith("../")) {
                     output.append("..");
                 } else if (output.toString().endsWith("..")) {
@@ -326,7 +326,7 @@ class XmlAttrStack {
                 // FIXME: what is complete path segment?
                 input = input.replaceFirst("/..", "/");
                 if (output.length() == 0) {
-                    output.append("/");
+                    output.append('/');
                 } else if (output.toString().endsWith("../")) {
                     output.append("..");
                 } else if (output.toString().endsWith("..")) {
@@ -388,7 +388,7 @@ class XmlAttrStack {
         // then append a slash "/". The output buffer is returned as the result
         // of remove_dot_segments
         if (output.toString().endsWith("..")) {
-            output.append("/");
+            output.append('/');
             printStep("3 ", output.toString(), input);
         }
 

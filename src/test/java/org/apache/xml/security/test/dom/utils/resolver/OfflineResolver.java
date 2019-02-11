@@ -139,7 +139,7 @@ public class OfflineResolver extends ResourceResolverSpi {
     @Override
     public boolean engineCanResolveURI(ResourceResolverContext context) {
         String uriNodeValue = context.uriToResolve;
-        if (uriNodeValue.isEmpty() || uriNodeValue.startsWith("#")) {
+        if (uriNodeValue.isEmpty() || uriNodeValue.charAt(0) == '#') {
             return false;
         }
 

@@ -34,6 +34,9 @@ import org.w3c.dom.Node;
  */
 public class NameSpaceSymbTable {
 
+    private static final org.slf4j.Logger LOG =
+        org.slf4j.LoggerFactory.getLogger(NameSpaceSymbTable.class);
+
     private static final String XMLNS = "xmlns";
     private static final SymbMap initialMap = new SymbMap();
 
@@ -56,7 +59,11 @@ public class NameSpaceSymbTable {
     public NameSpaceSymbTable() {
         level = new ArrayList<>();
         //Insert the default binding for xmlns.
-        symb = (SymbMap) initialMap.clone();
+        try {
+            symb = (SymbMap) initialMap.clone();
+        } catch (CloneNotSupportedException e) {
+            LOG.error("Error cloning the initial map");
+        }
     }
 
     /**
@@ -128,7 +135,11 @@ public class NameSpaceSymbTable {
     final void needsClone() {
         if (!cloned) {
             level.set(level.size() - 1, symb);
-            symb = (SymbMap) symb.clone();
+            try {
+                symb = (SymbMap) symb.clone();
+            } catch (CloneNotSupportedException e) {
+                LOG.error("Error cloning the symbol map");
+            }
             cloned = true;
         }
     }
@@ -386,18 +397,14 @@ class SymbMap implements Cloneable {
         return entries[index(key)];
     }
 
-    protected Object clone()  {
-        try {
-            SymbMap copy = (SymbMap) super.clone();
-            copy.entries = new NameSpaceSymbEntry[entries.length];
-            System.arraycopy(entries, 0, copy.entries, 0, entries.length);
-            copy.keys = new String[keys.length];
-            System.arraycopy(keys, 0, copy.keys, 0, keys.length);
+    @Override
+    protected Object clone() throws CloneNotSupportedException  {
+        SymbMap copy = (SymbMap) super.clone();
+        copy.entries = new NameSpaceSymbEntry[entries.length];
+        System.arraycopy(entries, 0, copy.entries, 0, entries.length);
+        copy.keys = new String[keys.length];
+        System.arraycopy(keys, 0, copy.keys, 0, keys.length);
 
-            return copy;
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return copy;
     }
 }

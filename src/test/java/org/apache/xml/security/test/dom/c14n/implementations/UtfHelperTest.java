@@ -79,22 +79,19 @@ public class UtfHelperTest {
 
         String str = new String(newResult);
         byte[] a = UtfHelpper.getStringInUtf8(str);
-        try {
-            // System.out.println("chunk:"+j);
-            byte[] correct = str.getBytes(StandardCharsets.UTF_8);
-            assertTrue("UtfHelper.getStringInUtf8 false", Arrays.equals(correct, a));
-            assertTrue(
-                "UtfHelper.getStringInUtf8 false",
-                Arrays.equals(correct, charByCharOs.toByteArray())
-            );
-            UtfHelpper.writeStringToUtf8(str, strOs);
-            assertTrue(
-                "UtfHelper.writeStringToUtf8 false",
-                Arrays.equals(correct, strOs.toByteArray())
-            );
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+
+        // System.out.println("chunk:"+j);
+        byte[] correct = str.getBytes(StandardCharsets.UTF_8);
+        assertTrue("UtfHelper.getStringInUtf8 false", Arrays.equals(correct, a));
+        assertTrue(
+                   "UtfHelper.getStringInUtf8 false",
+                   Arrays.equals(correct, charByCharOs.toByteArray())
+        );
+        UtfHelpper.writeStringToUtf8(str, strOs);
+        assertTrue(
+                   "UtfHelper.writeStringToUtf8 false",
+                   Arrays.equals(correct, strOs.toByteArray())
+        );
     }
 
 }

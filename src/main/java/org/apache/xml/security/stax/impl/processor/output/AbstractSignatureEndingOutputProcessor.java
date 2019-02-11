@@ -288,7 +288,7 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
                 for (Iterator<String> iterator = prefixSet.iterator(); iterator.hasNext(); ) {
                     String prefix = iterator.next();
                     if (prefixes.length() != 0) {
-                        prefixes.append(" ");
+                        prefixes.append(' ');
                     }
                     prefixes.append(prefix);
                 }

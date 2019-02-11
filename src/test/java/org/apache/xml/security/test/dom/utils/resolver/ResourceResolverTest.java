@@ -59,7 +59,6 @@ public class ResourceResolverTest {
             uriAttr.setValue("http://xmldsig.pothole.com/xml-stylesheet.txt");
             res.resolve(uriAttr, null, true);
         } catch (Exception e) {
-            e.printStackTrace();
             fail(uriAttr.getValue()
                 + " should be resolvable by the OfflineResolver");
         }

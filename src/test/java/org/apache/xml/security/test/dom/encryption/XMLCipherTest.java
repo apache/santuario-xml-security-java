@@ -23,6 +23,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
@@ -39,6 +41,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESedeKeySpec;
 import javax.crypto.spec.SecretKeySpec;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.xml.security.algorithms.JCEMapper;
 import org.apache.xml.security.c14n.Canonicalizer;
@@ -58,6 +61,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -980,17 +984,9 @@ public class XMLCipherTest {
         return baos.toString(StandardCharsets.UTF_8.name());
     }
 
-    private Document document() {
-        Document d = null;
-        try {
-            File f = new File(documentName);
-            d = XMLUtils.read(new FileInputStream(f), false);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(-1);
-        }
-
-        return d;
+    private Document document() throws FileNotFoundException, ParserConfigurationException, SAXException, IOException {
+        File f = new File(documentName);
+        return XMLUtils.read(new FileInputStream(f), false);
     }
 
     private String element() {
@@ -998,16 +994,7 @@ public class XMLCipherTest {
     }
 
     private int index() {
-        int result = -1;
-
-        try {
-            result = Integer.parseInt(elementIndex);
-        } catch (NumberFormatException nfe) {
-            nfe.printStackTrace();
-            System.exit(-1);
-        }
-
-        return result;
+        return Integer.parseInt(elementIndex);
     }
 
 }

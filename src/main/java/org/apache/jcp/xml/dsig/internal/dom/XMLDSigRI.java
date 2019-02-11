@@ -67,7 +67,7 @@ public final class XMLDSigRI extends Provider {
         }
 
         ProviderService(Provider p, String type, String algo, String cn,
-            String[] aliases, HashMap<String, String> attrs) {
+            String[] aliases, Map<String, String> attrs) {
             super(p, type, algo, cn,
                   aliases == null ? null : Arrays.asList(aliases), attrs);
         }
@@ -129,7 +129,7 @@ public final class XMLDSigRI extends Provider {
         final Provider p = this;
         AccessController.doPrivileged(new PrivilegedAction<Void>() {
             public Void run() {
-                HashMap<String, String> MECH_TYPE = new HashMap<>();
+                Map<String, String> MECH_TYPE = new HashMap<>();
                 MECH_TYPE.put("MechanismType", "DOM");
 
                 putService(new ProviderService(p, "XMLSignatureFactory",

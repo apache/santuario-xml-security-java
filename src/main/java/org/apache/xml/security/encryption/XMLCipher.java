@@ -3284,7 +3284,7 @@ public class XMLCipher {
             public void setTarget(String target) {
                 if (target == null || target.length() == 0) {
                     this.target = null;
-                } else if (target.startsWith("#")) {
+                } else if (target.charAt(0) == '#') {
                     /*
                      * This is a same document URI reference. Do not parse,
                      * because it has no scheme.

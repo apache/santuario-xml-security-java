@@ -285,7 +285,7 @@ class Marshaller {
 
     private static void marshalGenericNode(XmlWriter xwriter, Node node) {
 
-        short nodeType = node.getNodeType();
+        short nodeType = node.getNodeType(); //NOPMD
         if (DOMUtils.isNamespace(node)) {
             xwriter.writeNamespace(node.getLocalName(), node.getTextContent());
         }

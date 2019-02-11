@@ -143,7 +143,7 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
                 LOG.debug("Reference " + i + " was OK");
             } else {
                 sb.append(i);
-                sb.append(" ");
+                sb.append(' ');
 
                 //JavaUtils.writeBytesToFilename(directory + "/c14n-" + i + ".apache.txt", signature.getSignedInfo().item(i).getContentsAfterTransformation().getBytes());
                 //JavaUtils.writeBytesToFilename(directory + "/c14n-" + i + ".apache.html", signature.getSignedInfo().item(i).getHTMLRepresentation().getBytes());

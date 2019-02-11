@@ -118,7 +118,7 @@ public final class DOMExcC14NMethod extends ApacheCanonicalizer {
         for (int i = 0, size = prefixList.size(); i < size; i++) {
             prefixListAttr.append(prefixList.get(i));
             if (i < size - 1) {
-                prefixListAttr.append(" ");
+                prefixListAttr.append(' ');
             }
         }
         xwriter.writeAttribute("", "", "PrefixList", prefixListAttr.toString());
