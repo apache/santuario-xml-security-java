@@ -20,13 +20,11 @@ package org.apache.xml.security.test.dom.c14n.implementations;
 
 
 import java.io.ByteArrayOutputStream;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 
 import org.apache.xml.security.c14n.implementations.UtfHelpper;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertArrayEquals;
 
 public class UtfHelperTest {
 
@@ -35,8 +33,7 @@ public class UtfHelperTest {
         String s = "\u00e4\u00f6\u00fc";
         byte[] a = UtfHelpper.getStringInUtf8(s);
         byte[] correct = s.getBytes(StandardCharsets.UTF_8);
-        boolean equals = Arrays.equals(correct, a);
-        assertTrue(equals);
+        assertArrayEquals(correct, a);
     }
 
     @org.junit.Test
@@ -82,15 +79,15 @@ public class UtfHelperTest {
 
         // System.out.println("chunk:"+j);
         byte[] correct = str.getBytes(StandardCharsets.UTF_8);
-        assertTrue("UtfHelper.getStringInUtf8 false", Arrays.equals(correct, a));
-        assertTrue(
+        assertArrayEquals("UtfHelper.getStringInUtf8 false", correct, a);
+        assertArrayEquals(
                    "UtfHelper.getStringInUtf8 false",
-                   Arrays.equals(correct, charByCharOs.toByteArray())
+                   correct, charByCharOs.toByteArray()
         );
         UtfHelpper.writeStringToUtf8(str, strOs);
-        assertTrue(
+        assertArrayEquals(
                    "UtfHelper.writeStringToUtf8 false",
-                   Arrays.equals(correct, strOs.toByteArray())
+                   correct, strOs.toByteArray()
         );
     }
 

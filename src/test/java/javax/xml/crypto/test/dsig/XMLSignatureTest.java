@@ -38,6 +38,7 @@ import javax.crypto.spec.SecretKeySpec;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.*;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -136,7 +137,7 @@ public class XMLSignatureTest {
         sig = fac.newXMLSignature(defSi, defKi, objs, id, sigValueId);
         assertEquals(sig.getId(), id);
         assertEquals(sig.getKeyInfo(), defKi);
-        assertTrue(Arrays.equals(sig.getObjects().toArray(), objs.toArray()));
+        assertArrayEquals(sig.getObjects().toArray(), objs.toArray());
         assertNull(sig.getSignatureValue().getValue());
         assertEquals(sig.getSignatureValue().getId(), sigValueId);
         assertEquals(sig.getSignedInfo(), defSi);

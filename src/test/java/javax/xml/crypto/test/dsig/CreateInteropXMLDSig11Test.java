@@ -35,6 +35,7 @@ import org.w3c.dom.*;
 
 import javax.xml.crypto.test.KeySelectors;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 
@@ -315,7 +316,7 @@ public class CreateInteropXMLDSig11Test {
         (ks, doc.getDocumentElement());
         XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
 
-        assertTrue(sig.equals(sig2));
+        assertEquals(sig, sig2);
         assertTrue(sig2.validate(dvc));
     }
 

@@ -35,7 +35,7 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Unit test for {@link org.apache.xml.security.transforms.implementations.TransformBase64Decode}
@@ -69,9 +69,7 @@ public class TransformBase64DecodeTest {
         XMLSignatureInput out = t.performTransforms(in);
         String result = new String(out.getBytes());
 
-        assertTrue(
-            result.equals("The URI of the transform is http://www.w3.org/2000/09/xmldsig#base64")
-        );
+        assertEquals(result, "The URI of the transform is http://www.w3.org/2000/09/xmldsig#base64");
     }
 
     @org.junit.Test
@@ -93,9 +91,7 @@ public class TransformBase64DecodeTest {
         XMLSignatureInput out = t.performTransforms(t.performTransforms(in));
         String result = new String(out.getBytes());
 
-        assertTrue(
-            result.equals("The URI of the transform is http://www.w3.org/2000/09/xmldsig#base64")
-        );
+        assertEquals(result, "The URI of the transform is http://www.w3.org/2000/09/xmldsig#base64");
     }
 
     @org.junit.Test
@@ -135,9 +131,9 @@ public class TransformBase64DecodeTest {
         XMLSignatureInput out = t.performTransforms(xmlinput);
         String result = new String(out.getBytes());
 
-        assertTrue(
+        assertEquals(
             "\"" + result + "\"",
-            result.equals("The URI of the transform is http://www.w3.org/2000/09/xmldsig#base64")
+            result, "The URI of the transform is http://www.w3.org/2000/09/xmldsig#base64"
         );
     }
 

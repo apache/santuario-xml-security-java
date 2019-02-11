@@ -23,11 +23,11 @@ package javax.xml.crypto.test.dsig.keyinfo;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import javax.xml.crypto.*;
 import javax.xml.crypto.dsig.keyinfo.*;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -109,16 +109,16 @@ public class PGPDataTest {
     public void testConstructor() {
         // test newPGPKeyData(byte[])
         PGPData pd = fac.newPGPData(values[0]);
-        assertTrue(Arrays.equals(values[0], pd.getKeyId()));
+        assertArrayEquals(values[0], pd.getKeyId());
 
         // test newPGPData(byte[], byte[], List)
         pd = fac.newPGPData(values[0], values[1], null);
-        assertTrue(Arrays.equals(values[0], pd.getKeyId()));
-        assertTrue(Arrays.equals(values[1], pd.getKeyPacket()));
+        assertArrayEquals(values[0], pd.getKeyId());
+        assertArrayEquals(values[1], pd.getKeyPacket());
 
         // test newPGPData(byte[], List)
         pd = fac.newPGPData(values[1], null);
-        assertTrue(Arrays.equals(values[1], pd.getKeyPacket()));
+        assertArrayEquals(values[1], pd.getKeyPacket());
     }
 
     @org.junit.Test

@@ -632,7 +632,7 @@ public class XMLEncryption11Test {
     private void checkDecryptedDoc(Document d, boolean doNodeCheck) throws Exception {
 
         String cc = retrieveCCNumber(d);
-        assertTrue(cardNumber.equals(cc));
+        assertEquals(cardNumber, cc);
 
         // Test cc numbers
         if (doNodeCheck) {

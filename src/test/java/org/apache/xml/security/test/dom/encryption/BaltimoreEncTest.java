@@ -599,7 +599,7 @@ public class BaltimoreEncTest {
 
         String cc = retrieveCCNumber(d);
         LOG.debug("Retrieved Credit Card : " + cc);
-        assertTrue(cardNumber.equals(cc));
+        assertEquals(cardNumber, cc);
 
         // Test cc numbers
         if (doNodeCheck) {

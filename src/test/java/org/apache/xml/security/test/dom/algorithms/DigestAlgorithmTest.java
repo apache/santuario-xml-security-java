@@ -23,12 +23,12 @@ import java.lang.reflect.Constructor;
 import java.security.MessageDigest;
 import java.security.Provider;
 import java.security.Security;
-import java.util.Arrays;
 
 import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -86,7 +86,7 @@ public class DigestAlgorithmTest {
         // Now compare against a JDK MessageDigest Object
         MessageDigest md = MessageDigest.getInstance("SHA-1");
         byte[] digest2 = md.digest("test-string".getBytes());
-        assertTrue(Arrays.equals(digest, digest2));
+        assertArrayEquals(digest, digest2);
     }
 
     @org.junit.Test
@@ -104,7 +104,7 @@ public class DigestAlgorithmTest {
         // Now compare against a JDK MessageDigest Object
         MessageDigest md = MessageDigest.getInstance("SHA-224");
         byte[] digest2 = md.digest("test-string".getBytes());
-        assertTrue(Arrays.equals(digest, digest2));
+        assertArrayEquals(digest, digest2);
     }
 
     @org.junit.Test
@@ -122,7 +122,7 @@ public class DigestAlgorithmTest {
         // Now compare against a JDK MessageDigest Object
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         byte[] digest2 = md.digest("test-string".getBytes());
-        assertTrue(Arrays.equals(digest, digest2));
+        assertArrayEquals(digest, digest2);
     }
 
     @org.junit.Test
@@ -140,7 +140,7 @@ public class DigestAlgorithmTest {
         // Now compare against a JDK MessageDigest Object
         MessageDigest md = MessageDigest.getInstance("SHA-384");
         byte[] digest2 = md.digest("test-string".getBytes());
-        assertTrue(Arrays.equals(digest, digest2));
+        assertArrayEquals(digest, digest2);
     }
 
     @org.junit.Test
@@ -158,7 +158,7 @@ public class DigestAlgorithmTest {
         // Now compare against a JDK MessageDigest Object
         MessageDigest md = MessageDigest.getInstance("SHA-512");
         byte[] digest2 = md.digest("test-string".getBytes());
-        assertTrue(Arrays.equals(digest, digest2));
+        assertArrayEquals(digest, digest2);
     }
 
     @org.junit.Test
@@ -176,7 +176,7 @@ public class DigestAlgorithmTest {
         // Now compare against a JDK MessageDigest Object
         MessageDigest md = MessageDigest.getInstance("MD5");
         byte[] digest2 = md.digest("test-string".getBytes());
-        assertTrue(Arrays.equals(digest, digest2));
+        assertArrayEquals(digest, digest2);
     }
 
     @org.junit.Test
@@ -195,7 +195,7 @@ public class DigestAlgorithmTest {
         // Now compare against a JDK MessageDigest Object
         MessageDigest md = MessageDigest.getInstance("RIPEMD160");
         byte[] digest2 = md.digest("test-string".getBytes());
-        assertTrue(Arrays.equals(digest, digest2));
+        assertArrayEquals(digest, digest2);
     }
 
     @org.junit.Test
@@ -214,7 +214,7 @@ public class DigestAlgorithmTest {
         // Now compare against a JDK MessageDigest Object
         MessageDigest md = MessageDigest.getInstance("WHIRLPOOL");
         byte[] digest2 = md.digest("test-string".getBytes());
-        assertTrue(Arrays.equals(digest, digest2));
+        assertArrayEquals(digest, digest2);
     }
 
     @org.junit.Test
@@ -233,7 +233,7 @@ public class DigestAlgorithmTest {
         // Now compare against a JDK MessageDigest Object
         MessageDigest md = MessageDigest.getInstance("SHA3-224");
         byte[] digest2 = md.digest("test-string".getBytes());
-        assertTrue(Arrays.equals(digest, digest2));
+        assertArrayEquals(digest, digest2);
     }
 
     @org.junit.Test
@@ -252,7 +252,7 @@ public class DigestAlgorithmTest {
         // Now compare against a JDK MessageDigest Object
         MessageDigest md = MessageDigest.getInstance("SHA3-256");
         byte[] digest2 = md.digest("test-string".getBytes());
-        assertTrue(Arrays.equals(digest, digest2));
+        assertArrayEquals(digest, digest2);
     }
 
     @org.junit.Test
@@ -271,7 +271,7 @@ public class DigestAlgorithmTest {
         // Now compare against a JDK MessageDigest Object
         MessageDigest md = MessageDigest.getInstance("SHA3-384");
         byte[] digest2 = md.digest("test-string".getBytes());
-        assertTrue(Arrays.equals(digest, digest2));
+        assertArrayEquals(digest, digest2);
     }
 
     @org.junit.Test
@@ -290,7 +290,7 @@ public class DigestAlgorithmTest {
         // Now compare against a JDK MessageDigest Object
         MessageDigest md = MessageDigest.getInstance("SHA3-512");
         byte[] digest2 = md.digest("test-string".getBytes());
-        assertTrue(Arrays.equals(digest, digest2));
+        assertArrayEquals(digest, digest2);
     }
 
 }

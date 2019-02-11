@@ -36,6 +36,7 @@ import org.w3c.dom.*;
 
 import javax.xml.crypto.test.KeySelectors;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -119,7 +120,7 @@ public class CreatePhaosXMLDSig3Test {
 
         XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
 
-        assertTrue(sig.equals(sig2));
+        assertEquals(sig, sig2);
 
         assertTrue(sig2.validate(dvc));
     }
@@ -175,7 +176,7 @@ public class CreatePhaosXMLDSig3Test {
 
         XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
 
-        assertTrue(sig.equals(sig2));
+        assertEquals(sig, sig2);
 
         assertTrue(sig2.validate(dvc));
     }

@@ -25,6 +25,7 @@ package javax.xml.crypto.test.dsig;
 import java.util.*;
 import javax.xml.crypto.dsig.*;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -97,7 +98,7 @@ public class SignaturePropertiesTest {
             unmodifiable.add(prop);
             fail("Should return an unmodifiable List object");
         } catch (UnsupportedOperationException uoe) {}
-        assertTrue(Arrays.equals(unmodifiable.toArray(), list.toArray()));
+        assertArrayEquals(unmodifiable.toArray(), list.toArray());
         assertNotNull(props);
         assertEquals(props.getId(), id);
     }

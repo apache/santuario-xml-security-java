@@ -22,6 +22,7 @@ package org.apache.xml.security.test.dom.version;
 import java.security.Provider;
 import java.security.Security;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -37,13 +38,13 @@ public class VersionTest {
     @org.junit.Test
     public void testConvertVersion() throws Exception {
         String version = convertVersion("1.4.4");
-        assertTrue("1.44".equals(version));
+        assertEquals("1.44", version);
 
         version = convertVersion("1.4.4-SNAPSHOT");
-        assertTrue("1.44".equals(version));
+        assertEquals("1.44", version);
 
         version = convertVersion("1.4");
-        assertTrue("1.4".equals(version));
+        assertEquals("1.4", version);
     }
 
     @org.junit.Test

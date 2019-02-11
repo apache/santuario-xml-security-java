@@ -41,7 +41,6 @@
      <exclude name="OneDeclarationPerLine" />
      <exclude name="PreserveStackTrace" />
      <exclude name="UseAssertSameInsteadOfAssertTrue" />
-     <exclude name="UseAssertEqualsInsteadOfAssertTrue" />
      <exclude name="UseVarargs" />
 
      <!-- To fix -->

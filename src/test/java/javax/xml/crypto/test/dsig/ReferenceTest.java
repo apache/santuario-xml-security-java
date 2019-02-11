@@ -35,6 +35,7 @@ import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 import javax.xml.crypto.dsig.spec.TransformParameterSpec;
 import org.w3c.dom.Document;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -136,8 +137,8 @@ public class ReferenceTest {
             // try empty transforms list
             ref = fac.newReference(uri, dmSHA1, transforms,
                                    type, id);
-            assertTrue(Arrays.equals(transforms.toArray(),
-                                     ref.getTransforms().toArray()));
+            assertArrayEquals(transforms.toArray(),
+                                     ref.getTransforms().toArray());
         } catch(Exception ex) {
             fail("Unexpected Exception: " + ex);
         }
@@ -176,8 +177,8 @@ public class ReferenceTest {
         try {
             // try a transforms list with a Transform object
             ref = fac.newReference(uri, dmSHA1, transforms, type, id);
-            assertTrue(Arrays.equals(transforms.toArray(),
-                                     ref.getTransforms().toArray()));
+            assertArrayEquals(transforms.toArray(),
+                                     ref.getTransforms().toArray());
         } catch (Exception ex) {
             fail("Unexpected Exception: " + ex);
         }
@@ -271,7 +272,7 @@ public class ReferenceTest {
                     }
                     byte[] dv = validated_ref.getDigestValue();
                     byte[] cdv = validated_ref.getCalculatedDigestValue();
-                    assertTrue(Arrays.equals(dv, cdv));
+                    assertArrayEquals(dv, cdv);
                     boolean valid = validated_ref.validate(validateContext);
                     assertTrue(valid);
                 }

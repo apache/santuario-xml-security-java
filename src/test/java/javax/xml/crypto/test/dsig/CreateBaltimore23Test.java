@@ -55,6 +55,7 @@ import org.apache.xml.security.utils.XMLUtils;
 
 import javax.xml.crypto.test.KeySelectors;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -95,10 +96,11 @@ public class CreateBaltimore23Test {
         String fs = System.getProperty("file.separator");
         String base = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
 
-        FileInputStream fis = new FileInputStream
-            (base + fs + "src/test/resources" + fs + "test.jks");
-        ks = KeyStore.getInstance("JKS");
-        ks.load(fis, "changeit".toCharArray());
+        try (FileInputStream fis = new FileInputStream
+            (base + fs + "src/test/resources" + fs + "test.jks")) {
+            ks = KeyStore.getInstance("JKS");
+            ks.load(fis, "changeit".toCharArray());
+        }
         signingKey = ks.getKey("mullan", "changeit".toCharArray());
         signingCert = ks.getCertificate("mullan");
         validatingKey = signingCert.getPublicKey();
@@ -151,7 +153,7 @@ public class CreateBaltimore23Test {
             (kvks, envelope.getFirstChild());
         XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
 
-        assertTrue(sig.equals(sig2));
+        assertEquals(sig, sig2);
 
         assertTrue(sig2.validate(dvc));
     }
@@ -627,7 +629,7 @@ public class CreateBaltimore23Test {
 
         XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
 
-        assertTrue(sig.equals(sig2));
+        assertEquals(sig, sig2);
         assertTrue(sig2.validate(dvc));
     }
 
@@ -690,7 +692,7 @@ public class CreateBaltimore23Test {
 
         XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
 
-        assertTrue(sig.equals(sig2));
+        assertEquals(sig, sig2);
         assertTrue(sig2.validate(dvc));
     }
 
@@ -731,7 +733,7 @@ public class CreateBaltimore23Test {
             (ks, doc.getDocumentElement());
         XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
 
-        assertTrue(sig.equals(sig2));
+        assertEquals(sig, sig2);
         assertTrue(sig2.validate(dvc));
     }
 

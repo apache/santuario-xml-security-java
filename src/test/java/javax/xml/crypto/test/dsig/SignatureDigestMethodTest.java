@@ -44,6 +44,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 
@@ -205,7 +206,7 @@ public class SignatureDigestMethodTest {
         (ks, doc.getDocumentElement());
         XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
 
-        assertTrue(sig.equals(sig2));
+        assertEquals(sig, sig2);
         assertTrue(sig2.validate(dvc));
     }
 

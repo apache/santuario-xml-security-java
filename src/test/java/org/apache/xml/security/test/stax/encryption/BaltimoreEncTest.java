@@ -55,6 +55,7 @@ import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 
@@ -431,7 +432,7 @@ public class BaltimoreEncTest {
     private void checkDecryptedDoc(Document d, boolean doNodeCheck) throws Exception {
 
         String cc = retrieveCCNumber(d);
-        assertTrue(cardNumber.equals(cc));
+        assertEquals(cardNumber, cc);
 
         // Test cc numbers
         if (doNodeCheck) {

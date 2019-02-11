@@ -52,6 +52,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 
@@ -634,7 +635,7 @@ public class XMLEncryption11Test {
         X509Data certData = kiek.itemX509Data(0);
         XMLX509Certificate xcert = certData.itemCertificate(0);
         X509Certificate cert = xcert.getX509Certificate();
-        assertTrue(rsaCert.equals(cert));
+        assertEquals(rsaCert, cert);
 
         XMLCipher cipher2 = XMLCipher.getInstance();
         cipher2.init(XMLCipher.UNWRAP_MODE, rsaKey);
@@ -800,7 +801,7 @@ public class XMLEncryption11Test {
 
         String cc = retrieveCCNumber(d);
         LOG.debug("Retrieved Credit Card : " + cc);
-        assertTrue(cardNumber.equals(cc));
+        assertEquals(cardNumber, cc);
 
         // Test cc numbers
         if (doNodeCheck) {

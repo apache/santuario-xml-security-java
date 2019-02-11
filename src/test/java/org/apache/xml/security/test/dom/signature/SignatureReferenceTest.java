@@ -101,7 +101,7 @@ public class SignatureReferenceTest {
         Element referenceElement =
             (Element)((ReferenceNodeSetData)referenceData).iterator().next();
         assertNotNull(referenceElement);
-        assertTrue("root".equals(referenceElement.getLocalName()));
+        assertEquals("root", referenceElement.getLocalName());
 
         Element originalElement =
             (Element) doc.getElementsByTagNameNS("http://ns.example.org/", "root").item(0);

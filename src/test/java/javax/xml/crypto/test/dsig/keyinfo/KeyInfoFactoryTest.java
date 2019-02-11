@@ -29,6 +29,7 @@ import java.security.PublicKey;
 import javax.xml.crypto.dsig.keyinfo.*;
 import javax.xml.crypto.*;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -147,7 +148,7 @@ public class KeyInfoFactoryTest {
 
         // test newPGPData(byte[])
         PGPData pd = factory.newPGPData(valid_id);
-        assertTrue(Arrays.equals(valid_id, pd.getKeyId()));
+        assertArrayEquals(valid_id, pd.getKeyId());
         try {
             pd = factory.newPGPData(invalid_id);
             fail("Should throw IAE for invalid key id values");
@@ -155,8 +156,8 @@ public class KeyInfoFactoryTest {
 
         // test newPGPData(byte[], byte[], List)
         pd = factory.newPGPData(valid_id, valid_packet, null);
-        assertTrue(Arrays.equals(valid_id, pd.getKeyId()));
-        assertTrue(Arrays.equals(valid_packet, pd.getKeyPacket()));
+        assertArrayEquals(valid_id, pd.getKeyId());
+        assertArrayEquals(valid_packet, pd.getKeyPacket());
         try {
             pd = factory.newPGPData(invalid_id, valid_packet, null);
             fail("Should throw IAE for invalid key id values");
@@ -172,7 +173,7 @@ public class KeyInfoFactoryTest {
 
         // test newPGPData(byte[], List)
         pd = factory.newPGPData(valid_packet, null);
-        assertTrue(Arrays.equals(valid_packet, pd.getKeyPacket()));
+        assertArrayEquals(valid_packet, pd.getKeyPacket());
         try {
             pd = factory.newPGPData(invalid_packet, null);
             fail("Should throw IAE for invalid key packet values");

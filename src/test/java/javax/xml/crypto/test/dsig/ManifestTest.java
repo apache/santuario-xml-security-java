@@ -25,6 +25,7 @@ package javax.xml.crypto.test.dsig;
 import java.util.*;
 import javax.xml.crypto.dsig.*;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -75,7 +76,7 @@ public class ManifestTest {
                 break;
             }
             assertNotNull(man);
-            assertTrue(Arrays.equals(man.getReferences().toArray(), refs.toArray()));
+            assertArrayEquals(man.getReferences().toArray(), refs.toArray());
             assertEquals(man.getId(), expectedId);
         }
 

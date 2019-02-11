@@ -26,6 +26,7 @@ import java.util.*;
 import javax.xml.crypto.XMLStructure;
 import javax.xml.crypto.dsig.*;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -78,7 +79,7 @@ public class XMLObjectTest {
         obj = factory.newXMLObject(list, id, mimeType, encoding);
         assertNotNull(obj);
         assertNotNull(obj.getContent());
-        assertTrue(Arrays.equals(obj.getContent().toArray(), list.toArray()));
+        assertArrayEquals(obj.getContent().toArray(), list.toArray());
         assertEquals(obj.getId(), id);
         assertEquals(obj.getMimeType(), mimeType);
         assertEquals(obj.getEncoding(), encoding);
@@ -89,7 +90,7 @@ public class XMLObjectTest {
             unmodifiable.add(new TestUtils.MyOwnXMLStructure());
             fail("Should return an unmodifiable List object");
         } catch (UnsupportedOperationException uoe) {}
-        assertTrue(Arrays.equals(unmodifiable.toArray(), list.toArray()));
+        assertArrayEquals(unmodifiable.toArray(), list.toArray());
     }
 
     @org.junit.Test

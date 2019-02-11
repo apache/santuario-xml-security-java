@@ -29,6 +29,7 @@ import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Element;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -63,7 +64,7 @@ public class ForbiddenAlgorithmTest extends InteropTestBase {
         } catch (XMLSignatureException ex) {
             String error = "It is forbidden to use algorithm http://www.w3.org/2001/04/xmldsig-more#md5 "
                 + "when secure validation is enabled";
-            assertTrue(ex.getMessage().equals(error));
+            assertEquals(ex.getMessage(), error);
         }
     }
 

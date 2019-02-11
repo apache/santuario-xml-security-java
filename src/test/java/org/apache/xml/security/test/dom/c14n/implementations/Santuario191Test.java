@@ -29,7 +29,7 @@ import org.w3c.dom.NodeList;
 import org.apache.xml.security.c14n.implementations.Canonicalizer11_OmitComments;
 import org.apache.xml.security.utils.XMLUtils;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 /**
  * This is a test for Santuario-191:
@@ -80,7 +80,7 @@ public class Santuario191Test {
         //
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         out.write(result);
-        assertTrue(EXPECTED_RESULT.equals(out.toString(StandardCharsets.UTF_8.name())));
+        assertEquals(EXPECTED_RESULT, out.toString(StandardCharsets.UTF_8.name()));
     }
 
 }

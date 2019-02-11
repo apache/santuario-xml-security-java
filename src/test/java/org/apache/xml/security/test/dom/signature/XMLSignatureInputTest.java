@@ -28,6 +28,7 @@ import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.InvalidCanonicalizerException;
 import org.apache.xml.security.signature.XMLSignatureInput;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -106,7 +107,7 @@ public class XMLSignatureInputTest {
         byte[] resBytes = baos.toByteArray();
         String resString = new String(resBytes, java.nio.charset.StandardCharsets.UTF_8);
 
-        assertTrue(resString.equals(_octetStreamTextInput));
+        assertEquals(resString, _octetStreamTextInput);
     }
 
     @org.junit.Test
