@@ -30,6 +30,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -104,7 +105,7 @@ public class ReferenceListTest {
         ref = iter.next();
         assertEquals(EncryptionConstants._TAG_DATAREFERENCE, ref.getType());
         assertEquals("#id2", ref.getURI());
-        assertTrue(!iter.hasNext());
+        assertFalse(iter.hasNext());
 
         iter = keyRefList.getReferences();
         ref = iter.next();
@@ -113,6 +114,6 @@ public class ReferenceListTest {
         ref = iter.next();
         assertEquals(EncryptionConstants._TAG_KEYREFERENCE, ref.getType());
         assertEquals("#id20", ref.getURI());
-        assertTrue(!iter.hasNext());
+        assertFalse(iter.hasNext());
     }
 }

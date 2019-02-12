@@ -26,6 +26,7 @@ import java.math.BigInteger;
 import javax.xml.crypto.dsig.keyinfo.*;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -92,6 +93,6 @@ public class X509IssuerSerialTest {
             fail("Should raise a NPE for null feature");
         } catch (NullPointerException npe) {}
 
-        assertTrue(!x509is.isFeatureSupported("not supported"));
+        assertFalse(x509is.isFeatureSupported("not supported"));
     }
 }

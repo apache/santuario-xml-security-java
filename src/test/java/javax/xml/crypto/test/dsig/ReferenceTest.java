@@ -37,6 +37,7 @@ import org.w3c.dom.Document;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -192,7 +193,7 @@ public class ReferenceTest {
             fail("Should raise a NPE for null feature");
         } catch (NullPointerException npe) {}
 
-        assertTrue(!ref.isFeatureSupported("not supported"));
+        assertFalse(ref.isFeatureSupported("not supported"));
     }
 
     @org.junit.Test

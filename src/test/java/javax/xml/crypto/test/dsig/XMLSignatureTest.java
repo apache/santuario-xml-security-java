@@ -40,6 +40,7 @@ import org.w3c.dom.*;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -161,7 +162,7 @@ public class XMLSignatureTest {
             fail("Should raise a NPE for null feature");
         } catch (NullPointerException npe) {}
 
-        assertTrue(!sig.isFeatureSupported("not supported"));
+        assertFalse(sig.isFeatureSupported("not supported"));
     }
 
     @org.junit.Test

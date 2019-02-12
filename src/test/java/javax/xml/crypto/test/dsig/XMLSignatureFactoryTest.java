@@ -38,6 +38,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -107,7 +108,7 @@ public class XMLSignatureFactoryTest {
             fail("Should raise a NPE for null feature");
         } catch (NullPointerException npe) {}
 
-        assertTrue(!factory.isFeatureSupported("not supported"));
+        assertFalse(factory.isFeatureSupported("not supported"));
     }
 
     @org.junit.Test

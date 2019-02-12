@@ -29,6 +29,7 @@ import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 import javax.xml.crypto.dsig.spec.ExcC14NParameterSpec;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -75,7 +76,7 @@ public class CanonicalizationMethodTest {
                 fail("Should raise a NPE for null feature");
             } catch (NullPointerException npe) {}
 
-            assertTrue(!cm.isFeatureSupported("not supported"));
+            assertFalse(cm.isFeatureSupported("not supported"));
         }
     }
 

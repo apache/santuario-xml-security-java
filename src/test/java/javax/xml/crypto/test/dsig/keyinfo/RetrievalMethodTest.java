@@ -25,6 +25,7 @@ package javax.xml.crypto.test.dsig.keyinfo;
 import javax.xml.crypto.dsig.keyinfo.*;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -105,7 +106,7 @@ public class RetrievalMethodTest {
                 fail("Should raise a NPE for null feature");
             } catch (NullPointerException npe) {}
 
-            assertTrue(!rm.isFeatureSupported("not supported"));
+            assertFalse(rm.isFeatureSupported("not supported"));
         }
     }
 }

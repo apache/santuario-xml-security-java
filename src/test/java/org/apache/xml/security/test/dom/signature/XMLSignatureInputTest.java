@@ -29,6 +29,7 @@ import org.apache.xml.security.c14n.InvalidCanonicalizerException;
 import org.apache.xml.security.signature.XMLSignatureInput;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -136,7 +137,7 @@ public class XMLSignatureInputTest {
             new ByteArrayInputStream(_octetStreamTextInput.getBytes())) {
             XMLSignatureInput input = new XMLSignatureInput(inputStream);
 
-            assertTrue("Input is not node set", !input.isNodeSet());
+            assertFalse("Input is not node set", input.isNodeSet());
         }
     }
 

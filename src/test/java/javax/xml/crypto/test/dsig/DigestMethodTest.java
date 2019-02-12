@@ -27,6 +27,7 @@ import javax.xml.crypto.dsig.*;
 import java.security.*;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -59,7 +60,7 @@ public class DigestMethodTest {
                 dm.isFeatureSupported(null);
                 fail("Should raise a NPE for null feature");
             } catch (NullPointerException npe) {}
-            assertTrue(!dm.isFeatureSupported("not supported"));
+            assertFalse(dm.isFeatureSupported("not supported"));
         }
     }
 

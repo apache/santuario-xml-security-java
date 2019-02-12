@@ -27,6 +27,7 @@ import javax.xml.crypto.dsig.*;
 import java.security.*;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -62,7 +63,7 @@ public class SignatureMethodTest {
                 fail("Should raise a NPE for null feature");
             } catch (NullPointerException npe) {}
 
-            assertTrue(!sm.isFeatureSupported("not supported"));
+            assertFalse(sm.isFeatureSupported("not supported"));
         }
     }
 

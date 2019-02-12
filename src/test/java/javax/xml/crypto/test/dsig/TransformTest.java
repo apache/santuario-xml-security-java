@@ -34,6 +34,7 @@ import javax.xml.crypto.dsig.spec.XSLTTransformParameterSpec;
 import java.security.*;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -87,7 +88,7 @@ public class TransformTest {
                      ": Should raise a NPE for null feature");
             } catch (NullPointerException npe) {}
 
-            assertTrue(!tm.isFeatureSupported("not supported"));
+            assertFalse(tm.isFeatureSupported("not supported"));
         }
     }
 

@@ -28,6 +28,7 @@ import javax.xml.crypto.dsig.*;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -103,7 +104,7 @@ public class XMLObjectTest {
             fail("Should raise a NPE for null feature");
         } catch (NullPointerException npe) {}
 
-        assertTrue(!obj.isFeatureSupported("not supported"));
+        assertFalse(obj.isFeatureSupported("not supported"));
     }
 
     @SuppressWarnings({

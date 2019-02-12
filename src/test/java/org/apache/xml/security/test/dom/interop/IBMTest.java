@@ -25,6 +25,7 @@ import org.apache.xml.security.test.dom.utils.resolver.OfflineResolver;
 import org.apache.xml.security.utils.JavaUtils;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 
@@ -309,7 +310,7 @@ public class IBMTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename + ", had to be broken but was successful");
         }
 
-        assertTrue(filename, !verify);
+        assertFalse(filename, verify);
     }
 
     /**

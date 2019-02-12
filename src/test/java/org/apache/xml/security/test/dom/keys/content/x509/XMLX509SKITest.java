@@ -31,6 +31,7 @@ import java.util.Collections;
 
 import org.apache.xml.security.keys.content.x509.XMLX509SKI;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -78,6 +79,6 @@ public class XMLX509SKITest {
             new CollectionCertStoreParameters(Collections.singleton(cert)));
 
         Collection<?> certs = cs.getCertificates(xcs);
-        assertTrue(!certs.isEmpty());
+        assertFalse(certs.isEmpty());
     }
 }

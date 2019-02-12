@@ -29,6 +29,7 @@ import java.security.cert.X509CRL;
 import javax.xml.crypto.*;
 import javax.xml.crypto.dsig.keyinfo.*;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -82,6 +83,6 @@ public class X509DataTest {
             fail("Should raise a NPE for null feature");
         } catch (NullPointerException npe) {}
 
-        assertTrue(!x509.isFeatureSupported("not supported"));
+        assertFalse(x509.isFeatureSupported("not supported"));
     }
 }

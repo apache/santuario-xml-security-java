@@ -26,6 +26,7 @@ import java.security.*;
 import javax.xml.crypto.dsig.keyinfo.*;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -86,7 +87,7 @@ public class KeyValueTest {
             fail("Should raise a NPE for null feature");
         } catch (NullPointerException npe) {}
 
-        assertTrue(!kv.isFeatureSupported("not supported"));
+        assertFalse(kv.isFeatureSupported("not supported"));
     }
 
     private PublicKey genPublicKey(String algo, int keysize) throws Exception {
