@@ -18,21 +18,38 @@
  */
 package org.apache.xml.security.stax.impl.transformer.canonicalizer;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.WeakHashMap;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+
 import org.apache.xml.security.c14n.implementations.UtfHelpper;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.ext.Transformer;
 import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.stax.ext.XMLSecurityUtils;
-import org.apache.xml.security.stax.ext.stax.*;
+import org.apache.xml.security.stax.ext.stax.XMLSecAttribute;
+import org.apache.xml.security.stax.ext.stax.XMLSecComment;
+import org.apache.xml.security.stax.ext.stax.XMLSecEndElement;
+import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
+import org.apache.xml.security.stax.ext.stax.XMLSecEventFactory;
+import org.apache.xml.security.stax.ext.stax.XMLSecNamespace;
+import org.apache.xml.security.stax.ext.stax.XMLSecProcessingInstruction;
+import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
 import org.apache.xml.security.stax.impl.processor.input.XMLEventReaderInputProcessor;
 import org.apache.xml.security.stax.impl.transformer.TransformIdentity;
 import org.apache.xml.security.utils.UnsyncByteArrayInputStream;
 import org.apache.xml.security.utils.UnsyncByteArrayOutputStream;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.*;
-import java.io.*;
-import java.util.*;
 
 /**
  */

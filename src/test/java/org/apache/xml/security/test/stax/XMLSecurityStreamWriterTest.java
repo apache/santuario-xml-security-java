@@ -18,27 +18,35 @@
  */
 package org.apache.xml.security.test.stax;
 
-import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.stax.config.Init;
-import org.apache.xml.security.stax.impl.OutboundSecurityContextImpl;
-import org.junit.Before;
-import org.junit.Test;
-
-import org.custommonkey.xmlunit.XMLAssert;
-import org.apache.xml.security.stax.ext.*;
-import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
-import org.apache.xml.security.stax.impl.OutputProcessorChainImpl;
-import org.apache.xml.security.stax.impl.XMLSecurityStreamWriter;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.nio.charset.StandardCharsets;
-import java.util.*;
+
+import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.stax.config.Init;
+import org.apache.xml.security.stax.ext.OutputProcessor;
+import org.apache.xml.security.stax.ext.OutputProcessorChain;
+import org.apache.xml.security.stax.ext.XMLSecurityConstants;
+import org.apache.xml.security.stax.ext.XMLSecurityProperties;
+import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
+import org.apache.xml.security.stax.impl.OutboundSecurityContextImpl;
+import org.apache.xml.security.stax.impl.OutputProcessorChainImpl;
+import org.apache.xml.security.stax.impl.XMLSecurityStreamWriter;
+
+import org.custommonkey.xmlunit.XMLAssert;
+import org.junit.Before;
+import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 

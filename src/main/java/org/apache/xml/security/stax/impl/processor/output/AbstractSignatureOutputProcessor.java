@@ -18,30 +18,43 @@
  */
 package org.apache.xml.security.stax.impl.processor.output;
 
-import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer20010315_Excl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.stax.config.JCEAlgorithmMapper;
-import org.apache.xml.security.stax.config.ResourceResolverMapper;
-import org.apache.xml.security.stax.ext.*;
-import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
-import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
-import org.apache.xml.security.stax.impl.SignaturePartDef;
-import org.apache.xml.security.stax.impl.transformer.TransformIdentity;
-import org.apache.xml.security.stax.impl.util.DigestOutputStream;
-import org.apache.xml.security.utils.UnsyncBufferedOutputStream;
-import org.apache.xml.security.utils.XMLUtils;
-
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+
+import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.stax.config.JCEAlgorithmMapper;
+import org.apache.xml.security.stax.config.ResourceResolverMapper;
+import org.apache.xml.security.stax.ext.AbstractOutputProcessor;
+import org.apache.xml.security.stax.ext.OutputProcessorChain;
+import org.apache.xml.security.stax.ext.ResourceResolver;
+import org.apache.xml.security.stax.ext.SecurePart;
+import org.apache.xml.security.stax.ext.Transformer;
+import org.apache.xml.security.stax.ext.XMLSecurityConstants;
+import org.apache.xml.security.stax.ext.XMLSecurityUtils;
+import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
+import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
+import org.apache.xml.security.stax.impl.SignaturePartDef;
+import org.apache.xml.security.stax.impl.transformer.TransformIdentity;
+import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer20010315_Excl;
+import org.apache.xml.security.stax.impl.util.DigestOutputStream;
+import org.apache.xml.security.utils.UnsyncBufferedOutputStream;
+import org.apache.xml.security.utils.XMLUtils;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  */

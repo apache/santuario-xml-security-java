@@ -24,10 +24,6 @@
  */
 package org.apache.jcp.xml.dsig.internal.dom;
 
-import javax.xml.crypto.*;
-import javax.xml.crypto.dsig.*;
-import javax.xml.crypto.dsig.keyinfo.KeyValue;
-
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.KeyException;
@@ -49,6 +45,12 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.security.spec.RSAPublicKeySpec;
 import java.util.Arrays;
+
+import javax.xml.crypto.MarshalException;
+import javax.xml.crypto.XMLCryptoContext;
+import javax.xml.crypto.XMLStructure;
+import javax.xml.crypto.dsig.XMLSignature;
+import javax.xml.crypto.dsig.keyinfo.KeyValue;
 
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Element;

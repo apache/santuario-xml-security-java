@@ -20,11 +20,17 @@ package org.apache.xml.security.stax.impl.processor.input;
 
 import org.apache.xml.security.binding.xmldsig.SignatureType;
 import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.stax.ext.*;
+import org.apache.xml.security.stax.ext.InboundSecurityContext;
+import org.apache.xml.security.stax.ext.InputProcessorChain;
+import org.apache.xml.security.stax.ext.XMLSecurityConstants;
+import org.apache.xml.security.stax.ext.XMLSecurityProperties;
+import org.apache.xml.security.stax.ext.XMLSecurityUtils;
+import org.apache.xml.security.stax.securityEvent.AlgorithmSuiteSecurityEvent;
+import org.apache.xml.security.stax.securityEvent.SignatureValueSecurityEvent;
+import org.apache.xml.security.stax.securityEvent.TokenSecurityEvent;
 import org.apache.xml.security.stax.securityToken.InboundSecurityToken;
 import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 import org.apache.xml.security.stax.securityToken.SecurityTokenFactory;
-import org.apache.xml.security.stax.securityEvent.*;
 
 /**
  * An input handler for XML Signature.

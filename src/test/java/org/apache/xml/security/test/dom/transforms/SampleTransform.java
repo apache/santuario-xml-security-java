@@ -19,12 +19,17 @@
 package org.apache.xml.security.test.dom.transforms;
 
 import java.io.IOException;
+
 import javax.xml.parsers.ParserConfigurationException;
-import org.xml.sax.SAXException;
-import org.apache.xml.security.c14n.*;
-import org.apache.xml.security.exceptions.*;
+
+import org.apache.xml.security.c14n.CanonicalizationException;
+import org.apache.xml.security.c14n.InvalidCanonicalizerException;
+import org.apache.xml.security.exceptions.AlgorithmAlreadyRegisteredException;
 import org.apache.xml.security.signature.XMLSignatureInput;
-import org.apache.xml.security.transforms.*;
+import org.apache.xml.security.transforms.Transform;
+import org.apache.xml.security.transforms.TransformSpi;
+import org.apache.xml.security.transforms.TransformationException;
+import org.xml.sax.SAXException;
 
 public class SampleTransform extends TransformSpi {
 

@@ -18,31 +18,6 @@
  */
 package org.apache.xml.security.test.stax.signature;
 
-import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.signature.XMLSignature;
-import org.apache.xml.security.stax.ext.*;
-import org.apache.xml.security.stax.securityEvent.SecurityEventConstants;
-import org.apache.xml.security.stax.securityEvent.SignatureValueSecurityEvent;
-import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
-import org.apache.xml.security.test.dom.DSNamespaceContext;
-import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
-import org.apache.xml.security.utils.XMLUtils;
-import org.junit.Test;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathFactory;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -54,6 +29,37 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.signature.XMLSignature;
+import org.apache.xml.security.stax.ext.OutboundXMLSec;
+import org.apache.xml.security.stax.ext.SecurePart;
+import org.apache.xml.security.stax.ext.XMLSec;
+import org.apache.xml.security.stax.ext.XMLSecurityConstants;
+import org.apache.xml.security.stax.ext.XMLSecurityProperties;
+import org.apache.xml.security.stax.securityEvent.SecurityEventConstants;
+import org.apache.xml.security.stax.securityEvent.SignatureValueSecurityEvent;
+import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
+import org.apache.xml.security.test.dom.DSNamespaceContext;
+import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
+import org.apache.xml.security.utils.XMLUtils;
+
+import org.junit.Test;
 
 import static org.apache.xml.security.stax.ext.XMLSecurityConstants.NS_C14N_EXCL;
 import static org.apache.xml.security.stax.ext.XMLSecurityConstants.NS_XMLDSIG_ENVELOPED_SIGNATURE;

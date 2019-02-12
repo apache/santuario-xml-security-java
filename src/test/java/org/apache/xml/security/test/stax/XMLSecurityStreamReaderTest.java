@@ -18,27 +18,6 @@
  */
 package org.apache.xml.security.test.stax;
 
-import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.stax.config.Init;
-import org.junit.Before;
-import org.junit.Test;
-
-import org.custommonkey.xmlunit.XMLAssert;
-import org.apache.xml.security.stax.ext.*;
-import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
-import org.apache.xml.security.stax.ext.stax.XMLSecEventFactory;
-import org.apache.xml.security.stax.impl.DocumentContextImpl;
-import org.apache.xml.security.stax.impl.InputProcessorChainImpl;
-import org.apache.xml.security.stax.impl.InboundSecurityContextImpl;
-import org.apache.xml.security.stax.impl.XMLSecurityStreamReader;
-
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stax.StAXSource;
-import javax.xml.transform.stream.StreamResult;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -47,9 +26,35 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stax.StAXSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.stax.config.Init;
+import org.apache.xml.security.stax.ext.InputProcessor;
+import org.apache.xml.security.stax.ext.InputProcessorChain;
+import org.apache.xml.security.stax.ext.XMLSecurityConstants;
+import org.apache.xml.security.stax.ext.XMLSecurityProperties;
+import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
+import org.apache.xml.security.stax.ext.stax.XMLSecEventFactory;
+import org.apache.xml.security.stax.impl.DocumentContextImpl;
+import org.apache.xml.security.stax.impl.InboundSecurityContextImpl;
+import org.apache.xml.security.stax.impl.InputProcessorChainImpl;
+import org.apache.xml.security.stax.impl.XMLSecurityStreamReader;
+
+import org.custommonkey.xmlunit.XMLAssert;
+import org.junit.Before;
+import org.junit.Test;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
 
 /**
  */

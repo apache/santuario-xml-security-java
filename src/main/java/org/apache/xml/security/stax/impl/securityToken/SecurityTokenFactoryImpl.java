@@ -18,18 +18,6 @@
  */
 package org.apache.xml.security.stax.impl.securityToken;
 
-import org.apache.xml.security.binding.xmldsig.*;
-import org.apache.xml.security.binding.xmldsig11.ECKeyValueType;
-import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.stax.ext.*;
-import org.apache.xml.security.stax.impl.util.IDGenerator;
-import org.apache.xml.security.stax.securityToken.SecurityTokenConstants.TokenType;
-import org.apache.xml.security.stax.securityToken.InboundSecurityToken;
-import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
-import org.apache.xml.security.stax.securityToken.SecurityTokenFactory;
-import org.apache.xml.security.utils.RFC2253Parser;
-import org.apache.xml.security.utils.UnsyncByteArrayInputStream;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.Key;
@@ -38,6 +26,26 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.Map;
+
+import org.apache.xml.security.binding.xmldsig.DSAKeyValueType;
+import org.apache.xml.security.binding.xmldsig.KeyInfoType;
+import org.apache.xml.security.binding.xmldsig.KeyValueType;
+import org.apache.xml.security.binding.xmldsig.RSAKeyValueType;
+import org.apache.xml.security.binding.xmldsig.X509DataType;
+import org.apache.xml.security.binding.xmldsig.X509IssuerSerialType;
+import org.apache.xml.security.binding.xmldsig11.ECKeyValueType;
+import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.stax.ext.InboundSecurityContext;
+import org.apache.xml.security.stax.ext.XMLSecurityConstants;
+import org.apache.xml.security.stax.ext.XMLSecurityProperties;
+import org.apache.xml.security.stax.ext.XMLSecurityUtils;
+import org.apache.xml.security.stax.impl.util.IDGenerator;
+import org.apache.xml.security.stax.securityToken.InboundSecurityToken;
+import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
+import org.apache.xml.security.stax.securityToken.SecurityTokenConstants.TokenType;
+import org.apache.xml.security.stax.securityToken.SecurityTokenFactory;
+import org.apache.xml.security.utils.RFC2253Parser;
+import org.apache.xml.security.utils.UnsyncByteArrayInputStream;
 
 /**
  * Factory to create SecurityToken Objects from keys in XML

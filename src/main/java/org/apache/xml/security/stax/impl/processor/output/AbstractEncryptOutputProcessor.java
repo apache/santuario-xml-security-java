@@ -18,6 +18,27 @@
  */
 package org.apache.xml.security.stax.impl.processor.output;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.AlgorithmParameterSpec;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.crypto.Cipher;
+import javax.crypto.CipherOutputStream;
+import javax.crypto.NoSuchPaddingException;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLEventWriter;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+
 import org.apache.commons.codec.binary.Base64OutputStream;
 import org.apache.xml.security.algorithms.JCEMapper;
 import org.apache.xml.security.encryption.XMLCipherUtil;
@@ -27,26 +48,16 @@ import org.apache.xml.security.stax.ext.AbstractOutputProcessor;
 import org.apache.xml.security.stax.ext.OutputProcessorChain;
 import org.apache.xml.security.stax.ext.SecurePart;
 import org.apache.xml.security.stax.ext.XMLSecurityConstants;
-import org.apache.xml.security.stax.ext.stax.*;
+import org.apache.xml.security.stax.ext.stax.XMLSecAttribute;
+import org.apache.xml.security.stax.ext.stax.XMLSecCharacters;
+import org.apache.xml.security.stax.ext.stax.XMLSecEndElement;
+import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
+import org.apache.xml.security.stax.ext.stax.XMLSecEventFactory;
+import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
 import org.apache.xml.security.stax.impl.EncryptionPartDef;
 import org.apache.xml.security.stax.impl.XMLSecurityEventWriter;
 import org.apache.xml.security.stax.impl.util.TrimmerOutputStream;
 import org.apache.xml.security.utils.XMLUtils;
-
-import javax.crypto.Cipher;
-import javax.crypto.CipherOutputStream;
-import javax.crypto.NoSuchPaddingException;
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLEventWriter;
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.AlgorithmParameterSpec;
-import java.util.*;
 
 /**
  * Processor to encrypt XML structures

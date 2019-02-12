@@ -24,18 +24,29 @@
  */
 package org.apache.jcp.xml.dsig.internal.dom;
 
-import java.util.*;
 import java.security.spec.AlgorithmParameterSpec;
+import java.util.AbstractSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Set;
+
+import javax.xml.XMLConstants;
+import javax.xml.crypto.MarshalException;
+import javax.xml.crypto.XMLCryptoContext;
+import javax.xml.crypto.XMLStructure;
+import javax.xml.crypto.dsig.XMLSignature;
+import javax.xml.crypto.dsig.spec.ExcC14NParameterSpec;
+import javax.xml.crypto.dsig.spec.XPathFilter2ParameterSpec;
+import javax.xml.crypto.dsig.spec.XPathFilterParameterSpec;
+import javax.xml.crypto.dsig.spec.XPathType;
+import javax.xml.crypto.dsig.spec.XSLTTransformParameterSpec;
+
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import javax.xml.XMLConstants;
-import javax.xml.crypto.*;
-import javax.xml.crypto.dsig.*;
-import javax.xml.crypto.dsig.spec.*;
 
 /**
  * Useful static DOM utility methods.

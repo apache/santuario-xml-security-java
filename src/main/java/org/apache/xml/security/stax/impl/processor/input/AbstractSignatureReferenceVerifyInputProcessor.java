@@ -18,12 +18,26 @@
  */
 package org.apache.xml.security.stax.impl.processor.input;
 
-import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer20010315_Excl;
-import org.apache.xml.security.stax.securityToken.InboundSecurityToken;
-import org.apache.xml.security.utils.UnsyncBufferedOutputStream;
-import org.apache.xml.security.utils.XMLUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+
 import org.apache.xml.security.binding.excc14n.InclusiveNamespaces;
 import org.apache.xml.security.binding.xmldsig.ReferenceType;
 import org.apache.xml.security.binding.xmldsig.SignatureType;
@@ -32,26 +46,28 @@ import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.config.ConfigurationProperties;
 import org.apache.xml.security.stax.config.JCEAlgorithmMapper;
 import org.apache.xml.security.stax.config.ResourceResolverMapper;
-import org.apache.xml.security.stax.ext.*;
+import org.apache.xml.security.stax.ext.AbstractInputProcessor;
+import org.apache.xml.security.stax.ext.InboundSecurityContext;
+import org.apache.xml.security.stax.ext.InputProcessorChain;
+import org.apache.xml.security.stax.ext.ResourceResolver;
+import org.apache.xml.security.stax.ext.Transformer;
+import org.apache.xml.security.stax.ext.XMLSecurityConstants;
+import org.apache.xml.security.stax.ext.XMLSecurityProperties;
+import org.apache.xml.security.stax.ext.XMLSecurityUtils;
 import org.apache.xml.security.stax.ext.stax.XMLSecEndElement;
 import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
+import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer20010315_Excl;
 import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer20010315_OmitCommentsTransformer;
 import org.apache.xml.security.stax.impl.util.DigestOutputStream;
 import org.apache.xml.security.stax.impl.util.IDGenerator;
 import org.apache.xml.security.stax.impl.util.KeyValue;
 import org.apache.xml.security.stax.securityEvent.AlgorithmSuiteSecurityEvent;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
-import java.io.*;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.util.*;
+import org.apache.xml.security.stax.securityToken.InboundSecurityToken;
+import org.apache.xml.security.utils.UnsyncBufferedOutputStream;
+import org.apache.xml.security.utils.XMLUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  */

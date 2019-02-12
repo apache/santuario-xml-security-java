@@ -18,19 +18,35 @@
  */
 package org.apache.xml.security.test.stax;
 
-import org.apache.xml.security.stax.ext.stax.*;
-import org.apache.xml.security.stax.impl.XMLSecurityEventReader;
-import org.apache.xml.security.stax.impl.stax.*;
-import org.junit.Test;
+import java.io.StringWriter;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.events.XMLEvent;
-import java.io.StringWriter;
-import java.util.ArrayDeque;
-import java.util.Deque;
+
+import org.apache.xml.security.stax.ext.stax.XMLSecAttribute;
+import org.apache.xml.security.stax.ext.stax.XMLSecCharacters;
+import org.apache.xml.security.stax.ext.stax.XMLSecComment;
+import org.apache.xml.security.stax.ext.stax.XMLSecEntityDeclaration;
+import org.apache.xml.security.stax.ext.stax.XMLSecEntityReference;
+import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
+import org.apache.xml.security.stax.ext.stax.XMLSecEventFactory;
+import org.apache.xml.security.stax.ext.stax.XMLSecNamespace;
+import org.apache.xml.security.stax.ext.stax.XMLSecProcessingInstruction;
+import org.apache.xml.security.stax.impl.XMLSecurityEventReader;
+import org.apache.xml.security.stax.impl.stax.XMLSecAttributeImpl;
+import org.apache.xml.security.stax.impl.stax.XMLSecCharactersImpl;
+import org.apache.xml.security.stax.impl.stax.XMLSecCommentImpl;
+import org.apache.xml.security.stax.impl.stax.XMLSecEntityDeclarationImpl;
+import org.apache.xml.security.stax.impl.stax.XMLSecEntityReferenceImpl;
+import org.apache.xml.security.stax.impl.stax.XMLSecNamespaceImpl;
+import org.apache.xml.security.stax.impl.stax.XMLSecProcessingInstructionImpl;
+
+import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 

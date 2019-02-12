@@ -47,7 +47,6 @@
      <exclude name="AvoidReassigningParameters" />
      <exclude name="SwitchStmtsShouldHaveDefault" />
      <exclude name="SystemPrintln" />
-     <exclude name="UnusedImports" />
      <exclude name="PositionLiteralsFirstInComparisons" />
      <exclude name="PositionLiteralsFirstInCaseInsensitiveComparisons" />
      <exclude name="UnusedPrivateMethod" />

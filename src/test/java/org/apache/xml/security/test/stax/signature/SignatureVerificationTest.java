@@ -40,6 +40,9 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.c14n.implementations.Canonicalizer20010315OmitComments;
 import org.apache.xml.security.exceptions.XMLSecurityException;
@@ -50,8 +53,16 @@ import org.apache.xml.security.keys.content.x509.XMLX509IssuerSerial;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.stax.config.Init;
 import org.apache.xml.security.stax.config.TransformerAlgorithmMapper;
-import org.apache.xml.security.stax.ext.*;
-import org.apache.xml.security.stax.securityEvent.*;
+import org.apache.xml.security.stax.ext.InboundXMLSec;
+import org.apache.xml.security.stax.ext.XMLSec;
+import org.apache.xml.security.stax.ext.XMLSecurityConstants;
+import org.apache.xml.security.stax.ext.XMLSecurityProperties;
+import org.apache.xml.security.stax.securityEvent.KeyNameTokenSecurityEvent;
+import org.apache.xml.security.stax.securityEvent.KeyValueTokenSecurityEvent;
+import org.apache.xml.security.stax.securityEvent.SecurityEvent;
+import org.apache.xml.security.stax.securityEvent.SecurityEventConstants;
+import org.apache.xml.security.stax.securityEvent.SignedElementSecurityEvent;
+import org.apache.xml.security.stax.securityEvent.X509TokenSecurityEvent;
 import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 import org.apache.xml.security.test.stax.utils.StAX2DOM;
 import org.apache.xml.security.test.stax.utils.TestUtils;
@@ -59,10 +70,9 @@ import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.transforms.Transform;
 import org.apache.xml.security.transforms.implementations.TransformC14N;
 import org.apache.xml.security.utils.XMLUtils;
+
 import org.junit.Before;
 import org.junit.Test;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

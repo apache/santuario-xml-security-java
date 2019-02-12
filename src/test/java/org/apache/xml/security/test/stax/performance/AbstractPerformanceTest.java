@@ -18,18 +18,19 @@
  */
 package org.apache.xml.security.test.stax.performance;
 
-import org.apache.xml.security.encryption.XMLCipher;
-import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.signature.XMLSignature;
-import org.apache.xml.security.stax.ext.*;
-import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
-import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
-import org.apache.xml.security.transforms.Transforms;
-import org.apache.xml.security.utils.XMLUtils;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
+import java.security.Key;
+import java.security.KeyStore;
+import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.crypto.KeyGenerator;
 import javax.xml.namespace.QName;
@@ -38,13 +39,25 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.security.Key;
-import java.security.KeyStore;
-import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.List;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import org.apache.xml.security.encryption.XMLCipher;
+import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.signature.XMLSignature;
+import org.apache.xml.security.stax.ext.InboundXMLSec;
+import org.apache.xml.security.stax.ext.OutboundXMLSec;
+import org.apache.xml.security.stax.ext.SecurePart;
+import org.apache.xml.security.stax.ext.XMLSec;
+import org.apache.xml.security.stax.ext.XMLSecurityConstants;
+import org.apache.xml.security.stax.ext.XMLSecurityProperties;
+import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
+import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
+import org.apache.xml.security.transforms.Transforms;
+import org.apache.xml.security.utils.XMLUtils;
+
+import org.junit.Before;
+import org.junit.BeforeClass;
 
 /**
  */

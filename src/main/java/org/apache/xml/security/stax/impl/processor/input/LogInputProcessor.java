@@ -18,14 +18,18 @@
  */
 package org.apache.xml.security.stax.impl.processor.input;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.stax.ext.*;
-import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
+import java.io.StringWriter;
 
 import javax.xml.stream.XMLStreamException;
-import java.io.StringWriter;
+
+import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.stax.ext.AbstractInputProcessor;
+import org.apache.xml.security.stax.ext.InputProcessorChain;
+import org.apache.xml.security.stax.ext.XMLSecurityConstants;
+import org.apache.xml.security.stax.ext.XMLSecurityProperties;
+import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  */

@@ -18,13 +18,29 @@
  */
 package org.apache.xml.security.stax.impl;
 
-import org.apache.xml.security.stax.ext.stax.*;
+import java.util.List;
 
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
-import javax.xml.stream.*;
-import javax.xml.stream.events.*;
-import java.util.List;
+import javax.xml.stream.XMLEventReader;
+import javax.xml.stream.XMLEventWriter;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
+import javax.xml.stream.events.Attribute;
+import javax.xml.stream.events.Comment;
+import javax.xml.stream.events.DTD;
+import javax.xml.stream.events.EntityReference;
+import javax.xml.stream.events.Namespace;
+import javax.xml.stream.events.ProcessingInstruction;
+import javax.xml.stream.events.StartDocument;
+import javax.xml.stream.events.XMLEvent;
+
+import org.apache.xml.security.stax.ext.stax.XMLSecAttribute;
+import org.apache.xml.security.stax.ext.stax.XMLSecCharacters;
+import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
+import org.apache.xml.security.stax.ext.stax.XMLSecNamespace;
+import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
 
 /**
  */

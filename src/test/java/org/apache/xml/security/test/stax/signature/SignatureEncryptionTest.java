@@ -18,24 +18,6 @@
  */
 package org.apache.xml.security.test.stax.signature;
 
-import org.apache.xml.security.encryption.XMLCipher;
-import org.apache.xml.security.stax.ext.*;
-import org.apache.xml.security.stax.securityEvent.SecurityEventConstants;
-import org.apache.xml.security.test.stax.utils.StAX2DOM;
-import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
-import org.apache.xml.security.utils.XMLUtils;
-import org.junit.Test;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.DESedeKeySpec;
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -46,6 +28,32 @@ import java.security.PublicKey;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.DESedeKeySpec;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
+import org.apache.xml.security.encryption.XMLCipher;
+import org.apache.xml.security.stax.ext.InboundXMLSec;
+import org.apache.xml.security.stax.ext.OutboundXMLSec;
+import org.apache.xml.security.stax.ext.SecurePart;
+import org.apache.xml.security.stax.ext.XMLSec;
+import org.apache.xml.security.stax.ext.XMLSecurityConstants;
+import org.apache.xml.security.stax.ext.XMLSecurityProperties;
+import org.apache.xml.security.stax.securityEvent.SecurityEventConstants;
+import org.apache.xml.security.test.stax.utils.StAX2DOM;
+import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
+import org.apache.xml.security.utils.XMLUtils;
+
+import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;

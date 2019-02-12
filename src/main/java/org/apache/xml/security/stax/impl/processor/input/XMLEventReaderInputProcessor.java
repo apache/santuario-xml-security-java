@@ -18,17 +18,21 @@
  */
 package org.apache.xml.security.stax.impl.processor.input;
 
-import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.stax.config.ConfigurationProperties;
-import org.apache.xml.security.stax.ext.*;
-import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
-import org.apache.xml.security.stax.ext.stax.XMLSecEventFactory;
-import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
+import java.util.NoSuchElementException;
 
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import java.util.NoSuchElementException;
+
+import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.stax.config.ConfigurationProperties;
+import org.apache.xml.security.stax.ext.AbstractInputProcessor;
+import org.apache.xml.security.stax.ext.InputProcessorChain;
+import org.apache.xml.security.stax.ext.XMLSecurityConstants;
+import org.apache.xml.security.stax.ext.XMLSecurityProperties;
+import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
+import org.apache.xml.security.stax.ext.stax.XMLSecEventFactory;
+import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
 
 /**
  * The XMLEventReaderInputProcessor reads requested XMLEvents from the original XMLEventReader

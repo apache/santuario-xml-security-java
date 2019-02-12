@@ -18,19 +18,23 @@
  */
 package org.apache.xml.security.test.stax;
 
-import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.stax.config.Init;
-import org.apache.xml.security.stax.impl.OutboundSecurityContextImpl;
-import org.junit.Before;
-import org.junit.Test;
-
-import org.apache.xml.security.stax.ext.*;
-import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
-import org.apache.xml.security.stax.impl.OutputProcessorChainImpl;
-
-import javax.xml.stream.XMLStreamException;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.xml.stream.XMLStreamException;
+
+import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.stax.config.Init;
+import org.apache.xml.security.stax.ext.OutputProcessor;
+import org.apache.xml.security.stax.ext.OutputProcessorChain;
+import org.apache.xml.security.stax.ext.XMLSecurityConstants;
+import org.apache.xml.security.stax.ext.XMLSecurityProperties;
+import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
+import org.apache.xml.security.stax.impl.OutboundSecurityContextImpl;
+import org.apache.xml.security.stax.impl.OutputProcessorChainImpl;
+
+import org.junit.Before;
+import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 

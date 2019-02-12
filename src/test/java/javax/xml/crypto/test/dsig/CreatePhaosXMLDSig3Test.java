@@ -21,25 +21,35 @@
  */
 package javax.xml.crypto.test.dsig;
 
-
 import java.nio.charset.StandardCharsets;
-import java.security.*;
-import java.util.*;
+import java.security.Security;
+import java.util.Collections;
 
 import javax.xml.crypto.URIDereferencer;
-import javax.xml.crypto.dsig.*;
-import javax.xml.crypto.dsig.dom.*;
-import javax.xml.crypto.dsig.spec.*;
+import javax.xml.crypto.dsig.CanonicalizationMethod;
+import javax.xml.crypto.dsig.DigestMethod;
+import javax.xml.crypto.dsig.Reference;
+import javax.xml.crypto.dsig.SignatureMethod;
+import javax.xml.crypto.dsig.SignedInfo;
+import javax.xml.crypto.dsig.Transform;
+import javax.xml.crypto.dsig.XMLSignature;
+import javax.xml.crypto.dsig.XMLSignatureException;
+import javax.xml.crypto.dsig.XMLSignatureFactory;
+import javax.xml.crypto.dsig.dom.DOMSignContext;
+import javax.xml.crypto.dsig.dom.DOMValidateContext;
+import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
+import javax.xml.crypto.dsig.spec.HMACParameterSpec;
+import javax.xml.crypto.dsig.spec.TransformParameterSpec;
+import javax.xml.crypto.test.KeySelectors;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import org.apache.xml.security.utils.XMLUtils;
-import org.w3c.dom.*;
-
-import javax.xml.crypto.test.KeySelectors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
 
 /**
  * Test that recreates Phaos XMLDSig-3 test vectors

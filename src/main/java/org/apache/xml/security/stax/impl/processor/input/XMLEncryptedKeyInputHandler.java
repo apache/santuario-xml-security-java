@@ -18,27 +18,15 @@
  */
 package org.apache.xml.security.stax.impl.processor.input;
 
-import org.apache.xml.security.stax.securityToken.InboundSecurityToken;
-import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
-import org.apache.xml.security.stax.securityToken.SecurityTokenProvider;
-import org.apache.xml.security.utils.XMLUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.apache.xml.security.binding.xmldsig.DigestMethodType;
-import org.apache.xml.security.binding.xmldsig.KeyInfoType;
-import org.apache.xml.security.binding.xmlenc.CipherValueType;
-import org.apache.xml.security.binding.xmlenc.EncryptedKeyType;
-import org.apache.xml.security.binding.xmlenc11.MGFType;
-import org.apache.xml.security.binding.xop.Include;
-import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.stax.config.JCEAlgorithmMapper;
-import org.apache.xml.security.stax.ext.*;
-import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
-import org.apache.xml.security.stax.impl.securityToken.AbstractInboundSecurityToken;
-import org.apache.xml.security.stax.securityToken.SecurityTokenFactory;
-import org.apache.xml.security.stax.impl.util.IDGenerator;
-import org.apache.xml.security.stax.securityEvent.AlgorithmSuiteSecurityEvent;
-import org.apache.xml.security.stax.securityEvent.EncryptedKeyTokenSecurityEvent;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.Key;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.spec.MGF1ParameterSpec;
+import java.util.Base64;
+import java.util.Deque;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
@@ -47,10 +35,32 @@ import javax.crypto.spec.PSource;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.JAXBElement;
 
-import java.security.*;
-import java.security.spec.MGF1ParameterSpec;
-import java.util.Base64;
-import java.util.Deque;
+import org.apache.xml.security.binding.xmldsig.DigestMethodType;
+import org.apache.xml.security.binding.xmldsig.KeyInfoType;
+import org.apache.xml.security.binding.xmlenc.CipherValueType;
+import org.apache.xml.security.binding.xmlenc.EncryptedKeyType;
+import org.apache.xml.security.binding.xmlenc11.MGFType;
+import org.apache.xml.security.binding.xop.Include;
+import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.stax.config.JCEAlgorithmMapper;
+import org.apache.xml.security.stax.ext.AbstractInputSecurityHeaderHandler;
+import org.apache.xml.security.stax.ext.InboundSecurityContext;
+import org.apache.xml.security.stax.ext.InputProcessorChain;
+import org.apache.xml.security.stax.ext.XMLSecurityConstants;
+import org.apache.xml.security.stax.ext.XMLSecurityProperties;
+import org.apache.xml.security.stax.ext.XMLSecurityUtils;
+import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
+import org.apache.xml.security.stax.impl.securityToken.AbstractInboundSecurityToken;
+import org.apache.xml.security.stax.impl.util.IDGenerator;
+import org.apache.xml.security.stax.securityEvent.AlgorithmSuiteSecurityEvent;
+import org.apache.xml.security.stax.securityEvent.EncryptedKeyTokenSecurityEvent;
+import org.apache.xml.security.stax.securityToken.InboundSecurityToken;
+import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
+import org.apache.xml.security.stax.securityToken.SecurityTokenFactory;
+import org.apache.xml.security.stax.securityToken.SecurityTokenProvider;
+import org.apache.xml.security.utils.XMLUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * An input handler for the EncryptedKey XML Structure
