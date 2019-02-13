@@ -36,7 +36,6 @@ import java.util.List;
 
 import org.apache.xml.security.keys.storage.StorageResolverException;
 import org.apache.xml.security.keys.storage.StorageResolverSpi;
-import org.apache.xml.security.utils.XMLUtils;
 
 /**
  * This {@link StorageResolverSpi} makes all raw (binary) {@link X509Certificate}s
@@ -184,32 +183,4 @@ public class CertsInFilesystemDirectoryResolver extends StorageResolverSpi {
         }
     }
 
-    /**
-     * Method main
-     *
-     * @param unused
-     * @throws Exception
-     */
-    public static void main(String[] unused) throws Exception {
-
-        CertsInFilesystemDirectoryResolver krs =
-            new CertsInFilesystemDirectoryResolver(
-                "data/ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/certs");
-
-        for (Iterator<Certificate> i = krs.getIterator(); i.hasNext(); ) {
-            X509Certificate cert = (X509Certificate) i.next();
-            byte[] ski =
-                org.apache.xml.security.keys.content.x509.XMLX509SKI.getSKIBytesFromCert(cert);
-
-            System.out.println();
-            System.out.println("Base64(SKI())=                 \""
-                               + XMLUtils.encodeToString(ski) + "\"");
-            System.out.println("cert.getSerialNumber()=        \""
-                               + cert.getSerialNumber().toString() + "\"");
-            System.out.println("cert.getSubjectX500Principal().getName()= \""
-                               + cert.getSubjectX500Principal().getName() + "\"");
-            System.out.println("cert.getIssuerX500Principal().getName()=  \""
-                               + cert.getIssuerX500Principal().getName() + "\"");
-        }
-    }
 }

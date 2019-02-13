@@ -1568,7 +1568,7 @@ public class BaltimoreTest {
             throws InvalidKeySpecException, NoSuchAlgorithmException {
         KeyFactory kf = KeyFactory.getInstance(algo);
         KeySpec kspec = null;
-        if (algo.equalsIgnoreCase("DSA")) {
+        if ("DSA".equalsIgnoreCase(algo)) {
             if (number == 15) {
                 kspec = new DSAPublicKeySpec(new BigInteger(DSA_Y_15),
                         new BigInteger(DSA_P_15),
@@ -1580,7 +1580,7 @@ public class BaltimoreTest {
                         new BigInteger(DSA_Q_23),
                         new BigInteger(DSA_G_23));
             }
-        } else if (algo.equalsIgnoreCase("RSA")) {
+        } else if ("RSA".equalsIgnoreCase(algo)) {
             if (number == 15) {
                 kspec = new RSAPublicKeySpec(new BigInteger(RSA_MOD_15),
                         new BigInteger(RSA_PUB));

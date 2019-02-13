@@ -370,8 +370,8 @@ public class SignedInfo extends Manifest {
 
     public String getInclusiveNamespaces() {
         String c14nMethodURI = getCanonicalizationMethodURI();
-        if (!(c14nMethodURI.equals("http://www.w3.org/2001/10/xml-exc-c14n#") ||
-            c14nMethodURI.equals("http://www.w3.org/2001/10/xml-exc-c14n#WithComments"))) {
+        if (!("http://www.w3.org/2001/10/xml-exc-c14n#".equals(c14nMethodURI) ||
+            "http://www.w3.org/2001/10/xml-exc-c14n#WithComments".equals(c14nMethodURI))) {
             return null;
         }
 

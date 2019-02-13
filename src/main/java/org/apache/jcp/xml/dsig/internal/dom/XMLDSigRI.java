@@ -83,20 +83,20 @@ public final class XMLDSigRI extends Provider {
 
             String algo = getAlgorithm();
             try {
-                if (type.equals("XMLSignatureFactory")) {
-                    if (algo.equals("DOM")) {
+                if ("XMLSignatureFactory".equals(type)) {
+                    if ("DOM".equals(algo)) {
                         return new DOMXMLSignatureFactory();
                     }
-                } else if (type.equals("KeyInfoFactory")) {
-                    if (algo.equals("DOM")) {
+                } else if ("KeyInfoFactory".equals(type)) {
+                    if ("DOM".equals(algo)) {
                         return new DOMKeyInfoFactory();
                     }
-                } else if (type.equals("TransformService")) {
+                } else if ("TransformService".equals(type)) {
                     if (algo.equals(CanonicalizationMethod.INCLUSIVE) ||
                         algo.equals(CanonicalizationMethod.INCLUSIVE_WITH_COMMENTS)) {
                         return new DOMCanonicalXMLC14NMethod();
-                    } else if (algo.equals("http://www.w3.org/2006/12/xml-c14n11") ||
-                        algo.equals("http://www.w3.org/2006/12/xml-c14n11#WithComments")) {
+                    } else if ("http://www.w3.org/2006/12/xml-c14n11".equals(algo) ||
+                        "http://www.w3.org/2006/12/xml-c14n11#WithComments".equals(algo)) {
                         return new DOMCanonicalXMLC14N11Method();
                     } else if (algo.equals(CanonicalizationMethod.EXCLUSIVE) ||
                         algo.equals(CanonicalizationMethod.EXCLUSIVE_WITH_COMMENTS)) {

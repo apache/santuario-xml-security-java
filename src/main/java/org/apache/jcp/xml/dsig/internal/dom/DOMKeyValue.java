@@ -88,11 +88,11 @@ public abstract class DOMKeyValue<K extends PublicKey> extends BaseStructure imp
         }
 
         String namespace = kvtElem.getNamespaceURI();
-        if (kvtElem.getLocalName().equals("DSAKeyValue") && XMLSignature.XMLNS.equals(namespace)) {
+        if ("DSAKeyValue".equals(kvtElem.getLocalName()) && XMLSignature.XMLNS.equals(namespace)) {
             return new DSA(kvtElem);
-        } else if (kvtElem.getLocalName().equals("RSAKeyValue") && XMLSignature.XMLNS.equals(namespace)) {
+        } else if ("RSAKeyValue".equals(kvtElem.getLocalName()) && XMLSignature.XMLNS.equals(namespace)) {
             return new RSA(kvtElem);
-        } else if (kvtElem.getLocalName().equals("ECKeyValue") && XMLDSIG_11_XMLNS.equals(namespace)) {
+        } else if ("ECKeyValue".equals(kvtElem.getLocalName()) && XMLDSIG_11_XMLNS.equals(namespace)) {
             return new EC(kvtElem);
         } else {
             return new Unknown(kvtElem);
@@ -285,7 +285,7 @@ public abstract class DOMKeyValue<K extends PublicKey> extends BaseStructure imp
             // check for P and Q
             BigInteger p = null;
             BigInteger q = null;
-            if (curElem.getLocalName().equals("P") && XMLSignature.XMLNS.equals(curElem.getNamespaceURI())) {
+            if ("P".equals(curElem.getLocalName()) && XMLSignature.XMLNS.equals(curElem.getNamespaceURI())) {
                 p = decode(curElem);
                 curElem = DOMUtils.getNextSiblingElement(curElem, "Q", XMLSignature.XMLNS);
                 q = decode(curElem);
@@ -293,7 +293,7 @@ public abstract class DOMKeyValue<K extends PublicKey> extends BaseStructure imp
             }
             BigInteger g = null;
             if (curElem != null
-                && curElem.getLocalName().equals("G") && XMLSignature.XMLNS.equals(curElem.getNamespaceURI())) {
+                && "G".equals(curElem.getLocalName()) && XMLSignature.XMLNS.equals(curElem.getNamespaceURI())) {
                 g = decode(curElem);
                 curElem = DOMUtils.getNextSiblingElement(curElem, "Y", XMLSignature.XMLNS);
             }
@@ -302,7 +302,7 @@ public abstract class DOMKeyValue<K extends PublicKey> extends BaseStructure imp
                 y = decode(curElem);
                 curElem = DOMUtils.getNextSiblingElement(curElem);
             }
-            //if (curElem != null && curElem.getLocalName().equals("J")) {
+            //if (curElem != null && "J".equals(curElem.getLocalName())) {
                 //j = new DOMCryptoBinary(curElem.getFirstChild());
                 // curElem = DOMUtils.getNextSiblingElement(curElem);
             //}
@@ -498,11 +498,11 @@ public abstract class DOMKeyValue<K extends PublicKey> extends BaseStructure imp
                 throw new MarshalException("KeyValue must contain at least one type");
             }
 
-            if (curElem.getLocalName().equals("ECParameters")
+            if ("ECParameters".equals(curElem.getLocalName())
                 && XMLDSIG_11_XMLNS.equals(curElem.getNamespaceURI())) {
                 throw new UnsupportedOperationException
                     ("ECParameters not supported");
-            } else if (curElem.getLocalName().equals("NamedCurve")
+            } else if ("NamedCurve".equals(curElem.getLocalName())
                 && XMLDSIG_11_XMLNS.equals(curElem.getNamespaceURI())) {
                 String uri = DOMUtils.getAttributeValue(curElem, "URI");
                 // strip off "urn:oid"

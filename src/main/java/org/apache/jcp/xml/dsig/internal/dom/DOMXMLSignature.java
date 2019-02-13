@@ -140,7 +140,7 @@ public final class DOMXMLSignature extends DOMStructure
 
         // unmarshal KeyInfo, if specified
         Element nextSibling = DOMUtils.getNextSiblingElement(sigValElem);
-        if (nextSibling != null && nextSibling.getLocalName().equals("KeyInfo")
+        if (nextSibling != null && "KeyInfo".equals(nextSibling.getLocalName())
             && XMLSignature.XMLNS.equals(nextSibling.getNamespaceURI())) {
             ki = new DOMKeyInfo(nextSibling, context, provider);
             nextSibling = DOMUtils.getNextSiblingElement(nextSibling);

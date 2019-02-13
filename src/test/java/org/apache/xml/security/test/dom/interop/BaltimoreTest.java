@@ -107,7 +107,7 @@ public class BaltimoreTest extends InteropTestBase {
             LOG.error("Verification crashed for " + filename);
             throw ex;
         } catch (XMLSignatureException ex) {
-            if (!ex.getMsgID().equals("algorithms.HMACOutputLengthMin")) {
+            if (!"algorithms.HMACOutputLengthMin".equals(ex.getMsgID())) {
                 fail(ex.getMessage());
             }
         }
@@ -373,7 +373,7 @@ public class BaltimoreTest extends InteropTestBase {
             LOG.error("Verification crashed for " + filename);
             throw ex;
         } catch (XMLSignatureException ex) {
-            if (!ex.getMsgID().equals("algorithms.HMACOutputLengthMin")) {
+            if (!"algorithms.HMACOutputLengthMin".equals(ex.getMsgID())) {
                 fail(ex.getMessage());
             }
         }

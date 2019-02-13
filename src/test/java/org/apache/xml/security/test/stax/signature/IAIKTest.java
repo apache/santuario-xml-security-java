@@ -358,12 +358,12 @@ public class IAIKTest {
             throws InvalidKeySpecException, NoSuchAlgorithmException {
         KeyFactory kf = KeyFactory.getInstance(algo);
         KeySpec kspec = null;
-        if (algo.equalsIgnoreCase("DSA")) {
+        if ("DSA".equalsIgnoreCase(algo)) {
             kspec = new DSAPublicKeySpec(new BigInteger(DSA_Y),
                         new BigInteger(DSA_P),
                         new BigInteger(DSA_Q),
                         new BigInteger(DSA_G));
-        } else if (algo.equalsIgnoreCase("RSA")) {
+        } else if ("RSA".equalsIgnoreCase(algo)) {
             kspec = new RSAPublicKeySpec(new BigInteger(RSA_MOD),
                     new BigInteger(RSA_PUB));
         } else {

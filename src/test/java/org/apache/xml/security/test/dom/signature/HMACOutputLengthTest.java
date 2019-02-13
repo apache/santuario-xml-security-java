@@ -58,7 +58,7 @@ public class HMACOutputLengthTest {
             fail("Expected HMACOutputLength exception");
         } catch (XMLSignatureException xse) {
             // System.out.println(xse.getMessage());
-            if (!xse.getMsgID().equals("algorithms.HMACOutputLengthMin")) {
+            if (!"algorithms.HMACOutputLengthMin".equals(xse.getMsgID())) {
                 fail(xse.getMessage());
             }
         }
@@ -70,7 +70,7 @@ public class HMACOutputLengthTest {
             validate("signature-enveloping-hmac-sha1-trunclen-8-attack.xml");
         } catch (XMLSignatureException xse) {
             // System.out.println(xse.getMessage());
-            if (!xse.getMsgID().equals("algorithms.HMACOutputLengthMin")) {
+            if (!"algorithms.HMACOutputLengthMin".equals(xse.getMsgID())) {
                 fail(xse.getMessage());
             }
         }
@@ -89,7 +89,7 @@ public class HMACOutputLengthTest {
             fail("Expected HMACOutputLength Exception");
         } catch (XMLSignatureException xse) {
             // System.out.println(xse.getMessage());
-            if (!xse.getMsgID().equals("algorithms.HMACOutputLengthMin")) {
+            if (!"algorithms.HMACOutputLengthMin".equals(xse.getMsgID())) {
                 fail(xse.getMessage());
             }
         }

@@ -135,7 +135,7 @@ public class InclusiveNamespaces extends ElementProxy implements TransformParam 
 
         String[] tokens = inclusiveNamespaces.split("\\s");
         for (String prefix : tokens) {
-            if (prefix.equals("#default")) {
+            if ("#default".equals(prefix)) {
                 prefixes.add("xmlns");
             } else {
                 prefixes.add(prefix);

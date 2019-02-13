@@ -123,7 +123,7 @@ public class ResolverXPointer extends ResourceResolverSpi {
      * @return true if begins with xpointer
      */
     private static boolean isXPointerSlash(String uri) {
-        if (uri.equals("#xpointer(/)")) {
+        if ("#xpointer(/)".equals(uri)) {
             return true;
         }
 

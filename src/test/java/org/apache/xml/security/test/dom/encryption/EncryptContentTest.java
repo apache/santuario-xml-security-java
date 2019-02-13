@@ -136,7 +136,7 @@ public class EncryptContentTest {
 
         // child should be EncryptedData, if not throw exception
         Element childElem = (Element) child;
-        if (!childElem.getLocalName().equals("EncryptedData")) {
+        if (!"EncryptedData".equals(childElem.getLocalName())) {
             // t.transform(new DOMSource(doc), new StreamResult(System.out));
             throw new Exception("Element content not replaced");
         }

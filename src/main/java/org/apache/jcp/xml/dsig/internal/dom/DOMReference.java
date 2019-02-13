@@ -191,7 +191,7 @@ public final class DOMReference extends DOMStructure
         // unmarshal Transforms, if specified
         Element nextSibling = DOMUtils.getFirstChildElement(refElem);
         List<Transform> newTransforms = new ArrayList<>(MAXIMUM_TRANSFORM_COUNT);
-        if (nextSibling.getLocalName().equals("Transforms")
+        if ("Transforms".equals(nextSibling.getLocalName())
             && XMLSignature.XMLNS.equals(nextSibling.getNamespaceURI())) {
             Element transformElem = DOMUtils.getFirstChildElement(nextSibling,
                                                                   "Transform",
@@ -217,7 +217,7 @@ public final class DOMReference extends DOMStructure
             }
             nextSibling = DOMUtils.getNextSiblingElement(nextSibling);
         }
-        if (!nextSibling.getLocalName().equals("DigestMethod")
+        if (!"DigestMethod".equals(nextSibling.getLocalName())
             && XMLSignature.XMLNS.equals(nextSibling.getNamespaceURI())) {
             throw new MarshalException("Invalid element name: " +
                                        nextSibling.getLocalName() +

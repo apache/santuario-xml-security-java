@@ -131,11 +131,11 @@ public class KeyInfoTest {
         }
 
         Element kiElem = DOMUtils.getFirstChildElement(elem);
-        if (!kiElem.getLocalName().equals("KeyInfo")) {
+        if (!"KeyInfo".equals(kiElem.getLocalName())) {
             fail("Should be KeyInfo element: " + kiElem.getLocalName());
         }
         Element knElem = DOMUtils.getFirstChildElement(kiElem);
-        if (!knElem.getLocalName().equals("KeyName")) {
+        if (!"KeyName".equals(knElem.getLocalName())) {
             fail("Should be KeyName element: " + knElem.getLocalName());
         }
 

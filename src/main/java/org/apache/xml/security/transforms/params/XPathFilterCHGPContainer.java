@@ -237,7 +237,7 @@ public class XPathFilterCHGPContainer extends ElementProxy implements TransformP
      * @return the string
      */
     public boolean getIncludeSlashPolicy() {
-        return getLocalAttribute(XPathFilterCHGPContainer._ATT_INCLUDESLASH).equals("true");
+        return "true".equals(getLocalAttribute(XPathFilterCHGPContainer._ATT_INCLUDESLASH));
     }
 
     /**

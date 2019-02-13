@@ -116,7 +116,7 @@ class XmlAttrStack {
                 Iterator<Attr> it = e.nodes.iterator();
                 while (it.hasNext() && successiveOmitted) {
                     Attr n = it.next();
-                    if (n.getLocalName().equals("base") && !e.rendered) {
+                    if ("base".equals(n.getLocalName()) && !e.rendered) {
                         baseAttrs.add(n);
                     } else if (!loa.containsKey(n.getName())) {
                         loa.put(n.getName(), n);
@@ -129,7 +129,7 @@ class XmlAttrStack {
                 Attr baseAttr = null;
                 while (it.hasNext()) {
                     Attr n = it.next();
-                    if (n.getLocalName().equals("base")) {
+                    if ("base".equals(n.getLocalName())) {
                         base = n.getValue();
                         baseAttr = n;
                         break;
@@ -278,7 +278,7 @@ class XmlAttrStack {
                 printStep("2A", output.toString(), input);
             } else if (input.startsWith("../")) {
                 input = input.substring(3);
-                if (!output.toString().equals("/")) {
+                if (!"/".equals(output.toString())) {
                     output.append("../");
                 }
                 printStep("2A", output.toString(), input);
@@ -288,7 +288,7 @@ class XmlAttrStack {
             } else if (input.startsWith("/./")) {
                 input = input.substring(2);
                 printStep("2B", output.toString(), input);
-            } else if (input.equals("/.")) {
+            } else if ("/.".equals(input)) {
                 // FIXME: what is complete path segment?
                 input = input.replaceFirst("/.", "/");
                 printStep("2B", output.toString(), input);
@@ -322,7 +322,7 @@ class XmlAttrStack {
                     }
                 }
                 printStep("2C", output.toString(), input);
-            } else if (input.equals("/..")) {
+            } else if ("/..".equals(input)) {
                 // FIXME: what is complete path segment?
                 input = input.replaceFirst("/..", "/");
                 if (output.length() == 0) {
@@ -348,11 +348,11 @@ class XmlAttrStack {
                 // only of ".." and if the output buffer does not contain only
                 // the root slash "/", then move the ".." to the output buffer
                 // else delte it.; otherwise,
-            } else if (input.equals(".")) {
+            } else if (".".equals(input)) {
                 input = "";
                 printStep("2D", output.toString(), input);
-            } else if (input.equals("..")) {
-                if (!output.toString().equals("/")) {
+            } else if ("..".equals(input)) {
+                if (!"/".equals(output.toString())) {
                     output.append("..");
                 }
                 input = "";

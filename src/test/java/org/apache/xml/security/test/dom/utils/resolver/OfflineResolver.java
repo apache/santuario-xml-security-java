@@ -146,7 +146,7 @@ public class OfflineResolver extends ResourceResolverSpi {
         URI uriNew = null;
         try {
             uriNew = getNewURI(context.uriToResolve, context.baseUri);
-            if (uriNew.getScheme().equals("http")) {
+            if ("http".equals(uriNew.getScheme())) {
                 LOG.debug("I state that I can resolve " + uriNew.toString());
                 return true;
             }

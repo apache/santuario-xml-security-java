@@ -345,7 +345,7 @@ public class XMLSignatureTest {
         // check that Object element retained namespace definitions
         Element objElem = (Element)parent.getFirstChild().getLastChild();
         Attr a = objElem.getAttributeNode("xmlns:test");
-        if (!a.getValue().equals("http://www.example.org/ns")) {
+        if (!"http://www.example.org/ns".equals(a.getValue())) {
             throw new Exception("Object namespace definition not retained");
         }
     }

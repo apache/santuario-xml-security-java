@@ -273,10 +273,10 @@ public class X509KeySelector extends KeySelector {
      */
     //@@@FIXME: this should also work for key types other than DSA/RSA
     private boolean algEquals(String algURI, String algName) {
-        if (algName.equalsIgnoreCase("DSA") &&
+        if ("DSA".equalsIgnoreCase(algName) &&
             algURI.equalsIgnoreCase(SignatureMethod.DSA_SHA1)) {
             return true;
-        } else if (algName.equalsIgnoreCase("RSA") &&
+        } else if ("RSA".equalsIgnoreCase(algName) &&
             algURI.equalsIgnoreCase(SignatureMethod.RSA_SHA1)) {
             return true;
         } else {

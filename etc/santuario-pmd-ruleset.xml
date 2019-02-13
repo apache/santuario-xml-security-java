@@ -28,6 +28,7 @@
      <exclude name="AbstractClassWithoutAbstractMethod" />
      <exclude name="AccessorMethodGeneration" />
      <exclude name="ArrayIsStoredDirectly" />
+     <exclude name="AvoidReassigningParameters" />
      <exclude name="AvoidUsingHardCodedIP" />
      <exclude name="ConstantsInInterface" />
      <exclude name="ForLoopCanBeForeach" />
@@ -40,16 +41,13 @@
      <exclude name="MissingOverride" />
      <exclude name="OneDeclarationPerLine" />
      <exclude name="PreserveStackTrace" />
+     <exclude name="SystemPrintln" />
+     <exclude name="UnusedPrivateMethod" />
      <exclude name="UseAssertSameInsteadOfAssertTrue" />
      <exclude name="UseVarargs" />
 
      <!-- To fix -->
-     <exclude name="AvoidReassigningParameters" />
      <exclude name="SwitchStmtsShouldHaveDefault" />
-     <exclude name="SystemPrintln" />
-     <exclude name="PositionLiteralsFirstInComparisons" />
-     <exclude name="PositionLiteralsFirstInCaseInsensitiveComparisons" />
-     <exclude name="UnusedPrivateMethod" />
   </rule>
 
   <!-- TODO <rule ref="category/java/design.xml"> -->

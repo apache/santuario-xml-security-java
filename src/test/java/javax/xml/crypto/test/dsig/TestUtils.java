@@ -114,9 +114,9 @@ public class TestUtils {
 
     public static PublicKey getPublicKey(String algo)
         throws InvalidKeySpecException, NoSuchAlgorithmException {
-        if (algo.equalsIgnoreCase("DSA")) {
+        if ("DSA".equalsIgnoreCase(algo)) {
             return getPublicKey("DSA", 1024);
-        } else if (algo.equalsIgnoreCase("RSA")) {
+        } else if ("RSA".equalsIgnoreCase(algo)) {
             return getPublicKey("RSA", 512);
         } else {
             throw new RuntimeException("Unsupported key algorithm " + algo);
@@ -127,7 +127,7 @@ public class TestUtils {
         throws InvalidKeySpecException, NoSuchAlgorithmException {
         KeyFactory kf = KeyFactory.getInstance(algo);
         KeySpec kspec;
-        if (algo.equalsIgnoreCase("DSA")) {
+        if ("DSA".equalsIgnoreCase(algo)) {
             if (keysize == 1024) {
                 kspec = new DSAPublicKeySpec(new BigInteger(DSA_Y),
                                              new BigInteger(DSA_P),
@@ -141,7 +141,7 @@ public class TestUtils {
             } else {
                 throw new RuntimeException("Unsupported keysize:" + keysize);
             }
-        } else if (algo.equalsIgnoreCase("RSA")) {
+        } else if ("RSA".equalsIgnoreCase(algo)) {
             if (keysize == 512) {
                 kspec = new RSAPublicKeySpec(new BigInteger(RSA_MOD),
                                              new BigInteger(RSA_PUB));
@@ -164,9 +164,9 @@ public class TestUtils {
 
     public static PrivateKey getPrivateKey(String algo)
         throws InvalidKeySpecException, NoSuchAlgorithmException {
-        if (algo.equalsIgnoreCase("DSA")) {
+        if ("DSA".equalsIgnoreCase(algo)) {
             return getPrivateKey("DSA", 1024);
-        } else if (algo.equalsIgnoreCase("RSA")) {
+        } else if ("RSA".equalsIgnoreCase(algo)) {
             return getPrivateKey("RSA", 512);
         } else {
             throw new RuntimeException("Unsupported key algorithm " + algo);
@@ -177,7 +177,7 @@ public class TestUtils {
         throws InvalidKeySpecException, NoSuchAlgorithmException {
         KeyFactory kf = KeyFactory.getInstance(algo);
         KeySpec kspec;
-        if (algo.equalsIgnoreCase("DSA")) {
+        if ("DSA".equalsIgnoreCase(algo)) {
             if (keysize == 1024) {
                 kspec = new DSAPrivateKeySpec
                     (new BigInteger(DSA_X), new BigInteger(DSA_P),
@@ -189,7 +189,7 @@ public class TestUtils {
             } else {
                 throw new RuntimeException("Unsupported keysize:" + keysize);
             }
-        } else if (algo.equalsIgnoreCase("RSA")) {
+        } else if ("RSA".equalsIgnoreCase(algo)) {
             if (keysize == 512) {
                 kspec = new RSAPrivateKeySpec
                     (new BigInteger(RSA_MOD), new BigInteger(RSA_PRIV));
@@ -232,7 +232,7 @@ public class TestUtils {
                                                        File input,
                                                        String tag)
         throws Exception {
-        if (type.equalsIgnoreCase("dom")) {
+        if ("dom".equalsIgnoreCase(type)) {
             Document doc = XMLUtils.read(new FileInputStream(input), false);
             if (tag == null) {
                 return new DOMValidateContext
