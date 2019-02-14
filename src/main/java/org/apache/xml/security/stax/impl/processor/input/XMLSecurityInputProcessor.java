@@ -74,98 +74,95 @@ public class XMLSecurityInputProcessor extends AbstractInputProcessor {
         }
 
         XMLSecEvent xmlSecEvent = inputProcessorChain.processEvent();
-        switch (xmlSecEvent.getEventType()) {
-            case XMLStreamConstants.START_ELEMENT:
-                final XMLSecStartElement xmlSecStartElement = xmlSecEvent.asStartElement();
+        if (XMLStreamConstants.START_ELEMENT == xmlSecEvent.getEventType()) {
+            final XMLSecStartElement xmlSecStartElement = xmlSecEvent.asStartElement();
 
-                if (!decryptOnly && xmlSecStartElement.getName().equals(XMLSecurityConstants.TAG_dsig_Signature)) {
-                    if (signatureElementFound) {
-                        throw new XMLSecurityException("stax.multipleSignaturesNotSupported");
-                    }
-                    signatureElementFound = true;
-                    startIndexForProcessor = internalBufferProcessor.getXmlSecEventList().size() - 1;
-                } else if (xmlSecStartElement.getName().equals(XMLSecurityConstants.TAG_xenc_EncryptedData)) {
-                    encryptedDataElementFound = true;
-
-                    XMLDecryptInputProcessor decryptInputProcessor = new XMLDecryptInputProcessor(getSecurityProperties());
-                    decryptInputProcessor.setPhase(XMLSecurityConstants.Phase.PREPROCESSING);
-                    decryptInputProcessor.addAfterProcessor(XMLEventReaderInputProcessor.class.getName());
-                    decryptInputProcessor.addBeforeProcessor(XMLSecurityInputProcessor.class.getName());
-                    decryptInputProcessor.addBeforeProcessor(XMLSecurityInputProcessor.InternalBufferProcessor.class.getName());
-                    inputProcessorChain.addProcessor(decryptInputProcessor);
-
-                    if (!decryptOnly) {
-                        final ArrayDeque<XMLSecEvent> xmlSecEventList = internalBufferProcessor.getXmlSecEventList();
-                        //remove the last event (EncryptedData)
-                        xmlSecEventList.pollFirst();
-                    }
-
-                    // temporary processor to return the EncryptedData element for the DecryptionProcessor
-                    AbstractInputProcessor abstractInputProcessor = new AbstractInputProcessor(getSecurityProperties()) {
-                        @Override
-                        public XMLSecEvent processNextHeaderEvent(InputProcessorChain inputProcessorChain)
-                                throws XMLStreamException, XMLSecurityException {
-                            return processNextEvent(inputProcessorChain);
-                        }
-
-                        @Override
-                        public XMLSecEvent processNextEvent(InputProcessorChain inputProcessorChain)
-                                throws XMLStreamException, XMLSecurityException {
-                            inputProcessorChain.removeProcessor(this);
-                            return xmlSecStartElement;
-                        }
-                    };
-                    abstractInputProcessor.setPhase(XMLSecurityConstants.Phase.PREPROCESSING);
-                    abstractInputProcessor.addBeforeProcessor(decryptInputProcessor);
-                    inputProcessorChain.addProcessor(abstractInputProcessor);
-
-                    //fetch the next event from the original chain
-                    inputProcessorChain.reset();
-                    xmlSecEvent = inputProcessorChain.processEvent();
-
-                    // no need to catch a possible signature element here because the decrypt processor
-                    // is installed before this processor and therefore the decrypted signature element will
-                    // flow as normal through this processor.
-                    // for safety we do a check if this really true
-                    //check if the decrypted element is a Signature element
-                    if (!decryptOnly && xmlSecEvent.isStartElement() &&
-                            xmlSecEvent.asStartElement().getName().equals(XMLSecurityConstants.TAG_dsig_Signature) &&
-                            !signatureElementFound) {
-                        throw new XMLSecurityException("Internal error");
-                    }
+            if (!decryptOnly && xmlSecStartElement.getName().equals(XMLSecurityConstants.TAG_dsig_Signature)) {
+                if (signatureElementFound) {
+                    throw new XMLSecurityException("stax.multipleSignaturesNotSupported");
                 }
-                break;
-            case XMLStreamConstants.END_ELEMENT:
-                XMLSecEndElement xmlSecEndElement = xmlSecEvent.asEndElement();
-                // Handle the signature
-                if (signatureElementFound
-                        && xmlSecEndElement.getName().equals(XMLSecurityConstants.TAG_dsig_Signature)) {
-                    XMLSignatureInputHandler inputHandler = new XMLSignatureInputHandler();
+                signatureElementFound = true;
+                startIndexForProcessor = internalBufferProcessor.getXmlSecEventList().size() - 1;
+            } else if (xmlSecStartElement.getName().equals(XMLSecurityConstants.TAG_xenc_EncryptedData)) {
+                encryptedDataElementFound = true;
 
+                XMLDecryptInputProcessor decryptInputProcessor = new XMLDecryptInputProcessor(getSecurityProperties());
+                decryptInputProcessor.setPhase(XMLSecurityConstants.Phase.PREPROCESSING);
+                decryptInputProcessor.addAfterProcessor(XMLEventReaderInputProcessor.class.getName());
+                decryptInputProcessor.addBeforeProcessor(XMLSecurityInputProcessor.class.getName());
+                decryptInputProcessor.addBeforeProcessor(XMLSecurityInputProcessor.InternalBufferProcessor.class.getName());
+                inputProcessorChain.addProcessor(decryptInputProcessor);
+
+                if (!decryptOnly) {
                     final ArrayDeque<XMLSecEvent> xmlSecEventList = internalBufferProcessor.getXmlSecEventList();
-                    inputHandler.handle(inputProcessorChain, getSecurityProperties(),
-                            xmlSecEventList, startIndexForProcessor);
+                    //remove the last event (EncryptedData)
+                    xmlSecEventList.pollFirst();
+                }
 
-                    inputProcessorChain.removeProcessor(internalBufferProcessor);
-
-                    //add the replay processor to the chain...
-                    InternalReplayProcessor internalReplayProcessor =
-                            new InternalReplayProcessor(getSecurityProperties(), xmlSecEventList);
-                    internalReplayProcessor.addBeforeProcessor(XMLSignatureReferenceVerifyInputProcessor.class.getName());
-                    inputProcessorChain.addProcessor(internalReplayProcessor);
-
-                    //...and let the SignatureVerificationProcessor process the buffered events (enveloped signature).
-                    InputProcessorChain subInputProcessorChain = inputProcessorChain.createSubChain(this, false);
-                    while (!xmlSecEventList.isEmpty()) {
-                        subInputProcessorChain.reset();
-                        subInputProcessorChain.processEvent();
+                // temporary processor to return the EncryptedData element for the DecryptionProcessor
+                AbstractInputProcessor abstractInputProcessor = new AbstractInputProcessor(getSecurityProperties()) {
+                    @Override
+                    public XMLSecEvent processNextHeaderEvent(InputProcessorChain inputProcessorChain)
+                        throws XMLStreamException, XMLSecurityException {
+                        return processNextEvent(inputProcessorChain);
                     }
 
-                    // copy all processor back to main chain for finalization
-                    inputProcessorChain.getProcessors().clear();
-                    inputProcessorChain.getProcessors().addAll(subInputProcessorChain.getProcessors());
+                    @Override
+                    public XMLSecEvent processNextEvent(InputProcessorChain inputProcessorChain)
+                        throws XMLStreamException, XMLSecurityException {
+                        inputProcessorChain.removeProcessor(this);
+                        return xmlSecStartElement;
+                    }
+                };
+                abstractInputProcessor.setPhase(XMLSecurityConstants.Phase.PREPROCESSING);
+                abstractInputProcessor.addBeforeProcessor(decryptInputProcessor);
+                inputProcessorChain.addProcessor(abstractInputProcessor);
+
+                //fetch the next event from the original chain
+                inputProcessorChain.reset();
+                xmlSecEvent = inputProcessorChain.processEvent();
+
+                // no need to catch a possible signature element here because the decrypt processor
+                // is installed before this processor and therefore the decrypted signature element will
+                // flow as normal through this processor.
+                // for safety we do a check if this really true
+                //check if the decrypted element is a Signature element
+                if (!decryptOnly && xmlSecEvent.isStartElement() &&
+                    xmlSecEvent.asStartElement().getName().equals(XMLSecurityConstants.TAG_dsig_Signature) &&
+                    !signatureElementFound) {
+                    throw new XMLSecurityException("Internal error");
                 }
-                break;
+            }
+        } else  if (XMLStreamConstants.END_ELEMENT == xmlSecEvent.getEventType()) {
+            XMLSecEndElement xmlSecEndElement = xmlSecEvent.asEndElement();
+            // Handle the signature
+            if (signatureElementFound
+                && xmlSecEndElement.getName().equals(XMLSecurityConstants.TAG_dsig_Signature)) {
+                XMLSignatureInputHandler inputHandler = new XMLSignatureInputHandler();
+
+                final ArrayDeque<XMLSecEvent> xmlSecEventList = internalBufferProcessor.getXmlSecEventList();
+                inputHandler.handle(inputProcessorChain, getSecurityProperties(),
+                                    xmlSecEventList, startIndexForProcessor);
+
+                inputProcessorChain.removeProcessor(internalBufferProcessor);
+
+                //add the replay processor to the chain...
+                InternalReplayProcessor internalReplayProcessor =
+                    new InternalReplayProcessor(getSecurityProperties(), xmlSecEventList);
+                internalReplayProcessor.addBeforeProcessor(XMLSignatureReferenceVerifyInputProcessor.class.getName());
+                inputProcessorChain.addProcessor(internalReplayProcessor);
+
+                //...and let the SignatureVerificationProcessor process the buffered events (enveloped signature).
+                InputProcessorChain subInputProcessorChain = inputProcessorChain.createSubChain(this, false);
+                while (!xmlSecEventList.isEmpty()) {
+                    subInputProcessorChain.reset();
+                    subInputProcessorChain.processEvent();
+                }
+
+                // copy all processor back to main chain for finalization
+                inputProcessorChain.getProcessors().clear();
+                inputProcessorChain.getProcessors().addAll(subInputProcessorChain.getProcessors());
+            }
         }
 
         return xmlSecEvent;

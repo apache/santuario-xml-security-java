@@ -68,26 +68,23 @@ public class XMLEventReaderInputProcessor extends AbstractInputProcessor {
 
     private XMLSecEvent processNextEventInternal() throws XMLStreamException {
         XMLSecEvent xmlSecEvent = XMLSecEventFactory.allocate(xmlStreamReader, parentXmlSecStartElement);
-        switch (xmlSecEvent.getEventType()) {
-            case XMLStreamConstants.START_ELEMENT:
-                currentXMLStructureDepth++;
-                if (currentXMLStructureDepth > maximumAllowedXMLStructureDepth) {
-                    XMLSecurityException xmlSecurityException = new XMLSecurityException(
-                            "secureProcessing.MaximumAllowedXMLStructureDepth",
-                            new Object[] {maximumAllowedXMLStructureDepth}
+        if (XMLStreamConstants.START_ELEMENT == xmlSecEvent.getEventType()) {
+            currentXMLStructureDepth++;
+            if (currentXMLStructureDepth > maximumAllowedXMLStructureDepth) {
+                XMLSecurityException xmlSecurityException = new XMLSecurityException(
+                                                                                     "secureProcessing.MaximumAllowedXMLStructureDepth",
+                                                                                     new Object[] {maximumAllowedXMLStructureDepth}
                     );
-                    throw new XMLStreamException(xmlSecurityException);
-                }
+                throw new XMLStreamException(xmlSecurityException);
+            }
 
-                parentXmlSecStartElement = (XMLSecStartElement) xmlSecEvent;
-                break;
-            case XMLStreamConstants.END_ELEMENT:
-                currentXMLStructureDepth--;
+            parentXmlSecStartElement = (XMLSecStartElement) xmlSecEvent;
+        } else if (XMLStreamConstants.END_ELEMENT == xmlSecEvent.getEventType()) {
+            currentXMLStructureDepth--;
 
-                if (parentXmlSecStartElement != null) {
-                    parentXmlSecStartElement = parentXmlSecStartElement.getParentXMLSecStartElement();
-                }
-                break;
+            if (parentXmlSecStartElement != null) {
+                parentXmlSecStartElement = parentXmlSecStartElement.getParentXMLSecStartElement();
+            }
         }
         if (xmlStreamReader.hasNext()) {
             xmlStreamReader.next();

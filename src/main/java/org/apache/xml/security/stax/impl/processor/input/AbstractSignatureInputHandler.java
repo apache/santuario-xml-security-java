@@ -127,25 +127,19 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
             loop:
             while (iterator.hasNext()) {
                 XMLSecEvent xmlSecEvent = iterator.next();
-                switch (xmlSecEvent.getEventType()) {
-                    case XMLStreamConstants.START_ELEMENT:
-                        if (xmlSecEvent.asStartElement().getName().equals(XMLSecurityConstants.TAG_dsig_SignedInfo)) {
-                            signatureVerifier.processEvent(xmlSecEvent);
-                            break loop;
-                        }
-                        break;
+                if (XMLStreamConstants.START_ELEMENT == xmlSecEvent.getEventType()
+                    && xmlSecEvent.asStartElement().getName().equals(XMLSecurityConstants.TAG_dsig_SignedInfo)) {
+                    signatureVerifier.processEvent(xmlSecEvent);
+                    break loop;
                 }
             }
             loop:
             while (iterator.hasNext()) {
                 XMLSecEvent xmlSecEvent = iterator.next();
                 signatureVerifier.processEvent(xmlSecEvent);
-                switch (xmlSecEvent.getEventType()) {
-                    case XMLStreamConstants.END_ELEMENT:
-                        if (xmlSecEvent.asEndElement().getName().equals(XMLSecurityConstants.TAG_dsig_SignedInfo)) {
-                            break loop;
-                        }
-                        break;
+                if (XMLStreamConstants.END_ELEMENT == xmlSecEvent.getEventType()
+                    && xmlSecEvent.asEndElement().getName().equals(XMLSecurityConstants.TAG_dsig_SignedInfo)) {
+                    break loop;
                 }
             }
         } catch (XMLStreamException e) {
@@ -180,13 +174,10 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
             loop:
             while (iterator.hasNext()) {
                 XMLSecEvent xmlSecEvent = iterator.next();
-                switch (xmlSecEvent.getEventType()) {
-                    case XMLStreamConstants.START_ELEMENT:
-                        if (xmlSecEvent.asStartElement().getName().equals(XMLSecurityConstants.TAG_dsig_SignedInfo)) {
-                            transformer.transform(xmlSecEvent);
-                            break loop;
-                        }
-                        break;
+                if (XMLStreamConstants.START_ELEMENT == xmlSecEvent.getEventType()
+                    && xmlSecEvent.asStartElement().getName().equals(XMLSecurityConstants.TAG_dsig_SignedInfo)) {
+                    transformer.transform(xmlSecEvent);
+                    break loop;
                 }
             }
 
@@ -194,12 +185,9 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
             while (iterator.hasNext()) {
                 XMLSecEvent xmlSecEvent = iterator.next();
                 transformer.transform(xmlSecEvent);
-                switch (xmlSecEvent.getEventType()) {
-                    case XMLStreamConstants.END_ELEMENT:
-                        if (xmlSecEvent.asEndElement().getName().equals(XMLSecurityConstants.TAG_dsig_SignedInfo)) {
-                            break loop;
-                        }
-                        break;
+                if (XMLStreamConstants.END_ELEMENT == xmlSecEvent.getEventType()
+                    && xmlSecEvent.asEndElement().getName().equals(XMLSecurityConstants.TAG_dsig_SignedInfo)) {
+                    break loop;
                 }
             }
 

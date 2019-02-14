@@ -512,15 +512,10 @@ public class XMLSignatureInputDebugger {
             for (int i = 0; i < length; i++) {
                 char c = data.charAt(i);
 
-                switch (c) {
-
-                case 0x0D:
+                if (c == 0x0D) {
                     this.writer.write("&amp;#xD;");
-                    break;
-
-                default:
+                } else {
                     this.writer.write(c);
-                    break;
                 }
             }
         }

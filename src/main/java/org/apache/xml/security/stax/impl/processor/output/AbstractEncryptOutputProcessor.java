@@ -224,18 +224,16 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
 
                     if (this.elementCounter == 0 && xmlSecStartElement.getName().equals(this.getXmlSecStartElement().getName())) {
                         //if the user selected element encryption we have to encrypt the current element-event...
-                        switch (getEncryptionPartDef().getModifier()) {
-                            case Element:
-                                OutputProcessorChain subOutputProcessorChain = outputProcessorChain.createSubChain(this);
-                                processEventInternal(xmlSecStartElement, subOutputProcessorChain);
-                                //encrypt the current element event
-                                encryptEvent(xmlSecEvent);
-                                break;
-                            case Content:
-                                outputProcessorChain.processEvent(xmlSecEvent);
-                                subOutputProcessorChain = outputProcessorChain.createSubChain(this);
-                                processEventInternal(xmlSecStartElement, subOutputProcessorChain);
-                                break;
+                        if (SecurePart.Modifier.Element == getEncryptionPartDef().getModifier()) {
+                            OutputProcessorChain subOutputProcessorChain = outputProcessorChain.createSubChain(this);
+                            processEventInternal(xmlSecStartElement, subOutputProcessorChain);
+                            //encrypt the current element event
+                            encryptEvent(xmlSecEvent);
+                        } else if (SecurePart.Modifier.Content == getEncryptionPartDef().getModifier()) {
+                            OutputProcessorChain subOutputProcessorChain = outputProcessorChain.createSubChain(this);
+                            outputProcessorChain.processEvent(xmlSecEvent);
+                            subOutputProcessorChain = outputProcessorChain.createSubChain(this);
+                            processEventInternal(xmlSecStartElement, subOutputProcessorChain);
                         }
                     } else {
                         encryptEvent(xmlSecEvent);
@@ -248,15 +246,12 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
 
                     if (this.elementCounter == 0 && xmlSecEvent.asEndElement().getName().equals(this.getXmlSecStartElement().getName())) {
                         OutputProcessorChain subOutputProcessorChain = outputProcessorChain.createSubChain(this);
-                        switch (getEncryptionPartDef().getModifier()) {
-                            case Element:
-                                encryptEvent(xmlSecEvent);
-                                doFinalInternal(subOutputProcessorChain);
-                                break;
-                            case Content:
-                                doFinalInternal(subOutputProcessorChain);
-                                outputAsEvent(subOutputProcessorChain, xmlSecEvent);
-                                break;
+                        if (SecurePart.Modifier.Element == getEncryptionPartDef().getModifier()) {
+                            encryptEvent(xmlSecEvent);
+                            doFinalInternal(subOutputProcessorChain);
+                        } else if (SecurePart.Modifier.Content == getEncryptionPartDef().getModifier()) {
+                            doFinalInternal(subOutputProcessorChain);
+                            outputAsEvent(subOutputProcessorChain, xmlSecEvent);
                         }
                         subOutputProcessorChain.removeProcessor(this);
                         //from now on encryption is possible again

@@ -123,51 +123,46 @@ public class TransformIdentity implements Transformer {
                 final XMLSecurityConstants.TransformMethod preferredChildTransformMethod =
                         getTransformer().getPreferredTransformMethod(XMLSecurityConstants.TransformMethod.XMLSecEvent);
 
-                switch (preferredChildTransformMethod) {
-                    case XMLSecEvent: {
-                        childOutputMethod = new ChildOutputMethod() {
+                if (preferredChildTransformMethod == XMLSecurityConstants.TransformMethod.XMLSecEvent) {
+                    childOutputMethod = new ChildOutputMethod() {
 
-                            @Override
-                            public void transform(Object object) throws XMLStreamException {
-                                getTransformer().transform((XMLSecEvent) object);
+                        @Override
+                        public void transform(Object object) throws XMLStreamException {
+                            getTransformer().transform((XMLSecEvent) object);
+                        }
+
+                        @Override
+                        public void doFinal() throws XMLStreamException {
+                            getTransformer().doFinal();
+                        }
+                    };
+                } else if (preferredChildTransformMethod == XMLSecurityConstants.TransformMethod.InputStream) {
+                    childOutputMethod = new ChildOutputMethod() {
+
+                        private UnsyncByteArrayOutputStream baos;
+                        private XMLEventWriter xmlEventWriter;
+
+                        @Override
+                        public void transform(Object object) throws XMLStreamException {
+                            if (xmlEventWriter == null) {
+                                baos = new UnsyncByteArrayOutputStream();
+                                xmlEventWriter = getXmlOutputFactory().createXMLEventWriter(baos);
                             }
 
-                            @Override
-                            public void doFinal() throws XMLStreamException {
+                            xmlEventWriter.add((XMLSecEvent) object);
+                        }
+
+                        @Override
+                        public void doFinal() throws XMLStreamException {
+                            xmlEventWriter.close();
+                            try (InputStream is = new UnsyncByteArrayInputStream(baos.toByteArray())) {
+                                getTransformer().transform(is);
                                 getTransformer().doFinal();
+                            } catch (IOException ex) {
+                                throw new XMLStreamException(ex);
                             }
-                        };
-                        break;
-                    }
-                    case InputStream: {
-                        childOutputMethod = new ChildOutputMethod() {
-
-                            private UnsyncByteArrayOutputStream baos;
-                            private XMLEventWriter xmlEventWriter;
-
-                            @Override
-                            public void transform(Object object) throws XMLStreamException {
-                                if (xmlEventWriter == null) {
-                                    baos = new UnsyncByteArrayOutputStream();
-                                    xmlEventWriter = getXmlOutputFactory().createXMLEventWriter(baos);
-                                }
-
-                                xmlEventWriter.add((XMLSecEvent) object);
-                            }
-
-                            @Override
-                            public void doFinal() throws XMLStreamException {
-                                xmlEventWriter.close();
-                                try (InputStream is = new UnsyncByteArrayInputStream(baos.toByteArray())) {
-                                    getTransformer().transform(is);
-                                    getTransformer().doFinal();
-                                } catch (IOException ex) {
-                                    throw new XMLStreamException(ex);
-                                }
-                            }
-                        };
-                        break;
-                    }
+                        }
+                    };
                 }
             }
             if (childOutputMethod != null) {
@@ -192,54 +187,49 @@ public class TransformIdentity implements Transformer {
                 final XMLSecurityConstants.TransformMethod preferredChildTransformMethod =
                         getTransformer().getPreferredTransformMethod(XMLSecurityConstants.TransformMethod.InputStream);
 
-                switch (preferredChildTransformMethod) {
-                    case XMLSecEvent: {
-                        childOutputMethod = new ChildOutputMethod() {
+                if (preferredChildTransformMethod == XMLSecurityConstants.TransformMethod.XMLSecEvent) {
+                    childOutputMethod = new ChildOutputMethod() {
 
-                            private XMLEventReaderInputProcessor xmlEventReaderInputProcessor;
+                        private XMLEventReaderInputProcessor xmlEventReaderInputProcessor;
 
-                            @Override
-                            public void transform(Object object) throws XMLStreamException {
-                                if (xmlEventReaderInputProcessor == null) {
-                                    xmlEventReaderInputProcessor = new XMLEventReaderInputProcessor(
-                                            null,
-                                            getXmlInputFactory().createXMLStreamReader(inputStream)
-                                    );
-                                }
-                                try {
-                                    XMLSecEvent xmlSecEvent;
-                                    do {
-                                        xmlSecEvent = xmlEventReaderInputProcessor.processNextEvent(null);
-                                        getTransformer().transform(xmlSecEvent);
-                                    } while (xmlSecEvent.getEventType() != XMLStreamConstants.END_DOCUMENT);
-                                } catch (XMLSecurityException e) {
-                                    throw new XMLStreamException(e);
-                                }
+                        @Override
+                        public void transform(Object object) throws XMLStreamException {
+                            if (xmlEventReaderInputProcessor == null) {
+                                xmlEventReaderInputProcessor = new XMLEventReaderInputProcessor(
+                                    null,
+                                    getXmlInputFactory().createXMLStreamReader(inputStream)
+                                );
                             }
-
-                            @Override
-                            public void doFinal() throws XMLStreamException {
-                                getTransformer().doFinal();
+                            try {
+                                XMLSecEvent xmlSecEvent;
+                                do {
+                                    xmlSecEvent = xmlEventReaderInputProcessor.processNextEvent(null);
+                                    getTransformer().transform(xmlSecEvent);
+                                } while (xmlSecEvent.getEventType() != XMLStreamConstants.END_DOCUMENT);
+                            } catch (XMLSecurityException e) {
+                                throw new XMLStreamException(e);
                             }
-                        };
-                        break;
-                    }
-                    case InputStream: {
-                        childOutputMethod = new ChildOutputMethod() {
+                        }
 
-                            @Override
-                            public void transform(Object object) throws XMLStreamException {
-                                getTransformer().transform(inputStream);
-                            }
+                        @Override
+                        public void doFinal() throws XMLStreamException {
+                            getTransformer().doFinal();
+                        }
+                    };
+                } else if (preferredChildTransformMethod == XMLSecurityConstants.TransformMethod.InputStream) {
+                    childOutputMethod = new ChildOutputMethod() {
 
-                            @Override
-                            public void doFinal() throws XMLStreamException {
-                                getTransformer().doFinal();
-                            }
+                        @Override
+                        public void transform(Object object) throws XMLStreamException {
+                            getTransformer().transform(inputStream);
+                        }
 
-                        };
-                        break;
-                    }
+                        @Override
+                        public void doFinal() throws XMLStreamException {
+                            getTransformer().doFinal();
+                        }
+
+                    };
                 }
             }
             if (childOutputMethod != null) {

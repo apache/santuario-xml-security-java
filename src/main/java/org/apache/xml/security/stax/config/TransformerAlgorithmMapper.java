@@ -68,13 +68,10 @@ public class TransformerAlgorithmMapper {
     public static Class<?> getTransformerClass(String algoURI, XMLSecurityConstants.DIRECTION direction) throws XMLSecurityException {
         Class<?> clazz = null;
 
-        switch (direction) {
-            case IN:
-                clazz = algorithmsClassMapIn.get(algoURI);
-                break;
-            case OUT:
-                clazz = algorithmsClassMapOut.get(algoURI);
-                break;
+        if (XMLSecurityConstants.DIRECTION.IN == direction) {
+            clazz = algorithmsClassMapIn.get(algoURI);
+        } else if (XMLSecurityConstants.DIRECTION.OUT == direction) {
+            clazz = algorithmsClassMapOut.get(algoURI);
         }
 
         if (clazz == null) {

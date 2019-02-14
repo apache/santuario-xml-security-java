@@ -162,11 +162,9 @@ public class TransformBase64Decode extends TransformSpi {
     void traverseElement(Element node, StringBuilder sb) {
         Node sibling = node.getFirstChild();
         while (sibling != null) {
-            switch (sibling.getNodeType()) {
-            case Node.ELEMENT_NODE:
+            if (Node.ELEMENT_NODE == sibling.getNodeType()) {
                 traverseElement((Element)sibling, sb);
-                break;
-            case Node.TEXT_NODE:
+            } else if (Node.TEXT_NODE == sibling.getNodeType()) {
                 sb.append(((Text)sibling).getData());
             }
             sibling = sibling.getNextSibling();

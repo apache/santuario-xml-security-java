@@ -1864,14 +1864,12 @@ public class XMLCipher {
         EncryptedData result = null;
         CipherData data = null;
 
-        switch (type) {
-        case CipherData.REFERENCE_TYPE:
+        if (CipherData.REFERENCE_TYPE == type) {
             CipherReference cipherReference = factory.newCipherReference(value);
             data = factory.newCipherData(type);
             data.setCipherReference(cipherReference);
             result = factory.newEncryptedData(data);
-            break;
-        case CipherData.VALUE_TYPE:
+        } else if (CipherData.VALUE_TYPE == type) {
             CipherValue cipherValue = factory.newCipherValue(value);
             data = factory.newCipherData(type);
             data.setCipherValue(cipherValue);
@@ -1919,14 +1917,12 @@ public class XMLCipher {
         EncryptedKey result = null;
         CipherData data = null;
 
-        switch (type) {
-        case CipherData.REFERENCE_TYPE:
+        if (CipherData.REFERENCE_TYPE == type) {
             CipherReference cipherReference = factory.newCipherReference(value);
             data = factory.newCipherData(type);
             data.setCipherReference(cipherReference);
             result = factory.newEncryptedKey(data);
-            break;
-        case CipherData.VALUE_TYPE:
+        } else if (CipherData.VALUE_TYPE == type) {
             CipherValue cipherValue = factory.newCipherValue(value);
             data = factory.newCipherData(type);
             data.setCipherValue(cipherValue);
@@ -2482,8 +2478,7 @@ public class XMLCipher {
 
             ReferenceList result = new ReferenceListImpl(type);
             NodeList list = null;
-            switch (type) {
-            case ReferenceList.DATA_REFERENCE:
+            if (ReferenceList.DATA_REFERENCE == type) {
                 list =
                     element.getElementsByTagNameNS(
                         EncryptionConstants.EncryptionSpecNS,
@@ -2493,8 +2488,7 @@ public class XMLCipher {
                     String uri = ((Element) list.item(i)).getAttributeNS(null, "URI");
                     result.add(result.newDataReference(uri));
                 }
-                break;
-            case ReferenceList.KEY_REFERENCE:
+            } else if (ReferenceList.KEY_REFERENCE == type) {
                 list =
                     element.getElementsByTagNameNS(
                         EncryptionConstants.EncryptionSpecNS,

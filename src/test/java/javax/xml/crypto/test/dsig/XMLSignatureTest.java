@@ -109,13 +109,10 @@ public class XMLSignatureTest {
         // for generating XMLSignature objects
         for (int i = 0; i < 2; i++) {
             try {
-                switch (i) {
-                case 0:
+                if (i == 0) {
                     sig = fac.newXMLSignature(null, defKi);
-                    break;
-                case 1:
+                } else if (i == 1) {
                     sig = fac.newXMLSignature(null, defKi, objs, id, sigValueId);
-                    break;
                 }
                 fail("Should throw a NPE for null references");
             } catch (NullPointerException npe) {

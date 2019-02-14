@@ -287,32 +287,29 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
 
             transformer.transform(xmlSecEvent);
 
-            switch (xmlSecEvent.getEventType()) {
-                case XMLStreamConstants.START_ELEMENT:
-                    elementCounter++;
-                    break;
-                case XMLStreamConstants.END_ELEMENT:
-                    elementCounter--;
+            if (XMLStreamConstants.START_ELEMENT == xmlSecEvent.getEventType()) {
+                elementCounter++;
+            } else if (XMLStreamConstants.END_ELEMENT == xmlSecEvent.getEventType()) {
+                elementCounter--;
 
-                    if (elementCounter == 0 &&
-                            xmlSecEvent.asEndElement().getName().equals(this.xmlSecStartElement.getName())) {
+                if (elementCounter == 0 &&
+                    xmlSecEvent.asEndElement().getName().equals(this.xmlSecStartElement.getName())) {
 
-                        transformer.doFinal();
-                        try {
-                            bufferedDigestOutputStream.close();
-                        } catch (IOException e) {
-                            throw new XMLSecurityException(e);
-                        }
-                        String calculatedDigest =
-                            XMLUtils.encodeToString(this.digestOutputStream.getDigestValue());
-                        LOG.debug("Calculated Digest: {}", calculatedDigest);
-                        signaturePartDef.setDigestValue(calculatedDigest);
-
-                        outputProcessorChain.removeProcessor(this);
-                        //from now on signature is possible again
-                        setActiveInternalSignatureOutputProcessor(null);
+                    transformer.doFinal();
+                    try {
+                        bufferedDigestOutputStream.close();
+                    } catch (IOException e) {
+                        throw new XMLSecurityException(e);
                     }
-                    break;
+                    String calculatedDigest =
+                        XMLUtils.encodeToString(this.digestOutputStream.getDigestValue());
+                    LOG.debug("Calculated Digest: {}", calculatedDigest);
+                    signaturePartDef.setDigestValue(calculatedDigest);
+
+                    outputProcessorChain.removeProcessor(this);
+                    //from now on signature is possible again
+                    setActiveInternalSignatureOutputProcessor(null);
+                }
             }
             outputProcessorChain.processEvent(xmlSecEvent);
         }

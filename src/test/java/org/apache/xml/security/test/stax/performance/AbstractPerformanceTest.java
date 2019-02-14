@@ -136,10 +136,8 @@ public abstract class AbstractPerformanceTest {
         XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(fileInputStream);
         while (xmlStreamReader.hasNext()) {
             xmlStreamReader.next();
-            switch (xmlStreamReader.getEventType()) {
-                case XMLStreamConstants.START_ELEMENT:
-                    i++;
-                    break;
+            if (XMLStreamConstants.START_ELEMENT == xmlStreamReader.getEventType()) {
+                i++;
             }
         }
         xmlStreamReader.close();

@@ -66,110 +66,103 @@ public class TransformBase64Decode extends TransformIdentity {
     @Override
     public void transform(XMLSecEvent xmlSecEvent) throws XMLStreamException {
         int eventType = xmlSecEvent.getEventType();
-        switch (eventType) {
-            case XMLStreamConstants.CHARACTERS:
-                if (getOutputStream() != null) {
-                    //we have an output stream
-                    //encoding shouldn't matter here, because the data is Base64 encoded and is therefore in the ASCII range.
-                    try {
-                        getOutputStream().write(xmlSecEvent.asCharacters().getData().getBytes());
-                    } catch (IOException e) {
-                        throw new XMLStreamException(e);
-                    }
-                } else {
-                    //we have a child transformer
-                    if (childOutputMethod == null) {
+        if (XMLStreamConstants.CHARACTERS == eventType) {
+            if (getOutputStream() != null) {
+                //we have an output stream
+                //encoding shouldn't matter here, because the data is Base64 encoded and is therefore in the ASCII range.
+                try {
+                    getOutputStream().write(xmlSecEvent.asCharacters().getData().getBytes());
+                } catch (IOException e) {
+                    throw new XMLStreamException(e);
+                }
+            } else {
+                //we have a child transformer
+                if (childOutputMethod == null) {
 
-                        final XMLSecurityConstants.TransformMethod preferredChildTransformMethod =
-                                getTransformer().getPreferredTransformMethod(XMLSecurityConstants.TransformMethod.XMLSecEvent);
+                    final XMLSecurityConstants.TransformMethod preferredChildTransformMethod =
+                        getTransformer().getPreferredTransformMethod(XMLSecurityConstants.TransformMethod.XMLSecEvent);
 
-                        switch (preferredChildTransformMethod) {
-                            case XMLSecEvent: {
-                                childOutputMethod = new ChildOutputMethod() {
+                    if (preferredChildTransformMethod == XMLSecurityConstants.TransformMethod.XMLSecEvent) {
+                        childOutputMethod = new ChildOutputMethod() {
 
-                                    private UnsyncByteArrayOutputStream byteArrayOutputStream;
-                                    private Base64OutputStream base64OutputStream;
+                            private UnsyncByteArrayOutputStream byteArrayOutputStream;
+                            private Base64OutputStream base64OutputStream;
 
-                                    @Override
-                                    public void transform(Object object) throws XMLStreamException {
-                                        if (base64OutputStream == null) {
-                                            byteArrayOutputStream = new UnsyncByteArrayOutputStream();
-                                            base64OutputStream = new Base64OutputStream(byteArrayOutputStream, false);
-                                        }
-                                        try {
-                                            base64OutputStream.write((byte[]) object);
-                                        } catch (IOException e) {
-                                            throw new XMLStreamException(e);
-                                        }
-                                    }
-
-                                    @Override
-                                    public void doFinal() throws XMLStreamException {
-                                        try {
-                                            base64OutputStream.close();
-                                        } catch (IOException e) {
-                                            throw new XMLStreamException(e);
-                                        }
-
-                                        try (InputStream is = new UnsyncByteArrayInputStream(byteArrayOutputStream.toByteArray())) {
-                                            XMLEventReaderInputProcessor xmlEventReaderInputProcessor
-                                                = new XMLEventReaderInputProcessor(null,
-                                                                                   getXmlInputFactory().createXMLStreamReader(is)
-                                                );
-                                            XMLSecEvent xmlSecEvent;
-                                            do {
-                                                xmlSecEvent = xmlEventReaderInputProcessor.processNextEvent(null);
-                                                getTransformer().transform(xmlSecEvent);
-                                            } while (xmlSecEvent.getEventType() != XMLStreamConstants.END_DOCUMENT);
-                                        } catch (XMLSecurityException | IOException e) {
-                                            throw new XMLStreamException(e);
-                                        }
-                                        getTransformer().doFinal();
-                                    }
-                                };
-                                break;
+                            @Override
+                            public void transform(Object object) throws XMLStreamException {
+                                if (base64OutputStream == null) {
+                                    byteArrayOutputStream = new UnsyncByteArrayOutputStream();
+                                    base64OutputStream = new Base64OutputStream(byteArrayOutputStream, false);
+                                }
+                                try {
+                                    base64OutputStream.write((byte[]) object);
+                                } catch (IOException e) {
+                                    throw new XMLStreamException(e);
+                                }
                             }
-                            case InputStream: {
-                                childOutputMethod = new ChildOutputMethod() {
 
-                                    private UnsyncByteArrayOutputStream byteArrayOutputStream;
-                                    private Base64OutputStream base64OutputStream;
+                            @Override
+                            public void doFinal() throws XMLStreamException {
+                                try {
+                                    base64OutputStream.close();
+                                } catch (IOException e) {
+                                    throw new XMLStreamException(e);
+                                }
 
-                                    @Override
-                                    public void transform(Object object) throws XMLStreamException {
-                                        if (base64OutputStream == null) {
-                                            byteArrayOutputStream = new UnsyncByteArrayOutputStream();
-                                            base64OutputStream = new Base64OutputStream(byteArrayOutputStream, false);
-                                        }
-                                        try {
-                                            base64OutputStream.write((byte[]) object);
-                                        } catch (IOException e) {
-                                            throw new XMLStreamException(e);
-                                        }
-                                    }
-
-                                    @Override
-                                    public void doFinal() throws XMLStreamException {
-                                        try {
-                                            base64OutputStream.close();
-                                        } catch (IOException e) {
-                                            throw new XMLStreamException(e);
-                                        }
-                                        try (InputStream is = new UnsyncByteArrayInputStream(byteArrayOutputStream.toByteArray())) {
-                                            getTransformer().transform(is);
-                                            getTransformer().doFinal();
-                                        } catch (IOException ex) {
-                                            throw new XMLStreamException(ex);
-                                        }
-                                    }
-                                };
-                                break;
+                                try (InputStream is = new UnsyncByteArrayInputStream(byteArrayOutputStream.toByteArray())) {
+                                    XMLEventReaderInputProcessor xmlEventReaderInputProcessor
+                                    = new XMLEventReaderInputProcessor(null,
+                                                                       getXmlInputFactory().createXMLStreamReader(is)
+                                        );
+                                    XMLSecEvent xmlSecEvent;
+                                    do {
+                                        xmlSecEvent = xmlEventReaderInputProcessor.processNextEvent(null);
+                                        getTransformer().transform(xmlSecEvent);
+                                    } while (xmlSecEvent.getEventType() != XMLStreamConstants.END_DOCUMENT);
+                                } catch (XMLSecurityException | IOException e) {
+                                    throw new XMLStreamException(e);
+                                }
+                                getTransformer().doFinal();
                             }
-                        }
+                        };
+                    } else if (preferredChildTransformMethod == XMLSecurityConstants.TransformMethod.InputStream) {
+                        childOutputMethod = new ChildOutputMethod() {
+
+                            private UnsyncByteArrayOutputStream byteArrayOutputStream;
+                            private Base64OutputStream base64OutputStream;
+
+                            @Override
+                            public void transform(Object object) throws XMLStreamException {
+                                if (base64OutputStream == null) {
+                                    byteArrayOutputStream = new UnsyncByteArrayOutputStream();
+                                    base64OutputStream = new Base64OutputStream(byteArrayOutputStream, false);
+                                }
+                                try {
+                                    base64OutputStream.write((byte[]) object);
+                                } catch (IOException e) {
+                                    throw new XMLStreamException(e);
+                                }
+                            }
+
+                            @Override
+                            public void doFinal() throws XMLStreamException {
+                                try {
+                                    base64OutputStream.close();
+                                } catch (IOException e) {
+                                    throw new XMLStreamException(e);
+                                }
+                                try (InputStream is = new UnsyncByteArrayInputStream(byteArrayOutputStream.toByteArray())) {
+                                    getTransformer().transform(is);
+                                    getTransformer().doFinal();
+                                } catch (IOException ex) {
+                                    throw new XMLStreamException(ex);
+                                }
+                            }
+                        };
                     }
                     childOutputMethod.transform(xmlSecEvent.asCharacters().getData().getBytes());
                 }
-                break;
+            }
         }
     }
 

@@ -162,35 +162,33 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
             throws XMLStreamException, XMLSecurityException {
 
         XMLSecEvent xmlSecEvent = inputProcessorChain.processEvent();
-        switch (xmlSecEvent.getEventType()) {
-            case XMLStreamConstants.START_ELEMENT:
-                XMLSecStartElement xmlSecStartElement = xmlSecEvent.asStartElement();
-                List<ReferenceType> referenceTypes = resolvesResource(xmlSecStartElement);
-                if (!referenceTypes.isEmpty()) {
-                    for (int i = 0; i < referenceTypes.size(); i++) {
-                        ReferenceType referenceType = referenceTypes.get(i);
+        if (XMLStreamConstants.START_ELEMENT == xmlSecEvent.getEventType()) {
+            XMLSecStartElement xmlSecStartElement = xmlSecEvent.asStartElement();
+            List<ReferenceType> referenceTypes = resolvesResource(xmlSecStartElement);
+            if (!referenceTypes.isEmpty()) {
+                for (int i = 0; i < referenceTypes.size(); i++) {
+                    ReferenceType referenceType = referenceTypes.get(i);
 
-                        if (processedReferences.contains(referenceType)) {
-                            throw new XMLSecurityException("signature.Verification.MultipleIDs",
-                                                           new Object[] {referenceType.getURI()});
-                        }
-                        InternalSignatureReferenceVerifier internalSignatureReferenceVerifier =
-                                getSignatureReferenceVerifier(getSecurityProperties(), inputProcessorChain,
-                                        referenceType, xmlSecStartElement);
-                        if (!internalSignatureReferenceVerifier.isFinished()) {
-                            internalSignatureReferenceVerifier.processEvent(xmlSecEvent, inputProcessorChain);
-                            inputProcessorChain.addProcessor(internalSignatureReferenceVerifier);
-                        }
-                        processedReferences.add(referenceType);
-                        inputProcessorChain.getDocumentContext().setIsInSignedContent(
-                                inputProcessorChain.getProcessors().indexOf(internalSignatureReferenceVerifier),
-                                internalSignatureReferenceVerifier);
-
-                        processElementPath(internalSignatureReferenceVerifier.getStartElementPath(), inputProcessorChain,
-                                internalSignatureReferenceVerifier.getStartElement(), referenceType);
+                    if (processedReferences.contains(referenceType)) {
+                        throw new XMLSecurityException("signature.Verification.MultipleIDs",
+                                                       new Object[] {referenceType.getURI()});
                     }
+                    InternalSignatureReferenceVerifier internalSignatureReferenceVerifier =
+                        getSignatureReferenceVerifier(getSecurityProperties(), inputProcessorChain,
+                                                      referenceType, xmlSecStartElement);
+                    if (!internalSignatureReferenceVerifier.isFinished()) {
+                        internalSignatureReferenceVerifier.processEvent(xmlSecEvent, inputProcessorChain);
+                        inputProcessorChain.addProcessor(internalSignatureReferenceVerifier);
+                    }
+                    processedReferences.add(referenceType);
+                    inputProcessorChain.getDocumentContext().setIsInSignedContent(
+                        inputProcessorChain.getProcessors().indexOf(internalSignatureReferenceVerifier),
+                        internalSignatureReferenceVerifier);
+
+                    processElementPath(internalSignatureReferenceVerifier.getStartElementPath(), inputProcessorChain,
+                                       internalSignatureReferenceVerifier.getStartElement(), referenceType);
                 }
-                break;
+            }
         }
         return xmlSecEvent;
     }
@@ -454,32 +452,29 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
         }
 
         public void processEvent(XMLSecEvent xmlSecEvent, InputProcessorChain inputProcessorChain)
-                throws XMLStreamException, XMLSecurityException {
+            throws XMLStreamException, XMLSecurityException {
 
             getTransformer().transform(xmlSecEvent);
-            switch (xmlSecEvent.getEventType()) {
-                case XMLStreamConstants.START_ELEMENT:
-                    this.elementCounter++;
-                    break;
-                case XMLStreamConstants.END_ELEMENT:
-                    XMLSecEndElement xmlSecEndElement = xmlSecEvent.asEndElement();
-                    this.elementCounter--;
+            if (XMLStreamConstants.START_ELEMENT == xmlSecEvent.getEventType()) {
+                this.elementCounter++;
+            } else if (XMLStreamConstants.END_ELEMENT == xmlSecEvent.getEventType()) {
+                XMLSecEndElement xmlSecEndElement = xmlSecEvent.asEndElement();
+                this.elementCounter--;
 
-                    if (this.elementCounter == 0 && xmlSecEndElement.getName().equals(startElement.getName())) {
-                        getTransformer().doFinal();
-                        try {
-                            getBufferedDigestOutputStream().close();
-                        } catch (IOException e) {
-                            throw new XMLSecurityException(e);
-                        }
-
-                        compareDigest(this.getDigestOutputStream().getDigestValue(), getReferenceType());
-
-                        inputProcessorChain.removeProcessor(this);
-                        inputProcessorChain.getDocumentContext().unsetIsInSignedContent(this);
-                        setFinished(true);
+                if (this.elementCounter == 0 && xmlSecEndElement.getName().equals(startElement.getName())) {
+                    getTransformer().doFinal();
+                    try {
+                        getBufferedDigestOutputStream().close();
+                    } catch (IOException e) {
+                        throw new XMLSecurityException(e);
                     }
-                    break;
+
+                    compareDigest(this.getDigestOutputStream().getDigestValue(), getReferenceType());
+
+                    inputProcessorChain.removeProcessor(this);
+                    inputProcessorChain.getDocumentContext().unsetIsInSignedContent(this);
+                    setFinished(true);
+                }
             }
         }
 

@@ -285,13 +285,10 @@ public abstract class AbstractOutputProcessor implements OutputProcessor {
         createStartElementAndOutputAsEvent(outputProcessorChain, elementName, namespaces, attributes);
         Node childNode = element.getFirstChild();
         while (childNode != null) {
-            switch (childNode.getNodeType()) {
-                case Node.ELEMENT_NODE:
-                    outputDOMElement((Element) childNode, outputProcessorChain);
-                    break;
-                case Node.TEXT_NODE:
-                    createCharactersAndOutputAsEvent(outputProcessorChain, ((Text) childNode).getData());
-                    break;
+            if (Node.ELEMENT_NODE == childNode.getNodeType()) {
+                outputDOMElement((Element) childNode, outputProcessorChain);
+            } else if (Node.TEXT_NODE == childNode.getNodeType()) {
+                createCharactersAndOutputAsEvent(outputProcessorChain, ((Text) childNode).getData());
             }
             childNode = childNode.getNextSibling();
         }

@@ -174,17 +174,14 @@ public class XMLSecNamespaceImpl extends XMLSecEventBaseImpl implements XMLSecNa
         int idx = 0;
         while (i < length) {
             char c = text.charAt(i);
-            switch (c) {
-                case '&':
-                    writer.write(text, idx, i - idx);
-                    writer.write("&amp;");
-                    idx = i + 1;
-                    break;
-                case '"':
-                    writer.write(text, idx, i - idx);
-                    writer.write("&quot;");
-                    idx = i + 1;
-                    break;
+            if (c == '&') {
+                writer.write(text, idx, i - idx);
+                writer.write("&amp;");
+                idx = i + 1;
+            } else if (c == '"') {
+                writer.write(text, idx, i - idx);
+                writer.write("&quot;");
+                idx = i + 1;
             }
             i++;
         }

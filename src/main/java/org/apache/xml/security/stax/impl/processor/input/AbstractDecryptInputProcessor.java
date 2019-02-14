@@ -680,75 +680,72 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
             XMLSecEvent xmlSecEvent = XMLSecEventFactory.allocate(xmlStreamReader, parentXmlSecStartElement);
             //here we request the next XMLEvent from the decryption thread
             //instead from the processor-chain as we normally would do
-            switch (xmlSecEvent.getEventType()) {
-                case XMLStreamConstants.START_ELEMENT:
-                    currentXMLStructureDepth++;
-                    if (currentXMLStructureDepth > maximumAllowedXMLStructureDepth) {
-                        throw new XMLSecurityException(
-                                "secureProcessing.MaximumAllowedXMLStructureDepth",
-                                new Object[] {maximumAllowedXMLStructureDepth}
+            if (XMLStreamConstants.START_ELEMENT == xmlSecEvent.getEventType()) {
+                currentXMLStructureDepth++;
+                if (currentXMLStructureDepth > maximumAllowedXMLStructureDepth) {
+                    throw new XMLSecurityException(
+                                                   "secureProcessing.MaximumAllowedXMLStructureDepth",
+                                                   new Object[] {maximumAllowedXMLStructureDepth}
                         );
+                }
+
+                parentXmlSecStartElement = xmlSecEvent.asStartElement();
+                if (!rootElementProcessed) {
+                    handleEncryptedElement(inputProcessorChain, parentXmlSecStartElement, this.inboundSecurityToken, encryptedDataType);
+                    rootElementProcessed = true;
+                }
+            } else if (XMLStreamConstants.END_ELEMENT == xmlSecEvent.getEventType()) {
+                currentXMLStructureDepth--;
+
+                if (parentXmlSecStartElement != null) {
+                    parentXmlSecStartElement = parentXmlSecStartElement.getParentXMLSecStartElement();
+                }
+
+                if (xmlSecEvent.asEndElement().getName().equals(wrapperElementName)) {
+                    InputProcessorChain subInputProcessorChain = inputProcessorChain.createSubChain(this);
+
+                    //skip EncryptedHeader Element when we processed it.
+                    QName endElement;
+                    if (encryptedHeader) {
+                        endElement = XMLSecurityConstants.TAG_wsse11_EncryptedHeader;
+                    } else {
+                        endElement = XMLSecurityConstants.TAG_xenc_EncryptedData;
                     }
 
-                    parentXmlSecStartElement = xmlSecEvent.asStartElement();
-                    if (!rootElementProcessed) {
-                        handleEncryptedElement(inputProcessorChain, parentXmlSecStartElement, this.inboundSecurityToken, encryptedDataType);
-                        rootElementProcessed = true;
-                    }
-                    break;
-                case XMLStreamConstants.END_ELEMENT:
-                    currentXMLStructureDepth--;
-
-                    if (parentXmlSecStartElement != null) {
-                        parentXmlSecStartElement = parentXmlSecStartElement.getParentXMLSecStartElement();
-                    }
-
-                    if (xmlSecEvent.asEndElement().getName().equals(wrapperElementName)) {
-                        InputProcessorChain subInputProcessorChain = inputProcessorChain.createSubChain(this);
-
-                        //skip EncryptedHeader Element when we processed it.
-                        QName endElement;
-                        if (encryptedHeader) {
-                            endElement = XMLSecurityConstants.TAG_wsse11_EncryptedHeader;
-                        } else {
-                            endElement = XMLSecurityConstants.TAG_xenc_EncryptedData;
-                        }
-
-                        //read and discard XMLEvents until the EncryptedData structure
-                        XMLSecEvent endEvent;
-                        do {
-                            subInputProcessorChain.reset();
-                            if (headerEvent) {
-                                endEvent = subInputProcessorChain.processHeaderEvent();
-                            } else {
-                                endEvent = subInputProcessorChain.processEvent();
-                            }
-                        }
-                        while (!(endEvent.getEventType() == XMLStreamConstants.END_ELEMENT
-                                && endEvent.asEndElement().getName().equals(endElement)));
-
-                        inputProcessorChain.getDocumentContext().unsetIsInEncryptedContent(this);
-
-                        //...fetch the next (unencrypted) event
+                    //read and discard XMLEvents until the EncryptedData structure
+                    XMLSecEvent endEvent;
+                    do {
+                        subInputProcessorChain.reset();
                         if (headerEvent) {
-                            xmlSecEvent = inputProcessorChain.processHeaderEvent();
+                            endEvent = subInputProcessorChain.processHeaderEvent();
                         } else {
-                            xmlSecEvent = inputProcessorChain.processEvent();
+                            endEvent = subInputProcessorChain.processEvent();
                         }
-
-                        if (decryptionThread != null) {
-                            //wait until the decryption thread dies...
-                            try {
-                                decryptionThread.join();
-                            } catch (InterruptedException e) {
-                                throw new XMLStreamException(e);
-                            }
-                            //...and test again for an exception in the decryption thread.
-                            testAndThrowUncaughtException();
-                        }
-                        inputProcessorChain.removeProcessor(this);
                     }
-                    break;
+                    while (!(endEvent.getEventType() == XMLStreamConstants.END_ELEMENT
+                        && endEvent.asEndElement().getName().equals(endElement)));
+
+                    inputProcessorChain.getDocumentContext().unsetIsInEncryptedContent(this);
+
+                    //...fetch the next (unencrypted) event
+                    if (headerEvent) {
+                        xmlSecEvent = inputProcessorChain.processHeaderEvent();
+                    } else {
+                        xmlSecEvent = inputProcessorChain.processEvent();
+                    }
+
+                    if (decryptionThread != null) {
+                        //wait until the decryption thread dies...
+                        try {
+                            decryptionThread.join();
+                        } catch (InterruptedException e) {
+                            throw new XMLStreamException(e);
+                        }
+                        //...and test again for an exception in the decryption thread.
+                        testAndThrowUncaughtException();
+                    }
+                    inputProcessorChain.removeProcessor(this);
+                }
             }
             xmlStreamReader.next();
             return xmlSecEvent;

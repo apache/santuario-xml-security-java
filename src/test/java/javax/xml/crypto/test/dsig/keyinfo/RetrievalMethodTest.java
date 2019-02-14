@@ -92,13 +92,10 @@ public class RetrievalMethodTest {
         String type = "http://www.w3.org/2000/09/xmldsig#X509Data";
         RetrievalMethod rm = null;
         for (int i = 0; i < 2; i++) {
-            switch (i) {
-            case 0:
+            if (i == 0) {
                 rm = fac.newRetrievalMethod(uri);
-                break;
-            case 1:
+            } else if (i == 1) {
                 rm = fac.newRetrievalMethod(uri, type, null);
-                break;
             }
             try {
                 rm.isFeatureSupported(null);

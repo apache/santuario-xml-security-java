@@ -61,6 +61,7 @@
   </rule>
 
   <rule ref="category/java/performance.xml">
+     <exclude name="AddEmptyString" />
      <exclude name="AvoidInstantiatingObjectsInLoops" />
      <exclude name="ConsecutiveAppendsShouldReuse" />
      <exclude name="InefficientEmptyStringCheck" />
@@ -69,8 +70,6 @@
 
      <!-- To fix -->
      <exclude name="AvoidFileStream" />
-     <exclude name="AddEmptyString" />
-     <exclude name="TooFewBranchesForASwitchStatement" />
      <exclude name="RedundantFieldInitializer" />
   </rule>
 
