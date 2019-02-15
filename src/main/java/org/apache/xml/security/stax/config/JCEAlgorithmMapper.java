@@ -27,7 +27,7 @@ import org.apache.xml.security.configuration.JCEAlgorithmMappingsType;
 /**
  * Mapping between JCE id and xmlsec uri's for algorithms
  */
-public class JCEAlgorithmMapper extends JCEMapper {
+public final class JCEAlgorithmMapper extends JCEMapper {
 
     private JCEAlgorithmMapper() {
     }

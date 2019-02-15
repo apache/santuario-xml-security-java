@@ -35,7 +35,8 @@ import static org.junit.Assert.assertTrue;
  */
 public class IVSplittingOutputStreamTest {
 
-    private final String testString = "Within this class we test if the IVSplittingOutputStream works correctly under different conditions";
+    private static final String TEST_STR
+        = "Within this class we test if the IVSplittingOutputStream works correctly under different conditions";
 
     @Test
     public void testWriteBytes() throws Exception {
@@ -51,15 +52,15 @@ public class IVSplittingOutputStreamTest {
         IVSplittingOutputStream ivSplittingOutputStream = new IVSplittingOutputStream(byteArrayOutputStream, cipher, secretKey, ivSize);
         ReplaceableOuputStream replaceableOuputStream = new ReplaceableOuputStream(ivSplittingOutputStream);
         ivSplittingOutputStream.setParentOutputStream(replaceableOuputStream);
-        byte[] testBytes = testString.getBytes();
+        byte[] testBytes = TEST_STR.getBytes();
         for (int i = 0; i < testBytes.length; i++) {
             replaceableOuputStream.write(testBytes[i]);
         }
         replaceableOuputStream.close();
 
-        assertEquals(new String(ivSplittingOutputStream.getIv()), testString.substring(0, ivSize));
-        assertEquals(new String(byteArrayOutputStream.toByteArray()), testString.substring(ivSize));
-        assertEquals(new String(ivSplittingOutputStream.getIv()) + new String(byteArrayOutputStream.toByteArray()), testString);
+        assertEquals(new String(ivSplittingOutputStream.getIv()), TEST_STR.substring(0, ivSize));
+        assertEquals(new String(byteArrayOutputStream.toByteArray()), TEST_STR.substring(ivSize));
+        assertEquals(new String(ivSplittingOutputStream.getIv()) + new String(byteArrayOutputStream.toByteArray()), TEST_STR);
         assertTrue(ivSplittingOutputStream.isIVComplete());
     }
 
@@ -77,12 +78,12 @@ public class IVSplittingOutputStreamTest {
         IVSplittingOutputStream ivSplittingOutputStream = new IVSplittingOutputStream(byteArrayOutputStream, cipher, secretKey, ivSize);
         ReplaceableOuputStream replaceableOuputStream = new ReplaceableOuputStream(ivSplittingOutputStream);
         ivSplittingOutputStream.setParentOutputStream(replaceableOuputStream);
-        replaceableOuputStream.write(testString.getBytes());
+        replaceableOuputStream.write(TEST_STR.getBytes());
         replaceableOuputStream.close();
 
-        assertEquals(new String(ivSplittingOutputStream.getIv()), testString.substring(0, ivSize));
-        assertEquals(new String(byteArrayOutputStream.toByteArray()), testString.substring(ivSize));
-        assertEquals(new String(ivSplittingOutputStream.getIv()) + new String(byteArrayOutputStream.toByteArray()), testString);
+        assertEquals(new String(ivSplittingOutputStream.getIv()), TEST_STR.substring(0, ivSize));
+        assertEquals(new String(byteArrayOutputStream.toByteArray()), TEST_STR.substring(ivSize));
+        assertEquals(new String(ivSplittingOutputStream.getIv()) + new String(byteArrayOutputStream.toByteArray()), TEST_STR);
         assertTrue(ivSplittingOutputStream.isIVComplete());
     }
 
@@ -101,7 +102,7 @@ public class IVSplittingOutputStreamTest {
         ReplaceableOuputStream replaceableOuputStream = new ReplaceableOuputStream(ivSplittingOutputStream);
         ivSplittingOutputStream.setParentOutputStream(replaceableOuputStream);
 
-        byte[] testBytes = testString.getBytes();
+        byte[] testBytes = TEST_STR.getBytes();
         for (int i = 0; i < testBytes.length - ivSize; i += ivSize) {
             replaceableOuputStream.write(testBytes, i, ivSize);
         }
@@ -109,9 +110,9 @@ public class IVSplittingOutputStreamTest {
         replaceableOuputStream.write(testBytes, testBytes.length - testBytes.length % ivSize, testBytes.length % ivSize);
         replaceableOuputStream.close();
 
-        assertEquals(new String(ivSplittingOutputStream.getIv()), testString.substring(0, ivSize));
-        assertEquals(new String(byteArrayOutputStream.toByteArray()), testString.substring(ivSize));
-        assertEquals(new String(ivSplittingOutputStream.getIv()) + new String(byteArrayOutputStream.toByteArray()), testString);
+        assertEquals(new String(ivSplittingOutputStream.getIv()), TEST_STR.substring(0, ivSize));
+        assertEquals(new String(byteArrayOutputStream.toByteArray()), TEST_STR.substring(ivSize));
+        assertEquals(new String(ivSplittingOutputStream.getIv()) + new String(byteArrayOutputStream.toByteArray()), TEST_STR);
         assertTrue(ivSplittingOutputStream.isIVComplete());
     }
 
@@ -130,15 +131,15 @@ public class IVSplittingOutputStreamTest {
         ReplaceableOuputStream replaceableOuputStream = new ReplaceableOuputStream(ivSplittingOutputStream);
         ivSplittingOutputStream.setParentOutputStream(replaceableOuputStream);
 
-        byte[] testBytes = testString.getBytes();
+        byte[] testBytes = TEST_STR.getBytes();
         replaceableOuputStream.write(testBytes, 0, testBytes.length - ivSize);
         //write last part
         replaceableOuputStream.write(testBytes, testBytes.length - ivSize, ivSize);
         replaceableOuputStream.close();
 
-        assertEquals(new String(ivSplittingOutputStream.getIv()), testString.substring(0, ivSize));
-        assertEquals(new String(byteArrayOutputStream.toByteArray()), testString.substring(ivSize));
-        assertEquals(new String(ivSplittingOutputStream.getIv()) + new String(byteArrayOutputStream.toByteArray()), testString);
+        assertEquals(new String(ivSplittingOutputStream.getIv()), TEST_STR.substring(0, ivSize));
+        assertEquals(new String(byteArrayOutputStream.toByteArray()), TEST_STR.substring(ivSize));
+        assertEquals(new String(ivSplittingOutputStream.getIv()) + new String(byteArrayOutputStream.toByteArray()), TEST_STR);
         assertTrue(ivSplittingOutputStream.isIVComplete());
     }
 
@@ -157,7 +158,7 @@ public class IVSplittingOutputStreamTest {
         ReplaceableOuputStream replaceableOuputStream = new ReplaceableOuputStream(ivSplittingOutputStream);
         ivSplittingOutputStream.setParentOutputStream(replaceableOuputStream);
 
-        byte[] testBytes = testString.getBytes();
+        byte[] testBytes = TEST_STR.getBytes();
         for (int i = 0; i < testBytes.length - 4; i += 4) {
             replaceableOuputStream.write(testBytes, i, 4);
         }
@@ -165,9 +166,9 @@ public class IVSplittingOutputStreamTest {
         replaceableOuputStream.write(testBytes, testBytes.length - testBytes.length % 4, testBytes.length % 4);
         replaceableOuputStream.close();
 
-        assertEquals(new String(ivSplittingOutputStream.getIv()), testString.substring(0, ivSize));
-        assertEquals(new String(byteArrayOutputStream.toByteArray()), testString.substring(ivSize));
-        assertEquals(new String(ivSplittingOutputStream.getIv()) + new String(byteArrayOutputStream.toByteArray()), testString);
+        assertEquals(new String(ivSplittingOutputStream.getIv()), TEST_STR.substring(0, ivSize));
+        assertEquals(new String(byteArrayOutputStream.toByteArray()), TEST_STR.substring(ivSize));
+        assertEquals(new String(ivSplittingOutputStream.getIv()) + new String(byteArrayOutputStream.toByteArray()), TEST_STR);
         assertTrue(ivSplittingOutputStream.isIVComplete());
     }
 }

@@ -32,7 +32,7 @@ import java.util.Map;
  * Mapping between JCE id and xmlsec uri's for algorithms
  *
  */
-public class TransformerAlgorithmMapper {
+public final class TransformerAlgorithmMapper {
 
     private static Map<String, Class<?>> algorithmsClassMapInOut;
     private static Map<String, Class<?>> algorithmsClassMapIn;

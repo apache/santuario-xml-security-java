@@ -109,11 +109,7 @@ public class ResolverXPointer extends ResourceResolverSpi {
         if (context.uriToResolve == null) {
             return false;
         }
-        if (isXPointerSlash(context.uriToResolve) || isXPointerId(context.uriToResolve)) {
-            return true;
-        }
-
-        return false;
+        return isXPointerSlash(context.uriToResolve) || isXPointerId(context.uriToResolve);
     }
 
     /**
@@ -123,11 +119,7 @@ public class ResolverXPointer extends ResourceResolverSpi {
      * @return true if begins with xpointer
      */
     private static boolean isXPointerSlash(String uri) {
-        if ("#xpointer(/)".equals(uri)) {
-            return true;
-        }
-
-        return false;
+        return "#xpointer(/)".equals(uri);
     }
 
     /**

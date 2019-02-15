@@ -42,11 +42,11 @@ public class DEREncodedKeyValueTest {
     private static final String BASEDIR = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
     private static final String SEP = System.getProperty("file.separator");
 
+    private static final String ID_CONTROL = "abc123";
+
     private PublicKey rsaKeyControl;
     private PublicKey dsaKeyControl;
     private PublicKey ecKeyControl;
-
-    private final String idControl = "abc123";
 
     public DEREncodedKeyValueTest() throws Exception {
         rsaKeyControl = loadPublicKey("rsa.key", "RSA");
@@ -72,7 +72,7 @@ public class DEREncodedKeyValueTest {
         DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(element, "");
         assertEquals(rsaKeyControl, derEncodedKeyValue.getPublicKey());
         assertArrayEquals(rsaKeyControl.getEncoded(), derEncodedKeyValue.getBytesFromTextChild());
-        assertEquals(idControl, derEncodedKeyValue.getId());
+        assertEquals(ID_CONTROL, derEncodedKeyValue.getId());
     }
 
     @org.junit.Test
@@ -84,7 +84,7 @@ public class DEREncodedKeyValueTest {
         DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(element, "");
         assertEquals(dsaKeyControl, derEncodedKeyValue.getPublicKey());
         assertArrayEquals(dsaKeyControl.getEncoded(), derEncodedKeyValue.getBytesFromTextChild());
-        assertEquals(idControl, derEncodedKeyValue.getId());
+        assertEquals(ID_CONTROL, derEncodedKeyValue.getId());
     }
 
     @org.junit.Test
@@ -96,7 +96,7 @@ public class DEREncodedKeyValueTest {
         DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(element, "");
         assertEquals(ecKeyControl, derEncodedKeyValue.getPublicKey());
         assertArrayEquals(ecKeyControl.getEncoded(), derEncodedKeyValue.getBytesFromTextChild());
-        assertEquals(idControl, derEncodedKeyValue.getId());
+        assertEquals(ID_CONTROL, derEncodedKeyValue.getId());
     }
 
     @org.junit.Test
@@ -126,8 +126,8 @@ public class DEREncodedKeyValueTest {
         assertEquals("", derEncodedKeyValue.getId());
         assertNull(derEncodedKeyValue.getElement().getAttributeNodeNS(null, Constants._ATT_ID));
 
-        derEncodedKeyValue.setId(idControl);
-        assertEquals(idControl, derEncodedKeyValue.getId());
+        derEncodedKeyValue.setId(ID_CONTROL);
+        assertEquals(ID_CONTROL, derEncodedKeyValue.getId());
         assertTrue(derEncodedKeyValue.getElement().getAttributeNodeNS(null, Constants._ATT_ID).isId());
 
         derEncodedKeyValue.setId(null);

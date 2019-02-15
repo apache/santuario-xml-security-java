@@ -355,11 +355,7 @@ public class Reference extends SignatureElementProxy {
      * <code>Object</code>
      */
     public boolean typeIsReferenceToObject() {
-        if (Reference.OBJECT_URI.equals(this.getType())) {
-            return true;
-        }
-
-        return false;
+        return Reference.OBJECT_URI.equals(this.getType());
     }
 
     /**
@@ -372,11 +368,7 @@ public class Reference extends SignatureElementProxy {
      * {@link Manifest}
      */
     public boolean typeIsReferenceToManifest() {
-        if (Reference.MANIFEST_URI.equals(this.getType())) {
-            return true;
-        }
-
-        return false;
+        return Reference.MANIFEST_URI.equals(this.getType());
     }
 
     /**

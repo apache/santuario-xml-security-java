@@ -30,7 +30,7 @@ import java.util.List;
 
 /**
  */
-public class ResourceResolverMapper {
+public final class ResourceResolverMapper {
 
     private static List<ResourceResolverLookup> resourceResolvers;
 

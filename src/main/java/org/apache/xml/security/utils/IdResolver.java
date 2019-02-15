@@ -30,7 +30,7 @@ import org.w3c.dom.Element;
  * @deprecated
  */
 @Deprecated
-public class IdResolver {
+public final class IdResolver {
 
     private IdResolver() {
         // we don't allow instantiation

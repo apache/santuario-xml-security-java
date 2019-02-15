@@ -37,12 +37,12 @@ public class KeyInfoReferenceTest {
     private static final String BASEDIR = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
     private static final String SEP = System.getProperty("file.separator");
 
-    private final String idControl = "abc123";
-    private final String uriControl = "http://www.example.org/keyinfo.xml";
+    private static final String ID_CONTROL = "abc123";
+    private static final String URI_CONTROL = "http://www.example.org/keyinfo.xml";
 
     @org.junit.Test
     public void testSchema() throws Exception {
-        KeyInfoReference keyInfoReference = new KeyInfoReference(XMLUtils.newDocument(), uriControl);
+        KeyInfoReference keyInfoReference = new KeyInfoReference(XMLUtils.newDocument(), URI_CONTROL);
         Element element = keyInfoReference.getElement();
 
         assertEquals("http://www.w3.org/2009/xmldsig11#", element.getNamespaceURI());
@@ -56,24 +56,24 @@ public class KeyInfoReferenceTest {
         Element element = (Element) nl.item(0);
 
         KeyInfoReference keyInfoReference = new KeyInfoReference(element, "");
-        assertEquals(uriControl, keyInfoReference.getURI());
-        assertEquals(idControl, keyInfoReference.getId());
+        assertEquals(URI_CONTROL, keyInfoReference.getURI());
+        assertEquals(ID_CONTROL, keyInfoReference.getId());
     }
 
     @org.junit.Test
     public void testURIOnConstruction() throws Exception {
-        KeyInfoReference keyInfoReference = new KeyInfoReference(XMLUtils.newDocument(), uriControl);
-        assertEquals(uriControl, keyInfoReference.getURI());
+        KeyInfoReference keyInfoReference = new KeyInfoReference(XMLUtils.newDocument(), URI_CONTROL);
+        assertEquals(URI_CONTROL, keyInfoReference.getURI());
     }
 
     @org.junit.Test
     public void testId() throws Exception {
-        KeyInfoReference keyInfoReference = new KeyInfoReference(XMLUtils.newDocument(), uriControl);
+        KeyInfoReference keyInfoReference = new KeyInfoReference(XMLUtils.newDocument(), URI_CONTROL);
         assertEquals("", keyInfoReference.getId());
         assertNull(keyInfoReference.getElement().getAttributeNodeNS(null, Constants._ATT_ID));
 
-        keyInfoReference.setId(idControl);
-        assertEquals(idControl, keyInfoReference.getId());
+        keyInfoReference.setId(ID_CONTROL);
+        assertEquals(ID_CONTROL, keyInfoReference.getId());
         assertTrue(keyInfoReference.getElement().getAttributeNodeNS(null, Constants._ATT_ID).isId());
 
         keyInfoReference.setId(null);

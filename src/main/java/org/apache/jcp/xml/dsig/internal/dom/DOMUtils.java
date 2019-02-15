@@ -369,11 +369,9 @@ public final class DOMUtils {
         if (thisNode == otherNode) {
             return true;
         }
-        if (thisNode.getNodeType() != otherNode.getNodeType()) {
-            return false;
-        }
+
         // FIXME - test content, etc
-        return true;
+        return thisNode.getNodeType() == otherNode.getNodeType();
     }
 
     /**

@@ -39,17 +39,16 @@ public class XMLX509DigestTest {
     private static final String BASEDIR = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
     private static final String SEP = System.getProperty("file.separator");
 
+    private static final String ALG_URI_CONTROL = "http://www.w3.org/2001/04/xmlenc#sha256";
+    private static final String DIGEST_B64_CONTROL = "jToLQ/K7aaLHy/aXLFnjEfCwSQd9z0MrBOH6Ru/aJyY=";
+
     private X509Certificate certControl;
-
-    private final String algorithmURIControl = "http://www.w3.org/2001/04/xmlenc#sha256";
-
-    private final String digestBase64Control = "jToLQ/K7aaLHy/aXLFnjEfCwSQd9z0MrBOH6Ru/aJyY=";
     private final byte[] digestControl;
 
     public XMLX509DigestTest() throws Exception {
         certControl = loadCertificate("cert-X509Digest.crt");
 
-        digestControl = XMLUtils.decode(digestBase64Control);
+        digestControl = XMLUtils.decode(DIGEST_B64_CONTROL);
 
         if (!Init.isInitialized()) {
             Init.init();
@@ -58,7 +57,7 @@ public class XMLX509DigestTest {
 
     @org.junit.Test
     public void testSchema() throws Exception {
-        XMLX509Digest x509Digest = new XMLX509Digest(XMLUtils.newDocument(), digestControl, algorithmURIControl);
+        XMLX509Digest x509Digest = new XMLX509Digest(XMLUtils.newDocument(), digestControl, ALG_URI_CONTROL);
         Element element = x509Digest.getElement();
 
         assertEquals("http://www.w3.org/2009/xmldsig11#", element.getNamespaceURI());
@@ -72,27 +71,27 @@ public class XMLX509DigestTest {
         Element element = (Element) nl.item(0);
 
         XMLX509Digest x509Digest = new XMLX509Digest(element, "");
-        assertEquals(algorithmURIControl, x509Digest.getAlgorithm());
+        assertEquals(ALG_URI_CONTROL, x509Digest.getAlgorithm());
         assertArrayEquals(digestControl, x509Digest.getDigestBytes());
     }
 
     @org.junit.Test
     public void testDigestOnConstructionWithCert() throws Exception {
-        XMLX509Digest x509Digest = new XMLX509Digest(XMLUtils.newDocument(), certControl, algorithmURIControl);
-        assertEquals(algorithmURIControl, x509Digest.getAlgorithm());
+        XMLX509Digest x509Digest = new XMLX509Digest(XMLUtils.newDocument(), certControl, ALG_URI_CONTROL);
+        assertEquals(ALG_URI_CONTROL, x509Digest.getAlgorithm());
         assertArrayEquals(digestControl, x509Digest.getDigestBytes());
     }
 
     @org.junit.Test
     public void testDigestOnConstructionWithBytes() throws Exception {
-        XMLX509Digest x509Digest = new XMLX509Digest(XMLUtils.newDocument(), digestControl, algorithmURIControl);
-        assertEquals(algorithmURIControl, x509Digest.getAlgorithm());
+        XMLX509Digest x509Digest = new XMLX509Digest(XMLUtils.newDocument(), digestControl, ALG_URI_CONTROL);
+        assertEquals(ALG_URI_CONTROL, x509Digest.getAlgorithm());
         assertArrayEquals(digestControl, x509Digest.getDigestBytes());
     }
 
     @org.junit.Test
     public void testGetDigestBytesFromCert() throws Exception {
-        assertArrayEquals(digestControl, XMLX509Digest.getDigestBytesFromCert(certControl, algorithmURIControl));
+        assertArrayEquals(digestControl, XMLX509Digest.getDigestBytesFromCert(certControl, ALG_URI_CONTROL));
     }
 
 

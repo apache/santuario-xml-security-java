@@ -45,7 +45,7 @@ import org.w3c.dom.Node;
 /**
  * Defines the individual marshallers for each of the different javax.xml.crypto structures.
  */
-class Marshaller {
+final class Marshaller {
 
     private Marshaller() {
         // complete

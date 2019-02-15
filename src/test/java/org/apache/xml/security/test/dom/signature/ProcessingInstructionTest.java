@@ -133,10 +133,7 @@ public class ProcessingInstructionTest {
 
         @Override
         public boolean engineCanResolveURI(ResourceResolverContext context) {
-            if (context.uriToResolve == null || !"out.xml".equals(context.uriToResolve)) {
-                return false;
-            }
-            return true;
+            return !(context.uriToResolve == null || !"out.xml".equals(context.uriToResolve));
         }
 
         private static URI getNewURI(String uri, String baseURI) throws URISyntaxException {

@@ -33,7 +33,7 @@ import org.w3c.dom.Document;
  * MessageDigestAlgorithm.getInstance()
  * </pre>
  */
-public class MessageDigestAlgorithm extends Algorithm {
+public final class MessageDigestAlgorithm extends Algorithm {
 
     /** Message Digest - NOT RECOMMENDED MD5*/
     public static final String ALGO_ID_DIGEST_NOT_RECOMMENDED_MD5 =

@@ -39,7 +39,7 @@ import org.w3c.dom.Text;
  * @see org.apache.xml.security.transforms.implementations.TransformBase64Decode
  */
 @Deprecated
-public class Base64 {
+public final class Base64 {
 
     /** Field BASE64DEFAULTLENGTH */
     public static final int BASE64DEFAULTLENGTH = 76;
@@ -372,7 +372,7 @@ public class Base64 {
             return "";
         }
 
-        long fewerThan24bits = lengthDataBits % ((long) TWENTYFOURBITGROUP);
+        long fewerThan24bits = lengthDataBits % (TWENTYFOURBITGROUP);
         int numberTriplets = (int) (lengthDataBits / TWENTYFOURBITGROUP);
         int numberQuartet = fewerThan24bits != 0L ? numberTriplets + 1 : numberTriplets;
         int quartesPerLine = length / 4;

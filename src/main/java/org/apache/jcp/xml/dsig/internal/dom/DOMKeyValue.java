@@ -445,15 +445,11 @@ public abstract class DOMKeyValue<K extends PublicKey> extends BaseStructure imp
 
         private static boolean matchCurve(ECParameterSpec params, Curve curve) {
             int fieldSize = params.getCurve().getField().getFieldSize();
-            if (curve.getCurve().getField().getFieldSize() == fieldSize
+            return curve.getCurve().getField().getFieldSize() == fieldSize
                 && curve.getCurve().equals(params.getCurve())
                 && curve.getGenerator().equals(params.getGenerator())
                 && curve.getOrder().equals(params.getOrder())
-                && curve.getCofactor() == params.getCofactor()) {
-                return true;
-            } else {
-                return false;
-            }
+                && curve.getCofactor() == params.getCofactor();
         }
 
         @Override

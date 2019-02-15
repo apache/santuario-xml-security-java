@@ -81,7 +81,7 @@ public class SignatureValidator {
         boolean coreValidity = signature.validate(vc);
 
         // Check core validation status
-        if (coreValidity == false) {
+        if (!coreValidity) {
             // check the validation status of each Reference
             @SuppressWarnings("unchecked")
             Iterator<Reference> i = signature.getSignedInfo().getReferences().iterator();

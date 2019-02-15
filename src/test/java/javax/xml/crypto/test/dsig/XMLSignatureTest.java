@@ -188,7 +188,7 @@ public class XMLSignatureTest {
             validateContext = new DOMValidateContext
                 (VALIDATE_KEYS[i], doc.getDocumentElement());
             validateContext.setURIDereferencer(ud);
-            if (sig.validate(validateContext) == false) {
+            if (!sig.validate(validateContext)) {
                 status = false;
                 TestUtils.dumpDocument(doc, "signatureTest_out"+i+".xml");
             }
@@ -297,11 +297,11 @@ public class XMLSignatureTest {
             (VALIDATE_KEYS[1], doc.getDocumentElement());
         XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
 
-        if (sig.equals(sig2) == false) {
+        if (!sig.equals(sig2)) {
             throw new Exception
                 ("Unmarshalled signature is not equal to generated signature");
         }
-        if (sig2.validate(dvc) == false) {
+        if (!sig2.validate(dvc)) {
             throw new Exception("Validation of generated signature failed");
         }
     }

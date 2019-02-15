@@ -26,7 +26,7 @@ import java.util.ResourceBundle;
  * The Internationalization (I18N) pack.
  *
  */
-public class I18n {
+public final class I18n {
 
     /** Field NOT_INITIALIZED_MSG */
     public static final String NOT_INITIALIZED_MSG =

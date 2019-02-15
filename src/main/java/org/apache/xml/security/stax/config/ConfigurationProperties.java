@@ -28,7 +28,7 @@ import java.util.Properties;
  * Configuration Properties
  *
  */
-public class ConfigurationProperties {
+public final class ConfigurationProperties {
 
     private static Properties properties;
     private static Class<?> callingClass;

@@ -33,7 +33,7 @@ import org.w3c.dom.Text;
  * than the xfilter2.
  *
  */
-public class XPathFilterCHGPContainer extends ElementProxy implements TransformParam {
+public final class XPathFilterCHGPContainer extends ElementProxy implements TransformParam {
 
     public static final String TRANSFORM_XPATHFILTERCHGP =
         "http://www.nue.et-inf.uni-siegen.de/~geuer-pollmann/#xpathFilter";

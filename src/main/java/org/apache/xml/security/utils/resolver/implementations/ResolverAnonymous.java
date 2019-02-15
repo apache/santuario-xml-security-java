@@ -69,10 +69,7 @@ public class ResolverAnonymous extends ResourceResolverSpi {
      */
     @Override
     public boolean engineCanResolveURI(ResourceResolverContext context) {
-        if (context.uriToResolve == null) {
-            return true;
-        }
-        return false;
+        return context.uriToResolve == null;
     }
 
     /** {@inheritDoc} */

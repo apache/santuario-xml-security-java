@@ -562,10 +562,8 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
                 }
             }
         }
-        if (this.xpathNodeSet != null && !this.xpathNodeSet.contains(currentNode)) {
-            return false;
-        }
-        return true;
+
+        return this.xpathNodeSet == null || this.xpathNodeSet.contains(currentNode);
     }
 
     protected void handleParent(Element e, NameSpaceSymbTable ns) {

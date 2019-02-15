@@ -44,7 +44,7 @@ import org.apache.xml.security.stax.impl.stax.XMLSecStartElementImpl;
 
 /**
  */
-public class XMLSecEventFactory {
+public final class XMLSecEventFactory {
 
     private XMLSecEventFactory() {
     }

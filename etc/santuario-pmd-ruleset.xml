@@ -41,16 +41,41 @@
      <exclude name="MissingOverride" />
      <exclude name="OneDeclarationPerLine" />
      <exclude name="PreserveStackTrace" />
+     <exclude name="SwitchStmtsShouldHaveDefault" />
      <exclude name="SystemPrintln" />
      <exclude name="UnusedPrivateMethod" />
      <exclude name="UseAssertSameInsteadOfAssertTrue" />
      <exclude name="UseVarargs" />
-
-     <!-- To fix -->
-     <exclude name="SwitchStmtsShouldHaveDefault" />
   </rule>
 
-  <!-- TODO <rule ref="category/java/design.xml"> -->
+  <rule ref="category/java/design.xml" >
+     <exclude name="AvoidCatchingGenericException" />
+     <exclude name="AvoidDeeplyNestedIfStmts" />
+     <exclude name="AvoidRethrowingException" />
+     <exclude name="AvoidThrowingNullPointerException" />
+     <exclude name="AvoidThrowingRawExceptionTypes" />
+     <exclude name="CouplingBetweenObjects" />
+     <exclude name="CyclomaticComplexity" />
+     <exclude name="DataClass" />
+     <exclude name="ExceptionAsFlowControl" />
+     <exclude name="ExcessiveClassLength" />
+     <exclude name="ExcessiveImports" />
+     <exclude name="ExcessiveMethodLength" />
+     <exclude name="ExcessivePublicCount" />
+     <exclude name="GodClass" />
+     <exclude name="ImmutableField" />
+     <exclude name="LawOfDemeter" />
+     <exclude name="NcssCount" />
+     <exclude name="NPathComplexity" />
+     <exclude name="SignatureDeclareThrowsException" />
+     <exclude name="SingularField" />
+     <exclude name="SwitchDensity" />
+     <exclude name="TooManyFields" />
+     <exclude name="TooManyMethods" />
+     <exclude name="UseObjectForClearerAPI" />
+     <exclude name="UseUtilityClass" />
+  </rule>
+
   <!-- TODO <rule ref="category/java/errorprone.xml"> -->
 
   <rule ref="category/java/multithreading.xml">
@@ -63,14 +88,12 @@
   <rule ref="category/java/performance.xml">
      <exclude name="AddEmptyString" />
      <exclude name="AvoidInstantiatingObjectsInLoops" />
+     <exclude name="AvoidFileStream" />
      <exclude name="ConsecutiveAppendsShouldReuse" />
      <exclude name="InefficientEmptyStringCheck" />
      <exclude name="OptimizableToArrayCall" />
-     <exclude name="UseStringBufferForStringAppends" />
-
-     <!-- To fix -->
-     <exclude name="AvoidFileStream" />
      <exclude name="RedundantFieldInitializer" />
+     <exclude name="UseStringBufferForStringAppends" />
   </rule>
 
   <rule ref="category/java/security.xml" >

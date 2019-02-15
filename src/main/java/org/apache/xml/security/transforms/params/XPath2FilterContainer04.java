@@ -31,7 +31,7 @@ import org.w3c.dom.Node;
  *
  * @see <A HREF="http://www.w3.org/TR/xmldsig-filter2/">XPath Filter v2.0 (TR)</A>
  */
-public class XPath2FilterContainer04 extends ElementProxy implements TransformParam {
+public final class XPath2FilterContainer04 extends ElementProxy implements TransformParam {
 
     /** Field _ATT_FILTER */
     private static final String _ATT_FILTER = "Filter";

@@ -45,7 +45,7 @@ import org.xml.sax.InputSource;
 /**
  *
  */
-public class Canonicalizer {
+public final class Canonicalizer {
 
     /** The output encoding of canonicalized data */
     public static final String ENCODING = StandardCharsets.UTF_8.name();
