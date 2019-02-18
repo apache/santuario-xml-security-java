@@ -159,7 +159,6 @@ public class CreateInteropXFilter2Test {
         DOMSignContext dsc = new DOMSignContext(signingKey, document);
 
         sig.sign(dsc);
-        TestUtils.validateSecurityOrEncryptionElement(document.getLastChild());
 
         DOMValidateContext dvc = new DOMValidateContext
             (new KeySelectors.KeyValueKeySelector(), document.getLastChild());

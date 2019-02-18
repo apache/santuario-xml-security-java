@@ -147,7 +147,6 @@ public class CreateBaltimore23Test {
         DOMSignContext dsc = new DOMSignContext(signingKey, envelope);
 
         sig.sign(dsc);
-        TestUtils.validateSecurityOrEncryptionElement(envelope.getFirstChild());
 
         DOMValidateContext dvc = new DOMValidateContext
             (kvks, envelope.getFirstChild());
@@ -582,7 +581,6 @@ public class CreateBaltimore23Test {
         dsc.setURIDereferencer(ud);
 
         sig.sign(dsc);
-        TestUtils.validateSecurityOrEncryptionElement(ys.getLastChild());
 
         // DOM L2 does not support the creation of DOCTYPEs, so instead
         // we insert it before the document using a StringWriter
@@ -670,7 +668,6 @@ public class CreateBaltimore23Test {
         dsc.setURIDereferencer(ud);
 
         sig.sign(dsc);
-        TestUtils.validateSecurityOrEncryptionElement(doc.getDocumentElement());
 
         /*
         System.out.println("doc is:");
@@ -727,7 +724,6 @@ public class CreateBaltimore23Test {
         DOMSignContext dsc = new DOMSignContext(signingKey, doc);
 
         sig.sign(dsc);
-        TestUtils.validateSecurityOrEncryptionElement(doc.getDocumentElement());
 
         DOMValidateContext dvc = new DOMValidateContext
             (ks, doc.getDocumentElement());

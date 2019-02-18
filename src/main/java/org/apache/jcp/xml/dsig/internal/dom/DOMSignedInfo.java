@@ -25,6 +25,7 @@
 package org.apache.jcp.xml.dsig.internal.dom;
 
 import javax.xml.crypto.*;
+import javax.xml.crypto.dom.DOMCryptoContext;
 import javax.xml.crypto.dsig.*;
 
 import java.io.ByteArrayInputStream;
@@ -35,7 +36,9 @@ import java.io.IOException;
 import java.security.Provider;
 import java.util.*;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.UnsyncBufferedOutputStream;
 import org.apache.xml.security.utils.XMLUtils;
@@ -66,6 +69,7 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
     private CanonicalizationMethod canonicalizationMethod;
     private SignatureMethod signatureMethod;
     private String id;
+    private Document ownerDoc;
     private Element localSiElem;
     private InputStream canonData;
 
@@ -134,6 +138,7 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
     public DOMSignedInfo(Element siElem, XMLCryptoContext context, Provider provider)
         throws MarshalException {
         localSiElem = siElem;
+        ownerDoc = siElem.getOwnerDocument();
 
         // get Id attribute, if specified
         id = DOMUtils.getAttributeValue(siElem, "Id");
@@ -185,27 +190,22 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
         references = Collections.unmodifiableList(refList);
     }
 
-    @Override
     public CanonicalizationMethod getCanonicalizationMethod() {
         return canonicalizationMethod;
     }
 
-    @Override
     public SignatureMethod getSignatureMethod() {
         return signatureMethod;
     }
 
-    @Override
     public String getId() {
         return id;
     }
 
-    @Override
     public List<Reference> getReferences() {
         return references;
     }
 
-    @Override
     public InputStream getCanonicalizedData() {
         return canonData;
     }
@@ -246,32 +246,31 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
     }
 
     @Override
-    public void marshal(XmlWriter xwriter, String dsPrefix, XMLCryptoContext context)
+    public void marshal(Node parent, String dsPrefix, DOMCryptoContext context)
         throws MarshalException
     {
-        xwriter.writeStartElement(dsPrefix, "SignedInfo", XMLSignature.XMLNS);
-        XMLStructure siStruct = xwriter.getCurrentNodeAsStructure();
-        localSiElem = (Element) ((javax.xml.crypto.dom.DOMStructure) siStruct).getNode();
-
-        // append Id attribute
-        xwriter.writeIdAttribute("", "", "Id", id);
+        ownerDoc = DOMUtils.getOwnerDocument(parent);
+        Element siElem = DOMUtils.createElement(ownerDoc, "SignedInfo",
+                                                XMLSignature.XMLNS, dsPrefix);
 
         // create and append CanonicalizationMethod element
         DOMCanonicalizationMethod dcm =
             (DOMCanonicalizationMethod)canonicalizationMethod;
-        dcm.marshal(xwriter, dsPrefix, context);
+        dcm.marshal(siElem, dsPrefix, context);
 
         // create and append SignatureMethod element
-        ((AbstractDOMSignatureMethod)signatureMethod).marshal(xwriter, dsPrefix);
+        ((DOMStructure)signatureMethod).marshal(siElem, dsPrefix, context);
 
         // create and append Reference elements
         for (Reference reference : references) {
-            // TODO - either suppress warning here, or figure out how to get rid of the cast.
-            DOMReference domRef = (DOMReference)reference;
-            domRef.marshal(xwriter, dsPrefix, context);
+            ((DOMReference)reference).marshal(siElem, dsPrefix, context);
         }
 
-        xwriter.writeEndElement(); // "SignedInfo"
+        // append Id attribute
+        DOMUtils.setAttributeID(siElem, "Id", id);
+
+        parent.appendChild(siElem);
+        localSiElem = siElem;
     }
 
     @Override

@@ -33,12 +33,14 @@ import java.security.spec.AlgorithmParameterSpec;
 import javax.xml.crypto.Data;
 import javax.xml.crypto.MarshalException;
 import javax.xml.crypto.XMLCryptoContext;
+import javax.xml.crypto.dom.DOMCryptoContext;
 import javax.xml.crypto.dsig.Transform;
 import javax.xml.crypto.dsig.TransformException;
 import javax.xml.crypto.dsig.TransformService;
 import javax.xml.crypto.dsig.XMLSignature;
 import javax.xml.crypto.dsig.dom.DOMSignContext;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
@@ -46,7 +48,7 @@ import org.w3c.dom.Node;
  * DOM-based abstract implementation of Transform.
  *
  */
-public class DOMTransform extends BaseStructure implements Transform {
+public class DOMTransform extends DOMStructure implements Transform {
 
     protected TransformService spi;
 
@@ -70,6 +72,7 @@ public class DOMTransform extends BaseStructure implements Transform {
         throws MarshalException
     {
         String algorithm = DOMUtils.getAttributeValue(transElem, "Algorithm");
+
         if (provider == null) {
             try {
                 spi = TransformService.getInstance(algorithm, "DOM");
@@ -94,12 +97,10 @@ public class DOMTransform extends BaseStructure implements Transform {
         }
     }
 
-    @Override
     public final AlgorithmParameterSpec getParameterSpec() {
         return spi.getParameterSpec();
     }
 
-    @Override
     public final String getAlgorithm() {
         return spi.getAlgorithm();
     }
@@ -107,18 +108,29 @@ public class DOMTransform extends BaseStructure implements Transform {
     /**
      * This method marshals any algorithm-specific parameters.
      */
-    public void marshal(XmlWriter xwriter, String dsPrefix, XMLCryptoContext context)
+    @Override
+    public void marshal(Node parent, String dsPrefix, DOMCryptoContext context)
         throws MarshalException
     {
-        String parentLocalName = xwriter.getCurrentLocalName();
-        String localName = "Transforms".equals(parentLocalName) ? "Transform" : "CanonicalizationMethod";
-        xwriter.writeStartElement(dsPrefix, localName, XMLSignature.XMLNS);
-        xwriter.writeAttribute("", "", "Algorithm", getAlgorithm());
+        Document ownerDoc = DOMUtils.getOwnerDocument(parent);
 
-        javax.xml.crypto.XMLStructure xmlStruct = xwriter.getCurrentNodeAsStructure();
-        spi.marshalParams(xmlStruct, context);
+        Element transformElem = null;
+        if (parent.getLocalName().equals("Transforms")) {
+            transformElem = DOMUtils.createElement(ownerDoc, "Transform",
+                                                   XMLSignature.XMLNS,
+                                                   dsPrefix);
+        } else {
+            transformElem = DOMUtils.createElement(ownerDoc,
+                                                   "CanonicalizationMethod",
+                                                   XMLSignature.XMLNS,
+                                                   dsPrefix);
+        }
+        DOMUtils.setAttribute(transformElem, "Algorithm", getAlgorithm());
 
-        xwriter.writeEndElement(); // "Transforms" or "CanonicalizationMethod"
+        spi.marshalParams(new javax.xml.crypto.dom.DOMStructure(transformElem),
+                          context);
+
+        parent.appendChild(transformElem);
     }
 
     /**
@@ -132,7 +144,6 @@ public class DOMTransform extends BaseStructure implements Transform {
      * @throws XMLSignatureException if an unexpected error occurs while
      *    executing the transform
      */
-    @Override
     public Data transform(Data data, XMLCryptoContext xc)
         throws TransformException
     {
@@ -152,7 +163,6 @@ public class DOMTransform extends BaseStructure implements Transform {
      * @throws XMLSignatureException if an unexpected error occurs while
      *    executing the transform
      */
-    @Override
     public Data transform(Data data, XMLCryptoContext xc, OutputStream os)
         throws TransformException
     {
@@ -206,9 +216,8 @@ public class DOMTransform extends BaseStructure implements Transform {
     Data transform(Data data, XMLCryptoContext xc, DOMSignContext context)
         throws MarshalException, TransformException
     {
-        Node parent = context.getParent();
-        XmlWriter xwriter = new XmlWriterToTree(Marshaller.getMarshallers(), parent);
-        marshal(xwriter, DOMUtils.getSignaturePrefix(context), context);
+        marshal(context.getParent(),
+                DOMUtils.getSignaturePrefix(context), context);
         return transform(data, xc);
     }
 }

@@ -99,7 +99,9 @@ public final class DOMUtils {
     public static Element createElement(Document doc, String tag,
                                         String nsURI, String prefix)
     {
-        return doc.createElementNS(nsURI, getQNameString(prefix, tag));
+        String qName = (prefix == null || prefix.length() == 0)
+                       ? tag : prefix + ":" + tag;
+        return doc.createElementNS(nsURI, qName);
     }
 
     /**
@@ -294,25 +296,20 @@ public final class DOMUtils {
             this.nl = nl;
         }
 
-        @Override
         public int size() { return nl.getLength(); }
-        @Override
         public Iterator<Node> iterator() {
             return new Iterator<Node>() {
                 private int index;
 
-                @Override
                 public void remove() {
                     throw new UnsupportedOperationException();
                 }
-                @Override
                 public Node next() {
                     if (!hasNext()) {
                         throw new NoSuchElementException();
                     }
                     return nl.item(index++);
                 }
-                @Override
                 public boolean hasNext() {
                     return index < nl.getLength();
                 }
