@@ -99,7 +99,7 @@ public class Transforms extends SignatureElementProxy {
     private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(Transforms.class);
 
-    private Element[] transforms;
+    private Element[] transformsElement;
 
     protected Transforms() { }
 
@@ -296,7 +296,7 @@ public class Transforms extends SignatureElementProxy {
      */
     public int getLength() {
         initTransforms();
-        return transforms.length;
+        return transformsElement.length;
     }
 
     /**
@@ -310,15 +310,15 @@ public class Transforms extends SignatureElementProxy {
     public Transform item(int i) throws TransformationException {
         try {
             initTransforms();
-            return new Transform(transforms[i], this.baseURI);
+            return new Transform(transformsElement[i], this.baseURI);
         } catch (XMLSecurityException ex) {
             throw new TransformationException(ex);
         }
     }
 
     private void initTransforms() {
-        if (transforms == null) {
-            transforms = XMLUtils.selectDsNodes(getFirstChild(), "Transform");
+        if (transformsElement == null) {
+            transformsElement = XMLUtils.selectDsNodes(getFirstChild(), "Transform");
         }
     }
 

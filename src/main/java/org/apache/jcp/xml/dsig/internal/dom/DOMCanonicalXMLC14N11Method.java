@@ -64,9 +64,9 @@ public final class DOMCanonicalXMLC14N11Method extends ApacheCanonicalizer {
             DOMSubTreeData subTree = (DOMSubTreeData) data;
             if (subTree.excludeComments()) {
                 try {
-                    apacheCanonicalizer = Canonicalizer.getInstance(C14N_11);
+                    canonicalizer = Canonicalizer.getInstance(C14N_11);
                     boolean secVal = Utils.secureValidation(xc);
-                    apacheCanonicalizer.setSecureValidation(secVal);
+                    canonicalizer.setSecureValidation(secVal);
                 } catch (InvalidCanonicalizerException ice) {
                     throw new TransformException
                         ("Couldn't find Canonicalizer for: " +

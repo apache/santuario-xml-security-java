@@ -30,6 +30,7 @@ import org.w3c.dom.*;
 import javax.xml.crypto.test.KeySelectors;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.fail;
 
 
 public class SecureXSLTTest {
@@ -101,7 +102,7 @@ public class SecureXSLTTest {
         } finally {
             if (f.exists()) {
                 f.delete(); // cleanup file. comment out when debugging
-                throw new Exception("Test FAILED: doc.xml was successfully created");
+                fail("Test FAILED: doc.xml was successfully created");
             }
         }
     }

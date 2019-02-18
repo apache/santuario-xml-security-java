@@ -76,7 +76,38 @@
      <exclude name="UseUtilityClass" />
   </rule>
 
-  <!-- TODO <rule ref="category/java/errorprone.xml"> -->
+  <!-- TODO
+  <rule ref="category/java/errorprone.xml">
+     <exclude name="AssignmentInOperand" />
+     <exclude name="AssignmentToNonFinalStatic" />
+     <exclude name="AvoidBranchingStatementAsLastInLoop" />
+     <exclude name="AvoidAccessibilityAlteration" />
+     <exclude name="AvoidCatchingNPE" />
+     <exclude name="AvoidCatchingThrowable" />
+     <exclude name="AvoidDuplicateLiterals" />
+     <exclude name="AvoidFieldNameMatchingMethodName" />
+     <exclude name="AvoidLiteralsInIfCondition" />
+     <exclude name="BeanMembersShouldSerialize" />
+     <exclude name="CompareObjectsWithEquals" />
+     <exclude name="ConstructorCallsOverridableMethod" />
+     <exclude name="DataflowAnomalyAnalysis" />
+     <exclude name="DoNotCallGarbageCollectionExplicitly" />
+     <exclude name="DoNotCallSystemExit" />
+     <exclude name="EmptyCatchBlock" />
+     <exclude name="EmptyIfStmt" />
+     <exclude name="EmptySynchronizedBlock" />
+     <exclude name="InvalidSlf4jMessageFormat" />
+     <exclude name="JUnitSpelling" />
+     <exclude name="MissingBreakInSwitch" />
+     <exclude name="MissingSerialVersionUID" />
+     <exclude name="MoreThanOneLogger" />
+     <exclude name="NullAssignment" />
+     <exclude name="ReturnEmptyArrayRatherThanNull" />
+     <exclude name="TestClassWithoutTestCases" />
+     <exclude name="UseLocaleWithCaseConversions" />
+     <exclude name="UseProperClassLoader" />
+  </rule>
+  -->
 
   <rule ref="category/java/multithreading.xml">
      <exclude name="AvoidSynchronizedAtMethodLevel" />

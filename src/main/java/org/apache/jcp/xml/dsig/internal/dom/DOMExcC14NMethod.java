@@ -141,10 +141,10 @@ public final class DOMExcC14NMethod extends ApacheCanonicalizer {
             DOMSubTreeData subTree = (DOMSubTreeData)data;
             if (subTree.excludeComments()) {
                 try {
-                    apacheCanonicalizer = Canonicalizer.getInstance
+                    canonicalizer = Canonicalizer.getInstance
                         (CanonicalizationMethod.EXCLUSIVE);
                     boolean secVal = Utils.secureValidation(xc);
-                    apacheCanonicalizer.setSecureValidation(secVal);
+                    canonicalizer.setSecureValidation(secVal);
                 } catch (InvalidCanonicalizerException ice) {
                     throw new TransformException
                         ("Couldn't find Canonicalizer for: " +
