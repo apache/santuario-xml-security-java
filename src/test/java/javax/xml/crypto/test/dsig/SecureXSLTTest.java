@@ -78,7 +78,7 @@ public class SecureXSLTTest {
 
     private void testSignature(File signatureFile) throws Exception {
 
-        XMLSignatureFactory fac = XMLSignatureFactory.getInstance("DOM");
+        XMLSignatureFactory fac = XMLSignatureFactory.getInstance("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
         File f = new File("doc.xml");
 
         Document doc =

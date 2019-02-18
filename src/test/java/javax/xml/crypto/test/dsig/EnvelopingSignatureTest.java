@@ -56,7 +56,6 @@ import org.w3c.dom.Element;
  * A test for Enveloping XML Signature
  */
 // TODO
-@org.junit.Ignore
 public class EnvelopingSignatureTest {
 
     private KeyPair rsaKeyPair;
@@ -81,7 +80,8 @@ public class EnvelopingSignatureTest {
         DBF.setNamespaceAware(true);
         Document document = DBF.newDocumentBuilder().parse(sourceDocument);
 
-        XMLSignatureFactory fac = XMLSignatureFactory.getInstance("DOM");
+        XMLSignatureFactory fac =
+            XMLSignatureFactory.getInstance("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
         DigestMethod digestMethod = fac.newDigestMethod(DigestMethod.SHA1, null);
         Reference reference = fac.newReference("#data", digestMethod);
 
