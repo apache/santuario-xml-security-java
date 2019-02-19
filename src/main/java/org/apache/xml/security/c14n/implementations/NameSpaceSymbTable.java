@@ -60,7 +60,7 @@ public class NameSpaceSymbTable {
         level = new ArrayList<>();
         //Insert the default binding for xmlns.
         try {
-            symb = (SymbMap) initialMap.clone();
+            symb = initialMap.clone();
         } catch (CloneNotSupportedException e) {
             LOG.error("Error cloning the initial map");
         }
@@ -77,7 +77,7 @@ public class NameSpaceSymbTable {
             NameSpaceSymbEntry n = it.next();
             //put them rendered?
             if (!n.rendered && n.n != null) {
-                n = (NameSpaceSymbEntry) n.clone();
+                n = n.clone();
                 needsClone();
                 symb.put(n.prefix, n);
                 n.lastrendered = n.uri;
@@ -136,7 +136,7 @@ public class NameSpaceSymbTable {
         if (!cloned) {
             level.set(level.size() - 1, symb);
             try {
-                symb = (SymbMap) symb.clone();
+                symb = symb.clone();
             } catch (CloneNotSupportedException e) {
                 LOG.error("Error cloning the symbol map");
             }
@@ -162,7 +162,7 @@ public class NameSpaceSymbTable {
             return null;
         }
         // Mark this entry as render.
-        entry = (NameSpaceSymbEntry) entry.clone();
+        entry = entry.clone();
         needsClone();
         symb.put(prefix, entry);
         entry.rendered = true;
@@ -230,7 +230,7 @@ public class NameSpaceSymbTable {
 
         if (ob != null && uri.equals(ob.uri)) {
             if (!ob.rendered) {
-                ob = (NameSpaceSymbEntry) ob.clone();
+                ob = ob.clone();
                 needsClone();
                 symb.put(prefix, ob);
                 ob.lastrendered = uri;
@@ -311,9 +311,9 @@ class NameSpaceSymbEntry implements Cloneable {
     }
 
     /** {@inheritDoc} */
-    public Object clone() {
+    public NameSpaceSymbEntry clone() { //NOPMD
         try {
-            return super.clone();
+            return (NameSpaceSymbEntry)super.clone();
         } catch (CloneNotSupportedException e) {
             return null;
         }
@@ -398,7 +398,7 @@ class SymbMap implements Cloneable {
     }
 
     @Override
-    protected Object clone() throws CloneNotSupportedException  {
+    public SymbMap clone() throws CloneNotSupportedException  {
         SymbMap copy = (SymbMap) super.clone();
         copy.entries = new NameSpaceSymbEntry[entries.length];
         System.arraycopy(entries, 0, copy.entries, 0, entries.length);

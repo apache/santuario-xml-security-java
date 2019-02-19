@@ -125,14 +125,11 @@ public class PGPDataTest {
     public void testisFeatureSupported() {
         PGPData pd = null;
         for (int i = 0; i < 3; i++) {
-            switch (i) {
-            case 0:
+            if (i == 0) {
                 pd = fac.newPGPData(values[0]);
-                break;
-            case 1:
+            } else if (i == 1) {
                 pd = fac.newPGPData(values[0], values[1], null);
-                break;
-            case 2:
+            } else {
                 pd = fac.newPGPData(values[1], null);
             }
             try {

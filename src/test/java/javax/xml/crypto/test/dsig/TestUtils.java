@@ -288,7 +288,7 @@ public class TestUtils {
         }
 
         public byte[] getCalculatedDigestValue() {
-            return null;
+            return new byte[0];
         }
 
         public DigestMethod getDigestMethod() { return DIG_METHOD; }

@@ -156,7 +156,7 @@ public class KeyInfoTest {
 
             @Override
             public byte[] getEncoded() {
-                return null;
+                return new byte[0];
             }
 
             @Override

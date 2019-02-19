@@ -154,7 +154,7 @@ public final class XMLUtils {
         if (rootNode == exclude) {
             return;
         }
-        switch (rootNode.getNodeType()) {
+        switch (rootNode.getNodeType()) { //NOPMD
         case Node.ELEMENT_NODE:
             result.add(rootNode);
             Element el = (Element)rootNode;
@@ -179,14 +179,14 @@ public final class XMLUtils {
                 }
                 getSetRec(r, result, exclude, com);
             }
-            return;
+            break;
         case Node.COMMENT_NODE:
             if (com) {
                 result.add(rootNode);
             }
-            return;
+            break;
         case Node.DOCUMENT_TYPE_NODE:
-            return;
+            break;
         default:
             result.add(rootNode);
         }

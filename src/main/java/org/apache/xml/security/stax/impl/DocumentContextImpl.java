@@ -101,8 +101,8 @@ public class DocumentContextImpl implements DocumentContext, Cloneable {
     }
 
     @Override
-    protected DocumentContextImpl clone() throws CloneNotSupportedException {
-        DocumentContextImpl documentContext = new DocumentContextImpl();
+    public DocumentContextImpl clone() throws CloneNotSupportedException {
+        DocumentContextImpl documentContext = (DocumentContextImpl)super.clone();
         documentContext.setEncoding(this.encoding);
         documentContext.setBaseURI(this.baseURI);
         documentContext.setContentTypeMap(getContentTypeMap());

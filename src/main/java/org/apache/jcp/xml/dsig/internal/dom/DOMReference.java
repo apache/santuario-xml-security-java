@@ -545,7 +545,7 @@ public final class DOMReference extends DOMStructure
             throw new XMLSignatureException(e);
         } catch (org.apache.xml.security.c14n.CanonicalizationException e) {
             throw new XMLSignatureException(e);
-        } finally {
+        } finally { //NOPMD
             if (dos != null) {
                 try {
                     dos.close();
