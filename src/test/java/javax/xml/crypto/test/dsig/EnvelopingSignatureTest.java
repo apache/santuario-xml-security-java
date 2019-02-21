@@ -39,6 +39,7 @@ import javax.xml.crypto.dsig.XMLObject;
 import javax.xml.crypto.dsig.XMLSignature;
 import javax.xml.crypto.dsig.XMLSignatureFactory;
 import javax.xml.crypto.dsig.dom.DOMSignContext;
+import javax.xml.crypto.dsig.dom.DOMValidateContext;
 import javax.xml.crypto.dsig.keyinfo.KeyInfo;
 import javax.xml.crypto.dsig.keyinfo.KeyInfoFactory;
 import javax.xml.crypto.dsig.keyinfo.KeyValue;
@@ -121,6 +122,19 @@ public class EnvelopingSignatureTest {
             (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
         assertNotNull(signedElement);
         assertEquals("Object", signedElement.getParentNode().getLocalName());
+
+        // validate signature
+        DOMValidateContext dvc = new DOMValidateContext
+            (rsaKeyPair.getPublic(), document.getDocumentElement());
+        XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
+
+        if (!signature.equals(sig2)) {
+            throw new Exception
+                ("Unmarshalled signature is not equal to generated signature");
+        }
+        if (!sig2.validate(dvc)) {
+            throw new Exception("Validation of generated signature failed");
+        }
     }
 
     @Test
@@ -158,5 +172,18 @@ public class EnvelopingSignatureTest {
                                                "signature", null);
         DOMSignContext dsc = new DOMSignContext(rsaKeyPair.getPrivate(), doc);       
         sig.sign(dsc);
+
+        // validate signature
+        DOMValidateContext dvc = new DOMValidateContext
+            (rsaKeyPair.getPublic(), doc.getDocumentElement());
+        XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
+
+        if (!sig.equals(sig2)) {
+            throw new Exception
+                ("Unmarshalled signature is not equal to generated signature");
+        }
+        if (!sig2.validate(dvc)) {
+            throw new Exception("Validation of generated signature failed");
+        }
     }
 }
