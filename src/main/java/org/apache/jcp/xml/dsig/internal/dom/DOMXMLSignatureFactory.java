@@ -50,24 +50,20 @@ public final class DOMXMLSignatureFactory extends XMLSignatureFactory {
      */
     public DOMXMLSignatureFactory() {}
 
-    @Override
     public XMLSignature newXMLSignature(SignedInfo si, KeyInfo ki) {
         return new DOMXMLSignature(si, ki, null, null, null);
     }
 
-    @Override
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public XMLSignature newXMLSignature(SignedInfo si, KeyInfo ki,
         List objects, String id, String signatureValueId) {
         return new DOMXMLSignature(si, ki, objects, id, signatureValueId);
     }
 
-    @Override
     public Reference newReference(String uri, DigestMethod dm) {
         return newReference(uri, dm, null, null, null);
     }
 
-    @Override
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public Reference newReference(String uri, DigestMethod dm, List transforms,
         String type, String id) {
@@ -92,7 +88,6 @@ public final class DOMXMLSignatureFactory extends XMLSignatureFactory {
             (uri, type, dm, appliedTransforms, result, transforms, id, getProvider());
     }
 
-    @Override
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public Reference newReference(String uri, DigestMethod dm, List transforms,
         String type, String id, byte[] digestValue) {
@@ -103,14 +98,12 @@ public final class DOMXMLSignatureFactory extends XMLSignatureFactory {
             (uri, type, dm, null, null, transforms, id, digestValue, getProvider());
     }
 
-    @Override
     @SuppressWarnings({ "rawtypes" })
     public SignedInfo newSignedInfo(CanonicalizationMethod cm,
         SignatureMethod sm, List references) {
         return newSignedInfo(cm, sm, references, null);
     }
 
-    @Override
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public SignedInfo newSignedInfo(CanonicalizationMethod cm,
         SignatureMethod sm, List references, String id) {
@@ -118,39 +111,33 @@ public final class DOMXMLSignatureFactory extends XMLSignatureFactory {
     }
 
     // Object factory methods
-    @Override
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public XMLObject newXMLObject(List content, String id, String mimeType,
         String encoding) {
         return new DOMXMLObject(content, id, mimeType, encoding);
     }
 
-    @Override
     @SuppressWarnings({ "rawtypes" })
     public Manifest newManifest(List references) {
         return newManifest(references, null);
     }
 
-    @Override
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public Manifest newManifest(List references, String id) {
         return new DOMManifest(references, id);
     }
 
-    @Override
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public SignatureProperties newSignatureProperties(List props, String id) {
         return new DOMSignatureProperties(props, id);
     }
 
-    @Override
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public SignatureProperty newSignatureProperty
         (List info, String target, String id) {
         return new DOMSignatureProperty(info, target, id);
     }
 
-    @Override
     public XMLSignature unmarshalXMLSignature(XMLValidateContext context)
         throws MarshalException {
 
@@ -160,7 +147,6 @@ public final class DOMXMLSignatureFactory extends XMLSignatureFactory {
         return unmarshal(((DOMValidateContext) context).getNode(), context);
     }
 
-    @Override
     public XMLSignature unmarshalXMLSignature(XMLStructure xmlStructure)
         throws MarshalException {
 
@@ -208,7 +194,6 @@ public final class DOMXMLSignatureFactory extends XMLSignatureFactory {
         }
     }
 
-    @Override
     public boolean isFeatureSupported(String feature) {
         if (feature == null) {
             throw new NullPointerException();
@@ -217,7 +202,6 @@ public final class DOMXMLSignatureFactory extends XMLSignatureFactory {
         }
     }
 
-    @Override
     public DigestMethod newDigestMethod(String algorithm,
         DigestMethodParameterSpec params) throws NoSuchAlgorithmException,
         InvalidAlgorithmParameterException {
@@ -251,7 +235,6 @@ public final class DOMXMLSignatureFactory extends XMLSignatureFactory {
         }
     }
 
-    @Override
     public SignatureMethod newSignatureMethod(String algorithm,
         SignatureMethodParameterSpec params) throws NoSuchAlgorithmException,
         InvalidAlgorithmParameterException {
@@ -315,7 +298,6 @@ public final class DOMXMLSignatureFactory extends XMLSignatureFactory {
         }
     }
 
-    @Override
     public Transform newTransform(String algorithm,
         TransformParameterSpec params) throws NoSuchAlgorithmException,
         InvalidAlgorithmParameterException {
@@ -335,7 +317,6 @@ public final class DOMXMLSignatureFactory extends XMLSignatureFactory {
         return new DOMTransform(spi);
     }
 
-    @Override
     public Transform newTransform(String algorithm,
         XMLStructure params) throws NoSuchAlgorithmException,
         InvalidAlgorithmParameterException {
@@ -358,7 +339,6 @@ public final class DOMXMLSignatureFactory extends XMLSignatureFactory {
         return new DOMTransform(spi);
     }
 
-    @Override
     public CanonicalizationMethod newCanonicalizationMethod(String algorithm,
         C14NMethodParameterSpec params) throws NoSuchAlgorithmException,
         InvalidAlgorithmParameterException {
@@ -377,7 +357,6 @@ public final class DOMXMLSignatureFactory extends XMLSignatureFactory {
         return new DOMCanonicalizationMethod(spi);
     }
 
-    @Override
     public CanonicalizationMethod newCanonicalizationMethod(String algorithm,
         XMLStructure params) throws NoSuchAlgorithmException,
         InvalidAlgorithmParameterException {
@@ -400,7 +379,6 @@ public final class DOMXMLSignatureFactory extends XMLSignatureFactory {
         return new DOMCanonicalizationMethod(spi);
     }
 
-    @Override
     public URIDereferencer getURIDereferencer() {
         return DOMURIDereferencer.INSTANCE;
     }

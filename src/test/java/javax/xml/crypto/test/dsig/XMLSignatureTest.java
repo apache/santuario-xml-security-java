@@ -180,7 +180,6 @@ public class XMLSignatureTest {
             signContext = new DOMSignContext(SIGN_KEYS[i], doc);
             signContext.setURIDereferencer(ud);
             sig.sign(signContext);
-            TestUtils.validateSecurityOrEncryptionElement(doc.getDocumentElement());
             validateContext = new DOMValidateContext
                 (VALIDATE_KEYS[i], doc.getDocumentElement());
             validateContext.setURIDereferencer(ud);
@@ -216,7 +215,6 @@ public class XMLSignatureTest {
             signContext.setURIDereferencer(ud);
             try {
                 sig.sign(signContext);
-                // note - don't bother validating the returned XML here, because there shouldn't be any.
                 fail("Should have failed because TestProvider does not " +
                      "support " + SIGN_KEYS[i].getAlgorithm());
             } catch (Exception e) {
@@ -237,7 +235,6 @@ public class XMLSignatureTest {
         signContext.putNamespacePrefix(XMLSignature.XMLNS, "");
         signContext.setURIDereferencer(ud);
         sig.sign(signContext);
-        TestUtils.validateSecurityOrEncryptionElement(doc.getDocumentElement());
 /*
         StringWriter sw = new StringWriter();
         dumpDocument(doc, sw);
@@ -281,7 +278,6 @@ public class XMLSignatureTest {
         DOMSignContext dsc = new DOMSignContext(SIGN_KEYS[1], doc);
 
         sig.sign(dsc);
-        TestUtils.validateSecurityOrEncryptionElement(doc.getDocumentElement());
 
 /*
         StringWriter sw = new StringWriter();
@@ -333,7 +329,6 @@ public class XMLSignatureTest {
         // remove the signature node (since it will get recreated)
         parent.removeChild(domSignature.getNode());
         newSignature.sign(signContext);
-        TestUtils.validateSecurityOrEncryptionElement(parent.getLastChild());
 
         // check that Object element retained namespace definitions
         Element objElem = (Element)parent.getFirstChild().getLastChild();

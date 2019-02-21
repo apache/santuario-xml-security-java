@@ -366,7 +366,6 @@ public abstract class ElementProxy {
         if (n != null) {
             return new BigInteger(1, XMLUtils.decode(XMLUtils.getFullTextChildrenFromNode(n)));
         }
-
         return null;
     }
 

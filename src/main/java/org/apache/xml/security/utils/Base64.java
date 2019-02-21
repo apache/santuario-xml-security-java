@@ -144,7 +144,8 @@ public class Base64 {
      * @return String with Base64 encoding
      */
     public static final String encode(BigInteger big) {
-        return encode(getBytes(big, big.bitLength()));
+        byte[] bytes = XMLUtils.getBytes(big, big.bitLength());
+        return XMLUtils.encodeToString(bytes);
     }
 
     /**
@@ -210,9 +211,9 @@ public class Base64 {
      * @return a decoded BigInteger
      * @throws Base64DecodingException
      */
-    public static BigInteger decodeBigIntegerFromString(String base64str)
-            throws Base64DecodingException {
-        return new BigInteger(1, Base64.decode(base64str));
+    public static final BigInteger decodeBigIntegerFromText(Text text)
+        throws Base64DecodingException {
+        return new BigInteger(1, Base64.decode(text.getData()));
     }
 
     /**

@@ -25,10 +25,13 @@
 package org.apache.jcp.xml.dsig.internal.dom;
 
 import javax.xml.crypto.*;
+import javax.xml.crypto.dom.DOMCryptoContext;
 import javax.xml.crypto.dsig.*;
 
 import java.util.*;
 
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
@@ -36,7 +39,7 @@ import org.w3c.dom.Node;
  * DOM-based implementation of SignatureProperties.
  *
  */
-public final class DOMSignatureProperties extends BaseStructure
+public final class DOMSignatureProperties extends DOMStructure
     implements SignatureProperties {
 
     private final String id;
@@ -54,7 +57,7 @@ public final class DOMSignatureProperties extends BaseStructure
      * @throws IllegalArgumentException if <code>properties</code> is empty
      * @throws NullPointerException if <code>properties</code>
      */
-    public DOMSignatureProperties(List<DOMSignatureProperty> properties,
+    public DOMSignatureProperties(List<? extends SignatureProperty> properties,
                                   String id)
     {
         if (properties == null) {
@@ -84,7 +87,13 @@ public final class DOMSignatureProperties extends BaseStructure
         throws MarshalException
     {
         // unmarshal attributes
-        id = DOMUtils.getIdAttributeValue(propsElem, "Id");
+        Attr attr = propsElem.getAttributeNodeNS(null, "Id");
+        if (attr != null) {
+            id = attr.getValue();
+            propsElem.setIdAttributeNode(attr, true);
+        } else {
+            id = null;
+        }
 
         List<SignatureProperty> newProperties = new ArrayList<>();
         Node firstChild = propsElem.getFirstChild();
@@ -107,32 +116,34 @@ public final class DOMSignatureProperties extends BaseStructure
         }
     }
 
-    @Override
     public List<SignatureProperty> getProperties() {
         return properties;
     }
 
-    @Override
     public String getId() {
         return id;
     }
 
-    public static void marshal(XmlWriter xwriter, SignatureProperties sigProps, String dsPrefix, XMLCryptoContext context)
+    @Override
+    public void marshal(Node parent, String dsPrefix, DOMCryptoContext context)
         throws MarshalException
     {
-        xwriter.writeStartElement(dsPrefix, "SignatureProperties", XMLSignature.XMLNS);
+        Document ownerDoc = DOMUtils.getOwnerDocument(parent);
+        Element propsElem = DOMUtils.createElement(ownerDoc,
+                                                   "SignatureProperties",
+                                                   XMLSignature.XMLNS,
+                                                   dsPrefix);
 
         // set attributes
-        xwriter.writeIdAttribute("", "", "Id", sigProps.getId());
+        DOMUtils.setAttributeID(propsElem, "Id", id);
 
         // create and append any properties
-        @SuppressWarnings("unchecked")
-        List<SignatureProperty> properties = sigProps.getProperties();
         for (SignatureProperty property : properties) {
-            DOMSignatureProperty.marshal(xwriter, property, dsPrefix, context);
+            ((DOMSignatureProperty)property).marshal(propsElem, dsPrefix,
+                                                     context);
         }
 
-        xwriter.writeEndElement(); // "SignatureProperties"
+        parent.appendChild(propsElem);
     }
 
     @Override

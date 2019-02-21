@@ -311,7 +311,6 @@ public class CreateInteropXMLDSig11Test {
         dsc.setDefaultNamespacePrefix("dsig");
 
         sig.sign(dsc);
-        TestUtils.validateSecurityOrEncryptionElement(doc.getDocumentElement());
 
         DOMValidateContext dvc = new DOMValidateContext
         (ks, doc.getDocumentElement());

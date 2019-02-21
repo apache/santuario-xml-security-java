@@ -40,7 +40,6 @@ import org.apache.xml.security.c14n.InvalidCanonicalizerException;
  */
 public final class DOMCanonicalXMLC14NMethod extends ApacheCanonicalizer {
 
-    @Override
     public void init(TransformParameterSpec params)
         throws InvalidAlgorithmParameterException {
         if (params != null) {
@@ -49,7 +48,6 @@ public final class DOMCanonicalXMLC14NMethod extends ApacheCanonicalizer {
         }
     }
 
-    @Override
     public Data transform(Data data, XMLCryptoContext xc)
         throws TransformException {
 
