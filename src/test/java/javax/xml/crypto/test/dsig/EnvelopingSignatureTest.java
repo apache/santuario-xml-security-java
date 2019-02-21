@@ -55,10 +55,12 @@ import org.w3c.dom.Element;
 /**
  * A test for Enveloping XML Signature
  */
-// TODO
 public class EnvelopingSignatureTest {
 
     private KeyPair rsaKeyPair;
+    private XMLSignatureFactory fac;
+    private KeyInfoFactory kif;
+    private DocumentBuilderFactory dbf;
 
     static {
         Security.insertProviderAt(new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI(), 1);
@@ -68,6 +70,11 @@ public class EnvelopingSignatureTest {
         KeyPairGenerator rsaKpg = KeyPairGenerator.getInstance("RSA");
         rsaKpg.initialize(2048);
         rsaKeyPair = rsaKpg.genKeyPair();
+        fac = XMLSignatureFactory.getInstance("DOM",
+            new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
+        dbf = DocumentBuilderFactory.newInstance();
+        dbf.setNamespaceAware(true);
+        kif = fac.getKeyInfoFactory();
     }
 
     @Test
@@ -76,17 +83,12 @@ public class EnvelopingSignatureTest {
         InputStream sourceDocument =
             this.getClass().getClassLoader().getResourceAsStream(
                 "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        DocumentBuilderFactory DBF = DocumentBuilderFactory.newInstance();
-        DBF.setNamespaceAware(true);
-        Document document = DBF.newDocumentBuilder().parse(sourceDocument);
+        Document document = dbf.newDocumentBuilder().parse(sourceDocument);
 
-        XMLSignatureFactory fac =
-            XMLSignatureFactory.getInstance("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
         DigestMethod digestMethod = fac.newDigestMethod(DigestMethod.SHA1, null);
         Reference reference = fac.newReference("#data", digestMethod);
 
         // Create a KeyInfo and add the KeyValue to it
-        KeyInfoFactory kif = fac.getKeyInfoFactory();
         KeyValue kv = kif.newKeyValue(rsaKeyPair.getPublic());
         KeyInfo ki = kif.newKeyInfo(Collections.singletonList(kv));
 
@@ -121,4 +123,40 @@ public class EnvelopingSignatureTest {
         assertEquals("Object", signedElement.getParentNode().getLocalName());
     }
 
+    @Test
+    public void enveloping_dom_level1() throws Exception {
+        // create reference
+        DigestMethod sha256 = fac.newDigestMethod(DigestMethod.SHA256, null);
+        Reference ref = fac.newReference("#object", sha256);
+
+        // create SignedInfo
+        CanonicalizationMethod withoutComments =
+            fac.newCanonicalizationMethod(CanonicalizationMethod.INCLUSIVE,
+                (C14NMethodParameterSpec) null);
+        SignatureMethod rsaSha256 =
+            fac.newSignatureMethod(SignatureMethod.RSA_SHA1, null);
+        SignedInfo si = fac.newSignedInfo(withoutComments, rsaSha256,
+            Collections.singletonList(ref));
+
+        // create object using DOM Level 1 methods
+        Document doc = dbf.newDocumentBuilder().newDocument();
+        Element child = doc.createElement("Child");
+        child.setAttribute("Version", "1.0");
+        child.setAttribute("Id", "child");
+        child.setIdAttribute("Id", true);
+        child.appendChild(doc.createComment("Comment"));
+        XMLObject obj = fac.newXMLObject(
+            Collections.singletonList(new DOMStructure(child)),
+            "object", null, "UTF-8");
+      
+        // Create a KeyInfo and add the KeyValue to it
+        KeyValue kv = kif.newKeyValue(rsaKeyPair.getPublic());
+        KeyInfo ki = kif.newKeyInfo(Collections.singletonList(kv));
+        // Perform the signature
+        XMLSignature sig = fac.newXMLSignature(si, ki,
+                                               Collections.singletonList(obj),
+                                               "signature", null);
+        DOMSignContext dsc = new DOMSignContext(rsaKeyPair.getPrivate(), doc);       
+        sig.sign(dsc);
+    }
 }
