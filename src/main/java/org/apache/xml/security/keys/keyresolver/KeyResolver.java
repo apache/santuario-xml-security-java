@@ -29,6 +29,7 @@ import javax.crypto.SecretKey;
 
 import org.apache.xml.security.keys.keyresolver.implementations.DEREncodedKeyValueResolver;
 import org.apache.xml.security.keys.keyresolver.implementations.DSAKeyValueResolver;
+import org.apache.xml.security.keys.keyresolver.implementations.ECKeyValueResolver;
 import org.apache.xml.security.keys.keyresolver.implementations.KeyInfoReferenceResolver;
 import org.apache.xml.security.keys.keyresolver.implementations.RSAKeyValueResolver;
 import org.apache.xml.security.keys.keyresolver.implementations.RetrievalMethodResolver;
@@ -288,6 +289,7 @@ public class KeyResolver {
         keyResolverList.add(new KeyResolver(new DEREncodedKeyValueResolver()));
         keyResolverList.add(new KeyResolver(new KeyInfoReferenceResolver()));
         keyResolverList.add(new KeyResolver(new X509DigestResolver()));
+        keyResolverList.add(new KeyResolver(new ECKeyValueResolver()));
 
         resolverVector.addAll(keyResolverList);
     }

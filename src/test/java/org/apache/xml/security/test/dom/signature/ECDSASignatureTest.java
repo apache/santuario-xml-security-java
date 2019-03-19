@@ -23,8 +23,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
 import java.security.KeyStore;
 import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.cert.X509Certificate;
 
 import javax.xml.xpath.XPath;
@@ -56,8 +59,6 @@ public class ECDSASignatureTest {
         "src/test/resources/org/apache/xml/security/samples/input/ecdsa.jks";
     private static final String ECDSA_JKS_PASSWORD = "security";
 
-    private KeyStore keyStore;
-
     public ECDSASignatureTest() throws Exception {
 
         //String id = "http://apache.org/xml/properties/dom/document-class-name";
@@ -75,11 +76,14 @@ public class ECDSASignatureTest {
             return;
         }
 
-        keyStore = KeyStore.getInstance("JKS");
+        KeyStore keyStore = KeyStore.getInstance("JKS");
         keyStore.load(new FileInputStream(ECDSA_JKS), ECDSA_JKS_PASSWORD.toCharArray());
 
-        doVerify(doSign());
-        doVerify(doSign());
+        PrivateKey privateKey =
+            (PrivateKey)keyStore.getKey("ECDSA", ECDSA_JKS_PASSWORD.toCharArray());
+
+        doVerify(doSign(privateKey, (X509Certificate)keyStore.getCertificate("ECDSA"), null));
+        doVerify(doSign(privateKey, (X509Certificate)keyStore.getCertificate("ECDSA"), null));
     }
 
     // Failing with more recent BouncyCastle libraries
@@ -102,9 +106,23 @@ public class ECDSASignatureTest {
         }
     }
 
-    private byte[] doSign() throws Exception {
-        PrivateKey privateKey =
-            (PrivateKey)keyStore.getKey("ECDSA", ECDSA_JKS_PASSWORD.toCharArray());
+    @org.junit.Test
+    public void testKeyValue() throws Exception {
+        //
+        // This test fails with the IBM JDK
+        //
+        if ("IBM Corporation".equals(System.getProperty("java.vendor"))) {
+            return;
+        }
+
+        KeyPairGenerator ecKpg = KeyPairGenerator.getInstance("EC");
+        ecKpg.initialize(256);
+        KeyPair ecKeyPair = ecKpg.genKeyPair();
+
+        doVerify(doSign(ecKeyPair.getPrivate(), null, ecKeyPair.getPublic()));
+    }
+
+    private byte[] doSign(PrivateKey privateKey, X509Certificate x509, PublicKey publicKey) throws Exception {
         org.w3c.dom.Document doc = XMLUtils.newDocument();
         doc.appendChild(doc.createComment(" Comment before "));
         Element root = doc.createElementNS("", "RootElement");
@@ -130,8 +148,11 @@ public class ECDSASignatureTest {
         transforms.addTransform(Transforms.TRANSFORM_C14N_WITH_COMMENTS);
         sig.addDocument("", transforms, Constants.ALGO_ID_DIGEST_SHA1);
 
-        X509Certificate x509 = (X509Certificate)keyStore.getCertificate("ECDSA");
-        sig.addKeyInfo(x509);
+        if (x509 != null) {
+            sig.addKeyInfo(x509);
+        } else {
+            sig.addKeyInfo(publicKey);
+        }
         sig.sign(privateKey);
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -165,11 +186,11 @@ public class ECDSASignatureTest {
             throw new RuntimeException("No keyinfo");
         }
         X509Certificate cert = signature.getKeyInfo().getX509Certificate();
-
-        if (cert == null) {
-            throw new RuntimeException("No certificate");
+        if (cert != null) {
+            assertTrue(signature.checkSignatureValue(cert));
+        } else {
+            assertTrue(signature.checkSignatureValue(signature.getKeyInfo().getPublicKey()));
         }
-        assertTrue(signature.checkSignatureValue(cert) );
     }
 
     private File makeDataFile(String relPath) {
@@ -253,6 +274,6 @@ public class ECDSASignatureTest {
         );
 
     }
-    */
+     */
 
 }
