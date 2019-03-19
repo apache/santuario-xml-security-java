@@ -493,8 +493,9 @@ public abstract class ElementProxy {
 
         if (Constants.SignatureSpecNS.equals(namespace)) {
             XMLUtils.setDsPrefix(prefix);
-        }
-        if (EncryptionConstants.EncryptionSpecNS.equals(namespace)) {
+        } else if (Constants.SignatureSpec11NS.equals(namespace)) {
+            XMLUtils.setDs11Prefix(prefix);
+        } else if (EncryptionConstants.EncryptionSpecNS.equals(namespace)) {
             XMLUtils.setXencPrefix(prefix);
         }
         prefixMappings.put(namespace, prefix);
@@ -514,6 +515,7 @@ public abstract class ElementProxy {
         setNamespacePrefix(
             "http://www.nue.et-inf.uni-siegen.de/~geuer-pollmann/#xpathFilter", "xx"
         );
+        setNamespacePrefix("http://www.w3.org/2009/xmldsig11#", "dsig11");
     }
 
     /**
