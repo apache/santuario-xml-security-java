@@ -167,6 +167,7 @@ public class XMLSecurityStreamReader implements XMLStreamReader {
                 case SPACE:
                 case COMMENT:
                 case PROCESSING_INSTRUCTION:
+                case START_DOCUMENT:
                     continue;
                 case CDATA:
                 case CHARACTERS:
