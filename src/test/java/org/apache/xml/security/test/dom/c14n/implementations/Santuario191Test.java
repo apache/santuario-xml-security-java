@@ -18,18 +18,19 @@
  */
 package org.apache.xml.security.test.dom.c14n.implementations;
 
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
+import javax.xml.parsers.DocumentBuilder;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.apache.xml.security.c14n.implementations.Canonicalizer11_OmitComments;
 import org.apache.xml.security.utils.XMLUtils;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * This is a test for Santuario-191:
@@ -54,6 +55,8 @@ public class Santuario191Test {
       + "    <user2>Bob</user2>"
       + "</data>";
 
+    private DocumentBuilder db;
+
     static {
         org.apache.xml.security.Init.init();
     }
@@ -63,9 +66,10 @@ public class Santuario191Test {
         //
         // Parse the Data
         //
+        db = XMLUtils.createDocumentBuilder(false);
         Document doc = null;
         try (InputStream is = new ByteArrayInputStream(INPUT_DATA.getBytes(StandardCharsets.UTF_8))) {
-            doc = XMLUtils.read(is, false);
+            doc = db.parse(is);
         }
 
         //
@@ -80,7 +84,7 @@ public class Santuario191Test {
         //
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         out.write(result);
-        assertEquals(EXPECTED_RESULT, out.toString(StandardCharsets.UTF_8.name()));
+        assertTrue(EXPECTED_RESULT.equals(out.toString(StandardCharsets.UTF_8.name())));
     }
 
 }

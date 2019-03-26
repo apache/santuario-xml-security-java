@@ -162,7 +162,7 @@ public final class DOMReference extends DOMStructure
         }
         this.digestMethod = dm;
         this.uri = uri;
-        if (uri != null && !uri.isEmpty()) {
+        if (uri != null && !uri.equals("")) {
             try {
                 new URI(uri);
             } catch (URISyntaxException e) {
@@ -193,7 +193,7 @@ public final class DOMReference extends DOMStructure
         // unmarshal Transforms, if specified
         Element nextSibling = DOMUtils.getFirstChildElement(refElem);
         List<Transform> newTransforms = new ArrayList<>(MAXIMUM_TRANSFORM_COUNT);
-        if ("Transforms".equals(nextSibling.getLocalName())
+        if (nextSibling.getLocalName().equals("Transforms")
             && XMLSignature.XMLNS.equals(nextSibling.getNamespaceURI())) {
             Element transformElem = DOMUtils.getFirstChildElement(nextSibling,
                                                                   "Transform",
@@ -219,7 +219,7 @@ public final class DOMReference extends DOMStructure
             }
             nextSibling = DOMUtils.getNextSiblingElement(nextSibling);
         }
-        if (!"DigestMethod".equals(nextSibling.getLocalName())
+        if (!nextSibling.getLocalName().equals("DigestMethod")
             && XMLSignature.XMLNS.equals(nextSibling.getNamespaceURI())) {
             throw new MarshalException("Invalid element name: " +
                                        nextSibling.getLocalName() +
@@ -545,7 +545,7 @@ public final class DOMReference extends DOMStructure
             throw new XMLSignatureException(e);
         } catch (org.apache.xml.security.c14n.CanonicalizationException e) {
             throw new XMLSignatureException(e);
-        } finally { //NOPMD
+        } finally {
             if (dos != null) {
                 try {
                     dos.close();

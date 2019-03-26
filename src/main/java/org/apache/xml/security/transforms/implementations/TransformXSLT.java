@@ -85,7 +85,7 @@ public class TransformXSLT extends TransformSpi {
                     XMLUtils.selectNode(transformElement.getFirstChild(), XSLTSpecNS, "transform", 0);
             }
             if (xsltElement == null) {
-                Object[] exArgs = { "xslt:stylesheet", "Transform" };
+                Object exArgs[] = { "xslt:stylesheet", "Transform" };
 
                 throw new TransformationException("xml.WrongContent", exArgs);
             }

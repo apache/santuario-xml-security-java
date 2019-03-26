@@ -18,12 +18,11 @@
  */
 package org.apache.xml.security.test.dom.keys.content.x509;
 
+import static org.junit.Assert.assertEquals;
 
 import org.apache.xml.security.keys.content.x509.XMLX509IssuerSerial;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * XMLX509IssuerSerial tests.
@@ -34,7 +33,7 @@ public class XMLX509IssuerSerialTest {
     private Document doc;
 
     public XMLX509IssuerSerialTest() throws Exception {
-        doc = XMLUtils.newDocument();
+        doc = XMLUtils.createDocumentBuilder(false).newDocument();
     }
 
     @org.junit.Test

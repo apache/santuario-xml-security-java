@@ -21,14 +21,9 @@
  */
 package javax.xml.crypto.test.dsig.keyinfo;
 
+import static org.junit.Assert.*;
 
 import javax.xml.crypto.dsig.keyinfo.*;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-
 
 /**
  * Unit test for javax.xml.crypto.dsig.keyinfo.KeyName
@@ -68,6 +63,6 @@ public class KeyNameTest {
             fail("Should raise a NPE for null feature");
         } catch (NullPointerException npe) {}
 
-        assertFalse(kn.isFeatureSupported("not supported"));
+        assertTrue(!kn.isFeatureSupported("not supported"));
     }
 }

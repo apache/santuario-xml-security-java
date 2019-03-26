@@ -18,13 +18,11 @@
  */
 package org.apache.xml.security.test.dom.encryption;
 
+import static org.junit.Assert.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
@@ -41,7 +39,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESedeKeySpec;
 import javax.crypto.spec.SecretKeySpec;
-import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.DocumentBuilder;
 
 import org.apache.xml.security.algorithms.JCEMapper;
 import org.apache.xml.security.c14n.Canonicalizer;
@@ -61,12 +59,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
 
 /**
  *
@@ -633,7 +625,9 @@ public class XMLCipherTest {
     public void testSameDocumentCipherReference() throws Exception {
 
         if (haveISOPadding) {
-            Document d = XMLUtils.newDocument();
+            DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+
+            Document d = db.newDocument();
 
             Element docElement = d.createElement("EncryptedDoc");
             d.appendChild(docElement);
@@ -704,6 +698,8 @@ public class XMLCipherTest {
     public void testPhysicalRepresentation() throws Exception {
 
         if (haveISOPadding) {
+            DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+
             byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes();
             DESedeKeySpec keySpec = new DESedeKeySpec(bits192);
             SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
@@ -714,7 +710,7 @@ public class XMLCipherTest {
             final String DATA1 = "<ns:root xmlns:ns=\"ns.com\"><ns:elem xmlns:ns2=\"ns2.com\">11</ns:elem></ns:root>";
             Document doc = null;
             try (InputStream is = new ByteArrayInputStream(DATA1.getBytes(StandardCharsets.UTF_8))) {
-                doc = XMLUtils.read(is, false);
+                doc = db.parse(is);
             }
             Element elem = (Element)doc.getDocumentElement().getFirstChild();
 
@@ -740,7 +736,7 @@ public class XMLCipherTest {
             // Test default namespace undeclaration is preserved
             final String DATA2 = "<ns:root xmlns=\"defns.com\" xmlns:ns=\"ns.com\"><elem xmlns=\"\">11</elem></ns:root>";
             try (InputStream is = new ByteArrayInputStream(DATA2.getBytes(StandardCharsets.UTF_8))) {
-                doc = XMLUtils.read(is, false);
+                doc = db.parse(is);
             }
             elem = (Element)doc.getDocumentElement().getFirstChild();
 
@@ -767,9 +763,9 @@ public class XMLCipherTest {
             // Other c14n algorithms add a newline after comments and PIs, when they are before or after the document element.
             final String DATA3 = "<root><!--comment1--><?pi1 target1?><elem/><!--comment2--><?pi2 target2?></root>";
             try (InputStream is = new ByteArrayInputStream(DATA3.getBytes(StandardCharsets.UTF_8))) {
-                doc = XMLUtils.read(is, false);
+                doc = db.parse(is);
             }
-            elem = doc.getDocumentElement();
+            elem = (Element)doc.getDocumentElement();
 
             dataCipher = XMLCipher.getInstance(XMLCipher.TRIPLEDES);
             dataCipher.init(XMLCipher.ENCRYPT_MODE, secretKey);
@@ -864,7 +860,8 @@ public class XMLCipherTest {
         }
         File f = new File(filename);
 
-        Document document = XMLUtils.read(new FileInputStream(f), false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(f);
 
         XMLCipher keyCipher = XMLCipher.getInstance();
         keyCipher.init(XMLCipher.UNWRAP_MODE, null);
@@ -984,9 +981,18 @@ public class XMLCipherTest {
         return baos.toString(StandardCharsets.UTF_8.name());
     }
 
-    private Document document() throws FileNotFoundException, ParserConfigurationException, SAXException, IOException {
-        File f = new File(documentName);
-        return XMLUtils.read(new FileInputStream(f), false);
+    private Document document() {
+        Document d = null;
+        try {
+            DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+            File f = new File(documentName);
+            d = db.parse(f);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(-1);
+        }
+
+        return d;
     }
 
     private String element() {
@@ -994,7 +1000,16 @@ public class XMLCipherTest {
     }
 
     private int index() {
-        return Integer.parseInt(elementIndex);
+        int result = -1;
+
+        try {
+            result = Integer.parseInt(elementIndex);
+        } catch (NumberFormatException nfe) {
+            nfe.printStackTrace();
+            System.exit(-1);
+        }
+
+        return result;
     }
 
 }

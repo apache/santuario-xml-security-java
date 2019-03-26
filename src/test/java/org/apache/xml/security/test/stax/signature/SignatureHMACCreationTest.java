@@ -83,7 +83,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
     public void testHMACSHA1() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
@@ -117,7 +117,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         // Verify using DOM
@@ -128,7 +128,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
     public void testHMACSHA_224() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
@@ -162,7 +162,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         // Verify using DOM
@@ -173,7 +173,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
     public void testHMACSHA_256() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
@@ -207,7 +207,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         // Verify using DOM
@@ -218,7 +218,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
     public void testHMACSHA_384() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
@@ -252,7 +252,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         // Verify using DOM
@@ -263,7 +263,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
     public void testHMACSHA_512() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
@@ -297,7 +297,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         // Verify using DOM
@@ -310,7 +310,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
@@ -344,7 +344,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         // Verify using DOM

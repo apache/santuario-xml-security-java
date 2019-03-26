@@ -141,7 +141,7 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
             return;
         }
         // result will contain the attrs which have to be output
-        SortedSet<Attr> result = new TreeSet<>(COMPARE);
+        SortedSet<Attr> result = new TreeSet<Attr>(COMPARE);
 
         if (element.hasAttributes()) {
             NamedNodeMap attrs = element.getAttributes();
@@ -164,7 +164,7 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
                         //Render the ns definition
                         result.add((Attr)n);
                         if (C14nHelper.namespaceIsRelative(attribute)) {
-                            Object[] exArgs = { element.getTagName(), NName, attribute.getNodeValue() };
+                            Object exArgs[] = { element.getTagName(), NName, attribute.getNodeValue() };
                             throw new CanonicalizationException(
                                 "c14n.Canonicalizer.RelativeNamespace", exArgs
                             );
@@ -209,7 +209,7 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
         // result will contain the attrs which have to be output
         xmlattrStack.push(ns.getLevel());
         boolean isRealVisible = isVisibleDO(element, ns.getLevel()) == 1;
-        SortedSet<Attr> result = new TreeSet<>(COMPARE);
+        SortedSet<Attr> result = new TreeSet<Attr>(COMPARE);
 
         if (element.hasAttributes()) {
             NamedNodeMap attrs = element.getAttributes();
@@ -249,7 +249,7 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
                             if (n != null) {
                                 result.add((Attr)n);
                                 if (C14nHelper.namespaceIsRelative(attribute)) {
-                                    Object[] exArgs = { element.getTagName(), NName, attribute.getNodeValue() };
+                                    Object exArgs[] = { element.getTagName(), NName, attribute.getNodeValue() };
                                     throw new CanonicalizationException(
                                         "c14n.Canonicalizer.RelativeNamespace", exArgs
                                     );
@@ -335,7 +335,7 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
             String NName = e.getPrefix();
             String NValue = e.getNamespaceURI();
             String Name;
-            if (NName == null || NName.isEmpty()) {
+            if (NName == null || NName.equals("")) {
                 NName = "xmlns";
                 Name = "xmlns";
             } else {

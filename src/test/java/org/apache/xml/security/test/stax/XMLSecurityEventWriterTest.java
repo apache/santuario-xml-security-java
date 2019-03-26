@@ -23,6 +23,7 @@ import org.apache.xml.security.stax.ext.stax.XMLSecEventFactory;
 import org.apache.xml.security.stax.impl.stax.XMLSecEndElementImpl;
 import org.apache.xml.security.stax.impl.stax.XMLSecNamespaceImpl;
 import org.apache.xml.security.stax.impl.stax.XMLSecStartElementImpl;
+import org.junit.Assert;
 import org.junit.Test;
 
 import org.custommonkey.xmlunit.XMLAssert;
@@ -33,11 +34,9 @@ import javax.xml.stream.*;
 import javax.xml.stream.events.XMLEvent;
 import java.io.StringWriter;
 
-import static org.junit.Assert.assertEquals;
-
 /**
  */
-public class XMLSecurityEventWriterTest {
+public class XMLSecurityEventWriterTest extends Assert {
 
     @Test
     public void testConformness() throws Exception {
@@ -80,7 +79,7 @@ public class XMLSecurityEventWriterTest {
         xmlEventWriter.add(new XMLSecStartElementImpl(new QName("http://ns3", "c", ""), null, null));
         xmlEventWriter.close();
 
-        assertEquals(
+        Assert.assertEquals(
                 "<ns1:a xmlns:ns1=\"http://ns1\">" +
                         "<b xmlns=\"http://ns2\"/>" +
                         "<c xmlns=\"http://ns3\">" +

@@ -23,7 +23,6 @@ package javax.xml.crypto.test.dsig;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -63,6 +62,7 @@ import javax.xml.crypto.dsig.dom.DOMValidateContext;
 import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 import javax.xml.crypto.dsig.spec.DigestMethodParameterSpec;
 import javax.xml.crypto.dsig.spec.SignatureMethodParameterSpec;
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
 import javax.xml.transform.Transformer;
@@ -114,9 +114,9 @@ public class TestUtils {
 
     public static PublicKey getPublicKey(String algo)
         throws InvalidKeySpecException, NoSuchAlgorithmException {
-        if ("DSA".equalsIgnoreCase(algo)) {
+        if (algo.equalsIgnoreCase("DSA")) {
             return getPublicKey("DSA", 1024);
-        } else if ("RSA".equalsIgnoreCase(algo)) {
+        } else if (algo.equalsIgnoreCase("RSA")) {
             return getPublicKey("RSA", 512);
         } else {
             throw new RuntimeException("Unsupported key algorithm " + algo);
@@ -127,7 +127,7 @@ public class TestUtils {
         throws InvalidKeySpecException, NoSuchAlgorithmException {
         KeyFactory kf = KeyFactory.getInstance(algo);
         KeySpec kspec;
-        if ("DSA".equalsIgnoreCase(algo)) {
+        if (algo.equalsIgnoreCase("DSA")) {
             if (keysize == 1024) {
                 kspec = new DSAPublicKeySpec(new BigInteger(DSA_Y),
                                              new BigInteger(DSA_P),
@@ -141,7 +141,7 @@ public class TestUtils {
             } else {
                 throw new RuntimeException("Unsupported keysize:" + keysize);
             }
-        } else if ("RSA".equalsIgnoreCase(algo)) {
+        } else if (algo.equalsIgnoreCase("RSA")) {
             if (keysize == 512) {
                 kspec = new RSAPublicKeySpec(new BigInteger(RSA_MOD),
                                              new BigInteger(RSA_PUB));
@@ -164,9 +164,9 @@ public class TestUtils {
 
     public static PrivateKey getPrivateKey(String algo)
         throws InvalidKeySpecException, NoSuchAlgorithmException {
-        if ("DSA".equalsIgnoreCase(algo)) {
+        if (algo.equalsIgnoreCase("DSA")) {
             return getPrivateKey("DSA", 1024);
-        } else if ("RSA".equalsIgnoreCase(algo)) {
+        } else if (algo.equalsIgnoreCase("RSA")) {
             return getPrivateKey("RSA", 512);
         } else {
             throw new RuntimeException("Unsupported key algorithm " + algo);
@@ -177,7 +177,7 @@ public class TestUtils {
         throws InvalidKeySpecException, NoSuchAlgorithmException {
         KeyFactory kf = KeyFactory.getInstance(algo);
         KeySpec kspec;
-        if ("DSA".equalsIgnoreCase(algo)) {
+        if (algo.equalsIgnoreCase("DSA")) {
             if (keysize == 1024) {
                 kspec = new DSAPrivateKeySpec
                     (new BigInteger(DSA_X), new BigInteger(DSA_P),
@@ -189,7 +189,7 @@ public class TestUtils {
             } else {
                 throw new RuntimeException("Unsupported keysize:" + keysize);
             }
-        } else if ("RSA".equalsIgnoreCase(algo)) {
+        } else if (algo.equalsIgnoreCase("RSA")) {
             if (keysize == 512) {
                 kspec = new RSAPrivateKeySpec
                     (new BigInteger(RSA_MOD), new BigInteger(RSA_PRIV));
@@ -214,7 +214,8 @@ public class TestUtils {
 
     public static Document newDocument() {
         try {
-            return XMLUtils.newDocument();
+            DocumentBuilder docBuilder = XMLUtils.createDocumentBuilder(false);
+            return docBuilder.newDocument();
         } catch (Exception ex) {
             return null;
         }
@@ -232,8 +233,9 @@ public class TestUtils {
                                                        File input,
                                                        String tag)
         throws Exception {
-        if ("dom".equalsIgnoreCase(type)) {
-            Document doc = XMLUtils.read(new FileInputStream(input), false);
+        if (type.equalsIgnoreCase("dom")) {
+            DocumentBuilder docBuilder = XMLUtils.createDocumentBuilder(false, false);
+            Document doc = docBuilder.parse(input);
             if (tag == null) {
                 return new DOMValidateContext
                     (TestUtils.getPublicKey("RSA", 512),
@@ -288,7 +290,7 @@ public class TestUtils {
         }
 
         public byte[] getCalculatedDigestValue() {
-            return new byte[0];
+            return null;
         }
 
         public DigestMethod getDigestMethod() { return DIG_METHOD; }
@@ -341,7 +343,7 @@ public class TestUtils {
         private byte[] data;
 
         public OctetStreamURIDereferencer(byte[] in) {
-            data = in.clone();
+            data = (byte[]) in.clone();
         }
 
         public Data dereference(URIReference ref, XMLCryptoContext ctxt) {

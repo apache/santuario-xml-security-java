@@ -37,6 +37,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import static org.junit.Assert.*;
 
 import java.io.*;
 import java.net.URL;
@@ -44,10 +45,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 
 /**
  */
@@ -236,7 +233,7 @@ public class Canonicalizer20010315ExclusiveTest {
      */
     @org.junit.Test
     public void test24Aexcl() throws Exception {
-        Document doc = XMLUtils.newDocument();
+        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
         Element local = doc.createElementNS("foo:bar", "dsig:local");
         Element test = doc.createElementNS("http://example.net", "etsi:test");
         Element elem2 = doc.createElementNS("http://example.net", "etsi:elem2");
@@ -781,7 +778,7 @@ public class Canonicalizer20010315ExclusiveTest {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         InputStream inputStream = resource.openStream();
         try {
-            byte[] buf = new byte[1024];
+            byte buf[] = new byte[1024];
             int len;
             while ((len = inputStream.read(buf)) > 0) {
                 baos.write(buf, 0, len);

@@ -54,7 +54,7 @@ public abstract class ApacheTransform extends TransformService {
 
     private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(ApacheTransform.class);
-    private Transform transform;
+    private Transform apacheTransform;
     protected Document ownerDoc;
     protected Element transformElem;
     protected TransformParameterSpec params;
@@ -128,13 +128,13 @@ public abstract class ApacheTransform extends TransformService {
             throw new TransformException("transform must be marshalled");
         }
 
-        if (transform == null) {
+        if (apacheTransform == null) {
             try {
-                transform =
+                apacheTransform =
                     new Transform(ownerDoc, getAlgorithm(), transformElem.getChildNodes());
-                transform.setElement(transformElem, xc.getBaseURI());
+                apacheTransform.setElement(transformElem, xc.getBaseURI());
                 boolean secVal = Utils.secureValidation(xc);
-                transform.setSecureValidation(secVal);
+                apacheTransform.setSecureValidation(secVal);
                 LOG.debug("Created transform for algorithm: {}", getAlgorithm());
             } catch (Exception ex) {
                 throw new TransformException("Couldn't find Transform for: " +
@@ -182,12 +182,12 @@ public abstract class ApacheTransform extends TransformService {
 
         try {
             if (os != null) {
-                in = transform.performTransform(in, os);
+                in = apacheTransform.performTransform(in, os);
                 if (!in.isNodeSet() && !in.isElement()) {
                     return null;
                 }
             } else {
-                in = transform.performTransform(in);
+                in = apacheTransform.performTransform(in);
             }
             if (in.isOctetStream()) {
                 return new ApacheOctetStreamData(in);

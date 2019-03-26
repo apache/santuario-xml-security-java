@@ -90,7 +90,7 @@ public class TransformXPath2Filter extends TransformSpi {
                     XPath2FilterContainer._TAG_XPATH2
                 );
             if (xpathElements.length == 0) {
-                Object[] exArgs = { Transforms.TRANSFORM_XPATH2FILTER, "XPath" };
+                Object exArgs[] = { Transforms.TRANSFORM_XPATH2FILTER, "XPath" };
 
                 throw new TransformationException("xml.WrongContent", exArgs);
             }

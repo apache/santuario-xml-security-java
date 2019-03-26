@@ -18,22 +18,24 @@
  */
 package org.apache.xml.security.stax.ext;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.math.BigInteger;
-import java.security.PublicKey;
-import java.security.cert.CertificateEncodingException;
-import java.security.cert.X509Certificate;
-import java.security.interfaces.DSAPublicKey;
-import java.security.interfaces.ECPublicKey;
-import java.security.interfaces.RSAPublicKey;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import org.apache.xml.security.algorithms.JCEMapper;
+import org.apache.xml.security.algorithms.implementations.ECDSAUtils;
+import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.keys.content.x509.XMLX509SKI;
+import org.apache.xml.security.stax.config.TransformerAlgorithmMapper;
+import org.apache.xml.security.stax.ext.stax.XMLSecAttribute;
+import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
+import org.apache.xml.security.stax.ext.stax.XMLSecNamespace;
+import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
+import org.apache.xml.security.stax.impl.util.ConcreteLSInput;
+import org.apache.xml.security.stax.securityEvent.*;
+import org.apache.xml.security.stax.securityToken.InboundSecurityToken;
+import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
+import org.apache.xml.security.utils.ClassLoaderUtils;
+import org.apache.xml.security.utils.XMLUtils;
+import org.w3c.dom.ls.LSInput;
+import org.w3c.dom.ls.LSResourceResolver;
+import org.xml.sax.SAXException;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -46,30 +48,17 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
-import org.w3c.dom.ls.LSInput;
-import org.w3c.dom.ls.LSResourceResolver;
-import org.xml.sax.SAXException;
-
-import org.apache.xml.security.algorithms.JCEMapper;
-import org.apache.xml.security.algorithms.implementations.ECDSAUtils;
-import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.keys.content.x509.XMLX509SKI;
-import org.apache.xml.security.stax.config.TransformerAlgorithmMapper;
-import org.apache.xml.security.stax.ext.stax.XMLSecAttribute;
-import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
-import org.apache.xml.security.stax.ext.stax.XMLSecNamespace;
-import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
-import org.apache.xml.security.stax.impl.util.ConcreteLSInput;
-import org.apache.xml.security.stax.securityEvent.DefaultTokenSecurityEvent;
-import org.apache.xml.security.stax.securityEvent.EncryptedKeyTokenSecurityEvent;
-import org.apache.xml.security.stax.securityEvent.KeyNameTokenSecurityEvent;
-import org.apache.xml.security.stax.securityEvent.KeyValueTokenSecurityEvent;
-import org.apache.xml.security.stax.securityEvent.TokenSecurityEvent;
-import org.apache.xml.security.stax.securityEvent.X509TokenSecurityEvent;
-import org.apache.xml.security.stax.securityToken.InboundSecurityToken;
-import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
-import org.apache.xml.security.utils.ClassLoaderUtils;
-import org.apache.xml.security.utils.XMLUtils;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.math.BigInteger;
+import java.security.PublicKey;
+import java.security.cert.CertificateEncodingException;
+import java.security.cert.X509Certificate;
+import java.security.interfaces.DSAPublicKey;
+import java.security.interfaces.ECPublicKey;
+import java.security.interfaces.RSAPublicKey;
+import java.util.*;
 
 /**
  */
@@ -509,7 +498,6 @@ public class XMLSecurityUtils {
 
     public static Schema loadXMLSecuritySchemas() throws SAXException {
         SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-        schemaFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
         schemaFactory.setResourceResolver(new LSResourceResolver() {
             @Override
             public LSInput resolveResource(String type, String namespaceURI, String publicId, String systemId, String baseURI) {

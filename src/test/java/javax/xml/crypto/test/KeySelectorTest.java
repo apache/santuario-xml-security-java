@@ -23,14 +23,13 @@ package javax.xml.crypto.test;
 
 import java.util.*;
 
+import static org.junit.Assert.assertTrue;
 
 import java.security.Key;
 import java.security.cert.X509Certificate;
 import javax.xml.crypto.*;
 import javax.xml.crypto.dsig.keyinfo.*;
 import javax.xml.crypto.dsig.*;
-
-import static org.junit.Assert.assertTrue;
 
 /**
  * Unit test for javax.xml.crypto.KeySelector

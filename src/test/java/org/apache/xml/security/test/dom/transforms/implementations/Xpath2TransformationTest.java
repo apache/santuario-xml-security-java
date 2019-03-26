@@ -18,6 +18,7 @@
  */
 package org.apache.xml.security.test.dom.transforms.implementations;
 
+import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayInputStream;
 
@@ -26,8 +27,6 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Element;
-
-import static org.junit.Assert.assertEquals;
 
 public class Xpath2TransformationTest {
 
@@ -130,9 +129,10 @@ public class Xpath2TransformationTest {
         "      </edoc:ObjectContent>\n" +
         "   </edoc:Object>";
 
+        javax.xml.parsers.DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
         org.w3c.dom.Document doc = null;
         try (ByteArrayInputStream is = new ByteArrayInputStream(sig.getBytes())) {
-            doc = XMLUtils.read(is, false);
+            doc = db.parse(is);
         }
         Element sigElement =
             (Element) doc.getElementsByTagNameNS(

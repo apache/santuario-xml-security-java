@@ -18,33 +18,32 @@
  */
 package org.apache.xml.security.stax.impl.processor.input;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.security.Key;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import org.apache.commons.codec.binary.Base64OutputStream;
+import org.apache.xml.security.stax.securityToken.InboundSecurityToken;
+import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
+import org.apache.xml.security.stax.securityToken.SecurityTokenProvider;
+import org.apache.xml.security.utils.UnsyncByteArrayInputStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.apache.xml.security.binding.xmldsig.KeyInfoType;
+import org.apache.xml.security.binding.xmlenc.EncryptedDataType;
+import org.apache.xml.security.binding.xmlenc.EncryptedKeyType;
+import org.apache.xml.security.binding.xmlenc.ReferenceList;
+import org.apache.xml.security.binding.xmlenc.ReferenceType;
+import org.apache.xml.security.binding.xop.Include;
+import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.stax.config.ConfigurationProperties;
+import org.apache.xml.security.stax.config.JCEAlgorithmMapper;
+import org.apache.xml.security.stax.ext.*;
+import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
+import org.apache.xml.security.stax.ext.stax.XMLSecEventFactory;
+import org.apache.xml.security.stax.ext.stax.XMLSecNamespace;
+import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
+import org.apache.xml.security.stax.impl.XMLSecurityEventReader;
+import org.apache.xml.security.stax.securityToken.SecurityTokenFactory;
+import org.apache.xml.security.stax.impl.util.*;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.CipherOutputStream;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.security.auth.DestroyFailedException;
-import javax.security.auth.Destroyable;
+import javax.crypto.*;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -55,41 +54,13 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.events.Attribute;
 
-import org.apache.commons.codec.binary.Base64OutputStream;
-import org.apache.xml.security.binding.xmldsig.KeyInfoType;
-import org.apache.xml.security.binding.xmlenc.EncryptedDataType;
-import org.apache.xml.security.binding.xmlenc.EncryptedKeyType;
-import org.apache.xml.security.binding.xmlenc.ReferenceList;
-import org.apache.xml.security.binding.xmlenc.ReferenceType;
-import org.apache.xml.security.binding.xop.Include;
-import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.stax.config.ConfigurationProperties;
-import org.apache.xml.security.stax.config.JCEAlgorithmMapper;
-import org.apache.xml.security.stax.ext.AbstractInputProcessor;
-import org.apache.xml.security.stax.ext.InboundSecurityContext;
-import org.apache.xml.security.stax.ext.InputProcessorChain;
-import org.apache.xml.security.stax.ext.SecurePart;
-import org.apache.xml.security.stax.ext.UncheckedXMLSecurityException;
-import org.apache.xml.security.stax.ext.XMLSecurityConstants;
-import org.apache.xml.security.stax.ext.XMLSecurityProperties;
-import org.apache.xml.security.stax.ext.XMLSecurityUtils;
-import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
-import org.apache.xml.security.stax.ext.stax.XMLSecEventFactory;
-import org.apache.xml.security.stax.ext.stax.XMLSecNamespace;
-import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
-import org.apache.xml.security.stax.impl.XMLSecurityEventReader;
-import org.apache.xml.security.stax.impl.util.FullyBufferedOutputStream;
-import org.apache.xml.security.stax.impl.util.IDGenerator;
-import org.apache.xml.security.stax.impl.util.IVSplittingOutputStream;
-import org.apache.xml.security.stax.impl.util.MultiInputStream;
-import org.apache.xml.security.stax.impl.util.ReplaceableOuputStream;
-import org.apache.xml.security.stax.securityToken.InboundSecurityToken;
-import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
-import org.apache.xml.security.stax.securityToken.SecurityTokenFactory;
-import org.apache.xml.security.stax.securityToken.SecurityTokenProvider;
-import org.apache.xml.security.utils.UnsyncByteArrayInputStream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.security.Key;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.util.*;
 
 /**
  * Processor for decryption of EncryptedData XML structures
@@ -111,7 +82,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
     private final String uuid = IDGenerator.generateID(null);
     private final QName wrapperElementName = new QName("http://dummy", "dummy", uuid);
 
-    private final ArrayDeque<XMLSecEvent> tmpXmlEventList = new ArrayDeque<>();
+    private final ArrayDeque<XMLSecEvent> tmpXmlEventList = new ArrayDeque<XMLSecEvent>();
 
     public AbstractDecryptInputProcessor(XMLSecurityProperties securityProperties) throws XMLSecurityException {
         super(securityProperties);
@@ -286,7 +257,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                 if (nextEvent.isStartElement() && nextEvent.asStartElement().getName().equals(XMLSecurityConstants.TAG_XOP_INCLUDE)) {
                     try {
                         // Unmarshal the XOP Include Element
-                        Deque<XMLSecEvent> xmlSecEvents = new ArrayDeque<>();
+                        Deque<XMLSecEvent> xmlSecEvents = new ArrayDeque<XMLSecEvent>();
                         xmlSecEvents.push(nextEvent);
                         xmlSecEvents.push(XMLSecEventFactory.createXmlSecEndElement(XMLSecurityConstants.TAG_XOP_INCLUDE));
 
@@ -378,7 +349,8 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
         stringBuilder.append(wrapperElementName.getPrefix());
         stringBuilder.append(':');
         stringBuilder.append(wrapperElementName.getLocalPart());
-        stringBuilder.append(" xmlns:");
+        stringBuilder.append(' ');
+        stringBuilder.append("xmlns:");
         stringBuilder.append(wrapperElementName.getPrefix());
         stringBuilder.append("=\"");
         stringBuilder.append(wrapperElementName.getNamespaceURI());
@@ -400,13 +372,13 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                 if (prefix == null || prefix.isEmpty()) {
                     stringBuilder.append("xmlns=\"");
                     stringBuilder.append(uri);
-                    stringBuilder.append('\"');
+                    stringBuilder.append("\"");
                 } else {
                     stringBuilder.append("xmlns:");
                     stringBuilder.append(prefix);
                     stringBuilder.append("=\"");
                     stringBuilder.append(uri);
-                    stringBuilder.append('\"');
+                    stringBuilder.append("\"");
                 }
             }
         }
@@ -495,7 +467,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
             boolean isSecurityHeaderEvent, XMLSecEvent xmlSecEvent, InputProcessorChain subInputProcessorChain)
             throws XMLStreamException, XMLSecurityException {
 
-        Deque<XMLSecEvent> xmlSecEvents = new ArrayDeque<>();
+        Deque<XMLSecEvent> xmlSecEvents = new ArrayDeque<XMLSecEvent>();
         xmlSecEvents.push(xmlSecEvent);
         XMLSecEvent encryptedDataXMLSecEvent;
         int count = 0;
@@ -680,72 +652,75 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
             XMLSecEvent xmlSecEvent = XMLSecEventFactory.allocate(xmlStreamReader, parentXmlSecStartElement);
             //here we request the next XMLEvent from the decryption thread
             //instead from the processor-chain as we normally would do
-            if (XMLStreamConstants.START_ELEMENT == xmlSecEvent.getEventType()) {
-                currentXMLStructureDepth++;
-                if (currentXMLStructureDepth > maximumAllowedXMLStructureDepth) {
-                    throw new XMLSecurityException(
-                                                   "secureProcessing.MaximumAllowedXMLStructureDepth",
-                                                   new Object[] {maximumAllowedXMLStructureDepth}
+            switch (xmlSecEvent.getEventType()) {
+                case XMLStreamConstants.START_ELEMENT:
+                    currentXMLStructureDepth++;
+                    if (currentXMLStructureDepth > maximumAllowedXMLStructureDepth) {
+                        throw new XMLSecurityException(
+                                "secureProcessing.MaximumAllowedXMLStructureDepth",
+                                new Object[] {maximumAllowedXMLStructureDepth}
                         );
-                }
-
-                parentXmlSecStartElement = xmlSecEvent.asStartElement();
-                if (!rootElementProcessed) {
-                    handleEncryptedElement(inputProcessorChain, parentXmlSecStartElement, this.inboundSecurityToken, encryptedDataType);
-                    rootElementProcessed = true;
-                }
-            } else if (XMLStreamConstants.END_ELEMENT == xmlSecEvent.getEventType()) {
-                currentXMLStructureDepth--;
-
-                if (parentXmlSecStartElement != null) {
-                    parentXmlSecStartElement = parentXmlSecStartElement.getParentXMLSecStartElement();
-                }
-
-                if (xmlSecEvent.asEndElement().getName().equals(wrapperElementName)) {
-                    InputProcessorChain subInputProcessorChain = inputProcessorChain.createSubChain(this);
-
-                    //skip EncryptedHeader Element when we processed it.
-                    QName endElement;
-                    if (encryptedHeader) {
-                        endElement = XMLSecurityConstants.TAG_wsse11_EncryptedHeader;
-                    } else {
-                        endElement = XMLSecurityConstants.TAG_xenc_EncryptedData;
                     }
 
-                    //read and discard XMLEvents until the EncryptedData structure
-                    XMLSecEvent endEvent;
-                    do {
-                        subInputProcessorChain.reset();
-                        if (headerEvent) {
-                            endEvent = subInputProcessorChain.processHeaderEvent();
+                    parentXmlSecStartElement = xmlSecEvent.asStartElement();
+                    if (!rootElementProcessed) {
+                        handleEncryptedElement(inputProcessorChain, parentXmlSecStartElement, this.inboundSecurityToken, encryptedDataType);
+                        rootElementProcessed = true;
+                    }
+                    break;
+                case XMLStreamConstants.END_ELEMENT:
+                    currentXMLStructureDepth--;
+
+                    if (parentXmlSecStartElement != null) {
+                        parentXmlSecStartElement = parentXmlSecStartElement.getParentXMLSecStartElement();
+                    }
+
+                    if (xmlSecEvent.asEndElement().getName().equals(wrapperElementName)) {
+                        InputProcessorChain subInputProcessorChain = inputProcessorChain.createSubChain(this);
+
+                        //skip EncryptedHeader Element when we processed it.
+                        QName endElement;
+                        if (encryptedHeader) {
+                            endElement = XMLSecurityConstants.TAG_wsse11_EncryptedHeader;
                         } else {
-                            endEvent = subInputProcessorChain.processEvent();
+                            endElement = XMLSecurityConstants.TAG_xenc_EncryptedData;
                         }
-                    }
-                    while (!(endEvent.getEventType() == XMLStreamConstants.END_ELEMENT
-                        && endEvent.asEndElement().getName().equals(endElement)));
 
-                    inputProcessorChain.getDocumentContext().unsetIsInEncryptedContent(this);
-
-                    //...fetch the next (unencrypted) event
-                    if (headerEvent) {
-                        xmlSecEvent = inputProcessorChain.processHeaderEvent();
-                    } else {
-                        xmlSecEvent = inputProcessorChain.processEvent();
-                    }
-
-                    if (decryptionThread != null) {
-                        //wait until the decryption thread dies...
-                        try {
-                            decryptionThread.join();
-                        } catch (InterruptedException e) {
-                            throw new XMLStreamException(e);
+                        //read and discard XMLEvents until the EncryptedData structure
+                        XMLSecEvent endEvent;
+                        do {
+                            subInputProcessorChain.reset();
+                            if (headerEvent) {
+                                endEvent = subInputProcessorChain.processHeaderEvent();
+                            } else {
+                                endEvent = subInputProcessorChain.processEvent();
+                            }
                         }
-                        //...and test again for an exception in the decryption thread.
-                        testAndThrowUncaughtException();
+                        while (!(endEvent.getEventType() == XMLStreamConstants.END_ELEMENT
+                                && endEvent.asEndElement().getName().equals(endElement)));
+
+                        inputProcessorChain.getDocumentContext().unsetIsInEncryptedContent(this);
+
+                        //...fetch the next (unencrypted) event
+                        if (headerEvent) {
+                            xmlSecEvent = inputProcessorChain.processHeaderEvent();
+                        } else {
+                            xmlSecEvent = inputProcessorChain.processEvent();
+                        }
+
+                        if (decryptionThread != null) {
+                            //wait until the decryption thread dies...
+                            try {
+                                decryptionThread.join();
+                            } catch (InterruptedException e) {
+                                throw new XMLStreamException(e);
+                            }
+                            //...and test again for an exception in the decryption thread.
+                            testAndThrowUncaughtException();
+                        }
+                        inputProcessorChain.removeProcessor(this);
                     }
-                    inputProcessorChain.removeProcessor(this);
-                }
+                    break;
             }
             xmlStreamReader.next();
             return xmlSecEvent;
@@ -887,16 +862,6 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
 
                 //close to get Cipher.doFinal() called
                 outputStreamWriter.close();
-
-                // Clean the secret key from memory now that we're done with it
-                if (secretKey instanceof Destroyable) {
-                    try {
-                        ((Destroyable)secretKey).destroy();
-                    } catch (DestroyFailedException e) {
-                        LOG.debug("Error destroying key: {}", e.getMessage());
-                    }
-                }
-
                 LOG.debug("Decryption thread finished");
 
             } catch (Exception e) {

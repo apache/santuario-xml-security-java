@@ -18,6 +18,7 @@
  */
 package org.apache.xml.security.test.dom.encryption;
 
+import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -29,6 +30,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESedeKeySpec;
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.transform.TransformerFactory;
 
 import org.apache.xml.security.algorithms.JCEMapper;
@@ -41,8 +43,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import static org.junit.Assert.assertEquals;
 
 public class EncryptContentTest {
 
@@ -71,11 +71,13 @@ public class EncryptContentTest {
         "  </user>\n" +
         "</users>\n";
 
+    private DocumentBuilder db;
     private SecretKey secretKey;
     private boolean haveISOPadding;
 
     public EncryptContentTest() throws Exception {
         org.apache.xml.security.Init.init();
+        db = XMLUtils.createDocumentBuilder(false);
 
         byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes();
         DESedeKeySpec keySpec = new DESedeKeySpec(bits192);
@@ -116,7 +118,7 @@ public class EncryptContentTest {
 
         Document doc = null;
         try (InputStream is = new ByteArrayInputStream(DATA.getBytes(StandardCharsets.UTF_8))) {
-            doc = XMLUtils.read(is, false);
+            doc = db.parse(is);
         }
         NodeList dataToEncrypt = doc.getElementsByTagName("user");
 
@@ -136,7 +138,7 @@ public class EncryptContentTest {
 
         // child should be EncryptedData, if not throw exception
         Element childElem = (Element) child;
-        if (!"EncryptedData".equals(childElem.getLocalName())) {
+        if (!childElem.getLocalName().equals("EncryptedData")) {
             // t.transform(new DOMSource(doc), new StreamResult(System.out));
             throw new Exception("Element content not replaced");
         }
@@ -168,7 +170,7 @@ public class EncryptContentTest {
 
         Document doc = null;
         try (InputStream is = new ByteArrayInputStream(MULTIPLE_USER_DATA.getBytes(StandardCharsets.UTF_8))) {
-            doc = XMLUtils.read(is, false);
+            doc = db.parse(is);
         }
         NodeList dataToEncrypt = doc.getElementsByTagName("user");
 

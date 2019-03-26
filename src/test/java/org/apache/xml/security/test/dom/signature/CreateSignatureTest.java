@@ -18,6 +18,7 @@
  */
 package org.apache.xml.security.test.dom.signature;
 
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -51,8 +52,6 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import static org.junit.Assert.assertTrue;
-
 /**
  * Tests that create signatures.
  *
@@ -66,8 +65,10 @@ public class CreateSignatureTest {
     private static final String SEP = System.getProperty("file.separator");
 
     private KeyPair kp;
+    private javax.xml.parsers.DocumentBuilder db;
 
     public CreateSignatureTest() throws Exception {
+        db = XMLUtils.createDocumentBuilder(false);
         org.apache.xml.security.Init.init();
         kp = KeyPairGenerator.getInstance("RSA").genKeyPair();
     }
@@ -78,7 +79,7 @@ public class CreateSignatureTest {
      */
     @org.junit.Test
     public void testEmptyNodeSet() throws Exception {
-        Document doc = XMLUtils.newDocument();
+        Document doc = db.newDocument();
         Element envelope = doc.createElementNS("http://www.usps.gov/", "Envelope");
         envelope.appendChild(doc.createTextNode("\n"));
         doc.appendChild(envelope);
@@ -153,7 +154,7 @@ public class CreateSignatureTest {
 
     @org.junit.Test
     public void testXFilter2Signature() throws Exception {
-        Document doc = XMLUtils.newDocument();
+        Document doc = db.newDocument();
         doc.appendChild(doc.createComment(" Comment before "));
         Element root = doc.createElementNS("", "RootElement");
 
@@ -196,7 +197,7 @@ public class CreateSignatureTest {
 
         // Now Verify
         try (InputStream is = new ByteArrayInputStream(signedDoc.getBytes())) {
-            doc = XMLUtils.read(is, false);
+            doc = db.parse(is);
         }
 
         XPathFactory xpf = XPathFactory.newInstance();
@@ -217,7 +218,7 @@ public class CreateSignatureTest {
 
         Document doc = null;
         try (InputStream is = new ByteArrayInputStream(signedXML.getBytes())) {
-            doc = XMLUtils.read(is, false);
+            doc = db.parse(is);
         }
 
         XPathFactory xpf = XPathFactory.newInstance();
@@ -256,7 +257,7 @@ public class CreateSignatureTest {
     @org.junit.Test
     public void testSHA256Digest() throws Exception {
         PrivateKey privateKey = kp.getPrivate();
-        Document doc = XMLUtils.newDocument();
+        Document doc = db.newDocument();
         doc.appendChild(doc.createComment(" Comment before "));
         Element root = doc.createElementNS("", "RootElement");
 
@@ -294,7 +295,7 @@ public class CreateSignatureTest {
 
     private String doSign() throws Exception {
         PrivateKey privateKey = kp.getPrivate();
-        Document doc = XMLUtils.newDocument();
+        Document doc = db.newDocument();
         doc.appendChild(doc.createComment(" Comment before "));
         Element root = doc.createElementNS("", "RootElement");
 
@@ -339,7 +340,7 @@ public class CreateSignatureTest {
         }
         ks.load(fis, "changeit".toCharArray());
         PrivateKey privateKey = (PrivateKey) ks.getKey("mullan", "changeit".toCharArray());
-        Document doc = XMLUtils.newDocument();
+        Document doc = db.newDocument();
         X509Certificate signingCert = (X509Certificate) ks.getCertificate("mullan");
         doc.appendChild(doc.createComment(" Comment before "));
         Element root = doc.createElementNS("", "RootElement");
@@ -378,7 +379,7 @@ public class CreateSignatureTest {
     private void doVerify(String signedXML) throws Exception {
         Document doc = null;
         try (InputStream is = new ByteArrayInputStream(signedXML.getBytes())) {
-            doc = XMLUtils.read(is, false);
+            doc = db.parse(is);
         }
 
         XPathFactory xpf = XPathFactory.newInstance();

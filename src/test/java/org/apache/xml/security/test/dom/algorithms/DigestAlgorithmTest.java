@@ -18,21 +18,17 @@
  */
 package org.apache.xml.security.test.dom.algorithms;
 
+import static org.junit.Assert.*;
 
 import java.lang.reflect.Constructor;
 import java.security.MessageDigest;
 import java.security.Provider;
 import java.security.Security;
+import java.util.Arrays;
 
 import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
-
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 
 /**
  * A test to make sure that the various digest algorithms are working
@@ -73,7 +69,7 @@ public class DigestAlgorithmTest {
 
     @org.junit.Test
     public void testSHA1() throws Exception {
-        Document doc = XMLUtils.newDocument();
+        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
 
         MessageDigestAlgorithm digestAlgorithm =
             MessageDigestAlgorithm.getInstance(doc, MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA1);
@@ -86,12 +82,12 @@ public class DigestAlgorithmTest {
         // Now compare against a JDK MessageDigest Object
         MessageDigest md = MessageDigest.getInstance("SHA-1");
         byte[] digest2 = md.digest("test-string".getBytes());
-        assertArrayEquals(digest, digest2);
+        assertTrue(Arrays.equals(digest, digest2));
     }
 
     @org.junit.Test
     public void testSHA224() throws Exception {
-        Document doc = XMLUtils.newDocument();
+        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
 
         MessageDigestAlgorithm digestAlgorithm =
             MessageDigestAlgorithm.getInstance(doc, MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA224);
@@ -104,12 +100,12 @@ public class DigestAlgorithmTest {
         // Now compare against a JDK MessageDigest Object
         MessageDigest md = MessageDigest.getInstance("SHA-224");
         byte[] digest2 = md.digest("test-string".getBytes());
-        assertArrayEquals(digest, digest2);
+        assertTrue(Arrays.equals(digest, digest2));
     }
 
     @org.junit.Test
     public void testSHA256() throws Exception {
-        Document doc = XMLUtils.newDocument();
+        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
 
         MessageDigestAlgorithm digestAlgorithm =
             MessageDigestAlgorithm.getInstance(doc, MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256);
@@ -122,12 +118,12 @@ public class DigestAlgorithmTest {
         // Now compare against a JDK MessageDigest Object
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         byte[] digest2 = md.digest("test-string".getBytes());
-        assertArrayEquals(digest, digest2);
+        assertTrue(Arrays.equals(digest, digest2));
     }
 
     @org.junit.Test
     public void testSHA384() throws Exception {
-        Document doc = XMLUtils.newDocument();
+        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
 
         MessageDigestAlgorithm digestAlgorithm =
             MessageDigestAlgorithm.getInstance(doc, MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA384);
@@ -140,12 +136,12 @@ public class DigestAlgorithmTest {
         // Now compare against a JDK MessageDigest Object
         MessageDigest md = MessageDigest.getInstance("SHA-384");
         byte[] digest2 = md.digest("test-string".getBytes());
-        assertArrayEquals(digest, digest2);
+        assertTrue(Arrays.equals(digest, digest2));
     }
 
     @org.junit.Test
     public void testSHA512() throws Exception {
-        Document doc = XMLUtils.newDocument();
+        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
 
         MessageDigestAlgorithm digestAlgorithm =
             MessageDigestAlgorithm.getInstance(doc, MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA512);
@@ -158,12 +154,12 @@ public class DigestAlgorithmTest {
         // Now compare against a JDK MessageDigest Object
         MessageDigest md = MessageDigest.getInstance("SHA-512");
         byte[] digest2 = md.digest("test-string".getBytes());
-        assertArrayEquals(digest, digest2);
+        assertTrue(Arrays.equals(digest, digest2));
     }
 
     @org.junit.Test
     public void testMD5() throws Exception {
-        Document doc = XMLUtils.newDocument();
+        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
 
         MessageDigestAlgorithm digestAlgorithm =
             MessageDigestAlgorithm.getInstance(doc, MessageDigestAlgorithm.ALGO_ID_DIGEST_NOT_RECOMMENDED_MD5);
@@ -176,13 +172,13 @@ public class DigestAlgorithmTest {
         // Now compare against a JDK MessageDigest Object
         MessageDigest md = MessageDigest.getInstance("MD5");
         byte[] digest2 = md.digest("test-string".getBytes());
-        assertArrayEquals(digest, digest2);
+        assertTrue(Arrays.equals(digest, digest2));
     }
 
     @org.junit.Test
     public void testRIPEMD160() throws Exception {
         org.junit.Assume.assumeTrue(bcInstalled);
-        Document doc = XMLUtils.newDocument();
+        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
 
         MessageDigestAlgorithm digestAlgorithm =
             MessageDigestAlgorithm.getInstance(doc, MessageDigestAlgorithm.ALGO_ID_DIGEST_RIPEMD160);
@@ -195,13 +191,13 @@ public class DigestAlgorithmTest {
         // Now compare against a JDK MessageDigest Object
         MessageDigest md = MessageDigest.getInstance("RIPEMD160");
         byte[] digest2 = md.digest("test-string".getBytes());
-        assertArrayEquals(digest, digest2);
+        assertTrue(Arrays.equals(digest, digest2));
     }
 
     @org.junit.Test
     public void testWhirlpool() throws Exception {
         org.junit.Assume.assumeTrue(bcInstalled);
-        Document doc = XMLUtils.newDocument();
+        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
 
         MessageDigestAlgorithm digestAlgorithm =
             MessageDigestAlgorithm.getInstance(doc, MessageDigestAlgorithm.ALGO_ID_DIGEST_WHIRLPOOL);
@@ -214,13 +210,13 @@ public class DigestAlgorithmTest {
         // Now compare against a JDK MessageDigest Object
         MessageDigest md = MessageDigest.getInstance("WHIRLPOOL");
         byte[] digest2 = md.digest("test-string".getBytes());
-        assertArrayEquals(digest, digest2);
+        assertTrue(Arrays.equals(digest, digest2));
     }
 
     @org.junit.Test
     public void testSHA3_224() throws Exception {
         org.junit.Assume.assumeTrue(bcInstalled);
-        Document doc = XMLUtils.newDocument();
+        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
 
         MessageDigestAlgorithm digestAlgorithm =
             MessageDigestAlgorithm.getInstance(doc, MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA3_224);
@@ -233,13 +229,13 @@ public class DigestAlgorithmTest {
         // Now compare against a JDK MessageDigest Object
         MessageDigest md = MessageDigest.getInstance("SHA3-224");
         byte[] digest2 = md.digest("test-string".getBytes());
-        assertArrayEquals(digest, digest2);
+        assertTrue(Arrays.equals(digest, digest2));
     }
 
     @org.junit.Test
     public void testSHA3_256() throws Exception {
         org.junit.Assume.assumeTrue(bcInstalled);
-        Document doc = XMLUtils.newDocument();
+        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
 
         MessageDigestAlgorithm digestAlgorithm =
             MessageDigestAlgorithm.getInstance(doc, MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA3_256);
@@ -252,13 +248,13 @@ public class DigestAlgorithmTest {
         // Now compare against a JDK MessageDigest Object
         MessageDigest md = MessageDigest.getInstance("SHA3-256");
         byte[] digest2 = md.digest("test-string".getBytes());
-        assertArrayEquals(digest, digest2);
+        assertTrue(Arrays.equals(digest, digest2));
     }
 
     @org.junit.Test
     public void testSHA3_384() throws Exception {
         org.junit.Assume.assumeTrue(bcInstalled);
-        Document doc = XMLUtils.newDocument();
+        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
 
         MessageDigestAlgorithm digestAlgorithm =
             MessageDigestAlgorithm.getInstance(doc, MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA3_384);
@@ -271,13 +267,13 @@ public class DigestAlgorithmTest {
         // Now compare against a JDK MessageDigest Object
         MessageDigest md = MessageDigest.getInstance("SHA3-384");
         byte[] digest2 = md.digest("test-string".getBytes());
-        assertArrayEquals(digest, digest2);
+        assertTrue(Arrays.equals(digest, digest2));
     }
 
     @org.junit.Test
     public void testSHA3_512() throws Exception {
         org.junit.Assume.assumeTrue(bcInstalled);
-        Document doc = XMLUtils.newDocument();
+        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
 
         MessageDigestAlgorithm digestAlgorithm =
             MessageDigestAlgorithm.getInstance(doc, MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA3_512);
@@ -290,7 +286,7 @@ public class DigestAlgorithmTest {
         // Now compare against a JDK MessageDigest Object
         MessageDigest md = MessageDigest.getInstance("SHA3-512");
         byte[] digest2 = md.digest("test-string".getBytes());
-        assertArrayEquals(digest, digest2);
+        assertTrue(Arrays.equals(digest, digest2));
     }
 
 }

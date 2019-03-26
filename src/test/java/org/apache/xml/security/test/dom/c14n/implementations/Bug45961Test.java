@@ -18,11 +18,14 @@
  */
 package org.apache.xml.security.test.dom.c14n.implementations;
 
+import static org.junit.Assert.*;
 
 import java.io.FileInputStream;
 import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
+
+import javax.xml.parsers.DocumentBuilder;
 
 import org.apache.xml.security.Init;
 import org.apache.xml.security.c14n.Canonicalizer;
@@ -37,10 +40,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-
-
 public class Bug45961Test {
 
     private static final String OBJECT_ID = "Object";
@@ -48,12 +47,14 @@ public class Bug45961Test {
         MockCanonicalizationMethod.MOCK_CANONICALIZATION_METHOD;
     private static final char[] PASSWORD = "changeit".toCharArray();
     private static final String ALIAS = "mullan";
+    private DocumentBuilder _builder;
     private ObjectContainer object;
 
     public Bug45961Test() throws Exception {
         Init.init();
         Canonicalizer.register(MOCK_CANONICALIZATION_METHOD,
                                MockCanonicalizationMethod.class.getName());
+        _builder = XMLUtils.createDocumentBuilder(false);
     }
 
     @org.junit.Test
@@ -83,7 +84,7 @@ public class Bug45961Test {
         X509Certificate signingCert = (X509Certificate) ks
         .getCertificate(ALIAS);
 
-        Document document = XMLUtils.newDocument();
+        Document document = _builder.newDocument();
 
         XMLSignature signature = new XMLSignature(document, null,
                                                   XMLSignature.ALGO_ID_SIGNATURE_DSA,

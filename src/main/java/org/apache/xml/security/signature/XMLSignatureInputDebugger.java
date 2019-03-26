@@ -291,7 +291,7 @@ public class XMLSignatureInputDebugger {
             }
 
             Arrays.sort(attrs2, ATTR_COMPARE);
-            Object[] attrs3 = attrs2;
+            Object attrs3[] = attrs2;
 
             for (int i = 0; i < attrsLength; i++) {
                 Attr a = (Attr) attrs3[i];
@@ -512,10 +512,15 @@ public class XMLSignatureInputDebugger {
             for (int i = 0; i < length; i++) {
                 char c = data.charAt(i);
 
-                if (c == 0x0D) {
+                switch (c) {
+
+                case 0x0D:
                     this.writer.write("&amp;#xD;");
-                } else {
+                    break;
+
+                default:
                     this.writer.write(c);
+                    break;
                 }
             }
         }

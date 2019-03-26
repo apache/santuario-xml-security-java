@@ -21,35 +21,22 @@
  */
 package javax.xml.crypto.test.dsig;
 
+import static org.junit.Assert.*;
+
 import java.nio.charset.StandardCharsets;
-import java.security.Security;
-import java.util.Collections;
+import java.security.*;
+import java.util.*;
 
 import javax.xml.crypto.URIDereferencer;
-import javax.xml.crypto.dsig.CanonicalizationMethod;
-import javax.xml.crypto.dsig.DigestMethod;
-import javax.xml.crypto.dsig.Reference;
-import javax.xml.crypto.dsig.SignatureMethod;
-import javax.xml.crypto.dsig.SignedInfo;
-import javax.xml.crypto.dsig.Transform;
-import javax.xml.crypto.dsig.XMLSignature;
-import javax.xml.crypto.dsig.XMLSignatureException;
-import javax.xml.crypto.dsig.XMLSignatureFactory;
-import javax.xml.crypto.dsig.dom.DOMSignContext;
-import javax.xml.crypto.dsig.dom.DOMValidateContext;
-import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
-import javax.xml.crypto.dsig.spec.HMACParameterSpec;
-import javax.xml.crypto.dsig.spec.TransformParameterSpec;
-import javax.xml.crypto.test.KeySelectors;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import javax.xml.crypto.dsig.*;
+import javax.xml.crypto.dsig.dom.*;
+import javax.xml.crypto.dsig.spec.*;
 
 import org.apache.xml.security.utils.XMLUtils;
+import org.w3c.dom.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import javax.xml.crypto.test.KeySelectors;
+import javax.xml.parsers.DocumentBuilder;
 
 /**
  * Test that recreates Phaos XMLDSig-3 test vectors
@@ -60,6 +47,7 @@ import static org.junit.Assert.fail;
 public class CreatePhaosXMLDSig3Test {
 
     private XMLSignatureFactory fac;
+    private DocumentBuilder db;
 
     static {
         Security.insertProviderAt
@@ -69,6 +57,7 @@ public class CreatePhaosXMLDSig3Test {
     public CreatePhaosXMLDSig3Test() throws Exception {
         fac = XMLSignatureFactory.getInstance
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
+        db = XMLUtils.createDocumentBuilder(false);
     }
 
     @org.junit.Test
@@ -112,7 +101,7 @@ public class CreatePhaosXMLDSig3Test {
         // create XMLSignature
         XMLSignature sig = fac.newXMLSignature(si, null);
 
-        Document doc = XMLUtils.newDocument();
+        Document doc = db.newDocument();
         DOMSignContext dsc = new DOMSignContext
             (new KeySelectors.SecretKeySelector
              ("test".getBytes(StandardCharsets.US_ASCII)), doc);
@@ -129,7 +118,7 @@ public class CreatePhaosXMLDSig3Test {
 
         XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
 
-        assertEquals(sig, sig2);
+        assertTrue(sig.equals(sig2));
 
         assertTrue(sig2.validate(dvc));
     }
@@ -154,7 +143,7 @@ public class CreatePhaosXMLDSig3Test {
         // create XMLSignature
         XMLSignature sig = fac.newXMLSignature(si, null);
 
-        Document doc = XMLUtils.newDocument();
+        Document doc = db.newDocument();
         Element player = doc.createElementNS(null, "player");
         player.setAttributeNS(null, "bats", "left");
         player.setAttributeNS(null, "id", "10012");
@@ -184,7 +173,7 @@ public class CreatePhaosXMLDSig3Test {
 
         XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
 
-        assertEquals(sig, sig2);
+        assertTrue(sig.equals(sig2));
 
         assertTrue(sig2.validate(dvc));
     }

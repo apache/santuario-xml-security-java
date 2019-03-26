@@ -19,7 +19,6 @@
 package org.apache.xml.security.test.dom.interop;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
 import java.util.Iterator;
@@ -41,9 +40,7 @@ import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
+import static org.junit.Assert.*;
 
 public class InteropTestBase {
 
@@ -63,7 +60,8 @@ public class InteropTestBase {
         String filename, ResourceResolverSpi resolver, boolean followManifests, byte[] hmacKey
     ) throws Exception {
         File f = new File(filename);
-        org.w3c.dom.Document doc = XMLUtils.read(new FileInputStream(f), false);
+        javax.xml.parsers.DocumentBuilder db = XMLUtils.createDocumentBuilder(false, false);
+        org.w3c.dom.Document doc = db.parse(new java.io.FileInputStream(f));
 
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();
@@ -79,7 +77,7 @@ public class InteropTestBase {
         }
         signature.setFollowNestedManifests(followManifests);
 
-        byte[] keybytes = hmacKey;
+        byte keybytes[] = hmacKey;
         javax.crypto.SecretKey sk = signature.createSecretKey(keybytes);
 
         return signature.checkSignatureValue(sk);
@@ -94,7 +92,8 @@ public class InteropTestBase {
                           boolean followManifests, boolean secureValidation)
         throws Exception {
         File f = new File(filename);
-        org.w3c.dom.Document doc = XMLUtils.read(new FileInputStream(f), false);
+        javax.xml.parsers.DocumentBuilder db = XMLUtils.createDocumentBuilder(false, false);
+        org.w3c.dom.Document doc = db.parse(f);
 
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();

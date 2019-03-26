@@ -21,16 +21,12 @@
  */
 package javax.xml.crypto.test;
 
+import static org.junit.Assert.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.Arrays;
 import javax.xml.crypto.KeySelectorException;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 
 /**
  * Unit test for javax.xml.crypto.KeySelectorException

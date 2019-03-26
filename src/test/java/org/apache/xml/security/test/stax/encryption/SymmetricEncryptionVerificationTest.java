@@ -31,6 +31,7 @@ import java.util.List;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.TransformerFactory;
@@ -53,20 +54,17 @@ import org.apache.xml.security.test.stax.signature.TestSecurityEventListener;
 import org.apache.xml.security.test.stax.utils.StAX2DOM;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 /**
  * A test to make sure that the various Symmetric Encryption algorithms are working
  */
-public class SymmetricEncryptionVerificationTest {
+public class SymmetricEncryptionVerificationTest extends Assert {
 
     private static boolean bcInstalled;
     private XMLInputFactory xmlInputFactory;
@@ -112,7 +110,8 @@ public class SymmetricEncryptionVerificationTest {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
@@ -129,7 +128,7 @@ public class SymmetricEncryptionVerificationTest {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 0);
+        Assert.assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -151,11 +150,11 @@ public class SymmetricEncryptionVerificationTest {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(securityStreamReader);
+        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 1);
+        Assert.assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -164,7 +163,8 @@ public class SymmetricEncryptionVerificationTest {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
@@ -181,7 +181,7 @@ public class SymmetricEncryptionVerificationTest {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 0);
+        Assert.assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -203,11 +203,11 @@ public class SymmetricEncryptionVerificationTest {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(securityStreamReader);
+        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 1);
+        Assert.assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -216,7 +216,8 @@ public class SymmetricEncryptionVerificationTest {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
@@ -233,7 +234,7 @@ public class SymmetricEncryptionVerificationTest {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 0);
+        Assert.assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -255,11 +256,11 @@ public class SymmetricEncryptionVerificationTest {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(securityStreamReader);
+        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 1);
+        Assert.assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -268,7 +269,8 @@ public class SymmetricEncryptionVerificationTest {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
@@ -285,7 +287,7 @@ public class SymmetricEncryptionVerificationTest {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 0);
+        Assert.assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -307,11 +309,11 @@ public class SymmetricEncryptionVerificationTest {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(securityStreamReader);
+        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 1);
+        Assert.assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -320,7 +322,8 @@ public class SymmetricEncryptionVerificationTest {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
@@ -337,7 +340,7 @@ public class SymmetricEncryptionVerificationTest {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 0);
+        Assert.assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -359,11 +362,11 @@ public class SymmetricEncryptionVerificationTest {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(securityStreamReader);
+        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 1);
+        Assert.assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -372,7 +375,8 @@ public class SymmetricEncryptionVerificationTest {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
@@ -389,7 +393,7 @@ public class SymmetricEncryptionVerificationTest {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 0);
+        Assert.assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -411,11 +415,11 @@ public class SymmetricEncryptionVerificationTest {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(securityStreamReader);
+        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 1);
+        Assert.assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -424,7 +428,8 @@ public class SymmetricEncryptionVerificationTest {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("DESede");
@@ -440,7 +445,7 @@ public class SymmetricEncryptionVerificationTest {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 0);
+        Assert.assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -462,11 +467,11 @@ public class SymmetricEncryptionVerificationTest {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(securityStreamReader);
+        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 1);
+        Assert.assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -477,7 +482,8 @@ public class SymmetricEncryptionVerificationTest {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("SEED");
@@ -494,7 +500,7 @@ public class SymmetricEncryptionVerificationTest {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 0);
+        Assert.assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -516,11 +522,11 @@ public class SymmetricEncryptionVerificationTest {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(securityStreamReader);
+        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 1);
+        Assert.assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -531,7 +537,8 @@ public class SymmetricEncryptionVerificationTest {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("Camellia");
@@ -548,7 +555,7 @@ public class SymmetricEncryptionVerificationTest {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 0);
+        Assert.assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -570,11 +577,11 @@ public class SymmetricEncryptionVerificationTest {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(securityStreamReader);
+        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 1);
+        Assert.assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -585,7 +592,8 @@ public class SymmetricEncryptionVerificationTest {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("Camellia");
@@ -602,7 +610,7 @@ public class SymmetricEncryptionVerificationTest {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 0);
+        Assert.assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -624,11 +632,11 @@ public class SymmetricEncryptionVerificationTest {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(securityStreamReader);
+        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 1);
+        Assert.assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -639,7 +647,8 @@ public class SymmetricEncryptionVerificationTest {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("Camellia");
@@ -656,7 +665,7 @@ public class SymmetricEncryptionVerificationTest {
 
         // Check the CreditCard encrypted ok
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 0);
+        Assert.assertEquals(nodeList.getLength(), 0);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -678,11 +687,11 @@ public class SymmetricEncryptionVerificationTest {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        document = StAX2DOM.readDoc(securityStreamReader);
+        document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 1);
+        Assert.assertEquals(nodeList.getLength(), 1);
     }
 
     private void encryptUsingDOM(
@@ -753,7 +762,7 @@ public class SymmetricEncryptionVerificationTest {
             String expression = "//*[local-name()='" + localName + "']";
             Element elementToEncrypt =
                     (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
-            assertNotNull(elementToEncrypt);
+            Assert.assertNotNull(elementToEncrypt);
 
             document = cipher.doFinal(document, elementToEncrypt, content);
         }
@@ -762,7 +771,7 @@ public class SymmetricEncryptionVerificationTest {
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        assertTrue(nodeList.getLength() > 0);
+        Assert.assertTrue(nodeList.getLength() > 0);
     }
 
 }

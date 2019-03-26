@@ -26,6 +26,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.xml.parsers.DocumentBuilder;
+
 import org.apache.xml.security.c14n.implementations.Canonicalizer11_OmitComments;
 import org.apache.xml.security.c14n.implementations.Canonicalizer11_WithComments;
 import org.apache.xml.security.c14n.implementations.Canonicalizer20010315ExclOmitComments;
@@ -45,7 +47,7 @@ import org.xml.sax.InputSource;
 /**
  *
  */
-public final class Canonicalizer {
+public class Canonicalizer {
 
     /** The output encoding of canonicalized data */
     public static final String ENCODING = StandardCharsets.UTF_8.name();
@@ -94,7 +96,7 @@ public final class Canonicalizer {
         "http://santuario.apache.org/c14n/physical";
 
     private static Map<String, Class<? extends CanonicalizerSpi>> canonicalizerHash =
-        new ConcurrentHashMap<>();
+        new ConcurrentHashMap<String, Class<? extends CanonicalizerSpi>>();
 
     private final CanonicalizerSpi canonicalizerSpi;
     private boolean secureValidation;
@@ -113,7 +115,7 @@ public final class Canonicalizer {
             canonicalizerSpi = implementingClass.newInstance();
             canonicalizerSpi.reset = true;
         } catch (Exception e) {
-            Object[] exArgs = { algorithmURI };
+            Object exArgs[] = { algorithmURI };
             throw new InvalidCanonicalizerException(
                 e, "signature.Canonicalizer.UnknownCanonicalizer", exArgs
             );
@@ -150,7 +152,7 @@ public final class Canonicalizer {
             canonicalizerHash.get(algorithmURI);
 
         if (registeredClass != null)  {
-            Object[] exArgs = { algorithmURI, registeredClass };
+            Object exArgs[] = { algorithmURI, registeredClass };
             throw new AlgorithmAlreadyRegisteredException("algorithm.alreadyRegistered", exArgs);
         }
 
@@ -176,7 +178,7 @@ public final class Canonicalizer {
         Class<? extends CanonicalizerSpi> registeredClass = canonicalizerHash.get(algorithmURI);
 
         if (registeredClass != null)  {
-            Object[] exArgs = { algorithmURI, registeredClass };
+            Object exArgs[] = { algorithmURI, registeredClass };
             throw new AlgorithmAlreadyRegisteredException("algorithm.alreadyRegistered", exArgs);
         }
 
@@ -254,7 +256,17 @@ public final class Canonicalizer {
         try (InputStream bais = new ByteArrayInputStream(inputBytes)) {
             InputSource in = new InputSource(bais);
 
+            // needs to validate for ID attribute normalization
+            DocumentBuilder db = XMLUtils.createDocumentBuilder(true, secureValidation);
+
             /*
+             * for some of the test vectors from the specification,
+             * there has to be a validating parser for ID attributes, default
+             * attribute values, NMTOKENS, etc.
+             * Unfortunately, the test vectors do use different DTDs or
+             * even no DTD. So Xerces 1.3.1 fires many warnings about using
+             * ErrorHandlers.
+             *
              * Text from the spec:
              *
              * The input octet stream MUST contain a well-formed XML document,
@@ -268,7 +280,13 @@ public final class Canonicalizer {
              * though the document type declaration is not retained in the
              * canonical form.
              */
-            document = XMLUtils.read(in, secureValidation);
+            db.setErrorHandler(new org.apache.xml.security.utils.IgnoreAllErrorHandler());
+
+            try {
+                document = db.parse(in);
+            } finally {
+                XMLUtils.repoolDocumentBuilder(db);
+            }
         }
         return this.canonicalizeSubtree(document);
     }

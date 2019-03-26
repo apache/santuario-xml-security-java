@@ -18,17 +18,13 @@
  */
 package org.apache.xml.security.stax.impl.resourceResolvers;
 
-import java.io.InputStream;
+import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.stax.ext.*;
+import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.Attribute;
-
-import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.stax.ext.ResourceResolver;
-import org.apache.xml.security.stax.ext.ResourceResolverLookup;
-import org.apache.xml.security.stax.ext.XMLSecurityConstants;
-import org.apache.xml.security.stax.ext.XMLSecurityUtils;
-import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
+import java.io.InputStream;
 
 /**
  * Resolver for references in the same document.

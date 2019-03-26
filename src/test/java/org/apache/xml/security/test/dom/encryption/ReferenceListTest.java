@@ -18,8 +18,11 @@
  */
 package org.apache.xml.security.test.dom.encryption;
 
+import static org.junit.Assert.*;
 
 import java.util.Iterator;
+
+import javax.xml.parsers.DocumentBuilder;
 
 import org.apache.xml.security.encryption.Reference;
 import org.apache.xml.security.encryption.ReferenceList;
@@ -29,24 +32,21 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-
-
 public class ReferenceListTest {
 
     static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(ReferenceListTest.class);
 
+    private DocumentBuilder db;
 
     public ReferenceListTest() throws Exception {
         org.apache.xml.security.Init.init();
+        db = XMLUtils.createDocumentBuilder(false);
     }
 
     @org.junit.Test
     public void testReferenceList() throws Exception {
-        Document doc = XMLUtils.newDocument();
+        Document doc = db.newDocument();
 
         XMLCipher dataCipher = XMLCipher.getInstance();
         dataCipher.init(XMLCipher.DECRYPT_MODE, null);
@@ -104,7 +104,7 @@ public class ReferenceListTest {
         ref = iter.next();
         assertEquals(EncryptionConstants._TAG_DATAREFERENCE, ref.getType());
         assertEquals("#id2", ref.getURI());
-        assertFalse(iter.hasNext());
+        assertTrue(!iter.hasNext());
 
         iter = keyRefList.getReferences();
         ref = iter.next();
@@ -113,6 +113,6 @@ public class ReferenceListTest {
         ref = iter.next();
         assertEquals(EncryptionConstants._TAG_KEYREFERENCE, ref.getType());
         assertEquals("#id20", ref.getURI());
-        assertFalse(iter.hasNext());
+        assertTrue(!iter.hasNext());
     }
 }

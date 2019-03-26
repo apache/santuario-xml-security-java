@@ -18,6 +18,25 @@
  */
 package org.apache.xml.security.test.stax.signature;
 
+import org.apache.xml.security.encryption.XMLCipher;
+import org.apache.xml.security.stax.ext.*;
+import org.apache.xml.security.stax.securityEvent.SecurityEventConstants;
+import org.apache.xml.security.test.stax.utils.StAX2DOM;
+import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
+import org.apache.xml.security.utils.XMLUtils;
+import org.junit.Assert;
+import org.junit.Test;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.DESedeKeySpec;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -29,35 +48,6 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.DESedeKeySpec;
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-
-import org.apache.xml.security.encryption.XMLCipher;
-import org.apache.xml.security.stax.ext.InboundXMLSec;
-import org.apache.xml.security.stax.ext.OutboundXMLSec;
-import org.apache.xml.security.stax.ext.SecurePart;
-import org.apache.xml.security.stax.ext.XMLSec;
-import org.apache.xml.security.stax.ext.XMLSecurityConstants;
-import org.apache.xml.security.stax.ext.XMLSecurityProperties;
-import org.apache.xml.security.stax.securityEvent.SecurityEventConstants;
-import org.apache.xml.security.test.stax.utils.StAX2DOM;
-import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
-import org.apache.xml.security.utils.XMLUtils;
-
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
 /**
  * A set of test-cases for Signature + Encryption.
  */
@@ -67,7 +57,7 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
     public void testSignatureEncryption() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         actions.add(XMLSecurityConstants.ENCRYPT);
         properties.setActions(actions);
@@ -111,7 +101,7 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         // Decrypt using DOM API
@@ -120,7 +110,7 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
 
         // Check the CreditCard decrypted ok
         NodeList nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 1);
+        Assert.assertEquals(nodeList.getLength(), 1);
 
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
@@ -128,15 +118,15 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
         TestSecurityEventListener testSecurityEventListener =
                 verifyUsingStAX(baos.toByteArray(), encryptionKey, cert.getPublicKey());
 
-        assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.SignedElement).size());
-        assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.ContentEncrypted).size());
+        Assert.assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.SignedElement).size());
+        Assert.assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.ContentEncrypted).size());
     }
 
     @Test
     public void testSignatureEncryptionSameElement() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         actions.add(XMLSecurityConstants.ENCRYPT);
         properties.setActions(actions);
@@ -180,7 +170,7 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         // Decrypt using DOM API
@@ -189,7 +179,7 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
 
         // Check the CreditCard decrypted ok
         NodeList nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 1);
+        Assert.assertEquals(nodeList.getLength(), 1);
 
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
@@ -197,15 +187,15 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
         TestSecurityEventListener testSecurityEventListener =
                 verifyUsingStAX(baos.toByteArray(), encryptionKey, cert.getPublicKey());
 
-        assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.SignedElement).size());
-        assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.EncryptedElement).size());
+        Assert.assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.SignedElement).size());
+        Assert.assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.EncryptedElement).size());
     }
 
     @Test
     public void testEnvelopedSignatureEncryptionElement() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         actions.add(XMLSecurityConstants.ENCRYPT);
         properties.setActions(actions);
@@ -257,7 +247,7 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         // Decrypt using DOM API
@@ -266,7 +256,7 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
 
         // Check the CreditCard decrypted ok
         NodeList nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 1);
+        Assert.assertEquals(nodeList.getLength(), 1);
 
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
@@ -274,15 +264,15 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
         TestSecurityEventListener testSecurityEventListener =
                 verifyUsingStAX(baos.toByteArray(), encryptionKey, cert.getPublicKey());
 
-        assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.SignedElement).size());
-        assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.EncryptedElement).size());
+        Assert.assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.SignedElement).size());
+        Assert.assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.EncryptedElement).size());
     }
 
     @Test
     public void testEnvelopedSignatureEncryptionContent() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         actions.add(XMLSecurityConstants.ENCRYPT);
         properties.setActions(actions);
@@ -334,7 +324,7 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         // Decrypt using DOM API
@@ -343,7 +333,7 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
 
         // Check the CreditCard decrypted ok
         NodeList nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 1);
+        Assert.assertEquals(nodeList.getLength(), 1);
 
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
@@ -351,15 +341,15 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
         TestSecurityEventListener testSecurityEventListener =
                 verifyUsingStAX(baos.toByteArray(), encryptionKey, cert.getPublicKey());
 
-        assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.SignedElement).size());
-        assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.ContentEncrypted).size());
+        Assert.assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.SignedElement).size());
+        Assert.assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.ContentEncrypted).size());
     }
 
     @Test
     public void testEncryptionSignature() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.ENCRYPT);
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
@@ -411,7 +401,7 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         // Verify using DOM
@@ -423,13 +413,13 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
 
         // Check the CreditCard decrypted ok
         NodeList nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 1);
+        Assert.assertEquals(nodeList.getLength(), 1);
 
         TestSecurityEventListener testSecurityEventListener =
                 verifyUsingStAX(baos.toByteArray(), encryptionKey, cert.getPublicKey());
 
-        assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.SignedElement).size());
-        assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.ContentEncrypted).size());
+        Assert.assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.SignedElement).size());
+        Assert.assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.ContentEncrypted).size());
     }
 
     @Test
@@ -451,9 +441,9 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
 
         try {
             verifyUsingStAX(sourceDocument, encryptionKey, cert.getPublicKey());
-            fail("Exception expected");
+            Assert.fail("Exception expected");
         } catch (XMLStreamException e) {
-            assertEquals("Unsecured message. Neither a Signature nor a EncryptedData element found.",
+            Assert.assertEquals("Unsecured message. Neither a Signature nor a EncryptedData element found.",
                     e.getCause().getMessage());
         }
     }
@@ -513,13 +503,13 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, testSecurityEventListener);
 
-        Document document = StAX2DOM.readDoc(securityStreamReader);
+        Document document = StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
         // javax.xml.transform.Transformer transformer = TransformerFactory.newInstance().newTransformer();
         // transformer.transform(new DOMSource(document), new StreamResult(System.out));
 
         NodeList nodeList = document.getElementsByTagNameNS("http://www.w3.org/2001/04/xmlenc#", "EncryptedData");
-        assertEquals(nodeList.getLength(), 0);
+        Assert.assertEquals(nodeList.getLength(), 0);
 
         return testSecurityEventListener;
     }

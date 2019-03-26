@@ -18,6 +18,7 @@
  */
 package org.apache.xml.security.test.dom.signature;
 
+import static org.junit.Assert.*;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -28,6 +29,7 @@ import java.util.Enumeration;
 import java.util.List;
 
 import javax.xml.crypto.dsig.DigestMethod;
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -55,13 +57,6 @@ import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.apache.xml.security.utils.resolver.ResourceResolverException;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
 import org.apache.xml.security.utils.resolver.implementations.ResolverXPointer;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 
 /**
  * Test a Signature and Validation, and check that we have access to the Element(s) that was
@@ -101,7 +96,7 @@ public class SignatureReferenceTest {
         Element referenceElement =
             (Element)((ReferenceNodeSetData)referenceData).iterator().next();
         assertNotNull(referenceElement);
-        assertEquals("root", referenceElement.getLocalName());
+        assertTrue("root".equals(referenceElement.getLocalName()));
 
         Element originalElement =
             (Element) doc.getElementsByTagNameNS("http://ns.example.org/", "root").item(0);
@@ -112,7 +107,8 @@ public class SignatureReferenceTest {
     // See SANTUARIO-465
     @org.junit.Test
     public void testNoReferenceChildren() throws ParserConfigurationException, XMLSecurityException {
-        Document doc = XMLUtils.newDocument();
+        DocumentBuilder db = XMLUtils.createDocumentBuilder(true);
+        Document doc = db.newDocument();
         Element referenceElement = doc.createElementNS(Constants.SignatureSpecNS, "Reference");
         referenceElement.setAttributeNS(null, "URI", "#_12345");
 
@@ -142,6 +138,8 @@ public class SignatureReferenceTest {
         referenceElement.appendChild(digestValue);
 
         new WrappedReference(referenceElement, "_54321", null);
+
+        XMLUtils.repoolDocumentBuilder(db);
     }
 
     @org.junit.Test
@@ -154,7 +152,8 @@ public class SignatureReferenceTest {
         InputStream sourceDocument =
             this.getClass().getClassLoader().getResourceAsStream(
                     "at/iaik/ixsil/coreFeatures/signatures/manifestSignature.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false, false);
+        Document document = builder.parse(sourceDocument);
 
         String expression = "//dsig:Signature[1]";
         Element sigElement =
@@ -189,6 +188,8 @@ public class SignatureReferenceTest {
         assertEquals(1, verifiedReferences.get(0).getManifestReferences().size());
         assertEquals("../samples/sampleXMLData.xml", verifiedReferences.get(0).getManifestReferences().get(0).getUri());
         assertFalse(verifiedReferences.get(0).getManifestReferences().get(0).isValid());
+
+        XMLUtils.repoolDocumentBuilder(builder);
     }
 
     /**
@@ -230,7 +231,8 @@ public class SignatureReferenceTest {
     }
 
     private Document getOriginalDocument() throws Throwable {
-        Document doc = XMLUtils.newDocument();
+        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+        Document doc = db.newDocument();
 
         Element rootElement = doc.createElementNS("http://ns.example.org/", "root");
         rootElement.appendChild(doc.createTextNode("Hello World!"));

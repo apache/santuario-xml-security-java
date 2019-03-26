@@ -18,6 +18,7 @@
  */
 package org.apache.xml.security.test.dom.signature;
 
+import static org.junit.Assert.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -33,10 +34,6 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-
 public class X509DataTest {
 
     private static final String BASEDIR = System.getProperty("basedir");
@@ -47,7 +44,8 @@ public class X509DataTest {
     public void testAddX509SubjectName() throws Exception {
         Init.init();
 
-        Document doc = XMLUtils.newDocument();
+        javax.xml.parsers.DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+        Document doc = db.newDocument();
         XMLSignature sig = new XMLSignature(doc, "", XMLSignature.ALGO_ID_SIGNATURE_DSA);
 
         doc.appendChild(sig.getElement());
@@ -77,9 +75,10 @@ public class X509DataTest {
 
     private XMLSignature getSignature(byte[] s) throws Exception {
 
+        javax.xml.parsers.DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
         Document doc = null;
         try (InputStream is = new ByteArrayInputStream(s)) {
-            doc = XMLUtils.read(is, false);
+            doc = db.parse(is);
         }
         Element el = (Element)doc.getFirstChild();
         return new XMLSignature(el, "");

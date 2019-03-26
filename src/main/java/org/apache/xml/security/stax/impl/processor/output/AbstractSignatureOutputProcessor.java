@@ -18,43 +18,30 @@
  */
 package org.apache.xml.security.stax.impl.processor.output;
 
+import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer20010315_Excl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.stax.config.JCEAlgorithmMapper;
+import org.apache.xml.security.stax.config.ResourceResolverMapper;
+import org.apache.xml.security.stax.ext.*;
+import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
+import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
+import org.apache.xml.security.stax.impl.SignaturePartDef;
+import org.apache.xml.security.stax.impl.transformer.TransformIdentity;
+import org.apache.xml.security.stax.impl.util.DigestOutputStream;
+import org.apache.xml.security.utils.UnsyncBufferedOutputStream;
+import org.apache.xml.security.utils.XMLUtils;
+
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
-
-import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.stax.config.JCEAlgorithmMapper;
-import org.apache.xml.security.stax.config.ResourceResolverMapper;
-import org.apache.xml.security.stax.ext.AbstractOutputProcessor;
-import org.apache.xml.security.stax.ext.OutputProcessorChain;
-import org.apache.xml.security.stax.ext.ResourceResolver;
-import org.apache.xml.security.stax.ext.SecurePart;
-import org.apache.xml.security.stax.ext.Transformer;
-import org.apache.xml.security.stax.ext.XMLSecurityConstants;
-import org.apache.xml.security.stax.ext.XMLSecurityUtils;
-import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
-import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
-import org.apache.xml.security.stax.impl.SignaturePartDef;
-import org.apache.xml.security.stax.impl.transformer.TransformIdentity;
-import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer20010315_Excl;
-import org.apache.xml.security.stax.impl.util.DigestOutputStream;
-import org.apache.xml.security.utils.UnsyncBufferedOutputStream;
-import org.apache.xml.security.utils.XMLUtils;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.*;
 
 /**
  */
@@ -233,7 +220,7 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
                 for (Iterator<String> iterator = prefixSet.iterator(); iterator.hasNext(); ) {
                     String prefix = iterator.next();
                     if (prefixes.length() != 0) {
-                        prefixes.append(' ');
+                        prefixes.append(" ");
                     }
                     prefixes.append(prefix);
                 }
@@ -287,29 +274,32 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
 
             transformer.transform(xmlSecEvent);
 
-            if (XMLStreamConstants.START_ELEMENT == xmlSecEvent.getEventType()) {
-                elementCounter++;
-            } else if (XMLStreamConstants.END_ELEMENT == xmlSecEvent.getEventType()) {
-                elementCounter--;
+            switch (xmlSecEvent.getEventType()) {
+                case XMLStreamConstants.START_ELEMENT:
+                    elementCounter++;
+                    break;
+                case XMLStreamConstants.END_ELEMENT:
+                    elementCounter--;
 
-                if (elementCounter == 0 &&
-                    xmlSecEvent.asEndElement().getName().equals(this.xmlSecStartElement.getName())) {
+                    if (elementCounter == 0 &&
+                            xmlSecEvent.asEndElement().getName().equals(this.xmlSecStartElement.getName())) {
 
-                    transformer.doFinal();
-                    try {
-                        bufferedDigestOutputStream.close();
-                    } catch (IOException e) {
-                        throw new XMLSecurityException(e);
+                        transformer.doFinal();
+                        try {
+                            bufferedDigestOutputStream.close();
+                        } catch (IOException e) {
+                            throw new XMLSecurityException(e);
+                        }
+                        String calculatedDigest =
+                            XMLUtils.encodeToString(this.digestOutputStream.getDigestValue());
+                        LOG.debug("Calculated Digest: {}", calculatedDigest);
+                        signaturePartDef.setDigestValue(calculatedDigest);
+
+                        outputProcessorChain.removeProcessor(this);
+                        //from now on signature is possible again
+                        setActiveInternalSignatureOutputProcessor(null);
                     }
-                    String calculatedDigest =
-                        XMLUtils.encodeToString(this.digestOutputStream.getDigestValue());
-                    LOG.debug("Calculated Digest: {}", calculatedDigest);
-                    signaturePartDef.setDigestValue(calculatedDigest);
-
-                    outputProcessorChain.removeProcessor(this);
-                    //from now on signature is possible again
-                    setActiveInternalSignatureOutputProcessor(null);
-                }
+                    break;
             }
             outputProcessorChain.processEvent(xmlSecEvent);
         }

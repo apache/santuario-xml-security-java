@@ -96,7 +96,7 @@ public class XMLCipherInput {
      * @throws XMLEncryptionException
      * @return The decripted bytes.
      */
-    public byte[] getBytes() throws XMLEncryptionException {  //NOPMD
+    public byte[] getBytes() throws XMLEncryptionException {
         if (mode == XMLCipher.DECRYPT_MODE) {
             return getDecryptBytes();
         }

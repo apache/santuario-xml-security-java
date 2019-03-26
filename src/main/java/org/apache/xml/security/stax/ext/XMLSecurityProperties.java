@@ -38,7 +38,7 @@ public class XMLSecurityProperties {
     private boolean skipDocumentEvents = false;
     private boolean disableSchemaValidation = false;
 
-    private List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+    private List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
 
     private X509Certificate encryptionUseThisCertificate;
     private String encryptionSymAlgorithm;
@@ -46,7 +46,7 @@ public class XMLSecurityProperties {
     private String encryptionKeyTransportDigestAlgorithm;
     private String encryptionKeyTransportMGFAlgorithm;
     private byte[] encryptionKeyTransportOAEPParams;
-    private final List<SecurePart> encryptionParts = new LinkedList<>();
+    private final List<SecurePart> encryptionParts = new LinkedList<SecurePart>();
     private Key encryptionKey;
     private Key encryptionTransportKey;
     private SecurityTokenConstants.KeyIdentifier encryptionKeyIdentifier;
@@ -54,7 +54,7 @@ public class XMLSecurityProperties {
 
     private Key decryptionKey;
 
-    private final List<SecurePart> signatureParts = new LinkedList<>();
+    private final List<SecurePart> signatureParts = new LinkedList<SecurePart>();
     private String signatureAlgorithm;
     private String signatureDigestAlgorithm;
     private String signatureCanonicalizationAlgorithm;
@@ -409,7 +409,7 @@ public class XMLSecurityProperties {
 
     public void addAction(XMLSecurityConstants.Action action) {
         if (actions == null) {
-            actions = new ArrayList<>();
+            actions = new ArrayList<XMLSecurityConstants.Action>();
         }
         actions.add(action);
     }

@@ -18,12 +18,13 @@
  */
 package org.apache.xml.security;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
 
 import org.apache.xml.security.algorithms.JCEMapper;
 import org.apache.xml.security.algorithms.SignatureAlgorithm;
@@ -91,11 +92,6 @@ public class Init {
             dynamicInit();
         } else {
             fileInit(is);
-            try {
-                is.close();
-            } catch (IOException ex) {
-                LOG.warn(ex.getMessage());
-            }
         }
 
         alreadyInitialized = true;
@@ -159,7 +155,14 @@ public class Init {
     private static void fileInit(InputStream is) {
         try {
             /* read library configuration file */
-            Document doc = XMLUtils.read(is, false);
+            DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+            Document doc;
+            try {
+                doc = db.parse(is);
+            } finally {
+                XMLUtils.repoolDocumentBuilder(db);
+                db = null;
+            }
             Node config = doc.getFirstChild();
             for (; config != null; config = config.getNextSibling()) {
                 if ("Configuration".equals(config.getLocalName())) {
@@ -199,7 +202,7 @@ public class Init {
                             Canonicalizer.register(uri, javaClass);
                             LOG.debug("Canonicalizer.register({}, {})", uri, javaClass);
                         } catch (ClassNotFoundException e) {
-                            Object[] exArgs = { uri, javaClass };
+                            Object exArgs[] = { uri, javaClass };
                             LOG.error(I18n.translate("algorithm.classDoesNotExist", exArgs));
                         }
                     }
@@ -217,7 +220,7 @@ public class Init {
                             Transform.register(uri, javaClass);
                             LOG.debug("Transform.register({}, {})", uri, javaClass);
                         } catch (ClassNotFoundException e) {
-                            Object[] exArgs = { uri, javaClass };
+                            Object exArgs[] = { uri, javaClass };
 
                             LOG.error(I18n.translate("algorithm.classDoesNotExist", exArgs));
                         } catch (NoClassDefFoundError ex) {
@@ -253,7 +256,7 @@ public class Init {
                             SignatureAlgorithm.register(uri, javaClass);
                             LOG.debug("SignatureAlgorithm.register({}, {})", uri, javaClass);
                         } catch (ClassNotFoundException e) {
-                            Object[] exArgs = { uri, javaClass };
+                            Object exArgs[] = { uri, javaClass };
 
                             LOG.error(I18n.translate("algorithm.classDoesNotExist", exArgs));
                         }

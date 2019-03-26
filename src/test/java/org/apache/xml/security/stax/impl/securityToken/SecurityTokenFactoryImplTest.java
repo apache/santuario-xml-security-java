@@ -41,8 +41,7 @@ import org.junit.rules.ExpectedException;
 
 import static org.apache.xml.security.stax.securityToken.SecurityTokenConstants.KeyIdentifier_KeyName;
 import static org.apache.xml.security.test.stax.utils.KeyLoader.loadPublicKey;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class SecurityTokenFactoryImplTest {
     private KeyInfoType keyInfoType;

@@ -62,7 +62,7 @@ public class BobKeyResolver extends KeyResolverSpi {
         try {
             if (isKeyName) {
                 _kn = new KeyName(element, "");
-                if ("bob".equals(_kn.getKeyName())) {
+                if (_kn.getKeyName().equals("bob")) {
                     return true;
                 }
             }

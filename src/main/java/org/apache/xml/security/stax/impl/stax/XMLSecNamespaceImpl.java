@@ -33,10 +33,10 @@ import java.util.WeakHashMap;
  * Class to let XML-Namespaces be comparable how it is requested by C14N
  *
  */
-public final class XMLSecNamespaceImpl extends XMLSecEventBaseImpl implements XMLSecNamespace {
+public class XMLSecNamespaceImpl extends XMLSecEventBaseImpl implements XMLSecNamespace {
 
     private static final Map<String, Map<String, XMLSecNamespace>> xmlSecNamespaceMap =
-            new WeakHashMap<>();
+            new WeakHashMap<String, Map<String, XMLSecNamespace>>();
 
     private String prefix;
     private final String uri;
@@ -68,7 +68,7 @@ public final class XMLSecNamespaceImpl extends XMLSecEventBaseImpl implements XM
                 return xmlSecNamespace;
             }
         } else {
-            nsMap = new WeakHashMap<>();
+            nsMap = new WeakHashMap<String, XMLSecNamespace>();
             XMLSecNamespace xmlSecNamespace = new XMLSecNamespaceImpl(prefixToUse, uriToUse);
             nsMap.put(uriToUse, xmlSecNamespace);
             xmlSecNamespaceMap.put(prefixToUse, nsMap);
@@ -174,14 +174,17 @@ public final class XMLSecNamespaceImpl extends XMLSecEventBaseImpl implements XM
         int idx = 0;
         while (i < length) {
             char c = text.charAt(i);
-            if (c == '&') {
-                writer.write(text, idx, i - idx);
-                writer.write("&amp;");
-                idx = i + 1;
-            } else if (c == '"') {
-                writer.write(text, idx, i - idx);
-                writer.write("&quot;");
-                idx = i + 1;
+            switch (c) {
+                case '&':
+                    writer.write(text, idx, i - idx);
+                    writer.write("&amp;");
+                    idx = i + 1;
+                    break;
+                case '"':
+                    writer.write(text, idx, i - idx);
+                    writer.write("&quot;");
+                    idx = i + 1;
+                    break;
             }
             i++;
         }

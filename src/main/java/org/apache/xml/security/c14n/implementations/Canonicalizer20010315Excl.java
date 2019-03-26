@@ -161,11 +161,11 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
                                            Map<String, byte[]> cache)
         throws CanonicalizationException, DOMException, IOException {
         // result will contain the attrs which have to be output
-        SortedSet<Attr> result = new TreeSet<>(COMPARE);
+        SortedSet<Attr> result = new TreeSet<Attr>(COMPARE);
 
         // The prefix visibly utilized (in the attribute or in the name) in
         // the element
-        SortedSet<String> visiblyUtilized = new TreeSet<>();
+        SortedSet<String> visiblyUtilized = new TreeSet<String>();
         if (inclusiveNSSet != null && !inclusiveNSSet.isEmpty()) {
             visiblyUtilized.addAll(inclusiveNSSet);
         }
@@ -193,7 +193,7 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
                     && C14nHelper.namespaceIsRelative(NNodeValue)) {
                     // The default mapping for xml must not be output.
                     // New definition check if it is relative.
-                    Object[] exArgs = {element.getTagName(), NName, attribute.getNodeValue()};
+                    Object exArgs[] = {element.getTagName(), NName, attribute.getNodeValue()};
                     throw new CanonicalizationException(
                         "c14n.Canonicalizer.RelativeNamespace", exArgs
                     );
@@ -238,7 +238,7 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
                                     Map<String, byte[]> cache)
         throws CanonicalizationException, DOMException, IOException {
         // result will contain the attrs which have to be output
-        SortedSet<Attr> result = new TreeSet<>(COMPARE);
+        SortedSet<Attr> result = new TreeSet<Attr>(COMPARE);
 
         // The prefix visibly utilized (in the attribute or in the name) in
         // the element
@@ -246,7 +246,7 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
         // It's the output selected.
         boolean isOutputElement = isVisibleDO(element, ns.getLevel()) == 1;
         if (isOutputElement) {
-            visiblyUtilized = new TreeSet<>();
+            visiblyUtilized = new TreeSet<String>();
             if (inclusiveNSSet != null && !inclusiveNSSet.isEmpty()) {
                 visiblyUtilized.addAll(inclusiveNSSet);
             }
@@ -282,7 +282,7 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
                         if (n != null) {
                             result.add((Attr)n);
                             if (C14nHelper.namespaceIsRelative(attribute)) {
-                                Object[] exArgs = { element.getTagName(), NName, attribute.getNodeValue() };
+                                Object exArgs[] = { element.getTagName(), NName, attribute.getNodeValue() };
                                 throw new CanonicalizationException(
                                     "c14n.Canonicalizer.RelativeNamespace", exArgs
                                 );
@@ -293,7 +293,7 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
                     if (ns.addMapping(NName, NNodeValue, attribute)
                         && C14nHelper.namespaceIsRelative(NNodeValue)) {
                         // New definition check if it is relative
-                        Object[] exArgs = { element.getTagName(), NName, attribute.getNodeValue() };
+                        Object exArgs[] = { element.getTagName(), NName, attribute.getNodeValue() };
                         throw new CanonicalizationException(
                             "c14n.Canonicalizer.RelativeNamespace", exArgs
                         );

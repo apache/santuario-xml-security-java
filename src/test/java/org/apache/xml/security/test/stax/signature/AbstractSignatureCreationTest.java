@@ -37,18 +37,14 @@ import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.apache.xml.security.utils.resolver.ResourceResolverException;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
+import org.junit.Assert;
 import org.junit.Before;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-
 /**
  */
-public class AbstractSignatureCreationTest {
+public class AbstractSignatureCreationTest extends Assert {
 
     protected static String BASEDIR;
 
@@ -107,7 +103,7 @@ public class AbstractSignatureCreationTest {
         String expression = "//dsig:Signature[1]";
         Element sigElement =
                 (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
-        assertNotNull(sigElement);
+        Assert.assertNotNull(sigElement);
 
         for (SecurePart securePart : secureParts) {
             if (securePart.getName() == null) {
@@ -116,7 +112,7 @@ public class AbstractSignatureCreationTest {
             expression = "//*[local-name()='" + securePart.getName().getLocalPart() + "']";
             Element signedElement =
                     (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
-            assertNotNull(signedElement);
+            Assert.assertNotNull(signedElement);
             signedElement.setIdAttributeNS(null, idAttributeNS, true);
         }
 
@@ -126,10 +122,10 @@ public class AbstractSignatureCreationTest {
         }
         if (keyInfoRequired) {
             KeyInfo ki = signature.getKeyInfo();
-            assertNotNull(ki);
+            Assert.assertNotNull(ki);
         }
 
-        assertTrue(signature.checkSignatureValue(cert));
+        Assert.assertTrue(signature.checkSignatureValue(cert));
     }
 
     /**
@@ -145,18 +141,18 @@ public class AbstractSignatureCreationTest {
         String expression = "//dsig:Signature[1]";
         Element sigElement =
                 (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
-        assertNotNull(sigElement);
+        Assert.assertNotNull(sigElement);
 
         for (SecurePart securePart : secureParts) {
             expression = "//*[local-name()='" + securePart.getName().getLocalPart() + "']";
             Element signedElement =
                     (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
-            assertNotNull(signedElement);
+            Assert.assertNotNull(signedElement);
             signedElement.setIdAttributeNS(null, "Id", true);
         }
 
         XMLSignature signature = new XMLSignature(sigElement, "");
-        assertTrue(signature.checkSignatureValue(key));
+        Assert.assertTrue(signature.checkSignatureValue(key));
     }
 
     protected void verifyUsingDOMWihtoutId(
@@ -169,22 +165,22 @@ public class AbstractSignatureCreationTest {
         String expression = "//dsig:Signature[1]";
         Element sigElement =
                 (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
-        assertNotNull(sigElement);
-        assertEquals("", sigElement.getAttribute("Id"));
+        Assert.assertNotNull(sigElement);
+        Assert.assertEquals("", sigElement.getAttribute("Id"));
 
         assertEquals("Without Id there can only be one secure part", 1, secureParts.size());
         expression = "//*[local-name()='" + secureParts.get(0).getName().getLocalPart() + "']";
         Element signedElement =
                 (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
-        assertNotNull(signedElement);
-        assertEquals("", signedElement.getAttribute("Id"));
+        Assert.assertNotNull(signedElement);
+        Assert.assertEquals("", signedElement.getAttribute("Id"));
 
         XMLSignature signature = new XMLSignature(sigElement, "");
 
         // We need a special resolver for the empty URI
         signature.addResourceResolver(new EmptyURIResourceResolverSpi(signedElement));
 
-        assertTrue(signature.checkSignatureValue(key));
+        Assert.assertTrue(signature.checkSignatureValue(key));
     }
 
     protected void verifyUsingDOMWihtoutIdAndDefaultTransform (
@@ -197,8 +193,8 @@ public class AbstractSignatureCreationTest {
         String expression = "//dsig:Signature[1]";
         Element sigElement =
                 (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
-        assertNotNull(sigElement);
-        assertEquals("", sigElement.getAttribute("Id"));
+        Assert.assertNotNull(sigElement);
+        Assert.assertEquals("", sigElement.getAttribute("Id"));
 
         assertEquals("Without Id there can only be one secure part", 1, secureParts.size());
         //assertNull(secureParts.get(0).getName());
@@ -210,7 +206,7 @@ public class AbstractSignatureCreationTest {
         // We need a special resolver for the empty URI
         signature.addResourceResolver(new EmptyURIResourceResolverSpi(signedElement));
 
-        assertTrue(signature.checkSignatureValue(key));
+        Assert.assertTrue(signature.checkSignatureValue(key));
     }
 
     private XPath getxPath() {

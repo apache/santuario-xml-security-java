@@ -45,14 +45,11 @@ import org.apache.xml.security.test.stax.utils.HttpRequestRedirectorProxy;
 import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
 import org.apache.xml.security.utils.XMLUtils;
 import org.apache.xml.security.utils.resolver.implementations.ResolverDirectHTTP;
+import org.junit.Assert;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 /**
  */
@@ -62,7 +59,7 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
     public void testSignatureCreationWithExternalFilesystemXMLReference() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
@@ -102,7 +99,7 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         // Verify using DOM
@@ -113,7 +110,7 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
     public void testSignatureCreationWithExternalFilesystemBinaryReference() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
@@ -153,7 +150,7 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         // Verify using DOM
@@ -174,7 +171,7 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
 
             // Set up the Configuration
             XMLSecurityProperties properties = new XMLSecurityProperties();
-            List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+            List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
             actions.add(XMLSecurityConstants.SIGNATURE);
             properties.setActions(actions);
 
@@ -210,7 +207,7 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
 
             Document document = null;
             try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-                document = XMLUtils.read(is, false);
+                document = XMLUtils.createDocumentBuilder(false).parse(is);
             }
 
             // Verify using DOM
@@ -224,7 +221,7 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
     public void testSignatureCreationWithSameDocumentXPointerIdApostropheReference() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
@@ -257,15 +254,15 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("http://www.w3.org/2000/09/xmldsig#", "Reference");
-        assertEquals(1, nodeList.getLength());
+        Assert.assertEquals(1, nodeList.getLength());
 
         String uri = ((Element) nodeList.item(0)).getAttribute("URI");
-        assertNotNull(uri);
-        assertTrue(uri.startsWith("#xpointer"));
+        Assert.assertNotNull(uri);
+        Assert.assertTrue(uri.startsWith("#xpointer"));
 
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());

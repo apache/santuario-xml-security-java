@@ -21,20 +21,13 @@
  */
 package javax.xml.crypto.test.dsig;
 
+import static org.junit.Assert.*;
 
 import java.security.*;
 import java.security.spec.AlgorithmParameterSpec;
 import javax.xml.crypto.dsig.*;
 import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 import javax.xml.crypto.dsig.spec.ExcC14NParameterSpec;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 
 /**
  * Unit test for javax.xml.crypto.dsig.CanonicalizationMethod
@@ -49,7 +42,7 @@ public class CanonicalizationMethodTest {
             (new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI(), 1);
     }
 
-    private static final String[] C14N_ALGOS = {
+    private static final String C14N_ALGOS[] = {
         CanonicalizationMethod.INCLUSIVE_WITH_COMMENTS,
         CanonicalizationMethod.INCLUSIVE,
         CanonicalizationMethod.EXCLUSIVE_WITH_COMMENTS,
@@ -76,7 +69,7 @@ public class CanonicalizationMethodTest {
                 fail("Should raise a NPE for null feature");
             } catch (NullPointerException npe) {}
 
-            assertFalse(cm.isFeatureSupported("not supported"));
+            assertTrue(!cm.isFeatureSupported("not supported"));
         }
     }
 

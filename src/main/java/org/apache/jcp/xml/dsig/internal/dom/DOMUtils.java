@@ -24,29 +24,18 @@
  */
 package org.apache.jcp.xml.dsig.internal.dom;
 
+import java.util.*;
 import java.security.spec.AlgorithmParameterSpec;
-import java.util.AbstractSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Set;
-
-import javax.xml.XMLConstants;
-import javax.xml.crypto.MarshalException;
-import javax.xml.crypto.XMLCryptoContext;
-import javax.xml.crypto.XMLStructure;
-import javax.xml.crypto.dsig.XMLSignature;
-import javax.xml.crypto.dsig.spec.ExcC14NParameterSpec;
-import javax.xml.crypto.dsig.spec.XPathFilter2ParameterSpec;
-import javax.xml.crypto.dsig.spec.XPathFilterParameterSpec;
-import javax.xml.crypto.dsig.spec.XPathType;
-import javax.xml.crypto.dsig.spec.XSLTTransformParameterSpec;
-
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import javax.xml.XMLConstants;
+import javax.xml.crypto.*;
+import javax.xml.crypto.dsig.*;
+import javax.xml.crypto.dsig.spec.*;
 
 /**
  * Useful static DOM utility methods.
@@ -99,7 +88,7 @@ public final class DOMUtils {
     public static Element createElement(Document doc, String tag,
                                         String nsURI, String prefix)
     {
-        String qName = (prefix == null || prefix.length() == 0)
+        String qName = prefix == null || prefix.length() == 0
                        ? tag : prefix + ":" + tag;
         return doc.createElementNS(nsURI, qName);
     }
@@ -156,6 +145,23 @@ public final class DOMUtils {
 
     /**
      * Returns the first child element of the specified node and checks that
+     * the local name is equal to {@code localName}.
+     *
+     * @param node the node
+     * @return the first child element of the specified node
+     * @throws NullPointerException if {@code node == null}
+     * @throws MarshalException if no such element or the local name is not
+     *    equal to {@code localName}
+     */
+    @Deprecated
+    public static Element getFirstChildElement(Node node, String localName)
+        throws MarshalException
+    {
+        return verifyElement(getFirstChildElement(node), localName);
+    }
+
+    /**
+     * Returns the first child element of the specified node and checks that
      * the local name is equal to {@code localName} and the namespace is equal to
      * {@code namespaceURI}
      *
@@ -169,6 +175,20 @@ public final class DOMUtils {
         throws MarshalException
     {
         return verifyElement(getFirstChildElement(node), localName, namespaceURI);
+    }
+
+    private static Element verifyElement(Element elem, String localName)
+        throws MarshalException
+    {
+        if (elem == null) {
+            throw new MarshalException("Missing " + localName + " element");
+        }
+        String name = elem.getLocalName();
+        if (!name.equals(localName)) {
+            throw new MarshalException("Invalid element name: " +
+                                       name + ", expected " + localName);
+        }
+        return elem;
     }
 
     private static Element verifyElement(Element elem, String localName, String namespaceURI)
@@ -219,6 +239,23 @@ public final class DOMUtils {
             sibling = sibling.getNextSibling();
         }
         return (Element)sibling;
+    }
+
+    /**
+     * Returns the next sibling element of the specified node and checks that
+     * the local name is equal to {@code localName}.
+     *
+     * @param node the node
+     * @return the next sibling element of the specified node
+     * @throws NullPointerException if {@code node == null}
+     * @throws MarshalException if no such element or the local name is not
+     * equal to {@code localName}
+     */
+    @Deprecated
+    public static Element getNextSiblingElement(Node node, String localName)
+        throws MarshalException
+    {
+        return verifyElement(getNextSiblingElement(node), localName);
     }
 
     /**
@@ -366,9 +403,11 @@ public final class DOMUtils {
         if (thisNode == otherNode) {
             return true;
         }
-
+        if (thisNode.getNodeType() != otherNode.getNodeType()) {
+            return false;
+        }
         // FIXME - test content, etc
-        return thisNode.getNodeType() == otherNode.getNodeType();
+        return true;
     }
 
     /**
@@ -467,7 +506,8 @@ public final class DOMUtils {
 
     public static boolean isNamespace(Node node)
     {
-        if (Node.ATTRIBUTE_NODE == node.getNodeType()) {
+        final short nodeType = node.getNodeType();
+        if (nodeType == Node.ATTRIBUTE_NODE) {
             final String namespaceURI = node.getNamespaceURI();
             return XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI);
         }

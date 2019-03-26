@@ -18,29 +18,24 @@
  */
 package org.apache.xml.security.test.stax;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.xml.stream.XMLStreamException;
-
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.config.Init;
-import org.apache.xml.security.stax.ext.OutputProcessor;
-import org.apache.xml.security.stax.ext.OutputProcessorChain;
-import org.apache.xml.security.stax.ext.XMLSecurityConstants;
-import org.apache.xml.security.stax.ext.XMLSecurityProperties;
-import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 import org.apache.xml.security.stax.impl.OutboundSecurityContextImpl;
-import org.apache.xml.security.stax.impl.OutputProcessorChainImpl;
-
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import org.apache.xml.security.stax.ext.*;
+import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
+import org.apache.xml.security.stax.impl.OutputProcessorChainImpl;
+
+import javax.xml.stream.XMLStreamException;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  */
-public class OutputProcessorChainTest {
+public class OutputProcessorChainTest extends Assert {
 
     @Before
     public void setUp() throws Exception {
@@ -120,9 +115,9 @@ public class OutputProcessorChainTest {
         };
         outputProcessorChain.addProcessor(outputProcessor3);
 
-        assertEquals(outputProcessorChain.getProcessors().get(0), outputProcessor1);
-        assertEquals(outputProcessorChain.getProcessors().get(1), outputProcessor2);
-        assertEquals(outputProcessorChain.getProcessors().get(2), outputProcessor3);
+        Assert.assertEquals(outputProcessorChain.getProcessors().get(0), outputProcessor1);
+        Assert.assertEquals(outputProcessorChain.getProcessors().get(1), outputProcessor2);
+        Assert.assertEquals(outputProcessorChain.getProcessors().get(2), outputProcessor3);
     }
 
     @Test
@@ -157,12 +152,12 @@ public class OutputProcessorChainTest {
         };
         outputProcessorChain.addProcessor(outputProcessor6);
 
-        assertEquals(outputProcessorChain.getProcessors().get(0), outputProcessor2);
-        assertEquals(outputProcessorChain.getProcessors().get(1), outputProcessor5);
-        assertEquals(outputProcessorChain.getProcessors().get(2), outputProcessor1);
-        assertEquals(outputProcessorChain.getProcessors().get(3), outputProcessor6);
-        assertEquals(outputProcessorChain.getProcessors().get(4), outputProcessor3);
-        assertEquals(outputProcessorChain.getProcessors().get(5), outputProcessor4);
+        Assert.assertEquals(outputProcessorChain.getProcessors().get(0), outputProcessor2);
+        Assert.assertEquals(outputProcessorChain.getProcessors().get(1), outputProcessor5);
+        Assert.assertEquals(outputProcessorChain.getProcessors().get(2), outputProcessor1);
+        Assert.assertEquals(outputProcessorChain.getProcessors().get(3), outputProcessor6);
+        Assert.assertEquals(outputProcessorChain.getProcessors().get(4), outputProcessor3);
+        Assert.assertEquals(outputProcessorChain.getProcessors().get(5), outputProcessor4);
     }
 
     @Test
@@ -200,12 +195,12 @@ public class OutputProcessorChainTest {
         outputProcessor6.addBeforeProcessor(outputProcessor1.getClass().getName());
         outputProcessorChain.addProcessor(outputProcessor6);
 
-        assertEquals(outputProcessorChain.getProcessors().get(0), outputProcessor5);
-        assertEquals(outputProcessorChain.getProcessors().get(1), outputProcessor2);
-        assertEquals(outputProcessorChain.getProcessors().get(2), outputProcessor6);
-        assertEquals(outputProcessorChain.getProcessors().get(3), outputProcessor1);
-        assertEquals(outputProcessorChain.getProcessors().get(4), outputProcessor4);
-        assertEquals(outputProcessorChain.getProcessors().get(5), outputProcessor3);
+        Assert.assertEquals(outputProcessorChain.getProcessors().get(0), outputProcessor5);
+        Assert.assertEquals(outputProcessorChain.getProcessors().get(1), outputProcessor2);
+        Assert.assertEquals(outputProcessorChain.getProcessors().get(2), outputProcessor6);
+        Assert.assertEquals(outputProcessorChain.getProcessors().get(3), outputProcessor1);
+        Assert.assertEquals(outputProcessorChain.getProcessors().get(4), outputProcessor4);
+        Assert.assertEquals(outputProcessorChain.getProcessors().get(5), outputProcessor3);
     }
 
     @Test
@@ -243,12 +238,12 @@ public class OutputProcessorChainTest {
         outputProcessor6.addAfterProcessor(outputProcessor1.getClass().getName());
         outputProcessorChain.addProcessor(outputProcessor6);
 
-        assertEquals(outputProcessorChain.getProcessors().get(0), outputProcessor2);
-        assertEquals(outputProcessorChain.getProcessors().get(1), outputProcessor5);
-        assertEquals(outputProcessorChain.getProcessors().get(2), outputProcessor1);
-        assertEquals(outputProcessorChain.getProcessors().get(3), outputProcessor6);
-        assertEquals(outputProcessorChain.getProcessors().get(4), outputProcessor3);
-        assertEquals(outputProcessorChain.getProcessors().get(5), outputProcessor4);
+        Assert.assertEquals(outputProcessorChain.getProcessors().get(0), outputProcessor2);
+        Assert.assertEquals(outputProcessorChain.getProcessors().get(1), outputProcessor5);
+        Assert.assertEquals(outputProcessorChain.getProcessors().get(2), outputProcessor1);
+        Assert.assertEquals(outputProcessorChain.getProcessors().get(3), outputProcessor6);
+        Assert.assertEquals(outputProcessorChain.getProcessors().get(4), outputProcessor3);
+        Assert.assertEquals(outputProcessorChain.getProcessors().get(5), outputProcessor4);
     }
 
     @Test
@@ -283,11 +278,11 @@ public class OutputProcessorChainTest {
         outputProcessor6.addAfterProcessor("");
         outputProcessorChain.addProcessor(outputProcessor6);
 
-        assertEquals(outputProcessorChain.getProcessors().get(0), outputProcessor1);
-        assertEquals(outputProcessorChain.getProcessors().get(1), outputProcessor2);
-        assertEquals(outputProcessorChain.getProcessors().get(2), outputProcessor3);
-        assertEquals(outputProcessorChain.getProcessors().get(3), outputProcessor6);
-        assertEquals(outputProcessorChain.getProcessors().get(4), outputProcessor5);
-        assertEquals(outputProcessorChain.getProcessors().get(5), outputProcessor4);
+        Assert.assertEquals(outputProcessorChain.getProcessors().get(0), outputProcessor1);
+        Assert.assertEquals(outputProcessorChain.getProcessors().get(1), outputProcessor2);
+        Assert.assertEquals(outputProcessorChain.getProcessors().get(2), outputProcessor3);
+        Assert.assertEquals(outputProcessorChain.getProcessors().get(3), outputProcessor6);
+        Assert.assertEquals(outputProcessorChain.getProcessors().get(4), outputProcessor5);
+        Assert.assertEquals(outputProcessorChain.getProcessors().get(5), outputProcessor4);
     }
 }

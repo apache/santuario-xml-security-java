@@ -27,6 +27,7 @@ import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 import org.apache.xml.security.stax.impl.transformer.TransformIdentity;
 import org.apache.xml.security.test.stax.utils.UnixInputStream;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -43,12 +44,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
 /**
  */
-public class TransformIdentityTest {
+public class TransformIdentityTest extends Assert {
 
     private XMLInputFactory xmlInputFactory;
 
@@ -92,7 +90,7 @@ public class TransformIdentityTest {
 
             @Override
             public void transform(InputStream inputStream) throws XMLStreamException {
-                fail("unexpected call to transform(InputStream");
+                Assert.fail("unexpected call to transform(InputStream");
             }
 
             @Override
@@ -123,7 +121,7 @@ public class TransformIdentityTest {
 
         transformIdentity.doFinal();
 
-        assertEquals(3, xmlSecEvents.size());
+        Assert.assertEquals(3, xmlSecEvents.size());
     }
 
     @Test
@@ -152,7 +150,7 @@ public class TransformIdentityTest {
 
             @Override
             public void transform(XMLSecEvent xmlSecEvent) throws XMLStreamException {
-                fail("unexpected call to transform(XMLSecEvent");
+                Assert.fail("unexpected call to transform(XMLSecEvent");
             }
 
             @Override
@@ -192,7 +190,7 @@ public class TransformIdentityTest {
 
         transformIdentity.doFinal();
 
-        assertEquals(255, byteArrayOutputStream.size());
+        Assert.assertEquals(255, byteArrayOutputStream.size());
     }
 
     @Test
@@ -223,7 +221,7 @@ public class TransformIdentityTest {
 
         transformIdentity.doFinal();
 
-        assertEquals(255, byteArrayOutputStream.size());
+        Assert.assertEquals(255, byteArrayOutputStream.size());
     }
 
     @Test
@@ -235,7 +233,7 @@ public class TransformIdentityTest {
         transformIdentity.transform(new UnixInputStream(this.getClass().getClassLoader().getResourceAsStream(
                 "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/xml-stylesheet.b64")));
 
-        assertEquals(17786, byteArrayOutputStream.size());
+        Assert.assertEquals(17786, byteArrayOutputStream.size());
     }
 
     @Test
@@ -268,7 +266,7 @@ public class TransformIdentityTest {
 
             @Override
             public void transform(InputStream inputStream) throws XMLStreamException {
-                fail("unexpected call to transform(InputStream");
+                Assert.fail("unexpected call to transform(InputStream");
             }
 
             @Override
@@ -283,7 +281,7 @@ public class TransformIdentityTest {
 
         transformIdentity.doFinal();
 
-        assertEquals(25, xmlSecEvents.size());
+        Assert.assertEquals(25, xmlSecEvents.size());
     }
 
     @Test
@@ -311,7 +309,7 @@ public class TransformIdentityTest {
 
             @Override
             public void transform(XMLSecEvent xmlSecEvent) throws XMLStreamException {
-                fail("unexpected call to transform(XMLSecEvent");
+                Assert.fail("unexpected call to transform(XMLSecEvent");
             }
 
             @Override
@@ -335,6 +333,6 @@ public class TransformIdentityTest {
 
         transformIdentity.doFinal();
 
-        assertEquals(831, byteArrayOutputStream.size());
+        Assert.assertEquals(831, byteArrayOutputStream.size());
     }
 }

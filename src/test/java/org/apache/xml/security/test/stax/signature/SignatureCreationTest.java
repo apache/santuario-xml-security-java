@@ -18,6 +18,32 @@
  */
 package org.apache.xml.security.test.stax.signature;
 
+import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.signature.XMLSignature;
+import org.apache.xml.security.stax.ext.*;
+import org.apache.xml.security.stax.securityEvent.SecurityEventConstants;
+import org.apache.xml.security.stax.securityEvent.SignatureValueSecurityEvent;
+import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
+import org.apache.xml.security.test.dom.DSNamespaceContext;
+import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
+import org.apache.xml.security.utils.XMLUtils;
+import org.junit.Assert;
+import org.junit.Test;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -30,43 +56,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathFactory;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
-import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.signature.XMLSignature;
-import org.apache.xml.security.stax.ext.OutboundXMLSec;
-import org.apache.xml.security.stax.ext.SecurePart;
-import org.apache.xml.security.stax.ext.XMLSec;
-import org.apache.xml.security.stax.ext.XMLSecurityConstants;
-import org.apache.xml.security.stax.ext.XMLSecurityProperties;
-import org.apache.xml.security.stax.securityEvent.SecurityEventConstants;
-import org.apache.xml.security.stax.securityEvent.SignatureValueSecurityEvent;
-import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
-import org.apache.xml.security.test.dom.DSNamespaceContext;
-import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
-import org.apache.xml.security.utils.XMLUtils;
-
-import org.junit.Test;
-
 import static org.apache.xml.security.stax.ext.XMLSecurityConstants.NS_C14N_EXCL;
 import static org.apache.xml.security.stax.ext.XMLSecurityConstants.NS_XMLDSIG_ENVELOPED_SIGNATURE;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 /**
  * A set of test-cases for Signature creation.
@@ -77,7 +68,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     public void testSignatureCreation() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
@@ -111,7 +102,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         //first child element must be the dsig:Signature @see SANTUARIO-324:
@@ -119,7 +110,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         while (childNode != null) {
             if (childNode.getNodeType() == Node.ELEMENT_NODE) {
                 Element element = (Element)childNode;
-                assertEquals(element.getLocalName(), "Signature");
+                Assert.assertEquals(element.getLocalName(), "Signature");
                 break;
             }
             childNode = childNode.getNextSibling();
@@ -133,7 +124,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     public void testSignatureCreationRetrieveSignatureValue() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
@@ -169,7 +160,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         // Check Signature bytes
@@ -186,7 +177,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     public void testExceptionOnElementToSignNotFound() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
@@ -217,10 +208,10 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         try {
             XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
             xmlStreamWriter.close();
-            fail("Exception expected");
+            Assert.fail("Exception expected");
         } catch (XMLStreamException e) {
-            assertTrue(e.getCause() instanceof XMLSecurityException);
-            assertEquals("Part to sign not found: {urn:example:po}NotExistingElement", e.getCause().getMessage());
+            Assert.assertTrue(e.getCause() instanceof XMLSecurityException);
+            Assert.assertEquals("Part to sign not found: {urn:example:po}NotExistingElement", e.getCause().getMessage());
         }
     }
 
@@ -228,7 +219,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     public void testEnvelopedSignatureCreation() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
@@ -270,7 +261,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         //first child element must be the dsig:Signature @see SANTUARIO-324:
@@ -278,7 +269,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         while (childNode != null) {
             if (childNode.getNodeType() == Node.ELEMENT_NODE) {
                 Element element = (Element)childNode;
-                assertEquals(element.getLocalName(), "Signature");
+                Assert.assertEquals(element.getLocalName(), "Signature");
                 break;
             }
             childNode = childNode.getNextSibling();
@@ -292,7 +283,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     public void testSignRootElementInRequest() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
@@ -334,7 +325,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         //first child element must be the dsig:Signature @see SANTUARIO-324:
@@ -342,7 +333,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         while (childNode != null) {
             if (childNode.getNodeType() == Node.ELEMENT_NODE) {
                 Element element = (Element)childNode;
-                assertEquals(element.getLocalName(), "Signature");
+                Assert.assertEquals(element.getLocalName(), "Signature");
                 break;
             }
             childNode = childNode.getNextSibling();
@@ -377,7 +368,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     private void signAtSpecificPosition(int position, QName positionQName, boolean start) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
@@ -424,7 +415,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         //find first child element:
@@ -459,7 +450,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
             }
         }
 
-        assertEquals(childNode.getLocalName(), "Signature");
+        Assert.assertEquals(childNode.getLocalName(), "Signature");
 
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
@@ -469,7 +460,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     public void testIdAttributeNS() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
@@ -514,7 +505,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         // Verify using DOM
@@ -526,7 +517,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     public void testMultipleElements() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
@@ -563,7 +554,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         // Verify using DOM
@@ -574,7 +565,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     public void testMultipleSignatures() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
@@ -619,7 +610,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         // Verify using DOM
@@ -630,7 +621,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         String expression = "//dsig:Signature";
         NodeList sigElements =
                 (NodeList) xpath.evaluate(expression, document, XPathConstants.NODESET);
-        assertTrue(sigElements.getLength() == 2);
+        Assert.assertTrue(sigElements.getLength() == 2);
 
         for (SecurePart secPart : properties.getSignatureSecureParts()) {
             if (secPart.getName() == null) {
@@ -639,13 +630,13 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
             expression = "//*[local-name()='" + secPart.getName().getLocalPart() + "']";
             Element signedElement =
                     (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
-            assertNotNull(signedElement);
+            Assert.assertNotNull(signedElement);
             signedElement.setIdAttributeNS(null, "Id", true);
         }
 
         for (int i = 0; i < sigElements.getLength(); i++) {
             XMLSignature signature = new XMLSignature((Element)sigElements.item(i), "");
-            assertTrue(signature.checkSignatureValue(cert));
+            Assert.assertTrue(signature.checkSignatureValue(cert));
         }
     }
 
@@ -653,7 +644,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     public void testHMACSignatureCreation() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
@@ -683,7 +674,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         // Verify using DOM
@@ -694,7 +685,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     public void testStrongSignatureCreation() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
@@ -731,7 +722,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         // Verify using DOM
@@ -754,7 +745,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
@@ -791,7 +782,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         // Verify using DOM
@@ -814,7 +805,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
@@ -852,7 +843,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         // Verify using DOM
@@ -863,7 +854,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     public void testDifferentC14nMethod() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
@@ -899,7 +890,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         // Verify using DOM
@@ -910,7 +901,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     public void testDifferentC14nMethodForReference() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
@@ -947,28 +938,28 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_CanonicalizationMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_CanonicalizationMethod.getLocalPart());
-        assertEquals(1, nodeList.getLength());
+        Assert.assertEquals(1, nodeList.getLength());
         Element element = (Element)nodeList.item(0);
-        assertEquals(NS_C14N_EXCL, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
+        Assert.assertEquals(NS_C14N_EXCL, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_Transform.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_Transform.getLocalPart());
-        assertEquals(1, nodeList.getLength());
+        Assert.assertEquals(1, nodeList.getLength());
         element = (Element)nodeList.item(0);
-        assertEquals("http://www.w3.org/TR/2001/REC-xml-c14n-20010315", element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
+        Assert.assertEquals("http://www.w3.org/TR/2001/REC-xml-c14n-20010315", element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_SignatureMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_SignatureMethod.getLocalPart());
-        assertEquals(1, nodeList.getLength());
+        Assert.assertEquals(1, nodeList.getLength());
         element = (Element)nodeList.item(0);
-        assertEquals(XMLSecurityConstants.NS_XMLDSIG_RSASHA1, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
+        Assert.assertEquals(XMLSecurityConstants.NS_XMLDSIG_RSASHA1, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
-        assertEquals(1, nodeList.getLength());
+        Assert.assertEquals(1, nodeList.getLength());
         element = (Element)nodeList.item(0);
-        assertEquals(XMLSecurityConstants.NS_XMLDSIG_SHA1, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
+        Assert.assertEquals(XMLSecurityConstants.NS_XMLDSIG_SHA1, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
@@ -978,7 +969,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     public void testDifferentDigestMethodForReference() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
@@ -1015,28 +1006,28 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_CanonicalizationMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_CanonicalizationMethod.getLocalPart());
-        assertEquals(1, nodeList.getLength());
+        Assert.assertEquals(1, nodeList.getLength());
         Element element = (Element)nodeList.item(0);
-        assertEquals(NS_C14N_EXCL, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
+        Assert.assertEquals(NS_C14N_EXCL, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_Transform.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_Transform.getLocalPart());
-        assertEquals(1, nodeList.getLength());
+        Assert.assertEquals(1, nodeList.getLength());
         element = (Element)nodeList.item(0);
-        assertEquals(NS_C14N_EXCL, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
+        Assert.assertEquals(NS_C14N_EXCL, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_SignatureMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_SignatureMethod.getLocalPart());
-        assertEquals(1, nodeList.getLength());
+        Assert.assertEquals(1, nodeList.getLength());
         element = (Element)nodeList.item(0);
-        assertEquals(XMLSecurityConstants.NS_XMLDSIG_RSASHA1, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
+        Assert.assertEquals(XMLSecurityConstants.NS_XMLDSIG_RSASHA1, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
-        assertEquals(1, nodeList.getLength());
+        Assert.assertEquals(1, nodeList.getLength());
         element = (Element)nodeList.item(0);
-        assertEquals("http://www.w3.org/2001/04/xmlenc#sha256", element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
+        Assert.assertEquals("http://www.w3.org/2001/04/xmlenc#sha256", element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
@@ -1046,7 +1037,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     public void testC14n11Method() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
@@ -1082,7 +1073,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         // Verify using DOM
@@ -1093,7 +1084,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     public void testExcC14nInclusivePrefixes() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
@@ -1130,13 +1121,13 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_c14nExcl_InclusiveNamespaces.getNamespaceURI(), XMLSecurityConstants.TAG_c14nExcl_InclusiveNamespaces.getLocalPart());
-        assertEquals(2, nodeList.getLength());
-        assertEquals("", ((Element)nodeList.item(0)).getAttribute(XMLSecurityConstants.ATT_NULL_PrefixList.getLocalPart()));
-        assertEquals("", ((Element)nodeList.item(1)).getAttribute(XMLSecurityConstants.ATT_NULL_PrefixList.getLocalPart()));
+        Assert.assertEquals(2, nodeList.getLength());
+        Assert.assertEquals("", ((Element)nodeList.item(0)).getAttribute(XMLSecurityConstants.ATT_NULL_PrefixList.getLocalPart()));
+        Assert.assertEquals("", ((Element)nodeList.item(1)).getAttribute(XMLSecurityConstants.ATT_NULL_PrefixList.getLocalPart()));
 
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
@@ -1146,7 +1137,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     public void testSignatureCreationKeyValue() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyValue);
@@ -1181,7 +1172,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         // Verify using DOM
@@ -1200,7 +1191,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_SkiKeyIdentifier);
@@ -1236,7 +1227,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         // Verify using DOM
@@ -1247,7 +1238,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     public void testSignatureCreationX509Certificate() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_X509KeyIdentifier);
@@ -1282,7 +1273,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         // Verify using DOM
@@ -1293,7 +1284,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     public void testSignatureCreationX509SubjectName() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_X509SubjectName);
@@ -1328,7 +1319,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         // Verify using DOM
@@ -1339,7 +1330,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     public void testSignatureCreationMultipleKeyIdentifiers() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         List<SecurityTokenConstants.KeyIdentifier> signatureKeyIdentifiers =
@@ -1378,7 +1369,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         // Verify using DOM
@@ -1389,7 +1380,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     public void testSignatureCreationTransformBase64() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
@@ -1426,7 +1417,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         // Verify using DOM
@@ -1437,7 +1428,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     public void testNoKeyInfo() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
@@ -1474,7 +1465,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         // Verify using DOM
@@ -1486,7 +1477,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     public void testSignatureCreationKeyName() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyName);
@@ -1522,7 +1513,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_KeyName.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_KeyName.getLocalPart());
@@ -1537,7 +1528,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     public void testSignatureCreationWithoutId() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyName);
@@ -1573,7 +1564,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         //System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document =
-                XMLUtils.read(new ByteArrayInputStream(baos.toByteArray()), false);
+                XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
         NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_KeyName.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_KeyName.getLocalPart());
         assertEquals(1, nodeList.getLength());
@@ -1587,7 +1578,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     public void testSignatureCreationWithoutOmittedDefaultTransform() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyName);
@@ -1628,7 +1619,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         //System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
         Document document =
-                XMLUtils.read(new ByteArrayInputStream(baos.toByteArray()), false);
+                XMLUtils.createDocumentBuilder(false).parse(new ByteArrayInputStream(baos.toByteArray()));
 
         NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_KeyName.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_KeyName.getLocalPart());
         assertEquals(1, nodeList.getLength());

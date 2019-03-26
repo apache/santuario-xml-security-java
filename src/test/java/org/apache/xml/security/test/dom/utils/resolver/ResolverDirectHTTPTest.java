@@ -24,17 +24,14 @@ import org.apache.xml.security.utils.resolver.ResourceResolver;
 import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.apache.xml.security.utils.resolver.ResourceResolverException;
 import org.apache.xml.security.utils.resolver.implementations.ResolverDirectHTTP;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
-
-public class ResolverDirectHTTPTest {
+public class ResolverDirectHTTPTest extends Assert {
 
     //change these properties to match your environment
     private static final String url = "http://www.apache.org";
@@ -52,7 +49,7 @@ public class ResolverDirectHTTPTest {
 
     @Test
     public void testBug40783() throws Exception {
-        Document doc = XMLUtils.newDocument();
+        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
         Attr uri = doc.createAttribute("id");
         uri.setNodeValue("urn:ddd:uuu");
         doc.createElement("test").setAttributeNode(uri);
@@ -67,7 +64,7 @@ public class ResolverDirectHTTPTest {
     @Test
     @Ignore
     public void testProxyAuth() throws Exception {
-        Document doc = XMLUtils.newDocument();
+        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
         Attr uri = doc.createAttribute("URI");
         uri.setNodeValue(url);
 
@@ -84,7 +81,7 @@ public class ResolverDirectHTTPTest {
     @Test
     @Ignore
     public void testProxyAuthWithWrongPassword() throws Exception {
-        Document doc = XMLUtils.newDocument();
+        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
         Attr uri = doc.createAttribute("URI");
         uri.setNodeValue(url);
 
@@ -97,16 +94,16 @@ public class ResolverDirectHTTPTest {
             new ResourceResolverContext(uri, url, true);
         try {
             resolverDirectHTTP.engineResolveURI(context);
-            fail("Expected ResourceResolverException");
+            Assert.fail("Expected ResourceResolverException");
         } catch (ResourceResolverException e) {
-            assertEquals("Server returned HTTP response code: 407 for URL: " + url, e.getMessage());
+            Assert.assertEquals("Server returned HTTP response code: 407 for URL: " + url, e.getMessage());
         }
     }
 
     @Test
     @Ignore
     public void testServerAuth() throws Exception {
-        Document doc = XMLUtils.newDocument();
+        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
         Attr uri = doc.createAttribute("URI");
         uri.setNodeValue(url);
 
@@ -121,7 +118,7 @@ public class ResolverDirectHTTPTest {
     @Test
     @Ignore
     public void testServerAuthWithWrongPassword() throws Exception {
-        Document doc = XMLUtils.newDocument();
+        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
         Attr uri = doc.createAttribute("URI");
         uri.setNodeValue(url);
 
@@ -132,16 +129,16 @@ public class ResolverDirectHTTPTest {
             new ResourceResolverContext(uri, url, true);
         try {
             resolverDirectHTTP.engineResolveURI(context);
-            fail("Expected ResourceResolverException");
+            Assert.fail("Expected ResourceResolverException");
         } catch (ResourceResolverException e) {
-            assertEquals("Server returned HTTP response code: 401 for URL: " + url, e.getMessage());
+            Assert.assertEquals("Server returned HTTP response code: 401 for URL: " + url, e.getMessage());
         }
     }
 
     @Test
     @Ignore
     public void testProxyAndServerAuth() throws Exception {
-        Document doc = XMLUtils.newDocument();
+        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
         Attr uri = doc.createAttribute("URI");
         uri.setNodeValue(url);
 

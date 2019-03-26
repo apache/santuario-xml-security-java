@@ -21,17 +21,11 @@
  */
 package javax.xml.crypto.test.dsig;
 
+import static org.junit.Assert.*;
 
 import java.util.*;
 import javax.xml.crypto.XMLStructure;
 import javax.xml.crypto.dsig.*;
-
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-
 
 /**
  * Unit test for javax.xml.crypto.dsig.SignatureProperty
@@ -100,7 +94,7 @@ public class SignaturePropertyTest {
             unmodifiable.add(new TestUtils.MyOwnXMLStructure());
             fail("Should return an unmodifiable List object");
         } catch (UnsupportedOperationException uoe) {}
-        assertArrayEquals(unmodifiable.toArray(), list.toArray());
+        assertTrue(Arrays.equals(unmodifiable.toArray(), list.toArray()));
         assertEquals(prop.getTarget(), target);
         assertEquals(prop.getId(), id);
         assertNotNull(prop);
@@ -117,7 +111,7 @@ public class SignaturePropertyTest {
             fail("Should raise a NPE for null feature");
         } catch (NullPointerException npe) {}
 
-        assertFalse(prop.isFeatureSupported("not supported"));
+        assertTrue(!prop.isFeatureSupported("not supported"));
     }
 
     @SuppressWarnings({

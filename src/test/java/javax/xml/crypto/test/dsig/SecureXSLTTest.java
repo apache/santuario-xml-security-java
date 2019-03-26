@@ -30,8 +30,6 @@ import org.w3c.dom.*;
 import javax.xml.crypto.test.KeySelectors;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.fail;
-
 
 public class SecureXSLTTest {
 
@@ -82,7 +80,7 @@ public class SecureXSLTTest {
         File f = new File("doc.xml");
 
         Document doc =
-            XMLUtils.read(new FileInputStream(signatureFile), false);
+            XMLUtils.createDocumentBuilder(false).parse(new FileInputStream(signatureFile));
 
         NodeList nl =
             doc.getElementsByTagNameNS(XMLSignature.XMLNS, "Signature");
@@ -102,7 +100,7 @@ public class SecureXSLTTest {
         } finally {
             if (f.exists()) {
                 f.delete(); // cleanup file. comment out when debugging
-                fail("Test FAILED: doc.xml was successfully created");
+                throw new Exception("Test FAILED: doc.xml was successfully created");
             }
         }
     }

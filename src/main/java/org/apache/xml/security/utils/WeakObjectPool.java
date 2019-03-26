@@ -56,7 +56,7 @@ public abstract class WeakObjectPool<T, E extends Throwable> {
     protected WeakObjectPool() {
         //alternative implementations: ArrayBlockingQueue has a fixed size
         //  PriorityBlockingQueue: requires a dummy comparator; less memory but more overhead
-        available = new LinkedBlockingDeque<>();
+        available = new LinkedBlockingDeque<WeakReference<T>>();
         this.onLoan = Collections.synchronizedMap(new WeakHashMap<T, Integer>());
     }
 

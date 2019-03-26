@@ -18,22 +18,24 @@
  */
 package org.apache.xml.security.test.dom.c14n.implementations;
 
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayOutputStream;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 import org.apache.xml.security.c14n.implementations.UtfHelpper;
-
-import static org.junit.Assert.assertArrayEquals;
 
 public class UtfHelperTest {
 
     @org.junit.Test
     public void testBug40156() {
         String s = "\u00e4\u00f6\u00fc";
-        byte[] a = UtfHelpper.getStringInUtf8(s);
-        byte[] correct = s.getBytes(StandardCharsets.UTF_8);
-        assertArrayEquals(correct, a);
+        byte a[] = UtfHelpper.getStringInUtf8(s);
+        byte correct[] = s.getBytes(StandardCharsets.UTF_8);
+        boolean equals = Arrays.equals(correct, a);
+        assertTrue(equals);
     }
 
     @org.junit.Test
@@ -54,7 +56,7 @@ public class UtfHelperTest {
         ByteArrayOutputStream charByCharOs = new ByteArrayOutputStream();
         ByteArrayOutputStream strOs = new ByteArrayOutputStream();
 
-        char[] chs = new char[chunk * 2];
+        char chs[] = new char[chunk * 2];
         int pos = 0;
         for (int i = 0; i < chunk; i++) {
             int ch = chunk * j + i;
@@ -66,7 +68,7 @@ public class UtfHelperTest {
                 pos += offset;
             }
         }
-        char[] newResult = new char[pos];
+        char newResult[] = new char[pos];
         System.arraycopy(chs, 0, newResult, 0, pos);
         for (int i = 0; i < pos; ) {
             int ch = Character.codePointAt(newResult, i);
@@ -75,20 +77,23 @@ public class UtfHelperTest {
         }
 
         String str = new String(newResult);
-        byte[] a = UtfHelpper.getStringInUtf8(str);
-
-        // System.out.println("chunk:"+j);
-        byte[] correct = str.getBytes(StandardCharsets.UTF_8);
-        assertArrayEquals("UtfHelper.getStringInUtf8 false", correct, a);
-        assertArrayEquals(
-                   "UtfHelper.getStringInUtf8 false",
-                   correct, charByCharOs.toByteArray()
-        );
-        UtfHelpper.writeStringToUtf8(str, strOs);
-        assertArrayEquals(
-                   "UtfHelper.writeStringToUtf8 false",
-                   correct, strOs.toByteArray()
-        );
+        byte a[] = UtfHelpper.getStringInUtf8(str);
+        try {
+            // System.out.println("chunk:"+j);
+            byte correct[] = str.getBytes(StandardCharsets.UTF_8);
+            assertTrue("UtfHelper.getStringInUtf8 false", Arrays.equals(correct, a));
+            assertTrue(
+                "UtfHelper.getStringInUtf8 false",
+                Arrays.equals(correct, charByCharOs.toByteArray())
+            );
+            UtfHelpper.writeStringToUtf8(str, strOs);
+            assertTrue(
+                "UtfHelper.writeStringToUtf8 false",
+                Arrays.equals(correct, strOs.toByteArray())
+            );
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
 
 }

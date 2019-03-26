@@ -51,10 +51,10 @@ public class SignatureAlgorithm extends Algorithm {
 
     /** All available algorithm classes are registered here */
     private static Map<String, Class<? extends SignatureAlgorithmSpi>> algorithmHash =
-        new ConcurrentHashMap<>();
+        new ConcurrentHashMap<String, Class<? extends SignatureAlgorithmSpi>>();
 
     /** Field signatureAlgorithm */
-    private final SignatureAlgorithmSpi signatureAlgorithmSpi;
+    private final SignatureAlgorithmSpi signatureAlgorithm;
 
     private final String algorithmURI;
 
@@ -69,8 +69,8 @@ public class SignatureAlgorithm extends Algorithm {
         super(doc, algorithmURI);
         this.algorithmURI = algorithmURI;
 
-        signatureAlgorithmSpi = getSignatureAlgorithmSpi(algorithmURI);
-        signatureAlgorithmSpi.engineGetContextFromElement(getElement());
+        signatureAlgorithm = getSignatureAlgorithmSpi(algorithmURI);
+        signatureAlgorithm.engineGetContextFromElement(getElement());
     }
 
     /**
@@ -87,11 +87,11 @@ public class SignatureAlgorithm extends Algorithm {
         super(doc, algorithmURI);
         this.algorithmURI = algorithmURI;
 
-        signatureAlgorithmSpi = getSignatureAlgorithmSpi(algorithmURI);
-        signatureAlgorithmSpi.engineGetContextFromElement(getElement());
+        signatureAlgorithm = getSignatureAlgorithmSpi(algorithmURI);
+        signatureAlgorithm.engineGetContextFromElement(getElement());
 
-        signatureAlgorithmSpi.engineSetHMACOutputLength(hmacOutputLength);
-        ((IntegrityHmac)signatureAlgorithmSpi).engineAddContextToElement(getElement());
+        signatureAlgorithm.engineSetHMACOutputLength(hmacOutputLength);
+        ((IntegrityHmac)signatureAlgorithm).engineAddContextToElement(getElement());
     }
 
     /**
@@ -126,13 +126,13 @@ public class SignatureAlgorithm extends Algorithm {
 
         if (secureValidation && (XMLSignature.ALGO_ID_MAC_HMAC_NOT_RECOMMENDED_MD5.equals(algorithmURI)
             || XMLSignature.ALGO_ID_SIGNATURE_NOT_RECOMMENDED_RSA_MD5.equals(algorithmURI))) {
-            Object[] exArgs = { algorithmURI };
+            Object exArgs[] = { algorithmURI };
 
             throw new XMLSecurityException("signature.signatureAlgorithm", exArgs);
         }
 
-        signatureAlgorithmSpi = getSignatureAlgorithmSpi(algorithmURI);
-        signatureAlgorithmSpi.engineGetContextFromElement(getElement());
+        signatureAlgorithm = getSignatureAlgorithmSpi(algorithmURI);
+        signatureAlgorithm.engineGetContextFromElement(getElement());
     }
 
     /**
@@ -145,12 +145,12 @@ public class SignatureAlgorithm extends Algorithm {
                 algorithmHash.get(algorithmURI);
             LOG.debug("Create URI \"{}\" class \"{}\"", algorithmURI, implementingClass);
             if (implementingClass == null) {
-                Object[] exArgs = { algorithmURI };
+                Object exArgs[] = { algorithmURI };
                 throw new XMLSignatureException("algorithms.NoSuchAlgorithmNoEx", exArgs);
             }
             return implementingClass.newInstance();
         }  catch (IllegalAccessException | InstantiationException | NullPointerException ex) {
-            Object[] exArgs = { algorithmURI, ex.getMessage() };
+            Object exArgs[] = { algorithmURI, ex.getMessage() };
             throw new XMLSignatureException(ex, "algorithms.NoSuchAlgorithm", exArgs);
         }
     }
@@ -164,7 +164,7 @@ public class SignatureAlgorithm extends Algorithm {
      * @throws XMLSignatureException
      */
     public byte[] sign() throws XMLSignatureException {
-        return signatureAlgorithmSpi.engineSign();
+        return signatureAlgorithm.engineSign();
     }
 
     /**
@@ -174,7 +174,7 @@ public class SignatureAlgorithm extends Algorithm {
      * @return the result of the {@link java.security.Signature#getAlgorithm} method
      */
     public String getJCEAlgorithmString() {
-        return signatureAlgorithmSpi.engineGetJCEAlgorithmString();
+        return signatureAlgorithm.engineGetJCEAlgorithmString();
     }
 
     /**
@@ -183,7 +183,7 @@ public class SignatureAlgorithm extends Algorithm {
      * @return The Provider of this Signature Algorithm
      */
     public String getJCEProviderName() {
-        return signatureAlgorithmSpi.engineGetJCEProviderName();
+        return signatureAlgorithm.engineGetJCEProviderName();
     }
 
     /**
@@ -194,7 +194,7 @@ public class SignatureAlgorithm extends Algorithm {
      * @throws XMLSignatureException
      */
     public void update(byte[] input) throws XMLSignatureException {
-        signatureAlgorithmSpi.engineUpdate(input);
+        signatureAlgorithm.engineUpdate(input);
     }
 
     /**
@@ -205,7 +205,7 @@ public class SignatureAlgorithm extends Algorithm {
      * @throws XMLSignatureException
      */
     public void update(byte input) throws XMLSignatureException {
-        signatureAlgorithmSpi.engineUpdate(input);
+        signatureAlgorithm.engineUpdate(input);
     }
 
     /**
@@ -217,8 +217,8 @@ public class SignatureAlgorithm extends Algorithm {
      * @param len
      * @throws XMLSignatureException
      */
-    public void update(byte[] buf, int offset, int len) throws XMLSignatureException {
-        signatureAlgorithmSpi.engineUpdate(buf, offset, len);
+    public void update(byte buf[], int offset, int len) throws XMLSignatureException {
+        signatureAlgorithm.engineUpdate(buf, offset, len);
     }
 
     /**
@@ -229,7 +229,7 @@ public class SignatureAlgorithm extends Algorithm {
      * @throws XMLSignatureException
      */
     public void initSign(Key signingKey) throws XMLSignatureException {
-        signatureAlgorithmSpi.engineInitSign(signingKey);
+        signatureAlgorithm.engineInitSign(signingKey);
     }
 
     /**
@@ -242,7 +242,7 @@ public class SignatureAlgorithm extends Algorithm {
      * @throws XMLSignatureException
      */
     public void initSign(Key signingKey, SecureRandom secureRandom) throws XMLSignatureException {
-        signatureAlgorithmSpi.engineInitSign(signingKey, secureRandom);
+        signatureAlgorithm.engineInitSign(signingKey, secureRandom);
     }
 
     /**
@@ -256,7 +256,7 @@ public class SignatureAlgorithm extends Algorithm {
     public void initSign(
         Key signingKey, AlgorithmParameterSpec algorithmParameterSpec
     ) throws XMLSignatureException {
-        signatureAlgorithmSpi.engineInitSign(signingKey, algorithmParameterSpec);
+        signatureAlgorithm.engineInitSign(signingKey, algorithmParameterSpec);
     }
 
     /**
@@ -268,7 +268,7 @@ public class SignatureAlgorithm extends Algorithm {
      * @throws XMLSignatureException
      */
     public void setParameter(AlgorithmParameterSpec params) throws XMLSignatureException {
-        signatureAlgorithmSpi.engineSetParameter(params);
+        signatureAlgorithm.engineSetParameter(params);
     }
 
     /**
@@ -279,7 +279,7 @@ public class SignatureAlgorithm extends Algorithm {
      * @throws XMLSignatureException
      */
     public void initVerify(Key verificationKey) throws XMLSignatureException {
-        signatureAlgorithmSpi.engineInitVerify(verificationKey);
+        signatureAlgorithm.engineInitVerify(verificationKey);
     }
 
     /**
@@ -292,7 +292,7 @@ public class SignatureAlgorithm extends Algorithm {
      * @throws XMLSignatureException
      */
     public boolean verify(byte[] signature) throws XMLSignatureException {
-        return signatureAlgorithmSpi.engineVerify(signature);
+        return signatureAlgorithm.engineVerify(signature);
     }
 
     /**
@@ -325,7 +325,7 @@ public class SignatureAlgorithm extends Algorithm {
         // are we already registered?
         Class<? extends SignatureAlgorithmSpi> registeredClass = algorithmHash.get(algorithmURI);
         if (registeredClass != null) {
-            Object[] exArgs = { algorithmURI, registeredClass };
+            Object exArgs[] = { algorithmURI, registeredClass };
             throw new AlgorithmAlreadyRegisteredException(
                 "algorithm.alreadyRegistered", exArgs
             );
@@ -336,7 +336,7 @@ public class SignatureAlgorithm extends Algorithm {
                     ClassLoaderUtils.loadClass(implementingClass, SignatureAlgorithm.class);
             algorithmHash.put(algorithmURI, clazz);
         } catch (NullPointerException ex) {
-            Object[] exArgs = { algorithmURI, ex.getMessage() };
+            Object exArgs[] = { algorithmURI, ex.getMessage() };
             throw new XMLSignatureException(ex, "algorithms.NoSuchAlgorithm", exArgs);
         }
     }
@@ -361,7 +361,7 @@ public class SignatureAlgorithm extends Algorithm {
         // are we already registered?
         Class<? extends SignatureAlgorithmSpi> registeredClass = algorithmHash.get(algorithmURI);
         if (registeredClass != null) {
-            Object[] exArgs = { algorithmURI, registeredClass };
+            Object exArgs[] = { algorithmURI, registeredClass };
             throw new AlgorithmAlreadyRegisteredException(
                 "algorithm.alreadyRegistered", exArgs
             );

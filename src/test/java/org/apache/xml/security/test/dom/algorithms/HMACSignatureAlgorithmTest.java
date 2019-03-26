@@ -30,6 +30,7 @@ import java.util.UUID;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
@@ -38,18 +39,16 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 /**
  * A test to make sure that the various Signature HMAC algorithms are working
  */
-public class HMACSignatureAlgorithmTest {
+public class HMACSignatureAlgorithmTest extends Assert {
 
     static {
         org.apache.xml.security.Init.init();
@@ -90,7 +89,8 @@ public class HMACSignatureAlgorithmTest {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // Set up the Key
         byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
@@ -110,7 +110,8 @@ public class HMACSignatureAlgorithmTest {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // Set up the Key
         byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
@@ -130,7 +131,8 @@ public class HMACSignatureAlgorithmTest {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // Set up the Key
         byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
@@ -150,7 +152,8 @@ public class HMACSignatureAlgorithmTest {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // Set up the Key
         byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
@@ -170,7 +173,8 @@ public class HMACSignatureAlgorithmTest {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // Set up the Key
         byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
@@ -190,7 +194,8 @@ public class HMACSignatureAlgorithmTest {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // Set up the Key
         byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
@@ -212,7 +217,8 @@ public class HMACSignatureAlgorithmTest {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // Set up the Key
         byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
@@ -248,7 +254,7 @@ public class HMACSignatureAlgorithmTest {
                     (NodeList) xpath.evaluate(expression, document, XPathConstants.NODESET);
             for (int i = 0; i < elementsToSign.getLength(); i++) {
                 Element elementToSign = (Element)elementsToSign.item(i);
-                assertNotNull(elementToSign);
+                Assert.assertNotNull(elementToSign);
                 String id = UUID.randomUUID().toString();
                 elementToSign.setAttributeNS(null, "Id", id);
                 elementToSign.setIdAttributeNS(null, "Id", true);
@@ -265,7 +271,7 @@ public class HMACSignatureAlgorithmTest {
         String expression = "//ds:Signature[1]";
         Element sigElement =
                 (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
-        assertNotNull(sigElement);
+        Assert.assertNotNull(sigElement);
 
         return sig;
     }
@@ -291,19 +297,19 @@ public class HMACSignatureAlgorithmTest {
         String expression = "//dsig:Signature[1]";
         Element sigElement =
             (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
-        assertNotNull(sigElement);
+        Assert.assertNotNull(sigElement);
 
         for (String name : localNames) {
             expression = "//*[local-name()='" + name + "']";
             Element signedElement =
                 (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
-            assertNotNull(signedElement);
+            Assert.assertNotNull(signedElement);
             signedElement.setIdAttributeNS(null, "Id", true);
         }
 
         XMLSignature signature = new XMLSignature(sigElement, "", secureValidation);
 
-        assertTrue(signature.checkSignatureValue(key));
+        Assert.assertTrue(signature.checkSignatureValue(key));
     }
 
 }

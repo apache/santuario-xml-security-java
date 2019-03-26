@@ -30,7 +30,7 @@ import java.util.*;
  */
 public abstract class AbstractBufferingOutputProcessor extends AbstractOutputProcessor {
 
-    private final ArrayDeque<XMLSecEvent> xmlSecEventBuffer = new ArrayDeque<>(100);
+    private final ArrayDeque<XMLSecEvent> xmlSecEventBuffer = new ArrayDeque<XMLSecEvent>(100);
 
     protected AbstractBufferingOutputProcessor() throws XMLSecurityException {
         super();

@@ -21,9 +21,9 @@
  */
 package javax.xml.crypto.test.dsig;
 
+import static org.junit.Assert.*;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.security.NoSuchProviderException;
 import java.security.Provider;
 import java.security.Security;
@@ -32,16 +32,11 @@ import javax.xml.crypto.dsig.keyinfo.*;
 import javax.xml.crypto.*;
 import javax.xml.crypto.dsig.*;
 import javax.xml.crypto.dsig.dom.DOMValidateContext;
+import javax.xml.parsers.DocumentBuilder;
 
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-
 
 /**
  * Unit test for javax.xml.crypto.dsig.XMLSignatureFactory
@@ -107,7 +102,7 @@ public class XMLSignatureFactoryTest {
             fail("Should raise a NPE for null feature");
         } catch (NullPointerException npe) {}
 
-        assertFalse(factory.isFeatureSupported("not supported"));
+        assertTrue(!factory.isFeatureSupported("not supported"));
     }
 
     @org.junit.Test
@@ -158,12 +153,13 @@ public class XMLSignatureFactoryTest {
                  " for wrong inputs");
         }
 
+        DocumentBuilder docBuilder = XMLUtils.createDocumentBuilder(false, false);
         String fs = System.getProperty("file.separator");
         String base = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
         File dir = new File(base + fs +
             "src/test/resources" + fs + "ie" + fs + "baltimore" + fs + "merlin-examples",
             "merlin-xmldsig-twenty-three");
-        Document doc = XMLUtils.read(new FileInputStream(new File(dir, "signature.xml")), false);
+        Document doc = docBuilder.parse(new File(dir, "signature.xml"));
         NodeList nl = doc.getElementsByTagName("KeyInfo");
         try {
             stuff = factory.unmarshalXMLSignature
@@ -178,6 +174,7 @@ public class XMLSignatureFactoryTest {
             assertNotNull(stuff);
         } catch (MarshalException ex) {
             fail("Unmarshal failed: " + ex.getMessage());
+            ex.printStackTrace();
         }
     }
 

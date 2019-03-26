@@ -32,6 +32,7 @@ import java.util.Map;
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -52,9 +53,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
 
 /**
  * This is a set of tests that use the test vectors associated with the W3C XML Encryption 1.1 specification:
@@ -88,7 +87,8 @@ public class XMLEncryption11Test {
         }
         File f = new File(filename);
 
-        Document doc = XMLUtils.read(new java.io.FileInputStream(f), false);
+        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+        Document doc = db.parse(new java.io.FileInputStream(f));
 
         cardNumber = retrieveCCNumber(doc);
 
@@ -183,7 +183,8 @@ public class XMLEncryption11Test {
             }
             File f = new File(filename);
 
-            Document doc = XMLUtils.read(new java.io.FileInputStream(f), false);
+            DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+            Document doc = db.parse(new java.io.FileInputStream(f));
 
             Key sessionKey = getSessionKey("http://www.w3.org/2009/xmlenc11#aes128-gcm");
             EncryptedKey encryptedKey =
@@ -247,7 +248,8 @@ public class XMLEncryption11Test {
             }
             File f = new File(filename);
 
-            Document doc = XMLUtils.read(new java.io.FileInputStream(f), false);
+            DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+            Document doc = db.parse(new java.io.FileInputStream(f));
 
             Key sessionKey = getSessionKey("http://www.w3.org/2009/xmlenc11#aes128-gcm");
             EncryptedKey encryptedKey =
@@ -349,7 +351,8 @@ public class XMLEncryption11Test {
             }
             File f = new File(filename);
 
-            Document doc = XMLUtils.read(new java.io.FileInputStream(f), false);
+            DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+            Document doc = db.parse(new java.io.FileInputStream(f));
 
             Key sessionKey = getSessionKey("http://www.w3.org/2009/xmlenc11#aes192-gcm");
             EncryptedKey encryptedKey =
@@ -450,7 +453,8 @@ public class XMLEncryption11Test {
             }
             File f = new File(filename);
 
-            Document doc = XMLUtils.read(new java.io.FileInputStream(f), false);
+            DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+            Document doc = db.parse(new java.io.FileInputStream(f));
 
             Key sessionKey = getSessionKey("http://www.w3.org/2009/xmlenc11#aes256-gcm");
             EncryptedKey encryptedKey =
@@ -551,7 +555,8 @@ public class XMLEncryption11Test {
             }
             File f = new File(filename);
 
-            Document doc = XMLUtils.read(new java.io.FileInputStream(f), false);
+            DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+            Document doc = db.parse(new java.io.FileInputStream(f));
 
             Key sessionKey = getSessionKey("http://www.w3.org/2009/xmlenc11#aes256-gcm");
             EncryptedKey encryptedKey =
@@ -603,7 +608,8 @@ public class XMLEncryption11Test {
         }
         File f = new File(filename);
 
-        Document doc = XMLUtils.read(new java.io.FileInputStream(f), false);
+        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+        Document doc = db.parse(new java.io.FileInputStream(f));
 
         return decryptElement(doc, rsaKey, rsaCert);
     }
@@ -635,7 +641,7 @@ public class XMLEncryption11Test {
         X509Data certData = kiek.itemX509Data(0);
         XMLX509Certificate xcert = certData.itemCertificate(0);
         X509Certificate cert = xcert.getX509Certificate();
-        assertEquals(rsaCert, cert);
+        assertTrue(rsaCert.equals(cert));
 
         XMLCipher cipher2 = XMLCipher.getInstance();
         cipher2.init(XMLCipher.UNWRAP_MODE, rsaKey);
@@ -801,7 +807,7 @@ public class XMLEncryption11Test {
 
         String cc = retrieveCCNumber(d);
         LOG.debug("Retrieved Credit Card : " + cc);
-        assertEquals(cardNumber, cc);
+        assertTrue(cc, cc!= null && cc.equals(cardNumber));
 
         // Test cc numbers
         if (doNodeCheck) {

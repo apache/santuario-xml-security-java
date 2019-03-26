@@ -397,7 +397,7 @@ public final class XMLSignature extends SignatureElementProxy {
 
         // check to see if it is there
         if (signedInfoElem == null) {
-            Object[] exArgs = { Constants._TAG_SIGNEDINFO, Constants._TAG_SIGNATURE };
+            Object exArgs[] = { Constants._TAG_SIGNEDINFO, Constants._TAG_SIGNATURE };
             throw new XMLSignatureException("xml.WrongContent", exArgs);
         }
 
@@ -412,7 +412,7 @@ public final class XMLSignature extends SignatureElementProxy {
 
         // check to see if it exists
         if (signatureValueElement == null) {
-            Object[] exArgs = { Constants._TAG_SIGNATUREVALUE, Constants._TAG_SIGNATURE };
+            Object exArgs[] = { Constants._TAG_SIGNATUREVALUE, Constants._TAG_SIGNATURE };
             throw new XMLSignatureException("xml.WrongContent", exArgs);
         }
         Attr signatureValueAttr = signatureValueElement.getAttributeNodeNS(null, "Id");
@@ -696,7 +696,7 @@ public final class XMLSignature extends SignatureElementProxy {
             return this.checkSignatureValue(cert.getPublicKey());
         }
 
-        Object[] exArgs = { "Didn't get a certificate" };
+        Object exArgs[] = { "Didn't get a certificate" };
         throw new XMLSignatureException("empty", exArgs);
     }
 
@@ -714,7 +714,7 @@ public final class XMLSignature extends SignatureElementProxy {
         //COMMENT: pk suggests it can only be a public key?
         //check to see if the key is not null
         if (pk == null) {
-            Object[] exArgs = { "Didn't get a key" };
+            Object exArgs[] = { "Didn't get a key" };
             throw new XMLSignatureException("empty", exArgs);
         }
         // all references inside the signedinfo need to be dereferenced and
@@ -732,7 +732,7 @@ public final class XMLSignature extends SignatureElementProxy {
             LOG.debug("jceSigProvider = {}", sa.getJCEProviderName());
             LOG.debug("PublicKey = {}", pk);
 
-            byte[] sigBytes = null;
+            byte sigBytes[] = null;
             try (SignerOutputStream so = new SignerOutputStream(sa);
                 OutputStream bos = new UnsyncBufferedOutputStream(so)) {
 

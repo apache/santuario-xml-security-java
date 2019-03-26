@@ -18,9 +18,9 @@
  */
 package org.apache.xml.security.test.dom.signature;
 
+import static org.junit.Assert.fail;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
 
 import javax.crypto.SecretKey;
@@ -34,8 +34,6 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
-
-import static org.junit.Assert.fail;
 
 public class HMACOutputLengthTest {
 
@@ -58,7 +56,7 @@ public class HMACOutputLengthTest {
             fail("Expected HMACOutputLength exception");
         } catch (XMLSignatureException xse) {
             // System.out.println(xse.getMessage());
-            if (!"algorithms.HMACOutputLengthMin".equals(xse.getMsgID())) {
+            if (!xse.getMsgID().equals("algorithms.HMACOutputLengthMin")) {
                 fail(xse.getMessage());
             }
         }
@@ -70,7 +68,7 @@ public class HMACOutputLengthTest {
             validate("signature-enveloping-hmac-sha1-trunclen-8-attack.xml");
         } catch (XMLSignatureException xse) {
             // System.out.println(xse.getMessage());
-            if (!"algorithms.HMACOutputLengthMin".equals(xse.getMsgID())) {
+            if (!xse.getMsgID().equals("algorithms.HMACOutputLengthMin")) {
                 fail(xse.getMessage());
             }
         }
@@ -78,7 +76,7 @@ public class HMACOutputLengthTest {
 
     @org.junit.Test
     public void test_generate_hmac_sha1_40() throws Exception {
-        Document doc = XMLUtils.newDocument();
+        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
         XMLSignature sig =
             new XMLSignature(
                 doc, null, XMLSignature.ALGO_ID_MAC_HMAC_SHA1,
@@ -89,7 +87,7 @@ public class HMACOutputLengthTest {
             fail("Expected HMACOutputLength Exception");
         } catch (XMLSignatureException xse) {
             // System.out.println(xse.getMessage());
-            if (!"algorithms.HMACOutputLengthMin".equals(xse.getMsgID())) {
+            if (!xse.getMsgID().equals("algorithms.HMACOutputLengthMin")) {
                 fail(xse.getMessage());
             }
         }
@@ -100,7 +98,7 @@ public class HMACOutputLengthTest {
             new File(BASEDIR + SEP + "src/test/resources" + SEP + "javax" + SEP + "xml"
                      + SEP + "crypto" + SEP + "dsig" + SEP, data);
 
-        Document doc = XMLUtils.read(new FileInputStream(file), false);
+        Document doc = XMLUtils.createDocumentBuilder(false).parse(file);
         NodeList nl =
             doc.getElementsByTagNameNS(Constants.SignatureSpecNS, "Signature");
         if (nl.getLength() == 0) {

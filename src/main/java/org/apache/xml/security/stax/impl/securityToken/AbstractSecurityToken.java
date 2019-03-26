@@ -43,8 +43,8 @@ public abstract class AbstractSecurityToken implements SecurityToken {
     private boolean asymmetric = false;
     private String sha1Identifier;
 
-    protected final Map<String, Key> keyTable = new HashMap<>();
-    protected final List<SecurityTokenConstants.TokenUsage> tokenUsages = new ArrayList<>();
+    protected final Map<String, Key> keyTable = new HashMap<String, Key>();
+    protected final List<SecurityTokenConstants.TokenUsage> tokenUsages = new ArrayList<SecurityTokenConstants.TokenUsage>();
 
     public AbstractSecurityToken(String id) {
         if (id == null || id.isEmpty()) {

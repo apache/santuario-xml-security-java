@@ -18,13 +18,20 @@
  */
 package org.apache.xml.security.test.stax;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.util.HashSet;
-import java.util.Set;
+import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.stax.config.Init;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import org.custommonkey.xmlunit.XMLAssert;
+import org.apache.xml.security.stax.ext.*;
+import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
+import org.apache.xml.security.stax.ext.stax.XMLSecEventFactory;
+import org.apache.xml.security.stax.impl.DocumentContextImpl;
+import org.apache.xml.security.stax.impl.InputProcessorChainImpl;
+import org.apache.xml.security.stax.impl.InboundSecurityContextImpl;
+import org.apache.xml.security.stax.impl.XMLSecurityStreamReader;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
@@ -33,32 +40,17 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stax.StAXSource;
 import javax.xml.transform.stream.StreamResult;
-
-import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.stax.config.Init;
-import org.apache.xml.security.stax.ext.InputProcessor;
-import org.apache.xml.security.stax.ext.InputProcessorChain;
-import org.apache.xml.security.stax.ext.XMLSecurityConstants;
-import org.apache.xml.security.stax.ext.XMLSecurityProperties;
-import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
-import org.apache.xml.security.stax.ext.stax.XMLSecEventFactory;
-import org.apache.xml.security.stax.impl.DocumentContextImpl;
-import org.apache.xml.security.stax.impl.InboundSecurityContextImpl;
-import org.apache.xml.security.stax.impl.InputProcessorChainImpl;
-import org.apache.xml.security.stax.impl.XMLSecurityStreamReader;
-
-import org.custommonkey.xmlunit.XMLAssert;
-import org.junit.Before;
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  */
-public class XMLSecurityStreamReaderTest {
+public class XMLSecurityStreamReaderTest extends Assert {
 
     @Before
     public void setUp() throws Exception {
@@ -75,7 +67,7 @@ public class XMLSecurityStreamReaderTest {
         inputProcessorChain.addProcessor(new EventReaderProcessor());
         XMLSecurityStreamReader xmlSecurityStreamReader = new XMLSecurityStreamReader(inputProcessorChain, securityProperties);
         int event = xmlSecurityStreamReader.next();
-        assertEquals(XMLStreamConstants.START_DOCUMENT, event);
+        Assert.assertEquals(XMLStreamConstants.START_DOCUMENT, event);
     }
 
     @Test
@@ -87,7 +79,7 @@ public class XMLSecurityStreamReaderTest {
         inputProcessorChain.addProcessor(new EventReaderProcessor());
         XMLSecurityStreamReader xmlSecurityStreamReader = new XMLSecurityStreamReader(inputProcessorChain, securityProperties);
         int event = xmlSecurityStreamReader.next();
-        assertEquals(XMLStreamConstants.START_ELEMENT, event);
+        Assert.assertEquals(XMLStreamConstants.START_ELEMENT, event);
     }
 
     @Test
@@ -128,128 +120,128 @@ public class XMLSecurityStreamReaderTest {
         do {
             switch (stdXMLEventType) {
                 case XMLStreamConstants.START_ELEMENT:
-                    assertTrue(xmlSecurityStreamReader.isStartElement());
-                    assertFalse(xmlSecurityStreamReader.isEndElement());
-                    assertEquals(stdXmlStreamReader.getLocalName(), xmlSecurityStreamReader.getLocalName());
-                    assertEquals(stdXmlStreamReader.getName(), xmlSecurityStreamReader.getName());
-                    assertEquals(stdXmlStreamReader.getNamespaceURI(), xmlSecurityStreamReader.getNamespaceURI());
+                    Assert.assertTrue(xmlSecurityStreamReader.isStartElement());
+                    Assert.assertFalse(xmlSecurityStreamReader.isEndElement());
+                    Assert.assertEquals(stdXmlStreamReader.getLocalName(), xmlSecurityStreamReader.getLocalName());
+                    Assert.assertEquals(stdXmlStreamReader.getName(), xmlSecurityStreamReader.getName());
+                    Assert.assertEquals(stdXmlStreamReader.getNamespaceURI(), xmlSecurityStreamReader.getNamespaceURI());
                     if (stdXmlStreamReader.getPrefix() == null) {
-                        assertEquals("", xmlSecurityStreamReader.getPrefix());
+                        Assert.assertEquals("", xmlSecurityStreamReader.getPrefix());
                     } else {
-                        assertEquals(stdXmlStreamReader.getPrefix(), xmlSecurityStreamReader.getPrefix());
+                        Assert.assertEquals(stdXmlStreamReader.getPrefix(), xmlSecurityStreamReader.getPrefix());
                     }
-                    assertEquals(stdXmlStreamReader.hasName(), xmlSecurityStreamReader.hasName());
-                    assertEquals(stdXmlStreamReader.hasText(), xmlSecurityStreamReader.hasText());
-                    assertEquals(stdXmlStreamReader.getAttributeCount(), xmlSecurityStreamReader.getAttributeCount());
-                    assertEquals(stdXmlStreamReader.getNamespaceCount(), xmlSecurityStreamReader.getNamespaceCount());
+                    Assert.assertEquals(stdXmlStreamReader.hasName(), xmlSecurityStreamReader.hasName());
+                    Assert.assertEquals(stdXmlStreamReader.hasText(), xmlSecurityStreamReader.hasText());
+                    Assert.assertEquals(stdXmlStreamReader.getAttributeCount(), xmlSecurityStreamReader.getAttributeCount());
+                    Assert.assertEquals(stdXmlStreamReader.getNamespaceCount(), xmlSecurityStreamReader.getNamespaceCount());
                     for (int i = 0; i < stdXmlStreamReader.getAttributeCount(); i++) {
-                        assertEquals(stdXmlStreamReader.getAttributeLocalName(i), xmlSecurityStreamReader.getAttributeLocalName(i));
-                        assertEquals(stdXmlStreamReader.getAttributeName(i), xmlSecurityStreamReader.getAttributeName(i));
+                        Assert.assertEquals(stdXmlStreamReader.getAttributeLocalName(i), xmlSecurityStreamReader.getAttributeLocalName(i));
+                        Assert.assertEquals(stdXmlStreamReader.getAttributeName(i), xmlSecurityStreamReader.getAttributeName(i));
                         if (stdXmlStreamReader.getAttributeNamespace(i) == null) {
-                            assertEquals("", xmlSecurityStreamReader.getAttributeNamespace(i));
+                            Assert.assertEquals("", xmlSecurityStreamReader.getAttributeNamespace(i));
                         } else {
-                            assertEquals(stdXmlStreamReader.getAttributeNamespace(i), xmlSecurityStreamReader.getAttributeNamespace(i));
+                            Assert.assertEquals(stdXmlStreamReader.getAttributeNamespace(i), xmlSecurityStreamReader.getAttributeNamespace(i));
                         }
                         if (stdXmlStreamReader.getAttributePrefix(i) == null) {
-                            assertEquals("", xmlSecurityStreamReader.getAttributePrefix(i));
+                            Assert.assertEquals("", xmlSecurityStreamReader.getAttributePrefix(i));
                         } else {
-                            assertEquals(stdXmlStreamReader.getAttributePrefix(i), xmlSecurityStreamReader.getAttributePrefix(i));
+                            Assert.assertEquals(stdXmlStreamReader.getAttributePrefix(i), xmlSecurityStreamReader.getAttributePrefix(i));
                         }
-                        assertEquals(stdXmlStreamReader.getAttributeType(i), xmlSecurityStreamReader.getAttributeType(i));
-                        assertEquals(stdXmlStreamReader.getAttributeValue(i), xmlSecurityStreamReader.getAttributeValue(i));
+                        Assert.assertEquals(stdXmlStreamReader.getAttributeType(i), xmlSecurityStreamReader.getAttributeType(i));
+                        Assert.assertEquals(stdXmlStreamReader.getAttributeValue(i), xmlSecurityStreamReader.getAttributeValue(i));
                     }
                     for (int i = 0; i < stdXmlStreamReader.getNamespaceCount(); i++) {
                         if (stdXmlStreamReader.getNamespacePrefix(i) == null) {
-                            assertEquals("", xmlSecurityStreamReader.getNamespacePrefix(i));
+                            Assert.assertEquals("", xmlSecurityStreamReader.getNamespacePrefix(i));
                         } else {
-                            assertEquals(stdXmlStreamReader.getNamespacePrefix(i), xmlSecurityStreamReader.getNamespacePrefix(i));
+                            Assert.assertEquals(stdXmlStreamReader.getNamespacePrefix(i), xmlSecurityStreamReader.getNamespacePrefix(i));
                         }
-                        assertEquals(stdXmlStreamReader.getNamespaceURI(i), xmlSecurityStreamReader.getNamespaceURI(i));
+                        Assert.assertEquals(stdXmlStreamReader.getNamespaceURI(i), xmlSecurityStreamReader.getNamespaceURI(i));
                     }
                     break;
                 case XMLStreamConstants.END_ELEMENT:
-                    assertFalse(xmlSecurityStreamReader.isStartElement());
-                    assertTrue(xmlSecurityStreamReader.isEndElement());
-                    assertEquals(stdXmlStreamReader.getLocalName(), xmlSecurityStreamReader.getLocalName());
-                    assertEquals(stdXmlStreamReader.getName(), xmlSecurityStreamReader.getName());
-                    assertEquals(stdXmlStreamReader.getNamespaceURI(), xmlSecurityStreamReader.getNamespaceURI());
+                    Assert.assertFalse(xmlSecurityStreamReader.isStartElement());
+                    Assert.assertTrue(xmlSecurityStreamReader.isEndElement());
+                    Assert.assertEquals(stdXmlStreamReader.getLocalName(), xmlSecurityStreamReader.getLocalName());
+                    Assert.assertEquals(stdXmlStreamReader.getName(), xmlSecurityStreamReader.getName());
+                    Assert.assertEquals(stdXmlStreamReader.getNamespaceURI(), xmlSecurityStreamReader.getNamespaceURI());
                     if (stdXmlStreamReader.getPrefix() == null) {
-                        assertEquals("", xmlSecurityStreamReader.getPrefix());
+                        Assert.assertEquals("", xmlSecurityStreamReader.getPrefix());
                     } else {
-                        assertEquals(stdXmlStreamReader.getPrefix(), xmlSecurityStreamReader.getPrefix());
+                        Assert.assertEquals(stdXmlStreamReader.getPrefix(), xmlSecurityStreamReader.getPrefix());
                     }
-                    assertEquals(stdXmlStreamReader.hasName(), xmlSecurityStreamReader.hasName());
-                    assertEquals(stdXmlStreamReader.hasText(), xmlSecurityStreamReader.hasText());
+                    Assert.assertEquals(stdXmlStreamReader.hasName(), xmlSecurityStreamReader.hasName());
+                    Assert.assertEquals(stdXmlStreamReader.hasText(), xmlSecurityStreamReader.hasText());
                     break;
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
-                    assertEquals(stdXmlStreamReader.isCharacters(), xmlSecurityStreamReader.isCharacters());
-                    assertEquals(stdXmlStreamReader.getPITarget(), xmlSecurityStreamReader.getPITarget());
-                    assertEquals(stdXmlStreamReader.getPIData(), xmlSecurityStreamReader.getPIData());
+                    Assert.assertEquals(stdXmlStreamReader.isCharacters(), xmlSecurityStreamReader.isCharacters());
+                    Assert.assertEquals(stdXmlStreamReader.getPITarget(), xmlSecurityStreamReader.getPITarget());
+                    Assert.assertEquals(stdXmlStreamReader.getPIData(), xmlSecurityStreamReader.getPIData());
                     break;
                 case XMLStreamConstants.CHARACTERS:
-                    assertEquals(stdXmlStreamReader.isCharacters(), xmlSecurityStreamReader.isCharacters());
-                    assertEquals(stdXmlStreamReader.isWhiteSpace(), xmlSecurityStreamReader.isWhiteSpace());
-                    assertEquals(stdXmlStreamReader.getText(), xmlSecurityStreamReader.getText());
-                    assertEquals(
+                    Assert.assertEquals(stdXmlStreamReader.isCharacters(), xmlSecurityStreamReader.isCharacters());
+                    Assert.assertEquals(stdXmlStreamReader.isWhiteSpace(), xmlSecurityStreamReader.isWhiteSpace());
+                    Assert.assertEquals(stdXmlStreamReader.getText(), xmlSecurityStreamReader.getText());
+                    Assert.assertEquals(
                             new String(stdXmlStreamReader.getTextCharacters(), stdXmlStreamReader.getTextStart(), stdXmlStreamReader.getTextLength()),
                             new String(xmlSecurityStreamReader.getTextCharacters(), xmlSecurityStreamReader.getTextStart(), xmlSecurityStreamReader.getTextLength()));
-                    assertEquals(stdXmlStreamReader.getTextLength(), xmlSecurityStreamReader.getTextLength());
+                    Assert.assertEquals(stdXmlStreamReader.getTextLength(), xmlSecurityStreamReader.getTextLength());
                     break;
                 case XMLStreamConstants.COMMENT:
-                    assertEquals(stdXmlStreamReader.isCharacters(), xmlSecurityStreamReader.isCharacters());
-                    assertEquals(stdXmlStreamReader.isWhiteSpace(), xmlSecurityStreamReader.isWhiteSpace());
-                    assertEquals(stdXmlStreamReader.getText(), xmlSecurityStreamReader.getText());
-                    assertEquals(
+                    Assert.assertEquals(stdXmlStreamReader.isCharacters(), xmlSecurityStreamReader.isCharacters());
+                    Assert.assertEquals(stdXmlStreamReader.isWhiteSpace(), xmlSecurityStreamReader.isWhiteSpace());
+                    Assert.assertEquals(stdXmlStreamReader.getText(), xmlSecurityStreamReader.getText());
+                    Assert.assertEquals(
                             new String(stdXmlStreamReader.getTextCharacters(), stdXmlStreamReader.getTextStart(), stdXmlStreamReader.getTextLength()),
                             new String(xmlSecurityStreamReader.getTextCharacters(), xmlSecurityStreamReader.getTextStart(), xmlSecurityStreamReader.getTextLength()));
-                    assertEquals(stdXmlStreamReader.getTextLength(), xmlSecurityStreamReader.getTextLength());
+                    Assert.assertEquals(stdXmlStreamReader.getTextLength(), xmlSecurityStreamReader.getTextLength());
                     break;
                 case XMLStreamConstants.SPACE:
-                    assertEquals(stdXmlStreamReader.isWhiteSpace(), xmlSecurityStreamReader.isWhiteSpace());
-                    assertEquals(stdXmlStreamReader.getText(), xmlSecurityStreamReader.getText());
-                    assertEquals(
+                    Assert.assertEquals(stdXmlStreamReader.isWhiteSpace(), xmlSecurityStreamReader.isWhiteSpace());
+                    Assert.assertEquals(stdXmlStreamReader.getText(), xmlSecurityStreamReader.getText());
+                    Assert.assertEquals(
                             new String(stdXmlStreamReader.getTextCharacters(), stdXmlStreamReader.getTextStart(), stdXmlStreamReader.getTextLength()),
                             new String(xmlSecurityStreamReader.getTextCharacters(), xmlSecurityStreamReader.getTextStart(), xmlSecurityStreamReader.getTextLength()));
-                    assertEquals(stdXmlStreamReader.getTextLength(), xmlSecurityStreamReader.getTextLength());
+                    Assert.assertEquals(stdXmlStreamReader.getTextLength(), xmlSecurityStreamReader.getTextLength());
                     break;
                 case XMLStreamConstants.START_DOCUMENT:
-                    assertEquals(stdXmlStreamReader.getCharacterEncodingScheme(), xmlSecurityStreamReader.getCharacterEncodingScheme());
-                    assertEquals(stdXmlStreamReader.getEncoding(), xmlSecurityStreamReader.getEncoding());
-                    //assertEquals(stdXmlStreamReader.getVersion(), xmlSecurityStreamReader.getVersion());
+                    Assert.assertEquals(stdXmlStreamReader.getCharacterEncodingScheme(), xmlSecurityStreamReader.getCharacterEncodingScheme());
+                    Assert.assertEquals(stdXmlStreamReader.getEncoding(), xmlSecurityStreamReader.getEncoding());
+                    //Assert.assertEquals(stdXmlStreamReader.getVersion(), xmlSecurityStreamReader.getVersion());
                     break;
                 case XMLStreamConstants.END_DOCUMENT:
                     break;
                 case XMLStreamConstants.ENTITY_REFERENCE:
-                    assertEquals(stdXmlStreamReader.isCharacters(), xmlSecurityStreamReader.isCharacters());
-                    assertEquals(stdXmlStreamReader.getText(), xmlSecurityStreamReader.getText());
+                    Assert.assertEquals(stdXmlStreamReader.isCharacters(), xmlSecurityStreamReader.isCharacters());
+                    Assert.assertEquals(stdXmlStreamReader.getText(), xmlSecurityStreamReader.getText());
                     break;
                 case XMLStreamConstants.ATTRIBUTE:
                     break;
                 case XMLStreamConstants.DTD:
-                    assertEquals(stdXmlStreamReader.isCharacters(), xmlSecurityStreamReader.isCharacters());
+                    Assert.assertEquals(stdXmlStreamReader.isCharacters(), xmlSecurityStreamReader.isCharacters());
                     break;
                 case XMLStreamConstants.CDATA:
-                    assertEquals(stdXmlStreamReader.isCharacters(), xmlSecurityStreamReader.isCharacters());
+                    Assert.assertEquals(stdXmlStreamReader.isCharacters(), xmlSecurityStreamReader.isCharacters());
                     break;
                 case XMLStreamConstants.NAMESPACE:
                     break;
                 case XMLStreamConstants.NOTATION_DECLARATION:
                     break;
                 case XMLStreamConstants.ENTITY_DECLARATION:
-                    assertEquals(stdXmlStreamReader.isCharacters(), xmlSecurityStreamReader.isCharacters());
+                    Assert.assertEquals(stdXmlStreamReader.isCharacters(), xmlSecurityStreamReader.isCharacters());
                     break;
             }
             //hmm2 an eventreader returns a CHARACTER EVENT for an ignorable whitespace whereby a streamReader returns it as SPACE
             if (stdXMLEventType == XMLStreamConstants.SPACE && secXMLEventType == XMLStreamConstants.CHARACTERS) {
                 secXMLEventType = XMLStreamConstants.SPACE;
             }
-            assertEquals(stdXMLEventType, secXMLEventType);
+            Assert.assertEquals(stdXMLEventType, secXMLEventType);
             if (stdXmlStreamReader.hasNext()) {
-                assertTrue(xmlSecurityStreamReader.hasNext());
+                Assert.assertTrue(xmlSecurityStreamReader.hasNext());
                 stdXMLEventType = stdXmlStreamReader.next();
                 secXMLEventType = xmlSecurityStreamReader.next();
             } else {
-                assertFalse(xmlSecurityStreamReader.hasNext());
+                Assert.assertFalse(xmlSecurityStreamReader.hasNext());
                 break;
             }
         } while (true);

@@ -26,7 +26,7 @@ import java.security.NoSuchProviderException;
 
 /**
  */
-public final class SignatureAlgorithmFactory {
+public class SignatureAlgorithmFactory {
 
     private static SignatureAlgorithmFactory instance;
 

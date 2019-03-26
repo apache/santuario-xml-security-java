@@ -52,7 +52,7 @@ public class SignatureValidator {
 
     public DOMValidateContext getValidateContext(String fn, KeySelector ks)
         throws Exception {
-        Document doc = XMLUtils.read(new FileInputStream(new File(dir, fn)), false);
+        Document doc = XMLUtils.createDocumentBuilder(false, false).parse(new File(dir, fn));
         Element sigElement = getSignatureElement(doc);
         if (sigElement == null) {
             throw new Exception("Couldn't find signature Element");
@@ -81,7 +81,7 @@ public class SignatureValidator {
         boolean coreValidity = signature.validate(vc);
 
         // Check core validation status
-        if (!coreValidity) {
+        if (coreValidity == false) {
             // check the validation status of each Reference
             @SuppressWarnings("unchecked")
             Iterator<Reference> i = signature.getSignedInfo().getReferences().iterator();

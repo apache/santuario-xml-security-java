@@ -20,16 +20,13 @@ package org.apache.xml.security.test.dom.interop;
 
 import org.apache.xml.security.test.dom.utils.resolver.OfflineResolver;
 
+import static org.junit.Assert.*;
 
 import java.nio.charset.StandardCharsets;
 
 import org.apache.xml.security.signature.XMLSignatureException;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
 import org.apache.xml.security.utils.resolver.implementations.ResolverAnonymous;
-
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 
 /**
  * This test is to ensure interoperability with the examples provided by the IAIK
@@ -83,7 +80,7 @@ public class IAIKTest extends InteropTestBase {
             LOG.error("Verification crashed for " + filename);
             throw ex;
         } catch (XMLSignatureException ex) {
-            if (!"algorithms.HMACOutputLengthMin".equals(ex.getMsgID())) {
+            if (!ex.getMsgID().equals("algorithms.HMACOutputLengthMin")) {
                 fail(ex.getMessage());
             }
         }

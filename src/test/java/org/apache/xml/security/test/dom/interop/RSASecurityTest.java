@@ -19,10 +19,9 @@
 package org.apache.xml.security.test.dom.interop;
 
 
+import static org.junit.Assert.assertTrue;
 
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
-
-import static org.junit.Assert.assertTrue;
 
 
 /**

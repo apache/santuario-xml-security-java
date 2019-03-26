@@ -26,16 +26,8 @@ package org.apache.jcp.xml.dsig.internal.dom;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.security.cert.CRLException;
-import java.security.cert.CertificateEncodingException;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509CRL;
-import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.security.cert.*;
+import java.util.*;
 
 import javax.security.auth.x500.X500Principal;
 import javax.xml.crypto.MarshalException;

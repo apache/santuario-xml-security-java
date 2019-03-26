@@ -18,6 +18,7 @@
  */
 package org.apache.xml.security.test.dom.utils.resolver;
 
+import static org.junit.Assert.fail;
 
 import java.io.File;
 
@@ -25,8 +26,6 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.apache.xml.security.utils.resolver.ResourceResolver;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
-
-import static org.junit.Assert.fail;
 
 /**
  * Unit test for {@link org.apache.xml.security.utils.resolver.ResourceResolver}
@@ -50,7 +49,7 @@ public class ResourceResolverTest {
         String className =
             "org.apache.xml.security.test.dom.utils.resolver.OfflineResolver";
         ResourceResolver.registerAtStart(className);
-        Document doc = XMLUtils.newDocument();
+        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
         Attr uriAttr = doc.createAttribute("URI");
         uriAttr.setValue("http://www.apache.org");
         ResourceResolver res =
@@ -59,6 +58,7 @@ public class ResourceResolverTest {
             uriAttr.setValue("http://xmldsig.pothole.com/xml-stylesheet.txt");
             res.resolve(uriAttr, null, true);
         } catch (Exception e) {
+            e.printStackTrace();
             fail(uriAttr.getValue()
                 + " should be resolvable by the OfflineResolver");
         }
@@ -73,7 +73,7 @@ public class ResourceResolverTest {
 
     @org.junit.Test
     public void testLocalFileWithEmptyBaseURI() throws Exception {
-        Document doc = XMLUtils.newDocument();
+        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
         Attr uriAttr = doc.createAttribute("URI");
         String basedir = System.getProperty("basedir");
         String file = new File(basedir, "pom.xml").toURI().toString();

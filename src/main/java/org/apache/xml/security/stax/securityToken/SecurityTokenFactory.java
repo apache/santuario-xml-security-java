@@ -31,10 +31,10 @@ import org.apache.xml.security.utils.ClassLoaderUtils;
  */
 public abstract class SecurityTokenFactory {
 
-    private static SecurityTokenFactory instance;
+    private static SecurityTokenFactory securityTokenFactory;
 
     public static synchronized SecurityTokenFactory getInstance() throws XMLSecurityException {
-        if (instance == null) {
+        if (securityTokenFactory == null) {
             String stf = ConfigurationProperties.getProperty("securityTokenFactory");
             if (stf == null) {
                 throw new XMLSecurityException("algorithm.ClassDoesNotExist",
@@ -49,7 +49,7 @@ public abstract class SecurityTokenFactory {
                 @SuppressWarnings("unchecked")
                 Class<SecurityTokenFactory> securityTokenFactoryClass =
                         (Class<SecurityTokenFactory>) ClassLoaderUtils.loadClass(stf, callingClass);
-                instance = securityTokenFactoryClass.newInstance();
+                securityTokenFactory = securityTokenFactoryClass.newInstance();
             } catch (ClassNotFoundException e) {
                 throw new XMLSecurityException(e, "algorithm.ClassDoesNotExist", new Object[]{stf});
             } catch (InstantiationException e) {
@@ -58,7 +58,7 @@ public abstract class SecurityTokenFactory {
                 throw new XMLSecurityException(e, "algorithm.ClassDoesNotExist", new Object[]{stf});
             }
         }
-        return instance;
+        return securityTokenFactory;
     }
 
     public abstract InboundSecurityToken getSecurityToken(

@@ -118,7 +118,7 @@ public class OfflineResolver extends ResourceResolverSpi {
 
                 return result;
             } else {
-                Object[] exArgs = {"The URI " + URI + " is not configured for offline work" };
+                Object exArgs[] = {"The URI " + URI + " is not configured for offline work" };
 
                 throw new ResourceResolverException(
                     "generic.EmptyMessage", exArgs, context.uriToResolve, context.baseUri
@@ -139,14 +139,14 @@ public class OfflineResolver extends ResourceResolverSpi {
     @Override
     public boolean engineCanResolveURI(ResourceResolverContext context) {
         String uriNodeValue = context.uriToResolve;
-        if (uriNodeValue.isEmpty() || uriNodeValue.charAt(0) == '#') {
+        if (uriNodeValue.equals("") || uriNodeValue.startsWith("#")) {
             return false;
         }
 
         URI uriNew = null;
         try {
             uriNew = getNewURI(context.uriToResolve, context.baseUri);
-            if ("http".equals(uriNew.getScheme())) {
+            if (uriNew.getScheme().equals("http")) {
                 LOG.debug("I state that I can resolve " + uriNew.toString());
                 return true;
             }

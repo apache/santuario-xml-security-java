@@ -21,17 +21,11 @@
  */
 package javax.xml.crypto.test.dsig;
 
+import static org.junit.Assert.*;
 
 import java.util.*;
 import javax.xml.crypto.XMLStructure;
 import javax.xml.crypto.dsig.*;
-
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-
 
 /**
  * Unit test for javax.xml.crypto.dsig.XMLObject
@@ -79,7 +73,7 @@ public class XMLObjectTest {
         obj = factory.newXMLObject(list, id, mimeType, encoding);
         assertNotNull(obj);
         assertNotNull(obj.getContent());
-        assertArrayEquals(obj.getContent().toArray(), list.toArray());
+        assertTrue(Arrays.equals(obj.getContent().toArray(), list.toArray()));
         assertEquals(obj.getId(), id);
         assertEquals(obj.getMimeType(), mimeType);
         assertEquals(obj.getEncoding(), encoding);
@@ -90,7 +84,7 @@ public class XMLObjectTest {
             unmodifiable.add(new TestUtils.MyOwnXMLStructure());
             fail("Should return an unmodifiable List object");
         } catch (UnsupportedOperationException uoe) {}
-        assertArrayEquals(unmodifiable.toArray(), list.toArray());
+        assertTrue(Arrays.equals(unmodifiable.toArray(), list.toArray()));
     }
 
     @org.junit.Test
@@ -103,7 +97,7 @@ public class XMLObjectTest {
             fail("Should raise a NPE for null feature");
         } catch (NullPointerException npe) {}
 
-        assertFalse(obj.isFeatureSupported("not supported"));
+        assertTrue(!obj.isFeatureSupported("not supported"));
     }
 
     @SuppressWarnings({

@@ -21,17 +21,13 @@
  */
 package javax.xml.crypto.test.dsig.keyinfo;
 
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.xml.crypto.*;
 import javax.xml.crypto.dsig.keyinfo.*;
-
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-
 
 /**
  * Unit test for javax.xml.crypto.dsig.keyinfo.PGPData
@@ -109,27 +105,30 @@ public class PGPDataTest {
     public void testConstructor() {
         // test newPGPKeyData(byte[])
         PGPData pd = fac.newPGPData(values[0]);
-        assertArrayEquals(values[0], pd.getKeyId());
+        assertTrue(Arrays.equals(values[0], pd.getKeyId()));
 
         // test newPGPData(byte[], byte[], List)
         pd = fac.newPGPData(values[0], values[1], null);
-        assertArrayEquals(values[0], pd.getKeyId());
-        assertArrayEquals(values[1], pd.getKeyPacket());
+        assertTrue(Arrays.equals(values[0], pd.getKeyId()));
+        assertTrue(Arrays.equals(values[1], pd.getKeyPacket()));
 
         // test newPGPData(byte[], List)
         pd = fac.newPGPData(values[1], null);
-        assertArrayEquals(values[1], pd.getKeyPacket());
+        assertTrue(Arrays.equals(values[1], pd.getKeyPacket()));
     }
 
     @org.junit.Test
     public void testisFeatureSupported() {
         PGPData pd = null;
         for (int i = 0; i < 3; i++) {
-            if (i == 0) {
+            switch (i) {
+            case 0:
                 pd = fac.newPGPData(values[0]);
-            } else if (i == 1) {
+                break;
+            case 1:
                 pd = fac.newPGPData(values[0], values[1], null);
-            } else {
+                break;
+            case 2:
                 pd = fac.newPGPData(values[1], null);
             }
             try {
@@ -137,7 +136,7 @@ public class PGPDataTest {
                 fail("Should raise a NPE for null feature");
             } catch (NullPointerException npe) {}
 
-            assertFalse(pd.isFeatureSupported("not supported"));
+            assertTrue(!pd.isFeatureSupported("not supported"));
         }
     }
 

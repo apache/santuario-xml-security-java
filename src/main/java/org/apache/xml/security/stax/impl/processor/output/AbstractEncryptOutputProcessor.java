@@ -18,27 +18,6 @@
  */
 package org.apache.xml.security.stax.impl.processor.output;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.AlgorithmParameterSpec;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.crypto.Cipher;
-import javax.crypto.CipherOutputStream;
-import javax.crypto.NoSuchPaddingException;
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLEventWriter;
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
-
 import org.apache.commons.codec.binary.Base64OutputStream;
 import org.apache.xml.security.algorithms.JCEMapper;
 import org.apache.xml.security.encryption.XMLCipherUtil;
@@ -48,16 +27,26 @@ import org.apache.xml.security.stax.ext.AbstractOutputProcessor;
 import org.apache.xml.security.stax.ext.OutputProcessorChain;
 import org.apache.xml.security.stax.ext.SecurePart;
 import org.apache.xml.security.stax.ext.XMLSecurityConstants;
-import org.apache.xml.security.stax.ext.stax.XMLSecAttribute;
-import org.apache.xml.security.stax.ext.stax.XMLSecCharacters;
-import org.apache.xml.security.stax.ext.stax.XMLSecEndElement;
-import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
-import org.apache.xml.security.stax.ext.stax.XMLSecEventFactory;
-import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
+import org.apache.xml.security.stax.ext.stax.*;
 import org.apache.xml.security.stax.impl.EncryptionPartDef;
 import org.apache.xml.security.stax.impl.XMLSecurityEventWriter;
 import org.apache.xml.security.stax.impl.util.TrimmerOutputStream;
 import org.apache.xml.security.utils.XMLUtils;
+
+import javax.crypto.Cipher;
+import javax.crypto.CipherOutputStream;
+import javax.crypto.NoSuchPaddingException;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLEventWriter;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.AlgorithmParameterSpec;
+import java.util.*;
 
 /**
  * Processor to encrypt XML structures
@@ -224,16 +213,18 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
 
                     if (this.elementCounter == 0 && xmlSecStartElement.getName().equals(this.getXmlSecStartElement().getName())) {
                         //if the user selected element encryption we have to encrypt the current element-event...
-                        if (SecurePart.Modifier.Element == getEncryptionPartDef().getModifier()) {
-                            OutputProcessorChain subOutputProcessorChain = outputProcessorChain.createSubChain(this);
-                            processEventInternal(xmlSecStartElement, subOutputProcessorChain);
-                            //encrypt the current element event
-                            encryptEvent(xmlSecEvent);
-                        } else if (SecurePart.Modifier.Content == getEncryptionPartDef().getModifier()) {
-                            OutputProcessorChain subOutputProcessorChain = outputProcessorChain.createSubChain(this);
-                            outputProcessorChain.processEvent(xmlSecEvent);
-                            subOutputProcessorChain = outputProcessorChain.createSubChain(this);
-                            processEventInternal(xmlSecStartElement, subOutputProcessorChain);
+                        switch (getEncryptionPartDef().getModifier()) {
+                            case Element:
+                                OutputProcessorChain subOutputProcessorChain = outputProcessorChain.createSubChain(this);
+                                processEventInternal(xmlSecStartElement, subOutputProcessorChain);
+                                //encrypt the current element event
+                                encryptEvent(xmlSecEvent);
+                                break;
+                            case Content:
+                                outputProcessorChain.processEvent(xmlSecEvent);
+                                subOutputProcessorChain = outputProcessorChain.createSubChain(this);
+                                processEventInternal(xmlSecStartElement, subOutputProcessorChain);
+                                break;
                         }
                     } else {
                         encryptEvent(xmlSecEvent);
@@ -246,12 +237,15 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
 
                     if (this.elementCounter == 0 && xmlSecEvent.asEndElement().getName().equals(this.getXmlSecStartElement().getName())) {
                         OutputProcessorChain subOutputProcessorChain = outputProcessorChain.createSubChain(this);
-                        if (SecurePart.Modifier.Element == getEncryptionPartDef().getModifier()) {
-                            encryptEvent(xmlSecEvent);
-                            doFinalInternal(subOutputProcessorChain);
-                        } else if (SecurePart.Modifier.Content == getEncryptionPartDef().getModifier()) {
-                            doFinalInternal(subOutputProcessorChain);
-                            outputAsEvent(subOutputProcessorChain, xmlSecEvent);
+                        switch (getEncryptionPartDef().getModifier()) {
+                            case Element:
+                                encryptEvent(xmlSecEvent);
+                                doFinalInternal(subOutputProcessorChain);
+                                break;
+                            case Content:
+                                doFinalInternal(subOutputProcessorChain);
+                                outputAsEvent(subOutputProcessorChain, xmlSecEvent);
+                                break;
                         }
                         subOutputProcessorChain.removeProcessor(this);
                         //from now on encryption is possible again
@@ -386,7 +380,7 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
      */
     public class CharacterEventGeneratorOutputStream extends OutputStream {
 
-        private final Deque<XMLSecCharacters> charactersBuffer = new ArrayDeque<>();
+        private final Deque<XMLSecCharacters> charactersBuffer = new ArrayDeque<XMLSecCharacters>();
 
         public Deque<XMLSecCharacters> getCharactersBuffer() {
             return charactersBuffer;

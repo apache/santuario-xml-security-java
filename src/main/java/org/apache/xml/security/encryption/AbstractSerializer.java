@@ -226,7 +226,8 @@ public abstract class AbstractSerializer implements Serializer {
 
     protected static String createContext(String source, Node ctx) {
         // Create the context to parse the document against
-        StringBuilder sb = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?><dummy");
+        StringBuilder sb = new StringBuilder();
+        sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?><dummy");
 
         // Run through each node up to the document node and find any xmlns: nodes
         Map<String, String> storedNamespaces = new HashMap<>();
@@ -239,18 +240,18 @@ public abstract class AbstractSerializer implements Serializer {
                     String nodeName = att.getNodeName();
                     if (("xmlns".equals(nodeName) || nodeName.startsWith("xmlns:"))
                         && !storedNamespaces.containsKey(att.getNodeName())) {
-                        sb.append(' ');
+                        sb.append(" ");
                         sb.append(nodeName);
                         sb.append("=\"");
                         sb.append(att.getNodeValue());
-                        sb.append('\"');
+                        sb.append("\"");
                         storedNamespaces.put(nodeName, att.getNodeValue());
                     }
                 }
             }
             wk = wk.getParentNode();
         }
-        sb.append('>');
+        sb.append(">");
         sb.append(source);
         sb.append("</dummy>");
         return sb.toString();

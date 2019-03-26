@@ -30,14 +30,9 @@ import javax.xml.crypto.dsig.spec.XPathFilterParameterSpec;
 import javax.xml.crypto.dsig.spec.XPathFilter2ParameterSpec;
 import javax.xml.crypto.dsig.spec.XSLTTransformParameterSpec;
 
+import static org.junit.Assert.*;
 
 import java.security.*;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-
 
 /**
  * Unit test for javax.xml.crypto.dsig.Transform
@@ -47,7 +42,7 @@ public class TransformTest {
 
     XMLSignatureFactory factory;
 
-    private static final String[] TRANSFORM_ALGOS = {
+    private static final String TRANSFORM_ALGOS[] = {
         Transform.BASE64,
         Transform.ENVELOPED,
         Transform.XPATH,
@@ -87,7 +82,7 @@ public class TransformTest {
                      ": Should raise a NPE for null feature");
             } catch (NullPointerException npe) {}
 
-            assertFalse(tm.isFeatureSupported("not supported"));
+            assertTrue(!tm.isFeatureSupported("not supported"));
         }
     }
 

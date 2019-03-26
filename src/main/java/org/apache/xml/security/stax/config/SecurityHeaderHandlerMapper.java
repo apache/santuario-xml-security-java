@@ -32,7 +32,7 @@ import java.util.Map;
  * Security-header handler mapper
  *
  */
-public final class SecurityHeaderHandlerMapper {
+public class SecurityHeaderHandlerMapper {
 
     private static Map<QName, Class<?>> handlerClassMap;
 

@@ -18,9 +18,9 @@
  */
 package org.apache.xml.security.test.dom.c14n.implementations;
 
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.io.FileInputStream;
 
 import org.apache.xml.security.signature.Reference;
 import org.apache.xml.security.signature.XMLSignature;
@@ -28,8 +28,6 @@ import org.apache.xml.security.test.dom.interop.InteropTestBase;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Element;
-
-import static org.junit.Assert.assertNull;
 
 
 /**
@@ -62,7 +60,7 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
 
         String success = t("src/test/resources/interop/c14n/Y1", "exc-signature.xml", true);
 
-        assertNull(success);
+        assertTrue(success, success == null);
     }
 
     /**
@@ -75,7 +73,7 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
 
         String success = t("src/test/resources/interop/c14n/Y2", "signature-joseph-exc.xml", false);
 
-        assertNull(success);
+        assertTrue(success, success == null);
     }
 
     /**
@@ -88,7 +86,7 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
 
         String success = t("src/test/resources/interop/c14n/Y3", "signature.xml", false);
 
-        assertNull(success);
+        assertTrue(success, success == null);
     }
 
     /**
@@ -101,7 +99,7 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
 
         String success = t("src/test/resources/interop/c14n/Y4", "signature.xml", true);
 
-        assertNull(success);
+        assertTrue(success, success == null);
     }
 
     @org.junit.Test
@@ -109,7 +107,7 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
 
         String success = t("src/test/resources/interop/xfilter2/merlin-xpath-filter2-three", "sign-spec.xml", true);
 
-        assertNull(success);
+        assertTrue(success, success == null);
     }
 
     private String t(String directory, String file, boolean secureValidation) throws Exception {
@@ -120,7 +118,8 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
 
         File f = new File(directory + "/" + file);
 
-        org.w3c.dom.Document doc = XMLUtils.read(new FileInputStream(f), false);
+        javax.xml.parsers.DocumentBuilder db = XMLUtils.createDocumentBuilder(false, false);
+        org.w3c.dom.Document doc = db.parse(f);
 
         Element sigElement =
             (Element) doc.getElementsByTagNameNS(Constants.SignatureSpecNS,
@@ -143,7 +142,7 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
                 LOG.debug("Reference " + i + " was OK");
             } else {
                 sb.append(i);
-                sb.append(' ');
+                sb.append(" ");
 
                 //JavaUtils.writeBytesToFilename(directory + "/c14n-" + i + ".apache.txt", signature.getSignedInfo().item(i).getContentsAfterTransformation().getBytes());
                 //JavaUtils.writeBytesToFilename(directory + "/c14n-" + i + ".apache.html", signature.getSignedInfo().item(i).getHTMLRepresentation().getBytes());

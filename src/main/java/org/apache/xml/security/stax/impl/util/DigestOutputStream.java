@@ -34,7 +34,7 @@ public class DigestOutputStream extends OutputStream {
     protected static final transient boolean isDebugEnabled = LOG.isDebugEnabled();
 
     private final MessageDigest messageDigest;
-    private StringBuilder stringBuilder; //NOPMD
+    private StringBuilder stringBuilder;
 
     public DigestOutputStream(MessageDigest messageDigest) {
         this.messageDigest = messageDigest;

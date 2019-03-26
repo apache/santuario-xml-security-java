@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.xml.security.utils.XMLUtils;
@@ -69,8 +70,10 @@ public class DocumentSerializer extends AbstractSerializer {
      * @throws XMLEncryptionException
      */
     private Node deserialize(Node ctx, InputSource inputSource) throws XMLEncryptionException {
+        DocumentBuilder db = null;
         try {
-            Document d = XMLUtils.read(inputSource, secureValidation);
+            db = XMLUtils.createDocumentBuilder(false, secureValidation);
+            Document d = db.parse(inputSource);
 
             Document contextDocument = null;
             if (Node.DOCUMENT_NODE == ctx.getNodeType()) {
@@ -95,6 +98,10 @@ public class DocumentSerializer extends AbstractSerializer {
             throw new XMLEncryptionException(pce);
         } catch (IOException ioe) {
             throw new XMLEncryptionException(ioe);
+        } finally {
+            if (db != null) {
+                XMLUtils.repoolDocumentBuilder(db);
+            }
         }
     }
 

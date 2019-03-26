@@ -44,6 +44,7 @@ import javax.xml.crypto.dsig.keyinfo.KeyInfo;
 import javax.xml.crypto.dsig.keyinfo.KeyInfoFactory;
 import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 import javax.xml.crypto.test.KeySelectors;
+import javax.xml.parsers.DocumentBuilder;
 
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.BeforeClass;
@@ -51,9 +52,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
 
 /**
  * Test signing using all available PublicKey signing algorithms
@@ -67,6 +66,7 @@ public class PKSignatureAlgorithmTest {
     private SignatureMethod rsaSha1Mgf1, rsaSha224Mgf1, rsaSha256Mgf1, rsaSha384Mgf1, rsaSha512Mgf1;
     private SignatureMethod ecdsaSha1, ecdsaSha224, ecdsaSha256, ecdsaSha384, ecdsaSha512, ecdsaRipemd160;
     private XMLSignatureFactory fac;
+    private DocumentBuilder db;
     private KeyPair rsaKeyPair, ecKeyPair;
     private KeyInfo rsaki, ecki;
     private boolean ecAlgParamsSupport = true;
@@ -109,6 +109,7 @@ public class PKSignatureAlgorithmTest {
             ecAlgParamsSupport = false;
         }
 
+        db = XMLUtils.createDocumentBuilder(false);
         // create common objects
         fac = XMLSignatureFactory.getInstance("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
         withoutComments = fac.newCanonicalizationMethod
@@ -290,7 +291,7 @@ public class PKSignatureAlgorithmTest {
         SignedInfo si = fac.newSignedInfo(withoutComments, sm,
                                           Collections.singletonList(ref));
 
-        Document doc = XMLUtils.newDocument();
+        Document doc = db.newDocument();
         // create Objects
         Element webElem = doc.createElementNS(null, "Web");
         Text text = doc.createTextNode("up up and away");
@@ -314,7 +315,7 @@ public class PKSignatureAlgorithmTest {
         (ks, doc.getDocumentElement());
         XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
 
-        assertEquals(sig, sig2);
+        assertTrue(sig.equals(sig2));
         assertTrue(sig2.validate(dvc));
     }
 

@@ -36,9 +36,11 @@ import javax.xml.stream.util.XMLEventConsumer;
  */
 public class XMLSecEventAllocator implements XMLEventAllocator {
 
+    private XMLEventAllocator xmlEventAllocator;
     private XMLSecStartElement parentXmlSecStartElement;
 
     public XMLSecEventAllocator() throws Exception {
+        xmlEventAllocator = com.ctc.wstx.evt.DefaultEventAllocator.getDefaultInstance();
     }
 
     @Override
@@ -53,16 +55,21 @@ public class XMLSecEventAllocator implements XMLEventAllocator {
     @Override
     public XMLEvent allocate(XMLStreamReader xmlStreamReader) throws XMLStreamException {
         XMLSecEvent xmlSecEvent = XMLSecEventFactory.allocate(xmlStreamReader, parentXmlSecStartElement);
-        if (XMLStreamConstants.START_ELEMENT == xmlSecEvent.getEventType()) {
-            parentXmlSecStartElement = (XMLSecStartElement) xmlSecEvent;
-        } else if (XMLStreamConstants.START_ELEMENT == xmlSecEvent.getEventType() && parentXmlSecStartElement != null) {
-            parentXmlSecStartElement = parentXmlSecStartElement.getParentXMLSecStartElement();
+        switch (xmlSecEvent.getEventType()) {
+            case XMLStreamConstants.START_ELEMENT:
+                parentXmlSecStartElement = (XMLSecStartElement) xmlSecEvent;
+                break;
+            case XMLStreamConstants.END_ELEMENT:
+                if (parentXmlSecStartElement != null) {
+                    parentXmlSecStartElement = parentXmlSecStartElement.getParentXMLSecStartElement();
+                }
+                break;
         }
         return xmlSecEvent;
     }
 
     @Override
     public void allocate(XMLStreamReader reader, XMLEventConsumer consumer) throws XMLStreamException {
-       // xmlEventAllocator.allocate(reader, consumer);
+        xmlEventAllocator.allocate(reader, consumer);
     }
 }

@@ -72,8 +72,12 @@ public class PrivateKeyResolver extends KeyResolverSpi {
      * @return whether the KeyResolverSpi is able to perform the requested action.
      */
     public boolean engineCanResolve(Element element, String baseURI, StorageResolver storage) {
-        return XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_X509DATA)
-            || XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_KEYNAME);
+        if (XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_X509DATA)
+            || XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_KEYNAME)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

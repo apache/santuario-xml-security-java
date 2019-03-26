@@ -18,46 +18,34 @@
  */
 package org.apache.xml.security.test.stax.performance;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.InputStream;
-import java.io.OutputStream;
+import org.apache.xml.security.encryption.XMLCipher;
+import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.signature.XMLSignature;
+import org.apache.xml.security.stax.ext.*;
+import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
+import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
+import org.apache.xml.security.transforms.Transforms;
+import org.apache.xml.security.utils.XMLUtils;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import javax.crypto.KeyGenerator;
+import javax.xml.namespace.QName;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
+
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.KeyStore;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.crypto.KeyGenerator;
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
-import org.apache.xml.security.encryption.XMLCipher;
-import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.signature.XMLSignature;
-import org.apache.xml.security.stax.ext.InboundXMLSec;
-import org.apache.xml.security.stax.ext.OutboundXMLSec;
-import org.apache.xml.security.stax.ext.SecurePart;
-import org.apache.xml.security.stax.ext.XMLSec;
-import org.apache.xml.security.stax.ext.XMLSecurityConstants;
-import org.apache.xml.security.stax.ext.XMLSecurityProperties;
-import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
-import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
-import org.apache.xml.security.transforms.Transforms;
-import org.apache.xml.security.utils.XMLUtils;
-
-import org.junit.Before;
-import org.junit.BeforeClass;
 
 /**
  */
@@ -136,8 +124,10 @@ public abstract class AbstractPerformanceTest {
         XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(fileInputStream);
         while (xmlStreamReader.hasNext()) {
             xmlStreamReader.next();
-            if (XMLStreamConstants.START_ELEMENT == xmlStreamReader.getEventType()) {
-                i++;
+            switch (xmlStreamReader.getEventType()) {
+                case XMLStreamConstants.START_ELEMENT:
+                    i++;
+                    break;
             }
         }
         xmlStreamReader.close();
@@ -149,7 +139,7 @@ public abstract class AbstractPerformanceTest {
 
     protected void setUpOutboundSignatureXMLSec() throws XMLSecurityException {
         XMLSecurityProperties xmlSecurityProperties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         xmlSecurityProperties.setActions(actions);
         xmlSecurityProperties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_X509KeyIdentifier);
@@ -180,7 +170,7 @@ public abstract class AbstractPerformanceTest {
 
     protected void setUpOutboundEncryptionXMLSec() throws XMLSecurityException {
         XMLSecurityProperties xmlSecurityProperties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.ENCRYPT);
         xmlSecurityProperties.setActions(actions);
         xmlSecurityProperties.setEncryptionKey(encryptionSymKey);
@@ -234,7 +224,8 @@ public abstract class AbstractPerformanceTest {
 
     protected void doDOMSignatureOutbound(File file, int tagCount) throws Exception {
 
-        Document document = XMLUtils.read(new FileInputStream(file), false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(file);
 
         XMLSignature sig = new XMLSignature(document, "", "http://www.w3.org/2000/09/xmldsig#rsa-sha1");
         Element root = document.getDocumentElement();
@@ -253,7 +244,8 @@ public abstract class AbstractPerformanceTest {
 
     protected void doDOMSignatureInbound(File file, int tagCount) throws Exception {
 
-        Document document = XMLUtils.read(new FileInputStream(file), false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(file);
 
         Element signatureElement = (Element) document.getElementsByTagNameNS("http://www.w3.org/2000/09/xmldsig#", "Signature").item(0);
         ((Element) signatureElement.getParentNode()).setIdAttributeNS(null, "Id", true);
@@ -294,7 +286,8 @@ public abstract class AbstractPerformanceTest {
 
     protected void doDOMEncryptionOutbound(File file, int tagCount) throws Exception {
 
-        Document document = XMLUtils.read(new FileInputStream(file), false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(file);
 
         XMLCipher cipher = XMLCipher.getInstance("http://www.w3.org/2001/04/xmlenc#aes256-cbc");
         cipher.init(XMLCipher.ENCRYPT_MODE, encryptionSymKey);
@@ -305,7 +298,8 @@ public abstract class AbstractPerformanceTest {
 
     protected void doDOMDecryptionInbound(File file, int tagCount) throws Exception {
 
-        Document document = XMLUtils.read(new FileInputStream(file), false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(file);
 
         XMLCipher cipher = XMLCipher.getInstance("http://www.w3.org/2001/04/xmlenc#aes256-cbc");
         cipher.init(XMLCipher.DECRYPT_MODE, encryptionSymKey);

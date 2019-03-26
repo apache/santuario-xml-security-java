@@ -26,6 +26,7 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
 
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
@@ -43,7 +44,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import static org.junit.Assert.assertTrue;
-
 
 /**
  * Tests creating and validating an XML Signature with an XPath Transform.
@@ -71,7 +71,8 @@ public class XmlSecTest {
 
     private void checkXmlSignatureSoftwareStack(boolean cert) throws Exception {
         Init.init();
-        Document testDocument = XMLUtils.newDocument();
+        DocumentBuilder documentBuilder = XMLUtils.createDocumentBuilder(false);
+        Document testDocument = documentBuilder.newDocument();
 
         Element rootElement =
             testDocument.createElementNS("urn:namespace", "tns:document");

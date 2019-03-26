@@ -18,41 +18,32 @@
  */
 package org.apache.xml.security.test.stax;
 
-import java.io.StringWriter;
-import java.io.Writer;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.stax.config.Init;
+import org.apache.xml.security.stax.impl.OutboundSecurityContextImpl;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import org.custommonkey.xmlunit.XMLAssert;
+import org.apache.xml.security.stax.ext.*;
+import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
+import org.apache.xml.security.stax.impl.OutputProcessorChainImpl;
+import org.apache.xml.security.stax.impl.XMLSecurityStreamWriter;
 
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-
-import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.stax.config.Init;
-import org.apache.xml.security.stax.ext.OutputProcessor;
-import org.apache.xml.security.stax.ext.OutputProcessorChain;
-import org.apache.xml.security.stax.ext.XMLSecurityConstants;
-import org.apache.xml.security.stax.ext.XMLSecurityProperties;
-import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
-import org.apache.xml.security.stax.impl.OutboundSecurityContextImpl;
-import org.apache.xml.security.stax.impl.OutputProcessorChainImpl;
-import org.apache.xml.security.stax.impl.XMLSecurityStreamWriter;
-
-import org.custommonkey.xmlunit.XMLAssert;
-import org.junit.Before;
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 /**
  */
-public class XMLSecurityStreamWriterTest {
+public class XMLSecurityStreamWriterTest extends Assert {
 
     @Before
     public void setUp() throws Exception {
@@ -184,7 +175,7 @@ public class XMLSecurityStreamWriterTest {
         xmlSecurityStreamWriter.writeProcessingInstruction("PI", "there");
         stdXmlStreamWriter.writeProcessingInstruction("PI", "there");
 
-        assertEquals(xmlSecurityStreamWriter.getPrefix("test4ns"), stdXmlStreamWriter.getPrefix("test4ns"));
+        Assert.assertEquals(xmlSecurityStreamWriter.getPrefix("test4ns"), stdXmlStreamWriter.getPrefix("test4ns"));
 
         stdXmlStreamWriter.close();
         xmlSecurityStreamWriter.close();

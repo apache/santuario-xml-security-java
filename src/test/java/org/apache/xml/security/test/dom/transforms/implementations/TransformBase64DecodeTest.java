@@ -18,10 +18,12 @@
  */
 package org.apache.xml.security.test.dom.transforms.implementations;
 
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -34,8 +36,6 @@ import org.apache.xml.security.transforms.implementations.TransformBase64Decode;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * Unit test for {@link org.apache.xml.security.transforms.implementations.TransformBase64Decode}
@@ -69,7 +69,9 @@ public class TransformBase64DecodeTest {
         XMLSignatureInput out = t.performTransforms(in);
         String result = new String(out.getBytes());
 
-        assertEquals(result, "The URI of the transform is http://www.w3.org/2000/09/xmldsig#base64");
+        assertTrue(
+            result.equals("The URI of the transform is http://www.w3.org/2000/09/xmldsig#base64")
+        );
     }
 
     @org.junit.Test
@@ -91,7 +93,9 @@ public class TransformBase64DecodeTest {
         XMLSignatureInput out = t.performTransforms(t.performTransforms(in));
         String result = new String(out.getBytes());
 
-        assertEquals(result, "The URI of the transform is http://www.w3.org/2000/09/xmldsig#base64");
+        assertTrue(
+            result.equals("The URI of the transform is http://www.w3.org/2000/09/xmldsig#base64")
+        );
     }
 
     @org.junit.Test
@@ -106,10 +110,13 @@ public class TransformBase64DecodeTest {
             + "</Object>\n"
             ;
         //J+
+        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+
+        db.setErrorHandler(new org.apache.xml.security.utils.IgnoreAllErrorHandler());
 
         Document doc = null;
         try (InputStream is = new ByteArrayInputStream(input.getBytes())) {
-            doc = XMLUtils.read(is, false);
+            doc = db.parse(is);
         }
         //XMLUtils.circumventBug2650(doc);
 
@@ -131,14 +138,15 @@ public class TransformBase64DecodeTest {
         XMLSignatureInput out = t.performTransforms(xmlinput);
         String result = new String(out.getBytes());
 
-        assertEquals(
+        assertTrue(
             "\"" + result + "\"",
-            result, "The URI of the transform is http://www.w3.org/2000/09/xmldsig#base64"
+            result.equals("The URI of the transform is http://www.w3.org/2000/09/xmldsig#base64")
         );
     }
 
     private static Document createDocument() throws ParserConfigurationException {
-        Document doc = XMLUtils.newDocument();
+        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+        Document doc = db.newDocument();
 
         if (doc == null) {
             throw new RuntimeException("Could not create a Document");

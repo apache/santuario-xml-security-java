@@ -189,7 +189,7 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
      */
     private void validateReference(Element referentElement) throws XMLSecurityException {
         if (!XMLUtils.elementIsInSignatureSpace(referentElement, Constants._TAG_KEYINFO)) {
-            Object[] exArgs = { new QName(referentElement.getNamespaceURI(), referentElement.getLocalName()) };
+            Object exArgs[] = { new QName(referentElement.getNamespaceURI(), referentElement.getLocalName()) };
             throw new XMLSecurityException("KeyInfoReferenceResolver.InvalidReferentElement.WrongType", exArgs);
         }
 
@@ -245,7 +245,7 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
             return null;
         } else {
             // Retrieved resource is a byte stream
-            byte[] inputBytes = resource.getBytes();
+            byte inputBytes[] = resource.getBytes();
             e = getDocFromBytes(inputBytes, this.secureValidation);
         }
         return e;

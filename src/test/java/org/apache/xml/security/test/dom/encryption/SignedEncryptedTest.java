@@ -26,6 +26,7 @@ import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -33,6 +34,7 @@ import org.w3c.dom.Element;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -47,11 +49,9 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.UUID;
 
-import static org.junit.Assert.assertTrue;
-
 /**
  */
-public class SignedEncryptedTest {
+public class SignedEncryptedTest extends Assert {
 
     private static final String SAMPLE_MSG = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
             + "<SOAP-ENV:Envelope "
@@ -100,9 +100,10 @@ public class SignedEncryptedTest {
     }
 
     public void secureAndVerify(TransformerFactory transformerFactory, boolean useDocumentSerializer) throws Exception {
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(SAMPLE_MSG.getBytes(StandardCharsets.UTF_8))) {
-            document = XMLUtils.read(is, false);
+            document = builder.parse(is);
         }
 
         // Set up the Key
@@ -156,6 +157,6 @@ public class SignedEncryptedTest {
         deCipher.doFinal(document, element, true);
 
         XMLSignature xmlSignatureVerifier = new XMLSignature(sigElement, "");
-        assertTrue(xmlSignatureVerifier.checkSignatureValue(pub));
+        Assert.assertTrue(xmlSignatureVerifier.checkSignatureValue(pub));
     }
 }

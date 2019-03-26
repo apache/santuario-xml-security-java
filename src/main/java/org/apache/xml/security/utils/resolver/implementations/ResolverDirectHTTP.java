@@ -62,7 +62,7 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
         org.slf4j.LoggerFactory.getLogger(ResolverDirectHTTP.class);
 
     /** Field properties[] */
-    private static final String[] properties = {
+    private static final String properties[] = {
                                                  "http.proxy.host", "http.proxy.port",
                                                  "http.proxy.username", "http.proxy.password",
                                                  "http.basic.username", "http.basic.password"
@@ -206,7 +206,7 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
             return false;
         }
 
-        if (context.uriToResolve.isEmpty() || context.uriToResolve.charAt(0) == '#') {
+        if (context.uriToResolve.equals("") || context.uriToResolve.charAt(0) == '#') {
             LOG.debug("quick fail for empty URIs and local ones");
             return false;
         }

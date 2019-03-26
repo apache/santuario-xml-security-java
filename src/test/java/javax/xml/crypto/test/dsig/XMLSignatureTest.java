@@ -21,6 +21,7 @@
  */
 package javax.xml.crypto.test.dsig;
 
+import static org.junit.Assert.*;
 
 import java.io.*;
 import java.util.*;
@@ -37,14 +38,6 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.*;
-
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 
 /**
  * Unit test for javax.xml.crypto.dsig.XMLSignature
@@ -109,10 +102,13 @@ public class XMLSignatureTest {
         // for generating XMLSignature objects
         for (int i = 0; i < 2; i++) {
             try {
-                if (i == 0) {
+                switch (i) {
+                case 0:
                     sig = fac.newXMLSignature(null, defKi);
-                } else if (i == 1) {
+                    break;
+                case 1:
                     sig = fac.newXMLSignature(null, defKi, objs, id, sigValueId);
+                    break;
                 }
                 fail("Should throw a NPE for null references");
             } catch (NullPointerException npe) {
@@ -135,7 +131,7 @@ public class XMLSignatureTest {
         sig = fac.newXMLSignature(defSi, defKi, objs, id, sigValueId);
         assertEquals(sig.getId(), id);
         assertEquals(sig.getKeyInfo(), defKi);
-        assertArrayEquals(sig.getObjects().toArray(), objs.toArray());
+        assertTrue(Arrays.equals(sig.getObjects().toArray(), objs.toArray()));
         assertNull(sig.getSignatureValue().getValue());
         assertEquals(sig.getSignatureValue().getId(), sigValueId);
         assertEquals(sig.getSignedInfo(), defSi);
@@ -159,7 +155,7 @@ public class XMLSignatureTest {
             fail("Should raise a NPE for null feature");
         } catch (NullPointerException npe) {}
 
-        assertFalse(sig.isFeatureSupported("not supported"));
+        assertTrue(!sig.isFeatureSupported("not supported"));
     }
 
     @org.junit.Test
@@ -187,7 +183,7 @@ public class XMLSignatureTest {
             validateContext = new DOMValidateContext
                 (VALIDATE_KEYS[i], doc.getDocumentElement());
             validateContext.setURIDereferencer(ud);
-            if (!sig.validate(validateContext)) {
+            if (sig.validate(validateContext) == false) {
                 status = false;
                 TestUtils.dumpDocument(doc, "signatureTest_out"+i+".xml");
             }
@@ -293,11 +289,11 @@ public class XMLSignatureTest {
             (VALIDATE_KEYS[1], doc.getDocumentElement());
         XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
 
-        if (!sig.equals(sig2)) {
+        if (sig.equals(sig2) == false) {
             throw new Exception
                 ("Unmarshalled signature is not equal to generated signature");
         }
-        if (!sig2.validate(dvc)) {
+        if (sig2.validate(dvc) == false) {
             throw new Exception("Validation of generated signature failed");
         }
     }
@@ -310,7 +306,7 @@ public class XMLSignatureTest {
         File f = new File(base + "/src/test/resources/javax/xml/crypto/dsig/" +
             "signature-enveloping-rsa-template.xml");
 
-        Document doc = XMLUtils.read(new FileInputStream(f), false);
+        Document doc = XMLUtils.createDocumentBuilder(false).parse(new FileInputStream(f));
 
         // Find Signature element
         NodeList nl =
@@ -337,7 +333,7 @@ public class XMLSignatureTest {
         // check that Object element retained namespace definitions
         Element objElem = (Element)parent.getFirstChild().getLastChild();
         Attr a = objElem.getAttributeNode("xmlns:test");
-        if (!"http://www.example.org/ns".equals(a.getValue())) {
+        if (!a.getValue().equals("http://www.example.org/ns")) {
             throw new Exception("Object namespace definition not retained");
         }
     }
@@ -385,7 +381,7 @@ public class XMLSignatureTest {
         SignatureMethod sm = fac.newSignatureMethod(DSA_SHA256, null);
         SignedInfo si = createSignedInfo(sm);
         KeyInfo ki = kifac.newKeyInfo(Collections.singletonList
-            (kifac.newKeyValue(TestUtils.getPublicKey("DSA", 2048))));
+            (kifac.newKeyValue((PublicKey)TestUtils.getPublicKey("DSA", 2048))));
         XMLSignature sig = fac.newXMLSignature(si, ki, objs, id, sigValueId);
         Document doc = TestUtils.newDocument();
         XMLSignContext signContext =

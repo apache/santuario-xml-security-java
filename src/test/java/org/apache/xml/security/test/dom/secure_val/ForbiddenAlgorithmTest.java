@@ -18,9 +18,9 @@
  */
 package org.apache.xml.security.test.dom.secure_val;
 
+import static org.junit.Assert.*;
 
 import java.io.File;
-import java.io.FileInputStream;
 
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
@@ -28,11 +28,6 @@ import org.apache.xml.security.test.dom.interop.InteropTestBase;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Element;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 
 
 /**
@@ -64,7 +59,7 @@ public class ForbiddenAlgorithmTest extends InteropTestBase {
         } catch (XMLSignatureException ex) {
             String error = "It is forbidden to use algorithm http://www.w3.org/2001/04/xmldsig-more#md5 "
                 + "when secure validation is enabled";
-            assertEquals(ex.getMessage(), error);
+            assertTrue(ex.getMessage().equals(error));
         }
     }
 
@@ -78,7 +73,8 @@ public class ForbiddenAlgorithmTest extends InteropTestBase {
 
         File f = new File(directory + "/" + file);
 
-        org.w3c.dom.Document doc = XMLUtils.read(new FileInputStream(f), false);
+        javax.xml.parsers.DocumentBuilder db = XMLUtils.createDocumentBuilder(false, false);
+        org.w3c.dom.Document doc = db.parse(f);
 
         Element sigElement =
             (Element) doc.getElementsByTagNameNS(Constants.SignatureSpecNS,

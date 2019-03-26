@@ -26,18 +26,11 @@ import javax.xml.namespace.QName;
 
 import org.apache.xml.security.binding.xmlenc.EncryptedDataType;
 import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.stax.ext.DocumentContext;
-import org.apache.xml.security.stax.ext.InboundSecurityContext;
-import org.apache.xml.security.stax.ext.InputProcessorChain;
-import org.apache.xml.security.stax.ext.SecurePart;
-import org.apache.xml.security.stax.ext.XMLSecurityProperties;
-import org.apache.xml.security.stax.ext.XMLSecurityUtils;
-import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
-import org.apache.xml.security.stax.securityEvent.ContentEncryptedElementSecurityEvent;
-import org.apache.xml.security.stax.securityEvent.EncryptedElementSecurityEvent;
-import org.apache.xml.security.stax.securityEvent.TokenSecurityEvent;
+import org.apache.xml.security.stax.ext.*;
 import org.apache.xml.security.stax.securityToken.InboundSecurityToken;
 import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
+import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
+import org.apache.xml.security.stax.securityEvent.*;
 
 
 /**

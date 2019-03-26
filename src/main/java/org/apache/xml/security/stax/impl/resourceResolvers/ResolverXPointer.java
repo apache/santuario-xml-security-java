@@ -106,7 +106,10 @@ public class ResolverXPointer implements ResourceResolver, ResourceResolverLooku
         }
         //case #xpointer(id('ID')):
         Attribute attribute = xmlSecStartElement.getAttributeByName(idAttributeNS);
-        return attribute != null && attribute.getValue().equals(id);
+        if (attribute != null && attribute.getValue().equals(id)) {
+            return true;
+        }
+        return false;
     }
 
     @Override

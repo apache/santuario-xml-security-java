@@ -21,6 +21,7 @@
  */
 package javax.xml.crypto.test.dsig;
 
+import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,10 +33,6 @@ import javax.xml.crypto.URIDereferencer;
 import javax.xml.crypto.dsig.XMLSignatureException;
 
 import javax.xml.crypto.test.KeySelectors;
-
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 
 /**
  * This is a testcase to validate all "merlin-xmldsig-twenty-three"

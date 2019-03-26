@@ -19,6 +19,7 @@
 package org.apache.xml.security.test.stax;
 
 import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.junit.Assert;
 import org.junit.Test;
 import org.apache.xml.security.stax.config.Init;
 import org.apache.xml.security.stax.ext.XMLSec;
@@ -30,30 +31,27 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 /**
  */
-public class UncategorizedTest {
+public class UncategorizedTest extends Assert {
 
     @Test
     public void testConfigurationLoadFromUrl() throws Exception {
         URL url =
             this.getClass().getClassLoader().getResource(
-                "org/apache/xml/security/c14n/in/32_input.xml");
+                "org/apache/xml/security/c14n/in/31_input.xml");
         try {
             Init.init(url.toURI(), this.getClass());
-            fail();
+            Assert.fail();
         } catch (XMLSecurityException e) {
-            assertTrue(e.getMessage().contains("Cannot find the declaration of element 'doc'."));
+            Assert.assertTrue(e.getMessage().contains("Cannot find the declaration of element 'doc'."));
         }
     }
 
     @Test
     public void testDuplicateActions() throws Exception {
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
@@ -66,9 +64,9 @@ public class UncategorizedTest {
 
         try {
             XMLSec.getOutboundXMLSec(properties);
-            fail();
+            Assert.fail();
         } catch (XMLSecurityConfigurationException ex) {
-            assertTrue(ex.getMessage().contains("Duplicate Actions are not allowed"));
+            Assert.assertTrue(ex.getMessage().contains("Duplicate Actions are not allowed"));
         }
     }
 }

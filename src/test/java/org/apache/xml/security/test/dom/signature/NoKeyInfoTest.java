@@ -18,9 +18,12 @@
  */
 package org.apache.xml.security.test.dom.signature;
 
+import static org.junit.Assert.assertNull;
 
 import java.io.File;
 import java.io.FileInputStream;
+
+import javax.xml.parsers.DocumentBuilder;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -31,8 +34,6 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 
-import static org.junit.Assert.assertNull;
-
 public class NoKeyInfoTest {
 
     private static final String BASEDIR = System.getProperty("basedir");
@@ -40,6 +41,12 @@ public class NoKeyInfoTest {
 
     static {
         Init.init();
+    }
+
+    private DocumentBuilder db;
+
+    public NoKeyInfoTest() throws Exception {
+        db = XMLUtils.createDocumentBuilder(false);
     }
 
     @org.junit.Test
@@ -52,7 +59,7 @@ public class NoKeyInfoTest {
         } else {
             f = new File(filename);
         }
-        Document doc = XMLUtils.read(new FileInputStream(f), false);
+        Document doc = db.parse(new FileInputStream(f));
         NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpecNS, "Signature");
         XMLSignature sig = new XMLSignature
             ((Element) nl.item(0), f.toURI().toURL().toString());

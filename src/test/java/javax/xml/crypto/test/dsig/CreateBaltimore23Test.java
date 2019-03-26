@@ -21,6 +21,7 @@
  */
 package javax.xml.crypto.test.dsig;
 
+import static org.junit.Assert.*;
 
 import java.io.*;
 import java.math.BigInteger;
@@ -46,6 +47,7 @@ import javax.xml.crypto.dsig.dom.DOMSignContext;
 import javax.xml.crypto.dsig.dom.DOMValidateContext;
 import javax.xml.crypto.dsig.keyinfo.*;
 import javax.xml.crypto.dsig.spec.*;
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -54,11 +56,6 @@ import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 
 import javax.xml.crypto.test.KeySelectors;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 
 /**
  * Test that recreates merlin-xmldsig-twenty-three test vectors but with
@@ -69,6 +66,7 @@ public class CreateBaltimore23Test {
 
     private XMLSignatureFactory fac;
     private KeyInfoFactory kifac;
+    private DocumentBuilder db;
     private CanonicalizationMethod withoutComments;
     private Transform withComments;
     private SignatureMethod dsaSha1, rsaSha1;
@@ -91,16 +89,16 @@ public class CreateBaltimore23Test {
         fac = XMLSignatureFactory.getInstance
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
         kifac = fac.getKeyInfoFactory();
+        db = XMLUtils.createDocumentBuilder(false);
 
         // get key & self-signed certificate from keystore
         String fs = System.getProperty("file.separator");
         String base = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
 
-        try (FileInputStream fis = new FileInputStream
-            (base + fs + "src/test/resources" + fs + "test.jks")) {
-            ks = KeyStore.getInstance("JKS");
-            ks.load(fis, "changeit".toCharArray());
-        }
+        FileInputStream fis = new FileInputStream
+            (base + fs + "src/test/resources" + fs + "test.jks");
+        ks = KeyStore.getInstance("JKS");
+        ks.load(fis, "changeit".toCharArray());
         signingKey = ks.getKey("mullan", "changeit".toCharArray());
         signingCert = ks.getCertificate("mullan");
         validatingKey = signingCert.getPublicKey();
@@ -137,7 +135,7 @@ public class CreateBaltimore23Test {
         // create XMLSignature
         XMLSignature sig = fac.newXMLSignature(si, dsa);
 
-        Document doc = XMLUtils.newDocument();
+        Document doc = db.newDocument();
         Element envelope = doc.createElementNS
             ("http://example.org/envelope", "Envelope");
         envelope.setAttributeNS
@@ -152,7 +150,7 @@ public class CreateBaltimore23Test {
             (kvks, envelope.getFirstChild());
         XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
 
-        assertEquals(sig, sig2);
+        assertTrue(sig.equals(sig2));
 
         assertTrue(sig2.validate(dvc));
     }
@@ -435,7 +433,7 @@ public class CreateBaltimore23Test {
             (Transform.XPATH, xpf)));
         KeyInfo ki = kifac.newKeyInfo(Collections.singletonList(rm), null);
 
-        Document doc = XMLUtils.newDocument();
+        Document doc = db.newDocument();
 
         // create objects
         List<XMLObject> objs = new ArrayList<>();
@@ -498,7 +496,7 @@ public class CreateBaltimore23Test {
           + "</xsl:stylesheet>\n";
         Document docxslt = null;
         try (InputStream is = new ByteArrayInputStream(xslt.getBytes())) {
-            docxslt = XMLUtils.read(is, false);
+            docxslt = db.parse(is);
         }
         Node xslElem = docxslt.getDocumentElement();
 
@@ -599,7 +597,8 @@ public class CreateBaltimore23Test {
 
         // read document back into DOM tree
         try {
-            doc = XMLUtils.read(new InputSource(new StringReader(sw.toString())), false);
+            doc = XMLUtils.createDocumentBuilder(false).parse
+                (new InputSource(new StringReader(sw.toString())));
         } catch (SAXParseException spe) {
             System.err.println("line:" + spe.getLineNumber());
             System.err.println("xml:" + sw.toString());
@@ -627,7 +626,7 @@ public class CreateBaltimore23Test {
 
         XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
 
-        assertEquals(sig, sig2);
+        assertTrue(sig.equals(sig2));
         assertTrue(sig2.validate(dvc));
     }
 
@@ -659,7 +658,7 @@ public class CreateBaltimore23Test {
         SignedInfo si = fac.newSignedInfo(withoutComments, sm,
             Collections.singletonList(ref));
 
-        Document doc = XMLUtils.newDocument();
+        Document doc = db.newDocument();
 
         // create XMLSignature
         XMLSignature sig = fac.newXMLSignature(si, ki);
@@ -689,7 +688,7 @@ public class CreateBaltimore23Test {
 
         XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
 
-        assertEquals(sig, sig2);
+        assertTrue(sig.equals(sig2));
         assertTrue(sig2.validate(dvc));
     }
 
@@ -711,7 +710,7 @@ public class CreateBaltimore23Test {
         SignedInfo si = fac.newSignedInfo(withoutComments, sm,
             Collections.singletonList(ref));
 
-        Document doc = XMLUtils.newDocument();
+        Document doc = db.newDocument();
         // create Objects
         XMLObject obj = fac.newXMLObject(Collections.singletonList
             (new DOMStructure(doc.createTextNode("some text"))),
@@ -729,7 +728,7 @@ public class CreateBaltimore23Test {
             (ks, doc.getDocumentElement());
         XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
 
-        assertEquals(sig, sig2);
+        assertTrue(sig.equals(sig2));
         assertTrue(sig2.validate(dvc));
     }
 

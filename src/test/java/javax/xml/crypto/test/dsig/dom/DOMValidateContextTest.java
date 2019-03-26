@@ -21,17 +21,12 @@
  */
 package javax.xml.crypto.test.dsig.dom;
 
+import static org.junit.Assert.*;
 
 import java.io.*;
 import javax.xml.crypto.dsig.dom.DOMValidateContext;
 
 import javax.xml.crypto.test.dsig.TestUtils;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
-
 
 /**
  * Unit test for javax.xml.crypto.dsig.dom.DOMValidateContext

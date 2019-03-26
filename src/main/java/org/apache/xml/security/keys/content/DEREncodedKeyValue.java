@@ -37,7 +37,7 @@ import org.w3c.dom.Element;
 public class DEREncodedKeyValue extends Signature11ElementProxy implements KeyInfoContent {
 
     /** JCA algorithm key types supported by this implementation. */
-    private static final String[] supportedKeyTypes = { "RSA", "DSA", "EC"};
+    private static final String supportedKeyTypes[] = { "RSA", "DSA", "EC"};
 
     /**
      * Constructor DEREncodedKeyValue
@@ -137,10 +137,10 @@ public class DEREncodedKeyValue extends Signature11ElementProxy implements KeyIn
             X509EncodedKeySpec keySpec = keyFactory.getKeySpec(publicKey, X509EncodedKeySpec.class);
             return keySpec.getEncoded();
         } catch (NoSuchAlgorithmException e) {
-            Object[] exArgs = { publicKey.getAlgorithm(), publicKey.getFormat(), publicKey.getClass().getName() };
+            Object exArgs[] = { publicKey.getAlgorithm(), publicKey.getFormat(), publicKey.getClass().getName() };
             throw new XMLSecurityException(e, "DEREncodedKeyValue.UnsupportedPublicKey", exArgs);
         } catch (InvalidKeySpecException e) {
-            Object[] exArgs = { publicKey.getAlgorithm(), publicKey.getFormat(), publicKey.getClass().getName() };
+            Object exArgs[] = { publicKey.getAlgorithm(), publicKey.getFormat(), publicKey.getClass().getName() };
             throw new XMLSecurityException(e, "DEREncodedKeyValue.UnsupportedPublicKey", exArgs);
         }
     }

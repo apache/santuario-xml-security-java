@@ -18,23 +18,33 @@
  */
 package org.apache.xml.security.test.dom.c14n.implementations;
 
+import static org.junit.Assert.*;
 
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.StringReader;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.apache.xml.security.c14n.CanonicalizationException;
+import org.apache.xml.security.c14n.InvalidCanonicalizerException;
 import org.apache.xml.security.c14n.implementations.Canonicalizer20010315;
 import org.apache.xml.security.c14n.implementations.Canonicalizer20010315Excl;
 import org.apache.xml.security.c14n.implementations.Canonicalizer20010315ExclOmitComments;
 import org.apache.xml.security.c14n.implementations.Canonicalizer20010315ExclWithComments;
 import org.apache.xml.security.c14n.implementations.Canonicalizer20010315WithComments;
+import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
+import org.apache.xml.security.signature.XMLSignatureException;
 import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.utils.Constants;
@@ -45,9 +55,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.xml.sax.SAXException;
 
 
 /**
@@ -63,11 +71,34 @@ public class Canonicalizer20010315ExclusiveTest {
             Canonicalizer20010315ExclusiveTest.class
         );
 
+    /** Field db */
+    DocumentBuilder db;
+
+    public Canonicalizer20010315ExclusiveTest() throws ParserConfigurationException {
+        this.db = XMLUtils.createDocumentBuilder(false);
+    }
+
     /**
      * Method testA
+     *
+     * @throws CanonicalizationException
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws InvalidCanonicalizerException
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws TransformerException
+     * @throws XMLSecurityException
+     * @throws XMLSignatureException
+     * @throws org.apache.xml.security.keys.keyresolver.KeyResolverException
      */
     @org.junit.Test
-    public void testA() throws Exception {
+    public void testA()
+        throws IOException, FileNotFoundException, SAXException,
+        ParserConfigurationException, CanonicalizationException,
+        InvalidCanonicalizerException, TransformerException,
+        XMLSignatureException, XMLSecurityException,
+        org.apache.xml.security.keys.keyresolver.KeyResolverException {
 
         File fileIn = new File(getAbsolutePath(
             "src/test/resources/ie/baltimore/merlin-examples/ec-merlin-iaikTests-two/signature.xml"));
@@ -75,7 +106,7 @@ public class Canonicalizer20010315ExclusiveTest {
         // File fileIn = new File("signature.xml");
         assertTrue("file exists", fileIn.exists());
 
-        Document doc = XMLUtils.read(new FileInputStream(fileIn), false);
+        Document doc = this.db.parse(fileIn);
         Element signatureElement =
             (Element) doc.getElementsByTagNameNS(
                 Constants.SignatureSpecNS, Constants._TAG_SIGNATURE).item(0);
@@ -101,14 +132,27 @@ public class Canonicalizer20010315ExclusiveTest {
 
     /**
      * Method test221
+     *
+     * @throws CanonicalizationException
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws InvalidCanonicalizerException
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws TransformerException
+     * @throws XMLSecurityException
+     * @throws XMLSignatureException
      */
     @org.junit.Test
-    public void test221() throws Exception {
+    public void test221()
+        throws IOException, FileNotFoundException, SAXException,
+        ParserConfigurationException, CanonicalizationException,
+        InvalidCanonicalizerException, TransformerException,
+        XMLSignatureException, XMLSecurityException {
 
         Document doc =
-            XMLUtils.read(
-                new FileInputStream(getAbsolutePath("src/test/resources/org/apache/xml/security/c14n/inExcl/example2_2_1.xml")),
-                false
+            this.db.parse(
+                getAbsolutePath("src/test/resources/org/apache/xml/security/c14n/inExcl/example2_2_1.xml")
             );
         Node root = doc.getElementsByTagNameNS("http://example.net", "elem2").item(0);
         Canonicalizer20010315 c = new Canonicalizer20010315WithComments();
@@ -122,13 +166,27 @@ public class Canonicalizer20010315ExclusiveTest {
 
     /**
      * Method test222
+     *
+     * @throws CanonicalizationException
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws InvalidCanonicalizerException
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws TransformerException
+     * @throws XMLSecurityException
+     * @throws XMLSignatureException
      */
     @org.junit.Test
-    public void test222() throws Exception {
+    public void test222()
+        throws IOException, FileNotFoundException, SAXException,
+        ParserConfigurationException, CanonicalizationException,
+        InvalidCanonicalizerException, TransformerException,
+        XMLSignatureException, XMLSecurityException {
         Document doc =
-            XMLUtils.read(new FileInputStream(getAbsolutePath(
+            this.db.parse(getAbsolutePath(
                 "src/test/resources/org/apache/xml/security/c14n/inExcl/example2_2_2.xml")
-            ), false);
+            );
         Node root = doc.getElementsByTagNameNS("http://example.net", "elem2").item(0);
         Canonicalizer20010315 c = new Canonicalizer20010315WithComments();
         byte[] reference = JavaUtils.getBytesFromFile(getAbsolutePath(
@@ -141,13 +199,26 @@ public class Canonicalizer20010315ExclusiveTest {
 
     /**
      * Method test221excl
+     *
+     * @throws CanonicalizationException
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws InvalidCanonicalizerException
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws TransformerException
+     * @throws XMLSecurityException
+     * @throws XMLSignatureException
      */
     @org.junit.Test
-    public void test221excl() throws Exception {
+    public void test221excl()
+        throws IOException, FileNotFoundException, SAXException,
+        ParserConfigurationException, CanonicalizationException,
+        InvalidCanonicalizerException, TransformerException,
+        XMLSignatureException, XMLSecurityException {
         Document doc =
-            XMLUtils.read(new FileInputStream(getAbsolutePath(
-                "src/test/resources/org/apache/xml/security/c14n/inExcl/example2_2_1.xml")),
-                          false);
+            this.db.parse(getAbsolutePath(
+                "src/test/resources/org/apache/xml/security/c14n/inExcl/example2_2_1.xml"));
         Node root = doc.getElementsByTagNameNS("http://example.net", "elem2").item(0);
         Canonicalizer20010315Excl c = new Canonicalizer20010315ExclWithComments();
         byte[] reference = JavaUtils.getBytesFromFile(getAbsolutePath(
@@ -160,13 +231,26 @@ public class Canonicalizer20010315ExclusiveTest {
 
     /**
      * Method test222excl
+     *
+     * @throws CanonicalizationException
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws InvalidCanonicalizerException
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws TransformerException
+     * @throws XMLSecurityException
+     * @throws XMLSignatureException
      */
     @org.junit.Test
-    public void test222excl() throws Exception {
+    public void test222excl()
+        throws IOException, FileNotFoundException, SAXException,
+        ParserConfigurationException, CanonicalizationException,
+        InvalidCanonicalizerException, TransformerException,
+        XMLSignatureException, XMLSecurityException {
         Document doc =
-            XMLUtils.read(new FileInputStream(getAbsolutePath(
-                "src/test/resources/org/apache/xml/security/c14n/inExcl/example2_2_2.xml")),
-                          false);
+            this.db.parse(getAbsolutePath(
+                "src/test/resources/org/apache/xml/security/c14n/inExcl/example2_2_2.xml"));
         Node root = doc.getElementsByTagNameNS("http://example.net", "elem2").item(0);
         Canonicalizer20010315Excl c = new Canonicalizer20010315ExclWithComments();
         byte[] reference = JavaUtils.getBytesFromFile(getAbsolutePath(
@@ -181,13 +265,27 @@ public class Canonicalizer20010315ExclusiveTest {
      * Method test223excl
      *
      * Provided by Gabriel McGoldrick - see e-mail of 21/11/03
+     *
+     * @throws CanonicalizationException
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws InvalidCanonicalizerException
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws TransformerException
+     * @throws XMLSecurityException
+     * @throws XMLSignatureException
+     * @throws XPathExpressionException
      */
     @org.junit.Test
-    public void test223excl() throws Exception {
+    public void test223excl()
+        throws IOException, FileNotFoundException, SAXException,
+        ParserConfigurationException, CanonicalizationException,
+        InvalidCanonicalizerException, TransformerException,
+        XMLSignatureException, XMLSecurityException, XPathExpressionException {
         Document doc =
-            XMLUtils.read(new FileInputStream(getAbsolutePath(
-                "src/test/resources/org/apache/xml/security/c14n/inExcl/example2_2_3.xml")),
-                          false);
+            this.db.parse(getAbsolutePath(
+                "src/test/resources/org/apache/xml/security/c14n/inExcl/example2_2_3.xml"));
 
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();
@@ -238,7 +336,7 @@ public class Canonicalizer20010315ExclusiveTest {
             + "</ns0:Ping>"
             + "</env:Body>";
 
-        Document doc = XMLUtils.read(new InputSource(new StringReader(XML)), false);
+        Document doc = this.db.parse(new InputSource(new StringReader(XML)));
         Canonicalizer20010315ExclOmitComments c14n =
             new Canonicalizer20010315ExclOmitComments();
         Set<Node> nodeSet = new HashSet<>();
@@ -256,10 +354,9 @@ public class Canonicalizer20010315ExclusiveTest {
     @org.junit.Test
     public void test24excl() throws Exception {
         Document doc =
-            XMLUtils.read(
-                new FileInputStream(getAbsolutePath(
-                    "src/test/resources/org/apache/xml/security/c14n/inExcl/example2_4.xml")),
-                false);
+            this.db.parse(
+                getAbsolutePath(
+                    "src/test/resources/org/apache/xml/security/c14n/inExcl/example2_4.xml"));
         Node root =
             doc.getElementsByTagNameNS("http://example.net", "elem2").item(0);
         Canonicalizer20010315Excl c = new Canonicalizer20010315ExclWithComments();
@@ -279,7 +376,7 @@ public class Canonicalizer20010315ExclusiveTest {
      */
     @org.junit.Test
     public void test24Aexcl() throws Exception {
-        Document doc = XMLUtils.newDocument();
+        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
         Element local = doc.createElementNS("foo:bar", "dsig:local");
         Element test = doc.createElementNS("http://example.net", "etsi:test");
         Element elem2 = doc.createElementNS("http://example.net", "etsi:elem2");
@@ -332,7 +429,7 @@ public class Canonicalizer20010315ExclusiveTest {
                         + "</ns0:Ping>"
                         + "</env:Body>";
 
-        Document doc = XMLUtils.read(new InputSource(new StringReader(XML)), false);
+        Document doc = this.db.parse(new InputSource(new StringReader(XML)));
         {
             Canonicalizer20010315ExclOmitComments c14n =
                     new Canonicalizer20010315ExclOmitComments();
@@ -395,7 +492,7 @@ public class Canonicalizer20010315ExclusiveTest {
                         + "</ns0:Ping>"
                         + "</env:Body>";
 
-        Document doc = XMLUtils.read(new InputSource(new StringReader(XML)), false);
+        Document doc = this.db.parse(new InputSource(new StringReader(XML)));
         {
             Canonicalizer20010315ExclOmitComments c14n =
                     new Canonicalizer20010315ExclOmitComments();
@@ -445,7 +542,7 @@ public class Canonicalizer20010315ExclusiveTest {
                         + "</ns0:Ping>"
                         + "</env:Body>";
 
-        Document doc = XMLUtils.read(new InputSource(new StringReader(XML)), false);
+        Document doc = this.db.parse(new InputSource(new StringReader(XML)));
         {
             Canonicalizer20010315ExclOmitComments c14n =
                     new Canonicalizer20010315ExclOmitComments();
@@ -495,7 +592,7 @@ public class Canonicalizer20010315ExclusiveTest {
                         + "</ns0:Ping>"
                         + "</env:Body>";
 
-        Document doc = XMLUtils.read(new InputSource(new StringReader(XML)), false);
+        Document doc = this.db.parse(new InputSource(new StringReader(XML)));
         {
             Canonicalizer20010315ExclOmitComments c14n =
                     new Canonicalizer20010315ExclOmitComments();
@@ -545,7 +642,7 @@ public class Canonicalizer20010315ExclusiveTest {
                         + "</ns0:Ping>"
                         + "</env:Body>";
 
-        Document doc = XMLUtils.read(new InputSource(new StringReader(XML)), false);
+        Document doc = this.db.parse(new InputSource(new StringReader(XML)));
         Canonicalizer20010315ExclOmitComments c14n =
                 new Canonicalizer20010315ExclOmitComments();
         byte[] bytes = c14n.engineCanonicalizeSubTree(doc.getDocumentElement().getFirstChild(), "#default", true);
@@ -580,7 +677,7 @@ public class Canonicalizer20010315ExclusiveTest {
                         + "</ns0:Ping>"
                         + "</env:Body>";
 
-        Document doc = XMLUtils.read(new InputSource(new StringReader(XML)), false);
+        Document doc = this.db.parse(new InputSource(new StringReader(XML)));
         Canonicalizer20010315ExclOmitComments c14n =
                 new Canonicalizer20010315ExclOmitComments();
         byte[] bytes = c14n.engineCanonicalizeSubTree(doc.getDocumentElement().getFirstChild(), "#default", true);
@@ -615,7 +712,7 @@ public class Canonicalizer20010315ExclusiveTest {
                         + "</ns0:Ping>"
                         + "</env:Body>";
 
-        Document doc = XMLUtils.read(new InputSource(new StringReader(XML)), false);
+        Document doc = this.db.parse(new InputSource(new StringReader(XML)));
         Canonicalizer20010315ExclOmitComments c14n =
                 new Canonicalizer20010315ExclOmitComments();
         byte[] bytes = c14n.engineCanonicalizeSubTree(doc.getDocumentElement().getFirstChild(), "#default", true);
@@ -650,7 +747,7 @@ public class Canonicalizer20010315ExclusiveTest {
                         + "</ns0:Ping>"
                         + "</env:Body>";
 
-        Document doc = XMLUtils.read(new InputSource(new StringReader(XML)), false);
+        Document doc = this.db.parse(new InputSource(new StringReader(XML)));
         Canonicalizer20010315ExclOmitComments c14n =
                 new Canonicalizer20010315ExclOmitComments();
         byte[] bytes = c14n.engineCanonicalizeSubTree(doc.getDocumentElement().getFirstChild(), "#default", true);
@@ -680,7 +777,7 @@ public class Canonicalizer20010315ExclusiveTest {
                         + "<ns0:text xsi:type=\"xsd:string\">hello</ns0:text>"
                         + "</ns0:Ping>";
 
-        Document doc = XMLUtils.read(new InputSource(new StringReader(XML)), false);
+        Document doc = this.db.parse(new InputSource(new StringReader(XML)));
         Canonicalizer20010315ExclOmitComments c14n =
                 new Canonicalizer20010315ExclOmitComments();
         byte[] bytes = c14n.engineCanonicalizeSubTree(doc.getDocumentElement().getFirstChild().getFirstChild(), "#default", true);

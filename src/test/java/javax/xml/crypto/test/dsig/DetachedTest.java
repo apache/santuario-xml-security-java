@@ -28,16 +28,13 @@ import javax.xml.crypto.dsig.dom.DOMValidateContext;
 import javax.xml.crypto.dsig.keyinfo.*;
 import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 
+import static org.junit.Assert.*;
 
 import java.security.*;
 import java.util.*;
 
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
-
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 
 /**
  * This is a simple example of generating and validating a Detached XML
@@ -137,7 +134,7 @@ public class DetachedTest {
 
             // Create an XMLSignContext and set the
             // DSA PrivateKey for signing
-            Document doc = XMLUtils.newDocument();
+            Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
             DOMSignContext signContext = new DOMSignContext(kp.getPrivate(), doc);
             signContext.putNamespacePrefix(XMLSignature.XMLNS, "ds");
 
@@ -160,7 +157,7 @@ public class DetachedTest {
             boolean coreValidity = signature.validate(vc);
 
             // Check core validation status
-            if (!coreValidity) {
+            if (coreValidity == false) {
                 // check the validation status of each Reference
                 @SuppressWarnings("unchecked")
                 Iterator<Reference> i = signature.getSignedInfo().getReferences().iterator();

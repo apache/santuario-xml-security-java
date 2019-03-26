@@ -32,7 +32,7 @@ import java.util.Map;
  * Mapping between JCE id and xmlsec uri's for algorithms
  *
  */
-public final class TransformerAlgorithmMapper {
+public class TransformerAlgorithmMapper {
 
     private static Map<String, Class<?>> algorithmsClassMapInOut;
     private static Map<String, Class<?>> algorithmsClassMapIn;
@@ -68,10 +68,13 @@ public final class TransformerAlgorithmMapper {
     public static Class<?> getTransformerClass(String algoURI, XMLSecurityConstants.DIRECTION direction) throws XMLSecurityException {
         Class<?> clazz = null;
 
-        if (XMLSecurityConstants.DIRECTION.IN == direction) {
-            clazz = algorithmsClassMapIn.get(algoURI);
-        } else if (XMLSecurityConstants.DIRECTION.OUT == direction) {
-            clazz = algorithmsClassMapOut.get(algoURI);
+        switch (direction) {
+            case IN:
+                clazz = algorithmsClassMapIn.get(algoURI);
+                break;
+            case OUT:
+                clazz = algorithmsClassMapOut.get(algoURI);
+                break;
         }
 
         if (clazz == null) {

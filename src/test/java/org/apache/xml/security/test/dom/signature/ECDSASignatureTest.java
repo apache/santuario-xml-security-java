@@ -46,7 +46,6 @@ import org.w3c.dom.Element;
 
 import static org.junit.Assert.assertTrue;
 
-
 /**
  * Tests that creates and verifies ECDSA signatures.
  *
@@ -59,11 +58,14 @@ public class ECDSASignatureTest {
         "src/test/resources/org/apache/xml/security/samples/input/ecdsa.jks";
     private static final String ECDSA_JKS_PASSWORD = "security";
 
+    private javax.xml.parsers.DocumentBuilder db;
+
     public ECDSASignatureTest() throws Exception {
 
         //String id = "http://apache.org/xml/properties/dom/document-class-name";
         //dbf.setAttribute(id, IndexedDocument.class.getName());
 
+        db = XMLUtils.createDocumentBuilder(false);
         org.apache.xml.security.Init.init();
     }
 
@@ -123,7 +125,7 @@ public class ECDSASignatureTest {
     }
 
     private byte[] doSign(PrivateKey privateKey, X509Certificate x509, PublicKey publicKey) throws Exception {
-        org.w3c.dom.Document doc = XMLUtils.newDocument();
+        org.w3c.dom.Document doc = db.newDocument();
         doc.appendChild(doc.createComment(" Comment before "));
         Element root = doc.createElementNS("", "RootElement");
 
@@ -168,7 +170,7 @@ public class ECDSASignatureTest {
     }
 
     private void doVerify(InputStream is) throws Exception {
-        org.w3c.dom.Document doc = XMLUtils.read(is, false);
+        org.w3c.dom.Document doc = this.db.parse(is);
 
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();

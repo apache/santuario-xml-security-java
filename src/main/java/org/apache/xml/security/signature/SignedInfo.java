@@ -211,12 +211,16 @@ public class SignedInfo extends Manifest {
                 c14nizer.setSecureValidation(secureValidation);
 
                 byte[] c14nizedBytes = c14nizer.canonicalizeSubtree(element);
+                javax.xml.parsers.DocumentBuilder db =
+                    XMLUtils.createDocumentBuilder(false, secureValidation);
                 try (InputStream is = new ByteArrayInputStream(c14nizedBytes)) {
-                    Document newdoc = XMLUtils.read(is, secureValidation);
+                    Document newdoc = db.parse(is);
                     Node imported = element.getOwnerDocument().importNode(
                             newdoc.getDocumentElement(), true);
                     element.getParentNode().replaceChild(imported, element);
                     return (Element) imported;
+                } finally {
+                    XMLUtils.repoolDocumentBuilder(db);
                 }
             } catch (ParserConfigurationException ex) {
                 throw new XMLSecurityException(ex);
@@ -370,8 +374,8 @@ public class SignedInfo extends Manifest {
 
     public String getInclusiveNamespaces() {
         String c14nMethodURI = getCanonicalizationMethodURI();
-        if (!("http://www.w3.org/2001/10/xml-exc-c14n#".equals(c14nMethodURI) ||
-            "http://www.w3.org/2001/10/xml-exc-c14n#WithComments".equals(c14nMethodURI))) {
+        if (!(c14nMethodURI.equals("http://www.w3.org/2001/10/xml-exc-c14n#") ||
+            c14nMethodURI.equals("http://www.w3.org/2001/10/xml-exc-c14n#WithComments"))) {
             return null;
         }
 

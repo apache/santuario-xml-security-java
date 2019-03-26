@@ -45,18 +45,17 @@ import org.apache.xml.security.stax.ext.XMLSecurityProperties;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import static org.junit.Assert.assertEquals;
-
 /**
  * A test to make sure that the various Symmetric Encryption algorithms are working
  */
-public class SymmetricEncryptionCreationTest {
+public class SymmetricEncryptionCreationTest extends Assert {
 
     private static boolean bcInstalled;
     private XMLInputFactory xmlInputFactory;
@@ -99,7 +98,7 @@ public class SymmetricEncryptionCreationTest {
     public void testAES128() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.ENCRYPT);
         properties.setActions(actions);
 
@@ -132,35 +131,35 @@ public class SymmetricEncryptionCreationTest {
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
-        assertEquals(nodeList.getLength(), 0);
+        Assert.assertEquals(nodeList.getLength(), 0);
 
         // Check the CreditCard encrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 0);
+        Assert.assertEquals(nodeList.getLength(), 0);
 
         nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        assertEquals(nodeList.getLength(), 1);
+        Assert.assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
         Document doc = decryptUsingDOM(algorithm, key, null, document);
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 1);
+        Assert.assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
     public void testAES128_GCM() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.ENCRYPT);
         properties.setActions(actions);
 
@@ -193,35 +192,35 @@ public class SymmetricEncryptionCreationTest {
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
-        assertEquals(nodeList.getLength(), 0);
+        Assert.assertEquals(nodeList.getLength(), 0);
 
         // Check the CreditCard encrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 0);
+        Assert.assertEquals(nodeList.getLength(), 0);
 
         nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        assertEquals(nodeList.getLength(), 1);
+        Assert.assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
         Document doc = decryptUsingDOM(algorithm, key, null, document);
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 1);
+        Assert.assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
     public void testAES192() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.ENCRYPT);
         properties.setActions(actions);
 
@@ -254,35 +253,35 @@ public class SymmetricEncryptionCreationTest {
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
-        assertEquals(nodeList.getLength(), 0);
+        Assert.assertEquals(nodeList.getLength(), 0);
 
         // Check the CreditCard encrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 0);
+        Assert.assertEquals(nodeList.getLength(), 0);
 
         nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        assertEquals(nodeList.getLength(), 1);
+        Assert.assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
         Document doc = decryptUsingDOM(algorithm, key, null, document);
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 1);
+        Assert.assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
     public void testAES192_GCM() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.ENCRYPT);
         properties.setActions(actions);
 
@@ -315,35 +314,35 @@ public class SymmetricEncryptionCreationTest {
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
-        assertEquals(nodeList.getLength(), 0);
+        Assert.assertEquals(nodeList.getLength(), 0);
 
         // Check the CreditCard encrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 0);
+        Assert.assertEquals(nodeList.getLength(), 0);
 
         nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        assertEquals(nodeList.getLength(), 1);
+        Assert.assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
         Document doc = decryptUsingDOM(algorithm, key, null, document);
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 1);
+        Assert.assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
     public void testAES256() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.ENCRYPT);
         properties.setActions(actions);
 
@@ -376,35 +375,35 @@ public class SymmetricEncryptionCreationTest {
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
-        assertEquals(nodeList.getLength(), 0);
+        Assert.assertEquals(nodeList.getLength(), 0);
 
         // Check the CreditCard encrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 0);
+        Assert.assertEquals(nodeList.getLength(), 0);
 
         nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        assertEquals(nodeList.getLength(), 1);
+        Assert.assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
         Document doc = decryptUsingDOM(algorithm, key, null, document);
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 1);
+        Assert.assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
     public void testAES256_GCM() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.ENCRYPT);
         properties.setActions(actions);
 
@@ -437,35 +436,35 @@ public class SymmetricEncryptionCreationTest {
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
-        assertEquals(nodeList.getLength(), 0);
+        Assert.assertEquals(nodeList.getLength(), 0);
 
         // Check the CreditCard encrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 0);
+        Assert.assertEquals(nodeList.getLength(), 0);
 
         nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        assertEquals(nodeList.getLength(), 1);
+        Assert.assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
         Document doc = decryptUsingDOM(algorithm, key, null, document);
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 1);
+        Assert.assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
     public void testTRIPLE_DES() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.ENCRYPT);
         properties.setActions(actions);
 
@@ -497,28 +496,28 @@ public class SymmetricEncryptionCreationTest {
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
-        assertEquals(nodeList.getLength(), 0);
+        Assert.assertEquals(nodeList.getLength(), 0);
 
         // Check the CreditCard encrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 0);
+        Assert.assertEquals(nodeList.getLength(), 0);
 
         nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        assertEquals(nodeList.getLength(), 1);
+        Assert.assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
         Document doc = decryptUsingDOM(algorithm, key, null, document);
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 1);
+        Assert.assertEquals(nodeList.getLength(), 1);
     }
 
     @Test
@@ -527,7 +526,7 @@ public class SymmetricEncryptionCreationTest {
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.ENCRYPT);
         properties.setActions(actions);
 
@@ -560,21 +559,21 @@ public class SymmetricEncryptionCreationTest {
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
-        assertEquals(nodeList.getLength(), 0);
+        Assert.assertEquals(nodeList.getLength(), 0);
 
         // Check the CreditCard encrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 0);
+        Assert.assertEquals(nodeList.getLength(), 0);
 
         nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        assertEquals(nodeList.getLength(), 1);
+        Assert.assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
         Document doc = decryptUsingDOM(algorithm, key, null, document);
@@ -589,7 +588,7 @@ public class SymmetricEncryptionCreationTest {
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.ENCRYPT);
         properties.setActions(actions);
 
@@ -622,21 +621,21 @@ public class SymmetricEncryptionCreationTest {
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
-        assertEquals(nodeList.getLength(), 0);
+        Assert.assertEquals(nodeList.getLength(), 0);
 
         // Check the CreditCard encrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 0);
+        Assert.assertEquals(nodeList.getLength(), 0);
 
         nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        assertEquals(nodeList.getLength(), 1);
+        Assert.assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
         Document doc = decryptUsingDOM(algorithm, key, null, document);
@@ -651,7 +650,7 @@ public class SymmetricEncryptionCreationTest {
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.ENCRYPT);
         properties.setActions(actions);
 
@@ -684,21 +683,21 @@ public class SymmetricEncryptionCreationTest {
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
-        assertEquals(nodeList.getLength(), 0);
+        Assert.assertEquals(nodeList.getLength(), 0);
 
         // Check the CreditCard encrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 0);
+        Assert.assertEquals(nodeList.getLength(), 0);
 
         nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        assertEquals(nodeList.getLength(), 1);
+        Assert.assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
         Document doc = decryptUsingDOM(algorithm, key, null, document);
@@ -713,7 +712,7 @@ public class SymmetricEncryptionCreationTest {
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.ENCRYPT);
         properties.setActions(actions);
 
@@ -746,21 +745,21 @@ public class SymmetricEncryptionCreationTest {
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
-        assertEquals(nodeList.getLength(), 0);
+        Assert.assertEquals(nodeList.getLength(), 0);
 
         // Check the CreditCard encrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-        assertEquals(nodeList.getLength(), 0);
+        Assert.assertEquals(nodeList.getLength(), 0);
 
         nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        assertEquals(nodeList.getLength(), 1);
+        Assert.assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
         Document doc = decryptUsingDOM(algorithm, key, null, document);

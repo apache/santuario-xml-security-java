@@ -30,12 +30,14 @@ import org.apache.xml.security.test.stax.utils.TestUtils;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.utils.XMLUtils;
 import org.apache.xml.security.utils.resolver.implementations.ResolverDirectHTTP;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -50,16 +52,11 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.nio.charset.StandardCharsets;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-
 /**
  * This is a testcase to validate all "phaos-xmldsig-three"
  * testcases from Phaos
  */
-public class PhaosTest {
+public class PhaosTest extends Assert {
 
     private XMLInputFactory xmlInputFactory;
     private TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -94,7 +91,8 @@ public class PhaosTest {
             InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "com/phaos/phaos-xmldsig-three/signature-dsa-detached.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+            Document document = builder.parse(sourceDocument);
 
             // XMLUtils.outputDOM(document, System.out);
 
@@ -115,7 +113,7 @@ public class PhaosTest {
             XMLStreamReader securityStreamReader =
                     inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-            StAX2DOM.readDoc(securityStreamReader);
+            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
         } finally {
             TestUtils.switchAllowNotSameDocumentReferences(false);
             HttpRequestRedirectorProxy.stopHttpEngine();
@@ -129,7 +127,8 @@ public class PhaosTest {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "com/phaos/phaos-xmldsig-three/signature-dsa-enveloped.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -150,7 +149,7 @@ public class PhaosTest {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
 
     @Test
@@ -159,7 +158,8 @@ public class PhaosTest {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "com/phaos/phaos-xmldsig-three/signature-dsa-enveloping.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -180,7 +180,7 @@ public class PhaosTest {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
 
     // See SANTUARIO-319
@@ -202,7 +202,8 @@ public class PhaosTest {
             InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "com/phaos/phaos-xmldsig-three/signature-hmac-sha1-exclusive-c14n-comments-detached.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+            Document document = builder.parse(sourceDocument);
 
             // Set up the key
             byte[] hmacKey = "test".getBytes(StandardCharsets.US_ASCII);
@@ -228,7 +229,7 @@ public class PhaosTest {
             XMLStreamReader securityStreamReader =
                     inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-            StAX2DOM.readDoc(securityStreamReader);
+            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
         } finally {
             TestUtils.switchAllowNotSameDocumentReferences(false);
             HttpRequestRedirectorProxy.stopHttpEngine();
@@ -242,7 +243,8 @@ public class PhaosTest {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "com/phaos/phaos-xmldsig-three/signature-hmac-sha1-exclusive-c14n-enveloped.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // Set up the key
         byte[] hmacKey = "test".getBytes(StandardCharsets.US_ASCII);
@@ -268,7 +270,7 @@ public class PhaosTest {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
 
     @Test
@@ -277,7 +279,8 @@ public class PhaosTest {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "com/phaos/phaos-xmldsig-three/signature-rsa-detached-b64-transform.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // Set up the key
         byte[] hmacKey = "test".getBytes(StandardCharsets.US_ASCII);
@@ -305,7 +308,7 @@ public class PhaosTest {
 
         try {
             TestUtils.switchDoNotThrowExceptionForManifests(true);
-            StAX2DOM.readDoc(securityStreamReader);
+            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
         } finally {
             TestUtils.switchDoNotThrowExceptionForManifests(false);
         }
@@ -330,7 +333,8 @@ public class PhaosTest {
             InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "com/phaos/phaos-xmldsig-three/signature-rsa-detached.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+            Document document = builder.parse(sourceDocument);
 
             // XMLUtils.outputDOM(document, System.out);
 
@@ -351,7 +355,7 @@ public class PhaosTest {
             XMLStreamReader securityStreamReader =
                     inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-            StAX2DOM.readDoc(securityStreamReader);
+            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
         } finally {
             TestUtils.switchAllowNotSameDocumentReferences(false);
             HttpRequestRedirectorProxy.stopHttpEngine();
@@ -365,7 +369,8 @@ public class PhaosTest {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "com/phaos/phaos-xmldsig-three/signature-rsa-enveloped-bad-digest-val.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -385,11 +390,11 @@ public class PhaosTest {
         TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
         XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
         try {
-            StAX2DOM.readDoc(securityStreamReader);
+            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
             fail("Failure expected on a bad digest");
         } catch (XMLStreamException ex) {
-            assertTrue(ex.getCause() instanceof XMLSecurityException);
-            assertEquals("INVALID signature -- core validation failed.", ex.getCause().getMessage());
+            Assert.assertTrue(ex.getCause() instanceof XMLSecurityException);
+            Assert.assertEquals("INVALID signature -- core validation failed.", ex.getCause().getMessage());
         }
     }
 
@@ -400,7 +405,8 @@ public class PhaosTest {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "com/phaos/phaos-xmldsig-three/signature-rsa-enveloped.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -421,7 +427,7 @@ public class PhaosTest {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
 
     @Test
@@ -430,7 +436,8 @@ public class PhaosTest {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "com/phaos/phaos-xmldsig-three/signature-rsa-enveloping.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -451,7 +458,7 @@ public class PhaosTest {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
 
 }

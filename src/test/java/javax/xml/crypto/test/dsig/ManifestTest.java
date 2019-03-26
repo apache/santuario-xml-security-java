@@ -21,16 +21,10 @@
  */
 package javax.xml.crypto.test.dsig;
 
+import static org.junit.Assert.*;
 
 import java.util.*;
 import javax.xml.crypto.dsig.*;
-
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-
 
 /**
  * Unit test for javax.xml.crypto.dsig.Manifest
@@ -76,7 +70,7 @@ public class ManifestTest {
                 break;
             }
             assertNotNull(man);
-            assertArrayEquals(man.getReferences().toArray(), refs.toArray());
+            assertTrue(Arrays.equals(man.getReferences().toArray(), refs.toArray()));
             assertEquals(man.getId(), expectedId);
         }
 
@@ -154,7 +148,7 @@ public class ManifestTest {
             fail("Should raise a NPE for null feature");
         } catch (NullPointerException npe) {}
 
-        assertFalse(man.isFeatureSupported("not supported"));
+        assertTrue(!man.isFeatureSupported("not supported"));
     }
 
     @org.junit.Test

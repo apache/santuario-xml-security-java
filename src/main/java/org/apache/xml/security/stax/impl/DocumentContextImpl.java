@@ -31,7 +31,7 @@ public class DocumentContextImpl implements DocumentContext, Cloneable {
 
     private String encoding;
     private String baseURI;
-    private final Map<Integer, XMLSecurityConstants.ContentType> contentTypeMap = new TreeMap<>();
+    private final Map<Integer, XMLSecurityConstants.ContentType> contentTypeMap = new TreeMap<Integer, XMLSecurityConstants.ContentType>();
     private final Map<Object, Integer> processorToIndexMap = new HashMap<>();
 
     @Override
@@ -101,8 +101,8 @@ public class DocumentContextImpl implements DocumentContext, Cloneable {
     }
 
     @Override
-    public DocumentContextImpl clone() throws CloneNotSupportedException {
-        DocumentContextImpl documentContext = (DocumentContextImpl)super.clone();
+    protected DocumentContextImpl clone() throws CloneNotSupportedException {
+        DocumentContextImpl documentContext = new DocumentContextImpl();
         documentContext.setEncoding(this.encoding);
         documentContext.setBaseURI(this.baseURI);
         documentContext.setContentTypeMap(getContentTypeMap());

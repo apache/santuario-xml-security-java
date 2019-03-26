@@ -36,13 +36,12 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.xml.namespace.QName;
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -64,27 +63,21 @@ import org.apache.xml.security.test.stax.utils.StAX2DOM;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.Assert;
 import org.junit.Before;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-
 /**
  */
-public class XMLEncryption11Test {
+public class XMLEncryption11Test extends Assert {
 
     private String cardNumber;
     private int nodeCount;
 
     private XMLInputFactory xmlInputFactory;
-    private TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
     @Before
     public void setUp() throws Exception {
@@ -95,7 +88,8 @@ public class XMLEncryption11Test {
         xmlInputFactory.setEventAllocator(new XMLSecEventAllocator());
 
         String filename = "org/w3c/www/interop/xmlenc-core-11/plaintext.xml";
-        Document doc = XMLUtils.read(this.getClass().getClassLoader().getResourceAsStream(filename), false);
+        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+        Document doc = db.parse(this.getClass().getClassLoader().getResourceAsStream(filename));
 
         cardNumber = retrieveCCNumber(doc);
         nodeCount = countNodes(doc);
@@ -413,12 +407,12 @@ public class XMLEncryption11Test {
         // Perform decryption
         try {
             decryptElementStAX(ed, rsaKey);
-            fail("Exception expected");
+            Assert.fail("Exception expected");
         } catch (XMLStreamException e) {
-            assertTrue(e.getCause() instanceof IOException);
-            assertTrue(e.getCause().getCause() instanceof BadPaddingException);
+            Assert.assertTrue(e.getCause() instanceof IOException);
+            Assert.assertTrue(e.getCause().getCause() instanceof BadPaddingException);
             String cause = e.getCause().getCause().getMessage();
-            assertTrue("mac check in GCM failed".equals(cause) || "Tag mismatch!".equals(cause));
+            Assert.assertTrue("mac check in GCM failed".equals(cause) || "Tag mismatch!".equals(cause));
         }
     }
 
@@ -429,7 +423,8 @@ public class XMLEncryption11Test {
      * decrypt it and return the resulting document
      */
     private Document decryptElement(String filename, Key rsaKey) throws Exception {
-        Document doc = XMLUtils.read(this.getClass().getClassLoader().getResourceAsStream(filename), false);
+        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+        Document doc = db.parse(this.getClass().getClassLoader().getResourceAsStream(filename));
 
         return decryptElement(doc, rsaKey);
     }
@@ -455,17 +450,13 @@ public class XMLEncryption11Test {
         InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
         TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
 
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        transformer.transform(new DOMSource(doc), new StreamResult(baos));
-
         final XMLStreamReader xmlStreamReader =
-            xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
+                xmlInputFactory.createXMLStreamReader(new DOMSource(doc));
 
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        return StAX2DOM.readDoc(securityStreamReader);
+        return StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
     }
 
     /**
@@ -510,7 +501,7 @@ public class XMLEncryption11Test {
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<XMLSecurityConstants.Action>();
         actions.add(XMLSecurityConstants.ENCRYPT);
         properties.setActions(actions);
 
@@ -538,32 +529,32 @@ public class XMLEncryption11Test {
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.read(is, false);
+            document = XMLUtils.createDocumentBuilder(false).parse(is);
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
-        assertEquals(nodeList.getLength(), 0);
+        Assert.assertEquals(nodeList.getLength(), 0);
 
         NodeList encryptionMethodElements = document.getElementsByTagNameNS(XMLSecurityConstants.NS_XMLENC, "EncryptionMethod");
-        assertEquals(2, encryptionMethodElements.getLength());
-        assertEquals(encryptionMethodAlgo, ((Element) encryptionMethodElements.item(0)).getAttribute("Algorithm"));
-        assertEquals(encryptedKeyAlgo, ((Element) encryptionMethodElements.item(1)).getAttribute("Algorithm"));
+        Assert.assertEquals(2, encryptionMethodElements.getLength());
+        Assert.assertEquals(encryptionMethodAlgo, ((Element) encryptionMethodElements.item(0)).getAttribute("Algorithm"));
+        Assert.assertEquals(encryptedKeyAlgo, ((Element) encryptionMethodElements.item(1)).getAttribute("Algorithm"));
 
         if (digestMethodAlgo != null) {
             NodeList digestMethodElements = document.getElementsByTagNameNS(XMLSecurityConstants.NS_DSIG, "DigestMethod");
-            assertEquals(1, digestMethodElements.getLength());
-            assertEquals(digestMethodAlgo, ((Element) digestMethodElements.item(0)).getAttribute("Algorithm"));
+            Assert.assertEquals(1, digestMethodElements.getLength());
+            Assert.assertEquals(digestMethodAlgo, ((Element) digestMethodElements.item(0)).getAttribute("Algorithm"));
         }
         if (mgfAlgo != null) {
             NodeList mfgElements = document.getElementsByTagNameNS(XMLSecurityConstants.NS_XMLENC11, "MGF");
-            assertEquals(1, mfgElements.getLength());
-            assertEquals(mgfAlgo, ((Element) mfgElements.item(0)).getAttribute("Algorithm"));
+            Assert.assertEquals(1, mfgElements.getLength());
+            Assert.assertEquals(mgfAlgo, ((Element) mfgElements.item(0)).getAttribute("Algorithm"));
         }
         if (oaepParams != null) {
             NodeList oaepParamsElements = document.getElementsByTagNameNS(XMLSecurityConstants.NS_XMLENC, "OAEPparams");
-            assertEquals(1, oaepParamsElements.getLength());
+            Assert.assertEquals(1, oaepParamsElements.getLength());
             String content = XMLUtils.getFullTextChildrenFromNode(oaepParamsElements.item(0));
-            assertArrayEquals(oaepParams, XMLUtils.decode(content));
+            Assert.assertArrayEquals(oaepParams, XMLUtils.decode(content));
         }
         return document;
     }
@@ -632,7 +623,7 @@ public class XMLEncryption11Test {
     private void checkDecryptedDoc(Document d, boolean doNodeCheck) throws Exception {
 
         String cc = retrieveCCNumber(d);
-        assertEquals(cardNumber, cc);
+        assertTrue(cc, cc != null && cc.equals(cardNumber));
 
         // Test cc numbers
         if (doNodeCheck) {

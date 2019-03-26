@@ -21,6 +21,7 @@
  */
 package javax.xml.crypto.test.dsig;
 
+import static org.junit.Assert.*;
 
 import java.io.*;
 import java.security.MessageDigest;
@@ -34,15 +35,6 @@ import javax.xml.crypto.dsig.dom.DOMValidateContext;
 import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 import javax.xml.crypto.dsig.spec.TransformParameterSpec;
 import org.w3c.dom.Document;
-
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 
 /**
  * Unit test for javax.xml.crypto.dsig.Reference
@@ -138,8 +130,8 @@ public class ReferenceTest {
             // try empty transforms list
             ref = fac.newReference(uri, dmSHA1, transforms,
                                    type, id);
-            assertArrayEquals(transforms.toArray(),
-                                     ref.getTransforms().toArray());
+            assertTrue(Arrays.equals(transforms.toArray(),
+                                     ref.getTransforms().toArray()));
         } catch(Exception ex) {
             fail("Unexpected Exception: " + ex);
         }
@@ -178,8 +170,8 @@ public class ReferenceTest {
         try {
             // try a transforms list with a Transform object
             ref = fac.newReference(uri, dmSHA1, transforms, type, id);
-            assertArrayEquals(transforms.toArray(),
-                                     ref.getTransforms().toArray());
+            assertTrue(Arrays.equals(transforms.toArray(),
+                                     ref.getTransforms().toArray()));
         } catch (Exception ex) {
             fail("Unexpected Exception: " + ex);
         }
@@ -193,7 +185,7 @@ public class ReferenceTest {
             fail("Should raise a NPE for null feature");
         } catch (NullPointerException npe) {}
 
-        assertFalse(ref.isFeatureSupported("not supported"));
+        assertTrue(!ref.isFeatureSupported("not supported"));
     }
 
     @org.junit.Test
@@ -272,7 +264,7 @@ public class ReferenceTest {
                     }
                     byte[] dv = validated_ref.getDigestValue();
                     byte[] cdv = validated_ref.getCalculatedDigestValue();
-                    assertArrayEquals(dv, cdv);
+                    assertTrue(Arrays.equals(dv, cdv));
                     boolean valid = validated_ref.validate(validateContext);
                     assertTrue(valid);
                 }

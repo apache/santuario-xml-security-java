@@ -21,6 +21,7 @@
  */
 package javax.xml.crypto.test.dsig.keyinfo;
 
+import static org.junit.Assert.*;
 
 import java.security.Key;
 import java.util.Collections;
@@ -36,12 +37,6 @@ import org.apache.jcp.xml.dsig.internal.dom.DOMUtils;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-
 
 /**
  * Unit test for javax.xml.crypto.dsig.keyinfo.KeyInfo
@@ -108,7 +103,7 @@ public class KeyInfoTest {
             fail("Should raise a NPE for null feature");
         } catch (NullPointerException npe) {}
 
-        assertFalse(ki.isFeatureSupported("not supported"));
+        assertTrue(!ki.isFeatureSupported("not supported"));
     }
 
     @org.junit.Test
@@ -120,7 +115,7 @@ public class KeyInfoTest {
             fail("Should raise a NullPointerException");
         } catch (NullPointerException npe) {}
 
-        Document doc = XMLUtils.newDocument();
+        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
         Element elem = doc.createElementNS("http://acme.org", "parent");
         doc.appendChild(elem);
         DOMStructure parent = new DOMStructure(elem);
@@ -131,16 +126,16 @@ public class KeyInfoTest {
         }
 
         Element kiElem = DOMUtils.getFirstChildElement(elem);
-        if (!"KeyInfo".equals(kiElem.getLocalName())) {
+        if (!kiElem.getLocalName().equals("KeyInfo")) {
             fail("Should be KeyInfo element: " + kiElem.getLocalName());
         }
         Element knElem = DOMUtils.getFirstChildElement(kiElem);
-        if (!"KeyName".equals(knElem.getLocalName())) {
+        if (!knElem.getLocalName().equals("KeyName")) {
             fail("Should be KeyName element: " + knElem.getLocalName());
         }
 
         // check if key info is inserted before nextSibling
-        doc = XMLUtils.newDocument();
+        doc = XMLUtils.createDocumentBuilder(false).newDocument();
         elem = doc.createElementNS("http://acme.org", "parent");
         doc.appendChild(elem);
         Element nextSib = doc.createElementNS("http://acme.org", "nextSib");
@@ -156,7 +151,7 @@ public class KeyInfoTest {
 
             @Override
             public byte[] getEncoded() {
-                return new byte[0];
+                return null;
             }
 
             @Override

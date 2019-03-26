@@ -18,6 +18,7 @@
  */
 package org.apache.xml.security.utils;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -35,17 +36,21 @@ import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.validation.Schema;
 
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.c14n.InvalidCanonicalizerException;
 import org.w3c.dom.Attr;
+import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -60,10 +65,12 @@ public final class XMLUtils {
             (PrivilegedAction<Boolean>) () -> Boolean.getBoolean("org.apache.xml.security.ignoreLineBreaks"));
 
     @SuppressWarnings("unchecked")
-    private static final WeakObjectPool<DocumentBuilder, ParserConfigurationException> pools[] = new WeakObjectPool[2];
+    private static final WeakObjectPool<DocumentBuilder, ParserConfigurationException> pools[] = new WeakObjectPool[4];
     static {
-        pools[0] = new DocumentBuilderPool(false);
-        pools[1] = new DocumentBuilderPool(true);
+        pools[0] = new DocumentBuilderPool(false, false);
+        pools[1] = new DocumentBuilderPool(false, true);
+        pools[2] = new DocumentBuilderPool(true, false);
+        pools[3] = new DocumentBuilderPool(true, true);
     }
 
     private static volatile String dsPrefix = "ds";
@@ -154,7 +161,7 @@ public final class XMLUtils {
         if (rootNode == exclude) {
             return;
         }
-        switch (rootNode.getNodeType()) { //NOPMD
+        switch (rootNode.getNodeType()) {
         case Node.ELEMENT_NODE:
             result.add(rootNode);
             Element el = (Element)rootNode;
@@ -179,14 +186,14 @@ public final class XMLUtils {
                 }
                 getSetRec(r, result, exclude, com);
             }
-            break;
+            return;
         case Node.COMMENT_NODE:
             if (com) {
                 result.add(rootNode);
             }
-            break;
+            return;
         case Node.DOCUMENT_TYPE_NODE:
-            break;
+            return;
         default:
             result.add(rootNode);
         }
@@ -259,6 +266,11 @@ public final class XMLUtils {
             LOG.debug(ex.getMessage(), ex);
             // throw new RuntimeException(ex.getMessage());
         }
+    }
+
+    @Deprecated
+    public static String getFullTextChildrenFromElement(Element element) {
+        return getFullTextChildrenFromNode(element);
     }
 
     /**
@@ -719,6 +731,62 @@ public final class XMLUtils {
         return null;
     }
 
+
+    /**
+     * @param sibling
+     * @param nodeName
+     * @param number
+     * @return nodes with the constrain
+     */
+    public static Text selectDsNodeText(Node sibling, String nodeName, int number) {
+        Node n = selectDsNode(sibling, nodeName, number);
+        if (n == null) {
+            return null;
+        }
+        n = n.getFirstChild();
+        while (n != null && n.getNodeType() != Node.TEXT_NODE) {
+            n = n.getNextSibling();
+        }
+        return (Text)n;
+    }
+
+    /**
+     * @param sibling
+     * @param nodeName
+     * @param number
+     * @return nodes with the constrain
+     */
+    public static Text selectDs11NodeText(Node sibling, String nodeName, int number) {
+        Node n = selectDs11Node(sibling, nodeName, number);
+        if (n == null) {
+            return null;
+        }
+        n = n.getFirstChild();
+        while (n != null && n.getNodeType() != Node.TEXT_NODE) {
+            n = n.getNextSibling();
+        }
+        return (Text)n;
+    }
+
+    /**
+     * @param sibling
+     * @param uri
+     * @param nodeName
+     * @param number
+     * @return nodes with the constrain
+     */
+    public static Text selectNodeText(Node sibling, String uri, String nodeName, int number) {
+        Node n = selectNode(sibling, uri, nodeName, number);
+        if (n == null) {
+            return null;
+        }
+        n = n.getFirstChild();
+        while (n != null && n.getNodeType() != Node.TEXT_NODE) {
+            n = n.getNextSibling();
+        }
+        return (Text)n;
+    }
+
     /**
      * @param sibling
      * @param uri
@@ -1003,55 +1071,31 @@ public final class XMLUtils {
         return true;
     }
 
-    public static Document newDocument() throws ParserConfigurationException {
-        DocumentBuilder documentBuilder = createDocumentBuilder(true);
-        Document doc = documentBuilder.newDocument();
-        repoolDocumentBuilder(documentBuilder, true);
-        return doc;
+    public static DocumentBuilder createDocumentBuilder(boolean validating) throws ParserConfigurationException {
+        return createDocumentBuilder(validating, true);
     }
 
-    public static Document read(InputStream inputStream) throws ParserConfigurationException, SAXException, IOException {
-        return read(inputStream, true);
-    }
-
-    public static Document read(InputStream inputStream, boolean disAllowDocTypeDeclarations) throws ParserConfigurationException, SAXException, IOException {
-        DocumentBuilder documentBuilder = createDocumentBuilder(disAllowDocTypeDeclarations);
-        Document doc = documentBuilder.parse(inputStream);
-        repoolDocumentBuilder(documentBuilder, disAllowDocTypeDeclarations);
-        return doc;
-    }
-
-    public static Document read(String uri, boolean disAllowDocTypeDeclarations)
-        throws ParserConfigurationException, SAXException, IOException {
-        DocumentBuilder documentBuilder = createDocumentBuilder(disAllowDocTypeDeclarations);
-        Document doc = documentBuilder.parse(uri);
-        repoolDocumentBuilder(documentBuilder, disAllowDocTypeDeclarations);
-        return doc;
-    }
-
-    public static Document read(InputSource inputSource) throws ParserConfigurationException, SAXException, IOException {
-        return read(inputSource, true);
-    }
-
-    public static Document read(InputSource inputSource, boolean disAllowDocTypeDeclarations)
-        throws ParserConfigurationException, SAXException, IOException {
-        DocumentBuilder documentBuilder = createDocumentBuilder(disAllowDocTypeDeclarations);
-        Document doc = documentBuilder.parse(inputSource);
-        repoolDocumentBuilder(documentBuilder, disAllowDocTypeDeclarations);
-        return doc;
-    }
-
-    private static DocumentBuilder createDocumentBuilder(
-        boolean disAllowDocTypeDeclarations
+    public static DocumentBuilder createDocumentBuilder(
+        boolean validating, boolean disAllowDocTypeDeclarations
     ) throws ParserConfigurationException {
-        int idx = getPoolsIndex(disAllowDocTypeDeclarations);
+        int idx = getPoolsIndex(validating, disAllowDocTypeDeclarations);
         return pools[idx].getObject();
     }
 
 
-    private static boolean repoolDocumentBuilder(DocumentBuilder db, boolean disAllowDocTypeDeclarations) {
+    /**
+     * Return this document builder to be reused
+     * @param db DocumentBuilder returned from any of {@link #createDocumentBuilder} methods.
+     * @return whether it was successfully returned to the pool
+     */
+    public static boolean repoolDocumentBuilder(DocumentBuilder db) {
+        if (!(db instanceof DocumentBuilderProxy)) {
+            return false;
+        }
         db.reset();
-        int idx = getPoolsIndex(disAllowDocTypeDeclarations);
+        boolean disAllowDocTypeDeclarations =
+            ((DocumentBuilderProxy)db).disAllowDocTypeDeclarations();
+        int idx = getPoolsIndex(db.isValidating(), disAllowDocTypeDeclarations);
         return pools[idx].repool(db);
     }
 
@@ -1100,12 +1144,97 @@ public final class XMLUtils {
         return resizedBytes;
     }
 
+    /**
+     * We need this proxy wrapping DocumentBuilder to record the value
+     * passed to disAllowDoctypeDeclarations.  It's needed to figure out
+     * on which pool to return.
+     */
+    private static class DocumentBuilderProxy extends DocumentBuilder {
+        private final DocumentBuilder delegate;
+        private final boolean disAllowDocTypeDeclarations;
+
+        private DocumentBuilderProxy(DocumentBuilder actual, boolean disAllowDocTypeDeclarations) {
+            delegate = actual;
+            this.disAllowDocTypeDeclarations = disAllowDocTypeDeclarations;
+        }
+
+        boolean disAllowDocTypeDeclarations() {
+            return disAllowDocTypeDeclarations;
+        }
+
+        public void reset() {
+            delegate.reset();
+        }
+
+        public Document parse(InputStream is) throws SAXException, IOException {
+            return delegate.parse(is);
+        }
+
+        public Document parse(InputStream is, String systemId)
+                throws SAXException, IOException {
+            return delegate.parse(is, systemId);
+        }
+
+        public Document parse(String uri) throws SAXException, IOException {
+            return delegate.parse(uri);
+        }
+
+        public Document parse(File f) throws SAXException, IOException {
+            return delegate.parse(f);
+        }
+
+        public Schema getSchema() {
+            return delegate.getSchema();
+        }
+
+        public boolean isXIncludeAware() {
+            return delegate.isXIncludeAware();
+        }
+
+        @Override
+        public Document parse(InputSource is) throws SAXException, IOException {
+            return delegate.parse(is);
+        }
+
+        @Override
+        public boolean isNamespaceAware() {
+            return delegate.isNamespaceAware();
+        }
+
+        @Override
+        public boolean isValidating() {
+            return delegate.isValidating();
+        }
+
+        @Override
+        public void setEntityResolver(EntityResolver er) {
+            delegate.setEntityResolver(er);
+        }
+
+        @Override
+        public void setErrorHandler(ErrorHandler eh) {
+            delegate.setErrorHandler(eh);
+        }
+
+        @Override
+        public Document newDocument() {
+            return delegate.newDocument();
+        }
+
+        @Override
+        public DOMImplementation getDOMImplementation() {
+            return delegate.getDOMImplementation();
+        }
+
+    }
+
     private static final class DocumentBuilderPool
         extends WeakObjectPool<DocumentBuilder, ParserConfigurationException> {
 
-        private final boolean disAllowDocTypeDeclarations;
+        private final boolean validating, disAllowDocTypeDeclarations;
 
-        public DocumentBuilderPool(boolean disAllowDocTypeDeclarations) {
+        public DocumentBuilderPool(boolean validating, boolean disAllowDocTypeDeclarations) {
+            this.validating = validating;
             this.disAllowDocTypeDeclarations = disAllowDocTypeDeclarations;
         }
 
@@ -1116,18 +1245,20 @@ public final class XMLUtils {
             if (disAllowDocTypeDeclarations) {
                 dfactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
             }
+            dfactory.setValidating(validating);
             dfactory.setNamespaceAware(true);
-            return dfactory.newDocumentBuilder();
+            return new DocumentBuilderProxy(dfactory.newDocumentBuilder(), disAllowDocTypeDeclarations);
         }
     }
 
     /**
-     * Maps the boolean configuration options for the factories to the array index for the WeakObjectPool
+     * Maps the two boolean configuration options for the factories to the array index for the WeakObjectPool
+     * @param validating
      * @param disAllowDocTypeDeclarations
      * @return the index to the {@link #pools}
      */
-    private static int getPoolsIndex(boolean disAllowDocTypeDeclarations) {
-        return disAllowDocTypeDeclarations ? 1 : 0;
+    private static int getPoolsIndex(boolean validating, boolean disAllowDocTypeDeclarations) {
+        return (validating ? 2 : 0) + (disAllowDocTypeDeclarations ? 1 : 0);
     }
 
 }

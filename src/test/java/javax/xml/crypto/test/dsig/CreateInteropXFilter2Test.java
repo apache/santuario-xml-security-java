@@ -21,6 +21,7 @@
  */
 package javax.xml.crypto.test.dsig;
 
+import static org.junit.Assert.assertTrue;
 
 import java.io.*;
 import java.security.*;
@@ -37,9 +38,7 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.*;
 
 import javax.xml.crypto.test.KeySelectors;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import javax.xml.parsers.DocumentBuilder;
 
 /**
  * Test that recreates merlin-xpath-filter2-three test vectors
@@ -50,6 +49,7 @@ public class CreateInteropXFilter2Test {
 
     private XMLSignatureFactory fac;
     private KeyInfoFactory kifac;
+    private DocumentBuilder db;
     private KeyStore ks;
     private Key signingKey;
     private PublicKey validatingKey;
@@ -64,16 +64,16 @@ public class CreateInteropXFilter2Test {
         fac = XMLSignatureFactory.getInstance
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
         kifac = fac.getKeyInfoFactory();
+        db = XMLUtils.createDocumentBuilder(false);
 
         // get key & self-signed certificate from keystore
         String fs = System.getProperty("file.separator");
         String base = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
 
-        try (FileInputStream fis = new FileInputStream
-            (base + fs + "src/test/resources" + fs + "test.jks")) {
-            ks = KeyStore.getInstance("JKS");
-            ks.load(fis, "changeit".toCharArray());
-        }
+        FileInputStream fis = new FileInputStream
+            (base + fs + "src/test/resources" + fs + "test.jks");
+        ks = KeyStore.getInstance("JKS");
+        ks.load(fis, "changeit".toCharArray());
         signingKey = ks.getKey("mullan", "changeit".toCharArray());
         signingCert = ks.getCertificate("mullan");
         validatingKey = signingCert.getPublicKey();
@@ -128,7 +128,7 @@ public class CreateInteropXFilter2Test {
         XMLSignature sig = fac.newXMLSignature
             (si, ki, null, null, "signature-value");
 
-        Document doc = XMLUtils.newDocument();
+        Document doc = db.newDocument();
         Element tbs1 = doc.createElementNS(null, "ToBeSigned");
         Comment tbs1Com = doc.createComment(" comment ");
         Element tbs1Data = doc.createElementNS(null, "Data");
@@ -164,7 +164,7 @@ public class CreateInteropXFilter2Test {
             (new KeySelectors.KeyValueKeySelector(), document.getLastChild());
         XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
 
-        assertEquals(sig, sig2);
+        assertTrue(sig.equals(sig2));
 
         assertTrue(sig2.validate(dvc));
     }

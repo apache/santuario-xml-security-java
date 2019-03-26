@@ -24,103 +24,21 @@
   A PMD ruleset for Apache Santuario
   </description>
 
-  <rule ref="category/java/bestpractices.xml">
-     <exclude name="AbstractClassWithoutAbstractMethod" />
-     <exclude name="AccessorMethodGeneration" />
-     <exclude name="ArrayIsStoredDirectly" />
-     <exclude name="AvoidReassigningParameters" />
+  <rule ref="rulesets/java/basic.xml">
      <exclude name="AvoidUsingHardCodedIP" />
-     <exclude name="ConstantsInInterface" />
-     <exclude name="ForLoopCanBeForeach" />
-     <exclude name="GuardLogStatement" />
-     <exclude name="JUnitAssertionsShouldIncludeMessage"/>
-     <exclude name="JUnitTestContainsTooManyAsserts" />
-     <exclude name="JUnitTestsShouldIncludeAssert" />
-     <exclude name="JUnitUseExpected" />
-     <exclude name="MethodReturnsInternalArray" />
-     <exclude name="MissingOverride" />
-     <exclude name="OneDeclarationPerLine" />
-     <exclude name="PreserveStackTrace" />
-     <exclude name="SwitchStmtsShouldHaveDefault" />
-     <exclude name="SystemPrintln" />
-     <exclude name="UnusedPrivateMethod" />
-     <exclude name="UseAssertSameInsteadOfAssertTrue" />
-     <exclude name="UseVarargs" />
+     <exclude name="SimplifiedTernary" />
   </rule>
+  <rule ref="rulesets/java/unusedcode.xml"/>
+  <rule ref="rulesets/java/imports.xml"/>
+  <rule ref="rulesets/java/braces.xml"/>
+  <rule ref="rulesets/java/empty.xml">
+      <exclude name="EmptyCatchBlock" />
+  </rule>
+  <rule ref="rulesets/java/migrating.xml">
+     <exclude name="JUnit4TestShouldUseAfterAnnotation" /> 
+     <exclude name="JUnit4TestShouldUseTestAnnotation" /> 
+     <exclude name="JUnitUseExpected" /> 
+  </rule>
+  <rule ref="rulesets/java/unnecessary.xml"/>
 
-  <rule ref="category/java/design.xml" >
-     <exclude name="AvoidCatchingGenericException" />
-     <exclude name="AvoidDeeplyNestedIfStmts" />
-     <exclude name="AvoidRethrowingException" />
-     <exclude name="AvoidThrowingNullPointerException" />
-     <exclude name="AvoidThrowingRawExceptionTypes" />
-     <exclude name="CouplingBetweenObjects" />
-     <exclude name="CyclomaticComplexity" />
-     <exclude name="DataClass" />
-     <exclude name="ExceptionAsFlowControl" />
-     <exclude name="ExcessiveClassLength" />
-     <exclude name="ExcessiveImports" />
-     <exclude name="ExcessiveMethodLength" />
-     <exclude name="ExcessivePublicCount" />
-     <exclude name="GodClass" />
-     <exclude name="ImmutableField" />
-     <exclude name="LawOfDemeter" />
-     <exclude name="NcssCount" />
-     <exclude name="NPathComplexity" />
-     <exclude name="SignatureDeclareThrowsException" />
-     <exclude name="SingularField" />
-     <exclude name="SwitchDensity" />
-     <exclude name="TooManyFields" />
-     <exclude name="TooManyMethods" />
-     <exclude name="UseObjectForClearerAPI" />
-     <exclude name="UseUtilityClass" />
-  </rule>
-
-  <rule ref="category/java/errorprone.xml">
-     <exclude name="AssignmentInOperand" />
-     <exclude name="AssignmentToNonFinalStatic" />
-     <exclude name="AvoidCatchingNPE" />
-     <exclude name="AvoidCatchingThrowable" />
-     <exclude name="AvoidDuplicateLiterals" />
-     <exclude name="AvoidFieldNameMatchingMethodName" />
-     <exclude name="AvoidLiteralsInIfCondition" />
-     <exclude name="BeanMembersShouldSerialize" />
-     <exclude name="CompareObjectsWithEquals" />
-     <exclude name="ConstructorCallsOverridableMethod" />
-     <exclude name="DataflowAnomalyAnalysis" />
-     <exclude name="DoNotCallGarbageCollectionExplicitly" />
-     <exclude name="EmptyCatchBlock" />
-     <exclude name="InvalidSlf4jMessageFormat" />
-     <exclude name="JUnitSpelling" />
-     <exclude name="MissingSerialVersionUID" />
-     <exclude name="NullAssignment" />
-     <exclude name="SingletonClassReturningNewInstance" />
-     <exclude name="SingleMethodSingleton" />
-     <exclude name="SuspiciousEqualsMethodName" />
-     <exclude name="UseLocaleWithCaseConversions" />
-     <exclude name="UseProperClassLoader" />
-  </rule>
-
-  <rule ref="category/java/multithreading.xml">
-     <exclude name="AvoidSynchronizedAtMethodLevel" />
-     <exclude name="AvoidUsingVolatile" />
-     <exclude name="DoNotUseThreads" />
-     <exclude name="UseConcurrentHashMap" />
-  </rule>
-
-  <rule ref="category/java/performance.xml">
-     <exclude name="AddEmptyString" />
-     <exclude name="AvoidInstantiatingObjectsInLoops" />
-     <exclude name="AvoidFileStream" />
-     <exclude name="ConsecutiveAppendsShouldReuse" />
-     <exclude name="InefficientEmptyStringCheck" />
-     <exclude name="OptimizableToArrayCall" />
-     <exclude name="RedundantFieldInitializer" />
-     <exclude name="UseStringBufferForStringAppends" />
-  </rule>
-
-  <rule ref="category/java/security.xml" >
-     <exclude name="HardCodedCryptoKey" />
-  </rule>
-      
 </ruleset>

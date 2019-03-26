@@ -23,29 +23,18 @@ import org.apache.xml.security.binding.xmldsig.CanonicalizationMethodType;
 import org.apache.xml.security.binding.xmldsig.SignatureType;
 import org.apache.xml.security.binding.xmldsig.SignedInfoType;
 import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.stax.ext.*;
 import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer20010315_Excl;
-import org.apache.xml.security.stax.impl.util.IDGenerator;
-import org.apache.xml.security.stax.impl.util.SignerOutputStream;
 import org.apache.xml.security.stax.securityToken.InboundSecurityToken;
 import org.apache.xml.security.utils.UnsyncBufferedOutputStream;
 import org.apache.xml.security.utils.UnsyncByteArrayInputStream;
 import org.apache.xml.security.utils.UnsyncByteArrayOutputStream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.apache.xml.security.stax.ext.AbstractInputSecurityHeaderHandler;
-import org.apache.xml.security.stax.ext.InboundSecurityContext;
-import org.apache.xml.security.stax.ext.InputProcessorChain;
-import org.apache.xml.security.stax.ext.Transformer;
-import org.apache.xml.security.stax.ext.XMLSecurityConstants;
-import org.apache.xml.security.stax.ext.XMLSecurityProperties;
-import org.apache.xml.security.stax.ext.XMLSecurityUtils;
 import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 import org.apache.xml.security.stax.ext.stax.XMLSecEventFactory;
 import org.apache.xml.security.stax.impl.algorithms.SignatureAlgorithm;
 import org.apache.xml.security.stax.impl.algorithms.SignatureAlgorithmFactory;
+import org.apache.xml.security.stax.impl.util.*;
 
-import javax.security.auth.DestroyFailedException;
-import javax.security.auth.Destroyable;
 import javax.xml.bind.JAXBElement;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
@@ -62,8 +51,6 @@ import java.util.*;
 /**
  */
 public abstract class AbstractSignatureInputHandler extends AbstractInputSecurityHeaderHandler {
-
-    private static final transient Logger LOG = LoggerFactory.getLogger(AbstractSignatureInputHandler.class);
 
     @Override
     public void handle(final InputProcessorChain inputProcessorChain, final XMLSecurityProperties securityProperties,
@@ -127,19 +114,25 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
             loop:
             while (iterator.hasNext()) {
                 XMLSecEvent xmlSecEvent = iterator.next();
-                if (XMLStreamConstants.START_ELEMENT == xmlSecEvent.getEventType()
-                    && xmlSecEvent.asStartElement().getName().equals(XMLSecurityConstants.TAG_dsig_SignedInfo)) {
-                    signatureVerifier.processEvent(xmlSecEvent);
-                    break loop;
+                switch (xmlSecEvent.getEventType()) {
+                    case XMLStreamConstants.START_ELEMENT:
+                        if (xmlSecEvent.asStartElement().getName().equals(XMLSecurityConstants.TAG_dsig_SignedInfo)) {
+                            signatureVerifier.processEvent(xmlSecEvent);
+                            break loop;
+                        }
+                        break;
                 }
             }
             loop:
             while (iterator.hasNext()) {
                 XMLSecEvent xmlSecEvent = iterator.next();
                 signatureVerifier.processEvent(xmlSecEvent);
-                if (XMLStreamConstants.END_ELEMENT == xmlSecEvent.getEventType()
-                    && xmlSecEvent.asEndElement().getName().equals(XMLSecurityConstants.TAG_dsig_SignedInfo)) {
-                    break loop;
+                switch (xmlSecEvent.getEventType()) {
+                    case XMLStreamConstants.END_ELEMENT:
+                        if (xmlSecEvent.asEndElement().getName().equals(XMLSecurityConstants.TAG_dsig_SignedInfo)) {
+                            break loop;
+                        }
+                        break;
                 }
             }
         } catch (XMLStreamException e) {
@@ -153,7 +146,7 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
                                                    SignatureType signatureType, Deque<XMLSecEvent> eventDeque, int index
     ) throws XMLSecurityException {
 
-        Deque<XMLSecEvent> signedInfoDeque = new ArrayDeque<>();
+        Deque<XMLSecEvent> signedInfoDeque = new ArrayDeque<XMLSecEvent>();
 
         try (UnsyncByteArrayOutputStream unsynchronizedByteArrayOutputStream = new UnsyncByteArrayOutputStream()) {
             Transformer transformer = XMLSecurityUtils.getTransformer(
@@ -174,10 +167,13 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
             loop:
             while (iterator.hasNext()) {
                 XMLSecEvent xmlSecEvent = iterator.next();
-                if (XMLStreamConstants.START_ELEMENT == xmlSecEvent.getEventType()
-                    && xmlSecEvent.asStartElement().getName().equals(XMLSecurityConstants.TAG_dsig_SignedInfo)) {
-                    transformer.transform(xmlSecEvent);
-                    break loop;
+                switch (xmlSecEvent.getEventType()) {
+                    case XMLStreamConstants.START_ELEMENT:
+                        if (xmlSecEvent.asStartElement().getName().equals(XMLSecurityConstants.TAG_dsig_SignedInfo)) {
+                            transformer.transform(xmlSecEvent);
+                            break loop;
+                        }
+                        break;
                 }
             }
 
@@ -185,9 +181,12 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
             while (iterator.hasNext()) {
                 XMLSecEvent xmlSecEvent = iterator.next();
                 transformer.transform(xmlSecEvent);
-                if (XMLStreamConstants.END_ELEMENT == xmlSecEvent.getEventType()
-                    && xmlSecEvent.asEndElement().getName().equals(XMLSecurityConstants.TAG_dsig_SignedInfo)) {
-                    break loop;
+                switch (xmlSecEvent.getEventType()) {
+                    case XMLStreamConstants.END_ELEMENT:
+                        if (xmlSecEvent.asEndElement().getName().equals(XMLSecurityConstants.TAG_dsig_SignedInfo)) {
+                            break loop;
+                        }
+                        break;
                 }
             }
 
@@ -335,15 +334,6 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
                 throw new XMLSecurityException(e);
             } catch (NoSuchProviderException e) {
                 throw new XMLSecurityException(e);
-            }
-
-            // Clean the secret key from memory now that we're done with it
-            if (verifyKey instanceof Destroyable) {
-                try {
-                    ((Destroyable)verifyKey).destroy();
-                } catch (DestroyFailedException e) {
-                    LOG.debug("Error destroying key: {}", e.getMessage());
-                }
             }
         }
 

@@ -33,7 +33,7 @@ import org.w3c.dom.Text;
  * than the xfilter2.
  *
  */
-public final class XPathFilterCHGPContainer extends ElementProxy implements TransformParam {
+public class XPathFilterCHGPContainer extends ElementProxy implements TransformParam {
 
     public static final String TRANSFORM_XPATHFILTERCHGP =
         "http://www.nue.et-inf.uni-siegen.de/~geuer-pollmann/#xpathFilter";
@@ -237,7 +237,7 @@ public final class XPathFilterCHGPContainer extends ElementProxy implements Tran
      * @return the string
      */
     public boolean getIncludeSlashPolicy() {
-        return "true".equals(getLocalAttribute(XPathFilterCHGPContainer._ATT_INCLUDESLASH));
+        return getLocalAttribute(XPathFilterCHGPContainer._ATT_INCLUDESLASH).equals("true");
     }
 
     /**

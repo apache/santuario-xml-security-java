@@ -34,6 +34,7 @@ import java.security.spec.RSAPublicKeySpec;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -60,22 +61,17 @@ import org.apache.xml.security.test.stax.utils.StAX2DOM;
 import org.apache.xml.security.test.stax.utils.TestUtils;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 
 /**
  * This test is to ensure interoperability with the examples provided by the IAIK
  * XML Signature implementation. Thanks to Gregor Karlinger who provided these
  * test vectors. They are located in the directory <CODE>data/at/iaik/ixsil/</CODE>.
  */
-public class IAIKTest {
+public class IAIKTest extends Assert {
 
     // Define the Keys
     private static final String DSA_Y =
@@ -112,7 +108,8 @@ public class IAIKTest {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "at/iaik/ixsil/signatureAlgorithms/signatures/hMACSignature.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // Set up the Key
         byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
@@ -138,7 +135,7 @@ public class IAIKTest {
         XMLStreamReader securityStreamReader =
             inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
         // Check the SecurityEvents
         checkSignatureToken(securityEventListener, key, SecurityTokenConstants.KeyIdentifier_NoKeyInfo);
@@ -150,7 +147,8 @@ public class IAIKTest {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "at/iaik/ixsil/signatureAlgorithms/signatures/hMACShortSignature.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // Set up the Key
         byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
@@ -172,11 +170,11 @@ public class IAIKTest {
         XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
 
         try {
-            StAX2DOM.readDoc(securityStreamReader);
+            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
             fail("Failure expected on a short HMAC length");
         } catch (XMLStreamException ex) {
-            assertTrue(ex.getCause() instanceof XMLSecurityException);
-            assertEquals("INVALID signature -- core validation failed.", ex.getCause().getMessage());
+            Assert.assertTrue(ex.getCause() instanceof XMLSecurityException);
+            Assert.assertEquals("INVALID signature -- core validation failed.", ex.getCause().getMessage());
         }
     }
 
@@ -186,7 +184,8 @@ public class IAIKTest {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "at/iaik/ixsil/signatureAlgorithms/signatures/dSASignature.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -207,7 +206,7 @@ public class IAIKTest {
         XMLStreamReader securityStreamReader =
             inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
         // Check the SecurityEvents
         checkSignatureToken(securityEventListener, getPublicKey("DSA"),
@@ -220,7 +219,8 @@ public class IAIKTest {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "at/iaik/ixsil/signatureAlgorithms/signatures/rSASignature.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -241,7 +241,7 @@ public class IAIKTest {
         XMLStreamReader securityStreamReader =
             inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
         // Check the SecurityEvents
         checkSignatureToken(securityEventListener, getPublicKey("RSA"),
@@ -272,7 +272,7 @@ public class IAIKTest {
 
         try {
             TestUtils.switchAllowNotSameDocumentReferences(true);
-            StAX2DOM.readDoc(securityStreamReader);
+            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
         } finally {
             TestUtils.switchAllowNotSameDocumentReferences(false);
         }
@@ -306,7 +306,7 @@ public class IAIKTest {
 
         try {
             TestUtils.switchAllowNotSameDocumentReferences(true);
-            StAX2DOM.readDoc(securityStreamReader);
+            StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
         } finally {
             TestUtils.switchAllowNotSameDocumentReferences(false);
         }
@@ -322,7 +322,8 @@ public class IAIKTest {
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "at/iaik/ixsil/transforms/signatures/envelopedSignatureSignature.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
+        Document document = builder.parse(sourceDocument);
 
         // Set up the Key
         Key publicKey = getPublicKey("RSA");
@@ -347,7 +348,7 @@ public class IAIKTest {
         XMLStreamReader securityStreamReader =
             inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        StAX2DOM.readDoc(securityStreamReader);
+        StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
 
         // Check the SecurityEvents
         checkSignatureToken(securityEventListener, getPublicKey("RSA"),
@@ -358,12 +359,12 @@ public class IAIKTest {
             throws InvalidKeySpecException, NoSuchAlgorithmException {
         KeyFactory kf = KeyFactory.getInstance(algo);
         KeySpec kspec = null;
-        if ("DSA".equalsIgnoreCase(algo)) {
+        if (algo.equalsIgnoreCase("DSA")) {
             kspec = new DSAPublicKeySpec(new BigInteger(DSA_Y),
                         new BigInteger(DSA_P),
                         new BigInteger(DSA_Q),
                         new BigInteger(DSA_G));
-        } else if ("RSA".equalsIgnoreCase(algo)) {
+        } else if (algo.equalsIgnoreCase("RSA")) {
             kspec = new RSAPublicKeySpec(new BigInteger(RSA_MOD),
                     new BigInteger(RSA_PUB));
         } else {

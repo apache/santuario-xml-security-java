@@ -89,11 +89,11 @@ public abstract class DOMKeyValue<K extends PublicKey> extends DOMStructure impl
         }
 
         String namespace = kvtElem.getNamespaceURI();
-        if ("DSAKeyValue".equals(kvtElem.getLocalName()) && XMLSignature.XMLNS.equals(namespace)) {
+        if (kvtElem.getLocalName().equals("DSAKeyValue") && XMLSignature.XMLNS.equals(namespace)) {
             return new DSA(kvtElem);
-        } else if ("RSAKeyValue".equals(kvtElem.getLocalName()) && XMLSignature.XMLNS.equals(namespace)) {
+        } else if (kvtElem.getLocalName().equals("RSAKeyValue") && XMLSignature.XMLNS.equals(namespace)) {
             return new RSA(kvtElem);
-        } else if ("ECKeyValue".equals(kvtElem.getLocalName()) && XMLDSIG_11_XMLNS.equals(namespace)) {
+        } else if (kvtElem.getLocalName().equals("ECKeyValue") && XMLDSIG_11_XMLNS.equals(namespace)) {
             return new EC(kvtElem);
         } else {
             return new Unknown(kvtElem);
@@ -306,7 +306,7 @@ public abstract class DOMKeyValue<K extends PublicKey> extends DOMStructure impl
             // check for P and Q
             BigInteger p = null;
             BigInteger q = null;
-            if ("P".equals(curElem.getLocalName()) && XMLSignature.XMLNS.equals(curElem.getNamespaceURI())) {
+            if (curElem.getLocalName().equals("P") && XMLSignature.XMLNS.equals(curElem.getNamespaceURI())) {
                 p = decode(curElem);
                 curElem = DOMUtils.getNextSiblingElement(curElem, "Q", XMLSignature.XMLNS);
                 q = decode(curElem);
@@ -314,7 +314,7 @@ public abstract class DOMKeyValue<K extends PublicKey> extends DOMStructure impl
             }
             BigInteger g = null;
             if (curElem != null
-                && "G".equals(curElem.getLocalName()) && XMLSignature.XMLNS.equals(curElem.getNamespaceURI())) {
+                && curElem.getLocalName().equals("G") && XMLSignature.XMLNS.equals(curElem.getNamespaceURI())) {
                 g = decode(curElem);
                 curElem = DOMUtils.getNextSiblingElement(curElem, "Y", XMLSignature.XMLNS);
             }
@@ -323,7 +323,7 @@ public abstract class DOMKeyValue<K extends PublicKey> extends DOMStructure impl
                 y = decode(curElem);
                 curElem = DOMUtils.getNextSiblingElement(curElem);
             }
-            //if (curElem != null && "J".equals(curElem.getLocalName())) {
+            //if (curElem != null && curElem.getLocalName().equals("J")) {
                 //j = new DOMCryptoBinary(curElem.getFirstChild());
                 // curElem = DOMUtils.getNextSiblingElement(curElem);
             //}
@@ -465,11 +465,15 @@ public abstract class DOMKeyValue<K extends PublicKey> extends DOMStructure impl
 
         private static boolean matchCurve(ECParameterSpec params, Curve curve) {
             int fieldSize = params.getCurve().getField().getFieldSize();
-            return curve.getCurve().getField().getFieldSize() == fieldSize
+            if (curve.getCurve().getField().getFieldSize() == fieldSize
                 && curve.getCurve().equals(params.getCurve())
                 && curve.getGenerator().equals(params.getGenerator())
                 && curve.getOrder().equals(params.getOrder())
-                && curve.getCofactor() == params.getCofactor();
+                && curve.getCofactor() == params.getCofactor()) {
+                return true;
+            } else {
+                return false;
+            }
         }
 
         @Override
@@ -492,7 +496,7 @@ public abstract class DOMKeyValue<K extends PublicKey> extends DOMStructure impl
                 throw new MarshalException("Invalid ECParameterSpec");
             }
             DOMUtils.setAttribute(namedCurveElem, "URI", "urn:oid:" + oid);
-            String qname = (prefix == null || prefix.length() == 0)
+            String qname = prefix == null || prefix.length() == 0
                        ? "xmlns" : "xmlns:" + prefix;
             namedCurveElem.setAttributeNS("http://www.w3.org/2000/xmlns/",
                                           qname, XMLDSIG_11_XMLNS);
@@ -522,11 +526,11 @@ public abstract class DOMKeyValue<K extends PublicKey> extends DOMStructure impl
                 throw new MarshalException("KeyValue must contain at least one type");
             }
 
-            if ("ECParameters".equals(curElem.getLocalName())
+            if (curElem.getLocalName().equals("ECParameters")
                 && XMLDSIG_11_XMLNS.equals(curElem.getNamespaceURI())) {
                 throw new UnsupportedOperationException
                     ("ECParameters not supported");
-            } else if ("NamedCurve".equals(curElem.getLocalName())
+            } else if (curElem.getLocalName().equals("NamedCurve")
                 && XMLDSIG_11_XMLNS.equals(curElem.getNamespaceURI())) {
                 String uri = DOMUtils.getAttributeValue(curElem, "URI");
                 // strip off "urn:oid"

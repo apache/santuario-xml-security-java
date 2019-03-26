@@ -21,18 +21,12 @@
  */
 package javax.xml.crypto.test.dsig;
 
+import static org.junit.Assert.*;
 
 import java.security.Security;
 import java.util.*;
 import javax.xml.crypto.dsig.*;
 import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
-
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
-
 
 /**
  * Unit test for javax.xml.crypto.dsig.SignedInfo
@@ -123,8 +117,8 @@ public class SignedInfoTest {
                      sm.getAlgorithm());
         assertEquals(si.getSignatureMethod().getParameterSpec(),
                      sm.getParameterSpec());
-        assertArrayEquals(si.getReferences().toArray(),
-                                 references.toArray());
+        assertTrue(Arrays.equals(si.getReferences().toArray(),
+                                 references.toArray()));
         assertNull(si.getId());
 
         // test XMLSignatureFactory.newSignedInfo(

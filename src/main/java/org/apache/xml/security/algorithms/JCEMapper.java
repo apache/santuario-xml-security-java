@@ -35,7 +35,8 @@ public class JCEMapper {
     private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(JCEMapper.class);
 
-    private static Map<String, Algorithm> algorithmsMap = new ConcurrentHashMap<>();
+    private static Map<String, Algorithm> algorithmsMap =
+        new ConcurrentHashMap<String, Algorithm>();
 
     private static String providerName;
 

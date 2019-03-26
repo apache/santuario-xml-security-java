@@ -18,9 +18,9 @@
  */
 package org.apache.xml.security.test.dom.secure_val;
 
+import static org.junit.Assert.*;
 
 import java.io.File;
-import java.io.FileInputStream;
 
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
@@ -28,10 +28,6 @@ import org.apache.xml.security.test.dom.interop.InteropTestBase;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Element;
-
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 
 
 /**
@@ -80,7 +76,8 @@ public class WrappingAttackTest extends InteropTestBase {
 
         File f = new File(directory + "/" + file);
 
-        org.w3c.dom.Document doc = XMLUtils.read(new FileInputStream(f), false);
+        javax.xml.parsers.DocumentBuilder db = XMLUtils.createDocumentBuilder(false, false);
+        org.w3c.dom.Document doc = db.parse(f);
 
         Element sigElement =
             (Element) doc.getElementsByTagNameNS(Constants.SignatureSpecNS,
@@ -99,7 +96,8 @@ public class WrappingAttackTest extends InteropTestBase {
 
         File f = new File(directory + "/" + file);
 
-        org.w3c.dom.Document doc = XMLUtils.read(new FileInputStream(f), false);
+        javax.xml.parsers.DocumentBuilder db = XMLUtils.createDocumentBuilder(false, false);
+        org.w3c.dom.Document doc = db.parse(f);
 
         Element sigElement =
             (Element) doc.getElementsByTagNameNS(Constants.SignatureSpecNS,

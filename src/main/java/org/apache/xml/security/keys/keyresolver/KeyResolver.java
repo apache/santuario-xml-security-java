@@ -54,7 +54,7 @@ public class KeyResolver {
         org.slf4j.LoggerFactory.getLogger(KeyResolver.class);
 
     /** Field resolverVector */
-    private static List<KeyResolver> resolverVector = new CopyOnWriteArrayList<>();
+    private static List<KeyResolver> resolverVector = new CopyOnWriteArrayList<KeyResolver>();
 
     /** Field resolverSpi */
     private final KeyResolverSpi resolverSpi;
@@ -92,7 +92,7 @@ public class KeyResolver {
     ) throws KeyResolverException {
         for (KeyResolver resolver : resolverVector) {
             if (resolver == null) {
-                Object[] exArgs = {
+                Object exArgs[] = {
                                    element != null
                                        && element.getNodeType() == Node.ELEMENT_NODE
                                        ? element.getTagName() : "null"
@@ -108,7 +108,7 @@ public class KeyResolver {
             }
         }
 
-        Object[] exArgs = {
+        Object exArgs[] = {
                            element != null && element.getNodeType() == Node.ELEMENT_NODE
                            ? element.getTagName() : "null"
                           };
@@ -131,7 +131,7 @@ public class KeyResolver {
     ) throws KeyResolverException {
         for (KeyResolver resolver : resolverVector) {
             if (resolver == null) {
-                Object[] exArgs = {
+                Object exArgs[] = {
                                    element != null
                                        && element.getNodeType() == Node.ELEMENT_NODE
                                        ? element.getTagName() : "null"
@@ -147,7 +147,7 @@ public class KeyResolver {
             }
         }
 
-        Object[] exArgs = {
+        Object exArgs[] = {
                            element != null && element.getNodeType() == Node.ELEMENT_NODE
                            ? element.getTagName() : "null"
                           };

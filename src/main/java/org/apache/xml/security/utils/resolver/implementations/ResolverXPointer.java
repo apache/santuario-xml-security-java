@@ -73,7 +73,7 @@ public class ResolverXPointer extends ResourceResolverSpi {
             if (context.secureValidation) {
                 Element start = context.attr.getOwnerDocument().getDocumentElement();
                 if (!XMLUtils.protectAgainstWrappingAttack(start, id)) {
-                    Object[] exArgs = { id };
+                    Object exArgs[] = { id };
                     throw new ResourceResolverException(
                         "signature.Verification.MultipleIDs", exArgs, context.uriToResolve, context.baseUri
                     );
@@ -81,7 +81,7 @@ public class ResolverXPointer extends ResourceResolverSpi {
             }
 
             if (resultNode == null) {
-                Object[] exArgs = { id };
+                Object exArgs[] = { id };
 
                 throw new ResourceResolverException(
                     "signature.Verification.MissingID", exArgs, context.uriToResolve, context.baseUri
@@ -109,7 +109,11 @@ public class ResolverXPointer extends ResourceResolverSpi {
         if (context.uriToResolve == null) {
             return false;
         }
-        return isXPointerSlash(context.uriToResolve) || isXPointerId(context.uriToResolve);
+        if (isXPointerSlash(context.uriToResolve) || isXPointerId(context.uriToResolve)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -119,7 +123,11 @@ public class ResolverXPointer extends ResourceResolverSpi {
      * @return true if begins with xpointer
      */
     private static boolean isXPointerSlash(String uri) {
-        return "#xpointer(/)".equals(uri);
+        if (uri.equals("#xpointer(/)")) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

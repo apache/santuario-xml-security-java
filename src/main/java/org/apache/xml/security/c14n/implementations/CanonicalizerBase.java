@@ -562,8 +562,10 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
                 }
             }
         }
-
-        return this.xpathNodeSet == null || this.xpathNodeSet.contains(currentNode);
+        if (this.xpathNodeSet != null && !this.xpathNodeSet.contains(currentNode)) {
+            return false;
+        }
+        return true;
     }
 
     protected void handleParent(Element e, NameSpaceSymbTable ns) {
@@ -586,7 +588,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
             String NName = e.getPrefix();
             String NValue = e.getNamespaceURI();
             String Name;
-            if (NName == null || NName.isEmpty()) {
+            if (NName == null || NName.equals("")) {
                 NName = XMLNS;
                 Name = XMLNS;
             } else {

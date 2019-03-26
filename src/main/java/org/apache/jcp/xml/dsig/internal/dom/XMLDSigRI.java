@@ -63,13 +63,13 @@ public final class XMLDSigRI extends Provider {
         ProviderService(Provider p, String type, String algo, String cn,
             String[] aliases) {
             super(p, type, algo, cn,
-                aliases == null ? null : Arrays.asList(aliases), null);
+                (aliases == null? null : Arrays.asList(aliases)), null);
         }
 
         ProviderService(Provider p, String type, String algo, String cn,
-            String[] aliases, Map<String, String> attrs) {
+            String[] aliases, HashMap<String, String> attrs) {
             super(p, type, algo, cn,
-                  aliases == null ? null : Arrays.asList(aliases), attrs);
+                  (aliases == null? null : Arrays.asList(aliases)), attrs);
         }
 
         @Override
@@ -83,20 +83,20 @@ public final class XMLDSigRI extends Provider {
 
             String algo = getAlgorithm();
             try {
-                if ("XMLSignatureFactory".equals(type)) {
-                    if ("DOM".equals(algo)) {
+                if (type.equals("XMLSignatureFactory")) {
+                    if (algo.equals("DOM")) {
                         return new DOMXMLSignatureFactory();
                     }
-                } else if ("KeyInfoFactory".equals(type)) {
-                    if ("DOM".equals(algo)) {
+                } else if (type.equals("KeyInfoFactory")) {
+                    if (algo.equals("DOM")) {
                         return new DOMKeyInfoFactory();
                     }
-                } else if ("TransformService".equals(type)) {
+                } else if (type.equals("TransformService")) {
                     if (algo.equals(CanonicalizationMethod.INCLUSIVE) ||
                         algo.equals(CanonicalizationMethod.INCLUSIVE_WITH_COMMENTS)) {
                         return new DOMCanonicalXMLC14NMethod();
-                    } else if ("http://www.w3.org/2006/12/xml-c14n11".equals(algo) ||
-                        "http://www.w3.org/2006/12/xml-c14n11#WithComments".equals(algo)) {
+                    } else if (algo.equals("http://www.w3.org/2006/12/xml-c14n11") ||
+                        algo.equals("http://www.w3.org/2006/12/xml-c14n11#WithComments")) {
                         return new DOMCanonicalXMLC14N11Method();
                     } else if (algo.equals(CanonicalizationMethod.EXCLUSIVE) ||
                         algo.equals(CanonicalizationMethod.EXCLUSIVE_WITH_COMMENTS)) {
@@ -124,12 +124,12 @@ public final class XMLDSigRI extends Provider {
 
     public XMLDSigRI() {
         /* We are the ApacheXMLDSig provider */
-        super("ApacheXMLDSig", 2.20, INFO);
+        super("ApacheXMLDSig", 2.13, INFO);
 
         final Provider p = this;
         AccessController.doPrivileged(new PrivilegedAction<Void>() {
             public Void run() {
-                Map<String, String> MECH_TYPE = new HashMap<>();
+                HashMap<String, String> MECH_TYPE = new HashMap<>();
                 MECH_TYPE.put("MechanismType", "DOM");
 
                 putService(new ProviderService(p, "XMLSignatureFactory",

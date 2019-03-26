@@ -51,7 +51,7 @@ public abstract class ElementProxy {
     private Document wrappedDoc;
 
     /** Field prefixMappings */
-    private static Map<String, String> prefixMappings = new ConcurrentHashMap<>();
+    private static Map<String, String> prefixMappings = new ConcurrentHashMap<String, String>();
 
     /**
      * Constructor ElementProxy
@@ -245,7 +245,7 @@ public abstract class ElementProxy {
 
         if(!expectedNamespaceUri.equals(actualNamespaceUri)
             && !expectedLocalName.equals(actualLocalName)) {
-            Object[] exArgs = { actualNamespaceUri + ":" + actualLocalName,
+            Object exArgs[] = { actualNamespaceUri + ":" + actualLocalName,
                                 expectedNamespaceUri + ":" + expectedLocalName};
             throw new XMLSecurityException("xml.WrongElement", exArgs);
         }
@@ -455,7 +455,7 @@ public abstract class ElementProxy {
 
         if (a != null) {
             if (!a.getNodeValue().equals(uri)) {
-                Object[] exArgs = { ns, getElement().getAttributeNS(null, ns) };
+                Object exArgs[] = { ns, getElement().getAttributeNS(null, ns) };
 
                 throw new XMLSecurityException("namespacePrefixAlreadyUsedByOtherURI", exArgs);
             }
@@ -485,7 +485,7 @@ public abstract class ElementProxy {
         if (prefixMappings.containsValue(prefix)) {
             String storedPrefix = prefixMappings.get(namespace);
             if (!storedPrefix.equals(prefix)) {
-                Object[] exArgs = { prefix, namespace, storedPrefix };
+                Object exArgs[] = { prefix, namespace, storedPrefix };
 
                 throw new XMLSecurityException("prefix.AlreadyAssigned", exArgs);
             }

@@ -35,8 +35,8 @@ public class PerformanceMemoryTest extends AbstractPerformanceTest {
     private static final int xmlResizeFactor = 1000;
 
     //junit creates for every test method a new class instance so we need a static list
-    private static Map<Integer, File> signedFiles = new TreeMap<>();
-    private static Map<Integer, File> encryptedFiles = new TreeMap<>();
+    private static Map<Integer, File> signedFiles = new TreeMap<Integer, File>();
+    private static Map<Integer, File> encryptedFiles = new TreeMap<Integer, File>();
 
 
     @Override
@@ -219,7 +219,7 @@ public class PerformanceMemoryTest extends AbstractPerformanceTest {
         private long memoryDiff;
         private volatile boolean stop = false;
 
-        private List<Integer> memory = new LinkedList<>();
+        private List<Integer> memory = new LinkedList<Integer>();
 
         MemorySamplerThread(long memoryDiff) {
             this.memoryDiff = memoryDiff;

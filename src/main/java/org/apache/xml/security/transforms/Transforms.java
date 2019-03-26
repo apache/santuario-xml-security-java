@@ -99,7 +99,7 @@ public class Transforms extends SignatureElementProxy {
     private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(Transforms.class);
 
-    private Element[] transformsElement;
+    private Element[] transforms;
 
     protected Transforms() { }
 
@@ -137,7 +137,7 @@ public class Transforms extends SignatureElementProxy {
 
         if (numberOfTransformElems == 0) {
             // At least one Transform element must be present. Bad.
-            Object[] exArgs = { Constants._TAG_TRANSFORM, Constants._TAG_TRANSFORMS };
+            Object exArgs[] = { Constants._TAG_TRANSFORM, Constants._TAG_TRANSFORMS };
 
             throw new TransformationException("xml.WrongContent", exArgs);
         }
@@ -280,7 +280,7 @@ public class Transforms extends SignatureElementProxy {
     private void checkSecureValidation(Transform transform) throws TransformationException {
         String uri = transform.getURI();
         if (secureValidation && Transforms.TRANSFORM_XSLT.equals(uri)) {
-            Object[] exArgs = { uri };
+            Object exArgs[] = { uri };
 
             throw new TransformationException(
                 "signature.Transform.ForbiddenTransform", exArgs
@@ -296,7 +296,7 @@ public class Transforms extends SignatureElementProxy {
      */
     public int getLength() {
         initTransforms();
-        return transformsElement.length;
+        return transforms.length;
     }
 
     /**
@@ -310,15 +310,15 @@ public class Transforms extends SignatureElementProxy {
     public Transform item(int i) throws TransformationException {
         try {
             initTransforms();
-            return new Transform(transformsElement[i], this.baseURI);
+            return new Transform(transforms[i], this.baseURI);
         } catch (XMLSecurityException ex) {
             throw new TransformationException(ex);
         }
     }
 
     private void initTransforms() {
-        if (transformsElement == null) {
-            transformsElement = XMLUtils.selectDsNodes(getFirstChild(), "Transform");
+        if (transforms == null) {
+            transforms = XMLUtils.selectDsNodes(getFirstChild(), "Transform");
         }
     }
 

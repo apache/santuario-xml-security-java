@@ -21,15 +21,10 @@
  */
 package javax.xml.crypto.test.dsig.keyinfo;
 
+import static org.junit.Assert.*;
 
 import java.math.BigInteger;
 import javax.xml.crypto.dsig.keyinfo.*;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-
 
 /**
  * Unit test for javax.xml.crypto.dsig.keyinfo.X509IssuerSerial
@@ -92,6 +87,6 @@ public class X509IssuerSerialTest {
             fail("Should raise a NPE for null feature");
         } catch (NullPointerException npe) {}
 
-        assertFalse(x509is.isFeatureSupported("not supported"));
+        assertTrue(!x509is.isFeatureSupported("not supported"));
     }
 }

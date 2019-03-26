@@ -21,6 +21,7 @@
  */
 package javax.xml.crypto.test.dsig;
 
+import static org.junit.Assert.assertTrue;
 
 import java.io.*;
 import java.security.*;
@@ -37,9 +38,7 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.*;
 
 import javax.xml.crypto.test.KeySelectors;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import javax.xml.parsers.DocumentBuilder;
 
 /**
  * Test that recreates interop exc C14N test vectors
@@ -50,6 +49,7 @@ public class CreateInteropExcC14NTest {
 
     private XMLSignatureFactory fac;
     private KeyInfoFactory kifac;
+    private DocumentBuilder db;
     private KeyStore ks;
     private Key signingKey;
     private PublicKey validatingKey;
@@ -63,16 +63,16 @@ public class CreateInteropExcC14NTest {
         fac = XMLSignatureFactory.getInstance
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
         kifac = fac.getKeyInfoFactory();
+        db = XMLUtils.createDocumentBuilder(false);
 
         // get key & self-signed certificate from keystore
         String base = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
 
         String fs = System.getProperty("file.separator");
-        try (FileInputStream fis = new FileInputStream
-            (base + fs + "src/test/resources" + fs + "test.jks")) {
-            ks = KeyStore.getInstance("JKS");
-            ks.load(fis, "changeit".toCharArray());
-        }
+        FileInputStream fis = new FileInputStream
+            (base + fs + "src/test/resources" + fs + "test.jks");
+        ks = KeyStore.getInstance("JKS");
+        ks.load(fis, "changeit".toCharArray());
         Certificate signingCert = ks.getCertificate("mullan");
         signingKey = ks.getKey("mullan", "changeit".toCharArray());
         validatingKey = signingCert.getPublicKey();
@@ -138,7 +138,7 @@ public class CreateInteropExcC14NTest {
         KeyInfo ki = kifac.newKeyInfo(kits);
 
         // create Objects
-        Document doc = XMLUtils.newDocument();
+        Document doc = db.newDocument();
         Element baz = doc.createElementNS("urn:bar", "bar:Baz");
         Comment com = doc.createComment(" comment ");
         baz.appendChild(com);
@@ -165,7 +165,7 @@ public class CreateInteropExcC14NTest {
             (new KeySelectors.KeyValueKeySelector(), foo.getLastChild());
         XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
 
-        assertEquals(sig, sig2);
+        assertTrue(sig.equals(sig2));
 
         assertTrue(sig2.validate(dvc));
     }

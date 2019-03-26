@@ -18,22 +18,6 @@
  */
 package org.apache.xml.security.test.stax.signature;
 
-import java.io.File;
-import java.security.Key;
-import java.security.cert.X509Certificate;
-import java.util.List;
-import java.util.UUID;
-
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathFactory;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.stax.config.Init;
@@ -42,31 +26,32 @@ import org.apache.xml.security.stax.impl.securityToken.KeyNameSecurityToken;
 import org.apache.xml.security.stax.impl.securityToken.X509IssuerSerialSecurityToken;
 import org.apache.xml.security.stax.impl.securityToken.X509SecurityToken;
 import org.apache.xml.security.stax.impl.securityToken.X509SubjectNameSecurityToken;
-import org.apache.xml.security.stax.securityEvent.AlgorithmSuiteSecurityEvent;
-import org.apache.xml.security.stax.securityEvent.DefaultTokenSecurityEvent;
-import org.apache.xml.security.stax.securityEvent.KeyNameTokenSecurityEvent;
-import org.apache.xml.security.stax.securityEvent.KeyValueTokenSecurityEvent;
-import org.apache.xml.security.stax.securityEvent.SecurityEvent;
-import org.apache.xml.security.stax.securityEvent.SecurityEventConstants;
-import org.apache.xml.security.stax.securityEvent.SignatureValueSecurityEvent;
-import org.apache.xml.security.stax.securityEvent.SignedElementSecurityEvent;
-import org.apache.xml.security.stax.securityEvent.X509TokenSecurityEvent;
+import org.apache.xml.security.stax.securityEvent.*;
 import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
-
+import org.junit.Assert;
 import org.junit.Before;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+import java.io.File;
+import java.security.Key;
+import java.security.cert.X509Certificate;
+import java.util.List;
+import java.util.UUID;
 
 /**
  */
-public class AbstractSignatureVerificationTest {
+public class AbstractSignatureVerificationTest extends Assert {
 
     protected static String BASEDIR;
 
@@ -239,7 +224,7 @@ public class AbstractSignatureVerificationTest {
                     (NodeList) xpath.evaluate(expression, document, XPathConstants.NODESET);
             for (int i = 0; i < elementsToSign.getLength(); i++) {
                 Element elementToSign = (Element)elementsToSign.item(i);
-                assertNotNull(elementToSign);
+                Assert.assertNotNull(elementToSign);
                 String id = UUID.randomUUID().toString();
                 elementToSign.setAttributeNS(null, "Id", id);
                 elementToSign.setIdAttributeNS(null, "Id", true);
@@ -271,7 +256,7 @@ public class AbstractSignatureVerificationTest {
         String expression = "//ds:Signature[1]";
         Element sigElement =
                 (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
-        assertNotNull(sigElement);
+        Assert.assertNotNull(sigElement);
 
         return sig;
     }

@@ -234,7 +234,7 @@ public class KeySelectors {
                 case MATCH_SUBJECT_KEY_ID:
                     byte[] extension = c.getExtensionValue("2.5.29.14");
                     if (extension != null) {
-                        byte[] extVal = new byte[extension.length - 4];
+                        byte extVal[] = new byte[extension.length - 4];
                         System.arraycopy(extension, 4, extVal, 0, extVal.length);
 
                         if (Arrays.equals(extVal, (byte[]) value)) {
@@ -281,13 +281,13 @@ public class KeySelectors {
                             // assume KeyName contains subject DN and search
                             // collection of certs for match
                             List<X509Certificate> result = match(MATCH_SUBJECT, name, certs);
-                            int numOfMatches = result == null ? 0 : result.size();
+                            int numOfMatches = (result == null? 0 : result.size());
                             if (numOfMatches != 1) {
                                 throw new KeySelectorException
                                     ((numOfMatches == 0 ? "No":"More than one") +
                                      " match found");
                             }
-                            pk = result.get(0).getPublicKey();
+                            pk = ((X509Certificate)result.get(0)).getPublicKey();
                         }
                         return new SimpleKSResult(pk);
                     } else if (xmlStructure instanceof RetrievalMethod) {
@@ -331,14 +331,14 @@ public class KeySelectors {
                                 throw new KeySelectorException("Unsupported X509Data: " + obj);
                             }
                         }
-                        int numOfMatches = result == null ? 0 : result.size();
+                        int numOfMatches = (result == null ? 0 : result.size());
                         if (numOfMatches != 1) {
                             throw new KeySelectorException
-                                ((numOfMatches == 0 ? "No" : "More than one") +
+                                ((numOfMatches==0?"No":"More than one") +
                                  " match found");
-
                         }
-                        return new SimpleKSResult(result.get(0).getPublicKey());
+                        return new SimpleKSResult(((X509Certificate)
+                                          result.get(0)).getPublicKey());
                     }
                 } catch (Exception ex) {
                     throw new KeySelectorException(ex);
@@ -365,7 +365,7 @@ public class KeySelectors {
         public static String dumpArray(byte[] in) {
             int numDumped = 0;
             StringBuilder buf = new StringBuilder(512);
-            buf.append('{');
+            buf.append("{");
             for (int i = 0;i < (in.length / numBytesPerRow); i++) {
                 for (int j=0; j < (numBytesPerRow); j++) {
                     buf.append("(byte)0x");
@@ -377,10 +377,10 @@ public class KeySelectors {
             while (numDumped < in.length) {
                 buf.append("(byte)0x");
                 buf.append(getHex(in[numDumped]));
-                buf.append(' ');
+                buf.append(" ");
                 numDumped += 1;
             }
-            buf.append('}');
+            buf.append("}");
             return buf.toString();
         }
     }

@@ -18,6 +18,7 @@
  */
 package org.apache.xml.security.test.dom.signature;
 
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -27,10 +28,6 @@ import java.io.InputStream;
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.InvalidCanonicalizerException;
 import org.apache.xml.security.signature.XMLSignatureInput;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Unit test for {@link org.apache.xml.security.signature.XMLSignatureInput}
@@ -98,17 +95,17 @@ public class XMLSignatureInputTest {
         int off = 0;
 
         while (res.available() > 0) {
-            byte[] array = new byte[1024];
+            byte array[] = new byte[1024];
             int len = res.read(array);
 
             baos.write(array, off, len);
             off += len;
         }
 
-        byte[] resBytes = baos.toByteArray();
+        byte resBytes[] = baos.toByteArray();
         String resString = new String(resBytes, java.nio.charset.StandardCharsets.UTF_8);
 
-        assertEquals(resString, _octetStreamTextInput);
+        assertTrue(resString.equals(_octetStreamTextInput));
     }
 
     @org.junit.Test
@@ -137,7 +134,7 @@ public class XMLSignatureInputTest {
             new ByteArrayInputStream(_octetStreamTextInput.getBytes())) {
             XMLSignatureInput input = new XMLSignatureInput(inputStream);
 
-            assertFalse("Input is not node set", input.isNodeSet());
+            assertTrue("Input is not node set", !input.isNodeSet());
         }
     }
 

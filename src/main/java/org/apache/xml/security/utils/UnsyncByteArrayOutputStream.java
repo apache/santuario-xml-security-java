@@ -76,7 +76,7 @@ public class UnsyncByteArrayOutputStream extends OutputStream  {
     }
 
     public byte[] toByteArray() {
-        byte[] result = new byte[pos];
+        byte result[] = new byte[pos];
         System.arraycopy(buf, 0, result, 0, pos);
         return result;
     }
@@ -107,7 +107,7 @@ public class UnsyncByteArrayOutputStream extends OutputStream  {
                 newSize = VM_ARRAY_INDEX_MAX_VALUE;
             }
         }
-        byte[] newBuf = new byte[newSize];
+        byte newBuf[] = new byte[newSize];
         System.arraycopy(buf, 0, newBuf, 0, pos);
         buf = newBuf;
         size = newSize;

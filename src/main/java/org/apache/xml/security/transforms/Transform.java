@@ -70,7 +70,7 @@ public final class Transform extends SignatureElementProxy {
 
     /** All available Transform classes are registered here */
     private static Map<String, Class<? extends TransformSpi>> transformSpiHash =
-        new ConcurrentHashMap<>();
+        new ConcurrentHashMap<String, Class<? extends TransformSpi>>();
 
     private final TransformSpi transformSpi;
     private boolean secureValidation;
@@ -146,24 +146,24 @@ public final class Transform extends SignatureElementProxy {
         String algorithmURI = element.getAttributeNS(null, Constants._ATT_ALGORITHM);
 
         if (algorithmURI == null || algorithmURI.length() == 0) {
-            Object[] exArgs = { Constants._ATT_ALGORITHM, Constants._TAG_TRANSFORM };
+            Object exArgs[] = { Constants._ATT_ALGORITHM, Constants._TAG_TRANSFORM };
             throw new TransformationException("xml.WrongContent", exArgs);
         }
 
         Class<? extends TransformSpi> transformSpiClass = transformSpiHash.get(algorithmURI);
         if (transformSpiClass == null) {
-            Object[] exArgs = { algorithmURI };
+            Object exArgs[] = { algorithmURI };
             throw new InvalidTransformException("signature.Transform.UnknownTransform", exArgs);
         }
         try {
             transformSpi = transformSpiClass.newInstance();
         } catch (InstantiationException ex) {
-            Object[] exArgs = { algorithmURI };
+            Object exArgs[] = { algorithmURI };
             throw new InvalidTransformException(
                 ex, "signature.Transform.UnknownTransform", exArgs
             );
         } catch (IllegalAccessException ex) {
-            Object[] exArgs = { algorithmURI };
+            Object exArgs[] = { algorithmURI };
             throw new InvalidTransformException(
                 ex, "signature.Transform.UnknownTransform", exArgs
             );
@@ -189,7 +189,7 @@ public final class Transform extends SignatureElementProxy {
         // are we already registered?
         Class<? extends TransformSpi> transformSpi = transformSpiHash.get(algorithmURI);
         if (transformSpi != null) {
-            Object[] exArgs = { algorithmURI, transformSpi };
+            Object exArgs[] = { algorithmURI, transformSpi };
             throw new AlgorithmAlreadyRegisteredException("algorithm.alreadyRegistered", exArgs);
         }
         Class<? extends TransformSpi> transformSpiClass =
@@ -215,7 +215,7 @@ public final class Transform extends SignatureElementProxy {
         // are we already registered?
         Class<? extends TransformSpi> transformSpi = transformSpiHash.get(algorithmURI);
         if (transformSpi != null) {
-            Object[] exArgs = { algorithmURI, transformSpi };
+            Object exArgs[] = { algorithmURI, transformSpi };
             throw new AlgorithmAlreadyRegisteredException("algorithm.alreadyRegistered", exArgs);
         }
         transformSpiHash.put(algorithmURI, implementingClass);
@@ -310,11 +310,11 @@ public final class Transform extends SignatureElementProxy {
             transformSpi.secureValidation = secureValidation;
             result = transformSpi.enginePerformTransform(input, os, this);
         } catch (ParserConfigurationException ex) {
-            Object[] exArgs = { this.getURI(), "ParserConfigurationException" };
+            Object exArgs[] = { this.getURI(), "ParserConfigurationException" };
             throw new CanonicalizationException(
                 ex, "signature.Transform.ErrorDuringTransform", exArgs);
         } catch (SAXException ex) {
-            Object[] exArgs = { this.getURI(), "SAXException" };
+            Object exArgs[] = { this.getURI(), "SAXException" };
             throw new CanonicalizationException(
                 ex, "signature.Transform.ErrorDuringTransform", exArgs);
         }
@@ -337,19 +337,19 @@ public final class Transform extends SignatureElementProxy {
 
         Class<? extends TransformSpi> transformSpiClass = transformSpiHash.get(algorithmURI);
         if (transformSpiClass == null) {
-            Object[] exArgs = { algorithmURI };
+            Object exArgs[] = { algorithmURI };
             throw new InvalidTransformException("signature.Transform.UnknownTransform", exArgs);
         }
         TransformSpi newTransformSpi = null;
         try {
             newTransformSpi = transformSpiClass.newInstance();
         } catch (InstantiationException ex) {
-            Object[] exArgs = { algorithmURI };
+            Object exArgs[] = { algorithmURI };
             throw new InvalidTransformException(
                 ex, "signature.Transform.UnknownTransform", exArgs
             );
         } catch (IllegalAccessException ex) {
-            Object[] exArgs = { algorithmURI };
+            Object exArgs[] = { algorithmURI };
             throw new InvalidTransformException(
                 ex, "signature.Transform.UnknownTransform", exArgs
             );

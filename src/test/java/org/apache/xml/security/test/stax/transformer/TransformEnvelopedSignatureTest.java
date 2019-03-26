@@ -26,6 +26,7 @@ import org.apache.xml.security.stax.ext.XMLSecurityUtils;
 import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 import org.apache.xml.security.stax.impl.transformer.TransformEnvelopedSignature;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -41,12 +42,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
 /**
  */
-public class TransformEnvelopedSignatureTest {
+public class TransformEnvelopedSignatureTest extends Assert {
 
     private XMLInputFactory xmlInputFactory;
 
@@ -89,7 +87,7 @@ public class TransformEnvelopedSignatureTest {
 
             @Override
             public void transform(InputStream inputStream) throws XMLStreamException {
-                fail("unexpected call to transform(InputStream");
+                Assert.fail("unexpected call to transform(InputStream");
             }
 
             @Override
@@ -110,7 +108,7 @@ public class TransformEnvelopedSignatureTest {
 
         transformEnvelopedSignature.doFinal();
 
-        assertEquals(19, xmlSecEvents.size());
+        Assert.assertEquals(19, xmlSecEvents.size());
     }
 
     @Test
@@ -139,7 +137,7 @@ public class TransformEnvelopedSignatureTest {
 
             @Override
             public void transform(XMLSecEvent xmlSecEvent) throws XMLStreamException {
-                fail("unexpected call to transform(XMLSecEvent");
+                Assert.fail("unexpected call to transform(XMLSecEvent");
             }
 
             @Override
@@ -169,7 +167,7 @@ public class TransformEnvelopedSignatureTest {
 
         transformEnvelopedSignature.doFinal();
 
-        assertEquals(207, byteArrayOutputStream.size());
+        Assert.assertEquals(207, byteArrayOutputStream.size());
     }
 
     @Test
@@ -190,6 +188,6 @@ public class TransformEnvelopedSignatureTest {
 
         transformEnvelopedSignature.doFinal();
 
-        assertEquals(207, byteArrayOutputStream.size());
+        Assert.assertEquals(207, byteArrayOutputStream.size());
     }
 }

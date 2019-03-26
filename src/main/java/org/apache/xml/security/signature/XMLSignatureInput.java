@@ -29,6 +29,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.xml.security.c14n.CanonicalizationException;
@@ -225,12 +226,12 @@ public class XMLSignatureInput {
             if (circumvent) {
                 XMLUtils.circumventBug2650(XMLUtils.getOwnerDocument(subNode));
             }
-            inputNodeSet = new LinkedHashSet<>();
+            inputNodeSet = new LinkedHashSet<Node>();
             XMLUtils.getSet(subNode, inputNodeSet, excludeNode, excludeComments);
             return inputNodeSet;
         } else if (isOctetStream()) {
             convertToNodes();
-            Set<Node> result = new LinkedHashSet<>();
+            Set<Node> result = new LinkedHashSet<Node>();
             XMLUtils.getSet(subNode, result, null, false);
             return result;
         }
@@ -569,9 +570,12 @@ public class XMLSignatureInput {
 
     void convertToNodes() throws CanonicalizationException,
         ParserConfigurationException, IOException, SAXException {
+        DocumentBuilder db = XMLUtils.createDocumentBuilder(false, secureValidation);
         // select all nodes, also the comments.
         try {
-            Document doc = XMLUtils.read(this.getOctetStream(), secureValidation);
+            db.setErrorHandler(new org.apache.xml.security.utils.IgnoreAllErrorHandler());
+
+            Document doc = db.parse(this.getOctetStream());
             this.subNode = doc;
         } catch (SAXException ex) {
             byte[] result = null;
@@ -585,10 +589,11 @@ public class XMLSignatureInput {
                 result = baos.toByteArray();
             }
             try (InputStream is = new ByteArrayInputStream(result)) {
-                Document document = XMLUtils.read(is, secureValidation);
+                Document document = db.parse(is);
                 this.subNode = document.getDocumentElement().getFirstChild().getFirstChild();
             }
         } finally {
+            XMLUtils.repoolDocumentBuilder(db);
             if (this.inputOctetStreamProxy != null) {
                 this.inputOctetStreamProxy.close();
             }

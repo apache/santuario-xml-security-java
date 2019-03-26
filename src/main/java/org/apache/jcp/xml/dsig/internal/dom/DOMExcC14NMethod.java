@@ -124,7 +124,7 @@ public final class DOMExcC14NMethod extends ApacheCanonicalizer {
         for (int i = 0, size = prefixList.size(); i < size; i++) {
             prefixListAttr.append(prefixList.get(i));
             if (i < size - 1) {
-                prefixListAttr.append(' ');
+                prefixListAttr.append(" ");
             }
         }
         DOMUtils.setAttribute(eElem, "PrefixList", prefixListAttr.toString());
@@ -146,10 +146,10 @@ public final class DOMExcC14NMethod extends ApacheCanonicalizer {
             DOMSubTreeData subTree = (DOMSubTreeData)data;
             if (subTree.excludeComments()) {
                 try {
-                    canonicalizer = Canonicalizer.getInstance
+                    apacheCanonicalizer = Canonicalizer.getInstance
                         (CanonicalizationMethod.EXCLUSIVE);
                     boolean secVal = Utils.secureValidation(xc);
-                    canonicalizer.setSecureValidation(secVal);
+                    apacheCanonicalizer.setSecureValidation(secVal);
                 } catch (InvalidCanonicalizerException ice) {
                     throw new TransformException
                         ("Couldn't find Canonicalizer for: " +

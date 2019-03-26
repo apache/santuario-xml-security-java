@@ -53,6 +53,7 @@ import javax.xml.crypto.dom.DOMURIReference;
 import javax.xml.crypto.dsig.Transform;
 import javax.xml.crypto.dsig.XMLSignature;
 import javax.xml.crypto.dsig.keyinfo.RetrievalMethod;
+import javax.xml.parsers.DocumentBuilder;
 
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Attr;
@@ -108,7 +109,7 @@ public final class DOMRetrievalMethod extends DOMStructure
             }
         }
         this.uri = uri;
-        if (!uri.isEmpty()) {
+        if (!uri.equals("")) {
             try {
                 new URI(uri);
             } catch (URISyntaxException e) {
@@ -268,12 +269,14 @@ public final class DOMRetrievalMethod extends DOMStructure
     public XMLStructure dereferenceAsXMLStructure(XMLCryptoContext context)
         throws URIReferenceException
     {
+        DocumentBuilder db = null;
         boolean secVal = Utils.secureValidation(context);
         ApacheData data = (ApacheData)dereference(context);
         try (InputStream is = new ByteArrayInputStream(data.getXMLSignatureInput().getBytes())) {
-            Document doc = XMLUtils.read(is, secVal);
+            db = XMLUtils.createDocumentBuilder(false, secVal);
+            Document doc = db.parse(is);
             Element kiElem = doc.getDocumentElement();
-            if ("X509Data".equals(kiElem.getLocalName())
+            if (kiElem.getLocalName().equals("X509Data")
                 && XMLSignature.XMLNS.equals(kiElem.getNamespaceURI())) {
                 return new DOMX509Data(kiElem);
             } else {
@@ -281,6 +284,10 @@ public final class DOMRetrievalMethod extends DOMStructure
             }
         } catch (Exception e) {
             throw new URIReferenceException(e);
+        } finally {
+            if (db != null) {
+                XMLUtils.repoolDocumentBuilder(db);
+            }
         }
     }
 

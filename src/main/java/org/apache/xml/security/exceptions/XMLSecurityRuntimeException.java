@@ -35,7 +35,7 @@ import org.apache.xml.security.utils.I18n;
  * Usage in the Java source is:
  * <pre>
  * {
- *    Object[] exArgs = { Constants._TAG_TRANSFORMS, "BadElement" };
+ *    Object exArgs[] = { Constants._TAG_TRANSFORMS, "BadElement" };
  *
  *    throw new XMLSecurityException("xml.WrongElement", exArgs);
  * }
@@ -46,7 +46,7 @@ import org.apache.xml.security.utils.I18n;
  * try {
  *    ...
  * } catch (Exception oldEx) {
- *    Object[] exArgs = { Constants._TAG_TRANSFORMS, "BadElement" };
+ *    Object exArgs[] = { Constants._TAG_TRANSFORMS, "BadElement" };
  *
  *    throw new XMLSecurityException("xml.WrongElement", exArgs, oldEx);
  * }
@@ -88,7 +88,7 @@ public class XMLSecurityRuntimeException extends RuntimeException {
      * @param msgID
      * @param exArgs
      */
-    public XMLSecurityRuntimeException(String msgID, Object[] exArgs) {
+    public XMLSecurityRuntimeException(String msgID, Object exArgs[]) {
         super(MessageFormat.format(I18n.getExceptionMessage(msgID), exArgs));
 
         this.msgID = msgID;
@@ -126,7 +126,7 @@ public class XMLSecurityRuntimeException extends RuntimeException {
      * @param exArgs
      * @param originalException
      */
-    public XMLSecurityRuntimeException(String msgID, Object[] exArgs, Exception originalException) {
+    public XMLSecurityRuntimeException(String msgID, Object exArgs[], Exception originalException) {
         super(MessageFormat.format(I18n.getExceptionMessage(msgID), exArgs), originalException);
 
         this.msgID = msgID;

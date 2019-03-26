@@ -18,13 +18,10 @@
  */
 package org.apache.xml.security.test.dom.version;
 
+import static org.junit.Assert.assertTrue;
 
 import java.security.Provider;
 import java.security.Security;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Version test.
@@ -38,13 +35,13 @@ public class VersionTest {
     @org.junit.Test
     public void testConvertVersion() throws Exception {
         String version = convertVersion("1.4.4");
-        assertEquals("1.44", version);
+        assertTrue("1.44".equals(version));
 
         version = convertVersion("1.4.4-SNAPSHOT");
-        assertEquals("1.44", version);
+        assertTrue("1.44".equals(version));
 
         version = convertVersion("1.4");
-        assertEquals("1.4", version);
+        assertTrue("1.4".equals(version));
     }
 
     @org.junit.Test
@@ -52,10 +49,10 @@ public class VersionTest {
         Security.addProvider(new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
 
         Provider provider = Security.getProvider("ApacheXMLDSig");
-        assertNotNull(provider);
+        assertTrue(provider != null);
 
         String version = System.getProperty("product.version");
-        assertNotNull(version);
+        assertTrue(version != null);
 
         version = convertVersion(version);
 

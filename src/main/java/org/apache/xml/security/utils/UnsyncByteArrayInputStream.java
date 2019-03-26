@@ -55,7 +55,7 @@ public class UnsyncByteArrayInputStream extends InputStream {
      * @param buf
      *            the byte array to stream over.
      */
-    public UnsyncByteArrayInputStream(byte[] buf) {
+    public UnsyncByteArrayInputStream(byte buf[]) {
         this.mark = 0;
         this.buf = buf;
         this.count = buf.length;
@@ -73,7 +73,7 @@ public class UnsyncByteArrayInputStream extends InputStream {
      * @param length
      *            the number of bytes available for streaming.
      */
-    public UnsyncByteArrayInputStream(byte[] buf, int offset, int length) {
+    public UnsyncByteArrayInputStream(byte buf[], int offset, int length) {
         this.buf = buf;
         pos = offset;
         mark = offset;
@@ -166,7 +166,7 @@ public class UnsyncByteArrayInputStream extends InputStream {
      *             if {@code b} is {@code null}.
      */
     @Override
-    public int read(byte[] b, int offset, int length) {
+    public int read(byte b[], int offset, int length) {
         if (b == null) {
             throw new NullPointerException();
         }

@@ -25,26 +25,28 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.security.spec.X509EncodedKeySpec;
 
+import javax.xml.parsers.DocumentBuilder;
+
 import org.apache.xml.security.Init;
 import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.JavaUtils;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.Assert;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
-
-public class KeyInfoReferenceResolverTest {
+public class KeyInfoReferenceResolverTest extends Assert {
 
     private static final String BASEDIR = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
     private static final String SEP = System.getProperty("file.separator");
 
+    private DocumentBuilder documentBuilder;
+
     public KeyInfoReferenceResolverTest() throws Exception {
+        documentBuilder = XMLUtils.createDocumentBuilder(false);
+
         if (!Init.isInitialized()) {
             Init.init();
         }
@@ -135,7 +137,7 @@ public class KeyInfoReferenceResolverTest {
     }
 
     private Document loadXML(String fileName) throws Exception {
-        return XMLUtils.read(new FileInputStream(getControlFilePath(fileName)), false);
+        return documentBuilder.parse(new FileInputStream(getControlFilePath(fileName)));
     }
 
     private PublicKey loadPublicKey(String filePath, String algorithm) throws Exception {

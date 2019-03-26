@@ -21,6 +21,7 @@
  */
 package javax.xml.crypto.test.dsig.keyinfo;
 
+import static org.junit.Assert.*;
 
 import java.math.BigInteger;
 import java.util.*;
@@ -28,13 +29,6 @@ import java.security.KeyException;
 import java.security.PublicKey;
 import javax.xml.crypto.dsig.keyinfo.*;
 import javax.xml.crypto.*;
-
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-
 
 /**
  * Unit test for javax.xml.crypto.dsig.keyinfo.KeyInfoFactory
@@ -75,7 +69,7 @@ public class KeyInfoFactoryTest {
             fail("Should raise a NPE for null feature");
         } catch (NullPointerException npe) {}
 
-        assertFalse(factory.isFeatureSupported("not supported"));
+        assertTrue(!factory.isFeatureSupported("not supported"));
     }
 
     @org.junit.Test
@@ -148,7 +142,7 @@ public class KeyInfoFactoryTest {
 
         // test newPGPData(byte[])
         PGPData pd = factory.newPGPData(valid_id);
-        assertArrayEquals(valid_id, pd.getKeyId());
+        assertTrue(Arrays.equals(valid_id, pd.getKeyId()));
         try {
             pd = factory.newPGPData(invalid_id);
             fail("Should throw IAE for invalid key id values");
@@ -156,8 +150,8 @@ public class KeyInfoFactoryTest {
 
         // test newPGPData(byte[], byte[], List)
         pd = factory.newPGPData(valid_id, valid_packet, null);
-        assertArrayEquals(valid_id, pd.getKeyId());
-        assertArrayEquals(valid_packet, pd.getKeyPacket());
+        assertTrue(Arrays.equals(valid_id, pd.getKeyId()));
+        assertTrue(Arrays.equals(valid_packet, pd.getKeyPacket()));
         try {
             pd = factory.newPGPData(invalid_id, valid_packet, null);
             fail("Should throw IAE for invalid key id values");
@@ -173,7 +167,7 @@ public class KeyInfoFactoryTest {
 
         // test newPGPData(byte[], List)
         pd = factory.newPGPData(valid_packet, null);
-        assertArrayEquals(valid_packet, pd.getKeyPacket());
+        assertTrue(Arrays.equals(valid_packet, pd.getKeyPacket()));
         try {
             pd = factory.newPGPData(invalid_packet, null);
             fail("Should throw IAE for invalid key packet values");

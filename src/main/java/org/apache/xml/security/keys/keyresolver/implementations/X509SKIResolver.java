@@ -91,7 +91,7 @@ public class X509SKIResolver extends KeyResolverSpi {
         }
         try {
             if (storage == null) {
-                Object[] exArgs = { Constants._TAG_X509SKI };
+                Object exArgs[] = { Constants._TAG_X509SKI };
                 KeyResolverException ex =
                     new KeyResolverException("KeyResolver.needStorageResolver", exArgs);
 

@@ -26,16 +26,12 @@ import javax.xml.crypto.dsig.dom.DOMSignContext;
 import javax.xml.crypto.KeySelector;
 import javax.xml.crypto.URIDereferencer;
 
+import static org.junit.Assert.*;
 
 import java.security.*;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import org.w3c.dom.Document;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
-
 
 /**
  * Unit test for javax.xml.crypto.dsig.XMLSignContext

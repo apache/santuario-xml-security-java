@@ -32,18 +32,13 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLResolver;
 import javax.xml.stream.XMLStreamException;
 
+import static org.junit.Assert.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 
 /**
  */
@@ -332,10 +327,47 @@ public class Canonicalizer11Test {
             c14nAndCompare(fileIn, fileIn, true);
             fail();
         } catch (XMLStreamException cex) {
-            assertNotNull(cex);
+            assertTrue(cex != null);
         }
     }
 
+//   /**
+//    * The XPath data model represents data using UCS characters.
+//    * Implementations MUST use XML processors that support UTF-8 and UTF-16
+//    * and translate to the UCS character domain. For UTF-16, the leading byte
+//    * order mark is treated as an artifact of encoding and stripped from the
+//    * UCS character data (subsequent zero width non-breaking spaces appearing
+//    * within the UTF-16 data are not removed) [UTF-16, Section 3.2]. Support
+//    * for ISO-8859-1 encoding is RECOMMENDED, and all other character encodings
+//    * are OPTIONAL.
+//    *
+//    * $todo$ implement the test
+//    * @throws CanonicalizationException
+//    * @throws java.io.FileNotFoundException
+//    * @throws java.io.IOException
+//    * @throws InvalidCanonicalizerException
+//    * @throws javax.xml.parsers.ParserConfigurationException
+//    * @throws org.xml.sax.SAXException
+//    * @throws javax.xml.transform.TransformerException
+//    */
+//   public static void testTranslationFromUTF16toUTF8() throws Exception {
+//
+//      String val =
+//         "<UTF16>The german &amp;auml (which is Unicode &amp;#xE4;):  &quot;&#xE4;&quot;</UTF16>";
+//      byte utf16[] = convertToUTF16(val.getBytes());
+//      Canonicalizer c14n =
+//         Canonicalizer.getInstance(Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS);
+//      byte c14nBytes[] = c14n.canonicalize(utf16);
+//      org.xml.sax.EntityResolver resolver = new TestVectorResolver();
+//      InputStream refStream = resolver.resolveEntity(
+//         null,
+//            prefix + "/in/testTranslationFromUTF16toUTF8.xml")
+//               .getByteStream();
+//      byte refBytes[] = JavaUtils.getBytesFromStream(refStream);
+//      boolean equal = java.security.MessageDigest.isEqual(refBytes, c14nBytes);
+//
+//      assertTrue("Parser does not translate to UCS character domain", equal);
+//   }
 //
 //   /**
 //    * Method testXMLAttributes1
@@ -563,7 +595,7 @@ public class Canonicalizer11Test {
 //      db.setErrorHandler(new org.apache.xml.security.utils
 //         .IgnoreAllErrorHandler());
 //
-//      Document doc = XMLUtils.read(new ByteArrayInputStream(input.getBytes()));
+//      Document doc = db.parse(new ByteArrayInputStream(input.getBytes()));
 //      Canonicalizer c14nizer =
 //         Canonicalizer.getInstance(Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS);
 //      CachedXPathAPI xpathAPI = new CachedXPathAPI();
@@ -572,8 +604,8 @@ public class Canonicalizer11Test {
 //
 //      NodeList nodes =
 //         xpathAPI.selectNodeList(doc, "(//*[local-name()='included'] | //@*[parent::node()[local-name()='included']])");
-//      byte[] result = c14nizer.canonicalizeXPathNodeSet(nodes);
-//      byte[] defined = definedOutput.getBytes();
+//      byte result[] = c14nizer.canonicalizeXPathNodeSet(nodes);
+//      byte defined[] = definedOutput.getBytes();
 //      assertEquals(definedOutput, new String(result));
 //      return java.security.MessageDigest.isEqual(defined, result);
 //   }
@@ -602,8 +634,8 @@ public class Canonicalizer11Test {
         }
 
         // org.xml.sax.InputSource refIs = resolver.resolveEntity(null, fileRef);
-        // byte[] refBytes = JavaUtils.getBytesFromStream(refIs.getByteStream());
-        byte[] refBytes = getBytesFromResource(fileRef);
+        // byte refBytes[] = JavaUtils.getBytesFromStream(refIs.getByteStream());
+        byte refBytes[] = getBytesFromResource(fileRef);
 
         // if everything is OK, result is true; we do a binary compare, byte by byte
         boolean result = java.security.MessageDigest.isEqual(refBytes, baos.toByteArray());
@@ -619,7 +651,7 @@ public class Canonicalizer11Test {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         InputStream inputStream = resource.openStream();
         try {
-            byte[] buf = new byte[1024];
+            byte buf[] = new byte[1024];
             int len;
             while ((len = inputStream.read(buf)) > 0) {
                 baos.write(buf, 0, len);
@@ -643,14 +675,14 @@ public class Canonicalizer11Test {
 //    * @throws javax.xml.transform.TransformerConfigurationException
 //    * @throws javax.xml.transform.TransformerException
 //    */
-//   public static byte[] convertToUTF16(byte[] input) throws Exception {
+//   public static byte[] convertToUTF16(byte input[]) throws Exception {
 //
 //      //String ENCODING_ISO8859_1 = "ISO-8859-1";
 //      //String ENCODING_UTF8 = java.nio.charset.StandardCharsets.UTF_8;
 //      String ENCODING_UTF16 = "UTF-16";
 //      DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 //      DocumentBuilder db = dbf.newDocumentBuilder();
-//      Document doc = XMLUtils.read(new ByteArrayInputStream(input));
+//      Document doc = db.parse(new ByteArrayInputStream(input));
 //      TransformerFactory tFactory = TransformerFactory.newInstance();
 //      Transformer transformer = tFactory.newTransformer();
 //

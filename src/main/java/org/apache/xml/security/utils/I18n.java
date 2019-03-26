@@ -26,7 +26,7 @@ import java.util.ResourceBundle;
  * The Internationalization (I18N) pack.
  *
  */
-public final class I18n {
+public class I18n {
 
     /** Field NOT_INITIALIZED_MSG */
     public static final String NOT_INITIALIZED_MSG =
@@ -107,7 +107,7 @@ public final class I18n {
      */
     public static String getExceptionMessage(String msgID, Exception originalException) {
         try {
-            Object[] exArgs = { originalException.getMessage() };
+            Object exArgs[] = { originalException.getMessage() };
             return MessageFormat.format(resourceBundle.getString(msgID), exArgs);
         } catch (Throwable t) {
             if (org.apache.xml.security.Init.isInitialized()) {
@@ -129,7 +129,7 @@ public final class I18n {
      * @param exArgs
      * @return message translated
      */
-    public static String getExceptionMessage(String msgID, Object[] exArgs) {
+    public static String getExceptionMessage(String msgID, Object exArgs[]) {
         try {
             return MessageFormat.format(resourceBundle.getString(msgID), exArgs);
         } catch (Throwable t) {

@@ -134,14 +134,17 @@ public class XMLSecAttributeImpl extends XMLSecEventBaseImpl implements XMLSecAt
         int idx = 0;
         while (i < length) {
             char c = text.charAt(i);
-            if (c == '&') {
-                writer.write(text, idx, i - idx);
-                writer.write("&amp;");
-                idx = i + 1;
-            } else if (c == '"') {
-                writer.write(text, idx, i - idx);
-                writer.write("&quot;");
-                idx = i + 1;
+            switch (c) {
+                case '&':
+                    writer.write(text, idx, i - idx);
+                    writer.write("&amp;");
+                    idx = i + 1;
+                    break;
+                case '"':
+                    writer.write(text, idx, i - idx);
+                    writer.write("&quot;");
+                    idx = i + 1;
+                    break;
             }
             i++;
         }

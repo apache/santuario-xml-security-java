@@ -18,10 +18,12 @@
  */
 package org.apache.xml.security.test.dom.c14n.implementations;
 
+import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
@@ -32,8 +34,6 @@ import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * This is a test for Santuario-273:
@@ -79,9 +79,12 @@ public class Santuario273Test {
 
     @org.junit.Test
     public void testC14n11Base() throws Exception {
+        DocumentBuilder documentBuilder = XMLUtils.createDocumentBuilder(true);
+
+        documentBuilder.setErrorHandler(new org.apache.xml.security.utils.IgnoreAllErrorHandler());
         Document doc = null;
         try (InputStream is = new ByteArrayInputStream(input.getBytes())) {
-            doc = XMLUtils.read(is, false);
+            doc = documentBuilder.parse(is);
         }
 
         Canonicalizer c14n =

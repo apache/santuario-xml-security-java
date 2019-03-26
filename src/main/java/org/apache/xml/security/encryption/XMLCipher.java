@@ -1864,12 +1864,14 @@ public class XMLCipher {
         EncryptedData result = null;
         CipherData data = null;
 
-        if (CipherData.REFERENCE_TYPE == type) {
+        switch (type) {
+        case CipherData.REFERENCE_TYPE:
             CipherReference cipherReference = factory.newCipherReference(value);
             data = factory.newCipherData(type);
             data.setCipherReference(cipherReference);
             result = factory.newEncryptedData(data);
-        } else if (CipherData.VALUE_TYPE == type) {
+            break;
+        case CipherData.VALUE_TYPE:
             CipherValue cipherValue = factory.newCipherValue(value);
             data = factory.newCipherData(type);
             data.setCipherValue(cipherValue);
@@ -1917,12 +1919,14 @@ public class XMLCipher {
         EncryptedKey result = null;
         CipherData data = null;
 
-        if (CipherData.REFERENCE_TYPE == type) {
+        switch (type) {
+        case CipherData.REFERENCE_TYPE:
             CipherReference cipherReference = factory.newCipherReference(value);
             data = factory.newCipherData(type);
             data.setCipherReference(cipherReference);
             result = factory.newEncryptedKey(data);
-        } else if (CipherData.VALUE_TYPE == type) {
+            break;
+        case CipherData.VALUE_TYPE:
             CipherValue cipherValue = factory.newCipherValue(value);
             data = factory.newCipherData(type);
             data.setCipherValue(cipherValue);
@@ -2478,7 +2482,8 @@ public class XMLCipher {
 
             ReferenceList result = new ReferenceListImpl(type);
             NodeList list = null;
-            if (ReferenceList.DATA_REFERENCE == type) {
+            switch (type) {
+            case ReferenceList.DATA_REFERENCE:
                 list =
                     element.getElementsByTagNameNS(
                         EncryptionConstants.EncryptionSpecNS,
@@ -2488,7 +2493,8 @@ public class XMLCipher {
                     String uri = ((Element) list.item(i)).getAttributeNS(null, "URI");
                     result.add(result.newDataReference(uri));
                 }
-            } else if (ReferenceList.KEY_REFERENCE == type) {
+                break;
+            case ReferenceList.KEY_REFERENCE:
                 list =
                     element.getElementsByTagNameNS(
                         EncryptionConstants.EncryptionSpecNS,
@@ -2538,7 +2544,7 @@ public class XMLCipher {
              * @param algorithm
              */
             public AgreementMethodImpl(String algorithm) {
-                agreementMethodInformation = new LinkedList<>();
+                agreementMethodInformation = new LinkedList<Element>();
                 URI tmpAlgorithm = null;
                 try {
                     tmpAlgorithm = new URI(algorithm);
@@ -3086,7 +3092,7 @@ public class XMLCipher {
                     new IllegalArgumentException().initCause(ex);
                 }
                 this.algorithm = tmpAlgorithm.toString();
-                encryptionMethodInformation = new LinkedList<>();
+                encryptionMethodInformation = new LinkedList<Element>();
             }
 
             /** {@inheritDoc} */
@@ -3211,7 +3217,7 @@ public class XMLCipher {
              * Constructor.
              */
             public EncryptionPropertiesImpl() {
-                encryptionProperties = new LinkedList<>();
+                encryptionProperties = new LinkedList<EncryptionProperty>();
             }
 
             /** {@inheritDoc} */
@@ -3266,7 +3272,7 @@ public class XMLCipher {
              * Constructor.
              */
             public EncryptionPropertyImpl() {
-                encryptionInformation = new LinkedList<>();
+                encryptionInformation = new LinkedList<Element>();
             }
 
             /** {@inheritDoc} */
@@ -3278,7 +3284,7 @@ public class XMLCipher {
             public void setTarget(String target) {
                 if (target == null || target.length() == 0) {
                     this.target = null;
-                } else if (target.charAt(0) == '#') {
+                } else if (target.startsWith("#")) {
                     /*
                      * This is a same document URI reference. Do not parse,
                      * because it has no scheme.
@@ -3440,7 +3446,7 @@ public class XMLCipher {
                 } else {
                     throw new IllegalArgumentException();
                 }
-                references = new LinkedList<>();
+                references = new LinkedList<Reference>();
             }
 
             /** {@inheritDoc} */
@@ -3511,7 +3517,7 @@ public class XMLCipher {
 
                 ReferenceImpl(String uri) {
                     this.uri = uri;
-                    referenceInformation = new LinkedList<>();
+                    referenceInformation = new LinkedList<Element>();
                 }
 
                 /** {@inheritDoc} */

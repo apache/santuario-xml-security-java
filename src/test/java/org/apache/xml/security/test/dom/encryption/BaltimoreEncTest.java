@@ -33,6 +33,7 @@ import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -55,9 +56,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
+import static org.junit.Assert.*;
 
 /**
  * Interop test for XML Encryption
@@ -92,7 +91,8 @@ public class BaltimoreEncTest {
         }
         File f = new File(filename);
 
-        Document doc = XMLUtils.read(new java.io.FileInputStream(f), false);
+        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+        Document doc = db.parse(new java.io.FileInputStream(f));
 
         cardNumber = retrieveCCNumber(doc);
 
@@ -392,7 +392,8 @@ public class BaltimoreEncTest {
         }
         File f = new File(filename);
 
-        Document doc = XMLUtils.read(new java.io.FileInputStream(f), false);
+        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+        Document doc = db.parse(new java.io.FileInputStream(f));
 
         // Now we have the document, lets build the XMLCipher element
         Element ee = null;
@@ -431,7 +432,8 @@ public class BaltimoreEncTest {
         }
         File f = new File(filename);
 
-        Document doc = XMLUtils.read(new java.io.FileInputStream(f), false);
+        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+        Document doc = db.parse(new java.io.FileInputStream(f));
 
         // Now we have the document, lets build the XMLCipher element
         Element ee = null;
@@ -599,7 +601,7 @@ public class BaltimoreEncTest {
 
         String cc = retrieveCCNumber(d);
         LOG.debug("Retrieved Credit Card : " + cc);
-        assertEquals(cardNumber, cc);
+        assertTrue(cc, cc!= null && cc.equals(cardNumber));
 
         // Test cc numbers
         if (doNodeCheck) {

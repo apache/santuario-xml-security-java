@@ -18,6 +18,7 @@
  */
 package org.apache.xml.security.test.dom.keys.keyresolver;
 
+import static org.junit.Assert.*;
 
 import java.io.FileInputStream;
 import java.math.BigInteger;
@@ -36,6 +37,7 @@ import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import javax.xml.parsers.DocumentBuilder;
 
 import org.apache.xml.security.algorithms.JCEMapper;
 import org.apache.xml.security.encryption.EncryptedData;
@@ -60,10 +62,6 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-
 
 /**
  * KeyResolver test.
@@ -109,7 +107,8 @@ public class KeyResolverTest {
         KeyResolverSpi privateKeyResolver = new PrivateKeyResolver(ks, pwd);
         KeyResolverSpi secretKeyResolver = new SecretKeyResolver(ks, pwd);
 
-        Document doc = XMLUtils.newDocument();
+        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+        Document doc = db.newDocument();
 
         KeyInfo ki;
         X509Data x509data;
@@ -219,7 +218,7 @@ public class KeyResolverTest {
         }
 
         // Create a sample XML document
-        Document document = XMLUtils.newDocument();
+        Document document = XMLUtils.createDocumentBuilder(false).newDocument();
 
         Element rootElement = document.createElement("root");
         document.appendChild(rootElement);

@@ -139,7 +139,7 @@ public class FuncHere extends Function {
      * @param vars
      * @param globalsSize
      */
-    public void fixupVariables(@SuppressWarnings("rawtypes") java.util.Vector vars, int globalsSize) { //NOPMD
+    public void fixupVariables(@SuppressWarnings("rawtypes") java.util.Vector vars, int globalsSize) {
         // do nothing
     }
 }

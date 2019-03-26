@@ -230,7 +230,7 @@ public class X509KeySelector extends KeySelector {
         SignatureMethod sm) throws KeyStoreException {
         // skip non-signer certs
         boolean[] keyUsage = xcert.getKeyUsage();
-        if (keyUsage != null && !keyUsage[0]) {
+        if (keyUsage != null && keyUsage[0] == false) {
             return null;
         }
         String alias = ks.getCertificateAlias(xcert);
@@ -273,8 +273,15 @@ public class X509KeySelector extends KeySelector {
      */
     //@@@FIXME: this should also work for key types other than DSA/RSA
     private boolean algEquals(String algURI, String algName) {
-        return ("DSA".equalsIgnoreCase(algName) && algURI.equalsIgnoreCase(SignatureMethod.DSA_SHA1)
-            || "RSA".equalsIgnoreCase(algName) && algURI.equalsIgnoreCase(SignatureMethod.RSA_SHA1));
+        if (algName.equalsIgnoreCase("DSA") &&
+            algURI.equalsIgnoreCase(SignatureMethod.DSA_SHA1)) {
+            return true;
+        } else if (algName.equalsIgnoreCase("RSA") &&
+            algURI.equalsIgnoreCase(SignatureMethod.RSA_SHA1)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

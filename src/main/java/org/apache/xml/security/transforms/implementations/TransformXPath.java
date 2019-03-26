@@ -87,7 +87,7 @@ public class TransformXPath extends TransformSpi {
                     transformObject.getElement().getFirstChild(), Constants._TAG_XPATH, 0);
 
             if (xpathElement == null) {
-                Object[] exArgs = { "ds:XPath", "Transform" };
+                Object exArgs[] = { "ds:XPath", "Transform" };
 
                 throw new TransformationException("xml.WrongContent", exArgs);
             }

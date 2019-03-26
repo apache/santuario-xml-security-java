@@ -76,7 +76,7 @@ public abstract class SignatureAlgorithmSpi {
      * @param len
      * @throws XMLSignatureException
      */
-    protected abstract void engineUpdate(byte[] buf, int offset, int len)
+    protected abstract void engineUpdate(byte buf[], int offset, int len)
         throws XMLSignatureException;
 
     /**

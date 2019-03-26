@@ -18,33 +18,21 @@
  */
 package org.apache.xml.security.stax.ext.stax;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import org.apache.xml.security.stax.impl.stax.*;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.events.EntityDeclaration;
-
-import org.apache.xml.security.stax.impl.stax.XMLSecAttributeImpl;
-import org.apache.xml.security.stax.impl.stax.XMLSecCharactersImpl;
-import org.apache.xml.security.stax.impl.stax.XMLSecCommentImpl;
-import org.apache.xml.security.stax.impl.stax.XMLSecDTDImpl;
-import org.apache.xml.security.stax.impl.stax.XMLSecEndDocumentImpl;
-import org.apache.xml.security.stax.impl.stax.XMLSecEndElementImpl;
-import org.apache.xml.security.stax.impl.stax.XMLSecEntityDeclarationImpl;
-import org.apache.xml.security.stax.impl.stax.XMLSecEntityReferenceImpl;
-import org.apache.xml.security.stax.impl.stax.XMLSecNamespaceImpl;
-import org.apache.xml.security.stax.impl.stax.XMLSecProcessingInstructionImpl;
-import org.apache.xml.security.stax.impl.stax.XMLSecStartDocumentImpl;
-import org.apache.xml.security.stax.impl.stax.XMLSecStartElementImpl;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 /**
  */
-public final class XMLSecEventFactory {
+public class XMLSecEventFactory {
 
     private XMLSecEventFactory() {
     }

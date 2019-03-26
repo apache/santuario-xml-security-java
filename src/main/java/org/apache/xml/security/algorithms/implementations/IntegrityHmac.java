@@ -136,7 +136,7 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
                 supplied = secretKey.getClass().getName();
             }
             String needed = SecretKey.class.getName();
-            Object[] exArgs = { supplied, needed };
+            Object exArgs[] = { supplied, needed };
 
             throw new XMLSignatureException("algorithms.WrongKeyForThisOperation", exArgs);
         }
@@ -205,7 +205,7 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
                 supplied = secretKey.getClass().getName();
             }
             String needed = SecretKey.class.getName();
-            Object[] exArgs = { supplied, needed };
+            Object exArgs[] = { supplied, needed };
 
             throw new XMLSignatureException("algorithms.WrongKeyForThisOperation", exArgs);
         }
@@ -274,7 +274,7 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
      * @param len
      * @throws XMLSignatureException
      */
-    protected void engineUpdate(byte[] buf, int offset, int len) throws XMLSignatureException {
+    protected void engineUpdate(byte buf[], int offset, int len) throws XMLSignatureException {
         try {
             this.macAlgorithm.update(buf, offset, len);
         } catch (IllegalStateException ex) {

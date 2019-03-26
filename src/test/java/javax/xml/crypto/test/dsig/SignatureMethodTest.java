@@ -23,14 +23,9 @@ package javax.xml.crypto.test.dsig;
 
 import javax.xml.crypto.dsig.*;
 
+import static org.junit.Assert.*;
 
 import java.security.*;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
-
 
 /**
  * Unit test for javax.xml.crypto.dsig.SignatureMethod
@@ -40,7 +35,7 @@ public class SignatureMethodTest {
 
     XMLSignatureFactory factory;
 
-    private static final String[] SIG_ALGOS = {
+    private static final String SIG_ALGOS[] = {
         SignatureMethod.DSA_SHA1,
         SignatureMethod.RSA_SHA1,
         SignatureMethod.HMAC_SHA1
@@ -62,7 +57,7 @@ public class SignatureMethodTest {
                 fail("Should raise a NPE for null feature");
             } catch (NullPointerException npe) {}
 
-            assertFalse(sm.isFeatureSupported("not supported"));
+            assertTrue(!sm.isFeatureSupported("not supported"));
         }
     }
 
@@ -104,3 +99,4 @@ public class SignatureMethodTest {
     }
 
 }
+

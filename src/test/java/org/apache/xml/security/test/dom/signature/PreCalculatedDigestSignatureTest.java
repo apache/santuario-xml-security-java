@@ -37,7 +37,10 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.FileInputStream;
@@ -49,7 +52,6 @@ import java.security.cert.X509Certificate;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
 
 public class PreCalculatedDigestSignatureTest {
 
@@ -119,8 +121,9 @@ public class PreCalculatedDigestSignatureTest {
         assertTrue(signature.checkSignatureValue(signingCert));
     }
 
-    private XMLSignature openSignature(String signatureFile) throws Exception {
-        Document document = XMLUtils.read(new FileInputStream(new File(signatureFile)), false);
+    private XMLSignature openSignature(String signatureFile) throws ParserConfigurationException, SAXException, IOException, XMLSecurityException {
+        DocumentBuilder builder = createDocumentBuilder();
+        Document document = builder.parse(new File(signatureFile));
         Element root = document.getDocumentElement();
         Element signatureDocument = (Element) root.getFirstChild();
         String baseURI = "";
@@ -136,7 +139,8 @@ public class PreCalculatedDigestSignatureTest {
     }
 
     private XMLSignature createXmlSignature() throws ParserConfigurationException, XMLSecurityException {
-        Document signatureDocument = XMLUtils.newDocument();
+        DocumentBuilder documentBuilder = createDocumentBuilder();
+        Document signatureDocument = documentBuilder.newDocument();
         Element root = createSignatureRoot(signatureDocument);
 
         String baseURI = "";
@@ -146,6 +150,12 @@ public class PreCalculatedDigestSignatureTest {
         Transforms transforms = createTransformsForSignature(signatureDocument);
         signature.addDocument("", transforms, "http://www.w3.org/2001/04/xmlenc#sha256");
         return signature;
+    }
+
+    private DocumentBuilder createDocumentBuilder() throws ParserConfigurationException {
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        documentBuilderFactory.setNamespaceAware(true);
+        return documentBuilderFactory.newDocumentBuilder();
     }
 
     private Transforms createTransformsForSignature(Document signatureDocument) throws TransformationException {

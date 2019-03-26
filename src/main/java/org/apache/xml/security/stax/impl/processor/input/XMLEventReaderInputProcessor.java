@@ -18,21 +18,17 @@
  */
 package org.apache.xml.security.stax.impl.processor.input;
 
-import java.util.NoSuchElementException;
+import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.stax.config.ConfigurationProperties;
+import org.apache.xml.security.stax.ext.*;
+import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
+import org.apache.xml.security.stax.ext.stax.XMLSecEventFactory;
+import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
 
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-
-import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.stax.config.ConfigurationProperties;
-import org.apache.xml.security.stax.ext.AbstractInputProcessor;
-import org.apache.xml.security.stax.ext.InputProcessorChain;
-import org.apache.xml.security.stax.ext.XMLSecurityConstants;
-import org.apache.xml.security.stax.ext.XMLSecurityProperties;
-import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
-import org.apache.xml.security.stax.ext.stax.XMLSecEventFactory;
-import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
+import java.util.NoSuchElementException;
 
 /**
  * The XMLEventReaderInputProcessor reads requested XMLEvents from the original XMLEventReader
@@ -68,23 +64,26 @@ public class XMLEventReaderInputProcessor extends AbstractInputProcessor {
 
     private XMLSecEvent processNextEventInternal() throws XMLStreamException {
         XMLSecEvent xmlSecEvent = XMLSecEventFactory.allocate(xmlStreamReader, parentXmlSecStartElement);
-        if (XMLStreamConstants.START_ELEMENT == xmlSecEvent.getEventType()) {
-            currentXMLStructureDepth++;
-            if (currentXMLStructureDepth > maximumAllowedXMLStructureDepth) {
-                XMLSecurityException xmlSecurityException = new XMLSecurityException(
-                                                                                     "secureProcessing.MaximumAllowedXMLStructureDepth",
-                                                                                     new Object[] {maximumAllowedXMLStructureDepth}
+        switch (xmlSecEvent.getEventType()) {
+            case XMLStreamConstants.START_ELEMENT:
+                currentXMLStructureDepth++;
+                if (currentXMLStructureDepth > maximumAllowedXMLStructureDepth) {
+                    XMLSecurityException xmlSecurityException = new XMLSecurityException(
+                            "secureProcessing.MaximumAllowedXMLStructureDepth",
+                            new Object[] {maximumAllowedXMLStructureDepth}
                     );
-                throw new XMLStreamException(xmlSecurityException);
-            }
+                    throw new XMLStreamException(xmlSecurityException);
+                }
 
-            parentXmlSecStartElement = (XMLSecStartElement) xmlSecEvent;
-        } else if (XMLStreamConstants.END_ELEMENT == xmlSecEvent.getEventType()) {
-            currentXMLStructureDepth--;
+                parentXmlSecStartElement = (XMLSecStartElement) xmlSecEvent;
+                break;
+            case XMLStreamConstants.END_ELEMENT:
+                currentXMLStructureDepth--;
 
-            if (parentXmlSecStartElement != null) {
-                parentXmlSecStartElement = parentXmlSecStartElement.getParentXMLSecStartElement();
-            }
+                if (parentXmlSecStartElement != null) {
+                    parentXmlSecStartElement = parentXmlSecStartElement.getParentXMLSecStartElement();
+                }
+                break;
         }
         if (xmlStreamReader.hasNext()) {
             xmlStreamReader.next();

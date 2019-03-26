@@ -18,28 +18,36 @@
  */
 package org.apache.xml.security.test.dom.signature;
 
+import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
+import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.apache.xml.security.Init;
 import org.apache.xml.security.c14n.InvalidCanonicalizerException;
+import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import org.xml.sax.SAXException;
 
 /**
  * Tests cases where signature algorithms are unknown.
@@ -69,7 +77,8 @@ public class UnknownAlgoSignatureTest {
         Init.init();
     }
 
-    public UnknownAlgoSignatureTest() throws Exception {
+    public UnknownAlgoSignatureTest() throws KeyStoreException, NoSuchAlgorithmException,
+        CertificateException, IOException {
         FileInputStream fis = null;
         if (BASEDIR != null && !"".equals(BASEDIR)) {
             fis = new FileInputStream(BASEDIR + SEP + KEYSTORE_FILE);
@@ -83,12 +92,14 @@ public class UnknownAlgoSignatureTest {
     }
 
     @org.junit.Test
-    public void testGood() throws Exception {
+    public void testGood() throws ParserConfigurationException, SAXException,
+        IOException, TransformerException, XMLSignatureException, XMLSecurityException, XPathExpressionException {
         assertTrue(checkSignature("signature-good.xml"));
     }
 
     @org.junit.Test
-    public void testBadC14NAlgo() throws Exception {
+    public void testBadC14NAlgo() throws ParserConfigurationException,
+        SAXException, IOException, TransformerException, XMLSecurityException, XPathExpressionException {
         try {
             assertTrue(checkSignature("signature-bad-c14n-algo.xml"));
             fail("Exception not caught");
@@ -98,7 +109,8 @@ public class UnknownAlgoSignatureTest {
     }
 
     @org.junit.Test
-    public void testBadSigAlgo() throws Exception {
+    public void testBadSigAlgo() throws ParserConfigurationException,
+        SAXException, IOException, TransformerException, XMLSecurityException, XPathExpressionException {
         try {
             assertTrue(checkSignature("signature-bad-sig-algo.xml"));
             fail("Exception not caught");
@@ -108,7 +120,8 @@ public class UnknownAlgoSignatureTest {
     }
 
     @org.junit.Test
-    public void testBadTransformAlgo() throws Exception {
+    public void testBadTransformAlgo() throws ParserConfigurationException,
+        SAXException, IOException, TransformerException, XMLSecurityException, XPathExpressionException {
         try {
             assertTrue(checkReferences("signature-bad-transform-algo.xml"));
             fail("Exception not caught");
@@ -117,17 +130,23 @@ public class UnknownAlgoSignatureTest {
         }
     }
 
-    protected boolean checkSignature(String fileName) throws Exception {
+    protected boolean checkSignature(String fileName)
+        throws ParserConfigurationException, SAXException, IOException,
+        TransformerException, XMLSecurityException, XPathExpressionException {
         XMLSignature signature = unmarshalXMLSignature(fileName);
         return signature.checkSignatureValue(publicKey);
     }
 
-    protected boolean checkReferences(String fileName) throws Exception {
+    protected boolean checkReferences(String fileName)
+        throws ParserConfigurationException, SAXException, IOException,
+        TransformerException, XMLSecurityException, XPathExpressionException {
         XMLSignature signature = unmarshalXMLSignature(fileName);
         return signature.getSignedInfo().verify(false);
     }
 
-    private XMLSignature unmarshalXMLSignature(String fileName) throws Exception {
+    private XMLSignature unmarshalXMLSignature(String fileName)
+        throws ParserConfigurationException, SAXException, IOException,
+        TransformerException, XMLSecurityException, XPathExpressionException {
         File file = null;
         if (BASEDIR != null && !"".equals(BASEDIR)) {
             file = new File(BASEDIR + SEP + SIGNATURE_SOURCE_PATH, fileName);
@@ -146,8 +165,11 @@ public class UnknownAlgoSignatureTest {
         return new XMLSignature(sigElement, file.toURI().toURL().toString());
     }
 
-    public static Document getDocument(File file) throws Exception {
-        return XMLUtils.read(new FileInputStream(file), false);
+    public static Document getDocument(File file)
+        throws ParserConfigurationException, SAXException, IOException {
+        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+        Document doc = db.parse(new FileInputStream(file));
+        return doc;
     }
 
 }

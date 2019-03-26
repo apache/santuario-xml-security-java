@@ -24,15 +24,11 @@ package javax.xml.crypto.test.dsig.keyinfo;
 import java.util.*;
 import java.security.cert.X509Certificate;
 
+import static org.junit.Assert.*;
 
 import java.security.cert.X509CRL;
 import javax.xml.crypto.*;
 import javax.xml.crypto.dsig.keyinfo.*;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-
 
 /**
  * Unit test for javax.xml.crypto.dsig.keyinfo.X509Data
@@ -82,6 +78,6 @@ public class X509DataTest {
             fail("Should raise a NPE for null feature");
         } catch (NullPointerException npe) {}
 
-        assertFalse(x509.isFeatureSupported("not supported"));
+        assertTrue(!x509.isFeatureSupported("not supported"));
     }
 }

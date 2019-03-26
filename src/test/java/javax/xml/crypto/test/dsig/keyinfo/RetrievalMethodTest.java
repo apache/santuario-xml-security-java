@@ -21,15 +21,9 @@
  */
 package javax.xml.crypto.test.dsig.keyinfo;
 
+import static org.junit.Assert.*;
 
 import javax.xml.crypto.dsig.keyinfo.*;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
-
 
 /**
  * Unit test for javax.xml.crypto.dsig.keyinfo.RetrievalMethod
@@ -92,17 +86,20 @@ public class RetrievalMethodTest {
         String type = "http://www.w3.org/2000/09/xmldsig#X509Data";
         RetrievalMethod rm = null;
         for (int i = 0; i < 2; i++) {
-            if (i == 0) {
+            switch (i) {
+            case 0:
                 rm = fac.newRetrievalMethod(uri);
-            } else if (i == 1) {
+                break;
+            case 1:
                 rm = fac.newRetrievalMethod(uri, type, null);
+                break;
             }
             try {
                 rm.isFeatureSupported(null);
                 fail("Should raise a NPE for null feature");
             } catch (NullPointerException npe) {}
 
-            assertFalse(rm.isFeatureSupported("not supported"));
+            assertTrue(!rm.isFeatureSupported("not supported"));
         }
     }
 }

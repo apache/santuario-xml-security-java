@@ -18,34 +18,32 @@
  */
 package org.apache.xml.security.test.stax;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import org.apache.xml.security.stax.impl.util.TrimmerOutputStream;
 
 import java.io.ByteArrayOutputStream;
 
-import static org.junit.Assert.assertEquals;
-
 /**
  */
-public class TrimmerOutputStreamTest {
+public class TrimmerOutputStreamTest extends Assert {
 
-    private static final String TEST_STR
-        = "Within this class we test if the TrimmerOutputStream works correctly under different conditions";
+    private final String testString = "Within this class we test if the TrimmerOutputStream works correctly under different conditions";
 
     @Test
     public void testWriteSingleBytes() throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         TrimmerOutputStream trimmerOutputStream = new TrimmerOutputStream(baos, 32, 3, 4);
 
-        byte[] TEST_STRBytes = ("<a>" + TEST_STR + "</a>").getBytes();
-        for (int i = 0; i < TEST_STRBytes.length; i++) {
-            trimmerOutputStream.write(TEST_STRBytes[i]);
+        byte[] testStringBytes = ("<a>" + testString + "</a>").getBytes();
+        for (int i = 0; i < testStringBytes.length; i++) {
+            trimmerOutputStream.write(testStringBytes[i]);
         }
         trimmerOutputStream.close();
 
-        assertEquals(baos.size(), TEST_STRBytes.length - 7);
-        assertEquals(baos.toString(), TEST_STR);
+        Assert.assertEquals(baos.size(), testStringBytes.length - 7);
+        Assert.assertEquals(baos.toString(), testString);
     }
 
     @Test
@@ -55,25 +53,25 @@ public class TrimmerOutputStreamTest {
 
         StringBuilder stringBuffer = new StringBuilder("<a>");
         for (int i = 0; i < 100; i++) {
-            stringBuffer.append(TEST_STR);
+            stringBuffer.append(testString);
         }
         stringBuffer.append("</a>");
 
-        byte[] TEST_STRBytes = stringBuffer.toString().getBytes();
+        byte[] testStringBytes = stringBuffer.toString().getBytes();
 
         int written = 0;
         int count = 0;
         do {
             count++;
-            trimmerOutputStream.write(TEST_STRBytes, written, count);
+            trimmerOutputStream.write(testStringBytes, written, count);
             written += count;
         }
-        while ((written + count + 1) < TEST_STRBytes.length);
+        while ((written + count + 1) < testStringBytes.length);
 
-        trimmerOutputStream.write(TEST_STRBytes, written, TEST_STRBytes.length - written);
+        trimmerOutputStream.write(testStringBytes, written, testStringBytes.length - written);
         trimmerOutputStream.close();
 
-        assertEquals(baos.size(), TEST_STRBytes.length - 7);
-        assertEquals(baos.toString(), stringBuffer.toString().substring(3, stringBuffer.length() - 4));
+        Assert.assertEquals(baos.size(), testStringBytes.length - 7);
+        Assert.assertEquals(baos.toString(), stringBuffer.toString().substring(3, stringBuffer.length() - 4));
     }
 }

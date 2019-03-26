@@ -29,15 +29,14 @@ import javax.xml.crypto.dsig.*;
 import javax.xml.crypto.dsig.dom.*;
 import javax.xml.crypto.dsig.keyinfo.*;
 import javax.xml.crypto.dsig.spec.*;
+import javax.xml.parsers.DocumentBuilder;
 
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.*;
 
 import javax.xml.crypto.test.KeySelectors;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
 
 /**
  * This is a testcase to generate all the W3C xmldsig XMLDSig11 testcases.
@@ -53,6 +52,7 @@ public class CreateInteropXMLDSig11Test {
                             hmacSha384, hmacSha512;
     private KeyInfo p256ki, p384ki, p521ki, rsaki, rsa2048ki;
     private XMLSignatureFactory fac;
+    private DocumentBuilder db;
     private KeyPair p256, p384, p521, rsa2048;
     private boolean ecSupport = true;
 
@@ -82,6 +82,7 @@ public class CreateInteropXMLDSig11Test {
         rsakpg.initialize(2048);
         rsa2048 = rsakpg.generateKeyPair();
 
+        db = XMLUtils.createDocumentBuilder(false);
         // create common objects
         fac = XMLSignatureFactory.getInstance("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
         KeyInfoFactory kifac = fac.getKeyInfoFactory();
@@ -294,7 +295,7 @@ public class CreateInteropXMLDSig11Test {
         SignedInfo si = fac.newSignedInfo(withoutComments, sm,
                                           Collections.singletonList(ref));
 
-        Document doc = XMLUtils.newDocument();
+        Document doc = db.newDocument();
         // create Objects
         Element webElem = doc.createElementNS(null, "Web");
         Text text = doc.createTextNode("up up and away");
@@ -315,7 +316,7 @@ public class CreateInteropXMLDSig11Test {
         (ks, doc.getDocumentElement());
         XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
 
-        assertEquals(sig, sig2);
+        assertTrue(sig.equals(sig2));
         assertTrue(sig2.validate(dvc));
     }
 

@@ -23,14 +23,9 @@ package javax.xml.crypto.test.dsig;
 
 import javax.xml.crypto.dsig.*;
 
+import static org.junit.Assert.*;
 
 import java.security.*;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
-
 
 /**
  * Unit test for javax.xml.crypto.dsig.DigestMethod
@@ -40,7 +35,7 @@ public class DigestMethodTest {
 
     private XMLSignatureFactory factory;
 
-    private static final String[] MD_ALGOS = {
+    private static final String MD_ALGOS[] = {
         DigestMethod.SHA1
     };
 
@@ -59,7 +54,7 @@ public class DigestMethodTest {
                 dm.isFeatureSupported(null);
                 fail("Should raise a NPE for null feature");
             } catch (NullPointerException npe) {}
-            assertFalse(dm.isFeatureSupported("not supported"));
+            assertTrue(!dm.isFeatureSupported("not supported"));
         }
     }
 
