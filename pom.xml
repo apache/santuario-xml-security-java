@@ -57,12 +57,12 @@
     </licenses>
     <scm>
         <connection>
-            scm:svn:http://svn.apache.org/repos/asf/santuario/xml-security-java/trunk/
+            scm:svn:http://svn.apache.org/repos/asf/santuario/xml-security-java/branches/2.1.x-fixes/
         </connection>
         <developerConnection>
-            scm:svn:https://svn.apache.org/repos/asf/santuario/xml-security-java/trunk/
+            scm:svn:https://svn.apache.org/repos/asf/santuario/xml-security-java/branches/2.1.x-fixes/
         </developerConnection>
-        <url>http://svn.apache.org/repos/asf/santuario/xml-security-java/trunk/</url>
+        <url>http://svn.apache.org/repos/asf/santuario/xml-security-java/branches/2.1.x-fixes/</url>
     </scm>
     <organization>
         <name>The Apache Software Foundation</name>
