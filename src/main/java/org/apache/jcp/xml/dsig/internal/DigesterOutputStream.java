@@ -19,9 +19,6 @@
 /*
  * Copyright 2005 Sun Microsystems, Inc. All rights reserved.
  */
-/*
- * $Id: DigesterOutputStream.java, v 1.5 2005/12/20 20:02:39 mullan Exp $
- */
 package org.apache.jcp.xml.dsig.internal;
 
 import java.io.ByteArrayInputStream;

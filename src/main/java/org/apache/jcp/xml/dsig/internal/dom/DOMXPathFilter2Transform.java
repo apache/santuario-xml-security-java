@@ -26,9 +26,6 @@
 /*
  * Portions copyright 2005 Sun Microsystems, Inc. All rights reserved.
  */
-/*
- * $Id$
- */
 package org.apache.jcp.xml.dsig.internal.dom;
 
 import java.security.InvalidAlgorithmParameterException;

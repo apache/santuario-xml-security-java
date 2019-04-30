@@ -26,9 +26,6 @@
  *
  * ===========================================================================
  */
-/*
- * $Id$
- */
 package org.apache.jcp.xml.dsig.internal.dom;
 
 import java.io.ByteArrayInputStream;

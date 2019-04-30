@@ -19,9 +19,6 @@
 /*
  * Copyright 2005 Sun Microsystems, Inc. All rights reserved.
  */
-/*
- * $Id$
- */
 package org.apache.xml.security.signature.reference;
 
 import java.util.Iterator;

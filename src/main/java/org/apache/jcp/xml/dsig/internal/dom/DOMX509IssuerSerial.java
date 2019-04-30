@@ -19,9 +19,6 @@
 /*
  * Copyright 2005 Sun Microsystems, Inc. All rights reserved.
  */
-/*
- * $Id$
- */
 package org.apache.jcp.xml.dsig.internal.dom;
 
 import javax.xml.crypto.MarshalException;
