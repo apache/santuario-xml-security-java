@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.transform.TransformerException;
 
 import org.apache.xml.security.c14n.CanonicalizationException;
@@ -144,11 +145,7 @@ public class TransformXPath2Filter extends TransformSpi {
             throw new TransformationException(ex);
         } catch (XMLSecurityException ex) {
             throw new TransformationException(ex);
-        } catch (SAXException ex) {
-            throw new TransformationException(ex);
-        } catch (IOException ex) {
-            throw new TransformationException(ex);
-        } catch (ParserConfigurationException ex) {
+        } catch (ParserConfigurationException | IOException | SAXException | XMLStreamException ex) {
             throw new TransformationException(ex);
         }
     }

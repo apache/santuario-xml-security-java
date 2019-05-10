@@ -18,9 +18,19 @@
  */
 package org.apache.xml.security.test.dom;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+
+import org.apache.xml.security.staxutils.DOMUtils;
+import org.apache.xml.security.staxutils.StaxUtils;
 import org.apache.xml.security.utils.Constants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 public class TestUtils {
 
@@ -40,6 +50,29 @@ public class TestUtils {
         Element ctx = doc.createElementNS(null, "namespaceContext");
         ctx.setAttributeNS(Constants.NamespaceSpecNS, "xmlns:" + prefix.trim(), namespace);
         return ctx;
+    }
+
+    public static Document read(String uri, String systemId, boolean disAllowDocTypeDeclarations)
+        throws ParserConfigurationException, SAXException, IOException, XMLStreamException {
+        XMLStreamReader reader = StaxUtils.createXMLStreamReader(systemId, new FileInputStream(uri), disAllowDocTypeDeclarations);
+        try {
+            Document doc = DOMUtils.newDocument(disAllowDocTypeDeclarations);
+            if (reader.getLocation().getSystemId() != null) {
+                try {
+                    doc.setDocumentURI(reader.getLocation().getSystemId());
+                } catch (Exception e) {
+                    //ignore - probably not DOM level 3
+                }
+            }
+            StaxUtils.readDocElements(doc, doc, reader, true, false);
+            return doc;
+        } finally {
+            try {
+                reader.close();
+            } catch (Exception ex) {
+                //ignore
+            }
+        }
     }
 
 }

@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.io.StringReader;
 
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.stream.XMLStreamException;
 
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
@@ -89,12 +90,8 @@ public class DocumentSerializer extends AbstractSerializer {
                 child = fragElt.getFirstChild();
             }
             return result;
-        } catch (SAXException se) {
-            throw new XMLEncryptionException(se);
-        } catch (ParserConfigurationException pce) {
-            throw new XMLEncryptionException(pce);
-        } catch (IOException ioe) {
-            throw new XMLEncryptionException(ioe);
+        } catch (ParserConfigurationException | IOException | SAXException | XMLStreamException ex) {
+            throw new XMLEncryptionException(ex);
         }
     }
 

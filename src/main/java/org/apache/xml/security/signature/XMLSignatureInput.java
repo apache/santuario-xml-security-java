@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.stream.XMLStreamException;
 
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.implementations.Canonicalizer11_OmitComments;
@@ -191,9 +192,10 @@ public class XMLSignatureInput {
      * @throws IOException
      * @throws ParserConfigurationException
      * @throws CanonicalizationException
+     * @throws XMLStreamException
      */
     public Set<Node> getNodeSet() throws CanonicalizationException, ParserConfigurationException,
-        IOException, SAXException {
+        IOException, SAXException, XMLStreamException {
         return getNodeSet(false);
     }
 
@@ -215,9 +217,10 @@ public class XMLSignatureInput {
      * @throws IOException
      * @throws ParserConfigurationException
      * @throws CanonicalizationException
+     * @throws XMLStreamException
      */
     public Set<Node> getNodeSet(boolean circumvent) throws ParserConfigurationException,
-        IOException, SAXException, CanonicalizationException {
+        IOException, SAXException, CanonicalizationException, XMLStreamException {
         if (inputNodeSet != null) {
             return inputNodeSet;
         }
@@ -568,7 +571,7 @@ public class XMLSignatureInput {
     }
 
     void convertToNodes() throws CanonicalizationException,
-        ParserConfigurationException, IOException, SAXException {
+        ParserConfigurationException, IOException, SAXException, XMLStreamException {
         // select all nodes, also the comments.
         try {
             Document doc = XMLUtils.read(this.getOctetStream(), secureValidation);

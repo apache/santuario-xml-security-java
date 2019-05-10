@@ -26,6 +26,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.xml.stream.XMLStreamException;
+
 import org.apache.xml.security.c14n.implementations.Canonicalizer11_OmitComments;
 import org.apache.xml.security.c14n.implementations.Canonicalizer11_WithComments;
 import org.apache.xml.security.c14n.implementations.Canonicalizer20010315ExclOmitComments;
@@ -246,10 +248,11 @@ public final class Canonicalizer {
      * @throws java.io.IOException
      * @throws javax.xml.parsers.ParserConfigurationException
      * @throws org.xml.sax.SAXException
+     * @throws XMLStreamException
      */
     public byte[] canonicalize(byte[] inputBytes)
         throws javax.xml.parsers.ParserConfigurationException,
-        java.io.IOException, org.xml.sax.SAXException, CanonicalizationException {
+        java.io.IOException, org.xml.sax.SAXException, CanonicalizationException, XMLStreamException {
         Document document = null;
         try (InputStream bais = new ByteArrayInputStream(inputBytes)) {
             InputSource in = new InputSource(bais);
