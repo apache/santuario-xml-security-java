@@ -31,15 +31,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
 
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.c14n.InvalidCanonicalizerException;
-import org.apache.xml.security.staxutils.DOMUtils;
-import org.apache.xml.security.staxutils.StaxUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -59,6 +58,13 @@ public final class XMLUtils {
     private static boolean ignoreLineBreaks =
         AccessController.doPrivileged(
             (PrivilegedAction<Boolean>) () -> Boolean.getBoolean("org.apache.xml.security.ignoreLineBreaks"));
+
+    @SuppressWarnings("unchecked")
+    private static final WeakObjectPool<DocumentBuilder, ParserConfigurationException> pools[] = new WeakObjectPool[2];
+    static {
+        pools[0] = new DocumentBuilderPool(false);
+        pools[1] = new DocumentBuilderPool(true);
+    }
 
     private static volatile String dsPrefix = "ds";
     private static volatile String ds11Prefix = "dsig11";
@@ -998,61 +1004,55 @@ public final class XMLUtils {
     }
 
     public static Document newDocument() throws ParserConfigurationException {
-        return DOMUtils.newDocument(true);
+        DocumentBuilder documentBuilder = createDocumentBuilder(true);
+        Document doc = documentBuilder.newDocument();
+        repoolDocumentBuilder(documentBuilder, true);
+        return doc;
     }
 
-    public static Document read(InputStream inputStream) throws ParserConfigurationException, SAXException, IOException, XMLStreamException {
+    public static Document read(InputStream inputStream) throws ParserConfigurationException, SAXException, IOException {
         return read(inputStream, true);
     }
 
-    public static Document read(InputStream inputStream, boolean disAllowDocTypeDeclarations)
-        throws ParserConfigurationException, SAXException, IOException, XMLStreamException {
-        XMLStreamReader reader = StaxUtils.createXMLStreamReader(inputStream, disAllowDocTypeDeclarations);
-        try {
-            Document doc = DOMUtils.newDocument(disAllowDocTypeDeclarations);
-            if (reader.getLocation().getSystemId() != null) {
-                try {
-                    doc.setDocumentURI(reader.getLocation().getSystemId());
-                } catch (Exception e) {
-                    //ignore - probably not DOM level 3
-                }
-            }
-            StaxUtils.readDocElements(doc, doc, reader, true, false);
-            return doc;
-        } finally {
-            try {
-                reader.close();
-            } catch (Exception ex) {
-                //ignore
-            }
-        }
+    public static Document read(InputStream inputStream, boolean disAllowDocTypeDeclarations) throws ParserConfigurationException, SAXException, IOException {
+        DocumentBuilder documentBuilder = createDocumentBuilder(disAllowDocTypeDeclarations);
+        Document doc = documentBuilder.parse(inputStream);
+        repoolDocumentBuilder(documentBuilder, disAllowDocTypeDeclarations);
+        return doc;
     }
 
-    public static Document read(InputSource inputSource) throws ParserConfigurationException, SAXException, IOException, XMLStreamException {
+    public static Document read(String uri, boolean disAllowDocTypeDeclarations)
+        throws ParserConfigurationException, SAXException, IOException {
+        DocumentBuilder documentBuilder = createDocumentBuilder(disAllowDocTypeDeclarations);
+        Document doc = documentBuilder.parse(uri);
+        repoolDocumentBuilder(documentBuilder, disAllowDocTypeDeclarations);
+        return doc;
+    }
+
+    public static Document read(InputSource inputSource) throws ParserConfigurationException, SAXException, IOException {
         return read(inputSource, true);
     }
 
     public static Document read(InputSource inputSource, boolean disAllowDocTypeDeclarations)
-        throws ParserConfigurationException, SAXException, IOException, XMLStreamException {
-        XMLStreamReader reader = StaxUtils.createXMLStreamReader(inputSource, disAllowDocTypeDeclarations);
-        try {
-            Document doc = DOMUtils.newDocument(disAllowDocTypeDeclarations);
-            if (reader.getLocation().getSystemId() != null) {
-                try {
-                    doc.setDocumentURI(reader.getLocation().getSystemId());
-                } catch (Exception e) {
-                    //ignore - probably not DOM level 3
-                }
-            }
-            StaxUtils.readDocElements(doc, doc, reader, true, false);
-            return doc;
-        } finally {
-            try {
-                reader.close();
-            } catch (Exception ex) {
-                //ignore
-            }
-        }
+        throws ParserConfigurationException, SAXException, IOException {
+        DocumentBuilder documentBuilder = createDocumentBuilder(disAllowDocTypeDeclarations);
+        Document doc = documentBuilder.parse(inputSource);
+        repoolDocumentBuilder(documentBuilder, disAllowDocTypeDeclarations);
+        return doc;
+    }
+
+    private static DocumentBuilder createDocumentBuilder(
+        boolean disAllowDocTypeDeclarations
+    ) throws ParserConfigurationException {
+        int idx = getPoolsIndex(disAllowDocTypeDeclarations);
+        return pools[idx].getObject();
+    }
+
+
+    private static boolean repoolDocumentBuilder(DocumentBuilder db, boolean disAllowDocTypeDeclarations) {
+        db.reset();
+        int idx = getPoolsIndex(disAllowDocTypeDeclarations);
+        return pools[idx].repool(db);
     }
 
     /**
@@ -1098,6 +1098,36 @@ public final class XMLUtils {
         System.arraycopy(bigBytes, startSrc, resizedBytes, startDst, bigLen);
 
         return resizedBytes;
+    }
+
+    private static final class DocumentBuilderPool
+        extends WeakObjectPool<DocumentBuilder, ParserConfigurationException> {
+
+        private final boolean disAllowDocTypeDeclarations;
+
+        public DocumentBuilderPool(boolean disAllowDocTypeDeclarations) {
+            this.disAllowDocTypeDeclarations = disAllowDocTypeDeclarations;
+        }
+
+        @Override
+        protected DocumentBuilder createObject() throws ParserConfigurationException {
+            DocumentBuilderFactory dfactory = DocumentBuilderFactory.newInstance();
+            dfactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
+            if (disAllowDocTypeDeclarations) {
+                dfactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+            }
+            dfactory.setNamespaceAware(true);
+            return dfactory.newDocumentBuilder();
+        }
+    }
+
+    /**
+     * Maps the boolean configuration options for the factories to the array index for the WeakObjectPool
+     * @param disAllowDocTypeDeclarations
+     * @return the index to the {@link #pools}
+     */
+    private static int getPoolsIndex(boolean disAllowDocTypeDeclarations) {
+        return disAllowDocTypeDeclarations ? 1 : 0;
     }
 
 }

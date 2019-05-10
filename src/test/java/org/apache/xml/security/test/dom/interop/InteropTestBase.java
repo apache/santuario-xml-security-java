@@ -36,7 +36,6 @@ import org.apache.xml.security.signature.reference.ReferenceData;
 import org.apache.xml.security.signature.reference.ReferenceNodeSetData;
 import org.apache.xml.security.signature.reference.ReferenceOctetStreamData;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
-import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.utils.XMLUtils;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
 import org.w3c.dom.Element;
@@ -94,13 +93,8 @@ public class InteropTestBase {
     public boolean verify(String filename, ResourceResolverSpi resolver,
                           boolean followManifests, boolean secureValidation)
         throws Exception {
-        return verify(filename, resolver, null, followManifests, secureValidation);
-    }
-
-    public boolean verify(String filename, ResourceResolverSpi resolver, String systemId,
-                          boolean followManifests, boolean secureValidation)
-        throws Exception {
-        org.w3c.dom.Document doc = TestUtils.read(filename, systemId, false);
+        File f = new File(filename);
+        org.w3c.dom.Document doc = XMLUtils.read(new FileInputStream(f), false);
 
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();
@@ -109,7 +103,6 @@ public class InteropTestBase {
         String expression = "//ds:Signature[1]";
         Element sigElement =
             (Element) xpath.evaluate(expression, doc, XPathConstants.NODE);
-        File f = new File(filename);
         XMLSignature signature = new XMLSignature(sigElement, f.toURI().toURL().toString(), secureValidation);
 
         if (resolver != null) {

@@ -30,7 +30,6 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.stream.XMLStreamException;
 
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.InvalidCanonicalizerException;
@@ -400,7 +399,11 @@ public class Manifest extends SignatureElementProxy {
                         }
 
                         manifestReferences = referencedManifest.getVerificationResults();
-                    } catch (ParserConfigurationException | IOException | SAXException | XMLStreamException ex) {
+                    } catch (IOException ex) {
+                        throw new ReferenceNotInitializedException(ex);
+                    } catch (ParserConfigurationException ex) {
+                        throw new ReferenceNotInitializedException(ex);
+                    } catch (SAXException ex) {
                         throw new ReferenceNotInitializedException(ex);
                     }
                 }
