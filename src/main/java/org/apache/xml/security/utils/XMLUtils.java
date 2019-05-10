@@ -26,12 +26,16 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
+import java.util.WeakHashMap;
+import java.util.concurrent.ArrayBlockingQueue;
 
-import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -59,12 +63,9 @@ public final class XMLUtils {
         AccessController.doPrivileged(
             (PrivilegedAction<Boolean>) () -> Boolean.getBoolean("org.apache.xml.security.ignoreLineBreaks"));
 
-    @SuppressWarnings("unchecked")
-    private static final WeakObjectPool<DocumentBuilder, ParserConfigurationException> pools[] = new WeakObjectPool[2];
-    static {
-        pools[0] = new DocumentBuilderPool(false);
-        pools[1] = new DocumentBuilderPool(true);
-    }
+    private static int parserPoolSize =
+        AccessController.doPrivileged(
+            (PrivilegedAction<Integer>) () -> Integer.getInteger("org.apache.xml.security.parser.pool-size", 20));
 
     private static volatile String dsPrefix = "ds";
     private static volatile String ds11Prefix = "dsig11";
@@ -74,6 +75,11 @@ public final class XMLUtils {
     private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(XMLUtils.class);
 
+    private static final Map<ClassLoader, Queue<DocumentBuilder>> DOCUMENT_BUILDERS =
+        Collections.synchronizedMap(new WeakHashMap<ClassLoader, Queue<DocumentBuilder>>());
+
+    private static final Map<ClassLoader, Queue<DocumentBuilder>> DOCUMENT_BUILDERS_DISALLOW_DOCTYPE =
+        Collections.synchronizedMap(new WeakHashMap<ClassLoader, Queue<DocumentBuilder>>());
 
     /**
      * Constructor XMLUtils
@@ -1004,7 +1010,7 @@ public final class XMLUtils {
     }
 
     public static Document newDocument() throws ParserConfigurationException {
-        DocumentBuilder documentBuilder = createDocumentBuilder(true);
+        DocumentBuilder documentBuilder = getDocumentBuilder(true);
         Document doc = documentBuilder.newDocument();
         repoolDocumentBuilder(documentBuilder, true);
         return doc;
@@ -1015,7 +1021,7 @@ public final class XMLUtils {
     }
 
     public static Document read(InputStream inputStream, boolean disAllowDocTypeDeclarations) throws ParserConfigurationException, SAXException, IOException {
-        DocumentBuilder documentBuilder = createDocumentBuilder(disAllowDocTypeDeclarations);
+        DocumentBuilder documentBuilder = getDocumentBuilder(disAllowDocTypeDeclarations);
         Document doc = documentBuilder.parse(inputStream);
         repoolDocumentBuilder(documentBuilder, disAllowDocTypeDeclarations);
         return doc;
@@ -1023,7 +1029,7 @@ public final class XMLUtils {
 
     public static Document read(String uri, boolean disAllowDocTypeDeclarations)
         throws ParserConfigurationException, SAXException, IOException {
-        DocumentBuilder documentBuilder = createDocumentBuilder(disAllowDocTypeDeclarations);
+        DocumentBuilder documentBuilder = getDocumentBuilder(disAllowDocTypeDeclarations);
         Document doc = documentBuilder.parse(uri);
         repoolDocumentBuilder(documentBuilder, disAllowDocTypeDeclarations);
         return doc;
@@ -1035,24 +1041,10 @@ public final class XMLUtils {
 
     public static Document read(InputSource inputSource, boolean disAllowDocTypeDeclarations)
         throws ParserConfigurationException, SAXException, IOException {
-        DocumentBuilder documentBuilder = createDocumentBuilder(disAllowDocTypeDeclarations);
+        DocumentBuilder documentBuilder = getDocumentBuilder(disAllowDocTypeDeclarations);
         Document doc = documentBuilder.parse(inputSource);
         repoolDocumentBuilder(documentBuilder, disAllowDocTypeDeclarations);
         return doc;
-    }
-
-    private static DocumentBuilder createDocumentBuilder(
-        boolean disAllowDocTypeDeclarations
-    ) throws ParserConfigurationException {
-        int idx = getPoolsIndex(disAllowDocTypeDeclarations);
-        return pools[idx].getObject();
-    }
-
-
-    private static boolean repoolDocumentBuilder(DocumentBuilder db, boolean disAllowDocTypeDeclarations) {
-        db.reset();
-        int idx = getPoolsIndex(disAllowDocTypeDeclarations);
-        return pools[idx].repool(db);
     }
 
     /**
@@ -1100,34 +1092,75 @@ public final class XMLUtils {
         return resizedBytes;
     }
 
-    private static final class DocumentBuilderPool
-        extends WeakObjectPool<DocumentBuilder, ParserConfigurationException> {
-
-        private final boolean disAllowDocTypeDeclarations;
-
-        public DocumentBuilderPool(boolean disAllowDocTypeDeclarations) {
-            this.disAllowDocTypeDeclarations = disAllowDocTypeDeclarations;
+    private static DocumentBuilder getDocumentBuilder(boolean disAllowDocTypeDeclarations) throws ParserConfigurationException {
+        ClassLoader loader = getContextClassLoader();
+        if (loader == null) {
+            loader = getClassLoader(XMLUtils.class);
+        }
+        if (loader == null) {
+            return createDocumentBuilder(disAllowDocTypeDeclarations);
         }
 
-        @Override
-        protected DocumentBuilder createObject() throws ParserConfigurationException {
-            DocumentBuilderFactory dfactory = DocumentBuilderFactory.newInstance();
-            dfactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
-            if (disAllowDocTypeDeclarations) {
-                dfactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+        Map<ClassLoader, Queue<DocumentBuilder>> docBuilderCache =
+            disAllowDocTypeDeclarations ? DOCUMENT_BUILDERS_DISALLOW_DOCTYPE : DOCUMENT_BUILDERS;
+        Queue<DocumentBuilder> queue = docBuilderCache.get(loader);
+        if (queue == null) {
+            queue = new ArrayBlockingQueue<>(parserPoolSize);
+            docBuilderCache.put(loader, queue);
+        }
+
+        DocumentBuilder db = queue.poll();
+        if (db == null) {
+            db = createDocumentBuilder(disAllowDocTypeDeclarations);
+        }
+        return db;
+    }
+
+    private static DocumentBuilder createDocumentBuilder(boolean disAllowDocTypeDeclarations) throws ParserConfigurationException {
+        DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
+        f.setNamespaceAware(true);
+        f.setFeature(javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING, true);
+        f.setFeature("http://apache.org/xml/features/disallow-doctype-decl", disAllowDocTypeDeclarations);
+        return f.newDocumentBuilder();
+    }
+
+    private static void repoolDocumentBuilder(DocumentBuilder db, boolean disAllowDocTypeDeclarations) {
+        ClassLoader loader = getContextClassLoader();
+        if (loader == null) {
+            loader = getClassLoader(XMLUtils.class);
+        }
+        if (loader != null) {
+            Queue<DocumentBuilder> queue =
+                disAllowDocTypeDeclarations ? DOCUMENT_BUILDERS_DISALLOW_DOCTYPE.get(loader) : DOCUMENT_BUILDERS.get(loader);
+            if (queue != null) {
+                db.reset();
+                queue.offer(db);
             }
-            dfactory.setNamespaceAware(true);
-            return dfactory.newDocumentBuilder();
         }
     }
 
-    /**
-     * Maps the boolean configuration options for the factories to the array index for the WeakObjectPool
-     * @param disAllowDocTypeDeclarations
-     * @return the index to the {@link #pools}
-     */
-    private static int getPoolsIndex(boolean disAllowDocTypeDeclarations) {
-        return disAllowDocTypeDeclarations ? 1 : 0;
+    private static ClassLoader getContextClassLoader() {
+        final SecurityManager sm = System.getSecurityManager();
+        if (sm != null) {
+            return AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() {
+                public ClassLoader run() {
+                    return Thread.currentThread().getContextClassLoader();
+                }
+            });
+        }
+        return Thread.currentThread().getContextClassLoader();
+    }
+
+    private static ClassLoader getClassLoader(final Class<?> clazz) {
+        final SecurityManager sm = System.getSecurityManager();
+        if (sm != null) {
+            return AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() {
+                public ClassLoader run() {
+                    return clazz.getClassLoader();
+                }
+            });
+        }
+        return clazz.getClassLoader();
     }
 
 }
