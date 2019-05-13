@@ -1078,11 +1078,8 @@ public class XMLCipher {
             throw new XMLEncryptionException("empty", "XMLCipher unexpectedly not in ENCRYPT_MODE...");
         }
 
-        if (contentMode) {
-            return encryptData(context, element, EncryptionConstants.TYPE_CONTENT, null);
-        } else {
-            return encryptData(context, element, EncryptionConstants.TYPE_ELEMENT, null);
-        }
+        String type = contentMode ? EncryptionConstants.TYPE_CONTENT : EncryptionConstants.TYPE_ELEMENT;
+        return encryptData(context, element, type, null);
     }
 
     private EncryptedData encryptData(
