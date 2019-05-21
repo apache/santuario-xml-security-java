@@ -29,7 +29,7 @@
         Processing, W3C Recommendation 10 December 2002. As of version 1.4,
         the library supports the standard Java API JSR-105: XML Digital Signature APIs.
     </description>
-    <url>http://santuario.apache.org/</url>
+    <url>https://santuario.apache.org/</url>
     <issueManagement>
         <system>JIRA</system>
         <url>https://issues.apache.org/jira/browse/SANTUARIO</url>
@@ -51,22 +51,22 @@
     <licenses>
         <license>
             <name>Apache License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
     <scm>
         <connection>
-            scm:svn:http://svn.apache.org/repos/asf/santuario/xml-security-java/trunk/
+            scm:svn:https://svn.apache.org/repos/asf/santuario/xml-security-java/trunk/
         </connection>
         <developerConnection>
             scm:svn:https://svn.apache.org/repos/asf/santuario/xml-security-java/trunk/
         </developerConnection>
-        <url>http://svn.apache.org/repos/asf/santuario/xml-security-java/trunk/</url>
+        <url>https://svn.apache.org/repos/asf/santuario/xml-security-java/trunk/</url>
     </scm>
     <organization>
         <name>The Apache Software Foundation</name>
-        <url>http://www.apache.org/</url>
+        <url>https://www.apache.org/</url>
     </organization>
 
     <parent>
