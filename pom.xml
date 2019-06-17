@@ -557,7 +557,7 @@
         <xmlunit.version>1.6</xmlunit.version>
         <commons.codec.version>1.12</commons.codec.version>
         <woodstox.core.version>5.2.0</woodstox.core.version>
-        <jetty.version>9.4.18.v20190429</jetty.version>
+        <jetty.version>9.4.19.v20190610</jetty.version>
         <xmlsec.jaxb.context.class />
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <targetJdk>1.8</targetJdk>
