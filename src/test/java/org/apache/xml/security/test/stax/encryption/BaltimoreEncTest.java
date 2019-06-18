@@ -50,13 +50,13 @@ import org.apache.xml.security.test.stax.utils.StAX2DOM;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.utils.JavaUtils;
 import org.apache.xml.security.utils.XMLUtils;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -72,7 +72,7 @@ public class BaltimoreEncTest {
     private XMLInputFactory xmlInputFactory;
     private TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         org.apache.xml.security.Init.init();
 
@@ -439,7 +439,7 @@ public class BaltimoreEncTest {
             int myNodeCount = countNodes(d);
 
             assertTrue(
-                "Node count mismatches", myNodeCount > 0 && myNodeCount == nodeCount
+                myNodeCount > 0 && myNodeCount == nodeCount, "Node count mismatches"
             );
         }
     }

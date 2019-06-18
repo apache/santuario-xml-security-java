@@ -27,7 +27,7 @@ import java.security.Security;
 
 import javax.xml.crypto.test.KeySelectors;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * This is a testcase to validate all "ec-merlin-iaikTests-two"
@@ -54,12 +54,12 @@ public class BaltimoreIaik2Test {
         validator = new SignatureValidator(dir);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSignature() throws Exception {
         String file = "signature.xml";
         boolean coreValidity = validator.validate
             (file, new KeySelectors.KeyValueKeySelector());
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
 }

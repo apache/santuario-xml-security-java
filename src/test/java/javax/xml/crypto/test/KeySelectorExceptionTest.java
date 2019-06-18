@@ -27,9 +27,9 @@ import java.io.PrintStream;
 import java.util.Arrays;
 import javax.xml.crypto.KeySelectorException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -38,7 +38,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class KeySelectorExceptionTest {
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testConstructor() {
         // test KeySelectorException()
         KeySelectorException kse = new KeySelectorException();

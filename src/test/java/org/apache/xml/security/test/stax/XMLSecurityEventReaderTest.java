@@ -18,7 +18,7 @@
  */
 package org.apache.xml.security.test.stax;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 import org.apache.xml.security.stax.ext.stax.XMLSecEventFactory;
@@ -31,9 +31,9 @@ import javax.xml.stream.events.XMLEvent;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  */

@@ -29,9 +29,9 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 public class ReferenceListTest {
@@ -44,7 +44,7 @@ public class ReferenceListTest {
         org.apache.xml.security.Init.init();
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testReferenceList() throws Exception {
         Document doc = XMLUtils.newDocument();
 

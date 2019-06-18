@@ -41,8 +41,9 @@ import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.stax.ext.XMLSecurityProperties;
 import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
 import org.apache.xml.security.utils.XMLUtils;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 
 /**
@@ -52,7 +53,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
 
     private static boolean bcInstalled;
 
-    @BeforeClass
+    @BeforeAll
     public static void setup() throws Exception {
         //
         // If the BouncyCastle provider is not installed, then try to load it
@@ -74,7 +75,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         }
     }
 
-    @org.junit.AfterClass
+    @org.junit.jupiter.api.AfterAll
     public static void cleanup() throws Exception {
         Security.removeProvider("BC");
     }
@@ -306,7 +307,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
 
     @Test
     public void testRIPEMD160() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();

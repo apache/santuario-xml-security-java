@@ -36,7 +36,7 @@ public class SignatureAlgorithmTest {
         org.apache.xml.security.Init.init();
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSameKeySeveralAlgorithmSigning() throws Exception {
         Document doc = XMLUtils.newDocument();
         SignatureAlgorithm signatureAlgorithm =

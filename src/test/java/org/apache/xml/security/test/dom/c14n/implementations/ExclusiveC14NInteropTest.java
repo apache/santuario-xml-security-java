@@ -29,7 +29,7 @@ import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Element;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -57,7 +57,7 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_Y1() throws Exception {
 
         String success = t("src/test/resources/interop/c14n/Y1", "exc-signature.xml", true);
@@ -70,7 +70,7 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_Y2() throws Exception {
 
         String success = t("src/test/resources/interop/c14n/Y2", "signature-joseph-exc.xml", false);
@@ -83,7 +83,7 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_Y3() throws Exception {
 
         String success = t("src/test/resources/interop/c14n/Y3", "signature.xml", false);
@@ -96,7 +96,7 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_Y4() throws Exception {
 
         String success = t("src/test/resources/interop/c14n/Y4", "signature.xml", true);
@@ -104,7 +104,7 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
         assertNull(success);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_xfilter2() throws Exception {
 
         String success = t("src/test/resources/interop/xfilter2/merlin-xpath-filter2-three", "sign-spec.xml", true);

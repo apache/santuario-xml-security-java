@@ -59,7 +59,7 @@ public class ProcessingInstructionTest {
             fs + "security" + fs + "testcases" + fs;
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testProcessingInstruction() throws Exception {
         String signatureFileName = dir + "upp_sign.xml";
         File f = new File(signatureFileName);

@@ -56,11 +56,11 @@ import org.apache.xml.security.utils.resolver.ResourceResolverException;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
 import org.apache.xml.security.utils.resolver.implementations.ResolverXPointer;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -81,7 +81,7 @@ public class SignatureReferenceTest {
         ElementProxy.setDefaultPrefix(Constants.SignatureSpecNS, "ds");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSigningVerifyingReference() throws Throwable {
         Document doc = getOriginalDocument();
         XMLSignature signature = signDocument(doc);
@@ -110,7 +110,7 @@ public class SignatureReferenceTest {
     }
 
     // See SANTUARIO-465
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testNoReferenceChildren() throws ParserConfigurationException, XMLSecurityException {
         Document doc = XMLUtils.newDocument();
         Element referenceElement = doc.createElementNS(Constants.SignatureSpecNS, "Reference");
@@ -144,7 +144,7 @@ public class SignatureReferenceTest {
         new WrappedReference(referenceElement, "_54321", null);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testManifestReferences() throws Throwable {
 
         XPathFactory xpf = XPathFactory.newInstance();

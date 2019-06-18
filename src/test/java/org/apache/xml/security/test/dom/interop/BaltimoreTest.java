@@ -26,9 +26,9 @@ import java.nio.charset.StandardCharsets;
 
 import org.apache.xml.security.signature.XMLSignatureException;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -73,7 +73,7 @@ public class BaltimoreTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_fifteen_enveloping_hmac_sha1() throws Exception {
 
         String filename = merlinsDir15 + "signature-enveloping-hmac-sha1.xml";
@@ -84,7 +84,7 @@ public class BaltimoreTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(filename, verify);
+        assertTrue(verify, filename);
     }
 
     /**
@@ -92,7 +92,7 @@ public class BaltimoreTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_fifteen_enveloping_hmac_sha1_40() throws Exception {
 
         String filename = merlinsDir15 + "signature-enveloping-hmac-sha1-40.xml";
@@ -118,7 +118,7 @@ public class BaltimoreTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_fifteen_enveloped_dsa() throws Exception {
 
         String filename = merlinsDir15 + "signature-enveloped-dsa.xml";
@@ -137,7 +137,7 @@ public class BaltimoreTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(filename, verify);
+        assertTrue(verify, filename);
     }
 
     /**
@@ -145,7 +145,7 @@ public class BaltimoreTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_fifteen_enveloping_b64_dsa() throws Exception {
 
         String filename = merlinsDir15 + "signature-enveloping-b64-dsa.xml";
@@ -164,7 +164,7 @@ public class BaltimoreTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(filename, verify);
+        assertTrue(verify, filename);
     }
 
     /**
@@ -172,7 +172,7 @@ public class BaltimoreTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_fifteen_enveloping_dsa() throws Exception {
 
         String filename = merlinsDir15 + "signature-enveloping-dsa.xml";
@@ -191,7 +191,7 @@ public class BaltimoreTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(filename, verify);
+        assertTrue(verify, filename);
     }
 
     /**
@@ -199,7 +199,7 @@ public class BaltimoreTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_fifteen_enveloping_rsa() throws Exception {
 
         String filename = merlinsDir15 + "signature-enveloping-rsa.xml";
@@ -218,7 +218,7 @@ public class BaltimoreTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(filename, verify);
+        assertTrue(verify, filename);
     }
 
     /**
@@ -226,7 +226,7 @@ public class BaltimoreTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_fifteen_external_b64_dsa() throws Exception {
 
         String filename = merlinsDir15 + "signature-external-b64-dsa.xml";
@@ -245,7 +245,7 @@ public class BaltimoreTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(filename, verify);
+        assertTrue(verify, filename);
     }
 
     /**
@@ -253,7 +253,7 @@ public class BaltimoreTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_fifteen_external_dsa() throws Exception {
 
         String filename = merlinsDir15 + "signature-external-dsa.xml";
@@ -272,7 +272,7 @@ public class BaltimoreTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(filename, verify);
+        assertTrue(verify, filename);
     }
 
     /**
@@ -280,7 +280,7 @@ public class BaltimoreTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_sixteen_external_dsa() throws Exception {
 
         String filename =
@@ -300,7 +300,7 @@ public class BaltimoreTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(filename, verify);
+        assertTrue(verify, filename);
     }
 
     /**
@@ -311,7 +311,7 @@ public class BaltimoreTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_sixteen_bad_signature() throws Exception {
 
         String filename =
@@ -331,7 +331,7 @@ public class BaltimoreTest extends InteropTestBase {
             LOG.error("Verification passed (should have failed) for " + filename);
         }
 
-        assertFalse(filename, verify);
+        assertFalse(verify, filename);
     }
 
     /**
@@ -339,7 +339,7 @@ public class BaltimoreTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_twenty_three_enveloping_hmac_sha1() throws Exception {
 
         String filename = merlinsDir23 + "signature-enveloping-hmac-sha1.xml";
@@ -350,7 +350,7 @@ public class BaltimoreTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(filename, verify);
+        assertTrue(verify, filename);
     }
 
     /**
@@ -358,7 +358,7 @@ public class BaltimoreTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_twenty_three_enveloping_hmac_sha1_40() throws Exception {
 
         String filename = merlinsDir23 + "signature-enveloping-hmac-sha1-40.xml";
@@ -384,7 +384,7 @@ public class BaltimoreTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_twenty_three_enveloped_dsa() throws Exception {
 
         String filename = merlinsDir23 + "signature-enveloped-dsa.xml";
@@ -403,7 +403,7 @@ public class BaltimoreTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(filename, verify);
+        assertTrue(verify, filename);
     }
 
     /**
@@ -411,7 +411,7 @@ public class BaltimoreTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_twenty_three_enveloping_b64_dsa() throws Exception {
 
         String filename = merlinsDir23 + "signature-enveloping-b64-dsa.xml";
@@ -430,7 +430,7 @@ public class BaltimoreTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(filename, verify);
+        assertTrue(verify, filename);
     }
 
     /**
@@ -438,7 +438,7 @@ public class BaltimoreTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_twenty_three_enveloping_dsa() throws Exception {
 
         String filename = merlinsDir23 + "signature-enveloping-dsa.xml";
@@ -457,7 +457,7 @@ public class BaltimoreTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(filename, verify);
+        assertTrue(verify, filename);
     }
 
     /**
@@ -465,7 +465,7 @@ public class BaltimoreTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_twenty_three_enveloping_rsa() throws Exception {
 
         String filename = merlinsDir23 + "signature-enveloping-rsa.xml";
@@ -484,7 +484,7 @@ public class BaltimoreTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(filename, verify);
+        assertTrue(verify, filename);
     }
 
     /**
@@ -492,7 +492,7 @@ public class BaltimoreTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_twenty_three_external_b64_dsa() throws Exception {
 
         String filename = merlinsDir23 + "signature-external-b64-dsa.xml";
@@ -511,7 +511,7 @@ public class BaltimoreTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(filename, verify);
+        assertTrue(verify, filename);
     }
 
     /**
@@ -519,7 +519,7 @@ public class BaltimoreTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_twenty_three_external_dsa() throws Exception {
 
         String filename = merlinsDir23 + "signature-external-dsa.xml";
@@ -538,7 +538,7 @@ public class BaltimoreTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(filename, verify);
+        assertTrue(verify, filename);
     }
 
     /**
@@ -546,7 +546,7 @@ public class BaltimoreTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_twenty_three_external_dsa_2() throws Exception {
 
         String filename =
@@ -566,7 +566,7 @@ public class BaltimoreTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(filename, verify);
+        assertTrue(verify, filename);
     }
 
 }

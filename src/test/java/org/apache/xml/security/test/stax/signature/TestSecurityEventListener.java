@@ -18,6 +18,9 @@
  */
 package org.apache.xml.security.test.stax.signature;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,9 +28,6 @@ import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.securityEvent.SecurityEvent;
 import org.apache.xml.security.stax.securityEvent.SecurityEventConstants.Event;
 import org.apache.xml.security.stax.securityEvent.SecurityEventListener;
-
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 public class TestSecurityEventListener implements SecurityEventListener {
     private List<SecurityEvent> events = new ArrayList<>();
@@ -37,7 +37,7 @@ public class TestSecurityEventListener implements SecurityEventListener {
             throws XMLSecurityException {
 
         assertNotNull("CorrelationID of SecurityEvent is null: " + securityEvent.getSecurityEventType(), securityEvent.getCorrelationID());
-        assertTrue("CorrelationID of SecurityEvent is empty: " + securityEvent.getSecurityEventType(), securityEvent.getCorrelationID().length() > 0);
+        assertTrue(securityEvent.getCorrelationID().length() > 0, "CorrelationID of SecurityEvent is empty: " + securityEvent.getSecurityEventType());
         events.add(securityEvent);
     }
 

@@ -27,7 +27,7 @@ import java.security.Security;
 
 import javax.xml.crypto.test.KeySelectors;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * This is a testcase to validate all "bdournaee"
@@ -52,22 +52,22 @@ public class ComRSASecurityTest {
             (base, "rsasecurity/bdournaee"));
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_certj201_enveloping() throws Exception {
         String file = "certj201_enveloping.xml";
 
         boolean coreValidity = validator.validate
             (file, new KeySelectors.KeyValueKeySelector());
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_certj201_enveloped() throws Exception {
         String file = "certj201_enveloped.xml";
 
         boolean coreValidity = validator.validate
             (file, new KeySelectors.KeyValueKeySelector());
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
 }

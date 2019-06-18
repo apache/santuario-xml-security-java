@@ -35,8 +35,8 @@ import java.util.*;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -95,7 +95,7 @@ public class DetachedTest {
         //
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test() {
         try {
             //
@@ -175,7 +175,7 @@ public class DetachedTest {
             // Unmarshal and validate an XMLSignature from a DOMValidateContext
             signature = fac.unmarshalXMLSignature(vc);
             coreValidity = signature.validate(vc);
-            assertTrue("Core validity of unmarshalled XMLSignature is false", coreValidity);
+            assertTrue(coreValidity, "Core validity of unmarshalled XMLSignature is false");
         } catch (Exception ex) {
             fail("Exception: " + ex);
         }

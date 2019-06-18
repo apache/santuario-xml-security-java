@@ -71,12 +71,12 @@ import org.apache.xml.security.transforms.Transform;
 import org.apache.xml.security.transforms.implementations.TransformC14N;
 import org.apache.xml.security.utils.XMLUtils;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -87,7 +87,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
     private XMLInputFactory xmlInputFactory;
     private TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         Init.init(SignatureVerificationTest.class.getClassLoader().getResource("security-config.xml").toURI(),
                 this.getClass());

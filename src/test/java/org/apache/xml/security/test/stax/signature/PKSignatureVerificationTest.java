@@ -42,8 +42,9 @@ import org.apache.xml.security.stax.ext.XMLSecurityProperties;
 import org.apache.xml.security.test.stax.utils.StAX2DOM;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.utils.XMLUtils;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 
 /**
@@ -55,7 +56,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
     private XMLInputFactory xmlInputFactory;
     private TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
-    @BeforeClass
+    @BeforeAll
     public static void setup() throws Exception {
         //
         // If the BouncyCastle provider is not installed, then try to load it
@@ -92,7 +93,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         xmlInputFactory.setEventAllocator(new XMLSecEventAllocator());
     }
 
-    @org.junit.AfterClass
+    @org.junit.jupiter.api.AfterAll
     public static void cleanup() throws Exception {
         Security.removeProvider("BC");
     }
@@ -259,7 +260,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
 
     @Test
     public void testRSA_RIPEMD160() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
         InputStream sourceDocument =
@@ -301,7 +302,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
 
     @Test
     public void testRSA_SHA1_MGF1() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
         InputStream sourceDocument =
@@ -343,7 +344,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
 
     @Test
     public void testRSA_SHA224_MGF1() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
         InputStream sourceDocument =
@@ -385,7 +386,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
 
     @Test
     public void testRSA_SHA256_MGF1() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
         InputStream sourceDocument =
@@ -427,7 +428,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
 
     @Test
     public void testRSA_SHA384_MGF1() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
         InputStream sourceDocument =
@@ -469,7 +470,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
 
     @Test
     public void testRSA_SHA512_MGF1() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
         InputStream sourceDocument =
@@ -711,7 +712,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
 
     @Test
     public void testECDSA_RIPEMD160() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
         InputStream sourceDocument =

@@ -21,8 +21,8 @@ package org.apache.xml.security.test.stax;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.config.Init;
 import org.apache.xml.security.stax.impl.InboundSecurityContextImpl;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.apache.xml.security.stax.ext.InputProcessor;
 import org.apache.xml.security.stax.ext.InputProcessorChain;
@@ -34,13 +34,13 @@ import javax.xml.stream.XMLStreamException;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  */
 public class InputProcessorChainTest {
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         Init.init(this.getClass().getClassLoader().getResource("security-config.xml").toURI(),
                 this.getClass());

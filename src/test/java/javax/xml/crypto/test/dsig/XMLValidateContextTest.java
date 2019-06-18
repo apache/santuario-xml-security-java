@@ -29,9 +29,9 @@ import javax.xml.crypto.dsig.*;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -53,7 +53,7 @@ public class XMLValidateContextTest {
         KEY_SELECTORS[0] = KeySelector.singletonKeySelector(sk);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testsetngetKeySelector() throws Exception {
         defContext.setKeySelector(null);
         assertNull(defContext.getKeySelector());
@@ -64,7 +64,7 @@ public class XMLValidateContextTest {
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testsetngetBaseURI() throws Exception {
         assertNull(defContext.getBaseURI());
 
@@ -75,7 +75,7 @@ public class XMLValidateContextTest {
         assertNull(defContext.getBaseURI());
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testsetngetProperty() throws Exception {
         String name = "key";
         assertNull(defContext.getProperty(name));
@@ -96,7 +96,7 @@ public class XMLValidateContextTest {
         assertNull(defContext.getProperty(name));
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testsetngetURIDereferencer() throws Exception {
         assertNull(defContext.getURIDereferencer());
         byte[] data = "simpleDereferencer".getBytes();

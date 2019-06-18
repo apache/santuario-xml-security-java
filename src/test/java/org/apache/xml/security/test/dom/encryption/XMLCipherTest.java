@@ -55,6 +55,7 @@ import org.apache.xml.security.encryption.CipherData;
 import org.apache.xml.security.transforms.params.XPathContainer;
 import org.apache.xml.security.utils.EncryptionConstants;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Assumptions;
 import org.apache.xml.security.keys.KeyInfo;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -63,9 +64,9 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -127,7 +128,7 @@ public class XMLCipherTest {
      * Test encryption using a generated AES 128 bit key that is
      * encrypted using a AES 192 bit key.  Then reverse using the KEK
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testAES128ElementAES192KWCipherUsingKEK() throws Exception {
 
         Document d = document(); // source
@@ -192,7 +193,7 @@ public class XMLCipherTest {
      * Test encryption using a generated AES 256 bit key that is
      * encrypted using an RSA key.  Reverse using KEK
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testAES256ElementRSAKWCipherUsingKEK() throws Exception {
 
         Document d = document(); // source
@@ -264,7 +265,7 @@ public class XMLCipherTest {
      * encrypted using a 3DES key.  Then reverse by decrypting
      * EncryptedKey by hand
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testAES192Element3DESKWCipher() throws Exception {
 
         Document d = document(); // source
@@ -346,7 +347,7 @@ public class XMLCipherTest {
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testTripleDesElementCipher() throws Exception {
         Document d = document(); // source
         Document ed = null;      // target
@@ -389,7 +390,7 @@ public class XMLCipherTest {
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testAes128ElementCipher() throws Exception {
         byte[] bits128 = {
                           (byte) 0x10, (byte) 0x11, (byte) 0x12, (byte) 0x13,
@@ -433,7 +434,7 @@ public class XMLCipherTest {
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testAes192ElementCipher() throws Exception {
         byte[] bits192 = {
                           (byte) 0x08, (byte) 0x09, (byte) 0x0A, (byte) 0x0B,
@@ -477,7 +478,7 @@ public class XMLCipherTest {
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testAes265ElementCipher() throws Exception {
         byte[] bits256 = {
                           (byte) 0x00, (byte) 0x01, (byte) 0x02, (byte) 0x03,
@@ -527,7 +528,7 @@ public class XMLCipherTest {
      * Test case for when the entire document is encrypted and decrypted
      * In this case the EncryptedData becomes the root element of the document
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testTripleDesDocumentCipher() throws Exception {
         Document d = document(); // source
         Document ed = null;      // target
@@ -568,7 +569,7 @@ public class XMLCipherTest {
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testEncryptionProperties() throws Exception {
         Document d = document(); // source
         Document ed = null;      // target
@@ -629,7 +630,7 @@ public class XMLCipherTest {
     /*
      * Test a Cipher Reference
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSameDocumentCipherReference() throws Exception {
 
         if (haveISOPadding) {
@@ -700,7 +701,7 @@ public class XMLCipherTest {
     /*
      * Test physical representation of decrypted element, see SANTUARIO-309
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testPhysicalRepresentation() throws Exception {
 
         if (haveISOPadding) {
@@ -803,7 +804,7 @@ public class XMLCipherTest {
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSerializedData() throws Exception {
         if (!haveISOPadding) {
             LOG.warn("Test testSerializedData skipped as necessary algorithms not available");
@@ -855,7 +856,7 @@ public class XMLCipherTest {
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testEncryptedKeyWithRecipient() throws Exception {
         String filename =
             "src/test/resources/org/apache/xml/security/encryption/encryptedKey.xml";
@@ -880,9 +881,9 @@ public class XMLCipherTest {
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testEecryptToByteArray() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
 
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(128);
@@ -903,7 +904,7 @@ public class XMLCipherTest {
         xmlCipher.decryptToByteArray(encryptedData);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testMultipleKEKs() throws Exception {
 
         Document d = document(); // source

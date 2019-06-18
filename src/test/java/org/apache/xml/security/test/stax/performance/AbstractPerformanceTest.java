@@ -56,8 +56,8 @@ import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.XMLUtils;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 
 /**
  */
@@ -72,14 +72,14 @@ public abstract class AbstractPerformanceTest {
     private OutboundXMLSec outboundEncryptionXMLSec;
     private InboundXMLSec inboundDecryptionXMLSec;
 
-    @BeforeClass
+    @BeforeAll
     public static void genKey() throws Exception {
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(256);
         encryptionSymKey = keygen.generateKey();
     }
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         xmlInputFactory = XMLInputFactory.newInstance();
         xmlInputFactory.setProperty(XMLInputFactory.IS_COALESCING, false);

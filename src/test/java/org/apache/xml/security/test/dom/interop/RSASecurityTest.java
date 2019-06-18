@@ -22,7 +22,7 @@ package org.apache.xml.security.test.dom.interop;
 
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -56,7 +56,7 @@ public class RSASecurityTest extends InteropTestBase {
         super();
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_enveloping() throws Exception {
 
         String filename = blakesDir + "certj201_enveloping.xml";
@@ -68,10 +68,10 @@ public class RSASecurityTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(filename, verify);
+        assertTrue(verify, filename);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_enveloped() throws Exception {
 
         String filename = blakesDir + "certj201_enveloped.xml";
@@ -83,7 +83,7 @@ public class RSASecurityTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(filename, verify);
+        assertTrue(verify, filename);
     }
 
 }

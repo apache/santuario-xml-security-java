@@ -31,8 +31,8 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -57,7 +57,7 @@ public class JSRWrappingAttackTest {
     }
 
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testWrappingAttack() throws Exception {
         String file = "manifestSignatureWrapping.xml";
 
@@ -72,7 +72,7 @@ public class JSRWrappingAttackTest {
 
         vc.setProperty("org.apache.jcp.xml.dsig.secureValidation", Boolean.FALSE);
         boolean coreValidity = validator.validate(vc);
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
 
         vc.setProperty("org.apache.jcp.xml.dsig.secureValidation", Boolean.TRUE);
 

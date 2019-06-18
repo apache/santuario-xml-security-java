@@ -21,7 +21,7 @@ package org.apache.xml.security.test.dom.c14n.helper;
 
 import org.apache.xml.security.c14n.helper.C14nHelper;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -38,75 +38,69 @@ public class C14nHelperTest {
     /**
      * Method testNamespaceIsAbsolute01
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testNamespaceIsAbsolute01() {
 
         String namespaceURI = "http://www.w3.org/Signature/";
 
-        assertTrue("URI fails: \"" + namespaceURI + "\"",
-                   C14nHelper.namespaceIsAbsolute(namespaceURI));
+        assertTrue(C14nHelper.namespaceIsAbsolute(namespaceURI), "URI fails: \"" + namespaceURI + "\"");
     }
 
     /**
      * @see <A HREF="http://lists.w3.org/Archives/Public/w3c-ietf-xmldsig/2001JulSep/0068.html">The list</A>
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testNamespaceIsAbsolute02() {
 
         String namespaceURI = "http://www.w3.org/../blah";
 
-        assertTrue("URI fails: \"" + namespaceURI + "\"",
-                   C14nHelper.namespaceIsAbsolute(namespaceURI));
+        assertTrue(C14nHelper.namespaceIsAbsolute(namespaceURI), "URI fails: \"" + namespaceURI + "\"");
     }
 
     /**
      * Method testNamespaceIsAbsolute03
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testNamespaceIsAbsolute03() {
 
         // unknown protocol?
         String namespaceURI = "hxxp://www.w3.org/";
 
-        assertTrue("URI fails: \"" + namespaceURI + "\"",
-                   C14nHelper.namespaceIsAbsolute(namespaceURI));
+        assertTrue(C14nHelper.namespaceIsAbsolute(namespaceURI), "URI fails: \"" + namespaceURI + "\"");
     }
 
     /**
      * Method testNamespaceIsRelative01
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testNamespaceIsRelative01() {
 
         String namespaceURI = "../blah";
 
-        assertTrue("URI fails: \"" + namespaceURI + "\"",
-                   C14nHelper.namespaceIsRelative(namespaceURI));
+        assertTrue(C14nHelper.namespaceIsRelative(namespaceURI), "URI fails: \"" + namespaceURI + "\"");
     }
 
     /**
      * Method testNamespaceIsRelative02
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testNamespaceIsRelative02() {
 
         String namespaceURI = "blah";
 
-        assertTrue("URI fails: \"" + namespaceURI + "\"",
-                   C14nHelper.namespaceIsRelative(namespaceURI));
+        assertTrue(C14nHelper.namespaceIsRelative(namespaceURI), "URI fails: \"" + namespaceURI + "\"");
     }
 
     /**
      * Method testNamespaceIsRelative03
      */
-    @org.junit.Test
-    @org.junit.Ignore
+    @org.junit.jupiter.api.Test
+    @org.junit.jupiter.api.Disabled
     public void testNamespaceIsRelative03() {
 
         String namespaceURI = "http://...";
 
-        assertTrue("URI fails: \"" + namespaceURI + "\"",
-                   C14nHelper.namespaceIsRelative(namespaceURI));
+        assertTrue(C14nHelper.namespaceIsRelative(namespaceURI), "URI fails: \"" + namespaceURI + "\"");
     }
 
 }

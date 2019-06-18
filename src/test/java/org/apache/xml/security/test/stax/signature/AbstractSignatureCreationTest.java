@@ -37,13 +37,13 @@ import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.apache.xml.security.utils.resolver.ResourceResolverException;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -54,7 +54,7 @@ public class AbstractSignatureCreationTest {
 
     protected XMLInputFactory xmlInputFactory;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
 
         BASEDIR = System.getProperty("basedir");
@@ -172,7 +172,7 @@ public class AbstractSignatureCreationTest {
         assertNotNull(sigElement);
         assertEquals("", sigElement.getAttribute("Id"));
 
-        assertEquals("Without Id there can only be one secure part", 1, secureParts.size());
+        assertEquals(1, secureParts.size(), "Without Id there can only be one secure part");
         expression = "//*[local-name()='" + secureParts.get(0).getName().getLocalPart() + "']";
         Element signedElement =
                 (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
@@ -200,7 +200,7 @@ public class AbstractSignatureCreationTest {
         assertNotNull(sigElement);
         assertEquals("", sigElement.getAttribute("Id"));
 
-        assertEquals("Without Id there can only be one secure part", 1, secureParts.size());
+        assertEquals(1, secureParts.size(), "Without Id there can only be one secure part");
         //assertNull(secureParts.get(0).getName());
 
         Element signedElement = document.getDocumentElement();

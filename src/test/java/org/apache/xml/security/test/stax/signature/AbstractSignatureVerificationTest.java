@@ -57,12 +57,12 @@ import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
 
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  */
@@ -73,7 +73,7 @@ public class AbstractSignatureVerificationTest {
     protected XMLInputFactory xmlInputFactory;
     protected TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
 
         BASEDIR = System.getProperty("basedir");

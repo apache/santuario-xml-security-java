@@ -34,25 +34,21 @@ import org.apache.xml.security.stax.impl.InboundSecurityContextImpl;
 import org.apache.xml.security.stax.securityToken.InboundSecurityToken;
 import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 import org.apache.xml.security.stax.securityToken.SecurityTokenFactory;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.apache.xml.security.stax.securityToken.SecurityTokenConstants.KeyIdentifier_KeyName;
 import static org.apache.xml.security.test.stax.utils.KeyLoader.loadPublicKey;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class SecurityTokenFactoryImplTest {
     private KeyInfoType keyInfoType;
     private XMLSecurityProperties xmlSecurityProperties;
     private InboundSecurityContext inboundSecurityContext;
 
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
-
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         Init.init(null, this.getClass());
 
@@ -106,24 +102,20 @@ public class SecurityTokenFactoryImplTest {
 
     @Test
     public void testKeyNameTokenWithoutKeyInMap() throws Exception {
-        expectedException.expect(XMLSecurityException.class);
-        expectedException.expectMessage("No key configured for KeyName: mykey");
-
         SecurityTokenFactory factory = new SecurityTokenFactoryImpl();
 
         SecurityTokenConstants.KeyUsage keyUsage = SecurityTokenConstants.KeyUsage_Signature_Verification;
 
-
         InboundSecurityContext inboundSecurityContext = new InboundSecurityContextImpl();
 
-        factory.getSecurityToken(keyInfoType, keyUsage, xmlSecurityProperties, inboundSecurityContext);
+        XMLSecurityException exception = Assertions.assertThrows(XMLSecurityException.class, () -> {
+            factory.getSecurityToken(keyInfoType, keyUsage, xmlSecurityProperties, inboundSecurityContext);
+        });
+        assertEquals("No key configured for KeyName: mykey", exception.getMessage());
     }
 
     @Test
     public void testKeyNameTokenWithWrongKeyInMap() throws Exception {
-        expectedException.expect(XMLSecurityException.class);
-        expectedException.expectMessage("Key of type DSAPrivateKey not supported for a KeyName lookup");
-
         SecurityTokenFactory factory = new SecurityTokenFactoryImpl();
 
         SecurityTokenConstants.KeyUsage keyUsage = SecurityTokenConstants.KeyUsage_Signature_Verification;
@@ -136,7 +128,10 @@ public class SecurityTokenFactoryImplTest {
 
         InboundSecurityContext inboundSecurityContext = new InboundSecurityContextImpl();
 
-        factory.getSecurityToken(keyInfoType, keyUsage, xmlSecurityProperties, inboundSecurityContext);
+        XMLSecurityException exception = Assertions.assertThrows(XMLSecurityException.class, () -> {
+            factory.getSecurityToken(keyInfoType, keyUsage, xmlSecurityProperties, inboundSecurityContext);
+        });
+        assertEquals("Key of type DSAPrivateKey not supported for a KeyName lookup", exception.getMessage());
     }
 
 }

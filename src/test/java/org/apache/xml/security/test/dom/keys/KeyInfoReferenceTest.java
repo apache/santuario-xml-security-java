@@ -27,9 +27,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class KeyInfoReferenceTest {
@@ -40,7 +40,7 @@ public class KeyInfoReferenceTest {
     private static final String ID_CONTROL = "abc123";
     private static final String URI_CONTROL = "http://www.example.org/keyinfo.xml";
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSchema() throws Exception {
         KeyInfoReference keyInfoReference = new KeyInfoReference(XMLUtils.newDocument(), URI_CONTROL);
         Element element = keyInfoReference.getElement();
@@ -49,7 +49,7 @@ public class KeyInfoReferenceTest {
         assertEquals("KeyInfoReference", element.getLocalName());
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testURIFromElement() throws Exception {
         Document doc = loadXML("KeyInfoReference.xml");
         NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpec11NS, Constants._TAG_KEYINFOREFERENCE);
@@ -60,13 +60,13 @@ public class KeyInfoReferenceTest {
         assertEquals(ID_CONTROL, keyInfoReference.getId());
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testURIOnConstruction() throws Exception {
         KeyInfoReference keyInfoReference = new KeyInfoReference(XMLUtils.newDocument(), URI_CONTROL);
         assertEquals(URI_CONTROL, keyInfoReference.getURI());
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testId() throws Exception {
         KeyInfoReference keyInfoReference = new KeyInfoReference(XMLUtils.newDocument(), URI_CONTROL);
         assertEquals("", keyInfoReference.getId());

@@ -25,10 +25,10 @@ package javax.xml.crypto.test.dsig.keyinfo;
 import java.math.BigInteger;
 import javax.xml.crypto.dsig.keyinfo.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -46,19 +46,19 @@ public class X509IssuerSerialTest {
         name = "CN = Wolfgang";
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testgetIssuerName() {
         X509IssuerSerial x509is = fac.newX509IssuerSerial(name, BigInteger.ZERO);
         assertNotNull(x509is.getIssuerName());
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testgetSerialNumber() {
         X509IssuerSerial x509is = fac.newX509IssuerSerial(name, BigInteger.ZERO);
         assertNotNull(x509is.getSerialNumber());
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testConstructor() {
         // test newX509IssuerSerial(String, BigInteger)
         X509IssuerSerial x509is = fac.newX509IssuerSerial(name, BigInteger.ONE);
@@ -70,7 +70,7 @@ public class X509IssuerSerialTest {
      * Confirm that an IllegalArgumentException is thrown when an issuer
      * distinguished name does not conform to RFC 2253.
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testConstructorBadIssuerName() {
         // test newX509IssuerSerial(String, BigInteger)
         String badName = "cn=bad,=+bad,";
@@ -83,7 +83,7 @@ public class X509IssuerSerialTest {
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testisFeatureSupported() {
 
         X509IssuerSerial x509is = fac.newX509IssuerSerial(name, BigInteger.ONE);

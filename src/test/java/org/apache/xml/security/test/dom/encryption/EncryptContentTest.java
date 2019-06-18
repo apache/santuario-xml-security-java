@@ -42,7 +42,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class EncryptContentTest {
 
@@ -107,7 +107,7 @@ public class EncryptContentTest {
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testContentRemoved() throws Exception {
         if (!haveISOPadding) {
             LOG.warn("Test testContentRemoved skipped as necessary algorithms not available");
@@ -159,7 +159,7 @@ public class EncryptContentTest {
      * See SANTUARIO-301:
      * https://issues.apache.org/jira/browse/SANTUARIO-301
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testMultipleKeyInfoElements() throws Exception {
         if (!haveISOPadding) {
             LOG.warn("Test testMultipleKeyInfoElements skipped as necessary algorithms not available");

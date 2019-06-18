@@ -329,7 +329,7 @@ public class XMLSignatureInput {
     /**
      * Determines if the object has been set up with a ByteArray
      *
-     * @return true is the object has been set up with an octet stream
+     * @return true if the object has been set up with an octet stream
      */
     public boolean isByteArray() {
         return bytes != null && this.inputNodeSet == null && subNode == null;
@@ -337,7 +337,7 @@ public class XMLSignatureInput {
 
     /**
      * Determines if the object has been set up with a pre-calculated digest.
-     * @return
+     * @return true if the object has been set up with a pre-calculated digest.
      */
     public boolean isPreCalculatedDigest() {
         return preCalculatedDigest != null;

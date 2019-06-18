@@ -38,13 +38,14 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.XMLUtils;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeAll;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * A test to make sure that the various Signature HMAC algorithms are working
@@ -57,7 +58,7 @@ public class HMACSignatureAlgorithmTest {
 
     private static boolean bcInstalled;
 
-    @BeforeClass
+    @BeforeAll
     public static void setup() throws Exception {
         //
         // If the BouncyCastle provider is not installed, then try to load it
@@ -79,12 +80,12 @@ public class HMACSignatureAlgorithmTest {
         }
     }
 
-    @org.junit.AfterClass
+    @org.junit.jupiter.api.AfterAll
     public static void cleanup() throws Exception {
         Security.removeProvider("BC");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testHMACSHA1() throws Exception {
         // Read in plaintext document
         InputStream sourceDocument =
@@ -104,7 +105,7 @@ public class HMACSignatureAlgorithmTest {
         verify(document, key, localNames);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testHMACMD5() throws Exception {
         // Read in plaintext document
         InputStream sourceDocument =
@@ -124,7 +125,7 @@ public class HMACSignatureAlgorithmTest {
         verify(document, key, localNames, false);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testHMACSHA_224() throws Exception {
         // Read in plaintext document
         InputStream sourceDocument =
@@ -144,7 +145,7 @@ public class HMACSignatureAlgorithmTest {
         verify(document, key, localNames);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testHMACSHA_256() throws Exception {
         // Read in plaintext document
         InputStream sourceDocument =
@@ -164,7 +165,7 @@ public class HMACSignatureAlgorithmTest {
         verify(document, key, localNames);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testHMACSHA_384() throws Exception {
         // Read in plaintext document
         InputStream sourceDocument =
@@ -184,7 +185,7 @@ public class HMACSignatureAlgorithmTest {
         verify(document, key, localNames);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testHMACSHA_512() throws Exception {
         // Read in plaintext document
         InputStream sourceDocument =
@@ -204,9 +205,9 @@ public class HMACSignatureAlgorithmTest {
         verify(document, key, localNames);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testHMACRIPEMD160() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
         InputStream sourceDocument =

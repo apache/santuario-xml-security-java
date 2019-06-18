@@ -29,8 +29,8 @@ import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Element;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 
@@ -50,7 +50,7 @@ public class WrappingAttackTest extends InteropTestBase {
         super();
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testWrappingAttack() throws Exception {
         boolean success =
             readAndVerifySignature(

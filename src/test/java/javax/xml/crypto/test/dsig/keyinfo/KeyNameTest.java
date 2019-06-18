@@ -24,10 +24,10 @@ package javax.xml.crypto.test.dsig.keyinfo;
 
 import javax.xml.crypto.dsig.keyinfo.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -43,13 +43,13 @@ public class KeyNameTest {
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testgetName() {
         KeyName kn = fac.newKeyName("skeleton");
         assertNotNull(kn.getName());
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testConstructor() {
         final String name = "keyName";
         KeyName kn = fac.newKeyName(name);
@@ -60,7 +60,7 @@ public class KeyNameTest {
         } catch (NullPointerException npe) {}
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testisFeatureSupported() {
         KeyName kn = fac.newKeyName("keyName");
         try {

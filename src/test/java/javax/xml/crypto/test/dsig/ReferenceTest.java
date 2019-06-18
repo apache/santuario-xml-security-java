@@ -35,13 +35,13 @@ import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 import javax.xml.crypto.dsig.spec.TransformParameterSpec;
 import org.w3c.dom.Document;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -74,7 +74,7 @@ public class ReferenceTest {
     }
 
     @SuppressWarnings("rawtypes")
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testConstructor() throws Exception {
         Reference ref;
         // test XMLSignatureFactory.newReference(String uri,
@@ -185,7 +185,7 @@ public class ReferenceTest {
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testisFeatureSupported() throws Exception {
         Reference ref = fac.newReference(null, dmSHA1, null, null, null);
         try {
@@ -196,12 +196,12 @@ public class ReferenceTest {
         assertFalse(ref.isFeatureSupported("not supported"));
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testvalidate() throws Exception {
         testvalidate(false);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testvalidateWithCaching() throws Exception {
         testvalidate(true);
     }

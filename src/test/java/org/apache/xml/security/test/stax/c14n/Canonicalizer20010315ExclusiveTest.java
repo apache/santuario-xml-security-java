@@ -19,7 +19,7 @@
 package org.apache.xml.security.test.stax.c14n;
 
 import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer20010315_Excl;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer20010315_ExclOmitCommentsTransformer;
 import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer20010315_ExclWithCommentsTransformer;
@@ -45,8 +45,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -55,13 +55,13 @@ public class Canonicalizer20010315ExclusiveTest {
 
     private XMLInputFactory xmlInputFactory;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         this.xmlInputFactory = XMLInputFactory.newInstance();
         this.xmlInputFactory.setEventAllocator(new XMLSecEventAllocator());
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test221excl() throws Exception {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -103,7 +103,7 @@ public class Canonicalizer20010315ExclusiveTest {
         assertTrue(equals);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test222excl() throws Exception {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -130,7 +130,7 @@ public class Canonicalizer20010315ExclusiveTest {
         assertTrue(equals);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test24excl() throws Exception {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -157,7 +157,7 @@ public class Canonicalizer20010315ExclusiveTest {
         assertTrue(equals);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testComplexDocexcl() throws Exception {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -183,7 +183,7 @@ public class Canonicalizer20010315ExclusiveTest {
         assertTrue(equals);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testNodeSet() throws Exception {
 
         final String XML =
@@ -234,7 +234,7 @@ public class Canonicalizer20010315ExclusiveTest {
      * "Canonicalizer can't handle dynamical created DOM correctly"
      * https://issues.apache.org/jira/browse/SANTUARIO-263
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test24Aexcl() throws Exception {
         Document doc = XMLUtils.newDocument();
         Element local = doc.createElementNS("foo:bar", "dsig:local");
@@ -276,7 +276,7 @@ public class Canonicalizer20010315ExclusiveTest {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testDefaultNSInInclusiveNamespacePrefixList1() throws Exception {
         final String XML =
                 "<env:Envelope"
@@ -339,7 +339,7 @@ public class Canonicalizer20010315ExclusiveTest {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testDefaultNSInInclusiveNamespacePrefixList2() throws Exception {
         final String XML =
                 "<env:Envelope"
@@ -413,7 +413,7 @@ public class Canonicalizer20010315ExclusiveTest {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testDefaultNSInInclusiveNamespacePrefixList3() throws Exception {
         final String XML =
                 "<env:Envelope"
@@ -476,7 +476,7 @@ public class Canonicalizer20010315ExclusiveTest {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testDefaultNSInInclusiveNamespacePrefixList4() throws Exception {
         final String XML =
                 "<env:Envelope"
@@ -539,7 +539,7 @@ public class Canonicalizer20010315ExclusiveTest {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testPropagateDefaultNs1() throws Exception {
         final String XML =
                 "<env:Envelope"
@@ -580,7 +580,7 @@ public class Canonicalizer20010315ExclusiveTest {
         assertEquals(new String(baos.toByteArray(), java.nio.charset.StandardCharsets.UTF_8), c14nXML);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testPropagateDefaultNs2() throws Exception {
         final String XML =
                 "<env:Envelope"
@@ -622,7 +622,7 @@ public class Canonicalizer20010315ExclusiveTest {
         assertEquals(new String(baos.toByteArray(), java.nio.charset.StandardCharsets.UTF_8), c14nXML);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testPropagateDefaultNs3() throws Exception {
         final String XML =
                 "<Envelope"
@@ -664,7 +664,7 @@ public class Canonicalizer20010315ExclusiveTest {
         assertEquals(new String(baos.toByteArray(), java.nio.charset.StandardCharsets.UTF_8), c14nXML);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testPropagateDefaultNs4() throws Exception {
         final String XML =
                 "<Envelope"
@@ -706,7 +706,7 @@ public class Canonicalizer20010315ExclusiveTest {
         assertEquals(new String(baos.toByteArray(), java.nio.charset.StandardCharsets.UTF_8), c14nXML);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testPropagateDefaultNs5() throws Exception {
         final String XML =
                 "<env:Envelope"

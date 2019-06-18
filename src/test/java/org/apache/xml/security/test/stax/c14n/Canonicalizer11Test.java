@@ -18,7 +18,7 @@
  */
 package org.apache.xml.security.test.stax.c14n;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer11_OmitCommentsTransformer;
@@ -39,10 +39,10 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -220,7 +220,7 @@ public class Canonicalizer11Test {
      * @see <A HREF="http://www.w3.org/TR/2007/CR-xml-c14n11-20070621/#Example-DocSubsetsXMLAttrs">the example from the spec</A>
      */
     @Test
-    @org.junit.Ignore
+    @org.junit.jupiter.api.Disabled
     public void test38() throws Exception {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

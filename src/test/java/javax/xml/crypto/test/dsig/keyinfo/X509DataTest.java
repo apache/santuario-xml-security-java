@@ -29,9 +29,9 @@ import java.security.cert.X509CRL;
 import javax.xml.crypto.*;
 import javax.xml.crypto.dsig.keyinfo.*;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -47,7 +47,7 @@ public class X509DataTest {
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testgetTypes() {
         X509Data x509 = fac.newX509Data(Collections.singletonList("cn=foo"));
         List<?> li = x509.getContent();
@@ -66,14 +66,14 @@ public class X509DataTest {
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testConstructor() {
         // test newX509Data()
         X509Data x509 = fac.newX509Data(Collections.singletonList("cn=foo"));
         assertNotNull(x509);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testisFeatureSupported() {
 
         X509Data x509 = fac.newX509Data(Collections.singletonList("cn=foo"));

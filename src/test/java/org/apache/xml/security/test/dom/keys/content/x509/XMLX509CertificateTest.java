@@ -38,7 +38,7 @@ public class XMLX509CertificateTest {
         System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
     private static final String SEP = System.getProperty("file.separator");
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testGetX509Certificate() throws Exception {
         File f = new File(BASEDIR + SEP + "src/test/resources" + SEP + "ie" + SEP + "baltimore" +
             SEP + "merlin-examples" + SEP + "merlin-xmldsig-twenty-three" +

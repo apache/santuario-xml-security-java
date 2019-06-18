@@ -33,7 +33,7 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class KeyValueTest {
 
@@ -44,7 +44,7 @@ public class KeyValueTest {
         Init.init();
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testDSAPublicKey() throws Exception {
         File f = null;
         String filename =

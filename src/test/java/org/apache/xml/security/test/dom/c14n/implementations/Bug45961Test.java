@@ -37,8 +37,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 public class Bug45961Test {
@@ -56,7 +56,7 @@ public class Bug45961Test {
                                MockCanonicalizationMethod.class.getName());
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testBug() throws Exception {
         Document document = getSignedDocument();
         NodeList list =

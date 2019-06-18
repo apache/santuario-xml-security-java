@@ -27,11 +27,11 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class NameSpaceSymbTableTest {
@@ -46,13 +46,13 @@ public class NameSpaceSymbTableTest {
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testNullFirstXmlns() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         assertNull(ns.getMapping("xmlns"));
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testXmlnsPut() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
@@ -60,7 +60,7 @@ public class NameSpaceSymbTableTest {
         assertEquals(node1, ns.getMapping("xmlns"));
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testXmlnsMap() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
@@ -70,7 +70,7 @@ public class NameSpaceSymbTableTest {
         assertEquals(null, ns.getMapping("xmlns"));
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testXmlnsMap2() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
@@ -81,7 +81,7 @@ public class NameSpaceSymbTableTest {
         assertEquals(null, ns.getMapping("xmlns"));
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testXmlnsPrefix() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
@@ -95,7 +95,7 @@ public class NameSpaceSymbTableTest {
         assertEquals(node1, ns.getMapping("xmlns"));
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testXmlnsRemovePrefix() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
@@ -106,7 +106,7 @@ public class NameSpaceSymbTableTest {
         assertNull(ns.getMapping("xmlns"));
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testPrefix() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
@@ -124,7 +124,7 @@ public class NameSpaceSymbTableTest {
         assertEquals(node1, ns.getMapping("a"));
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSeveralPrefixes() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
@@ -136,7 +136,7 @@ public class NameSpaceSymbTableTest {
         assertNull(ns.getMapping("a"));
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSeveralPrefixes2() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
@@ -147,7 +147,7 @@ public class NameSpaceSymbTableTest {
         assertEquals(node1, ns.getMapping("a"));
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testGetUnrenderedNodes() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
@@ -157,11 +157,11 @@ public class NameSpaceSymbTableTest {
         ns.getUnrenderedNodes(l);
         assertTrue(l.contains(node1));
         Attr n = (Attr)ns.addMappingAndRender("xmlns", "", node2);
-        assertNotNull("xmlns=\"\" not rendered", n);
+        assertNotNull(n, "xmlns=\"\" not rendered");
         assertEquals(n, node2);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testUnrederedNodes() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
@@ -191,7 +191,7 @@ public class NameSpaceSymbTableTest {
         assertTrue(l.contains(node2));
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testBug38655() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();

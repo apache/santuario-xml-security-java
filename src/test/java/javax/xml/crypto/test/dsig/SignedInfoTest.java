@@ -27,11 +27,11 @@ import java.util.*;
 import javax.xml.crypto.dsig.*;
 import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -63,7 +63,7 @@ public class SignedInfoTest {
     }
 
     @SuppressWarnings("rawtypes")
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testConstructor() {
         // test XMLSignatureFactory.newSignedInfo(
         //	CanonicalizationMethod cm,

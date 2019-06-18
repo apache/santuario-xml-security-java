@@ -27,7 +27,7 @@ import java.security.Security;
 
 import javax.xml.crypto.test.KeySelectors;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * This is a testcase to validate all "merlin-exc-c14n-one"
@@ -53,13 +53,13 @@ public class BaltimoreExcC14n1Test {
             (base, "merlin-exc-c14n-one"));
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testExcSignature() throws Exception {
         String file = "exc-signature.xml";
 
         boolean coreValidity = validator.validate
             (file, new KeySelectors.KeyValueKeySelector());
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
 }

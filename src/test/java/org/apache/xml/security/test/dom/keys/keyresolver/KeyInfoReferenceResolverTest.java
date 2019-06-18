@@ -34,9 +34,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 public class KeyInfoReferenceResolverTest {
@@ -50,7 +50,7 @@ public class KeyInfoReferenceResolverTest {
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testRSAPublicKey() throws Exception {
         PublicKey rsaKeyControl = loadPublicKey("rsa-KeyInfoReference.key", "RSA");
 
@@ -64,7 +64,7 @@ public class KeyInfoReferenceResolverTest {
         assertEquals(rsaKeyControl, keyInfo.getPublicKey());
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testX509Certificate() throws Exception {
         X509Certificate certControl = loadCertificate("cert-KeyInfoReference.crt");
 
@@ -79,7 +79,7 @@ public class KeyInfoReferenceResolverTest {
         assertEquals(certControl.getPublicKey(), keyInfo.getPublicKey());
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testWrongReferentType() throws Exception {
         Document doc = loadXML("KeyInfoReference-WrongReferentType.xml");
         markKeyInfoIdAttrs(doc);
@@ -98,7 +98,7 @@ public class KeyInfoReferenceResolverTest {
         assertNull(keyInfo.getPublicKey());
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSameDocumentReferenceChain() throws Exception {
         Document doc = loadXML("KeyInfoReference-ReferenceChain.xml");
         markKeyInfoIdAttrs(doc);
@@ -111,7 +111,7 @@ public class KeyInfoReferenceResolverTest {
         assertNull(keyInfo.getPublicKey());
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSameDocumentReferenceChainWithSecureValidation() throws Exception {
         Document doc = loadXML("KeyInfoReference-ReferenceChain.xml");
         markKeyInfoIdAttrs(doc);

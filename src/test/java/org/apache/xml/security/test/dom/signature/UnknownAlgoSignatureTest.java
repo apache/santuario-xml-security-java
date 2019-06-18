@@ -38,8 +38,8 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Tests cases where signature algorithms are unknown.
@@ -82,12 +82,12 @@ public class UnknownAlgoSignatureTest {
         publicKey = cert.getPublicKey();
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testGood() throws Exception {
         assertTrue(checkSignature("signature-good.xml"));
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testBadC14NAlgo() throws Exception {
         try {
             assertTrue(checkSignature("signature-bad-c14n-algo.xml"));
@@ -97,7 +97,7 @@ public class UnknownAlgoSignatureTest {
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testBadSigAlgo() throws Exception {
         try {
             assertTrue(checkSignature("signature-bad-sig-algo.xml"));
@@ -107,7 +107,7 @@ public class UnknownAlgoSignatureTest {
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testBadTransformAlgo() throws Exception {
         try {
             assertTrue(checkReferences("signature-bad-transform-algo.xml"));

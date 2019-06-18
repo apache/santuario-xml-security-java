@@ -25,10 +25,10 @@ package javax.xml.crypto.test.dsig.keyinfo;
 import java.security.*;
 import javax.xml.crypto.dsig.keyinfo.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -52,7 +52,7 @@ public class KeyValueTest {
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testgetPublicKey() {
         try {
             KeyValue kv = fac.newKeyValue(keys[0]);
@@ -62,7 +62,7 @@ public class KeyValueTest {
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testConstructor() {
         // test newKeyValue(PublicKey pk)
         for (int i = 0; i < keys.length; i++) {
@@ -75,7 +75,7 @@ public class KeyValueTest {
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testisFeatureSupported() {
         KeyValue kv = null;
         try {

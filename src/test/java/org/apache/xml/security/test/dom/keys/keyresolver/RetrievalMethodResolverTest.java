@@ -40,7 +40,7 @@ public class RetrievalMethodResolverTest {
         Security.insertProviderAt(new XMLDSigRI(), 1);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testReferenceToSameRetrievalMethod() throws Exception {
         FileInputStream fis = null;
         String filename = "src/test/resources/org/apache/xml/security/keyresolver/retrievalmethod1.xml";
@@ -59,7 +59,7 @@ public class RetrievalMethodResolverTest {
         keyInfo.getX509Certificate();
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testLoopBetweenRetrievalMethods() throws Exception {
         FileInputStream fis = null;
         String filename = "src/test/resources/org/apache/xml/security/keyresolver/retrievalmethod2.xml";

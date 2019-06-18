@@ -30,8 +30,8 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 public class X509DigestResolverTest {
@@ -53,7 +53,7 @@ public class X509DigestResolverTest {
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testDigest() throws Exception {
         Document doc = loadXML("X509Digest.xml");
         Element element = doc.getDocumentElement();

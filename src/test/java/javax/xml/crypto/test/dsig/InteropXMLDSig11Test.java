@@ -27,7 +27,7 @@ import javax.xml.crypto.KeySelector;
 
 import javax.xml.crypto.test.KeySelectors;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -67,131 +67,131 @@ public class InteropXMLDSig11Test {
         sks = new KeySelectors.SecretKeySelector("testkey".getBytes(StandardCharsets.US_ASCII));
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_enveloping_p256_sha1() throws Exception {
         if (ecSupport) {
             test_xmldsig11("signature-enveloping-p256_sha1", "oracle");
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_enveloping_p256_sha256() throws Exception {
         if (ecSupport) {
             test_xmldsig11("signature-enveloping-p256_sha256", "oracle");
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_enveloping_p256_sha384() throws Exception {
         if (ecSupport) {
             test_xmldsig11("signature-enveloping-p256_sha384", "oracle");
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_enveloping_p256_sha512() throws Exception {
         if (ecSupport) {
             test_xmldsig11("signature-enveloping-p256_sha512", "oracle");
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_enveloping_p384_sha1() throws Exception {
         if (ecSupport) {
             test_xmldsig11("signature-enveloping-p384_sha1", "oracle");
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_enveloping_p384_sha256() throws Exception {
         if (ecSupport) {
             test_xmldsig11("signature-enveloping-p384_sha256", "oracle");
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_enveloping_p384_sha384() throws Exception {
         if (ecSupport) {
             test_xmldsig11("signature-enveloping-p384_sha384", "oracle");
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_enveloping_p384_sha512() throws Exception {
         if (ecSupport) {
             test_xmldsig11("signature-enveloping-p384_sha512", "oracle");
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_enveloping_p521_sha1() throws Exception {
         if (ecSupport) {
             test_xmldsig11("signature-enveloping-p521_sha1", "oracle");
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_enveloping_p521_sha256() throws Exception {
         if (ecSupport) {
             test_xmldsig11("signature-enveloping-p521_sha256", "oracle");
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_enveloping_p521_sha384() throws Exception {
         if (ecSupport) {
             test_xmldsig11("signature-enveloping-p521_sha384", "oracle");
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_enveloping_p521_sha512() throws Exception {
         if (ecSupport) {
             test_xmldsig11("signature-enveloping-p521_sha512", "oracle");
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_enveloping_rsa_sha256() throws Exception {
         test_xmldsig11("signature-enveloping-rsa-sha256", "oracle");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_enveloping_rsa_sha384() throws Exception {
         test_xmldsig11("signature-enveloping-rsa_sha384", "oracle");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_enveloping_rsa_sha512() throws Exception {
         test_xmldsig11("signature-enveloping-rsa_sha512", "oracle");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_enveloping_sha256_rsa_sha256() throws Exception {
         test_xmldsig11("signature-enveloping-sha256-rsa-sha256", "oracle");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_enveloping_sha384_rsa_sha256() throws Exception {
         test_xmldsig11("signature-enveloping-sha384-rsa_sha256", "oracle");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_enveloping_sha512_rsa_sha256() throws Exception {
         test_xmldsig11("signature-enveloping-sha512-rsa_sha256", "oracle");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_enveloping_hmac_sha256() throws Exception {
         test_xmldsig11("signature-enveloping-hmac-sha256", sks, "oracle");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_enveloping_hmac_sha384() throws Exception {
         test_xmldsig11("signature-enveloping-hmac-sha384", sks, "oracle");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_enveloping_hmac_sha512() throws Exception {
         test_xmldsig11("signature-enveloping-hmac-sha512", sks, "oracle");
     }
@@ -200,7 +200,7 @@ public class InteropXMLDSig11Test {
         String file = vendor + File.separator + test + ".xml";
         // System.out.println("Validating " + file);
         boolean coreValidity = validator.validate(file, kvks);
-        assertTrue(file + " failed core validation", coreValidity);
+        assertTrue(coreValidity, file + " failed core validation");
     }
 
     private void test_xmldsig11(String test, KeySelector ks, String vendor)
@@ -208,6 +208,6 @@ public class InteropXMLDSig11Test {
         String file = vendor + File.separator + test + ".xml";
         // System.out.println("Validating " + file);
         boolean coreValidity = validator.validate(file, ks);
-        assertTrue(file + " failed core validation", coreValidity);
+        assertTrue(coreValidity, file + " failed core validation");
     }
 }

@@ -28,9 +28,9 @@ import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.InvalidCanonicalizerException;
 import org.apache.xml.security.signature.XMLSignatureInput;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Unit test for {@link org.apache.xml.security.signature.XMLSignatureInput}
@@ -87,7 +87,7 @@ public class XMLSignatureInputTest {
         org.apache.xml.security.Init.init();
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSetOctetStreamGetOctetStream()
         throws IOException, CanonicalizationException, InvalidCanonicalizerException {
         InputStream inputStream =
@@ -111,33 +111,33 @@ public class XMLSignatureInputTest {
         assertEquals(resString, _octetStreamTextInput);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testIsInitializedWithOctetStream() throws IOException {
         try (InputStream inputStream =
             new ByteArrayInputStream(_octetStreamTextInput.getBytes())) {
             XMLSignatureInput input = new XMLSignatureInput(inputStream);
 
-            assertTrue("Input is initialized", input.isInitialized());
+            assertTrue(input.isInitialized(), "Input is initialized");
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testOctetStreamIsOctetStream() throws IOException {
         try (InputStream inputStream =
             new ByteArrayInputStream(_octetStreamTextInput.getBytes())) {
             XMLSignatureInput input = new XMLSignatureInput(inputStream);
 
-            assertTrue("Input is octet stream", input.isOctetStream());
+            assertTrue(input.isOctetStream(), "Input is octet stream");
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testOctetStreamIsNotNodeSet() throws IOException {
         try (InputStream inputStream =
             new ByteArrayInputStream(_octetStreamTextInput.getBytes())) {
             XMLSignatureInput input = new XMLSignatureInput(inputStream);
 
-            assertFalse("Input is not node set", input.isNodeSet());
+            assertFalse(input.isNodeSet(), "Input is not node set");
         }
     }
 

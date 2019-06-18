@@ -35,7 +35,7 @@ import org.apache.xml.security.signature.XMLSignatureException;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class HMACOutputLengthTest {
 
@@ -51,7 +51,7 @@ public class HMACOutputLengthTest {
         Init.init();
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_signature_enveloping_hmac_sha1_trunclen_0() throws Exception {
         try {
             validate("signature-enveloping-hmac-sha1-trunclen-0-attack.xml");
@@ -64,7 +64,7 @@ public class HMACOutputLengthTest {
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_signature_enveloping_hmac_sha1_trunclen_8() throws Exception {
         try {
             validate("signature-enveloping-hmac-sha1-trunclen-8-attack.xml");
@@ -76,7 +76,7 @@ public class HMACOutputLengthTest {
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_generate_hmac_sha1_40() throws Exception {
         Document doc = XMLUtils.newDocument();
         XMLSignature sig =

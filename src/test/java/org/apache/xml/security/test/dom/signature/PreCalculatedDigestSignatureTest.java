@@ -28,10 +28,9 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.apache.xml.security.utils.resolver.ResourceResolverException;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
@@ -43,12 +42,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.*;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class PreCalculatedDigestSignatureTest {
@@ -69,12 +70,12 @@ public class PreCalculatedDigestSignatureTest {
     private static final String ALIAS = "mullan";
     private String signatureFilePath;
 
-    @Rule
-    public TemporaryFolder testFolder = new TemporaryFolder();
+    @TempDir
+    public Path testFolder;
     private PrivateKey privateKey;
     private X509Certificate signingCert;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         org.apache.xml.security.Init.init();
         signatureFilePath = getAbsolutePath("src/test/resources/org/apache/xml/security/samples/input/signatureWithExternalReference.xml");
@@ -163,7 +164,7 @@ public class PreCalculatedDigestSignatureTest {
     }
 
     private void writeSignature(Document doc) throws IOException {
-        String signatureFilePath = testFolder.newFile("signature.xml").getPath();
+        String signatureFilePath = Files.createFile(testFolder.resolve("signature.xml")).toString();
         FileOutputStream fileOutputStream = null;
         try {
             fileOutputStream = new FileOutputStream(signatureFilePath);

@@ -27,7 +27,7 @@ import java.security.Security;
 
 import javax.xml.crypto.test.KeySelectors;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * This is a testcase to validate all "c14n" testcases
@@ -50,14 +50,14 @@ public class InteropC14nTest {
         base = base + fs + "src/test/resources" + fs + "interop";
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_y1_exc_signature() throws Exception {
         validator = new SignatureValidator(new File(base, "c14n/Y1"));
         String file = "exc-signature.xml";
 
         boolean coreValidity = validator.validate
             (file, new KeySelectors.KeyValueKeySelector());
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
 
     }
 
@@ -68,66 +68,66 @@ public class InteropC14nTest {
 
         boolean coreValidity = validator.validate
             (file, new KeySelectors.KeyValueKeySelector());
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
     */
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_y3_signature() throws Exception {
         validator = new SignatureValidator(new File(base, "c14n/Y3"));
         String file = "signature.xml";
 
         boolean coreValidity = validator.validate
             (file, new KeySelectors.KeyValueKeySelector());
-        assertTrue("Signature failed core validation#1", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation#1");
 
         coreValidity = validator.validate
             (file, new KeySelectors.RawX509KeySelector());
-        assertTrue("Signature failed core validation#2", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation#2");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_y4_signature() throws Exception {
         validator = new SignatureValidator(new File(base, "c14n/Y4"));
         String file = "signature.xml";
 
         boolean coreValidity = validator.validate
             (file, new KeySelectors.KeyValueKeySelector());
-        assertTrue("Signature failed core validation#1", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation#1");
 
         coreValidity = validator.validate
             (file, new KeySelectors.RawX509KeySelector());
-        assertTrue("Signature failed core validation#2", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation#2");
     }
 
-    @org.junit.Test
-    @org.junit.Ignore
+    @org.junit.jupiter.api.Test
+    @org.junit.jupiter.api.Disabled
     public void test_y5_signature() throws Exception {
         validator = new SignatureValidator(new File(base, "c14n/Y5"));
         String file = "signature.xml";
 
         boolean coreValidity = validator.validate
             (file, new KeySelectors.KeyValueKeySelector());
-        assertTrue("Signature failed core validation#1", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation#1");
 
         coreValidity = validator.validate
             (file, new KeySelectors.RawX509KeySelector());
-        assertTrue("Signature failed core validation#2", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation#2");
     }
 
-    @org.junit.Test
-    @org.junit.Ignore
+    @org.junit.jupiter.api.Test
+    @org.junit.jupiter.api.Disabled
     public void test_y5_signatureCommented() throws Exception {
         validator = new SignatureValidator(new File(base, "c14n/Y5"));
         String file = "signatureCommented.xml";
 
         boolean coreValidity = validator.validate
             (file, new KeySelectors.KeyValueKeySelector());
-        assertTrue("Signature failed core validation#1", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation#1");
 
         coreValidity = validator.validate
             (file, new KeySelectors.RawX509KeySelector());
-        assertTrue("Signature failed core validation#2", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation#2");
     }
 
 }

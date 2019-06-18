@@ -33,8 +33,8 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 public class X509DataTest {
@@ -43,7 +43,7 @@ public class X509DataTest {
 
     KeyStore ks = null;
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testAddX509SubjectName() throws Exception {
         Init.init();
 

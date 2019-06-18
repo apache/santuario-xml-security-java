@@ -42,7 +42,7 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -59,12 +59,12 @@ public class XmlSecTest {
         org.slf4j.LoggerFactory.getLogger
             (XmlSecTest.class.getName());
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testCheckXmlSignatureSoftwareStack() throws Exception {
         checkXmlSignatureSoftwareStack(false);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testCheckXmlSignatureSoftwareStackWithCert() throws Exception {
         checkXmlSignatureSoftwareStack(true);
     }

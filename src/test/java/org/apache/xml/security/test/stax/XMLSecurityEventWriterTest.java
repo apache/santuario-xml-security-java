@@ -23,9 +23,9 @@ import org.apache.xml.security.stax.ext.stax.XMLSecEventFactory;
 import org.apache.xml.security.stax.impl.stax.XMLSecEndElementImpl;
 import org.apache.xml.security.stax.impl.stax.XMLSecNamespaceImpl;
 import org.apache.xml.security.stax.impl.stax.XMLSecStartElementImpl;
-import org.junit.Test;
-
-import org.custommonkey.xmlunit.XMLAssert;
+import org.hamcrest.MatcherAssert;
+import org.junit.jupiter.api.Test;
+import org.xmlunit.matchers.CompareMatcher;
 import org.apache.xml.security.stax.impl.XMLSecurityEventWriter;
 
 import javax.xml.namespace.QName;
@@ -33,7 +33,7 @@ import javax.xml.stream.*;
 import javax.xml.stream.events.XMLEvent;
 import java.io.StringWriter;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  */
@@ -63,7 +63,7 @@ public class XMLSecurityEventWriterTest {
 
         xmlSecurityEventWriter.close();
         stdXmlEventWriter.close();
-        XMLAssert.assertXMLEqual(stdStringWriter.toString(), secStringWriter.toString());
+        MatcherAssert.assertThat(stdStringWriter.toString(), CompareMatcher.isSimilarTo(secStringWriter.toString()));
     }
 
     //@see WSS-437

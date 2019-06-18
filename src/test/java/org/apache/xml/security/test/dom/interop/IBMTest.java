@@ -25,8 +25,8 @@ import org.apache.xml.security.test.dom.utils.resolver.OfflineResolver;
 import org.apache.xml.security.utils.JavaUtils;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -81,7 +81,7 @@ public class IBMTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_enveloping_hmac() throws Exception {
         if (!runTests) {
             return;
@@ -103,7 +103,7 @@ public class IBMTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(filename, verify);
+        assertTrue(verify, filename);
     }
 
     /**
@@ -111,7 +111,7 @@ public class IBMTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_detached_dsa() throws Exception {
         if (!runTests) {
             return;
@@ -132,7 +132,7 @@ public class IBMTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(filename, verify);
+        assertTrue(verify, filename);
     }
 
     /**
@@ -140,7 +140,7 @@ public class IBMTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_detached_rsa() throws Exception {
         if (!runTests) {
             return;
@@ -161,7 +161,7 @@ public class IBMTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(filename, verify);
+        assertTrue(verify, filename);
     }
 
     /**
@@ -169,7 +169,7 @@ public class IBMTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_enveloped_dsa() throws Exception {
         if (!runTests) {
             return;
@@ -190,7 +190,7 @@ public class IBMTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(filename, verify);
+        assertTrue(verify, filename);
     }
 
     /**
@@ -198,7 +198,7 @@ public class IBMTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_enveloped_rsa() throws Exception {
         if (!runTests) {
             return;
@@ -219,7 +219,7 @@ public class IBMTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(filename, verify);
+        assertTrue(verify, filename);
     }
 
     /**
@@ -227,7 +227,7 @@ public class IBMTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_enveloping_dsa() throws Exception {
         if (!runTests) {
             return;
@@ -248,7 +248,7 @@ public class IBMTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(filename, verify);
+        assertTrue(verify, filename);
     }
 
     /**
@@ -256,7 +256,7 @@ public class IBMTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_enveloping_rsa() throws Exception {
         if (!runTests) {
             return;
@@ -277,7 +277,7 @@ public class IBMTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(filename, verify);
+        assertTrue(verify, filename);
     }
 
     /**
@@ -285,7 +285,7 @@ public class IBMTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_enveloping_dsa_soaped_broken() throws Exception {
         if (!runTests) {
             return;
@@ -310,7 +310,7 @@ public class IBMTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename + ", had to be broken but was successful");
         }
 
-        assertFalse(filename, verify);
+        assertFalse(verify, filename);
     }
 
     /**
@@ -319,7 +319,7 @@ public class IBMTest extends InteropTestBase {
      * @throws Exception
      * $todo$ implement exclusive-c14n
      */
-    @org.junit.Ignore
+    @org.junit.jupiter.api.Disabled
     public void _not_active_test_enveloping_exclusive() throws Exception {
         // exclusive c14n not supported yet
     }
@@ -330,7 +330,7 @@ public class IBMTest extends InteropTestBase {
      * @throws Exception
      * $todo$ implement exclusive-c14n
      */
-    @org.junit.Ignore
+    @org.junit.jupiter.api.Disabled
     public void _not_active_test_enveloping_exclusive_soaped() throws Exception {
         // exclusive c14n not supported yet
     }

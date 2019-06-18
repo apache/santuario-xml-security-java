@@ -24,11 +24,11 @@ package javax.xml.crypto.test.dsig.keyinfo;
 
 import javax.xml.crypto.dsig.keyinfo.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -44,25 +44,25 @@ public class RetrievalMethodTest {
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testgetURI() {
         RetrievalMethod rm = fac.newRetrievalMethod("#X509Data");
         assertNotNull(rm.getURI());
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testgetTransforms() {
         RetrievalMethod rm = fac.newRetrievalMethod("#X509Data");
         assertNotNull(rm.getTransforms());
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testgetType() {
         RetrievalMethod rm = fac.newRetrievalMethod("#X509Data");
         assertNull(rm.getType());
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testConstructors() {
         final String uri = "#X509CertChain";
         // test RetrievalMethod(String)
@@ -86,7 +86,7 @@ public class RetrievalMethodTest {
         assertEquals(type, rm.getType());
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testisFeatureSupported() throws Exception {
         String uri = "#X509CertChain";
         String type = "http://www.w3.org/2000/09/xmldsig#X509Data";

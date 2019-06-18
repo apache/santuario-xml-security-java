@@ -46,10 +46,11 @@ import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.stax.ext.XMLSecurityProperties;
 import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
 import org.apache.xml.security.utils.XMLUtils;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * A set of test-cases for Signature creation with various digest algorithms
@@ -57,7 +58,7 @@ import static org.junit.Assert.assertEquals;
 public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
     private static boolean bcInstalled;
 
-    @BeforeClass
+    @BeforeAll
     public static void setup() throws Exception {
         //
         // If the BouncyCastle provider is not installed, then try to load it
@@ -79,7 +80,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         }
     }
 
-    @org.junit.AfterClass
+    @org.junit.jupiter.api.AfterAll
     public static void cleanup() throws Exception {
         Security.removeProvider("BC");
     }
@@ -361,7 +362,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
 
     @Test
     public void testRIPEMD160() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
@@ -418,7 +419,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
 
     @Test
     public void testWhirlpool() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
@@ -475,7 +476,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
 
     @Test
     public void testSHA3_224() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
@@ -532,7 +533,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
 
     @Test
     public void testSHA3_256() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
@@ -589,7 +590,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
 
     @Test
     public void testSHA3_384() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
@@ -646,7 +647,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
 
     @Test
     public void testSHA3_512() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();

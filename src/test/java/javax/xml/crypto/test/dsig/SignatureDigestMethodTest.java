@@ -40,12 +40,13 @@ import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 import javax.xml.crypto.test.KeySelectors;
 
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Assumptions;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -98,74 +99,74 @@ public class SignatureDigestMethodTest {
         kvks = new KeySelectors.KeyValueKeySelector();
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSHA1() throws Exception {
         test_create_signature_enveloping(rsaSha1, sha1, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSHA224() throws Exception {
         test_create_signature_enveloping(rsaSha1, sha224, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSHA256() throws Exception {
         test_create_signature_enveloping(rsaSha1, sha256, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSHA384() throws Exception {
         test_create_signature_enveloping(rsaSha1, sha384, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSHA512() throws Exception {
         test_create_signature_enveloping(rsaSha1, sha512, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testRIPEMD160() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha1, ripemd160, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testWHIRLPOOL() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha1, whirlpool, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSHA3_224() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha1, sha3_224, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSHA3_256() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha1, sha3_256, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSHA3_384() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha1, sha3_384, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSHA3_512() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha1, sha3_512, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }

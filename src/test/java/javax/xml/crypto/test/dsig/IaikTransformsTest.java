@@ -27,7 +27,7 @@ import java.security.Security;
 
 import javax.xml.crypto.test.KeySelectors;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * This is a testcase to validate all "transforms"
@@ -52,41 +52,41 @@ public class IaikTransformsTest {
             (base, "transforms/signatures"));
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_base64DecodeSignature() throws Exception {
         String file = "base64DecodeSignature.xml";
 
         boolean coreValidity = validator.validate
             (file, new KeySelectors.KeyValueKeySelector());
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
 
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_envelopedSignatureSignature() throws Exception {
         String file = "envelopedSignatureSignature.xml";
 
         boolean coreValidity = validator.validate
             (file, new KeySelectors.KeyValueKeySelector());
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_c14nSignature() throws Exception {
         String file = "c14nSignature.xml";
 
         boolean coreValidity = validator.validate
             (file, new KeySelectors.KeyValueKeySelector());
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_xPathSignature() throws Exception {
         String file = "xPathSignature.xml";
 
         boolean coreValidity = validator.validate
             (file, new KeySelectors.KeyValueKeySelector());
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
 }

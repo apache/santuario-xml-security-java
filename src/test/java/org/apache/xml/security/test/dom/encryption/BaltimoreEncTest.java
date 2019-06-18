@@ -55,8 +55,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -156,7 +156,7 @@ public class BaltimoreEncTest {
      *
      * Check the merlin-enc-five element content test for 3DES
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_five_content_3des_cbc() throws Exception {
         if (haveISOPadding) {
             String filename =
@@ -177,7 +177,7 @@ public class BaltimoreEncTest {
      *
      * Check the merlin-enc-five element content test for AES256
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_five_content_aes256_cbc() throws Exception {
 
         if (haveISOPadding) {
@@ -200,7 +200,7 @@ public class BaltimoreEncTest {
      * Check the merlin-enc-five element content test for AES128 with
      * AES 192 key wrap
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_five_content_aes128_cbc_kw_aes192() throws Exception {
         if (haveISOPadding && haveKeyWraps) {
             String filename =
@@ -222,7 +222,7 @@ public class BaltimoreEncTest {
      * Check the merlin-enc-five element content test for 3DES with
      * AES 128 key wrap
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_five_content_3des_cbc_kw_aes128() throws Exception {
 
         if (haveISOPadding && haveKeyWraps) {
@@ -245,7 +245,7 @@ public class BaltimoreEncTest {
      * Check the merlin-enc-five element content test for AES128 with
      * RSA key wrap (PKCS 1.5 padding)
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_five_content_aes128_cbc_rsa_15() throws Exception {
         if (haveISOPadding) {
             String filename =
@@ -267,7 +267,7 @@ public class BaltimoreEncTest {
      * Check the merlin-enc-five element data test for AES192 with
      * a CipherReference element
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_five_element_aes192_cbc_ref() throws Exception {
         if (haveISOPadding) {
             String filename =
@@ -291,7 +291,7 @@ public class BaltimoreEncTest {
      * Check the merlin-enc-five element data test for AES128 with no
      * key wrap
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_five_data_aes128_cbc() throws Exception {
         if (haveISOPadding) {
             String filename =
@@ -313,7 +313,7 @@ public class BaltimoreEncTest {
      * Check the merlin-enc-five element data test for AES256 with 3DES
      * key wrap
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_five_data_aes256_cbc_3des() throws Exception {
         if (haveISOPadding && haveKeyWraps) {
             String filename =
@@ -335,7 +335,7 @@ public class BaltimoreEncTest {
      * Check the merlin-enc-five element data test for AES192 with AES256
      * key wrap
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_five_data_aes192_cbc_aes256() throws Exception {
         if (haveISOPadding && haveKeyWraps) {
             String filename =
@@ -357,7 +357,7 @@ public class BaltimoreEncTest {
      * Check the merlin-enc-five element data test for 3DES with
      * RSA key wrap (OAEP and no parameters)
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_five_data_3des_cbc_rsa_oaep() throws Exception {
         if (haveISOPadding) {
             String filename =
@@ -606,7 +606,7 @@ public class BaltimoreEncTest {
             int myNodeCount = countNodes(d);
 
             assertTrue(
-                "Node count mismatches", myNodeCount > 0 && myNodeCount == nodeCount
+                myNodeCount > 0 && myNodeCount == nodeCount, "Node count mismatches"
             );
         }
     }

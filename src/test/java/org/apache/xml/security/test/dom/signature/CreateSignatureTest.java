@@ -51,7 +51,7 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests that create signatures.
@@ -76,7 +76,7 @@ public class CreateSignatureTest {
      * Test for bug 36044 - Canonicalizing an empty node-set throws an
      * ArrayIndexOutOfBoundsException.
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testEmptyNodeSet() throws Exception {
         Document doc = XMLUtils.newDocument();
         Element envelope = doc.createElementNS("http://www.usps.gov/", "Envelope");
@@ -127,18 +127,18 @@ public class CreateSignatureTest {
         sig.sign(privateKey);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testOne() throws Exception {
         doVerify(doSign());
         doVerify(doSign());
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testTwo() throws Exception {
         doSignWithCert();
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testWithNSPrefixDisabled() throws Exception {
         String prefix = ElementProxy.getDefaultPrefix(Constants.SignatureSpecNS);
         try {
@@ -151,7 +151,7 @@ public class CreateSignatureTest {
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testXFilter2Signature() throws Exception {
         Document doc = XMLUtils.newDocument();
         doc.appendChild(doc.createComment(" Comment before "));
@@ -211,7 +211,7 @@ public class CreateSignatureTest {
         assertTrue(signature.checkSignatureValue(ks.getCertificate("test").getPublicKey()));
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testCanonicalizedOctetStream() throws Exception {
         String signedXML = doSign();
 
@@ -253,7 +253,7 @@ public class CreateSignatureTest {
         assertTrue(si.verify(false));
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSHA256Digest() throws Exception {
         PrivateKey privateKey = kp.getPrivate();
         Document doc = XMLUtils.newDocument();

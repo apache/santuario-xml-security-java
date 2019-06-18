@@ -59,14 +59,14 @@ import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
 import org.apache.xml.security.utils.XMLUtils;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.apache.xml.security.stax.ext.XMLSecurityConstants.NS_C14N_EXCL;
 import static org.apache.xml.security.stax.ext.XMLSecurityConstants.NS_XMLDSIG_ENVELOPED_SIGNATURE;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * A set of test-cases for Signature creation.

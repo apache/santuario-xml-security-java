@@ -36,9 +36,9 @@ import javax.xml.crypto.dsig.XMLSignatureException;
 import javax.xml.crypto.dsig.XMLSignatureFactory;
 import javax.xml.crypto.dsig.dom.DOMValidateContext;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -68,7 +68,7 @@ public class ValidateSignatureTest {
      * Validates a signature that references an element with an ID attribute.
      * The element's ID needs to be registered so that it can be found.
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_signature_with_ID() throws Exception {
         String file = "envelopingSignature.xml";
 
@@ -78,32 +78,32 @@ public class ValidateSignatureTest {
         NodeList nl = doc.getElementsByTagName("Assertion");
         vc.setIdAttributeNS((Element) nl.item(0), null, "AssertionID");
         boolean coreValidity = validator.validate(vc);
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_signature_external_c14n_xmlattrs() throws Exception {
         String file = "signature-external-c14n-xmlatrs.xml";
 
         boolean coreValidity = validator.validate(file,
             new KeySelectors.SecretKeySelector("secret".getBytes(StandardCharsets.US_ASCII)));
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
     /**
      * This test checks that the signature is verified before the references.
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_invalid_signature() throws Exception {
         InvalidURIDereferencer ud = new InvalidURIDereferencer();
 
         boolean coreValidity = validator.validate("invalid-signature.xml",
             new KeySelectors.KeyValueKeySelector(), ud);
-        assertFalse("Invalid signature should fail!", coreValidity);
-        assertTrue("References validated before signature", ud.dereferenced);
+        assertFalse(coreValidity, "Invalid signature should fail!");
+        assertTrue(ud.dereferenced, "References validated before signature");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_signature_enveloping_hmac_sha1_trunclen_0() throws Exception {
         try {
             validator.validate
@@ -116,7 +116,7 @@ public class ValidateSignatureTest {
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_signature_enveloping_hmac_sha1_trunclen_8() throws Exception {
 
         try {
@@ -132,23 +132,23 @@ public class ValidateSignatureTest {
 
     // Bug 47761: validates an xml signature containing a reference with
     // xmlns:xml attributes. C14n should not emit these attributes.
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_signature_exclc14n_xmlnamespace() throws Exception {
         String file = "demo.signed.xml";
         boolean coreValidity = validator.validate(file,
             new KeySelectors.RawX509KeySelector());
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
     // Bug https://issues.apache.org/jira/browse/SANTUARIO-295
     // Validates a signature with an XPathFilter2 Transform with an intersect
     // filter that produces an empty node-set.
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_signature_xpathfilter2() throws Exception {
         String file = "xmldsig-xfilter2.xml";
         boolean coreValidity = validator.validate
             (file, new KeySelectors.KeyValueKeySelector());
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
     /**

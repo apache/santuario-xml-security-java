@@ -19,7 +19,7 @@
 package org.apache.xml.security.test.stax.c14n;
 
 import org.apache.xml.security.test.stax.utils.UnixInputStream;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer20010315_OmitCommentsTransformer;
@@ -40,10 +40,10 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -444,7 +444,7 @@ public class Canonicalizer20010315Test {
 //      byte[] refBytes = JavaUtils.getBytesFromStream(refStream);
 //      boolean equal = java.security.MessageDigest.isEqual(refBytes, c14nBytes);
 //
-//      assertTrue("Parser does not translate to UCS character domain", equal);
+//      assertTrue(equal, "Parser does not translate to UCS character domain");
 //   }
 //
 //   /**

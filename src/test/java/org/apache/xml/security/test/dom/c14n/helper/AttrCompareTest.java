@@ -29,9 +29,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 
@@ -50,7 +50,7 @@ public class AttrCompareTest {
      *
      * @throws ParserConfigurationException
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testA1() throws ParserConfigurationException {
 
         Document doc = createDoc("documentElement");
@@ -63,21 +63,21 @@ public class AttrCompareTest {
 
         NamedNodeMap nnm = root.getAttributes();
 
-        assertEquals("nnm.getLength()", nnm.getLength(), 2);
+        assertEquals(nnm.getLength(), 2, "nnm.getLength()");
 
         Attr attr00 = (Attr) nnm.item(0);
         Attr attr10 = (Attr) nnm.item(1);
 
-        assertNotNull("Attribute attr00", attr00);
-        assertNotNull("Attribute attr10", attr10);
+        assertNotNull(attr00, "Attribute attr00");
+        assertNotNull(attr10, "Attribute attr10");
 
         AttrCompare attrCompare = new AttrCompare();
 
-        assertTrue(attr0 + " < " + attr1, attrCompare.compare(attr0, attr1) < 0);
-        assertTrue(attr1 + " < " + attr0, attrCompare.compare(attr1, attr0) > 0);
+        assertTrue(attrCompare.compare(attr0, attr1) < 0, attr0 + " < " + attr1);
+        assertTrue(attrCompare.compare(attr1, attr0) > 0, attr1 + " < " + attr0);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testA2() throws ParserConfigurationException {
 
         Document doc = createDoc("documentElement");
@@ -89,9 +89,8 @@ public class AttrCompareTest {
 
         AttrCompare attrCompare = new AttrCompare();
 
-        assertTrue(attr0 + " < " + attr1, attrCompare.compare(attr0, attr1) < 0);
-        assertTrue(attr1 + " < " + attr0, attrCompare.compare(attr1, attr0) > 0);
-
+        assertTrue(attrCompare.compare(attr0, attr1) < 0, attr0 + " < " + attr1);
+        assertTrue(attrCompare.compare(attr1, attr0) > 0, attr1 + " < " + attr0);
     }
 
     /**
@@ -99,7 +98,7 @@ public class AttrCompareTest {
      *
      * @throws ParserConfigurationException
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void __testA2() throws ParserConfigurationException {
 
         Document doc = createDoc("documentElement");
@@ -112,18 +111,18 @@ public class AttrCompareTest {
 
         NamedNodeMap nnm = root.getAttributes();
 
-        assertEquals("nnm.getLength()", nnm.getLength(), 2);
+        assertEquals(nnm.getLength(), 2, "nnm.getLength()");
 
         Attr attr00 = (Attr) nnm.item(0);
         Attr attr10 = (Attr) nnm.item(1);
 
-        assertNotNull("Attribute attr00", attr00);
-        assertNotNull("Attribute attr10", attr10);
+        assertNotNull(attr00, "Attribute attr00");
+        assertNotNull(attr10, "Attribute attr10");
 
         AttrCompare attrCompare = new AttrCompare();
 
-        assertTrue(attr0 + " < " + attr1, attrCompare.compare(attr0, attr1) < 0);
-        assertTrue(attr1 + " < " + attr0, attrCompare.compare(attr1, attr0) > 0);
+        assertTrue(attrCompare.compare(attr0, attr1) < 0, attr0 + " < " + attr1);
+        assertTrue(attrCompare.compare(attr1, attr0) > 0, attr1 + " < " + attr0);
     }
 
     /**
@@ -135,7 +134,7 @@ public class AttrCompareTest {
      *
      * @throws ParserConfigurationException
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testComplete() throws ParserConfigurationException {
 
         /* <e5 xmlns="http://example.org"
@@ -167,11 +166,11 @@ public class AttrCompareTest {
 
         NamedNodeMap nnm = root.getAttributes();
 
-        assertEquals("nnm.getLength()", nnm.getLength(), attrs.length);
+        assertEquals(nnm.getLength(), attrs.length, "nnm.getLength()");
 
         for (int i = 0; i < attrs.length; i++) {
             Attr attr = attrs[i];
-            assertNotNull("Attribute attr", attr);
+            assertNotNull(attr, "Attribute attr");
         }
 
         AttrCompare attrCompare = new AttrCompare();
@@ -180,8 +179,8 @@ public class AttrCompareTest {
             for (int j = i + 1; j < attrs.length; j++) {
                 Attr attr0 = attrs[i];
                 Attr attr1 = attrs[j];
-                assertTrue(attr0 + " < " + attr1, attrCompare.compare(attr0, attr1) < 0);
-                assertTrue(attr1 + " < " + attr0, attrCompare.compare(attr1, attr0) > 0);
+                assertTrue(attrCompare.compare(attr0, attr1) < 0, attr0 + " < " + attr1);
+                assertTrue(attrCompare.compare(attr1, attr0) > 0, attr1 + " < " + attr0);
             }
         }
     }

@@ -50,13 +50,14 @@ import org.apache.xml.security.stax.ext.XMLSecurityProperties;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
 import org.apache.xml.security.utils.XMLUtils;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * A test to make sure that the various KeyWrap Encryption algorithms are working
@@ -67,7 +68,7 @@ public class KeyWrapEncryptionCreationTest {
     private static boolean bcInstalled;
     private XMLInputFactory xmlInputFactory;
 
-    @BeforeClass
+    @BeforeAll
     public static void setup() throws Exception {
         //
         // If the BouncyCastle provider is not installed, then try to load it
@@ -98,7 +99,7 @@ public class KeyWrapEncryptionCreationTest {
         xmlInputFactory.setEventAllocator(new XMLSecEventAllocator());
     }
 
-    @org.junit.AfterClass
+    @org.junit.jupiter.api.AfterAll
     public static void cleanup() throws Exception {
         Security.removeProvider("BC");
     }
@@ -570,7 +571,7 @@ public class KeyWrapEncryptionCreationTest {
 
     @Test
     public void testCamellia128KW() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
@@ -640,7 +641,7 @@ public class KeyWrapEncryptionCreationTest {
 
     @Test
     public void testCamellia192KW() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
@@ -710,7 +711,7 @@ public class KeyWrapEncryptionCreationTest {
 
     @Test
     public void testCamellia256KW() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
@@ -780,7 +781,7 @@ public class KeyWrapEncryptionCreationTest {
 
     @Test
     public void testSEED128KW() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();

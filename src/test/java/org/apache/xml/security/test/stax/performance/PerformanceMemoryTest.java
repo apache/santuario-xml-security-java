@@ -18,9 +18,10 @@
  */
 package org.apache.xml.security.test.stax.performance;
 
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runners.MethodSorters;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -28,7 +29,7 @@ import java.util.*;
 
 /**
  */
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class PerformanceMemoryTest extends AbstractPerformanceTest {
 
     private static final int runs = 40;
@@ -44,6 +45,7 @@ public class PerformanceMemoryTest extends AbstractPerformanceTest {
         return new File("target/performanceMemoryTest");
     }
 
+    @Order(1)
     @Test
     public void testRunFirstOutboundSignatureMemoryPerformance() throws Exception {
         System.out.println("Testing Outbound Signature Memory Performance");
@@ -82,6 +84,7 @@ public class PerformanceMemoryTest extends AbstractPerformanceTest {
         outSignatureSamplesWriter.close();
     }
 
+    @Order(2)
     @Test
     public void testRunSecondInboundSignatureMemoryPerformance() throws Exception {
         System.out.println("Testing Inbound Signature Memory Performance");
@@ -122,6 +125,7 @@ public class PerformanceMemoryTest extends AbstractPerformanceTest {
         inSignatureSamplesWriter.close();
     }
 
+    @Order(3)
     @Test
     public void testRunFirstOutboundEncryptionMemoryPerformance() throws Exception {
         System.out.println("Testing Outbound Encryption Memory Performance");
@@ -160,6 +164,7 @@ public class PerformanceMemoryTest extends AbstractPerformanceTest {
         outEncryptionSamplesWriter.close();
     }
 
+    @Order(4)
     @Test
     public void testRunSecondInboundDecryptionMemoryPerformance() throws Exception {
         System.out.println("Testing Inbound Decryption Memory Performance");

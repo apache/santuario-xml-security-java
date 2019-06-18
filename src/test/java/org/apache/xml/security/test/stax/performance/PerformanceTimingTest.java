@@ -18,9 +18,10 @@
  */
 package org.apache.xml.security.test.stax.performance;
 
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runners.MethodSorters;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -30,7 +31,7 @@ import java.util.TreeMap;
 
 /**
  */
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class PerformanceTimingTest extends AbstractPerformanceTest {
 
     private static final int runs = 40;
@@ -45,6 +46,7 @@ public class PerformanceTimingTest extends AbstractPerformanceTest {
         return new File("target/performanceTimingTest");
     }
 
+    @Order(1)
     @Test
     public void testRunFirstOutboundSignatureTimePerformance() throws Exception {
         System.out.println("Testing Outbound Signature Time Performance");
@@ -73,6 +75,7 @@ public class PerformanceTimingTest extends AbstractPerformanceTest {
         outSignatureSamplesWriter.close();
     }
 
+    @Order(2)
     @Test
     public void testRunSecondInboundSignatureTimePerformance() throws Exception {
         System.out.println("Testing Inbound Signature Time Performance");
@@ -103,6 +106,7 @@ public class PerformanceTimingTest extends AbstractPerformanceTest {
         inSignatureSamplesWriter.close();
     }
 
+    @Order(3)
     @Test
     public void testRunFirstOutboundEncryptionTimePerformance() throws Exception {
         System.out.println("Testing Outbound Encryption Time Performance");
@@ -131,6 +135,7 @@ public class PerformanceTimingTest extends AbstractPerformanceTest {
         outEncryptionSamplesWriter.close();
     }
 
+    @Order(4)
     @Test
     public void testRunSecondInboundDecryptionTimePerformance() throws Exception {
         System.out.println("Testing Inbound Decryption Time Performance");

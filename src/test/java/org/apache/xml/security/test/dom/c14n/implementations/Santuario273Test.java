@@ -33,7 +33,7 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * This is a test for Santuario-273:
@@ -77,7 +77,7 @@ public class Santuario273Test {
         Init.init();
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testC14n11Base() throws Exception {
         Document doc = null;
         try (InputStream is = new ByteArrayInputStream(input.getBytes())) {

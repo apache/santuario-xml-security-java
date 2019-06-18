@@ -26,8 +26,8 @@ import org.apache.xml.security.stax.ext.XMLSecurityUtils;
 import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 import org.apache.xml.security.stax.impl.transformer.TransformBase64Decode;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
@@ -42,8 +42,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  */
@@ -51,7 +51,7 @@ public class TransformBase64DecodeTest {
 
     private XMLInputFactory xmlInputFactory;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         Init.init(this.getClass().getClassLoader().getResource("security-config.xml").toURI(),
                 this.getClass());

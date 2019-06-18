@@ -27,9 +27,9 @@ import java.util.NoSuchElementException;
 
 import org.apache.xml.security.keys.storage.StorageResolver;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -41,7 +41,7 @@ public class StorageResolverTest {
         System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
     private static final String SEP = System.getProperty("file.separator");
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testStorageResolver() throws Exception {
 
         //

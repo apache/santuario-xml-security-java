@@ -29,8 +29,8 @@ import javax.xml.crypto.dsig.XMLSignatureException;
 
 import javax.xml.crypto.test.KeySelectors;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -56,25 +56,25 @@ public class IaikSignatureAlgosTest {
             (base, "signatureAlgorithms/signatures"));
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_dsaSignature() throws Exception {
         String file = "dSASignature.xml";
 
         boolean coreValidity = validator.validate(file, new
             KeySelectors.KeyValueKeySelector());
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_rsaSignature() throws Exception {
         String file = "rSASignature.xml";
 
         boolean coreValidity = validator.validate(file, new
             KeySelectors.KeyValueKeySelector());
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_hmacShortSignature() throws Exception {
         String file = "hMACShortSignature.xml";
 
@@ -88,13 +88,13 @@ public class IaikSignatureAlgosTest {
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_hmacSignature() throws Exception {
         String file = "hMACSignature.xml";
 
         boolean coreValidity = validator.validate(file, new
             KeySelectors.SecretKeySelector("secret".getBytes(StandardCharsets.US_ASCII)));
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
 }

@@ -46,13 +46,14 @@ import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 import javax.xml.crypto.test.KeySelectors;
 
 import org.apache.xml.security.utils.XMLUtils;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeAll;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -77,7 +78,7 @@ public class PKSignatureAlgorithmTest {
             (new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI(), 1);
     }
 
-    @BeforeClass
+    @BeforeAll
     public static void setup() throws Exception {
         //
         // If the BouncyCastle provider is not installed, then try to load it
@@ -158,122 +159,122 @@ public class PKSignatureAlgorithmTest {
         }
     }
 
-    @org.junit.AfterClass
+    @org.junit.jupiter.api.AfterAll
     public static void cleanup() throws Exception {
         Security.removeProvider("BC");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testRSA_SHA1() throws Exception {
         test_create_signature_enveloping(rsaSha1, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testRSA_SHA_224() throws Exception {
         test_create_signature_enveloping(rsaSha224, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testRSA_SHA_256() throws Exception {
         test_create_signature_enveloping(rsaSha256, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testRSA_SHA_384() throws Exception {
         test_create_signature_enveloping(rsaSha384, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testRSA_SHA_512() throws Exception {
         test_create_signature_enveloping(rsaSha512, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testRSA_RIPEMD160() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaRipemd160, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testRSA_SHA1_MGF1() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha1Mgf1, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testRSA_SHA224_MGF1() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha224Mgf1, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testRSA_SHA256_MGF1() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha256Mgf1, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testRSA_SHA384_MGF1() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha384Mgf1, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testRSA_SHA512_MGF1() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha512Mgf1, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testECDSA_SHA1() throws Exception {
-        org.junit.Assume.assumeTrue(ecAlgParamsSupport && ecki != null);
+        Assumptions.assumeTrue(ecAlgParamsSupport && ecki != null);
         test_create_signature_enveloping(ecdsaSha1, sha1, ecki,
                                          ecKeyPair.getPrivate(), kvks);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testECDSA_SHA224() throws Exception {
-        org.junit.Assume.assumeTrue(ecAlgParamsSupport && ecki != null);
+        Assumptions.assumeTrue(ecAlgParamsSupport && ecki != null);
         test_create_signature_enveloping(ecdsaSha224, sha1, ecki,
                                          ecKeyPair.getPrivate(), kvks);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testECDSA_SHA256() throws Exception {
-        org.junit.Assume.assumeTrue(ecAlgParamsSupport && ecki != null);
+        Assumptions.assumeTrue(ecAlgParamsSupport && ecki != null);
         test_create_signature_enveloping(ecdsaSha256, sha1, ecki,
                                          ecKeyPair.getPrivate(), kvks);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testECDSA_SHA384() throws Exception {
-        org.junit.Assume.assumeTrue(ecAlgParamsSupport && ecki != null);
+        Assumptions.assumeTrue(ecAlgParamsSupport && ecki != null);
         test_create_signature_enveloping(ecdsaSha384, sha1, ecki,
                                          ecKeyPair.getPrivate(), kvks);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testECDSA_SHA512() throws Exception {
-        org.junit.Assume.assumeTrue(ecAlgParamsSupport && ecki != null);
+        Assumptions.assumeTrue(ecAlgParamsSupport && ecki != null);
         test_create_signature_enveloping(ecdsaSha512, sha1, ecki,
                                          ecKeyPair.getPrivate(), kvks);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testECDSA_RIPEMD160() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
-        org.junit.Assume.assumeTrue(ecAlgParamsSupport && ecki != null);
+        Assumptions.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(ecAlgParamsSupport && ecki != null);
         test_create_signature_enveloping(ecdsaRipemd160, sha1, ecki,
                                          ecKeyPair.getPrivate(), kvks);
     }

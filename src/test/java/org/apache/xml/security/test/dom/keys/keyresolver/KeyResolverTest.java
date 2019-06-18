@@ -61,8 +61,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -80,7 +80,7 @@ public class KeyResolverTest {
     /**
      * Test key resolvers through a KeyInfo.
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testKeyResolvers() throws Exception {
 
         //
@@ -194,7 +194,7 @@ public class KeyResolverTest {
      * Decrypt the data by resolving the Key Encryption Key.
      * This test verifies if a KeyResolver can return a PrivateKey.
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testResolvePrivateKey() throws Exception {
         // See if AES-128 is available...
         String algorithmId =

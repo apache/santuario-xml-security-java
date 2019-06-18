@@ -46,9 +46,9 @@ import org.apache.xml.security.stax.impl.stax.XMLSecEntityReferenceImpl;
 import org.apache.xml.security.stax.impl.stax.XMLSecNamespaceImpl;
 import org.apache.xml.security.stax.impl.stax.XMLSecProcessingInstructionImpl;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  */

@@ -41,8 +41,9 @@ import org.apache.xml.security.stax.ext.XMLSecurityProperties;
 import org.apache.xml.security.test.stax.utils.StAX2DOM;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.utils.XMLUtils;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 
 /**
@@ -54,7 +55,7 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
     private XMLInputFactory xmlInputFactory;
     private TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         Init.init(SignatureDigestVerificationTest.class.getClassLoader().getResource("security-config.xml").toURI(),
                 this.getClass());
@@ -321,7 +322,7 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
 
     @Test
     public void testRIPEMD160() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
         InputStream sourceDocument =
@@ -374,7 +375,7 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
 
     @Test
     public void testWhirlpool() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
         InputStream sourceDocument =
@@ -427,7 +428,7 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
 
     @Test
     public void testSHA3_224() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
         InputStream sourceDocument =
@@ -480,7 +481,7 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
 
     @Test
     public void testSHA3_256() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
         InputStream sourceDocument =
@@ -533,7 +534,7 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
 
     @Test
     public void testSHA3_384() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
         InputStream sourceDocument =
@@ -586,7 +587,7 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
 
     @Test
     public void testSHA3_512() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
         InputStream sourceDocument =

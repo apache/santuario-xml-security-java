@@ -47,9 +47,9 @@ import org.w3c.dom.Element;
 
 import org.apache.xml.security.utils.XMLUtils;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Test that recreates Phaos XMLDSig-3 test vectors
@@ -71,12 +71,12 @@ public class CreatePhaosXMLDSig3Test {
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_create_hmac_sha1_exclusive_c14n_comments_detached() throws Exception {
         test_create_hmac_sha1_exclusive_c14n_comments_detached(false);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_create_hmac_sha1_40_exclusive_c14n_comments_detached()
         throws Exception {
         try {
@@ -134,7 +134,7 @@ public class CreatePhaosXMLDSig3Test {
         assertTrue(sig2.validate(dvc));
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_create_hmac_sha1_exclusive_c14n_enveloped() throws Exception {
 
         // create reference

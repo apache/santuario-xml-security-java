@@ -27,8 +27,8 @@ import org.apache.xml.security.signature.XMLSignatureException;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
 import org.apache.xml.security.utils.resolver.implementations.ResolverAnonymous;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -66,7 +66,7 @@ public class IAIKTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_signatureAlgorithms_signatures_hMACShortSignature()
         throws Exception {
 
@@ -94,7 +94,7 @@ public class IAIKTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_signatureAlgorithms_signatures_hMACSignature()
         throws Exception {
 
@@ -116,7 +116,7 @@ public class IAIKTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(filename, verify);
+        assertTrue(verify, filename);
     }
 
     /**
@@ -124,7 +124,7 @@ public class IAIKTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_coreFeatures_signatures_manifestSignature_core()
         throws Exception {
 
@@ -145,7 +145,7 @@ public class IAIKTest extends InteropTestBase {
             LOG.error("Core validation failed for " + filename);
         }
 
-        assertTrue("Core validation failed for " + filename, verify);
+        assertTrue(verify, "Core validation failed for " + filename);
     }
 
     /**
@@ -153,7 +153,7 @@ public class IAIKTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_coreFeatures_signatures_manifestSignature_manifest()
         throws Exception {
 
@@ -174,7 +174,7 @@ public class IAIKTest extends InteropTestBase {
             LOG.error("Following the ds:Manifest failed for " + filename);
         }
 
-        assertTrue("Following the ds:Manifest failed for " + filename, verify);
+        assertTrue(verify, "Following the ds:Manifest failed for " + filename);
     }
 
     /**
@@ -182,7 +182,7 @@ public class IAIKTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_coreFeatures_signatures_signatureTypesSignature()
         throws Exception {
 
@@ -203,7 +203,7 @@ public class IAIKTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue("Verification failed for " + filename, verify);
+        assertTrue(verify, "Verification failed for " + filename);
     }
 
     /**
@@ -211,7 +211,7 @@ public class IAIKTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_coreFeatures_signatures_anonymousReferenceSignature()
         throws Exception {
 
@@ -235,7 +235,7 @@ public class IAIKTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(filename, verify);
+        assertTrue(verify, filename);
     }
 
     /**
@@ -243,7 +243,7 @@ public class IAIKTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_signatureAlgorithms_signatures_dSASignature()
         throws Exception {
 
@@ -264,7 +264,7 @@ public class IAIKTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(filename, verify);
+        assertTrue(verify, filename);
     }
 
     /**
@@ -272,7 +272,7 @@ public class IAIKTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_signatureAlgorithms_signatures_rSASignature()
         throws Exception {
 
@@ -293,7 +293,7 @@ public class IAIKTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(filename, verify);
+        assertTrue(verify, filename);
     }
 
     /**
@@ -301,7 +301,7 @@ public class IAIKTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_transforms_signatures_base64DecodeSignature()
         throws Exception {
 
@@ -322,7 +322,7 @@ public class IAIKTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(filename, verify);
+        assertTrue(verify, filename);
     }
 
     /**
@@ -330,7 +330,7 @@ public class IAIKTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_transforms_signatures_c14nSignature() throws Exception {
 
         String filename = gregorsDir + "transforms/signatures/c14nSignature.xml";
@@ -350,7 +350,7 @@ public class IAIKTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(filename, verify);
+        assertTrue(verify, filename);
     }
 
     /**
@@ -358,7 +358,7 @@ public class IAIKTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_transforms_signatures_envelopedSignatureSignature()
         throws Exception {
 
@@ -380,7 +380,7 @@ public class IAIKTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(filename, verify);
+        assertTrue(verify, filename);
     }
 
     /**
@@ -388,7 +388,7 @@ public class IAIKTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_transforms_signatures_xPathSignature() throws Exception {
 
         String filename = gregorsDir + "transforms/signatures/xPathSignature.xml";
@@ -408,7 +408,7 @@ public class IAIKTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(filename, verify);
+        assertTrue(verify, filename);
     }
 
 }

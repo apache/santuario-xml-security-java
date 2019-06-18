@@ -44,7 +44,7 @@ import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Element;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -67,7 +67,7 @@ public class ECDSASignatureTest {
         org.apache.xml.security.Init.init();
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testOne() throws Exception {
         //
         // This test fails with the IBM JDK
@@ -87,8 +87,8 @@ public class ECDSASignatureTest {
     }
 
     // Failing with more recent BouncyCastle libraries
-    @org.junit.Test
-    @org.junit.Ignore
+    @org.junit.jupiter.api.Test
+    @org.junit.jupiter.api.Disabled
     public void testTwo() throws Exception {
         File file =
             makeDataFile("src/test/resources/org/apache/xml/security/samples/input/ecdsaSignature.xml");
@@ -97,8 +97,8 @@ public class ECDSASignatureTest {
         }
     }
 
-    @org.junit.Test
-    @org.junit.Ignore
+    @org.junit.jupiter.api.Test
+    @org.junit.jupiter.api.Disabled
     public void testThree()  throws Exception {
         File file = makeDataFile("src/test/resources/at/buergerkarte/testresp.xml");
         try (InputStream is = new FileInputStream(file)) {
@@ -106,7 +106,7 @@ public class ECDSASignatureTest {
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testKeyValue() throws Exception {
         //
         // This test fails with the IBM JDK

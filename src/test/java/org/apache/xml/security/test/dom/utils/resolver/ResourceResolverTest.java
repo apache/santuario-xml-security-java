@@ -26,7 +26,7 @@ import org.apache.xml.security.utils.resolver.ResourceResolver;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Unit test for {@link org.apache.xml.security.utils.resolver.ResourceResolver}
@@ -45,7 +45,7 @@ public class ResourceResolverTest {
     /**
      * Tests registering a custom resolver implementation.
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testCustomResolver() throws Exception {
         String className =
             "org.apache.xml.security.test.dom.utils.resolver.OfflineResolver";
@@ -71,7 +71,7 @@ public class ResourceResolverTest {
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testLocalFileWithEmptyBaseURI() throws Exception {
         Document doc = XMLUtils.newDocument();
         Attr uriAttr = doc.createAttribute("URI");

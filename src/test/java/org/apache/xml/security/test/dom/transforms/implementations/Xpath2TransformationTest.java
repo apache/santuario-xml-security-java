@@ -27,7 +27,7 @@ import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Element;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Xpath2TransformationTest {
 
@@ -35,7 +35,7 @@ public class Xpath2TransformationTest {
         Init.init();
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testXpath2Transform() throws Exception {
         String sig="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" +
         "<edoc:EDOC xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:edoc=\"http://www.imtf.com/hypersuite/edoc/2.0/\" sysid=\"CC9CC230-C0A8024E01A3CA10-AC154F78\">\r\n" +

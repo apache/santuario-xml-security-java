@@ -24,14 +24,14 @@ import org.apache.xml.security.utils.resolver.ResourceResolver;
 import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.apache.xml.security.utils.resolver.ResourceResolverException;
 import org.apache.xml.security.utils.resolver.implementations.ResolverDirectHTTP;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 public class ResolverDirectHTTPTest {
@@ -45,7 +45,7 @@ public class ResolverDirectHTTPTest {
     private static final String serverUsername = "serverUser";
     private static final String serverPassword = "serverPass";
 
-    @Before
+    @BeforeEach
     public void setUp() {
         Init.init();
     }
@@ -65,7 +65,7 @@ public class ResolverDirectHTTPTest {
     }
 
     @Test
-    @Ignore
+    @Disabled
     public void testProxyAuth() throws Exception {
         Document doc = XMLUtils.newDocument();
         Attr uri = doc.createAttribute("URI");
@@ -82,7 +82,7 @@ public class ResolverDirectHTTPTest {
     }
 
     @Test
-    @Ignore
+    @Disabled
     public void testProxyAuthWithWrongPassword() throws Exception {
         Document doc = XMLUtils.newDocument();
         Attr uri = doc.createAttribute("URI");
@@ -104,7 +104,7 @@ public class ResolverDirectHTTPTest {
     }
 
     @Test
-    @Ignore
+    @Disabled
     public void testServerAuth() throws Exception {
         Document doc = XMLUtils.newDocument();
         Attr uri = doc.createAttribute("URI");
@@ -119,7 +119,7 @@ public class ResolverDirectHTTPTest {
     }
 
     @Test
-    @Ignore
+    @Disabled
     public void testServerAuthWithWrongPassword() throws Exception {
         Document doc = XMLUtils.newDocument();
         Attr uri = doc.createAttribute("URI");
@@ -139,7 +139,7 @@ public class ResolverDirectHTTPTest {
     }
 
     @Test
-    @Ignore
+    @Disabled
     public void testProxyAndServerAuth() throws Exception {
         Document doc = XMLUtils.newDocument();
         Attr uri = doc.createAttribute("URI");

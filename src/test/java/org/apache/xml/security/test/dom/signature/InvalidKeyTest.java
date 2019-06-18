@@ -45,7 +45,7 @@ public class InvalidKeyTest {
         Init.init();
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test() throws Exception {
         FileInputStream input = new FileInputStream(BASEDIR + SEP +
             "src/test/resources/org/apache/xml/security/samples/input/truststore.jks");

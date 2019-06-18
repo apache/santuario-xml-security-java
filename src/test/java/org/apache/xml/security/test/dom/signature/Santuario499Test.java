@@ -32,7 +32,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * A test for SANTUARIO-499 - https://issues.apache.org/jira/browse/SANTUARIO-499
@@ -47,7 +47,7 @@ public class Santuario499Test {
         Init.init();
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testXSLTTransform() throws Exception {
 
         URL signatureFile = this.getClass().getResource("Arbeidstijd_anonymous.xml");

@@ -30,7 +30,7 @@ import javax.xml.crypto.*;
 import javax.xml.crypto.dsig.XMLSignatureFactory;
 import javax.xml.crypto.test.KeySelectors;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * This is a testcase to validate all "coreFeatures"
@@ -56,33 +56,33 @@ public class IaikCoreFeaturesTest {
             (base, "coreFeatures/signatures"));
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_anonymousReferenceSignature() throws Exception {
         String file = "anonymousReferenceSignature.xml";
 
         boolean coreValidity = validator.validate
             (file, new KeySelectors.KeyValueKeySelector(),
              new NullURIDereferencer(base));
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_manifestSignature() throws Exception {
         String file = "manifestSignature.xml";
 
         boolean coreValidity = validator.validate
             (file, new KeySelectors.KeyValueKeySelector());
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_signatureTypesSignature() throws Exception {
         String file = "signatureTypesSignature.xml";
 
         boolean coreValidity = validator.validate
             (file, new KeySelectors.KeyValueKeySelector(),
                     new OfflineDereferencer());
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
     private static class NullURIDereferencer implements URIDereferencer {

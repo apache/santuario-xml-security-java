@@ -27,8 +27,8 @@ import javax.xml.crypto.dsig.XMLSignatureException;
 import javax.xml.crypto.dsig.dom.DOMValidateContext;
 import javax.xml.crypto.test.KeySelectors;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -53,7 +53,7 @@ public class JSRForbiddenReferenceTest {
     }
 
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testLocalFilesystem() throws Exception {
         String file = "signature-external-c14n-xmlatrs.xml";
 
@@ -64,7 +64,7 @@ public class JSRForbiddenReferenceTest {
 
         vc.setProperty("org.apache.jcp.xml.dsig.secureValidation", Boolean.FALSE);
         boolean coreValidity = validator.validate(vc);
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
 
         vc.setProperty("org.apache.jcp.xml.dsig.secureValidation", Boolean.TRUE);
 

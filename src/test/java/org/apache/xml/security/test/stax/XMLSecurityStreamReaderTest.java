@@ -46,21 +46,21 @@ import org.apache.xml.security.stax.impl.DocumentContextImpl;
 import org.apache.xml.security.stax.impl.InboundSecurityContextImpl;
 import org.apache.xml.security.stax.impl.InputProcessorChainImpl;
 import org.apache.xml.security.stax.impl.XMLSecurityStreamReader;
+import org.hamcrest.MatcherAssert;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.xmlunit.matchers.CompareMatcher;
 
-import org.custommonkey.xmlunit.XMLAssert;
-import org.junit.Before;
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  */
 public class XMLSecurityStreamReaderTest {
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         Init.init(this.getClass().getClassLoader().getResource("security-config.xml").toURI(),
                 this.getClass());
@@ -102,7 +102,7 @@ public class XMLSecurityStreamReaderTest {
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new StAXSource(xmlSecurityStreamReader), new StreamResult(baos));
-        XMLAssert.assertXMLEqual(readTestFile(), baos.toString(StandardCharsets.UTF_8.name()));
+        MatcherAssert.assertThat(readTestFile(), CompareMatcher.isSimilarTo(baos.toString(StandardCharsets.UTF_8.name())));
     }
 
     @Test

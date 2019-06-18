@@ -55,7 +55,7 @@ public class TransformXSLTTest {
      * Make sure Transform.performTransform does not throw NullPointerException.
      * See bug 41927 for more info.
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test1() throws Exception {
         File file1 = null;
         File file2 = null;

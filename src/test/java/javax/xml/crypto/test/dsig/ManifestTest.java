@@ -25,11 +25,11 @@ package javax.xml.crypto.test.dsig;
 import java.util.*;
 import javax.xml.crypto.dsig.*;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -50,7 +50,7 @@ public class ManifestTest {
     }
 
     @SuppressWarnings("rawtypes")
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testConstructor() throws Exception {
         Manifest man = null;
         String id = "manifest_id";
@@ -142,7 +142,7 @@ public class ManifestTest {
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testisFeatureSupported() throws Exception {
         List<Reference> refs = new ArrayList<>();
         refs.add(VALID_REF);
@@ -157,7 +157,7 @@ public class ManifestTest {
         assertFalse(man.isFeatureSupported("not supported"));
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testgetReferences() throws Exception {
         List<Reference> refs = new ArrayList<>();
         refs.add(VALID_REF);

@@ -107,8 +107,8 @@ public class CanonicalizerPhysical extends CanonicalizerBase {
     /**
      * Output the Attr[]s for the given element.
      * <br>
-     * The code of this method is a copy of {@link #outputAttributes(Element,
-     * NameSpaceSymbTable, Map<String, byte[]>)},
+     * The code of this method is a copy of
+     * {@link #outputAttributes(Element, NameSpaceSymbTable, Map<String, byte[]>)},
      * whereas it takes into account that subtree-c14n is -- well -- subtree-based.
      * So if the element in question isRoot of c14n, it's parent is not in the
      * node set, as well as all other ancestors.

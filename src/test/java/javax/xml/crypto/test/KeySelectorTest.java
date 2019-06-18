@@ -30,7 +30,7 @@ import javax.xml.crypto.*;
 import javax.xml.crypto.dsig.keyinfo.*;
 import javax.xml.crypto.dsig.*;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Unit test for javax.xml.crypto.KeySelector
@@ -67,7 +67,7 @@ public class KeySelectorTest {
         selector1 = KeySelector.singletonKeySelector(key);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testselect() throws Exception {
         KeyInfoFactory factory = KeyInfoFactory.getInstance
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());

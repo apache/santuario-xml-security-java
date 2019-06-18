@@ -53,15 +53,16 @@ import org.apache.xml.security.test.stax.signature.TestSecurityEventListener;
 import org.apache.xml.security.test.stax.utils.StAX2DOM;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.utils.XMLUtils;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * A test to make sure that the various Symmetric Encryption algorithms are working
@@ -72,7 +73,7 @@ public class SymmetricEncryptionVerificationTest {
     private XMLInputFactory xmlInputFactory;
     private TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
-    @BeforeClass
+    @BeforeAll
     public static void setup() throws Exception {
         //
         // If the BouncyCastle provider is not installed, then try to load it
@@ -101,7 +102,7 @@ public class SymmetricEncryptionVerificationTest {
         xmlInputFactory.setEventAllocator(new XMLSecEventAllocator());
     }
 
-    @org.junit.AfterClass
+    @org.junit.jupiter.api.AfterAll
     public static void cleanup() throws Exception {
         Security.removeProvider("BC");
     }
@@ -471,7 +472,7 @@ public class SymmetricEncryptionVerificationTest {
 
     @Test
     public void testSEED_128() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
         InputStream sourceDocument =
@@ -525,7 +526,7 @@ public class SymmetricEncryptionVerificationTest {
 
     @Test
     public void testCAMELLIA_128() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
         InputStream sourceDocument =
@@ -579,7 +580,7 @@ public class SymmetricEncryptionVerificationTest {
 
     @Test
     public void testCAMELLIA_192() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
         InputStream sourceDocument =
@@ -633,7 +634,7 @@ public class SymmetricEncryptionVerificationTest {
 
     @Test
     public void testCAMELLIA_256() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
         InputStream sourceDocument =

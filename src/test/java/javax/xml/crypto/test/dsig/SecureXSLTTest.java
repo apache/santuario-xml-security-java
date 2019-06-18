@@ -29,8 +29,8 @@ import org.w3c.dom.*;
 
 import javax.xml.crypto.test.KeySelectors;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 public class SecureXSLTTest {
@@ -40,7 +40,7 @@ public class SecureXSLTTest {
             (new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI(), 1);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSignature1() throws Exception {
 
         String fs = System.getProperty("file.separator");
@@ -52,7 +52,7 @@ public class SecureXSLTTest {
         testSignature(new File(baseDir, "signature1.xml"));
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSignature2() throws Exception {
 
         String fs = System.getProperty("file.separator");
@@ -64,7 +64,7 @@ public class SecureXSLTTest {
         testSignature(new File(baseDir, "signature2.xml"));
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSignature3() throws Exception {
 
         String fs = System.getProperty("file.separator");

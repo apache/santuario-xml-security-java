@@ -33,7 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class EmptyNamespaceTest {
 
@@ -65,7 +65,7 @@ public class EmptyNamespaceTest {
             "\t</ec:SubmitRetrieveInterchangeAgreementsRequestResponse>\n" +
             "</SOAP-ENV:Body>";
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void doStAXTest() throws Exception {
         org.apache.xml.security.Init.init();
         org.apache.xml.security.stax.config.Init.init(null, EmptyNamespaceTest.class);
@@ -89,7 +89,7 @@ public class EmptyNamespaceTest {
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void doDOMTest() throws Exception {
         org.apache.xml.security.Init.init();
         org.apache.xml.security.stax.config.Init.init(null, EmptyNamespaceTest.class);

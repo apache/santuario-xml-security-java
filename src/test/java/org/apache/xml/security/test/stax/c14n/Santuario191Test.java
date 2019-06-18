@@ -18,8 +18,8 @@
  */
 package org.apache.xml.security.test.stax.c14n;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer11_OmitCommentsTransformer;
@@ -33,7 +33,7 @@ import javax.xml.stream.XMLInputFactory;
 import java.io.ByteArrayOutputStream;
 import java.io.StringReader;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * This is a test for Santuario-191:
@@ -60,7 +60,7 @@ public class Santuario191Test {
 
     private XMLInputFactory xmlInputFactory;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         this.xmlInputFactory = XMLInputFactory.newInstance();
         this.xmlInputFactory.setEventAllocator(new XMLSecEventAllocator());

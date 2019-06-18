@@ -33,16 +33,16 @@ import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 import org.apache.xml.security.stax.impl.OutboundSecurityContextImpl;
 import org.apache.xml.security.stax.impl.OutputProcessorChainImpl;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  */
 public class OutputProcessorChainTest {
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         Init.init(this.getClass().getClassLoader().getResource("security-config.xml").toURI(),
                 this.getClass());

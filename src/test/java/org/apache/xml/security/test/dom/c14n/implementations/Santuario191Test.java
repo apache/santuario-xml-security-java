@@ -29,7 +29,7 @@ import org.w3c.dom.NodeList;
 import org.apache.xml.security.c14n.implementations.Canonicalizer11_OmitComments;
 import org.apache.xml.security.utils.XMLUtils;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * This is a test for Santuario-191:
@@ -58,7 +58,7 @@ public class Santuario191Test {
         org.apache.xml.security.Init.init();
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSantuario191() throws Exception {
         //
         // Parse the Data

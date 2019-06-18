@@ -64,16 +64,16 @@ import org.apache.xml.security.test.stax.utils.StAX2DOM;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
 import org.apache.xml.security.utils.XMLUtils;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -86,7 +86,7 @@ public class XMLEncryption11Test {
     private XMLInputFactory xmlInputFactory;
     private TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
 
         org.apache.xml.security.Init.init();
@@ -104,7 +104,7 @@ public class XMLEncryption11Test {
     /**
      * rsa-oaep-mgf1p, Digest:SHA256, MGF:SHA1, PSource: None
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testKeyWrappingRSA2048Outbound() throws Exception {
         String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-2048_SHA256WithRSA.jks";
         KeyStore keyStore = KeyStore.getInstance("jks");
@@ -123,7 +123,7 @@ public class XMLEncryption11Test {
     /**
      * rsa-oaep-mgf1p, Digest:SHA256, MGF:SHA1, PSource: None
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testKeyWrappingRSA2048EncryptDecrypt() throws Exception {
         String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-2048_SHA256WithRSA.jks";
         KeyStore keyStore = KeyStore.getInstance("jks");
@@ -159,7 +159,7 @@ public class XMLEncryption11Test {
     /**
      * rsa-oaep-mgf1p, Digest:SHA256, MGF:SHA1, PSource: None
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testKeyWrappingRSA3072() throws Exception {
         String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-3072_SHA256WithRSA.jks";
         KeyStore keyStore = KeyStore.getInstance("jks");
@@ -179,7 +179,7 @@ public class XMLEncryption11Test {
     /**
      * rsa-oaep-mgf1p, Digest:SHA256, MGF:SHA1, PSource: None
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testKeyWrappingRSA3072EncryptDecrypt() throws Exception {
         String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-3072_SHA256WithRSA.jks";
         KeyStore keyStore = KeyStore.getInstance("jks");
@@ -217,7 +217,7 @@ public class XMLEncryption11Test {
     /**
      * rsa-oaep, Digest:SHA384, MGF:SHA1, PSource: None
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testKeyWrappingRSA3072OAEP() throws Exception {
         String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-3072_SHA256WithRSA.jks";
         KeyStore keyStore = KeyStore.getInstance("jks");
@@ -237,7 +237,7 @@ public class XMLEncryption11Test {
     /**
      * rsa-oaep, Digest:SHA384, MGF:SHA1, PSource: None
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testKeyWrappingRSA3072OAEPEncryptDecrypt() throws Exception {
         String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-3072_SHA256WithRSA.jks";
         KeyStore keyStore = KeyStore.getInstance("jks");
@@ -275,7 +275,7 @@ public class XMLEncryption11Test {
     /**
      * rsa-oaep, Digest:SHA512, MGF:SHA1, PSource: Specified 8 bytes
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testKeyWrappingRSA4096() throws Exception {
         String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-4096_SHA256WithRSA.jks";
         KeyStore keyStore = KeyStore.getInstance("jks");
@@ -295,7 +295,7 @@ public class XMLEncryption11Test {
     /**
      * rsa-oaep, Digest:SHA512, MGF:SHA1, PSource: Specified 8 bytes
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testKeyWrappingRSA4096EncryptDecrypt() throws Exception {
         String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-4096_SHA256WithRSA.jks";
 
@@ -334,7 +334,7 @@ public class XMLEncryption11Test {
     /**
      * rsa-oaep, Digest:SHA512, MGF:SHA512, PSource: Specified 8 bytes
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testKeyWrappingRSA4096MGFSHA512EncryptDecrypt() throws Exception {
         String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-4096_SHA256WithRSA.jks";
 
@@ -373,7 +373,7 @@ public class XMLEncryption11Test {
     /**
      * rsa-oaep, Digest:SHA512, MGF:SHA512, PSource: Specified 8 bytes
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testAESGCMAuthentication() throws Exception {
 
         String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-4096_SHA256WithRSA.jks";
@@ -639,7 +639,7 @@ public class XMLEncryption11Test {
             int myNodeCount = countNodes(d);
 
             assertTrue(
-                "Node count mismatches", myNodeCount > 0 && myNodeCount == nodeCount
+                myNodeCount > 0 && myNodeCount == nodeCount, "Node count mismatches"
             );
         }
     }

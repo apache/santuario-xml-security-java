@@ -24,11 +24,11 @@ import java.nio.charset.StandardCharsets;
 
 import org.apache.xml.security.c14n.implementations.UtfHelpper;
 
-import static org.junit.Assert.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class UtfHelperTest {
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testBug40156() {
         String s = "\u00e4\u00f6\u00fc";
         byte[] a = UtfHelpper.getStringInUtf8(s);
@@ -36,7 +36,7 @@ public class UtfHelperTest {
         assertArrayEquals(correct, a);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testUtf() throws Exception {
 
         //
@@ -79,15 +79,14 @@ public class UtfHelperTest {
 
         // System.out.println("chunk:"+j);
         byte[] correct = str.getBytes(StandardCharsets.UTF_8);
-        assertArrayEquals("UtfHelper.getStringInUtf8 false", correct, a);
+        assertArrayEquals(correct, a, "UtfHelper.getStringInUtf8 false");
         assertArrayEquals(
-                   "UtfHelper.getStringInUtf8 false",
-                   correct, charByCharOs.toByteArray()
+                   correct, charByCharOs.toByteArray(),
+                   "UtfHelper.getStringInUtf8 false"
         );
         UtfHelpper.writeStringToUtf8(str, strOs);
         assertArrayEquals(
-                   "UtfHelper.writeStringToUtf8 false",
-                   correct, strOs.toByteArray()
+                   correct, strOs.toByteArray(), "UtfHelper.writeStringToUtf8 false"
         );
     }
 

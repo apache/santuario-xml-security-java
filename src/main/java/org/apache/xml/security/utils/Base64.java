@@ -207,7 +207,7 @@ public final class Base64 {
 
     /**
      * Decode a base 64 string into a {@link BigInteger}
-     * @param base64str Base 64 encoded string.
+     * @param text Base 64 encoded text.
      * @return a decoded BigInteger
      * @throws Base64DecodingException
      */

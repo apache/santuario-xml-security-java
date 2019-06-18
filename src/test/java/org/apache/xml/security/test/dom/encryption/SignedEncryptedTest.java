@@ -26,8 +26,8 @@ import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -47,7 +47,7 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.UUID;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  */
@@ -66,7 +66,7 @@ public class SignedEncryptedTest {
             + "</SOAP-ENV:Body>"
             + "</SOAP-ENV:Envelope>";
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         org.apache.xml.security.Init.init();
     }

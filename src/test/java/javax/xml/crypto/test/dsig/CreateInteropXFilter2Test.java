@@ -38,8 +38,8 @@ import org.w3c.dom.*;
 
 import javax.xml.crypto.test.KeySelectors;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test that recreates merlin-xpath-filter2-three test vectors
@@ -82,7 +82,7 @@ public class CreateInteropXFilter2Test {
     @SuppressWarnings({
      "rawtypes", "unchecked"
     })
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_create_sign_spec() throws Exception {
         List<Reference> refs = new ArrayList<>(2);
 

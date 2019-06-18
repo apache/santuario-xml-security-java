@@ -49,11 +49,11 @@ import org.apache.xml.security.test.stax.utils.StAX2DOM;
 import org.apache.xml.security.test.stax.utils.TestUtils;
 import org.apache.xml.security.utils.XMLUtils;
 import org.apache.xml.security.utils.resolver.implementations.ResolverDirectHTTP;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  */

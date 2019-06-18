@@ -30,8 +30,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class XMLX509DigestTest {
@@ -55,7 +55,7 @@ public class XMLX509DigestTest {
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSchema() throws Exception {
         XMLX509Digest x509Digest = new XMLX509Digest(XMLUtils.newDocument(), digestControl, ALG_URI_CONTROL);
         Element element = x509Digest.getElement();
@@ -64,7 +64,7 @@ public class XMLX509DigestTest {
         assertEquals("X509Digest", element.getLocalName());
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testDigestFromElement() throws Exception {
         Document doc = loadXML("X509Digest.xml");
         NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpec11NS, Constants._TAG_X509DIGEST);
@@ -75,21 +75,21 @@ public class XMLX509DigestTest {
         assertArrayEquals(digestControl, x509Digest.getDigestBytes());
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testDigestOnConstructionWithCert() throws Exception {
         XMLX509Digest x509Digest = new XMLX509Digest(XMLUtils.newDocument(), certControl, ALG_URI_CONTROL);
         assertEquals(ALG_URI_CONTROL, x509Digest.getAlgorithm());
         assertArrayEquals(digestControl, x509Digest.getDigestBytes());
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testDigestOnConstructionWithBytes() throws Exception {
         XMLX509Digest x509Digest = new XMLX509Digest(XMLUtils.newDocument(), digestControl, ALG_URI_CONTROL);
         assertEquals(ALG_URI_CONTROL, x509Digest.getAlgorithm());
         assertArrayEquals(digestControl, x509Digest.getDigestBytes());
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testGetDigestBytesFromCert() throws Exception {
         assertArrayEquals(digestControl, XMLX509Digest.getDigestBytesFromCert(certControl, ALG_URI_CONTROL));
     }

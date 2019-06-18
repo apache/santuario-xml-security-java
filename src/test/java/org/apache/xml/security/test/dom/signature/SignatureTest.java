@@ -38,7 +38,7 @@ import org.apache.xml.security.utils.resolver.implementations.ResolverXPointer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SignatureTest {
     public static final String DS_NS = "http://www.w3.org/2000/09/xmldsig#";
@@ -54,12 +54,12 @@ public class SignatureTest {
         ElementProxy.setDefaultPrefix(Constants.SignatureSpecNS, "ds");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSigning() throws Throwable {
         signDocument(getOriginalDocument());
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSigningVerifyingFromRebuildSignature() throws Throwable {
         Document doc = getOriginalDocument();
         signDocument(doc);
@@ -71,7 +71,7 @@ public class SignatureTest {
         assertTrue(signature.checkSignatureValue(pubKey));
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSigningVerifyingFromExistingSignature() throws Throwable {
         Document doc = getOriginalDocument();
         XMLSignature signature = signDocument(doc);
@@ -80,7 +80,7 @@ public class SignatureTest {
         assertTrue(signature.checkSignatureValue(pubKey));
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSigningVerifyingFromExistingSignatureSameThread()
         throws Throwable {
         Document doc = getOriginalDocument();
@@ -96,7 +96,7 @@ public class SignatureTest {
         assertTrue(r.result);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSigningVerifyingFromExistingSignatureSeparateThread()
         throws Throwable {
         Document doc = getOriginalDocument();

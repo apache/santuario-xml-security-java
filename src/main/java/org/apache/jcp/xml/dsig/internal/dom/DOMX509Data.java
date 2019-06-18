@@ -64,7 +64,7 @@ public final class DOMX509Data extends DOMStructure implements X509Data {
      * @param content a list of one or more X.509 data types. Valid types are
      *    {@link String} (subject names), <code>byte[]</code> (subject key ids),
      *    {@link java.security.cert.X509Certificate}, {@link X509CRL},
-     *    or {@link javax.xml.dsig.XMLStructure}
+     *    or {@link javax.xml.crypto.XMLStructure}
      *    objects or elements from an external namespace). The list is
      *    defensively copied to protect against subsequent modification.
      * @throws NullPointerException if <code>content</code> is <code>null</code>

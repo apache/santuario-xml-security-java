@@ -52,8 +52,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -120,7 +120,7 @@ public class XMLEncryption11Test {
     /**
      * rsa-oaep-mgf1p, Digest:SHA256, MGF:SHA1, PSource: None
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testKeyWrappingRSA2048() throws Exception {
         if (haveISOPadding) {
             String keystore =
@@ -157,7 +157,7 @@ public class XMLEncryption11Test {
     /**
      * rsa-oaep-mgf1p, Digest:SHA256, MGF:SHA1, PSource: None
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testKeyWrappingRSA2048EncryptDecrypt() throws Exception {
         if (haveISOPadding) {
             String keystore =
@@ -221,7 +221,7 @@ public class XMLEncryption11Test {
     /**
      * rsa-oaep-mgf1p, Digest:SHA256, MGF:SHA1, PSource: None
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testKeyWrappingRSA2048EncryptDecryptWithSecureRandom() throws Exception {
         if (haveISOPadding) {
             String keystore =
@@ -286,7 +286,7 @@ public class XMLEncryption11Test {
     /**
      * rsa-oaep-mgf1p, Digest:SHA256, MGF:SHA1, PSource: None
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testKeyWrappingRSA3072() throws Exception {
         if (haveISOPadding) {
             String keystore =
@@ -323,7 +323,7 @@ public class XMLEncryption11Test {
     /**
      * rsa-oaep-mgf1p, Digest:SHA256, MGF:SHA1, PSource: None
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testKeyWrappingRSA3072EncryptDecrypt() throws Exception {
         if (haveISOPadding) {
             String keystore =
@@ -387,7 +387,7 @@ public class XMLEncryption11Test {
     /**
      * rsa-oaep, Digest:SHA384, MGF:SHA1, PSource: None
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testKeyWrappingRSA3072OAEP() throws Exception {
         if (haveISOPadding) {
             String keystore =
@@ -424,7 +424,7 @@ public class XMLEncryption11Test {
     /**
      * rsa-oaep, Digest:SHA384, MGF:SHA1, PSource: None
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testKeyWrappingRSA3072OAEPEncryptDecrypt() throws Exception {
         if (haveISOPadding) {
             String keystore =
@@ -488,7 +488,7 @@ public class XMLEncryption11Test {
     /**
      * rsa-oaep, Digest:SHA512, MGF:SHA1, PSource: Specified 8 bytes
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testKeyWrappingRSA4096() throws Exception {
         if (haveISOPadding) {
             String keystore =
@@ -525,7 +525,7 @@ public class XMLEncryption11Test {
     /**
      * rsa-oaep, Digest:SHA512, MGF:SHA1, PSource: Specified 8 bytes
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testKeyWrappingRSA4096EncryptDecrypt() throws Exception {
         if (haveISOPadding) {
             String keystore =
@@ -808,7 +808,7 @@ public class XMLEncryption11Test {
             int myNodeCount = countNodes(d);
 
             assertTrue(
-                "Node count mismatches", myNodeCount > 0 && myNodeCount == nodeCount
+                myNodeCount > 0 && myNodeCount == nodeCount, "Node count mismatches"
             );
         }
     }

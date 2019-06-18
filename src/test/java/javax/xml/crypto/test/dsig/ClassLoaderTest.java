@@ -40,7 +40,7 @@ public class ClassLoaderTest {
         org.slf4j.LoggerFactory.getLogger(ClassLoaderTest.class);
 
     @SuppressWarnings("resource")
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testMultipleLoaders() throws Exception {
 
         String baseDir = System.getProperty("basedir");
@@ -66,7 +66,7 @@ public class ClassLoaderTest {
     }
 
     @SuppressWarnings("resource")
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testProviderMultipleLoaders() throws Exception {
         String baseDir = System.getProperty("basedir");
         String fs = System.getProperty("file.separator");
@@ -106,7 +106,7 @@ public class ClassLoaderTest {
     }
 
     @SuppressWarnings("resource")
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testProviderMultipleLoadersTwo() throws Exception {
 
         String baseDir = System.getProperty("basedir");

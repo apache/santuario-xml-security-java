@@ -45,8 +45,8 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -77,7 +77,7 @@ public class Canonicalizer20010315Test {
     /**
      * 3.1 PIs, Comments, and Outside of Document Element
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test31withCommentsSubtree() throws Exception {
         String descri =
             "3.1: PIs, Comments, and Outside of Document Element. (commented)";
@@ -88,14 +88,13 @@ public class Canonicalizer20010315Test {
         String c14nURI = Canonicalizer.ALGO_ID_C14N_WITH_COMMENTS;
         String xpath = null;
 
-        assertTrue(descri,
-                   c14nAndCompare(fileIn, fileRef, fileOut, c14nURI, xpath));
+        assertTrue(c14nAndCompare(fileIn, fileRef, fileOut, c14nURI, xpath), descri);
     }
 
     /**
      * 3.1 PIs, Comments, and Outside of Document Element
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test31withCommentsSubset() throws Exception {
         String descri =
             "3.1: PIs, Comments, and Outside of Document Element. (commented)";
@@ -106,8 +105,7 @@ public class Canonicalizer20010315Test {
         String c14nURI = Canonicalizer.ALGO_ID_C14N_WITH_COMMENTS;
         String xpath = Canonicalizer.XPATH_C14N_WITH_COMMENTS_SINGLE_NODE;
 
-        assertTrue(descri,
-                   c14nAndCompare(fileIn, fileRef, fileOut, c14nURI, xpath));
+        assertTrue(c14nAndCompare(fileIn, fileRef, fileOut, c14nURI, xpath), descri);
     }
 
     /**
@@ -115,7 +113,7 @@ public class Canonicalizer20010315Test {
 
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-OutsideDoc">the example from the spec</A>
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test31subtree() throws Exception {
         String descri =
             "3.1: PIs, Comments, and Outside of Document Element. (uncommented)";
@@ -125,8 +123,7 @@ public class Canonicalizer20010315Test {
         String c14nURI = Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS;
         String xpath = null;
 
-        assertTrue(descri,
-                   c14nAndCompare(fileIn, fileRef, fileOut, c14nURI, xpath));
+        assertTrue(c14nAndCompare(fileIn, fileRef, fileOut, c14nURI, xpath), descri);
     }
 
     /**
@@ -134,7 +131,7 @@ public class Canonicalizer20010315Test {
      *
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-OutsideDoc">the example from the spec</A>
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test31subset() throws Exception {
 
         String descri =
@@ -145,8 +142,7 @@ public class Canonicalizer20010315Test {
         String c14nURI = Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS;
         String xpath = Canonicalizer.XPATH_C14N_WITH_COMMENTS_SINGLE_NODE;
 
-        assertTrue(descri,
-                   c14nAndCompare(fileIn, fileRef, fileOut, c14nURI, xpath));
+        assertTrue(c14nAndCompare(fileIn, fileRef, fileOut, c14nURI, xpath), descri);
     }
 
     /**
@@ -154,7 +150,7 @@ public class Canonicalizer20010315Test {
      *
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-WhitespaceInContent">the example from the spec</A>
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test32subtree() throws Exception {
         String descri = "3.2 Whitespace in Document Content. (uncommented)";
         String fileIn = prefix + "in/32_input.xml";
@@ -163,8 +159,7 @@ public class Canonicalizer20010315Test {
         String c14nURI = Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS;
         String xpath = null;
 
-        assertTrue(descri,
-                   c14nAndCompare(fileIn, fileRef, fileOut, c14nURI, xpath));
+        assertTrue(c14nAndCompare(fileIn, fileRef, fileOut, c14nURI, xpath), descri);
     }
 
     /**
@@ -172,7 +167,7 @@ public class Canonicalizer20010315Test {
      *
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-WhitespaceInContent">the example from the spec</A>
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test32subset() throws Exception {
         String descri = "3.2 Whitespace in Document Content. (uncommented)";
         String fileIn = prefix + "in/32_input.xml";
@@ -181,8 +176,7 @@ public class Canonicalizer20010315Test {
         String c14nURI = Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS;
         String xpath = Canonicalizer.XPATH_C14N_WITH_COMMENTS_SINGLE_NODE;
 
-        assertTrue(descri,
-                   c14nAndCompare(fileIn, fileRef, fileOut, c14nURI, xpath));
+        assertTrue(c14nAndCompare(fileIn, fileRef, fileOut, c14nURI, xpath), descri);
     }
 
     /**
@@ -190,7 +184,7 @@ public class Canonicalizer20010315Test {
      *
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-SETags">the example from the spec</A>
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test33subtree() throws Exception {
         String descri = "3.3 Start and End Tags. (uncommented)";
         String fileIn = prefix + "in/33_input.xml";
@@ -199,11 +193,10 @@ public class Canonicalizer20010315Test {
         String c14nURI = Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS;
         String xpath = null;    // Canonicalizer.XPATH_C14N_OMIT_COMMENTS_SINGLE_NODE;
 
-        assertTrue(descri,
-                   c14nAndCompare(fileIn, fileRef, fileOut, c14nURI, xpath));
+        assertTrue(c14nAndCompare(fileIn, fileRef, fileOut, c14nURI, xpath), descri);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test33subset() throws Exception {
         String descri = "3.3 Start and End Tags. (uncommented)";
         String fileIn = prefix + "in/33_input.xml";
@@ -212,8 +205,7 @@ public class Canonicalizer20010315Test {
         String c14nURI = Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS;
         String xpath = Canonicalizer.XPATH_C14N_WITH_COMMENTS_SINGLE_NODE;
 
-        assertTrue(descri,
-                   c14nAndCompare(fileIn, fileRef, fileOut, c14nURI, xpath));
+        assertTrue(c14nAndCompare(fileIn, fileRef, fileOut, c14nURI, xpath), descri);
     }
 
     /**
@@ -222,7 +214,7 @@ public class Canonicalizer20010315Test {
      * @see #test34validatingParser
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-Chars">the example from the spec</A>
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test34() throws Exception {
         String descri =
             "3.4 Character Modifications and Character References. (uncommented)";
@@ -232,8 +224,7 @@ public class Canonicalizer20010315Test {
         String c14nURI = Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS;
         String xpath = null;
 
-        assertTrue(descri,
-                   c14nAndCompare(fileIn, fileRef, fileOut, c14nURI, xpath));
+        assertTrue(c14nAndCompare(fileIn, fileRef, fileOut, c14nURI, xpath), descri);
     }
 
     /**
@@ -249,7 +240,7 @@ public class Canonicalizer20010315Test {
      *
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-Chars">the example from the spec</A>
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test34subtree() throws Exception {
         String descri =
             "3.4 Character Modifications and Character References. (uncommented, patched to run on validating Parsers)";
@@ -259,8 +250,7 @@ public class Canonicalizer20010315Test {
         String c14nURI = Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS;
         String xpath = null;
 
-        assertTrue(descri,
-                   c14nAndCompare(fileIn, fileRef, fileOut, c14nURI, xpath));
+        assertTrue(c14nAndCompare(fileIn, fileRef, fileOut, c14nURI, xpath), descri);
     }
 
     /**
@@ -276,7 +266,7 @@ public class Canonicalizer20010315Test {
      *
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-Chars">the example from the spec</A>
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test34subset() throws Exception {
 
         String descri =
@@ -287,8 +277,7 @@ public class Canonicalizer20010315Test {
         String c14nURI = Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS;
         String xpath = Canonicalizer.XPATH_C14N_WITH_COMMENTS_SINGLE_NODE;
 
-        assertTrue(descri,
-                   c14nAndCompare(fileIn, fileRef, fileOut, c14nURI, xpath));
+        assertTrue(c14nAndCompare(fileIn, fileRef, fileOut, c14nURI, xpath), descri);
     }
 
     /**
@@ -296,7 +285,7 @@ public class Canonicalizer20010315Test {
      *
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-Entities">the example from the spec</A>
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test35subtree() throws Exception{
         String descri = "3.5 Entity References. (uncommented)";
         String fileIn = prefix + "in/35_input.xml";
@@ -305,8 +294,7 @@ public class Canonicalizer20010315Test {
         String c14nURI = Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS;
         String xpath = null;
 
-        assertTrue(descri,
-                   c14nAndCompare(fileIn, fileRef, fileOut, c14nURI, xpath));
+        assertTrue(c14nAndCompare(fileIn, fileRef, fileOut, c14nURI, xpath), descri);
     }
 
     /**
@@ -314,7 +302,7 @@ public class Canonicalizer20010315Test {
      *
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-Entities">the example from the spec</A>
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test35subset() throws Exception {
         String descri = "3.5 Entity References. (uncommented)";
         String fileIn = prefix + "in/35_input.xml";
@@ -323,8 +311,7 @@ public class Canonicalizer20010315Test {
         String c14nURI = Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS;
         String xpath = Canonicalizer.XPATH_C14N_WITH_COMMENTS_SINGLE_NODE;
 
-        assertTrue(descri,
-                   c14nAndCompare(fileIn, fileRef, fileOut, c14nURI, xpath));
+        assertTrue(c14nAndCompare(fileIn, fileRef, fileOut, c14nURI, xpath), descri);
     }
 
     /**
@@ -332,7 +319,7 @@ public class Canonicalizer20010315Test {
      *
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-UTF8">the example from the spec</A>
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test36subtree() throws Exception {
         String descri = "3.6 UTF-8 Encoding. (uncommented)";
         String fileIn = prefix + "in/36_input.xml";
@@ -341,8 +328,7 @@ public class Canonicalizer20010315Test {
         String c14nURI = Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS;
         String xpath = null;
 
-        assertTrue(descri,
-                   c14nAndCompare(fileIn, fileRef, fileOut, c14nURI, xpath));
+        assertTrue(c14nAndCompare(fileIn, fileRef, fileOut, c14nURI, xpath), descri);
     }
 
     /**
@@ -350,7 +336,7 @@ public class Canonicalizer20010315Test {
      *
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-UTF8">the example from the spec</A>
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test36subset() throws Exception {
         String descri = "3.6 UTF-8 Encoding. (uncommented)";
         String fileIn = prefix + "in/36_input.xml";
@@ -359,8 +345,7 @@ public class Canonicalizer20010315Test {
         String c14nURI = Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS;
         String xpath = Canonicalizer.XPATH_C14N_WITH_COMMENTS_SINGLE_NODE;
 
-        assertTrue(descri,
-                   c14nAndCompare(fileIn, fileRef, fileOut, c14nURI, xpath));
+        assertTrue(c14nAndCompare(fileIn, fileRef, fileOut, c14nURI, xpath), descri);
     }
 
     /**
@@ -368,7 +353,7 @@ public class Canonicalizer20010315Test {
      *
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-DocSubsets">the example from the spec</A>
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test37() throws Exception {
         String descri = "3.7 Document Subsets. (uncommented)";
         String fileIn = prefix + "in/37_input.xml";
@@ -386,8 +371,7 @@ public class Canonicalizer20010315Test {
             + "count(id(\"E3\")|ancestor-or-self::node()) = count(ancestor-or-self::node()) "
             + "]";
 
-        assertTrue(descri,
-                   c14nAndCompare(fileIn, fileRef, fileOut, c14nURI, xpath, namespace));
+        assertTrue(c14nAndCompare(fileIn, fileRef, fileOut, c14nURI, xpath, namespace), descri);
     }
 
     /**
@@ -395,7 +379,7 @@ public class Canonicalizer20010315Test {
      *
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-DocSubsets">the example from the spec</A>
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test37byNodeList() throws Exception {
 
         //String descri = "3.7 Document Subsets. (uncommented), c14n by NodeList";
@@ -440,7 +424,7 @@ public class Canonicalizer20010315Test {
      * Implementations MUST report an operation failure on documents containing
      * relative namespace URIs.
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testRelativeNSbehaviour() throws Exception {
 
         //J-
@@ -470,7 +454,7 @@ public class Canonicalizer20010315Test {
             weCatchedTheRelativeNS = true;
         }
 
-        assertTrue("We did not catch the relative namespace", weCatchedTheRelativeNS);
+        assertTrue(weCatchedTheRelativeNS, "We did not catch the relative namespace");
     }
 
     /**
@@ -483,7 +467,7 @@ public class Canonicalizer20010315Test {
      * for ISO-8859-1 encoding is RECOMMENDED, and all other character encodings
      * are OPTIONAL.
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testTranslationFromUTF16toUTF8() throws Exception {
         String val =
             "<UTF16>The german &amp;auml (which is Unicode &amp;#xE4;):  &quot;&#xE4;&quot;</UTF16>";
@@ -495,13 +479,13 @@ public class Canonicalizer20010315Test {
         byte[] refBytes = JavaUtils.getBytesFromStream(refStream);
         boolean equal = java.security.MessageDigest.isEqual(refBytes, c14nBytes);
 
-        assertTrue("Parser does not translate to UCS character domain", equal);
+        assertTrue(equal, "Parser does not translate to UCS character domain");
     }
 
     /**
      * Method testXMLAttributes1
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testXMLAttributes1() throws Exception {
         //J-
         String input = ""
@@ -526,7 +510,7 @@ public class Canonicalizer20010315Test {
     /**
      * Method testXMLAttributes2
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testXMLAttributes2() throws Exception {
         //J-
         String input = ""
@@ -551,7 +535,7 @@ public class Canonicalizer20010315Test {
     /**
      * Method testXMLAttributes3
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testXMLAttributes3() throws Exception {
         //J-
         String input = ""
@@ -576,8 +560,8 @@ public class Canonicalizer20010315Test {
     /**
      * Method testXMLAttributes4
      */
-    @org.junit.Test
-    @org.junit.Ignore
+    @org.junit.jupiter.api.Test
+    @org.junit.jupiter.api.Disabled
     public void _testXMLAttributes4() throws Exception {
         //J-
         String input = ""
@@ -604,8 +588,8 @@ public class Canonicalizer20010315Test {
     /**
      * Method testXMLAttributes5
      */
-    @org.junit.Test
-    @org.junit.Ignore
+    @org.junit.jupiter.api.Test
+    @org.junit.jupiter.api.Disabled
     public void _testXMLAttributes5() throws Exception {
         //J-
         String input = ""
@@ -632,8 +616,8 @@ public class Canonicalizer20010315Test {
     /**
      * Method testXMLAttributes6
      */
-    @org.junit.Test
-    @org.junit.Ignore
+    @org.junit.jupiter.api.Test
+    @org.junit.jupiter.api.Disabled
     public void _testXMLAttributes6() throws Exception {
         //J-
         String input = ""

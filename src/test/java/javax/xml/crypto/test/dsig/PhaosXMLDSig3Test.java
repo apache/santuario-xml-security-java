@@ -32,9 +32,9 @@ import javax.xml.crypto.dsig.dom.DOMValidateContext;
 
 import javax.xml.crypto.test.KeySelectors;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -62,7 +62,7 @@ public class PhaosXMLDSig3Test {
         ud = new LocalHttpCacheURIDereferencer();
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_signature_dsa_detached() throws Exception {
         String file = "signature-dsa-detached.xml";
 
@@ -72,37 +72,37 @@ public class PhaosXMLDSig3Test {
         vc.setURIDereferencer(ud);
 
         boolean coreValidity = validator.validate(vc);
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_signature_dsa_enveloped() throws Exception {
         String file = "signature-dsa-enveloped.xml";
 
         boolean coreValidity =
             validator.validate(file, new KeySelectors.RawX509KeySelector());
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_signature_dsa_enveloping() throws Exception {
         String file = "signature-dsa-enveloping.xml";
 
         boolean coreValidity =
             validator.validate(file, new KeySelectors.RawX509KeySelector());
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_signature_dsa_manifest() throws Exception {
         String file = "signature-dsa-manifest.xml";
 
         boolean coreValidity =
             validator.validate(file, new KeySelectors.KeyValueKeySelector());
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_signature_hmac_sha1_40_c14n_comments_detached()
     throws Exception {
         String file = "signature-hmac-sha1-40-c14n-comments-detached.xml";
@@ -118,7 +118,7 @@ public class PhaosXMLDSig3Test {
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_signature_hmac_sha1_40_exclusive_c14n_comments_detached()
     throws Exception {
         String file = "signature-hmac-sha1-40-exclusive-c14n-comments-detached.xml";
@@ -134,7 +134,7 @@ public class PhaosXMLDSig3Test {
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_signature_hmac_sha1_exclusive_c14n_comments_detached()
     throws Exception {
         String file = "signature-hmac-sha1-exclusive-c14n-comments-detached.xml";
@@ -142,10 +142,10 @@ public class PhaosXMLDSig3Test {
         KeySelector ks = new KeySelectors.SecretKeySelector
             ("test".getBytes(StandardCharsets.US_ASCII) );
         boolean coreValidity = validator.validate(file, ks, ud);
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_signature_hmac_sha1_exclusive_c14n_enveloped()
     throws Exception {
         String file = "signature-hmac-sha1-exclusive-c14n-enveloped.xml";
@@ -153,28 +153,28 @@ public class PhaosXMLDSig3Test {
         KeySelector ks = new KeySelectors.SecretKeySelector
             ("test".getBytes(StandardCharsets.US_ASCII) );
         boolean coreValidity = validator.validate(file, ks);
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_signature_rsa_detached_b64_transform() throws Exception {
         String file = "signature-rsa-detached-b64-transform.xml";
 
         boolean coreValidity =
             validator.validate(file, new KeySelectors.KeyValueKeySelector());
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_signature_rsa_detached_xpath_transform() throws Exception {
         String file = "signature-rsa-detached-xpath-transform.xml";
 
         boolean coreValidity =
             validator.validate(file, new KeySelectors.KeyValueKeySelector());
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_signature_rsa_detached_xslt_transform_bad_rm() throws Exception {
         String file = "signature-rsa-detached-xslt-transform-bad-retrieval-method.xml";
 
@@ -186,26 +186,26 @@ public class PhaosXMLDSig3Test {
         } catch (XMLSignatureException xse) {}
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_signature_rsa_detached_xslt_transform_rm() throws Exception {
         String file = "signature-rsa-detached-xslt-transform-retrieval-method.xml";
 
         boolean coreValidity =
             validator.validate(file,
                                new KeySelectors.CollectionKeySelector(base));
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_signature_rsa_detached_xslt_transform() throws Exception {
         String file = "signature-rsa-detached-xslt-transform.xml";
 
         boolean coreValidity =
             validator.validate(file, new KeySelectors.KeyValueKeySelector());
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_signature_rsa_detached() throws Exception {
         String file = "signature-rsa-detached.xml";
 
@@ -214,105 +214,105 @@ public class PhaosXMLDSig3Test {
         vc.setProperty("javax.xml.crypto.dsig.cacheReference", Boolean.TRUE);
         vc.setURIDereferencer(ud);
         boolean coreValidity = validator.validate(vc);
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_signature_rsa_enveloped_bad_digest_val() throws Exception {
         String file = "signature-rsa-enveloped-bad-digest-val.xml";
 
         boolean coreValidity =
             validator.validate(file, new KeySelectors.RawX509KeySelector());
-        assertFalse("Signature should fail core validation", coreValidity);
+        assertFalse(coreValidity, "Signature should fail core validation");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_signature_rsa_enveloped() throws Exception {
         String file = "signature-rsa-enveloped.xml";
 
         boolean coreValidity =
             validator.validate(file, new KeySelectors.RawX509KeySelector());
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_signature_rsa_enveloping() throws Exception {
         String file = "signature-rsa-enveloping.xml";
 
         boolean coreValidity =
             validator.validate(file, new KeySelectors.RawX509KeySelector());
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_signature_rsa_manifest_x509_data_cert_chain() throws Exception {
         String file = "signature-rsa-manifest-x509-data-cert-chain.xml";
 
         boolean coreValidity =
             validator.validate(file, new KeySelectors.RawX509KeySelector());
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_signature_rsa_manifest_x509_data_cert() throws Exception {
         String file = "signature-rsa-manifest-x509-data-cert.xml";
 
         boolean coreValidity =
             validator.validate(file, new KeySelectors.RawX509KeySelector());
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_signature_rsa_manifest_x509_data_issuer_serial() throws Exception {
         String file = "signature-rsa-manifest-x509-data-issuer-serial.xml";
 
         boolean coreValidity = validator.validate(file,
                                                   new KeySelectors.CollectionKeySelector(base));
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_signature_rsa_manifest_x509_data_ski() throws Exception {
         String file = "signature-rsa-manifest-x509-data-ski.xml";
 
         boolean coreValidity = validator.validate(file,
                                                   new KeySelectors.CollectionKeySelector(base));
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_signature_rsa_manifest_x509_data_subject_name() throws Exception {
         String file = "signature-rsa-manifest-x509-data-subject-name.xml";
 
         boolean coreValidity = validator.validate(file,
                                                   new KeySelectors.CollectionKeySelector(base));
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_signature_rsa_manifest_x509_data() throws Exception {
         String file = "signature-rsa-manifest-x509-data.xml";
 
         boolean coreValidity =
             validator.validate(file, new KeySelectors.RawX509KeySelector());
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_signature_rsa_manifest() throws Exception {
         String file = "signature-rsa-manifest.xml";
 
         boolean coreValidity =
             validator.validate(file, new KeySelectors.KeyValueKeySelector());
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_signature_rsa_xpath_transform_enveloped() throws Exception {
         String file = "signature-rsa-xpath-transform-enveloped.xml";
 
         boolean coreValidity =
             validator.validate(file, new KeySelectors.RawX509KeySelector());
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 }

@@ -26,11 +26,11 @@ import java.util.*;
 import javax.xml.crypto.XMLStructure;
 import javax.xml.crypto.dsig.*;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -50,7 +50,7 @@ public class XMLObjectTest {
     }
 
     @SuppressWarnings("rawtypes")
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testConstructor() {
         // test XMLSignatureFactory.newXMLObject(List, String, String, String)
         XMLObject obj;
@@ -93,7 +93,7 @@ public class XMLObjectTest {
         assertArrayEquals(unmodifiable.toArray(), list.toArray());
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testisFeatureSupported() {
         List<XMLStructure> list = new ArrayList<>();
         list.add(new TestUtils.MyOwnXMLStructure());

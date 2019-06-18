@@ -38,8 +38,8 @@ import org.w3c.dom.*;
 
 import javax.xml.crypto.test.KeySelectors;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test that recreates interop exc C14N test vectors
@@ -78,7 +78,7 @@ public class CreateInteropExcC14NTest {
         validatingKey = signingCert.getPublicKey();
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test_create_Y1() throws Exception {
         List<Reference> refs = new ArrayList<>(4);
 

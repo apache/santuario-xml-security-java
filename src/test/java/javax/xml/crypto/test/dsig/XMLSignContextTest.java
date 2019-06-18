@@ -32,9 +32,9 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import org.w3c.dom.Document;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -59,7 +59,7 @@ public class XMLSignContextTest {
         defContext = new DOMSignContext(sk, doc);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testsetngetBaseURI() throws Exception {
         assertNull(defContext.getBaseURI());
 
@@ -71,7 +71,7 @@ public class XMLSignContextTest {
     }
 
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testsetngetProperty() throws Exception {
         String name = "key";
         assertNull(defContext.getProperty(name));
@@ -92,7 +92,7 @@ public class XMLSignContextTest {
         assertNull(defContext.getProperty(name));
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testsetngetURIDereferencer() throws Exception {
         assertNull(defContext.getURIDereferencer());
         byte[] data = "simpleDereferencer".getBytes();
@@ -104,7 +104,7 @@ public class XMLSignContextTest {
         assertNull(defContext.getURIDereferencer());
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testsetngetKeySelector() throws Exception {
         defContext.setKeySelector(null);
         assertNull(defContext.getKeySelector());

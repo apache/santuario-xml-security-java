@@ -30,7 +30,7 @@ import javax.xml.crypto.KeySelector;
 import javax.xml.crypto.URIDereferencer;
 import javax.xml.crypto.test.KeySelectors;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * This is a testcase to validate all "merlin-xmldsig-eighteen"
@@ -59,67 +59,67 @@ public class Baltimore18Test {
         ud = new LocalHttpCacheURIDereferencer();
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSignatureKeyname() throws Exception {
         String file = "signature-keyname.xml";
 
         SignatureValidator validator = new SignatureValidator(dir);
         boolean coreValidity = validator.validate(file, cks, ud);
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSignatureRetrievalmethodRawx509crt() throws Exception {
         String file = "signature-retrievalmethod-rawx509crt.xml";
 
         SignatureValidator validator = new SignatureValidator(dir);
         boolean coreValidity = validator.validate(file, cks, ud);
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSignatureX509CrtCrl() throws Exception {
         String file = "signature-x509-crt-crl.xml";
 
         SignatureValidator validator = new SignatureValidator(dir);
         boolean coreValidity = validator.validate(file, cks, ud);
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSignatureX509Crt() throws Exception {
         String file = "signature-x509-crt.xml";
 
         SignatureValidator validator = new SignatureValidator(dir);
         boolean coreValidity = validator.validate(file, cks, ud);
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSignatureX509Is() throws Exception {
         String file = "signature-x509-is.xml";
 
         SignatureValidator validator = new SignatureValidator(dir);
         boolean coreValidity = validator.validate(file, cks, ud);
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSignatureX509Ski() throws Exception {
         String file = "signature-x509-ski.xml";
 
         SignatureValidator validator = new SignatureValidator(dir);
         boolean coreValidity = validator.validate(file, cks, ud);
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSignatureX509Sn() throws Exception {
         String file = "signature-x509-sn.xml";
 
         SignatureValidator validator = new SignatureValidator(dir);
         boolean coreValidity = validator.validate(file, cks, ud);
-        assertTrue("Signature failed core validation", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation");
     }
 
 }

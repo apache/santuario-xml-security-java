@@ -43,18 +43,18 @@ import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 import org.apache.xml.security.stax.impl.OutboundSecurityContextImpl;
 import org.apache.xml.security.stax.impl.OutputProcessorChainImpl;
 import org.apache.xml.security.stax.impl.XMLSecurityStreamWriter;
+import org.hamcrest.MatcherAssert;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.xmlunit.matchers.CompareMatcher;
 
-import org.custommonkey.xmlunit.XMLAssert;
-import org.junit.Before;
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  */
 public class XMLSecurityStreamWriterTest {
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         Init.init(this.getClass().getClassLoader().getResource("security-config.xml").toURI(),
                 this.getClass());
@@ -189,7 +189,7 @@ public class XMLSecurityStreamWriterTest {
         stdXmlStreamWriter.close();
         xmlSecurityStreamWriter.close();
 
-        XMLAssert.assertXMLEqual(stdStringWriter.toString(), securityStringWriter.toString());
+        MatcherAssert.assertThat(stdStringWriter.toString(), CompareMatcher.isSimilarTo(securityStringWriter.toString()));
     }
 
     // @see https://issues.apache.org/jira/browse/SANTUARIO-433

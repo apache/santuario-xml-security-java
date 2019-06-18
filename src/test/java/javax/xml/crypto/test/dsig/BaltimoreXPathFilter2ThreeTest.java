@@ -27,7 +27,7 @@ import java.security.Security;
 
 import javax.xml.crypto.test.KeySelectors;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * This is a testcase to validate the "merlin-xpath-filter2-three" testcases
@@ -52,30 +52,30 @@ public class BaltimoreXPathFilter2ThreeTest {
             (base, "merlin-xpath-filter2-three"));
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSignSpec() throws Exception {
         String file = "sign-spec.xml";
 
         boolean coreValidity = validator.validate(file,
                     new KeySelectors.KeyValueKeySelector());
-        assertTrue("Signature failed core validation#1", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation#1");
 
         coreValidity = validator.validate(file,
                     new KeySelectors.RawX509KeySelector());
-        assertTrue("Signature failed core validation#2", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation#2");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSignXfdl() throws Exception {
         String file = "sign-xfdl.xml";
 
         boolean coreValidity = validator.validate(file,
                     new KeySelectors.KeyValueKeySelector());
-        assertTrue("Signature failed core validation#1", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation#1");
 
         coreValidity = validator.validate(file,
                     new KeySelectors.RawX509KeySelector());
-        assertTrue("Signature failed core validation#2", coreValidity);
+        assertTrue(coreValidity, "Signature failed core validation#2");
     }
 
 }

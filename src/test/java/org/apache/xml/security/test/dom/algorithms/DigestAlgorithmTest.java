@@ -26,12 +26,13 @@ import java.security.Security;
 
 import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Assumptions;
 import org.w3c.dom.Document;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -66,12 +67,12 @@ public class DigestAlgorithmTest {
         }
     }
 
-    @org.junit.AfterClass
+    @org.junit.jupiter.api.AfterAll
     public static void cleanup() throws Exception {
         Security.removeProvider("BC");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSHA1() throws Exception {
         Document doc = XMLUtils.newDocument();
 
@@ -89,7 +90,7 @@ public class DigestAlgorithmTest {
         assertArrayEquals(digest, digest2);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSHA224() throws Exception {
         Document doc = XMLUtils.newDocument();
 
@@ -107,7 +108,7 @@ public class DigestAlgorithmTest {
         assertArrayEquals(digest, digest2);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSHA256() throws Exception {
         Document doc = XMLUtils.newDocument();
 
@@ -125,7 +126,7 @@ public class DigestAlgorithmTest {
         assertArrayEquals(digest, digest2);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSHA384() throws Exception {
         Document doc = XMLUtils.newDocument();
 
@@ -143,7 +144,7 @@ public class DigestAlgorithmTest {
         assertArrayEquals(digest, digest2);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSHA512() throws Exception {
         Document doc = XMLUtils.newDocument();
 
@@ -161,7 +162,7 @@ public class DigestAlgorithmTest {
         assertArrayEquals(digest, digest2);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testMD5() throws Exception {
         Document doc = XMLUtils.newDocument();
 
@@ -179,9 +180,9 @@ public class DigestAlgorithmTest {
         assertArrayEquals(digest, digest2);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testRIPEMD160() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
         Document doc = XMLUtils.newDocument();
 
         MessageDigestAlgorithm digestAlgorithm =
@@ -198,9 +199,9 @@ public class DigestAlgorithmTest {
         assertArrayEquals(digest, digest2);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testWhirlpool() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
         Document doc = XMLUtils.newDocument();
 
         MessageDigestAlgorithm digestAlgorithm =
@@ -217,9 +218,9 @@ public class DigestAlgorithmTest {
         assertArrayEquals(digest, digest2);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSHA3_224() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
         Document doc = XMLUtils.newDocument();
 
         MessageDigestAlgorithm digestAlgorithm =
@@ -236,9 +237,9 @@ public class DigestAlgorithmTest {
         assertArrayEquals(digest, digest2);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSHA3_256() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
         Document doc = XMLUtils.newDocument();
 
         MessageDigestAlgorithm digestAlgorithm =
@@ -255,9 +256,9 @@ public class DigestAlgorithmTest {
         assertArrayEquals(digest, digest2);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSHA3_384() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
         Document doc = XMLUtils.newDocument();
 
         MessageDigestAlgorithm digestAlgorithm =
@@ -274,9 +275,9 @@ public class DigestAlgorithmTest {
         assertArrayEquals(digest, digest2);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSHA3_512() throws Exception {
-        org.junit.Assume.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled);
         Document doc = XMLUtils.newDocument();
 
         MessageDigestAlgorithm digestAlgorithm =

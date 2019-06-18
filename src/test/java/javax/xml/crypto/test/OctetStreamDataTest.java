@@ -26,10 +26,10 @@ import java.io.*;
 import java.util.*;
 import javax.xml.crypto.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -38,7 +38,7 @@ import static org.junit.Assert.fail;
  */
 public class OctetStreamDataTest {
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testConstructor() throws Exception {
         // test OctetStreamData(InputStream) and
         // OctetStreamData(InputStream, String, String)

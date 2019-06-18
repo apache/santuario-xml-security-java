@@ -19,7 +19,7 @@
 package org.apache.xml.security.test.stax;
 
 import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.apache.xml.security.stax.config.Init;
 import org.apache.xml.security.stax.ext.XMLSec;
 import org.apache.xml.security.stax.ext.XMLSecurityConfigurationException;
@@ -30,8 +30,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  */

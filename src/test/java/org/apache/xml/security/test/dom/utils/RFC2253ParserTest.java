@@ -19,9 +19,9 @@
 package org.apache.xml.security.test.dom.utils;
 
 import org.apache.xml.security.utils.RFC2253Parser;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  */

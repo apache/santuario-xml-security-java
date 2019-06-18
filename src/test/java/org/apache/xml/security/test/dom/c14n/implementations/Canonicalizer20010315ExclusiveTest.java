@@ -46,8 +46,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -66,14 +66,14 @@ public class Canonicalizer20010315ExclusiveTest {
     /**
      * Method testA
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testA() throws Exception {
 
         File fileIn = new File(getAbsolutePath(
             "src/test/resources/ie/baltimore/merlin-examples/ec-merlin-iaikTests-two/signature.xml"));
 
         // File fileIn = new File("signature.xml");
-        assertTrue("file exists", fileIn.exists());
+        assertTrue(fileIn.exists(), "file exists");
 
         Document doc = XMLUtils.read(new FileInputStream(fileIn), false);
         Element signatureElement =
@@ -95,14 +95,14 @@ public class Canonicalizer20010315ExclusiveTest {
             }
         }
 
-        assertTrue("Verification failed; only " + numberOfPositiveReferences
-                   + "/" + length + " matched", verify);
+        assertTrue(verify, "Verification failed; only " + numberOfPositiveReferences
+                   + "/" + length + " matched");
     }
 
     /**
      * Method test221
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test221() throws Exception {
 
         Document doc =
@@ -123,7 +123,7 @@ public class Canonicalizer20010315ExclusiveTest {
     /**
      * Method test222
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test222() throws Exception {
         Document doc =
             XMLUtils.read(new FileInputStream(getAbsolutePath(
@@ -142,7 +142,7 @@ public class Canonicalizer20010315ExclusiveTest {
     /**
      * Method test221excl
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test221excl() throws Exception {
         Document doc =
             XMLUtils.read(new FileInputStream(getAbsolutePath(
@@ -161,7 +161,7 @@ public class Canonicalizer20010315ExclusiveTest {
     /**
      * Method test222excl
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test222excl() throws Exception {
         Document doc =
             XMLUtils.read(new FileInputStream(getAbsolutePath(
@@ -182,7 +182,7 @@ public class Canonicalizer20010315ExclusiveTest {
      *
      * Provided by Gabriel McGoldrick - see e-mail of 21/11/03
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test223excl() throws Exception {
         Document doc =
             XMLUtils.read(new FileInputStream(getAbsolutePath(
@@ -210,7 +210,7 @@ public class Canonicalizer20010315ExclusiveTest {
      * Tests node-set as input. See bug 37708.
      * Provided by Pete Hendry.
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testNodeSet() throws Exception {
         final String XML =
             "<env:Envelope"
@@ -253,7 +253,7 @@ public class Canonicalizer20010315ExclusiveTest {
      * "Canonicalizer can't handle dynamical created DOM correctly"
      * https://issues.apache.org/jira/browse/SANTUARIO-263
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test24excl() throws Exception {
         Document doc =
             XMLUtils.read(
@@ -277,7 +277,7 @@ public class Canonicalizer20010315ExclusiveTest {
      * "Canonicalizer can't handle dynamical created DOM correctly"
      * https://issues.apache.org/jira/browse/SANTUARIO-263
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void test24Aexcl() throws Exception {
         Document doc = XMLUtils.newDocument();
         Element local = doc.createElementNS("foo:bar", "dsig:local");
@@ -305,7 +305,7 @@ public class Canonicalizer20010315ExclusiveTest {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testDefaultNSInInclusiveNamespacePrefixList1() throws Exception {
         final String XML =
                 "<env:Envelope"
@@ -355,7 +355,7 @@ public class Canonicalizer20010315ExclusiveTest {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testDefaultNSInInclusiveNamespacePrefixList2() throws Exception {
         final String XML =
                 "<env:Envelope"
@@ -417,7 +417,7 @@ public class Canonicalizer20010315ExclusiveTest {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testDefaultNSInInclusiveNamespacePrefixList3() throws Exception {
         final String XML =
                 "<env:Envelope"
@@ -468,7 +468,7 @@ public class Canonicalizer20010315ExclusiveTest {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testDefaultNSInInclusiveNamespacePrefixList4() throws Exception {
         final String XML =
                 "<env:Envelope"
@@ -518,7 +518,7 @@ public class Canonicalizer20010315ExclusiveTest {
      *
      * @throws Exception
      */
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testPropagateDefaultNs1() throws Exception {
         final String XML =
                 "<env:Envelope"
@@ -552,7 +552,7 @@ public class Canonicalizer20010315ExclusiveTest {
         assertEquals(c14nXML, new String(bytes));
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testPropagateDefaultNs2() throws Exception {
         final String XML =
                 "<env:Envelope"
@@ -587,7 +587,7 @@ public class Canonicalizer20010315ExclusiveTest {
         assertEquals(c14nXML, new String(bytes));
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testPropagateDefaultNs3() throws Exception {
         final String XML =
                 "<Envelope"
@@ -622,7 +622,7 @@ public class Canonicalizer20010315ExclusiveTest {
         assertEquals(c14nXML, new String(bytes));
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testPropagateDefaultNs4() throws Exception {
         final String XML =
                 "<Envelope"
@@ -657,7 +657,7 @@ public class Canonicalizer20010315ExclusiveTest {
         assertEquals(c14nXML, new String(bytes));
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testPropagateDefaultNs5() throws Exception {
         final String XML =
                 "<env:Envelope"

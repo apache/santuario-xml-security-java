@@ -33,10 +33,10 @@ import javax.xml.crypto.dsig.spec.XSLTTransformParameterSpec;
 
 import java.security.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -65,7 +65,7 @@ public class TransformTest {
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testisFeatureSupported() throws Exception {
         Transform tm;
         for (int i = 0; i < TRANSFORM_ALGOS.length; i++) {
@@ -91,7 +91,7 @@ public class TransformTest {
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testConstructor() throws Exception {
         // test newTransform(String algorithm,
         //                   AlgorithmParameterSpec params)

@@ -29,11 +29,11 @@ import java.security.PublicKey;
 import javax.xml.crypto.dsig.keyinfo.*;
 import javax.xml.crypto.*;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -49,7 +49,7 @@ public class KeyInfoFactoryTest {
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testgetInstance() {
         try {
             KeyInfoFactory.getInstance("non-existent");
@@ -62,13 +62,13 @@ public class KeyInfoFactoryTest {
         } catch (NullPointerException npe) {}
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testgetMechanismType() {
         assertNotNull(factory);
         assertEquals("DOM", factory.getMechanismType());
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testisFeatureSupported() {
         try {
             factory.isFeatureSupported(null);
@@ -78,7 +78,7 @@ public class KeyInfoFactoryTest {
         assertFalse(factory.isFeatureSupported("not supported"));
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testnewKeyInfo() {
         String id = "keyId";
         // test newKeyInfo(List, String)
@@ -91,7 +91,7 @@ public class KeyInfoFactoryTest {
         } catch (NullPointerException npe) {}
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testnewKeyName() {
         final String name = "keyName";
         KeyName kn = factory.newKeyName(name);
@@ -102,7 +102,7 @@ public class KeyInfoFactoryTest {
         } catch (NullPointerException npe) {}
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testnewKeyValue() {
         // test newKeyValue(PublicKey pk)
         PublicKey myPubKey = new PublicKey() {
@@ -132,7 +132,7 @@ public class KeyInfoFactoryTest {
         } catch (NullPointerException npe) {}
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testnewPGPKeyId() {
         byte[] valid_id = {
             0x01, 0x02, 0x03, 0x04,
@@ -180,7 +180,7 @@ public class KeyInfoFactoryTest {
         } catch (IllegalArgumentException ex) {}
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testnewRetrievalMethod() throws Exception {
         final String uri = "#X509CertChain";
         // test RetrievalMethod(String)
@@ -209,7 +209,7 @@ public class KeyInfoFactoryTest {
         assertEquals(type, rm.getType());
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testnewX509Data() {
         // test newX509Data(List)
         X509Data x509 =
@@ -217,7 +217,7 @@ public class KeyInfoFactoryTest {
         assertNotNull(x509);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testnewX509IssuerSerial() {
         String name = "CN=valeriep";
         // test newX509IssuerSerial(String, BigInteger)

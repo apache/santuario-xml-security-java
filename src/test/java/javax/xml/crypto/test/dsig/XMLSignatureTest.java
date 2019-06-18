@@ -36,14 +36,15 @@ import javax.xml.crypto.dsig.dom.DOMValidateContext;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Assumptions;
 import org.w3c.dom.*;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -100,7 +101,7 @@ public class XMLSignatureTest {
     }
 
     @SuppressWarnings("rawtypes")
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testConstructor() throws Exception {
         XMLSignature sig = null;
         // test XMLSignatureFactory.newXMLSignature(SignedInfo, KeyInfo)
@@ -149,7 +150,7 @@ public class XMLSignatureTest {
         assertEquals(sig.getSignedInfo(), defSi);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testisFeatureSupported() throws Exception {
 
         XMLSignature sig = fac.newXMLSignature(defSi, null);
@@ -162,7 +163,7 @@ public class XMLSignatureTest {
         assertFalse(sig.isFeatureSupported("not supported"));
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testsignANDvalidate() throws Exception {
         XMLSignature sig;
         SignedInfo si;
@@ -195,7 +196,7 @@ public class XMLSignatureTest {
         assertTrue(status);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSignWithProvider() throws Exception {
         XMLSignature sig;
         SignedInfo si;
@@ -222,13 +223,12 @@ public class XMLSignatureTest {
                 fail("Should have failed because TestProvider does not " +
                      "support " + SIGN_KEYS[i].getAlgorithm());
             } catch (Exception e) {
-                assertTrue(e.getMessage(),
-                    e.getCause() instanceof NoSuchAlgorithmException);
+                assertTrue(e.getCause() instanceof NoSuchAlgorithmException, e.getMessage());
             }
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSignWithEmptyNSPrefix() throws Exception {
         SignedInfo si = createSignedInfo(SIG_METHODS[1]);
         KeyInfo ki = kifac.newKeyInfo(Collections.singletonList
@@ -246,7 +246,7 @@ public class XMLSignatureTest {
 */
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSignWithReferenceManifestDependencies() throws Exception {
         // create references
         DigestMethod dm = fac.newDigestMethod(DigestMethod.SHA1, null);
@@ -302,7 +302,7 @@ public class XMLSignatureTest {
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testSignTemplateWithObjectNSDefs() throws Exception {
         String base = System.getProperty("basedir") == null ? "./"
                       : System.getProperty("basedir");
@@ -342,7 +342,7 @@ public class XMLSignatureTest {
         }
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testCreateSignatureWithEmptyId() throws Exception {
         // create references
         DigestMethod dm = fac.newDigestMethod(DigestMethod.SHA1, null);
@@ -371,7 +371,7 @@ public class XMLSignatureTest {
         sig.sign(dsc);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testCreateDSA2048Signature() throws Exception {
 
         // check if SHA256withDSA is supported
@@ -380,7 +380,7 @@ public class XMLSignatureTest {
             Signature.getInstance("SHA256withDSA");
             gotSHA256withDSA = true;
         } catch (NoSuchAlgorithmException e) {}
-        org.junit.Assume.assumeTrue(gotSHA256withDSA);
+        Assumptions.assumeTrue(gotSHA256withDSA);
 
         SignatureMethod sm = fac.newSignatureMethod(DSA_SHA256, null);
         SignedInfo si = createSignedInfo(sm);

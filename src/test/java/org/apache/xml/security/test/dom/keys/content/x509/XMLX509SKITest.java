@@ -31,7 +31,7 @@ import java.util.Collections;
 
 import org.apache.xml.security.keys.content.x509.XMLX509SKI;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 /**
  * Test bugfix 41892: XML Security 1.4.0 does not build with IBM's JDK
@@ -46,7 +46,7 @@ public class XMLX509SKITest {
         cf = CertificateFactory.getInstance("X.509");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void testGetSKIBytesFromCert() throws Exception {
         File f = null;
         if (BASEDIR != null && !"".equals(BASEDIR)) {
