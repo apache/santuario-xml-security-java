@@ -53,7 +53,6 @@ import javax.xml.crypto.dom.DOMURIReference;
 import javax.xml.crypto.dsig.Transform;
 import javax.xml.crypto.dsig.XMLSignature;
 import javax.xml.crypto.dsig.keyinfo.RetrievalMethod;
-import javax.xml.parsers.DocumentBuilder;
 
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Attr;
@@ -269,12 +268,10 @@ public final class DOMRetrievalMethod extends DOMStructure
     public XMLStructure dereferenceAsXMLStructure(XMLCryptoContext context)
         throws URIReferenceException
     {
-        DocumentBuilder db = null;
         boolean secVal = Utils.secureValidation(context);
         ApacheData data = (ApacheData)dereference(context);
         try (InputStream is = new ByteArrayInputStream(data.getXMLSignatureInput().getBytes())) {
-            db = XMLUtils.createDocumentBuilder(false, secVal);
-            Document doc = db.parse(is);
+            Document doc = XMLUtils.read(is, false, secVal);
             Element kiElem = doc.getDocumentElement();
             if (kiElem.getLocalName().equals("X509Data")
                 && XMLSignature.XMLNS.equals(kiElem.getNamespaceURI())) {
@@ -284,10 +281,6 @@ public final class DOMRetrievalMethod extends DOMStructure
             }
         } catch (Exception e) {
             throw new URIReferenceException(e);
-        } finally {
-            if (db != null) {
-                XMLUtils.repoolDocumentBuilder(db);
-            }
         }
     }
 
