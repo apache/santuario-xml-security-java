@@ -48,7 +48,6 @@ import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.c14n.InvalidCanonicalizerException;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
-import org.apache.xml.security.utils.IgnoreAllErrorHandler;
 import org.apache.xml.security.utils.JavaUtils;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;

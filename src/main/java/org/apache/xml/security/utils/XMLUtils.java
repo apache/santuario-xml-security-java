@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.utils;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -27,30 +26,30 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
+import java.util.WeakHashMap;
+import java.util.concurrent.ArrayBlockingQueue;
 
-import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.validation.Schema;
 
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.c14n.InvalidCanonicalizerException;
 import org.w3c.dom.Attr;
-import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
-import org.xml.sax.EntityResolver;
-import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -64,12 +63,9 @@ public final class XMLUtils {
         AccessController.doPrivileged(
             (PrivilegedAction<Boolean>) () -> Boolean.getBoolean("org.apache.xml.security.ignoreLineBreaks"));
 
-    @SuppressWarnings("unchecked")
-    private static final WeakObjectPool<DocumentBuilder, ParserConfigurationException> pools[] = new WeakObjectPool[2];
-    static {
-        pools[0] = new DocumentBuilderPool(false);
-        pools[1] = new DocumentBuilderPool(true);
-    }
+    private static int parserPoolSize =
+        AccessController.doPrivileged(
+            (PrivilegedAction<Integer>) () -> Integer.getInteger("org.apache.xml.security.parser.pool-size", 20));
 
     private static volatile String dsPrefix = "ds";
     private static volatile String ds11Prefix = "dsig11";
@@ -79,6 +75,11 @@ public final class XMLUtils {
     private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(XMLUtils.class);
 
+    private static final Map<ClassLoader, Queue<DocumentBuilder>> DOCUMENT_BUILDERS =
+        Collections.synchronizedMap(new WeakHashMap<ClassLoader, Queue<DocumentBuilder>>());
+
+    private static final Map<ClassLoader, Queue<DocumentBuilder>> DOCUMENT_BUILDERS_DISALLOW_DOCTYPE =
+        Collections.synchronizedMap(new WeakHashMap<ClassLoader, Queue<DocumentBuilder>>());
 
     /**
      * Constructor XMLUtils
@@ -159,7 +160,7 @@ public final class XMLUtils {
         if (rootNode == exclude) {
             return;
         }
-        switch (rootNode.getNodeType()) {
+        switch (rootNode.getNodeType()) { //NOPMD
         case Node.ELEMENT_NODE:
             result.add(rootNode);
             Element el = (Element)rootNode;
@@ -184,14 +185,14 @@ public final class XMLUtils {
                 }
                 getSetRec(r, result, exclude, com);
             }
-            return;
+            break;
         case Node.COMMENT_NODE:
             if (com) {
                 result.add(rootNode);
             }
-            return;
+            break;
         case Node.DOCUMENT_TYPE_NODE:
-            return;
+            break;
         default:
             result.add(rootNode);
         }
@@ -729,7 +730,6 @@ public final class XMLUtils {
         return null;
     }
 
-
     /**
      * @param sibling
      * @param nodeName
@@ -1070,9 +1070,14 @@ public final class XMLUtils {
     }
 
     public static Document newDocument() throws ParserConfigurationException {
-        DocumentBuilder documentBuilder = createDocumentBuilder(true);
+        ClassLoader loader = getContextClassLoader();
+        if (loader == null) {
+            loader = getClassLoader(XMLUtils.class);
+        }
+
+        DocumentBuilder documentBuilder = getDocumentBuilder(true, loader);
         Document doc = documentBuilder.newDocument();
-        repoolDocumentBuilder(documentBuilder);
+        repoolDocumentBuilder(documentBuilder, true, loader);
         return doc;
     }
 
@@ -1081,17 +1086,27 @@ public final class XMLUtils {
     }
 
     public static Document read(InputStream inputStream, boolean disAllowDocTypeDeclarations) throws ParserConfigurationException, SAXException, IOException {
-        DocumentBuilder documentBuilder = createDocumentBuilder(disAllowDocTypeDeclarations);
+        ClassLoader loader = getContextClassLoader();
+        if (loader == null) {
+            loader = getClassLoader(XMLUtils.class);
+        }
+
+        DocumentBuilder documentBuilder = getDocumentBuilder(disAllowDocTypeDeclarations, loader);
         Document doc = documentBuilder.parse(inputStream);
-        repoolDocumentBuilder(documentBuilder);
+        repoolDocumentBuilder(documentBuilder, disAllowDocTypeDeclarations, loader);
         return doc;
     }
 
     public static Document read(String uri, boolean disAllowDocTypeDeclarations)
         throws ParserConfigurationException, SAXException, IOException {
-        DocumentBuilder documentBuilder = createDocumentBuilder(disAllowDocTypeDeclarations);
+        ClassLoader loader = getContextClassLoader();
+        if (loader == null) {
+            loader = getClassLoader(XMLUtils.class);
+        }
+
+        DocumentBuilder documentBuilder = getDocumentBuilder(disAllowDocTypeDeclarations, loader);
         Document doc = documentBuilder.parse(uri);
-        repoolDocumentBuilder(documentBuilder);
+        repoolDocumentBuilder(documentBuilder, disAllowDocTypeDeclarations, loader);
         return doc;
     }
 
@@ -1101,28 +1116,34 @@ public final class XMLUtils {
 
     public static Document read(InputSource inputSource, boolean disAllowDocTypeDeclarations)
         throws ParserConfigurationException, SAXException, IOException {
-        DocumentBuilder documentBuilder = createDocumentBuilder(disAllowDocTypeDeclarations);
+        ClassLoader loader = getContextClassLoader();
+        if (loader == null) {
+            loader = getClassLoader(XMLUtils.class);
+        }
+
+        DocumentBuilder documentBuilder = getDocumentBuilder(disAllowDocTypeDeclarations, loader);
         Document doc = documentBuilder.parse(inputSource);
-        repoolDocumentBuilder(documentBuilder);
+        repoolDocumentBuilder(documentBuilder, disAllowDocTypeDeclarations, loader);
         return doc;
     }
 
+    /**
+     * @deprecated Use XMLUtils.read instead to directly read a document.
+     */
     @Deprecated
     public static DocumentBuilder createDocumentBuilder(boolean validating) throws ParserConfigurationException {
-        DocumentBuilderFactory dfactory = DocumentBuilderFactory.newInstance();
-        dfactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
-        dfactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-        dfactory.setValidating(validating);
-        dfactory.setNamespaceAware(true);
-        return dfactory.newDocumentBuilder();
+        return createDocumentBuilder(validating, true);
     }
 
+    /**
+     * @deprecated Use XMLUtils.read instead to directly read a document.
+     */
     @Deprecated
     public static DocumentBuilder createDocumentBuilder(
         boolean validating, boolean disAllowDocTypeDeclarations
     ) throws ParserConfigurationException {
         DocumentBuilderFactory dfactory = DocumentBuilderFactory.newInstance();
-        dfactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
+        dfactory.setFeature(javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
         if (disAllowDocTypeDeclarations) {
             dfactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
         }
@@ -1132,11 +1153,9 @@ public final class XMLUtils {
     }
 
     /**
-     * Return this document builder to be reused
-     * @param db DocumentBuilder returned from any of {@link #createDocumentBuilder} methods.
-     * @return whether it was successfully returned to the pool
-     * @Deprecated
+     * @deprecated This method has no effect in Santuario 2.1.4
      */
+    @Deprecated
     public static boolean repoolDocumentBuilder(DocumentBuilder db) {
         return true;
     }
@@ -1186,119 +1205,67 @@ public final class XMLUtils {
         return resizedBytes;
     }
 
-    /**
-     * We need this proxy wrapping DocumentBuilder to record the value
-     * passed to disAllowDoctypeDeclarations.  It's needed to figure out
-     * on which pool to return.
-     */
-    private static class DocumentBuilderProxy extends DocumentBuilder {
-        private final DocumentBuilder delegate;
-        private final boolean disAllowDocTypeDeclarations;
-
-        private DocumentBuilderProxy(DocumentBuilder actual, boolean disAllowDocTypeDeclarations) {
-            delegate = actual;
-            this.disAllowDocTypeDeclarations = disAllowDocTypeDeclarations;
+    private static DocumentBuilder getDocumentBuilder(boolean disAllowDocTypeDeclarations, ClassLoader loader) throws ParserConfigurationException {
+        if (loader == null) {
+            return buildDocumentBuilder(disAllowDocTypeDeclarations);
         }
 
-        boolean disAllowDocTypeDeclarations() {
-            return disAllowDocTypeDeclarations;
+        Map<ClassLoader, Queue<DocumentBuilder>> docBuilderCache =
+            disAllowDocTypeDeclarations ? DOCUMENT_BUILDERS_DISALLOW_DOCTYPE : DOCUMENT_BUILDERS;
+        Queue<DocumentBuilder> queue = docBuilderCache.get(loader);
+        if (queue == null) {
+            queue = new ArrayBlockingQueue<>(parserPoolSize);
+            docBuilderCache.put(loader, queue);
         }
 
-        public void reset() {
-            delegate.reset();
+        DocumentBuilder db = queue.poll();
+        if (db == null) {
+            db = buildDocumentBuilder(disAllowDocTypeDeclarations);
         }
-
-        public Document parse(InputStream is) throws SAXException, IOException {
-            return delegate.parse(is);
-        }
-
-        public Document parse(InputStream is, String systemId)
-                throws SAXException, IOException {
-            return delegate.parse(is, systemId);
-        }
-
-        public Document parse(String uri) throws SAXException, IOException {
-            return delegate.parse(uri);
-        }
-
-        public Document parse(File f) throws SAXException, IOException {
-            return delegate.parse(f);
-        }
-
-        public Schema getSchema() {
-            return delegate.getSchema();
-        }
-
-        public boolean isXIncludeAware() {
-            return delegate.isXIncludeAware();
-        }
-
-        @Override
-        public Document parse(InputSource is) throws SAXException, IOException {
-            return delegate.parse(is);
-        }
-
-        @Override
-        public boolean isNamespaceAware() {
-            return delegate.isNamespaceAware();
-        }
-
-        @Override
-        public boolean isValidating() {
-            return delegate.isValidating();
-        }
-
-        @Override
-        public void setEntityResolver(EntityResolver er) {
-            delegate.setEntityResolver(er);
-        }
-
-        @Override
-        public void setErrorHandler(ErrorHandler eh) {
-            delegate.setErrorHandler(eh);
-        }
-
-        @Override
-        public Document newDocument() {
-            return delegate.newDocument();
-        }
-
-        @Override
-        public DOMImplementation getDOMImplementation() {
-            return delegate.getDOMImplementation();
-        }
-
+        return db;
     }
 
-    private static final class DocumentBuilderPool
-        extends WeakObjectPool<DocumentBuilder, ParserConfigurationException> {
+    private static DocumentBuilder buildDocumentBuilder(boolean disAllowDocTypeDeclarations) throws ParserConfigurationException {
+        DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
+        f.setNamespaceAware(true);
+        f.setFeature(javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING, true);
+        f.setFeature("http://apache.org/xml/features/disallow-doctype-decl", disAllowDocTypeDeclarations);
+        return f.newDocumentBuilder();
+    }
 
-        private final boolean disAllowDocTypeDeclarations;
-
-        public DocumentBuilderPool(boolean disAllowDocTypeDeclarations) {
-            this.disAllowDocTypeDeclarations = disAllowDocTypeDeclarations;
-        }
-
-        @Override
-        protected DocumentBuilder createObject() throws ParserConfigurationException {
-            DocumentBuilderFactory dfactory = DocumentBuilderFactory.newInstance();
-            dfactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
-            if (disAllowDocTypeDeclarations) {
-                dfactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+    private static void repoolDocumentBuilder(DocumentBuilder db, boolean disAllowDocTypeDeclarations, ClassLoader loader) {
+        if (loader != null) {
+            Queue<DocumentBuilder> queue =
+                disAllowDocTypeDeclarations ? DOCUMENT_BUILDERS_DISALLOW_DOCTYPE.get(loader) : DOCUMENT_BUILDERS.get(loader);
+            if (queue != null) {
+                db.reset();
+                queue.offer(db);
             }
-            dfactory.setNamespaceAware(true);
-            return new DocumentBuilderProxy(dfactory.newDocumentBuilder(), disAllowDocTypeDeclarations);
         }
     }
 
-    /**
-     * Maps the two boolean configuration options for the factories to the array index for the WeakObjectPool
-     * @param validating
-     * @param disAllowDocTypeDeclarations
-     * @return the index to the {@link #pools}
-     */
-    private static int getPoolsIndex(boolean disAllowDocTypeDeclarations) {
-        return (disAllowDocTypeDeclarations ? 1 : 0);
+    private static ClassLoader getContextClassLoader() {
+        final SecurityManager sm = System.getSecurityManager();
+        if (sm != null) {
+            return AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() {
+                public ClassLoader run() {
+                    return Thread.currentThread().getContextClassLoader();
+                }
+            });
+        }
+        return Thread.currentThread().getContextClassLoader();
+    }
+
+    private static ClassLoader getClassLoader(final Class<?> clazz) {
+        final SecurityManager sm = System.getSecurityManager();
+        if (sm != null) {
+            return AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() {
+                public ClassLoader run() {
+                    return clazz.getClassLoader();
+                }
+            });
+        }
+        return clazz.getClassLoader();
     }
 
 }
