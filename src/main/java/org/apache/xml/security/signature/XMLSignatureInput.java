@@ -571,8 +571,7 @@ public class XMLSignatureInput {
         ParserConfigurationException, IOException, SAXException {
         // select all nodes, also the comments.
         try {
-            Document doc = XMLUtils.read(this.getOctetStream(), false, secureValidation,
-                                         new org.apache.xml.security.utils.IgnoreAllErrorHandler());
+            Document doc = XMLUtils.read(this.getOctetStream(), secureValidation);
             this.subNode = doc;
         } catch (SAXException ex) {
             byte[] result = null;
@@ -586,8 +585,7 @@ public class XMLSignatureInput {
                 result = baos.toByteArray();
             }
             try (InputStream is = new ByteArrayInputStream(result)) {
-                Document document = XMLUtils.read(is, false, secureValidation,
-                                                  new org.apache.xml.security.utils.IgnoreAllErrorHandler());
+                Document document = XMLUtils.read(is, secureValidation);
                 this.subNode = document.getDocumentElement().getFirstChild().getFirstChild();
             }
         } finally {

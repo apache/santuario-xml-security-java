@@ -65,12 +65,10 @@ public final class XMLUtils {
             (PrivilegedAction<Boolean>) () -> Boolean.getBoolean("org.apache.xml.security.ignoreLineBreaks"));
 
     @SuppressWarnings("unchecked")
-    private static final WeakObjectPool<DocumentBuilder, ParserConfigurationException> pools[] = new WeakObjectPool[4];
+    private static final WeakObjectPool<DocumentBuilder, ParserConfigurationException> pools[] = new WeakObjectPool[2];
     static {
-        pools[0] = new DocumentBuilderPool(false, false);
-        pools[1] = new DocumentBuilderPool(false, true);
-        pools[2] = new DocumentBuilderPool(true, false);
-        pools[3] = new DocumentBuilderPool(true, true);
+        pools[0] = new DocumentBuilderPool(false);
+        pools[1] = new DocumentBuilderPool(true);
     }
 
     private static volatile String dsPrefix = "ds";
@@ -1072,97 +1070,75 @@ public final class XMLUtils {
     }
 
     public static Document newDocument() throws ParserConfigurationException {
-        DocumentBuilder documentBuilder = createDocumentBuilder(false);
+        DocumentBuilder documentBuilder = createDocumentBuilder(true);
         Document doc = documentBuilder.newDocument();
         repoolDocumentBuilder(documentBuilder);
         return doc;
     }
 
-    public static Document read(InputStream inputStream, boolean validating) throws ParserConfigurationException, SAXException, IOException {
-        return read(inputStream, validating, true);
+    public static Document read(InputStream inputStream) throws ParserConfigurationException, SAXException, IOException {
+        return read(inputStream, true);
     }
 
-    public static Document read(InputStream inputStream, boolean validating, boolean disAllowDocTypeDeclarations) throws ParserConfigurationException, SAXException, IOException {
-        return read(inputStream, validating, disAllowDocTypeDeclarations, null);
-    }
-
-    public static Document read(InputStream inputStream, boolean validating, boolean disAllowDocTypeDeclarations, ErrorHandler errorHandler)
-        throws ParserConfigurationException, SAXException, IOException {
-        DocumentBuilder documentBuilder = createDocumentBuilder(validating, disAllowDocTypeDeclarations);
-        if (errorHandler != null) {
-            documentBuilder.setErrorHandler(errorHandler);
-        }
+    public static Document read(InputStream inputStream, boolean disAllowDocTypeDeclarations) throws ParserConfigurationException, SAXException, IOException {
+        DocumentBuilder documentBuilder = createDocumentBuilder(disAllowDocTypeDeclarations);
         Document doc = documentBuilder.parse(inputStream);
-        if (errorHandler != null) {
-            documentBuilder.setErrorHandler(null);
-        }
         repoolDocumentBuilder(documentBuilder);
         return doc;
     }
 
-    public static Document read(String uri, boolean validating, boolean disAllowDocTypeDeclarations, ErrorHandler errorHandler)
+    public static Document read(String uri, boolean disAllowDocTypeDeclarations)
         throws ParserConfigurationException, SAXException, IOException {
-        DocumentBuilder documentBuilder = createDocumentBuilder(validating, disAllowDocTypeDeclarations);
-        if (errorHandler != null) {
-            documentBuilder.setErrorHandler(errorHandler);
-        }
+        DocumentBuilder documentBuilder = createDocumentBuilder(disAllowDocTypeDeclarations);
         Document doc = documentBuilder.parse(uri);
-        if (errorHandler != null) {
-            documentBuilder.setErrorHandler(null);
-        }
         repoolDocumentBuilder(documentBuilder);
         return doc;
     }
 
-    public static Document read(InputSource inputSource, boolean validating) throws ParserConfigurationException, SAXException, IOException {
-        return read(inputSource, validating, true, null);
+    public static Document read(InputSource inputSource) throws ParserConfigurationException, SAXException, IOException {
+        return read(inputSource, true);
     }
 
-    public static Document read(InputSource inputSource, boolean validating, boolean disAllowDocTypeDeclarations)
+    public static Document read(InputSource inputSource, boolean disAllowDocTypeDeclarations)
         throws ParserConfigurationException, SAXException, IOException {
-        return read(inputSource, validating, disAllowDocTypeDeclarations, null);
-    }
-
-    public static Document read(InputSource inputSource, boolean validating, boolean disAllowDocTypeDeclarations, ErrorHandler errorHandler)
-        throws ParserConfigurationException, SAXException, IOException {
-        DocumentBuilder documentBuilder = createDocumentBuilder(validating, disAllowDocTypeDeclarations);
-        if (errorHandler != null) {
-            documentBuilder.setErrorHandler(errorHandler);
-        }
+        DocumentBuilder documentBuilder = createDocumentBuilder(disAllowDocTypeDeclarations);
         Document doc = documentBuilder.parse(inputSource);
-        if (errorHandler != null) {
-            documentBuilder.setErrorHandler(null);
-        }
         repoolDocumentBuilder(documentBuilder);
         return doc;
     }
 
+    @Deprecated
     public static DocumentBuilder createDocumentBuilder(boolean validating) throws ParserConfigurationException {
-        return createDocumentBuilder(validating, true);
+        DocumentBuilderFactory dfactory = DocumentBuilderFactory.newInstance();
+        dfactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
+        dfactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+        dfactory.setValidating(validating);
+        dfactory.setNamespaceAware(true);
+        return dfactory.newDocumentBuilder();
     }
 
+    @Deprecated
     public static DocumentBuilder createDocumentBuilder(
         boolean validating, boolean disAllowDocTypeDeclarations
     ) throws ParserConfigurationException {
-        int idx = getPoolsIndex(validating, disAllowDocTypeDeclarations);
-        return pools[idx].getObject();
+        DocumentBuilderFactory dfactory = DocumentBuilderFactory.newInstance();
+        dfactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
+        if (disAllowDocTypeDeclarations) {
+            dfactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+        }
+        dfactory.setValidating(validating);
+        dfactory.setNamespaceAware(true);
+        return dfactory.newDocumentBuilder();
     }
-
 
     /**
      * Return this document builder to be reused
      * @param db DocumentBuilder returned from any of {@link #createDocumentBuilder} methods.
      * @return whether it was successfully returned to the pool
+     * @Deprecated
      */
     public static boolean repoolDocumentBuilder(DocumentBuilder db) {
-        if (!(db instanceof DocumentBuilderProxy)) {
-            return false;
-        }
-        db.reset();
-        boolean disAllowDocTypeDeclarations =
-            ((DocumentBuilderProxy)db).disAllowDocTypeDeclarations();
-        int idx = getPoolsIndex(db.isValidating(), disAllowDocTypeDeclarations);
-        return pools[idx].repool(db);
+        return true;
     }
 
     /**
@@ -1297,10 +1273,9 @@ public final class XMLUtils {
     private static final class DocumentBuilderPool
         extends WeakObjectPool<DocumentBuilder, ParserConfigurationException> {
 
-        private final boolean validating, disAllowDocTypeDeclarations;
+        private final boolean disAllowDocTypeDeclarations;
 
-        public DocumentBuilderPool(boolean validating, boolean disAllowDocTypeDeclarations) {
-            this.validating = validating;
+        public DocumentBuilderPool(boolean disAllowDocTypeDeclarations) {
             this.disAllowDocTypeDeclarations = disAllowDocTypeDeclarations;
         }
 
@@ -1311,7 +1286,6 @@ public final class XMLUtils {
             if (disAllowDocTypeDeclarations) {
                 dfactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
             }
-            dfactory.setValidating(validating);
             dfactory.setNamespaceAware(true);
             return new DocumentBuilderProxy(dfactory.newDocumentBuilder(), disAllowDocTypeDeclarations);
         }
@@ -1323,8 +1297,8 @@ public final class XMLUtils {
      * @param disAllowDocTypeDeclarations
      * @return the index to the {@link #pools}
      */
-    private static int getPoolsIndex(boolean validating, boolean disAllowDocTypeDeclarations) {
-        return (validating ? 2 : 0) + (disAllowDocTypeDeclarations ? 1 : 0);
+    private static int getPoolsIndex(boolean disAllowDocTypeDeclarations) {
+        return (disAllowDocTypeDeclarations ? 1 : 0);
     }
 
 }

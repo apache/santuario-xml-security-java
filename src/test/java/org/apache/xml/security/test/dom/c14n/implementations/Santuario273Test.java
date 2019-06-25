@@ -80,7 +80,7 @@ public class Santuario273Test {
     public void testC14n11Base() throws Exception {
         Document doc = null;
         try (InputStream is = new ByteArrayInputStream(input.getBytes())) {
-            doc = XMLUtils.read(is, true, false, new org.apache.xml.security.utils.IgnoreAllErrorHandler());
+            doc = XMLUtils.read(is, false);
         }
 
         Canonicalizer c14n =

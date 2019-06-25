@@ -61,7 +61,7 @@ public class InteropTestBase {
         String filename, ResourceResolverSpi resolver, boolean followManifests, byte[] hmacKey
     ) throws Exception {
         File f = new File(filename);
-        org.w3c.dom.Document doc = XMLUtils.read(new FileInputStream(f), false, false);
+        org.w3c.dom.Document doc = XMLUtils.read(new FileInputStream(f), false);
 
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();
@@ -92,7 +92,7 @@ public class InteropTestBase {
                           boolean followManifests, boolean secureValidation)
         throws Exception {
         File f = new File(filename);
-        org.w3c.dom.Document doc = XMLUtils.read(new FileInputStream(f), false, false);
+        org.w3c.dom.Document doc = XMLUtils.read(new FileInputStream(f), false);
 
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();

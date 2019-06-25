@@ -148,7 +148,7 @@ public class SignatureReferenceTest {
         InputStream sourceDocument =
             this.getClass().getClassLoader().getResourceAsStream(
                     "at/iaik/ixsil/coreFeatures/signatures/manifestSignature.xml");
-        Document document = XMLUtils.read(sourceDocument, false, false);
+        Document document = XMLUtils.read(sourceDocument, false);
 
         String expression = "//dsig:Signature[1]";
         Element sigElement =

@@ -158,7 +158,7 @@ public class XMLSignatureFactoryTest {
         File dir = new File(base + fs +
             "src/test/resources" + fs + "ie" + fs + "baltimore" + fs + "merlin-examples",
             "merlin-xmldsig-twenty-three");
-        Document doc = XMLUtils.read(new FileInputStream(new File(dir, "signature.xml")), false, false);
+        Document doc = XMLUtils.read(new FileInputStream(new File(dir, "signature.xml")), false);
         NodeList nl = doc.getElementsByTagName("KeyInfo");
         try {
             stuff = factory.unmarshalXMLSignature

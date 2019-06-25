@@ -271,7 +271,7 @@ public final class DOMRetrievalMethod extends DOMStructure
         boolean secVal = Utils.secureValidation(context);
         ApacheData data = (ApacheData)dereference(context);
         try (InputStream is = new ByteArrayInputStream(data.getXMLSignatureInput().getBytes())) {
-            Document doc = XMLUtils.read(is, false, secVal);
+            Document doc = XMLUtils.read(is, secVal);
             Element kiElem = doc.getDocumentElement();
             if (kiElem.getLocalName().equals("X509Data")
                 && XMLSignature.XMLNS.equals(kiElem.getNamespaceURI())) {

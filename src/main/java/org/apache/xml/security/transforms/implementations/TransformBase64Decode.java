@@ -143,7 +143,7 @@ public class TransformBase64Decode extends TransformSpi {
             //Exceptional case there is current not text case testing this(Before it was a
             //a common case).
             Document doc =
-                XMLUtils.read(input.getOctetStream(), false, secureValidation);
+                XMLUtils.read(input.getOctetStream(), secureValidation);
 
             Element rootNode = doc.getDocumentElement();
             StringBuilder sb = new StringBuilder();

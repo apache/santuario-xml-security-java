@@ -70,7 +70,7 @@ public class DocumentSerializer extends AbstractSerializer {
      */
     private Node deserialize(Node ctx, InputSource inputSource) throws XMLEncryptionException {
         try {
-            Document d = XMLUtils.read(inputSource, false, secureValidation);
+            Document d = XMLUtils.read(inputSource, secureValidation);
 
             Document contextDocument = null;
             if (Node.DOCUMENT_NODE == ctx.getNodeType()) {
