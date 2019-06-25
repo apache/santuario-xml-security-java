@@ -1010,9 +1010,14 @@ public final class XMLUtils {
     }
 
     public static Document newDocument() throws ParserConfigurationException {
-        DocumentBuilder documentBuilder = getDocumentBuilder(true);
+        ClassLoader loader = getContextClassLoader();
+        if (loader == null) {
+            loader = getClassLoader(XMLUtils.class);
+        }
+
+        DocumentBuilder documentBuilder = getDocumentBuilder(true, loader);
         Document doc = documentBuilder.newDocument();
-        repoolDocumentBuilder(documentBuilder, true);
+        repoolDocumentBuilder(documentBuilder, true, loader);
         return doc;
     }
 
@@ -1021,17 +1026,27 @@ public final class XMLUtils {
     }
 
     public static Document read(InputStream inputStream, boolean disAllowDocTypeDeclarations) throws ParserConfigurationException, SAXException, IOException {
-        DocumentBuilder documentBuilder = getDocumentBuilder(disAllowDocTypeDeclarations);
+        ClassLoader loader = getContextClassLoader();
+        if (loader == null) {
+            loader = getClassLoader(XMLUtils.class);
+        }
+
+        DocumentBuilder documentBuilder = getDocumentBuilder(disAllowDocTypeDeclarations, loader);
         Document doc = documentBuilder.parse(inputStream);
-        repoolDocumentBuilder(documentBuilder, disAllowDocTypeDeclarations);
+        repoolDocumentBuilder(documentBuilder, disAllowDocTypeDeclarations, loader);
         return doc;
     }
 
     public static Document read(String uri, boolean disAllowDocTypeDeclarations)
         throws ParserConfigurationException, SAXException, IOException {
-        DocumentBuilder documentBuilder = getDocumentBuilder(disAllowDocTypeDeclarations);
+        ClassLoader loader = getContextClassLoader();
+        if (loader == null) {
+            loader = getClassLoader(XMLUtils.class);
+        }
+
+        DocumentBuilder documentBuilder = getDocumentBuilder(disAllowDocTypeDeclarations, loader);
         Document doc = documentBuilder.parse(uri);
-        repoolDocumentBuilder(documentBuilder, disAllowDocTypeDeclarations);
+        repoolDocumentBuilder(documentBuilder, disAllowDocTypeDeclarations, loader);
         return doc;
     }
 
@@ -1041,9 +1056,14 @@ public final class XMLUtils {
 
     public static Document read(InputSource inputSource, boolean disAllowDocTypeDeclarations)
         throws ParserConfigurationException, SAXException, IOException {
-        DocumentBuilder documentBuilder = getDocumentBuilder(disAllowDocTypeDeclarations);
+        ClassLoader loader = getContextClassLoader();
+        if (loader == null) {
+            loader = getClassLoader(XMLUtils.class);
+        }
+
+        DocumentBuilder documentBuilder = getDocumentBuilder(disAllowDocTypeDeclarations, loader);
         Document doc = documentBuilder.parse(inputSource);
-        repoolDocumentBuilder(documentBuilder, disAllowDocTypeDeclarations);
+        repoolDocumentBuilder(documentBuilder, disAllowDocTypeDeclarations, loader);
         return doc;
     }
 
@@ -1092,11 +1112,7 @@ public final class XMLUtils {
         return resizedBytes;
     }
 
-    private static DocumentBuilder getDocumentBuilder(boolean disAllowDocTypeDeclarations) throws ParserConfigurationException {
-        ClassLoader loader = getContextClassLoader();
-        if (loader == null) {
-            loader = getClassLoader(XMLUtils.class);
-        }
+    private static DocumentBuilder getDocumentBuilder(boolean disAllowDocTypeDeclarations, ClassLoader loader) throws ParserConfigurationException {
         if (loader == null) {
             return createDocumentBuilder(disAllowDocTypeDeclarations);
         }
@@ -1124,11 +1140,7 @@ public final class XMLUtils {
         return f.newDocumentBuilder();
     }
 
-    private static void repoolDocumentBuilder(DocumentBuilder db, boolean disAllowDocTypeDeclarations) {
-        ClassLoader loader = getContextClassLoader();
-        if (loader == null) {
-            loader = getClassLoader(XMLUtils.class);
-        }
+    private static void repoolDocumentBuilder(DocumentBuilder db, boolean disAllowDocTypeDeclarations, ClassLoader loader) {
         if (loader != null) {
             Queue<DocumentBuilder> queue =
                 disAllowDocTypeDeclarations ? DOCUMENT_BUILDERS_DISALLOW_DOCTYPE.get(loader) : DOCUMENT_BUILDERS.get(loader);
