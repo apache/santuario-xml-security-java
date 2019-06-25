@@ -331,43 +331,6 @@ public class Canonicalizer11Test {
         }
     }
 
-//   /**
-//    * The XPath data model represents data using UCS characters.
-//    * Implementations MUST use XML processors that support UTF-8 and UTF-16
-//    * and translate to the UCS character domain. For UTF-16, the leading byte
-//    * order mark is treated as an artifact of encoding and stripped from the
-//    * UCS character data (subsequent zero width non-breaking spaces appearing
-//    * within the UTF-16 data are not removed) [UTF-16, Section 3.2]. Support
-//    * for ISO-8859-1 encoding is RECOMMENDED, and all other character encodings
-//    * are OPTIONAL.
-//    *
-//    * $todo$ implement the test
-//    * @throws CanonicalizationException
-//    * @throws java.io.FileNotFoundException
-//    * @throws java.io.IOException
-//    * @throws InvalidCanonicalizerException
-//    * @throws javax.xml.parsers.ParserConfigurationException
-//    * @throws org.xml.sax.SAXException
-//    * @throws javax.xml.transform.TransformerException
-//    */
-//   public static void testTranslationFromUTF16toUTF8() throws Exception {
-//
-//      String val =
-//         "<UTF16>The german &amp;auml (which is Unicode &amp;#xE4;):  &quot;&#xE4;&quot;</UTF16>";
-//      byte utf16[] = convertToUTF16(val.getBytes());
-//      Canonicalizer c14n =
-//         Canonicalizer.getInstance(Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS);
-//      byte c14nBytes[] = c14n.canonicalize(utf16);
-//      org.xml.sax.EntityResolver resolver = new TestVectorResolver();
-//      InputStream refStream = resolver.resolveEntity(
-//         null,
-//            prefix + "/in/testTranslationFromUTF16toUTF8.xml")
-//               .getByteStream();
-//      byte refBytes[] = JavaUtils.getBytesFromStream(refStream);
-//      boolean equal = java.security.MessageDigest.isEqual(refBytes, c14nBytes);
-//
-//      assertTrue("Parser does not translate to UCS character domain", equal);
-//   }
 //
 //   /**
 //    * Method testXMLAttributes1

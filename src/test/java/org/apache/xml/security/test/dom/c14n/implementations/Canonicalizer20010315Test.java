@@ -23,6 +23,7 @@ import static org.junit.Assert.*;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -47,7 +48,6 @@ import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.c14n.InvalidCanonicalizerException;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
-import org.apache.xml.security.test.dom.resource.TestVectorResolver;
 import org.apache.xml.security.utils.IgnoreAllErrorHandler;
 import org.apache.xml.security.utils.JavaUtils;
 import org.apache.xml.security.utils.XMLUtils;
@@ -608,8 +608,7 @@ public class Canonicalizer20010315Test {
         //String c14nURI = Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS;
         //boolean validating = true;
 
-        org.xml.sax.EntityResolver resolver = new TestVectorResolver();
-        Document doc = XMLUtils.read(resolver.resolveEntity(null, fileIn), false, false, resolver);
+        Document doc = XMLUtils.read(new FileInputStream(fileIn), false, false);
 
         String xpath = "(//. | //@* | //namespace::*)"
             + "[ "
@@ -631,8 +630,7 @@ public class Canonicalizer20010315Test {
         Canonicalizer c14n =
             Canonicalizer.getInstance(Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS);
         byte c14nBytes[] = c14n.canonicalizeXPathNodeSet(nodes);
-        InputStream refStream = resolver.resolveEntity(null,
-                                                       fileRef).getByteStream();
+        InputStream refStream = new FileInputStream(fileRef);
         byte refBytes[] = JavaUtils.getBytesFromStream(refStream);
         assertEquals(new String(refBytes),new String(c14nBytes));
     }
@@ -720,10 +718,7 @@ public class Canonicalizer20010315Test {
         Canonicalizer c14n =
             Canonicalizer.getInstance(Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS);
         byte c14nBytes[] = c14n.canonicalize(utf16);
-        org.xml.sax.EntityResolver resolver = new TestVectorResolver();
-        InputStream refStream =
-            resolver.resolveEntity(
-                null, prefix + "/in/testTranslationFromUTF16toUTF8.xml").getByteStream();
+        InputStream refStream = new FileInputStream(prefix + "/in/testTranslationFromUTF16toUTF8.xml");
         byte refBytes[] = JavaUtils.getBytesFromStream(refStream);
         boolean equal = java.security.MessageDigest.isEqual(refBytes, c14nBytes);
 
@@ -1032,10 +1027,6 @@ public class Canonicalizer20010315Test {
     ) throws IOException, FileNotFoundException, SAXException,
         ParserConfigurationException, CanonicalizationException,
         InvalidCanonicalizerException, TransformerException, XPathExpressionException {
-
-        // org.xml.sax.EntityResolver resolver = new TestVectorResolver();
-        // documentBuilder.setEntityResolver(resolver);
-        // Document doc = documentBuilder.parse(resolver.resolveEntity(null, fileIn));
 
         Document doc = XMLUtils.read(fileIn, validating, false, new IgnoreAllErrorHandler());
 

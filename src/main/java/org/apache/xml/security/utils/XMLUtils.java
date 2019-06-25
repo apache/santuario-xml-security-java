@@ -1115,26 +1115,12 @@ public final class XMLUtils {
     }
 
     public static Document read(InputSource inputSource, boolean validating) throws ParserConfigurationException, SAXException, IOException {
-        return read(inputSource, validating, true, (EntityResolver)null);
+        return read(inputSource, validating, true, null);
     }
 
     public static Document read(InputSource inputSource, boolean validating, boolean disAllowDocTypeDeclarations)
         throws ParserConfigurationException, SAXException, IOException {
-        return read(inputSource, validating, disAllowDocTypeDeclarations, (EntityResolver)null);
-    }
-
-    public static Document read(InputSource inputSource, boolean validating, boolean disAllowDocTypeDeclarations, EntityResolver resolver)
-        throws ParserConfigurationException, SAXException, IOException {
-        DocumentBuilder documentBuilder = createDocumentBuilder(validating, disAllowDocTypeDeclarations);
-        if (resolver != null) {
-            documentBuilder.setEntityResolver(resolver);
-        }
-        Document doc = documentBuilder.parse(inputSource);
-        if (resolver != null) {
-            documentBuilder.setEntityResolver(null);
-        }
-        repoolDocumentBuilder(documentBuilder);
-        return doc;
+        return read(inputSource, validating, disAllowDocTypeDeclarations, null);
     }
 
     public static Document read(InputSource inputSource, boolean validating, boolean disAllowDocTypeDeclarations, ErrorHandler errorHandler)
