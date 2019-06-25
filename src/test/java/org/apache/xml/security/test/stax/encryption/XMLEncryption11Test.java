@@ -36,7 +36,6 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.xml.namespace.QName;
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -88,8 +87,7 @@ public class XMLEncryption11Test extends Assert {
         xmlInputFactory.setEventAllocator(new XMLSecEventAllocator());
 
         String filename = "org/w3c/www/interop/xmlenc-core-11/plaintext.xml";
-        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
-        Document doc = db.parse(this.getClass().getClassLoader().getResourceAsStream(filename));
+        Document doc = XMLUtils.read(this.getClass().getClassLoader().getResourceAsStream(filename), false);
 
         cardNumber = retrieveCCNumber(doc);
         nodeCount = countNodes(doc);
@@ -423,8 +421,7 @@ public class XMLEncryption11Test extends Assert {
      * decrypt it and return the resulting document
      */
     private Document decryptElement(String filename, Key rsaKey) throws Exception {
-        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
-        Document doc = db.parse(this.getClass().getClassLoader().getResourceAsStream(filename));
+        Document doc = XMLUtils.read(this.getClass().getClassLoader().getResourceAsStream(filename), false);
 
         return decryptElement(doc, rsaKey);
     }
@@ -456,7 +453,7 @@ public class XMLEncryption11Test extends Assert {
         XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
-        return StAX2DOM.readDoc(XMLUtils.createDocumentBuilder(false), securityStreamReader);
+        return StAX2DOM.readDoc(securityStreamReader);
     }
 
     /**
@@ -529,7 +526,7 @@ public class XMLEncryption11Test extends Assert {
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            document = XMLUtils.createDocumentBuilder(false).parse(is);
+            document = XMLUtils.read(is, false);
         }
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");

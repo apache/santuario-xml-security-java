@@ -595,7 +595,7 @@ public class Canonicalizer11Test {
 //      db.setErrorHandler(new org.apache.xml.security.utils
 //         .IgnoreAllErrorHandler());
 //
-//      Document doc = db.parse(new ByteArrayInputStream(input.getBytes()));
+//      Document doc = XMLUtils.read(new ByteArrayInputStream(input.getBytes()));
 //      Canonicalizer c14nizer =
 //         Canonicalizer.getInstance(Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS);
 //      CachedXPathAPI xpathAPI = new CachedXPathAPI();
@@ -682,7 +682,7 @@ public class Canonicalizer11Test {
 //      String ENCODING_UTF16 = "UTF-16";
 //      DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 //      DocumentBuilder db = dbf.newDocumentBuilder();
-//      Document doc = db.parse(new ByteArrayInputStream(input));
+//      Document doc = XMLUtils.read(new ByteArrayInputStream(input));
 //      TransformerFactory tFactory = TransformerFactory.newInstance();
 //      Transformer transformer = tFactory.newTransformer();
 //

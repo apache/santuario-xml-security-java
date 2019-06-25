@@ -34,7 +34,6 @@ import org.w3c.dom.Element;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -100,10 +99,9 @@ public class SignedEncryptedTest extends Assert {
     }
 
     public void secureAndVerify(TransformerFactory transformerFactory, boolean useDocumentSerializer) throws Exception {
-        DocumentBuilder builder = XMLUtils.createDocumentBuilder(false);
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(SAMPLE_MSG.getBytes(StandardCharsets.UTF_8))) {
-            document = builder.parse(is);
+            document = XMLUtils.read(is, false);
         }
 
         // Set up the Key

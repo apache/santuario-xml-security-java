@@ -38,7 +38,6 @@ import javax.xml.crypto.dsig.keyinfo.KeyInfo;
 import javax.xml.crypto.dsig.keyinfo.KeyInfoFactory;
 import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 import javax.xml.crypto.test.KeySelectors;
-import javax.xml.parsers.DocumentBuilder;
 
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
@@ -59,7 +58,6 @@ public class SignatureDigestMethodTest {
     private SignatureMethod rsaSha1;
     private KeyInfo rsaki;
     private XMLSignatureFactory fac;
-    private DocumentBuilder db;
     private boolean bcInstalled;
 
     static {
@@ -69,7 +67,6 @@ public class SignatureDigestMethodTest {
 
     public SignatureDigestMethodTest() throws Exception {
 
-        db = XMLUtils.createDocumentBuilder(false);
         // create common objects
         fac = XMLSignatureFactory.getInstance("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
         KeyInfoFactory kifac = fac.getKeyInfoFactory();
@@ -183,7 +180,7 @@ public class SignatureDigestMethodTest {
         SignedInfo si = fac.newSignedInfo(withoutComments, sm,
                                           Collections.singletonList(ref));
 
-        Document doc = db.newDocument();
+        Document doc = XMLUtils.newDocument();
         // create Objects
         Element webElem = doc.createElementNS(null, "Web");
         Text text = doc.createTextNode("up up and away");

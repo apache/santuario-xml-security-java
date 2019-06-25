@@ -26,7 +26,6 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
 
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
@@ -71,8 +70,7 @@ public class XmlSecTest {
 
     private void checkXmlSignatureSoftwareStack(boolean cert) throws Exception {
         Init.init();
-        DocumentBuilder documentBuilder = XMLUtils.createDocumentBuilder(false);
-        Document testDocument = documentBuilder.newDocument();
+        Document testDocument = XMLUtils.newDocument();
 
         Element rootElement =
             testDocument.createElementNS("urn:namespace", "tns:document");

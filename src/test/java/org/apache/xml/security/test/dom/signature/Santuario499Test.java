@@ -53,7 +53,7 @@ public class Santuario499Test {
         URL signatureFile = this.getClass().getResource("Arbeidstijd_anonymous.xml");
         assertNotNull(signatureFile);
 
-        Document doc = XMLUtils.createDocumentBuilder(false).parse(signatureFile.openStream());
+        Document doc = XMLUtils.read(signatureFile.openStream(), false);
 
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();

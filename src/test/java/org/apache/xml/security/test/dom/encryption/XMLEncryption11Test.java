@@ -32,7 +32,6 @@ import java.util.Map;
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -87,8 +86,7 @@ public class XMLEncryption11Test {
         }
         File f = new File(filename);
 
-        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
-        Document doc = db.parse(new java.io.FileInputStream(f));
+        Document doc = XMLUtils.read(new java.io.FileInputStream(f), false);
 
         cardNumber = retrieveCCNumber(doc);
 
@@ -183,8 +181,7 @@ public class XMLEncryption11Test {
             }
             File f = new File(filename);
 
-            DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
-            Document doc = db.parse(new java.io.FileInputStream(f));
+            Document doc = XMLUtils.read(new java.io.FileInputStream(f), false);
 
             Key sessionKey = getSessionKey("http://www.w3.org/2009/xmlenc11#aes128-gcm");
             EncryptedKey encryptedKey =
@@ -248,8 +245,7 @@ public class XMLEncryption11Test {
             }
             File f = new File(filename);
 
-            DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
-            Document doc = db.parse(new java.io.FileInputStream(f));
+            Document doc = XMLUtils.read(new java.io.FileInputStream(f), false);
 
             Key sessionKey = getSessionKey("http://www.w3.org/2009/xmlenc11#aes128-gcm");
             EncryptedKey encryptedKey =
@@ -351,8 +347,7 @@ public class XMLEncryption11Test {
             }
             File f = new File(filename);
 
-            DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
-            Document doc = db.parse(new java.io.FileInputStream(f));
+            Document doc = XMLUtils.read(new java.io.FileInputStream(f), false);
 
             Key sessionKey = getSessionKey("http://www.w3.org/2009/xmlenc11#aes192-gcm");
             EncryptedKey encryptedKey =
@@ -453,8 +448,7 @@ public class XMLEncryption11Test {
             }
             File f = new File(filename);
 
-            DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
-            Document doc = db.parse(new java.io.FileInputStream(f));
+            Document doc = XMLUtils.read(new java.io.FileInputStream(f), false);
 
             Key sessionKey = getSessionKey("http://www.w3.org/2009/xmlenc11#aes256-gcm");
             EncryptedKey encryptedKey =
@@ -555,8 +549,7 @@ public class XMLEncryption11Test {
             }
             File f = new File(filename);
 
-            DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
-            Document doc = db.parse(new java.io.FileInputStream(f));
+            Document doc = XMLUtils.read(new java.io.FileInputStream(f), false);
 
             Key sessionKey = getSessionKey("http://www.w3.org/2009/xmlenc11#aes256-gcm");
             EncryptedKey encryptedKey =
@@ -608,8 +601,7 @@ public class XMLEncryption11Test {
         }
         File f = new File(filename);
 
-        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
-        Document doc = db.parse(new java.io.FileInputStream(f));
+        Document doc = XMLUtils.read(new java.io.FileInputStream(f), false);
 
         return decryptElement(doc, rsaKey, rsaCert);
     }
