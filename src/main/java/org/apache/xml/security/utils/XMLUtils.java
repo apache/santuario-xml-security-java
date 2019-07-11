@@ -1074,10 +1074,16 @@ public final class XMLUtils {
         if (loader == null) {
             loader = getClassLoader(XMLUtils.class);
         }
+        // If the ClassLoader is null then just create a DocumentBuilder and use it
+        if (loader == null) {
+            DocumentBuilder documentBuilder = buildDocumentBuilder(true);
+            return documentBuilder.newDocument();
+        }
 
-        DocumentBuilder documentBuilder = getDocumentBuilder(true, loader);
+        Queue<DocumentBuilder> queue = getDocumentBuilderQueue(true, loader);
+        DocumentBuilder documentBuilder = getDocumentBuilder(true, queue);
         Document doc = documentBuilder.newDocument();
-        repoolDocumentBuilder(documentBuilder, true, loader);
+        repoolDocumentBuilder(documentBuilder, queue);
         return doc;
     }
 
@@ -1090,10 +1096,16 @@ public final class XMLUtils {
         if (loader == null) {
             loader = getClassLoader(XMLUtils.class);
         }
+        // If the ClassLoader is null then just create a DocumentBuilder and use it
+        if (loader == null) {
+            DocumentBuilder documentBuilder = buildDocumentBuilder(disAllowDocTypeDeclarations);
+            return documentBuilder.parse(inputStream);
+        }
 
-        DocumentBuilder documentBuilder = getDocumentBuilder(disAllowDocTypeDeclarations, loader);
+        Queue<DocumentBuilder> queue = getDocumentBuilderQueue(disAllowDocTypeDeclarations, loader);
+        DocumentBuilder documentBuilder = getDocumentBuilder(disAllowDocTypeDeclarations, queue);
         Document doc = documentBuilder.parse(inputStream);
-        repoolDocumentBuilder(documentBuilder, disAllowDocTypeDeclarations, loader);
+        repoolDocumentBuilder(documentBuilder, queue);
         return doc;
     }
 
@@ -1103,10 +1115,16 @@ public final class XMLUtils {
         if (loader == null) {
             loader = getClassLoader(XMLUtils.class);
         }
+        // If the ClassLoader is null then just create a DocumentBuilder and use it
+        if (loader == null) {
+            DocumentBuilder documentBuilder = buildDocumentBuilder(disAllowDocTypeDeclarations);
+            return documentBuilder.parse(uri);
+        }
 
-        DocumentBuilder documentBuilder = getDocumentBuilder(disAllowDocTypeDeclarations, loader);
+        Queue<DocumentBuilder> queue = getDocumentBuilderQueue(disAllowDocTypeDeclarations, loader);
+        DocumentBuilder documentBuilder = getDocumentBuilder(disAllowDocTypeDeclarations, queue);
         Document doc = documentBuilder.parse(uri);
-        repoolDocumentBuilder(documentBuilder, disAllowDocTypeDeclarations, loader);
+        repoolDocumentBuilder(documentBuilder, queue);
         return doc;
     }
 
@@ -1120,10 +1138,16 @@ public final class XMLUtils {
         if (loader == null) {
             loader = getClassLoader(XMLUtils.class);
         }
+        // If the ClassLoader is null then just create a DocumentBuilder and use it
+        if (loader == null) {
+            DocumentBuilder documentBuilder = buildDocumentBuilder(disAllowDocTypeDeclarations);
+            return documentBuilder.parse(inputSource);
+        }
 
-        DocumentBuilder documentBuilder = getDocumentBuilder(disAllowDocTypeDeclarations, loader);
+        Queue<DocumentBuilder> queue = getDocumentBuilderQueue(disAllowDocTypeDeclarations, loader);
+        DocumentBuilder documentBuilder = getDocumentBuilder(disAllowDocTypeDeclarations, queue);
         Document doc = documentBuilder.parse(inputSource);
-        repoolDocumentBuilder(documentBuilder, disAllowDocTypeDeclarations, loader);
+        repoolDocumentBuilder(documentBuilder, queue);
         return doc;
     }
 
@@ -1205,11 +1229,7 @@ public final class XMLUtils {
         return resizedBytes;
     }
 
-    private static DocumentBuilder getDocumentBuilder(boolean disAllowDocTypeDeclarations, ClassLoader loader) throws ParserConfigurationException {
-        if (loader == null) {
-            return buildDocumentBuilder(disAllowDocTypeDeclarations);
-        }
-
+    private static Queue<DocumentBuilder> getDocumentBuilderQueue(boolean disAllowDocTypeDeclarations, ClassLoader loader) throws ParserConfigurationException {
         Map<ClassLoader, Queue<DocumentBuilder>> docBuilderCache =
             disAllowDocTypeDeclarations ? DOCUMENT_BUILDERS_DISALLOW_DOCTYPE : DOCUMENT_BUILDERS;
         Queue<DocumentBuilder> queue = docBuilderCache.get(loader);
@@ -1218,6 +1238,10 @@ public final class XMLUtils {
             docBuilderCache.put(loader, queue);
         }
 
+        return queue;
+    }
+
+    private static DocumentBuilder getDocumentBuilder(boolean disAllowDocTypeDeclarations, Queue<DocumentBuilder> queue) throws ParserConfigurationException {
         DocumentBuilder db = queue.poll();
         if (db == null) {
             db = buildDocumentBuilder(disAllowDocTypeDeclarations);
@@ -1233,14 +1257,10 @@ public final class XMLUtils {
         return f.newDocumentBuilder();
     }
 
-    private static void repoolDocumentBuilder(DocumentBuilder db, boolean disAllowDocTypeDeclarations, ClassLoader loader) {
-        if (loader != null) {
-            Queue<DocumentBuilder> queue =
-                disAllowDocTypeDeclarations ? DOCUMENT_BUILDERS_DISALLOW_DOCTYPE.get(loader) : DOCUMENT_BUILDERS.get(loader);
-            if (queue != null) {
-                db.reset();
-                queue.offer(db);
-            }
+    private static void repoolDocumentBuilder(DocumentBuilder db, Queue<DocumentBuilder> queue) {
+        if (queue != null) {
+            db.reset();
+            queue.offer(db);
         }
     }
 
