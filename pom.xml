@@ -551,13 +551,13 @@
         <slf4j.version>1.7.26</slf4j.version>
         <xalan.version>2.7.2</xalan.version>
         <xerces.version>2.12.0</xerces.version>
-        <junit.version>5.4.2</junit.version>
+        <junit.version>5.5.0</junit.version>
         <log4j.version>1.2.17</log4j.version>
         <bcprov.version>1.62</bcprov.version>
         <hamcrest.version>2.1</hamcrest.version>
-        <xmlunit.version>2.6.2</xmlunit.version>
+        <xmlunit.version>2.6.3</xmlunit.version>
         <commons.codec.version>1.12</commons.codec.version>
-        <woodstox.core.version>5.2.0</woodstox.core.version>
+        <woodstox.core.version>5.2.1</woodstox.core.version>
         <jetty.version>9.4.19.v20190610</jetty.version>
         <xmlsec.jaxb.context.class />
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
