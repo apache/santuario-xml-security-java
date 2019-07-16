@@ -643,21 +643,6 @@
         </dependency>
     </dependencies>
 
-    <!-- Remove when we pick up errorpone 2.3.2 -->
-    <repositories>
-        <repository>
-            <id>Sonatype</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-            <name>Sonatype Snapshot Repo</name>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-        </repository>
-    </repositories>
-
     <distributionManagement>
         <repository>
             <id>apache.releases.https</id>
