@@ -19,11 +19,9 @@
 package org.apache.xml.security.signature;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -573,21 +571,6 @@ public class XMLSignatureInput {
         try {
             Document doc = XMLUtils.read(this.getOctetStream(), secureValidation);
             this.subNode = doc;
-        } catch (SAXException ex) {
-            byte[] result = null;
-            // if a not-wellformed nodeset exists, put a container around it...
-            try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-
-                baos.write("<container>".getBytes(StandardCharsets.UTF_8));
-                baos.write(this.getBytes());
-                baos.write("</container>".getBytes(StandardCharsets.UTF_8));
-
-                result = baos.toByteArray();
-            }
-            try (InputStream is = new ByteArrayInputStream(result)) {
-                Document document = XMLUtils.read(is, secureValidation);
-                this.subNode = document.getDocumentElement().getFirstChild().getFirstChild();
-            }
         } finally {
             if (this.inputOctetStreamProxy != null) {
                 this.inputOctetStreamProxy.close();
