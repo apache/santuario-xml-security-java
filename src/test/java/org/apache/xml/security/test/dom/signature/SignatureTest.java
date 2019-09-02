@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.io.FileInputStream;
 import java.security.KeyStore;
 import java.security.PrivateKey;
+import java.security.Provider;
 import java.security.PublicKey;
 import java.util.Enumeration;
 
@@ -38,6 +39,7 @@ import org.apache.xml.security.utils.resolver.implementations.ResolverXPointer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SignatureTest {
@@ -72,9 +74,35 @@ public class SignatureTest {
     }
 
     @org.junit.jupiter.api.Test
+    public void testSigningVerifyingFromRebuildSignatureWithProvider() throws Throwable {
+        Provider provider = new org.bouncycastle.jce.provider.BouncyCastleProvider();
+        Document doc = getOriginalDocument();
+        XMLSignature signature = signDocument(doc, provider);
+        assertEquals(provider.getName(), signature.getSignedInfo().getSignatureAlgorithm().getJCEProviderName());
+
+        Element signatureElem = (Element) doc.getElementsByTagNameNS(DS_NS, "Signature").item(0);
+        signature = new XMLSignature(signatureElem, "", provider);
+        assertEquals(provider.getName(), signature.getSignedInfo().getSignatureAlgorithm().getJCEProviderName());
+
+        PublicKey pubKey = getPublicKey();
+        assertTrue(signature.checkSignatureValue(pubKey));
+    }
+
+    @org.junit.jupiter.api.Test
     public void testSigningVerifyingFromExistingSignature() throws Throwable {
         Document doc = getOriginalDocument();
         XMLSignature signature = signDocument(doc);
+
+        PublicKey pubKey = getPublicKey();
+        assertTrue(signature.checkSignatureValue(pubKey));
+    }
+
+    @org.junit.jupiter.api.Test
+    public void testSigningVerifyingFromExistingSignatureWithProvider() throws Throwable {
+        Provider provider = new org.bouncycastle.jce.provider.BouncyCastleProvider();
+        Document doc = getOriginalDocument();
+        XMLSignature signature = signDocument(doc, provider);
+        assertEquals(provider.getName(), signature.getSignedInfo().getSignatureAlgorithm().getJCEProviderName());
 
         PublicKey pubKey = getPublicKey();
         assertTrue(signature.checkSignatureValue(pubKey));
@@ -182,7 +210,11 @@ public class SignatureTest {
     }
 
     private XMLSignature signDocument(Document doc) throws Throwable {
-        XMLSignature sig = new XMLSignature(doc, "", XMLSignature.ALGO_ID_SIGNATURE_DSA);
+        return signDocument(doc, null);
+    }
+
+    private XMLSignature signDocument(Document doc, Provider provider) throws Throwable {
+        XMLSignature sig = new XMLSignature(doc, "", XMLSignature.ALGO_ID_SIGNATURE_DSA, provider);
         Element root = doc.getDocumentElement();
         root.appendChild(sig.getElement());
 

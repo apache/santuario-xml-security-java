@@ -81,7 +81,7 @@ public class SignatureAlgorithmTest {
 
         for (String algorithmURI : algorithmHash.keySet()) {
             SignatureAlgorithm signatureAlgorithm = new SignatureAlgorithm(doc, algorithmURI, provider);
-            assertEquals("BC", signatureAlgorithm.getJCEProviderName());
+            assertEquals(provider.getName(), signatureAlgorithm.getJCEProviderName());
         }
     }
 }
