@@ -21,6 +21,7 @@ package org.apache.xml.security.algorithms.implementations;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
+import java.security.Provider;
 import java.security.SecureRandom;
 import java.security.spec.AlgorithmParameterSpec;
 
@@ -69,11 +70,15 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
      * @throws XMLSignatureException
      */
     public IntegrityHmac() throws XMLSignatureException {
+        this(null);
+    }
+
+    public IntegrityHmac(Provider provider) throws XMLSignatureException {
         String algorithmID = JCEMapper.translateURItoJCEID(this.engineGetURI());
         LOG.debug("Created IntegrityHmacSHA1 using {}", algorithmID);
 
         try {
-            this.macAlgorithm = Mac.getInstance(algorithmID);
+            this.macAlgorithm = (provider == null) ? Mac.getInstance(algorithmID) : Mac.getInstance(algorithmID, provider);
         } catch (java.security.NoSuchAlgorithmException ex) {
             Object[] exArgs = { algorithmID, ex.getLocalizedMessage() };
 
@@ -370,6 +375,10 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
             super();
         }
 
+        public IntegrityHmacSHA1(Provider provider) throws XMLSignatureException {
+            super(provider);
+        }
+
         /**
          * Method engineGetURI
          * {@inheritDoc}
@@ -396,6 +405,10 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
          */
         public IntegrityHmacSHA224() throws XMLSignatureException {
             super();
+        }
+
+        public IntegrityHmacSHA224(Provider provider) throws XMLSignatureException {
+            super(provider);
         }
 
         /**
@@ -426,6 +439,10 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
             super();
         }
 
+        public IntegrityHmacSHA256(Provider provider) throws XMLSignatureException {
+            super(provider);
+        }
+
         /**
          * Method engineGetURI
          *
@@ -452,6 +469,10 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
          */
         public IntegrityHmacSHA384() throws XMLSignatureException {
             super();
+        }
+
+        public IntegrityHmacSHA384(Provider provider) throws XMLSignatureException {
+            super(provider);
         }
 
         /**
@@ -482,6 +503,10 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
             super();
         }
 
+        public IntegrityHmacSHA512(Provider provider) throws XMLSignatureException {
+            super(provider);
+        }
+
         /**
          * Method engineGetURI
          * {@inheritDoc}
@@ -510,6 +535,10 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
             super();
         }
 
+        public IntegrityHmacRIPEMD160(Provider provider) throws XMLSignatureException {
+            super(provider);
+        }
+
         /**
          * Method engineGetURI
          *
@@ -536,6 +565,10 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
          */
         public IntegrityHmacMD5() throws XMLSignatureException {
             super();
+        }
+
+        public IntegrityHmacMD5(Provider provider) throws XMLSignatureException {
+            super(provider);
         }
 
         /**

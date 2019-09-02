@@ -18,14 +18,20 @@
  */
 package org.apache.xml.security.test.dom.algorithms;
 
+import java.lang.reflect.Field;
 import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
+import java.security.Provider;
+import java.util.Map;
 
 import org.apache.xml.security.algorithms.SignatureAlgorithm;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class SignatureAlgorithmTest {
 
@@ -62,4 +68,20 @@ public class SignatureAlgorithmTest {
         otherSignatureAlgorithm.sign();
     }
 
+    @org.junit.jupiter.api.Test
+    public void testConstructionWithProvider() throws Exception {
+        Field algorithmHashField = SignatureAlgorithm.class.getDeclaredField("algorithmHash");
+        algorithmHashField.setAccessible(true);
+        @SuppressWarnings("unchecked")
+        Map<String, Class<?>> algorithmHash = (Map<String, Class<?>>)algorithmHashField.get(null);
+        assertFalse(algorithmHash.isEmpty());
+
+        Document doc = XMLUtils.newDocument();
+        Provider provider = new org.bouncycastle.jce.provider.BouncyCastleProvider();
+
+        for (String algorithmURI : algorithmHash.keySet()) {
+            SignatureAlgorithm signatureAlgorithm = new SignatureAlgorithm(doc, algorithmURI, provider);
+            assertEquals("BC", signatureAlgorithm.getJCEProviderName());
+        }
+    }
 }

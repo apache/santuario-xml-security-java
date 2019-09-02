@@ -18,7 +18,10 @@
  */
 package org.apache.xml.security.algorithms;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.security.Key;
+import java.security.Provider;
 import java.security.SecureRandom;
 import java.security.spec.AlgorithmParameterSpec;
 import java.util.Map;
@@ -66,10 +69,14 @@ public class SignatureAlgorithm extends Algorithm {
      * @throws XMLSecurityException
      */
     public SignatureAlgorithm(Document doc, String algorithmURI) throws XMLSecurityException {
+        this(doc, algorithmURI, null);
+    }
+
+    public SignatureAlgorithm(Document doc, String algorithmURI, Provider provider) throws XMLSecurityException {
         super(doc, algorithmURI);
         this.algorithmURI = algorithmURI;
 
-        signatureAlgorithmSpi = getSignatureAlgorithmSpi(algorithmURI);
+        signatureAlgorithmSpi = getSignatureAlgorithmSpi(algorithmURI, provider);
         signatureAlgorithmSpi.engineGetContextFromElement(getElement());
     }
 
@@ -84,10 +91,16 @@ public class SignatureAlgorithm extends Algorithm {
     public SignatureAlgorithm(
         Document doc, String algorithmURI, int hmacOutputLength
     ) throws XMLSecurityException {
+        this(doc, algorithmURI, hmacOutputLength, null);
+    }
+
+    public SignatureAlgorithm(
+        Document doc, String algorithmURI, int hmacOutputLength, Provider provider
+    ) throws XMLSecurityException {
         super(doc, algorithmURI);
         this.algorithmURI = algorithmURI;
 
-        signatureAlgorithmSpi = getSignatureAlgorithmSpi(algorithmURI);
+        signatureAlgorithmSpi = getSignatureAlgorithmSpi(algorithmURI, provider);
         signatureAlgorithmSpi.engineGetContextFromElement(getElement());
 
         signatureAlgorithmSpi.engineSetHMACOutputLength(hmacOutputLength);
@@ -102,7 +115,11 @@ public class SignatureAlgorithm extends Algorithm {
      * @throws XMLSecurityException
      */
     public SignatureAlgorithm(Element element, String baseURI) throws XMLSecurityException {
-        this(element, baseURI, true);
+        this(element, baseURI, true, null);
+    }
+
+    public SignatureAlgorithm(Element element, String baseURI, Provider provider) throws XMLSecurityException {
+        this(element, baseURI, true, provider);
     }
 
     /**
@@ -115,6 +132,12 @@ public class SignatureAlgorithm extends Algorithm {
      */
     public SignatureAlgorithm(
         Element element, String baseURI, boolean secureValidation
+    ) throws XMLSecurityException {
+        this(element, baseURI, secureValidation, null);
+    }
+
+    public SignatureAlgorithm(
+        Element element, String baseURI, boolean secureValidation, Provider provider
     ) throws XMLSecurityException {
         super(element, baseURI);
         algorithmURI = this.getURI();
@@ -131,14 +154,14 @@ public class SignatureAlgorithm extends Algorithm {
             throw new XMLSecurityException("signature.signatureAlgorithm", exArgs);
         }
 
-        signatureAlgorithmSpi = getSignatureAlgorithmSpi(algorithmURI);
+        signatureAlgorithmSpi = getSignatureAlgorithmSpi(algorithmURI, provider);
         signatureAlgorithmSpi.engineGetContextFromElement(getElement());
     }
 
     /**
      * Get a SignatureAlgorithmSpi object corresponding to the algorithmURI argument
      */
-    private static SignatureAlgorithmSpi getSignatureAlgorithmSpi(String algorithmURI)
+    private static SignatureAlgorithmSpi getSignatureAlgorithmSpi(String algorithmURI, Provider provider)
         throws XMLSignatureException {
         try {
             Class<? extends SignatureAlgorithmSpi> implementingClass =
@@ -148,8 +171,20 @@ public class SignatureAlgorithm extends Algorithm {
                 Object[] exArgs = { algorithmURI };
                 throw new XMLSignatureException("algorithms.NoSuchAlgorithmNoEx", exArgs);
             }
+
+            if (provider != null) {
+                try {
+                    Constructor<? extends SignatureAlgorithmSpi> constructor = implementingClass.getConstructor(Provider.class);
+                    return constructor.newInstance(provider);
+
+                } catch (NoSuchMethodException e) {
+                    LOG.warn("Class \"{}\" does not have a constructor with Provider", implementingClass);
+                }
+            }
+
             return implementingClass.newInstance();
-        }  catch (IllegalAccessException | InstantiationException | NullPointerException ex) {
+
+        }  catch (IllegalAccessException | InstantiationException | InvocationTargetException | NullPointerException ex) {
             Object[] exArgs = { algorithmURI, ex.getMessage() };
             throw new XMLSignatureException(ex, "algorithms.NoSuchAlgorithm", exArgs);
         }

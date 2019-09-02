@@ -21,6 +21,7 @@ package org.apache.xml.security.signature;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.security.Key;
+import java.security.Provider;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
 
@@ -202,7 +203,7 @@ public final class XMLSignature extends SignatureElementProxy {
         org.slf4j.LoggerFactory.getLogger(XMLSignature.class);
 
     /** ds:Signature.ds:SignedInfo element */
-    private SignedInfo signedInfo;
+    private final SignedInfo signedInfo;
 
     /** ds:Signature.ds:KeyInfo */
     private KeyInfo keyInfo;
@@ -234,7 +235,25 @@ public final class XMLSignature extends SignatureElementProxy {
      */
     public XMLSignature(Document doc, String baseURI, String signatureMethodURI)
         throws XMLSecurityException {
-        this(doc, baseURI, signatureMethodURI, 0, Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS);
+        this(doc, baseURI, signatureMethodURI, 0, Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS, null);
+    }
+
+    /**
+     * This creates a new <CODE>ds:Signature</CODE> Element and adds an empty
+     * <CODE>ds:SignedInfo</CODE>.
+     * The <code>ds:SignedInfo</code> is initialized with the specified Signature
+     * algorithm and Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS which is REQUIRED
+     * by the spec. This method's main use is for creating a new signature.
+     *
+     * @param doc Document in which the signature will be appended after creation.
+     * @param baseURI URI to be used as context for all relative URIs.
+     * @param signatureMethodURI signature algorithm to use.
+     * @param provider security provider to use.
+     * @throws XMLSecurityException
+     */
+    public XMLSignature(Document doc, String baseURI, String signatureMethodURI, Provider provider)
+        throws XMLSecurityException {
+        this(doc, baseURI, signatureMethodURI, 0, Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS, provider);
     }
 
     /**
@@ -250,7 +269,25 @@ public final class XMLSignature extends SignatureElementProxy {
                         int hmacOutputLength) throws XMLSecurityException {
         this(
             doc, baseURI, signatureMethodURI, hmacOutputLength,
-            Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS
+            Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS, null
+        );
+    }
+
+    /**
+     * Constructor XMLSignature
+     *
+     * @param doc
+     * @param baseURI
+     * @param signatureMethodURI the Signature method to be used.
+     * @param hmacOutputLength
+     * @param provider security provider to use.
+     * @throws XMLSecurityException
+     */
+    public XMLSignature(Document doc, String baseURI, String signatureMethodURI,
+                        int hmacOutputLength, Provider provider) throws XMLSecurityException {
+        this(
+            doc, baseURI, signatureMethodURI, hmacOutputLength,
+            Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS, provider
         );
     }
 
@@ -270,7 +307,28 @@ public final class XMLSignature extends SignatureElementProxy {
         String signatureMethodURI,
         String canonicalizationMethodURI
     ) throws XMLSecurityException {
-        this(doc, baseURI, signatureMethodURI, 0, canonicalizationMethodURI);
+        this(doc, baseURI, signatureMethodURI, 0, canonicalizationMethodURI, null);
+    }
+
+    /**
+     * Constructor XMLSignature
+     *
+     * @param doc
+     * @param baseURI
+     * @param signatureMethodURI the Signature method to be used.
+     * @param canonicalizationMethodURI the canonicalization algorithm to be
+     * used to c14nize the SignedInfo element.
+     * @param provider security provider to use.
+     * @throws XMLSecurityException
+     */
+    public XMLSignature(
+        Document doc,
+        String baseURI,
+        String signatureMethodURI,
+        String canonicalizationMethodURI,
+        Provider provider
+    ) throws XMLSecurityException {
+        this(doc, baseURI, signatureMethodURI, 0, canonicalizationMethodURI, provider);
     }
 
     /**
@@ -290,50 +348,16 @@ public final class XMLSignature extends SignatureElementProxy {
         int hmacOutputLength,
         String canonicalizationMethodURI
     ) throws XMLSecurityException {
-        super(doc);
-
-        String xmlnsDsPrefix = getDefaultPrefix(Constants.SignatureSpecNS);
-        if (xmlnsDsPrefix == null || xmlnsDsPrefix.length() == 0) {
-            getElement().setAttributeNS(
-                Constants.NamespaceSpecNS, "xmlns", Constants.SignatureSpecNS
-            );
-        } else {
-            getElement().setAttributeNS(
-                Constants.NamespaceSpecNS, "xmlns:" + xmlnsDsPrefix, Constants.SignatureSpecNS
-            );
-        }
-        addReturnToSelf();
-
-        this.baseURI = baseURI;
-        this.signedInfo =
-            new SignedInfo(
-                getDocument(), signatureMethodURI, hmacOutputLength, canonicalizationMethodURI
-            );
-
-        appendSelf(this.signedInfo);
-        addReturnToSelf();
-
-        // create an empty SignatureValue; this is filled by setSignatureValueElement
-        signatureValueElement =
-            XMLUtils.createElementInSignatureSpace(getDocument(), Constants._TAG_SIGNATUREVALUE);
-
-        appendSelf(signatureValueElement);
-        addReturnToSelf();
+        this(doc, baseURI, signatureMethodURI, hmacOutputLength, canonicalizationMethodURI, null);
     }
 
-    /**
-     *  Creates a XMLSignature in a Document
-     * @param doc
-     * @param baseURI
-     * @param SignatureMethodElem
-     * @param CanonicalizationMethodElem
-     * @throws XMLSecurityException
-     */
     public XMLSignature(
         Document doc,
         String baseURI,
-        Element SignatureMethodElem,
-        Element CanonicalizationMethodElem
+        String signatureMethodURI,
+        int hmacOutputLength,
+        String canonicalizationMethodURI,
+        Provider provider
     ) throws XMLSecurityException {
         super(doc);
 
@@ -351,7 +375,62 @@ public final class XMLSignature extends SignatureElementProxy {
 
         this.baseURI = baseURI;
         this.signedInfo =
-            new SignedInfo(getDocument(), SignatureMethodElem, CanonicalizationMethodElem);
+            new SignedInfo(
+                getDocument(), signatureMethodURI, hmacOutputLength, canonicalizationMethodURI, provider
+            );
+
+        appendSelf(this.signedInfo);
+        addReturnToSelf();
+
+        // create an empty SignatureValue; this is filled by setSignatureValueElement
+        signatureValueElement =
+            XMLUtils.createElementInSignatureSpace(getDocument(), Constants._TAG_SIGNATUREVALUE);
+
+        appendSelf(signatureValueElement);
+        addReturnToSelf();
+    }
+
+    /**
+     *  Creates a XMLSignature in a Document
+     * @param doc
+     * @param baseURI
+     * @param signatureMethodElem
+     * @param canonicalizationMethodElem
+     * @throws XMLSecurityException
+     */
+    public XMLSignature(
+        Document doc,
+        String baseURI,
+        Element signatureMethodElem,
+        Element canonicalizationMethodElem
+    ) throws XMLSecurityException {
+        this(doc, baseURI, signatureMethodElem, canonicalizationMethodElem, null);
+    }
+
+    public XMLSignature(
+        Document doc,
+        String baseURI,
+        Element signatureMethodElem,
+        Element canonicalizationMethodElem,
+        Provider provider
+    ) throws XMLSecurityException {
+        super(doc);
+
+        String xmlnsDsPrefix = getDefaultPrefix(Constants.SignatureSpecNS);
+        if (xmlnsDsPrefix == null || xmlnsDsPrefix.length() == 0) {
+            getElement().setAttributeNS(
+                Constants.NamespaceSpecNS, "xmlns", Constants.SignatureSpecNS
+            );
+        } else {
+            getElement().setAttributeNS(
+                Constants.NamespaceSpecNS, "xmlns:" + xmlnsDsPrefix, Constants.SignatureSpecNS
+            );
+        }
+        addReturnToSelf();
+
+        this.baseURI = baseURI;
+        this.signedInfo =
+            new SignedInfo(getDocument(), signatureMethodElem, canonicalizationMethodElem, provider);
 
         appendSelf(this.signedInfo);
         addReturnToSelf();
@@ -375,7 +454,22 @@ public final class XMLSignature extends SignatureElementProxy {
      */
     public XMLSignature(Element element, String baseURI)
         throws XMLSignatureException, XMLSecurityException {
-        this(element, baseURI, true);
+        this(element, baseURI, true, null);
+    }
+
+    /**
+     * This will parse the element and construct the Java Objects.
+     * That will allow a user to validate the signature.
+     *
+     * @param element ds:Signature element that contains the whole signature
+     * @param baseURI URI to be prepended to all relative URIs
+     * @param provider security provider to use
+     * @throws XMLSecurityException
+     * @throws XMLSignatureException if the signature is badly formatted
+     */
+    public XMLSignature(Element element, String baseURI, Provider provider)
+        throws XMLSignatureException, XMLSecurityException {
+        this(element, baseURI, true, provider);
     }
 
     /**
@@ -390,6 +484,22 @@ public final class XMLSignature extends SignatureElementProxy {
      */
     public XMLSignature(Element element, String baseURI, boolean secureValidation)
         throws XMLSignatureException, XMLSecurityException {
+        this(element, baseURI, secureValidation, null);
+    }
+
+    /**
+     * This will parse the element and construct the Java Objects.
+     * That will allow a user to validate the signature.
+     *
+     * @param element ds:Signature element that contains the whole signature
+     * @param baseURI URI to be prepended to all relative URIs
+     * @param secureValidation whether secure secureValidation is enabled or not
+     * @param provider security provider to use
+     * @throws XMLSecurityException
+     * @throws XMLSignatureException if the signature is badly formatted
+     */
+    public XMLSignature(Element element, String baseURI, boolean secureValidation, Provider provider)
+        throws XMLSignatureException, XMLSecurityException {
         super(element, baseURI);
 
         // check out SignedInfo child
@@ -402,7 +512,7 @@ public final class XMLSignature extends SignatureElementProxy {
         }
 
         // create a SignedInfo object from that element
-        this.signedInfo = new SignedInfo(signedInfoElem, baseURI, secureValidation);
+        this.signedInfo = new SignedInfo(signedInfoElem, baseURI, secureValidation, provider);
         // get signedInfoElem again in case it has changed
         signedInfoElem = XMLUtils.getNextElement(element.getFirstChild());
 

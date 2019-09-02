@@ -22,7 +22,10 @@ import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
+import java.security.Provider;
 import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.security.Signature;
@@ -66,22 +69,33 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
      * @throws XMLSignatureException
      */
     public SignatureDSA() throws XMLSignatureException {
+        this(null);
+    }
+
+    public SignatureDSA(Provider provider) throws XMLSignatureException {
         String algorithmID = JCEMapper.translateURItoJCEID(engineGetURI());
         LOG.debug("Created SignatureDSA using {}", algorithmID);
 
-        String provider = JCEMapper.getProviderId();
         try {
             if (provider == null) {
-                this.signatureAlgorithm = Signature.getInstance(algorithmID);
+                String providerId = JCEMapper.getProviderId();
+                if (providerId == null) {
+                    this.signatureAlgorithm = Signature.getInstance(algorithmID);
+
+                } else {
+                    this.signatureAlgorithm = Signature.getInstance(algorithmID, providerId);
+                }
+
             } else {
-                this.signatureAlgorithm =
-                    Signature.getInstance(algorithmID, provider);
+                this.signatureAlgorithm = Signature.getInstance(algorithmID, provider);
             }
-        } catch (java.security.NoSuchAlgorithmException ex) {
-            Object[] exArgs = { algorithmID, ex.getLocalizedMessage() };
+
+        } catch (NoSuchAlgorithmException ex) {
+            Object[] exArgs = {algorithmID, ex.getLocalizedMessage()};
             throw new XMLSignatureException("algorithms.NoSuchAlgorithm", exArgs);
-        } catch (java.security.NoSuchProviderException ex) {
-            Object[] exArgs = { algorithmID, ex.getLocalizedMessage() };
+
+        } catch (NoSuchProviderException ex) {
+            Object[] exArgs = {algorithmID, ex.getLocalizedMessage()};
             throw new XMLSignatureException("algorithms.NoSuchAlgorithm", exArgs);
         }
     }
@@ -281,6 +295,10 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
 
         public SHA256() throws XMLSignatureException {
             super();
+        }
+
+        public SHA256(Provider provider) throws XMLSignatureException {
+            super(provider);
         }
 
         public String engineGetURI() {

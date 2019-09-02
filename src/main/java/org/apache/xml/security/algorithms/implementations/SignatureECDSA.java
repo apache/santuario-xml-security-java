@@ -24,6 +24,7 @@ import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
+import java.security.Provider;
 import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.security.Signature;
@@ -90,24 +91,33 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
      * @throws XMLSignatureException
      */
     public SignatureECDSA() throws XMLSignatureException {
+        this(null);
+    }
 
+    public SignatureECDSA(Provider provider) throws XMLSignatureException {
         String algorithmID = JCEMapper.translateURItoJCEID(this.engineGetURI());
-
         LOG.debug("Created SignatureECDSA using {}", algorithmID);
-        String provider = JCEMapper.getProviderId();
+
         try {
             if (provider == null) {
-                this.signatureAlgorithm = Signature.getInstance(algorithmID);
+                String providerId = JCEMapper.getProviderId();
+                if (providerId == null) {
+                    this.signatureAlgorithm = Signature.getInstance(algorithmID);
+
+                } else {
+                    this.signatureAlgorithm = Signature.getInstance(algorithmID, providerId);
+                }
+
             } else {
                 this.signatureAlgorithm = Signature.getInstance(algorithmID, provider);
             }
+
         } catch (java.security.NoSuchAlgorithmException ex) {
             Object[] exArgs = { algorithmID, ex.getLocalizedMessage() };
-
             throw new XMLSignatureException("algorithms.NoSuchAlgorithm", exArgs);
+
         } catch (NoSuchProviderException ex) {
             Object[] exArgs = { algorithmID, ex.getLocalizedMessage() };
-
             throw new XMLSignatureException("algorithms.NoSuchAlgorithm", exArgs);
         }
     }
@@ -278,6 +288,10 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
             super();
         }
 
+        public SignatureECDSASHA1(Provider provider) throws XMLSignatureException {
+            super(provider);
+        }
+
         /** {@inheritDoc} */
         public String engineGetURI() {
             return XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA1;
@@ -296,6 +310,10 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
          */
         public SignatureECDSASHA224() throws XMLSignatureException {
             super();
+        }
+
+        public SignatureECDSASHA224(Provider provider) throws XMLSignatureException {
+            super(provider);
         }
 
         /** {@inheritDoc} */
@@ -319,6 +337,10 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
             super();
         }
 
+        public SignatureECDSASHA256(Provider provider) throws XMLSignatureException {
+            super(provider);
+        }
+
         /** {@inheritDoc} */
         public String engineGetURI() {
             return XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA256;
@@ -338,6 +360,10 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
          */
         public SignatureECDSASHA384() throws XMLSignatureException {
             super();
+        }
+
+        public SignatureECDSASHA384(Provider provider) throws XMLSignatureException {
+            super(provider);
         }
 
         /** {@inheritDoc} */
@@ -361,6 +387,10 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
             super();
         }
 
+        public SignatureECDSASHA512(Provider provider) throws XMLSignatureException {
+            super(provider);
+        }
+
         /** {@inheritDoc} */
         public String engineGetURI() {
             return XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA512;
@@ -379,6 +409,10 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
          */
         public SignatureECDSARIPEMD160() throws XMLSignatureException {
             super();
+        }
+
+        public SignatureECDSARIPEMD160(Provider provider) throws XMLSignatureException {
+            super(provider);
         }
 
         /** {@inheritDoc} */

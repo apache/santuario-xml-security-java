@@ -22,6 +22,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.security.Provider;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -49,7 +50,7 @@ import org.xml.sax.SAXException;
 public class SignedInfo extends Manifest {
 
     /** Field signatureAlgorithm */
-    private SignatureAlgorithm signatureAlgorithm;
+    private final SignatureAlgorithm signatureAlgorithm;
 
     /** Field c14nizedBytes           */
     private byte[] c14nizedBytes;
@@ -84,7 +85,25 @@ public class SignedInfo extends Manifest {
     public SignedInfo(
         Document doc, String signatureMethodURI, String canonicalizationMethodURI
     ) throws XMLSecurityException {
-        this(doc, signatureMethodURI, 0, canonicalizationMethodURI);
+        this(doc, signatureMethodURI, 0, canonicalizationMethodURI, null);
+    }
+
+    /**
+     * Constructs {@link SignedInfo} using given Canonicalization algorithm and
+     * Signature algorithm.
+     *
+     * @param doc <code>SignedInfo</code> is placed in this document
+     * @param signatureMethodURI URI representation of the Digest and
+     *    Signature algorithm
+     * @param canonicalizationMethodURI URI representation of the
+     *    Canonicalization method
+     * @param provider security provider to use
+     * @throws XMLSecurityException
+     */
+    public SignedInfo(
+        Document doc, String signatureMethodURI, String canonicalizationMethodURI, Provider provider
+    ) throws XMLSecurityException {
+        this(doc, signatureMethodURI, 0, canonicalizationMethodURI, provider);
     }
 
     /**
@@ -102,6 +121,13 @@ public class SignedInfo extends Manifest {
         Document doc, String signatureMethodURI,
         int hMACOutputLength, String canonicalizationMethodURI
     ) throws XMLSecurityException {
+        this(doc, signatureMethodURI, hMACOutputLength, canonicalizationMethodURI, null);
+    }
+
+    public SignedInfo(
+        Document doc, String signatureMethodURI,
+        int hMACOutputLength, String canonicalizationMethodURI, Provider provider
+    ) throws XMLSecurityException {
         super(doc);
 
         c14nMethod =
@@ -113,9 +139,9 @@ public class SignedInfo extends Manifest {
 
         if (hMACOutputLength > 0) {
             this.signatureAlgorithm =
-                new SignatureAlgorithm(getDocument(), signatureMethodURI, hMACOutputLength);
+                new SignatureAlgorithm(getDocument(), signatureMethodURI, hMACOutputLength, provider);
         } else {
-            this.signatureAlgorithm = new SignatureAlgorithm(getDocument(), signatureMethodURI);
+            this.signatureAlgorithm = new SignatureAlgorithm(getDocument(), signatureMethodURI, provider);
         }
 
         signatureMethod = this.signatureAlgorithm.getElement();
@@ -132,6 +158,12 @@ public class SignedInfo extends Manifest {
     public SignedInfo(
         Document doc, Element signatureMethodElem, Element canonicalizationMethodElem
     ) throws XMLSecurityException {
+        this(doc, signatureMethodElem, canonicalizationMethodElem, null);
+    }
+
+    public SignedInfo(
+        Document doc, Element signatureMethodElem, Element canonicalizationMethodElem, Provider provider
+    ) throws XMLSecurityException {
         super(doc);
         // Check this?
         this.c14nMethod = canonicalizationMethodElem;
@@ -139,7 +171,7 @@ public class SignedInfo extends Manifest {
         addReturnToSelf();
 
         this.signatureAlgorithm =
-            new SignatureAlgorithm(signatureMethodElem, null);
+            new SignatureAlgorithm(signatureMethodElem, null, provider);
 
         signatureMethod = this.signatureAlgorithm.getElement();
         appendSelf(signatureMethod);
@@ -159,7 +191,7 @@ public class SignedInfo extends Manifest {
      * Answer</A>
      */
     public SignedInfo(Element element, String baseURI) throws XMLSecurityException {
-        this(element, baseURI, true);
+        this(element, baseURI, true, null);
     }
 
     /**
@@ -177,13 +209,32 @@ public class SignedInfo extends Manifest {
     public SignedInfo(
         Element element, String baseURI, boolean secureValidation
     ) throws XMLSecurityException {
+        this(element, baseURI, secureValidation, null);
+    }
+
+    /**
+     * Build a {@link SignedInfo} from an {@link Element}
+     *
+     * @param element <code>SignedInfo</code>
+     * @param baseURI the URI of the resource where the XML instance was stored
+     * @param secureValidation whether secure validation is enabled or not
+     * @param provider security provider to use
+     * @throws XMLSecurityException
+     * @see <A HREF="http://lists.w3.org/Archives/Public/w3c-ietf-xmldsig/2001OctDec/0033.html">
+     * Question</A>
+     * @see <A HREF="http://lists.w3.org/Archives/Public/w3c-ietf-xmldsig/2001OctDec/0054.html">
+     * Answer</A>
+     */
+    public SignedInfo(
+        Element element, String baseURI, boolean secureValidation, Provider provider
+    ) throws XMLSecurityException {
         // Parse the Reference children and Id attribute in the Manifest
         super(reparseSignedInfoElem(element, secureValidation), baseURI, secureValidation);
 
         c14nMethod = XMLUtils.getNextElement(element.getFirstChild());
         signatureMethod = XMLUtils.getNextElement(c14nMethod.getNextSibling());
         this.signatureAlgorithm =
-            new SignatureAlgorithm(signatureMethod, this.getBaseURI(), secureValidation);
+            new SignatureAlgorithm(signatureMethod, this.getBaseURI(), secureValidation, provider);
     }
 
     private static Element reparseSignedInfoElem(Element element, boolean secureValidation)
