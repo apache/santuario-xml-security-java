@@ -153,7 +153,7 @@ public class Init {
     private static void fileInit(InputStream is) {
         try {
             /* read library configuration file */
-            Document doc = XMLUtils.read(is, false);
+            Document doc = XMLUtils.read(is, true);
             Node config = doc.getFirstChild();
             for (; config != null; config = config.getNextSibling()) {
                 if ("Configuration".equals(config.getLocalName())) {
