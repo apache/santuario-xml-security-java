@@ -94,8 +94,12 @@ public class TransformXSLT extends TransformSpi {
             // Process XSLT stylesheets in a secure manner
             tFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
             if (secureValidation) {
-                tFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-                tFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+                try {
+                    tFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+                    tFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+                } catch (IllegalArgumentException ex) {
+                    // ignore
+                }
             }
 
             /*

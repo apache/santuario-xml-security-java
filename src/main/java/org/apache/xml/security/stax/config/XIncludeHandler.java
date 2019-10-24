@@ -153,8 +153,12 @@ public class XIncludeHandler extends DefaultHandler {
                     XMLReader xmlReader = XMLReaderFactory.createXMLReader();
                     SAXTransformerFactory saxTransformerFactory = (SAXTransformerFactory) SAXTransformerFactory.newInstance();
                     saxTransformerFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
-                    saxTransformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-                    saxTransformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+                    try {
+                        saxTransformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+                        saxTransformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+                    } catch (IllegalArgumentException ex) {
+                        // ignore
+                    }
 
                     TransformerHandler transformerHandler = saxTransformerFactory.newTransformerHandler();
                     transformerHandler.setResult(domResult);
@@ -180,8 +184,12 @@ public class XIncludeHandler extends DefaultHandler {
             try {
                 TransformerFactory transformerFactory = TransformerFactory.newInstance();
                 transformerFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
-                transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-                transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+                try {
+                    transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+                    transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+                } catch (IllegalArgumentException ex) {
+                    // ignore
+                }
 
                 Transformer transformer = transformerFactory.newTransformer();
                 if (xpointer == null) {
