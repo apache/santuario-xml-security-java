@@ -153,6 +153,9 @@ public class XIncludeHandler extends DefaultHandler {
                     XMLReader xmlReader = XMLReaderFactory.createXMLReader();
                     SAXTransformerFactory saxTransformerFactory = (SAXTransformerFactory) SAXTransformerFactory.newInstance();
                     saxTransformerFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
+                    saxTransformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+                    saxTransformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+
                     TransformerHandler transformerHandler = saxTransformerFactory.newTransformerHandler();
                     transformerHandler.setResult(domResult);
                     xmlReader.setContentHandler(new XIncludeHandler(transformerHandler, uriDocMap));
@@ -177,6 +180,9 @@ public class XIncludeHandler extends DefaultHandler {
             try {
                 TransformerFactory transformerFactory = TransformerFactory.newInstance();
                 transformerFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
+                transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+                transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+
                 Transformer transformer = transformerFactory.newTransformer();
                 if (xpointer == null) {
                     transformer.transform(new DOMSource(document, document.getDocumentURI()), saxResult);

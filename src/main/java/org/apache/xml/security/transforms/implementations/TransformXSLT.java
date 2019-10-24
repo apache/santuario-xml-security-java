@@ -93,6 +93,10 @@ public class TransformXSLT extends TransformSpi {
             TransformerFactory tFactory = TransformerFactory.newInstance();
             // Process XSLT stylesheets in a secure manner
             tFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
+            if (secureValidation) {
+                tFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+                tFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+            }
 
             /*
              * This transform requires an octet stream as input. If the actual

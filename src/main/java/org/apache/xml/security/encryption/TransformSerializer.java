@@ -84,6 +84,10 @@ public class TransformSerializer extends AbstractSerializer {
             if (transformerFactory == null) {
                 transformerFactory = TransformerFactory.newInstance();
                 transformerFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
+                if (secureValidation) {
+                    transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+                    transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+                }
             }
             Transformer transformer = transformerFactory.newTransformer();
 
