@@ -414,6 +414,7 @@
                                 <reportFormat>brief</reportFormat>
                                 <useFile>false</useFile>
                                 <childDelegation>false</childDelegation>
+                                <reuseForks>false</reuseForks>
                                 <includes>
                                     <include>**/*Test.java</include>
                                 </includes>
@@ -457,6 +458,7 @@
                                 <reportFormat>brief</reportFormat>
                                 <useFile>false</useFile>
                                 <childDelegation>false</childDelegation>
+                                <reuseForks>false</reuseForks>
                                 <includes>
                                     <include>**/*Test.java</include>
                                 </includes>
