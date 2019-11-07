@@ -232,7 +232,21 @@ public class SignedInfo extends Manifest {
         super(reparseSignedInfoElem(element, secureValidation), baseURI, secureValidation);
 
         c14nMethod = XMLUtils.getNextElement(element.getFirstChild());
+        if (c14nMethod == null ||
+            !(Constants.SignatureSpecNS.equals(c14nMethod.getNamespaceURI())
+                && Constants._TAG_CANONICALIZATIONMETHOD.equals(c14nMethod.getLocalName()))) {
+            Object[] exArgs = { Constants._TAG_CANONICALIZATIONMETHOD, Constants._TAG_SIGNEDINFO };
+            throw new XMLSignatureException("xml.WrongContent", exArgs);
+        }
+
         signatureMethod = XMLUtils.getNextElement(c14nMethod.getNextSibling());
+        if (signatureMethod == null ||
+            !(Constants.SignatureSpecNS.equals(signatureMethod.getNamespaceURI())
+                && Constants._TAG_SIGNATUREMETHOD.equals(signatureMethod.getLocalName()))) {
+            Object[] exArgs = { Constants._TAG_SIGNATUREMETHOD, Constants._TAG_SIGNEDINFO };
+            throw new XMLSignatureException("xml.WrongContent", exArgs);
+        }
+
         this.signatureAlgorithm =
             new SignatureAlgorithm(signatureMethod, this.getBaseURI(), secureValidation, provider);
     }
@@ -246,6 +260,13 @@ public class SignedInfo extends Manifest {
          * the re-parsed canonicalized one.
          */
         Element c14nMethod = XMLUtils.getNextElement(element.getFirstChild());
+        if (c14nMethod == null ||
+            !(Constants.SignatureSpecNS.equals(c14nMethod.getNamespaceURI())
+                && Constants._TAG_CANONICALIZATIONMETHOD.equals(c14nMethod.getLocalName()))) {
+            Object[] exArgs = { Constants._TAG_CANONICALIZATIONMETHOD, Constants._TAG_SIGNEDINFO };
+            throw new XMLSignatureException("xml.WrongContent", exArgs);
+        }
+
         String c14nMethodURI =
             c14nMethod.getAttributeNS(null, Constants._ATT_ALGORITHM);
         if (!(c14nMethodURI.equals(Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS) ||

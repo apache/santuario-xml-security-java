@@ -43,6 +43,7 @@ import org.apache.xml.security.signature.SignatureProperties;
 import org.apache.xml.security.signature.SignatureProperty;
 import org.apache.xml.security.signature.SignedInfo;
 import org.apache.xml.security.signature.XMLSignature;
+import org.apache.xml.security.signature.XMLSignatureException;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.transforms.params.XPath2FilterContainer;
@@ -54,6 +55,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Tests that create signatures.
@@ -341,6 +343,53 @@ public class CreateSignatureTest {
         XMLUtils.outputDOMc14nWithComments(doc, bos);
         String signedContent = new String(bos.toByteArray());
         doVerify(signedContent);
+    }
+
+    @org.junit.jupiter.api.Test
+    public void testAddDuplicateKeyInfo() throws Exception {
+        PrivateKey privateKey = kp.getPrivate();
+        Document doc = XMLUtils.newDocument();
+        Element root = doc.createElementNS("", "RootElement");
+
+        doc.appendChild(root);
+        root.appendChild(doc.createTextNode("Some simple text\n"));
+
+        Element canonElem =
+            XMLUtils.createElementInSignatureSpace(doc, Constants._TAG_CANONICALIZATIONMETHOD);
+        canonElem.setAttributeNS(
+            null, Constants._ATT_ALGORITHM, Canonicalizer.ALGO_ID_C14N_EXCL_OMIT_COMMENTS
+        );
+
+        SignatureAlgorithm signatureAlgorithm =
+            new SignatureAlgorithm(doc, XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1);
+        XMLSignature sig =
+            new XMLSignature(doc, null, signatureAlgorithm.getElement(), canonElem);
+        String id = "12345";
+        sig.setId(id);
+
+        root.appendChild(sig.getElement());
+        Transforms transforms = new Transforms(doc);
+        transforms.addTransform(Transforms.TRANSFORM_ENVELOPED_SIGNATURE);
+        transforms.addTransform(Transforms.TRANSFORM_C14N_WITH_COMMENTS);
+        sig.addDocument("", transforms, Constants.ALGO_ID_DIGEST_SHA1);
+
+        sig.addKeyInfo(kp.getPublic());
+        sig.sign(privateKey);
+
+        // Add a duplicate (empty) KeyInfo element
+        KeyInfo keyInfo = new KeyInfo(doc);
+        sig.getElement().appendChild(keyInfo.getElement());
+
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+        XMLUtils.outputDOMc14nWithComments(doc, bos);
+        String signedContent = new String(bos.toByteArray());
+        try {
+            doVerify(signedContent);
+            fail("Failure expected on a duplicate KeyInfo element");
+        } catch (XMLSignatureException ex) {
+            // expected
+        }
     }
 
     private String doSign() throws Exception {
