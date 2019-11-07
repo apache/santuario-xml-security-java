@@ -535,16 +535,20 @@ public final class XMLSignature extends SignatureElementProxy {
             XMLUtils.getNextElement(signatureValueElement.getNextSibling());
 
         // If it exists use it, but it's not mandatory
+        Element objectElem = null;
         if (keyInfoElem != null
             && Constants.SignatureSpecNS.equals(keyInfoElem.getNamespaceURI())
             && Constants._TAG_KEYINFO.equals(keyInfoElem.getLocalName())) {
             this.keyInfo = new KeyInfo(keyInfoElem, baseURI);
             this.keyInfo.setSecureValidation(secureValidation);
+            objectElem = XMLUtils.getNextElement(keyInfoElem.getNextSibling());
         }
 
         // <element ref="ds:Object" minOccurs="0" maxOccurs="unbounded"/>
-        Element objectElem =
-            XMLUtils.getNextElement(signatureValueElement.getNextSibling());
+        if (objectElem == null) {
+            // If we have no KeyInfo
+            objectElem = XMLUtils.getNextElement(signatureValueElement.getNextSibling());
+        }
         while (objectElem != null) {
             Attr objectAttr = objectElem.getAttributeNodeNS(null, "Id");
             if (objectAttr != null) {
