@@ -40,6 +40,8 @@ import org.apache.xml.security.algorithms.SignatureAlgorithm;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.signature.ObjectContainer;
+import org.apache.xml.security.signature.SignatureProperties;
+import org.apache.xml.security.signature.SignatureProperty;
 import org.apache.xml.security.signature.SignedInfo;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
@@ -288,6 +290,55 @@ public class CreateSignatureTest {
         XMLUtils.outputDOMc14nWithComments(doc, bos);
         String signedContent = new String(bos.toByteArray());
 
+        doVerify(signedContent);
+    }
+
+    @org.junit.jupiter.api.Test
+    public void testSignatureProperties() throws Exception {
+        PrivateKey privateKey = kp.getPrivate();
+        Document doc = XMLUtils.newDocument();
+        Element root = doc.createElementNS("", "RootElement");
+
+        doc.appendChild(root);
+        root.appendChild(doc.createTextNode("Some simple text\n"));
+
+        Element canonElem =
+            XMLUtils.createElementInSignatureSpace(doc, Constants._TAG_CANONICALIZATIONMETHOD);
+        canonElem.setAttributeNS(
+            null, Constants._ATT_ALGORITHM, Canonicalizer.ALGO_ID_C14N_EXCL_OMIT_COMMENTS
+        );
+
+        SignatureAlgorithm signatureAlgorithm =
+            new SignatureAlgorithm(doc, XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1);
+        XMLSignature sig =
+            new XMLSignature(doc, null, signatureAlgorithm.getElement(), canonElem);
+        String id = "12345";
+        sig.setId(id);
+
+        ObjectContainer object = new ObjectContainer(doc);
+        SignatureProperties signatureProperties = new SignatureProperties(doc);
+        String sigPropertiesId = "54321";
+        signatureProperties.setId(sigPropertiesId);
+        SignatureProperty signatureProperty = new SignatureProperty(doc, "#" + id);
+        signatureProperties.addSignatureProperty(signatureProperty);
+        object.appendChild(signatureProperties.getElement());
+        signatureProperties.getElement().setIdAttributeNS(null, "Id", true);
+        sig.appendObject(object);
+        sig.addDocument("#" + sigPropertiesId);
+
+        root.appendChild(sig.getElement());
+        Transforms transforms = new Transforms(doc);
+        transforms.addTransform(Transforms.TRANSFORM_ENVELOPED_SIGNATURE);
+        transforms.addTransform(Transforms.TRANSFORM_C14N_WITH_COMMENTS);
+        sig.addDocument("", transforms, Constants.ALGO_ID_DIGEST_SHA1);
+
+        sig.addKeyInfo(kp.getPublic());
+        sig.sign(privateKey);
+
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+        XMLUtils.outputDOMc14nWithComments(doc, bos);
+        String signedContent = new String(bos.toByteArray());
         doVerify(signedContent);
     }
 
