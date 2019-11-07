@@ -242,12 +242,16 @@ public class Reference extends SignatureElementProxy {
         }
 
         digestMethodElem = el;
-        if (digestMethodElem == null) {
+        if (digestMethodElem == null ||
+            !(Constants.SignatureSpecNS.equals(digestMethodElem.getNamespaceURI())
+                && Constants._TAG_DIGESTMETHOD.equals(digestMethodElem.getLocalName()))) {
             throw new XMLSecurityException("signature.Reference.NoDigestMethod");
         }
 
         digestValueElement = XMLUtils.getNextElement(digestMethodElem.getNextSibling());
-        if (digestValueElement == null) {
+        if (digestValueElement == null ||
+            !(Constants.SignatureSpecNS.equals(digestValueElement.getNamespaceURI())
+                && Constants._TAG_DIGESTVALUE.equals(digestValueElement.getLocalName()))) {
             throw new XMLSecurityException("signature.Reference.NoDigestValue");
         }
         this.manifest = manifest;

@@ -396,8 +396,10 @@ public final class XMLSignature extends SignatureElementProxy {
         Element signedInfoElem = XMLUtils.getNextElement(element.getFirstChild());
 
         // check to see if it is there
-        if (signedInfoElem == null) {
-            Object exArgs[] = { Constants._TAG_SIGNEDINFO, Constants._TAG_SIGNATURE };
+        if (signedInfoElem == null ||
+            !(Constants.SignatureSpecNS.equals(signedInfoElem.getNamespaceURI())
+                && Constants._TAG_SIGNEDINFO.equals(signedInfoElem.getLocalName()))) {
+            Object[] exArgs = { Constants._TAG_SIGNEDINFO, Constants._TAG_SIGNATURE };
             throw new XMLSignatureException("xml.WrongContent", exArgs);
         }
 
@@ -411,8 +413,10 @@ public final class XMLSignature extends SignatureElementProxy {
             XMLUtils.getNextElement(signedInfoElem.getNextSibling());
 
         // check to see if it exists
-        if (signatureValueElement == null) {
-            Object exArgs[] = { Constants._TAG_SIGNATUREVALUE, Constants._TAG_SIGNATURE };
+        if (signatureValueElement == null ||
+            !(Constants.SignatureSpecNS.equals(signatureValueElement.getNamespaceURI())
+                && Constants._TAG_SIGNATUREVALUE.equals(signatureValueElement.getLocalName()))) {
+            Object[] exArgs = { Constants._TAG_SIGNATUREVALUE, Constants._TAG_SIGNATURE };
             throw new XMLSignatureException("xml.WrongContent", exArgs);
         }
         Attr signatureValueAttr = signatureValueElement.getAttributeNodeNS(null, "Id");
@@ -432,14 +436,20 @@ public final class XMLSignature extends SignatureElementProxy {
             this.keyInfo = new KeyInfo(keyInfoElem, baseURI);
             this.keyInfo.setSecureValidation(secureValidation);
             objectElem = XMLUtils.getNextElement(keyInfoElem.getNextSibling());
+        } else {
+            // If we have no KeyInfo
+            objectElem = keyInfoElem;
         }
 
         // <element ref="ds:Object" minOccurs="0" maxOccurs="unbounded"/>
-        if (objectElem == null) {
-            // If we have no KeyInfo
-            objectElem = XMLUtils.getNextElement(signatureValueElement.getNextSibling());
-        }
         while (objectElem != null) {
+            // Make sure it actually is an Object
+            if (!(Constants.SignatureSpecNS.equals(objectElem.getNamespaceURI())
+                && Constants._TAG_OBJECT.equals(objectElem.getLocalName()))) {
+                Object[] exArgs = { objectElem.getLocalName() };
+                throw new XMLSignatureException("signature.Verification.InvalidElement", exArgs);
+            }
+
             Attr objectAttr = objectElem.getAttributeNodeNS(null, "Id");
             if (objectAttr != null) {
                 objectElem.setIdAttributeNode(objectAttr, true);
