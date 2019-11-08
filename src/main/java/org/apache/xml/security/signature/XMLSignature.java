@@ -392,6 +392,12 @@ public final class XMLSignature extends SignatureElementProxy {
         throws XMLSignatureException, XMLSecurityException {
         super(element, baseURI);
 
+        if (!(Constants.SignatureSpecNS.equals(element.getNamespaceURI())
+            && Constants._TAG_SIGNATURE.equals(element.getLocalName()))) {
+            Object[] exArgs = { element.getLocalName() };
+            throw new XMLSignatureException("signature.Verification.InvalidElement", exArgs);
+        }
+
         // check out SignedInfo child
         Element signedInfoElem = XMLUtils.getNextElement(element.getFirstChild());
 
