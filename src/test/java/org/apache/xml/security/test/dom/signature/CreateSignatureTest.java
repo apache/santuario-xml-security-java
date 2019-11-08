@@ -391,7 +391,7 @@ public class CreateSignatureTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @org.junit.Test
     public void testWrongSignatureName() throws Exception {
         PrivateKey privateKey = kp.getPrivate();
         Document doc = XMLUtils.newDocument();
