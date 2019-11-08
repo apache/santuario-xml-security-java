@@ -392,6 +392,74 @@ public class CreateSignatureTest {
         }
     }
 
+    @org.junit.jupiter.api.Test
+    public void testWrongSignatureName() throws Exception {
+        PrivateKey privateKey = kp.getPrivate();
+        Document doc = XMLUtils.newDocument();
+        Element root = doc.createElementNS("", "RootElement");
+
+        doc.appendChild(root);
+        root.appendChild(doc.createTextNode("Some simple text\n"));
+
+        Element canonElem =
+            XMLUtils.createElementInSignatureSpace(doc, Constants._TAG_CANONICALIZATIONMETHOD);
+        canonElem.setAttributeNS(
+            null, Constants._ATT_ALGORITHM, Canonicalizer.ALGO_ID_C14N_EXCL_OMIT_COMMENTS
+        );
+
+        SignatureAlgorithm signatureAlgorithm =
+            new SignatureAlgorithm(doc, XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1);
+        XMLSignature sig =
+            new XMLSignature(doc, null, signatureAlgorithm.getElement(), canonElem);
+        String id = "12345";
+        sig.setId(id);
+
+        ObjectContainer object = new ObjectContainer(doc);
+        SignatureProperties signatureProperties = new SignatureProperties(doc);
+        String sigPropertiesId = "54321";
+        signatureProperties.setId(sigPropertiesId);
+        SignatureProperty signatureProperty = new SignatureProperty(doc, "#" + id);
+        signatureProperties.addSignatureProperty(signatureProperty);
+        object.appendChild(signatureProperties.getElement());
+        signatureProperties.getElement().setIdAttributeNS(null, "Id", true);
+        sig.appendObject(object);
+        sig.addDocument("#" + sigPropertiesId);
+
+        root.appendChild(sig.getElement());
+
+        sig.addKeyInfo(kp.getPublic());
+        sig.sign(privateKey);
+
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+        XMLUtils.outputDOMc14nWithComments(doc, bos);
+        String signedContent = new String(bos.toByteArray());
+        // Now change the Signature Element to be "SomeSignature" instead
+        signedContent = signedContent.replaceAll("ds:Signature ", "ds:SomeSignature ");
+        signedContent = signedContent.replaceAll("</ds:Signature>", "</ds:SomeSignature>");
+
+        // Verify the signature
+        Document doc2 = null;
+        try (InputStream is = new ByteArrayInputStream(signedContent.getBytes())) {
+            doc2 = XMLUtils.read(is, false);
+        }
+
+        XPathFactory xpf = XPathFactory.newInstance();
+        XPath xpath = xpf.newXPath();
+        xpath.setNamespaceContext(new DSNamespaceContext());
+
+        String expression = "//ds:SomeSignature[1]";
+        Element sigElement =
+            (Element) xpath.evaluate(expression, doc2, XPathConstants.NODE);
+
+        try {
+            new XMLSignature(sigElement, "");
+            fail("Failure expected on an incorrect Signature element name");
+        } catch (XMLSignatureException ex) {
+            // expected
+        }
+    }
+
     private String doSign() throws Exception {
         PrivateKey privateKey = kp.getPrivate();
         Document doc = XMLUtils.newDocument();
