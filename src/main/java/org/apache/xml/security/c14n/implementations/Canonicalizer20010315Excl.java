@@ -230,9 +230,6 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void outputAttributes(Element element, NameSpaceSymbTable ns,
                                     Map<String, byte[]> cache)
