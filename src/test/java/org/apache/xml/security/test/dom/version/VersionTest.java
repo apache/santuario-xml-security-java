@@ -49,9 +49,13 @@ public class VersionTest {
 
     @org.junit.jupiter.api.Test
     public void testVersion() throws Exception {
+        Provider provider = Security.getProvider("ApacheXMLDSig");
+        if (provider != null) {
+            Security.removeProvider(provider.getName());
+        }
         Security.addProvider(new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
 
-        Provider provider = Security.getProvider("ApacheXMLDSig");
+        provider = Security.getProvider("ApacheXMLDSig");
         assertNotNull(provider);
 
         String version = System.getProperty("product.version");
