@@ -46,10 +46,14 @@ public class VersionTest {
 
     @org.junit.Test
     public void testVersion() throws Exception {
+        Provider provider = Security.getProvider("ApacheXMLDSig");
+        if (provider != null) {
+            Security.removeProvider(provider.getName());
+        }
         Security.addProvider(new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
 
-        Provider provider = Security.getProvider("ApacheXMLDSig");
-        assertTrue(provider != null);
+        provider = Security.getProvider("ApacheXMLDSig");
+        assertNotNull(provider);
 
         String version = System.getProperty("product.version");
         assertTrue(version != null);
