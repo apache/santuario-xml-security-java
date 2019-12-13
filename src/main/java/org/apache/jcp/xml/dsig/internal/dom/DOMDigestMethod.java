@@ -225,7 +225,7 @@ public abstract class DOMDigestMethod extends DOMStructure
      * parameters. Subclasses should override it if they have parameters.
      *
      * @param parent the parent element to append the parameters to
-     * @param the namespace prefix to use
+     * @param prefix the namespace prefix to use
      * @throws MarshalException if the parameters cannot be marshalled
      */
     void marshalParams(Element parent, String prefix)

@@ -449,7 +449,7 @@ public class Manifest extends SignatureElementProxy {
             }
         }
 
-        return ((ArrayList<VerifiedReference>)verificationResults).get(index).isValid();
+        return verificationResults.get(index).isValid();
     }
 
     /**
