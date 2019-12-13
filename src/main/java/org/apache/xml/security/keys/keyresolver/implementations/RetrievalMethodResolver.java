@@ -199,12 +199,12 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
     private static X509Certificate resolveCertificate(
         Element e, String baseURI, StorageResolver storage
     ) throws KeyResolverException {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Now we have a {" + e.getNamespaceURI() + "}"
-                + e.getLocalName() + " Element");
-        }
         // An element has been provided
         if (e != null) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Now we have a {" + e.getNamespaceURI() + "}"
+                    + e.getLocalName() + " Element");
+            }
             return KeyResolver.getX509Certificate(e, baseURI, storage);
         }
         return null;
@@ -221,12 +221,12 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
     private static PublicKey resolveKey(
         Element e, String baseURI, StorageResolver storage
     ) throws KeyResolverException {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Now we have a {" + e.getNamespaceURI() + "}"
-                + e.getLocalName() + " Element");
-        }
         // An element has been provided
         if (e != null) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Now we have a {" + e.getNamespaceURI() + "}"
+                    + e.getLocalName() + " Element");
+            }
             return KeyResolver.getPublicKey(e, baseURI, storage);
         }
         return null;

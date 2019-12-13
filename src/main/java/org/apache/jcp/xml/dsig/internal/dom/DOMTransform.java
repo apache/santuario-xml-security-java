@@ -200,7 +200,7 @@ public class DOMTransform extends DOMStructure implements Transform {
      * the specified <code>DOMSignContext</code> before transforming the data.
      *
      * @param data the data to be transformed
-     * @param sc the <code>XMLCryptoContext</code> containing
+     * @param xc the <code>XMLCryptoContext</code> containing
      *    additional context (may be <code>null</code> if not applicable)
      * @param context the marshalling context
      * @return the transformed data

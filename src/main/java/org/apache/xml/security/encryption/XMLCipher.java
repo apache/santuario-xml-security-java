@@ -1099,7 +1099,7 @@ public class XMLCipher {
 
         byte[] serializedOctets = null;
         if (serializedData == null) {
-            if (type.equals(EncryptionConstants.TYPE_CONTENT)) {
+            if (EncryptionConstants.TYPE_CONTENT.equals(type)) {
                 NodeList children = element.getChildNodes();
                 if (null != children) {
                     serializedOctets = serializer.serializeToByteArray(children);

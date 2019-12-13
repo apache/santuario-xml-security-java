@@ -329,8 +329,7 @@ public class ResourceResolver {
     /**
      * Method canResolve
      *
-     * @param uri
-     * @param baseURI
+     * @param context
      * @return true if it can resolve the uri
      */
     private boolean canResolve(ResourceResolverContext context) {
