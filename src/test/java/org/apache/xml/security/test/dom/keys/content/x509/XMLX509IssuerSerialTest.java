@@ -20,7 +20,7 @@ package org.apache.xml.security.test.dom.keys.content.x509;
 
 
 import org.apache.xml.security.keys.content.x509.XMLX509IssuerSerial;
-import org.apache.xml.security.utils.XMLUtils;
+import org.apache.xml.security.test.dom.TestUtils;
 import org.w3c.dom.Document;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -34,7 +34,7 @@ public class XMLX509IssuerSerialTest {
     private Document doc;
 
     public XMLX509IssuerSerialTest() throws Exception {
-        doc = XMLUtils.newDocument();
+        doc = TestUtils.newDocument();
     }
 
     @org.junit.jupiter.api.Test

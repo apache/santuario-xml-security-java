@@ -55,8 +55,8 @@ import org.apache.xml.security.keys.keyresolver.implementations.SecretKeyResolve
 import org.apache.xml.security.keys.keyresolver.implementations.SingleKeyResolver;
 import org.apache.xml.security.keys.storage.StorageResolver;
 import org.apache.xml.security.keys.storage.implementations.KeyStoreResolver;
+import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.utils.Constants;
-import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
@@ -109,7 +109,7 @@ public class KeyResolverTest {
         KeyResolverSpi privateKeyResolver = new PrivateKeyResolver(ks, pwd);
         KeyResolverSpi secretKeyResolver = new SecretKeyResolver(ks, pwd);
 
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
 
         KeyInfo ki;
         X509Data x509data;
@@ -219,7 +219,7 @@ public class KeyResolverTest {
         }
 
         // Create a sample XML document
-        Document document = XMLUtils.newDocument();
+        Document document = TestUtils.newDocument();
 
         Element rootElement = document.createElement("root");
         document.appendChild(rootElement);

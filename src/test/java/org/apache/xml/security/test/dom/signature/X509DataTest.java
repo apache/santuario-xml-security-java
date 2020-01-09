@@ -29,6 +29,7 @@ import java.security.cert.X509Certificate;
 
 import org.apache.xml.security.Init;
 import org.apache.xml.security.signature.XMLSignature;
+import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -47,7 +48,7 @@ public class X509DataTest {
     public void testAddX509SubjectName() throws Exception {
         Init.init();
 
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
         XMLSignature sig = new XMLSignature(doc, "", XMLSignature.ALGO_ID_SIGNATURE_DSA);
 
         doc.appendChild(sig.getElement());

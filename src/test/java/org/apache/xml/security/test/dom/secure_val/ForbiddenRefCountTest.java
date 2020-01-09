@@ -31,10 +31,10 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
+import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.test.dom.interop.InteropTestBase;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.Constants;
-import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -79,7 +79,7 @@ public class ForbiddenRefCountTest extends InteropTestBase {
     }
 
     private Document getOriginalDocument() throws ParserConfigurationException {
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
 
         Element rootElement = doc.createElementNS("http://ns.example.org/", "root");
         rootElement.appendChild(doc.createTextNode("Hello World!"));

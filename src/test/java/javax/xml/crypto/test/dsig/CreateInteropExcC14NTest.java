@@ -33,7 +33,6 @@ import javax.xml.crypto.dsig.dom.*;
 import javax.xml.crypto.dsig.keyinfo.*;
 import javax.xml.crypto.dsig.spec.*;
 
-import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.*;
 
 import javax.xml.crypto.test.KeySelectors;
@@ -138,7 +137,7 @@ public class CreateInteropExcC14NTest {
         KeyInfo ki = kifac.newKeyInfo(kits);
 
         // create Objects
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
         Element baz = doc.createElementNS("urn:bar", "bar:Baz");
         Comment com = doc.createComment(" comment ");
         baz.appendChild(com);

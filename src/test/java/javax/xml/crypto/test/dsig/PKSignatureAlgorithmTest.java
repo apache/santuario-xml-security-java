@@ -45,7 +45,6 @@ import javax.xml.crypto.dsig.keyinfo.KeyInfoFactory;
 import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 import javax.xml.crypto.test.KeySelectors;
 
-import org.apache.xml.security.utils.XMLUtils;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.w3c.dom.Document;
@@ -291,7 +290,7 @@ public class PKSignatureAlgorithmTest {
         SignedInfo si = fac.newSignedInfo(withoutComments, sm,
                                           Collections.singletonList(ref));
 
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
         // create Objects
         Element webElem = doc.createElementNS(null, "Web");
         Text text = doc.createTextNode("up up and away");

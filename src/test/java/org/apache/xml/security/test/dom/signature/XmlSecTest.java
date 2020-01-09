@@ -35,10 +35,10 @@ import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
+import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.transforms.params.XPathContainer;
 import org.apache.xml.security.utils.Constants;
-import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -71,7 +71,7 @@ public class XmlSecTest {
 
     private void checkXmlSignatureSoftwareStack(boolean cert) throws Exception {
         Init.init();
-        Document testDocument = XMLUtils.newDocument();
+        Document testDocument = TestUtils.newDocument();
 
         Element rootElement =
             testDocument.createElementNS("urn:namespace", "tns:document");

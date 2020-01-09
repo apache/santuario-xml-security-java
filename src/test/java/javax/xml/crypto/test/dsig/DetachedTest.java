@@ -32,7 +32,6 @@ import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 import java.security.*;
 import java.util.*;
 
-import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -137,7 +136,7 @@ public class DetachedTest {
 
             // Create an XMLSignContext and set the
             // DSA PrivateKey for signing
-            Document doc = XMLUtils.newDocument();
+            Document doc = TestUtils.newDocument();
             DOMSignContext signContext = new DOMSignContext(kp.getPrivate(), doc);
             signContext.putNamespacePrefix(XMLSignature.XMLNS, "ds");
 

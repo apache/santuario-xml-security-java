@@ -63,6 +63,8 @@ import javax.xml.crypto.dsig.dom.DOMValidateContext;
 import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 import javax.xml.crypto.dsig.spec.DigestMethodParameterSpec;
 import javax.xml.crypto.dsig.spec.SignatureMethodParameterSpec;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
 import javax.xml.transform.Transformer;
@@ -109,6 +111,18 @@ public class TestUtils {
     private static final String RSA_PUB = "065537";
     private static final String RSA_PRIV =
         "0161169735844219697954459962296126719476357984292128166117072108359155865913405986839960884870654387514883422519600695753920562880636800379454345804879553";
+
+    private static final DocumentBuilderFactory DBF = DocumentBuilderFactory.newInstance();
+
+    static {
+        DBF.setNamespaceAware(true);
+        try {
+            DBF.setFeature(javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING, true);
+        } catch (ParserConfigurationException e) {
+            // Ignore: DocumentBuilderFactory is required to support the secure processing feature
+            e.printStackTrace();             // NOPMD
+        }
+    }
 
     private TestUtils() {}
 
@@ -214,7 +228,7 @@ public class TestUtils {
 
     public static Document newDocument() {
         try {
-            return XMLUtils.newDocument();
+            return DBF.newDocumentBuilder().newDocument();
         } catch (Exception ex) {
             return null;
         }

@@ -57,6 +57,7 @@ import org.apache.xml.security.utils.EncryptionConstants;
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.jupiter.api.Assumptions;
 import org.apache.xml.security.keys.KeyInfo;
+import org.apache.xml.security.test.dom.TestUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -634,7 +635,7 @@ public class XMLCipherTest {
     public void testSameDocumentCipherReference() throws Exception {
 
         if (haveISOPadding) {
-            Document d = XMLUtils.newDocument();
+            Document d = TestUtils.newDocument();
 
             Element docElement = d.createElement("EncryptedDoc");
             d.appendChild(docElement);

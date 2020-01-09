@@ -19,7 +19,7 @@
 package org.apache.xml.security.test.dom.utils.resolver;
 
 import org.apache.xml.security.Init;
-import org.apache.xml.security.utils.XMLUtils;
+import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.utils.resolver.ResourceResolver;
 import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.apache.xml.security.utils.resolver.ResourceResolverException;
@@ -52,7 +52,7 @@ public class ResolverDirectHTTPTest {
 
     @Test
     public void testBug40783() throws Exception {
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
         Attr uri = doc.createAttribute("id");
         uri.setNodeValue("urn:ddd:uuu");
         doc.createElement("test").setAttributeNode(uri);
@@ -67,7 +67,7 @@ public class ResolverDirectHTTPTest {
     @Test
     @Disabled
     public void testProxyAuth() throws Exception {
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
         Attr uri = doc.createAttribute("URI");
         uri.setNodeValue(url);
 
@@ -84,7 +84,7 @@ public class ResolverDirectHTTPTest {
     @Test
     @Disabled
     public void testProxyAuthWithWrongPassword() throws Exception {
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
         Attr uri = doc.createAttribute("URI");
         uri.setNodeValue(url);
 
@@ -106,7 +106,7 @@ public class ResolverDirectHTTPTest {
     @Test
     @Disabled
     public void testServerAuth() throws Exception {
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
         Attr uri = doc.createAttribute("URI");
         uri.setNodeValue(url);
 
@@ -121,7 +121,7 @@ public class ResolverDirectHTTPTest {
     @Test
     @Disabled
     public void testServerAuthWithWrongPassword() throws Exception {
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
         Attr uri = doc.createAttribute("URI");
         uri.setNodeValue(url);
 
@@ -141,7 +141,7 @@ public class ResolverDirectHTTPTest {
     @Test
     @Disabled
     public void testProxyAndServerAuth() throws Exception {
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
         Attr uri = doc.createAttribute("URI");
         uri.setNodeValue(url);
 

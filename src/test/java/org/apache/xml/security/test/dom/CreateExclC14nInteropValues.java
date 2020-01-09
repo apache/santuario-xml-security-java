@@ -50,7 +50,7 @@ public class CreateExclC14nInteropValues {
 
         org.apache.xml.security.Init.init();
 
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
         String directory = "data/org/apache/xml/security/c14n/outExcl/";
         File signatureFile = new File(directory + "apacheSignature.xml");
         XMLSignature xmlSignature = new XMLSignature(doc,

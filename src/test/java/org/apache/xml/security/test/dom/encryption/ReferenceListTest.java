@@ -24,8 +24,8 @@ import java.util.Iterator;
 import org.apache.xml.security.encryption.Reference;
 import org.apache.xml.security.encryption.ReferenceList;
 import org.apache.xml.security.encryption.XMLCipher;
+import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.utils.EncryptionConstants;
-import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -46,7 +46,7 @@ public class ReferenceListTest {
 
     @org.junit.jupiter.api.Test
     public void testReferenceList() throws Exception {
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
 
         XMLCipher dataCipher = XMLCipher.getInstance();
         dataCipher.init(XMLCipher.DECRYPT_MODE, null);

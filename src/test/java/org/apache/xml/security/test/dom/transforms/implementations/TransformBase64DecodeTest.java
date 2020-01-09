@@ -29,6 +29,7 @@ import javax.xml.xpath.XPathFactory;
 
 import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
+import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.transforms.implementations.TransformBase64Decode;
 import org.apache.xml.security.utils.XMLUtils;
@@ -138,7 +139,7 @@ public class TransformBase64DecodeTest {
     }
 
     private static Document createDocument() throws ParserConfigurationException {
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
 
         if (doc == null) {
             throw new RuntimeException("Could not create a Document");

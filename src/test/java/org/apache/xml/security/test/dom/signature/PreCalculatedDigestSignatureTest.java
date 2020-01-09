@@ -21,6 +21,7 @@ package org.apache.xml.security.test.dom.signature;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureInput;
+import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.transforms.TransformationException;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.Constants;
@@ -137,7 +138,7 @@ public class PreCalculatedDigestSignatureTest {
     }
 
     private XMLSignature createXmlSignature() throws ParserConfigurationException, XMLSecurityException {
-        Document signatureDocument = XMLUtils.newDocument();
+        Document signatureDocument = TestUtils.newDocument();
         Element root = createSignatureRoot(signatureDocument);
 
         String baseURI = "";

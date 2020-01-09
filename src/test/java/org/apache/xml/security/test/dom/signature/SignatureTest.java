@@ -31,10 +31,10 @@ import java.util.Enumeration;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
+import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.ElementProxy;
-import org.apache.xml.security.utils.XMLUtils;
 import org.apache.xml.security.utils.resolver.implementations.ResolverXPointer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -200,7 +200,7 @@ public class SignatureTest {
     }
 
     private Document getOriginalDocument() throws Throwable {
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
 
         Element rootElement = doc.createElementNS("http://ns.example.org/", "root");
         rootElement.appendChild(doc.createTextNode("Hello World!"));

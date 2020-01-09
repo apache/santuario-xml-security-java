@@ -41,7 +41,6 @@ import javax.xml.crypto.dsig.keyinfo.KeyInfo;
 import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 import javax.xml.crypto.test.KeySelectors;
 
-import org.apache.xml.security.utils.XMLUtils;
 import org.junit.jupiter.api.Assumptions;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -164,7 +163,7 @@ public class HMACSignatureAlgorithmTest {
         SignedInfo si = fac.newSignedInfo(withoutComments, sm,
                                           Collections.singletonList(ref));
 
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
         // create Objects
         Element webElem = doc.createElementNS(null, "Web");
         Text text = doc.createTextNode("up up and away");

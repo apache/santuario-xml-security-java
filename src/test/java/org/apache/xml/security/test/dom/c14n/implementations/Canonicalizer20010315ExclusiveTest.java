@@ -38,6 +38,7 @@ import org.apache.xml.security.c14n.implementations.Canonicalizer20010315WithCom
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
+import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.JavaUtils;
 import org.apache.xml.security.utils.XMLUtils;
@@ -279,7 +280,7 @@ public class Canonicalizer20010315ExclusiveTest {
      */
     @org.junit.jupiter.api.Test
     public void test24Aexcl() throws Exception {
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
         Element local = doc.createElementNS("foo:bar", "dsig:local");
         Element test = doc.createElementNS("http://example.net", "etsi:test");
         Element elem2 = doc.createElementNS("http://example.net", "etsi:elem2");

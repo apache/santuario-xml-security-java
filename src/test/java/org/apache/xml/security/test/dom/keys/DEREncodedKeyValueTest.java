@@ -24,6 +24,7 @@ import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
 
 import org.apache.xml.security.keys.content.DEREncodedKeyValue;
+import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.JavaUtils;
 import org.apache.xml.security.utils.XMLUtils;
@@ -56,7 +57,7 @@ public class DEREncodedKeyValueTest {
 
     @org.junit.jupiter.api.Test
     public void testSchema() throws Exception {
-        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(XMLUtils.newDocument(), rsaKeyControl);
+        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(TestUtils.newDocument(), rsaKeyControl);
         Element element = derEncodedKeyValue.getElement();
 
         assertEquals("http://www.w3.org/2009/xmldsig11#", element.getNamespaceURI());
@@ -101,28 +102,28 @@ public class DEREncodedKeyValueTest {
 
     @org.junit.jupiter.api.Test
     public void testRSAPublicKeyFromKey() throws Exception {
-        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(XMLUtils.newDocument(), rsaKeyControl);
+        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(TestUtils.newDocument(), rsaKeyControl);
         assertEquals(rsaKeyControl, derEncodedKeyValue.getPublicKey());
         assertArrayEquals(rsaKeyControl.getEncoded(), derEncodedKeyValue.getBytesFromTextChild());
     }
 
     @org.junit.jupiter.api.Test
     public void testDSAPublicKeyFromKey() throws Exception {
-        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(XMLUtils.newDocument(), dsaKeyControl);
+        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(TestUtils.newDocument(), dsaKeyControl);
         assertEquals(dsaKeyControl, derEncodedKeyValue.getPublicKey());
         assertArrayEquals(dsaKeyControl.getEncoded(), derEncodedKeyValue.getBytesFromTextChild());
     }
 
     @org.junit.jupiter.api.Test
     public void testECPublicKeyFromKey() throws Exception {
-        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(XMLUtils.newDocument(), ecKeyControl);
+        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(TestUtils.newDocument(), ecKeyControl);
         assertEquals(ecKeyControl, derEncodedKeyValue.getPublicKey());
         assertArrayEquals(ecKeyControl.getEncoded(), derEncodedKeyValue.getBytesFromTextChild());
     }
 
     @org.junit.jupiter.api.Test
     public void testId() throws Exception {
-        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(XMLUtils.newDocument(), rsaKeyControl);
+        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(TestUtils.newDocument(), rsaKeyControl);
         assertEquals("", derEncodedKeyValue.getId());
         assertNull(derEncodedKeyValue.getElement().getAttributeNodeNS(null, Constants._ATT_ID));
 

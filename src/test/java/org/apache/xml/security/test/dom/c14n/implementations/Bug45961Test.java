@@ -30,9 +30,9 @@ import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.signature.ObjectContainer;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
+import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.Constants;
-import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -83,7 +83,7 @@ public class Bug45961Test {
         X509Certificate signingCert = (X509Certificate) ks
         .getCertificate(ALIAS);
 
-        Document document = XMLUtils.newDocument();
+        Document document = TestUtils.newDocument();
 
         XMLSignature signature = new XMLSignature(document, null,
                                                   XMLSignature.ALGO_ID_SIGNATURE_DSA,

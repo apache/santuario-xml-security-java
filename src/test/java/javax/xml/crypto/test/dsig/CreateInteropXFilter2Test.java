@@ -33,7 +33,6 @@ import javax.xml.crypto.dsig.dom.*;
 import javax.xml.crypto.dsig.keyinfo.*;
 import javax.xml.crypto.dsig.spec.*;
 
-import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.*;
 
 import javax.xml.crypto.test.KeySelectors;
@@ -128,7 +127,7 @@ public class CreateInteropXFilter2Test {
         XMLSignature sig = fac.newXMLSignature
             (si, ki, null, null, "signature-value");
 
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
         Element tbs1 = doc.createElementNS(null, "ToBeSigned");
         Comment tbs1Com = doc.createComment(" comment ");
         Element tbs1Data = doc.createElementNS(null, "Data");

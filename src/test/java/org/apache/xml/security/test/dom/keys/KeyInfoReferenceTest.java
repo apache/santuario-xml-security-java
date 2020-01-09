@@ -21,6 +21,7 @@ package org.apache.xml.security.test.dom.keys;
 import java.io.FileInputStream;
 
 import org.apache.xml.security.keys.content.KeyInfoReference;
+import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
@@ -42,7 +43,7 @@ public class KeyInfoReferenceTest {
 
     @org.junit.jupiter.api.Test
     public void testSchema() throws Exception {
-        KeyInfoReference keyInfoReference = new KeyInfoReference(XMLUtils.newDocument(), URI_CONTROL);
+        KeyInfoReference keyInfoReference = new KeyInfoReference(TestUtils.newDocument(), URI_CONTROL);
         Element element = keyInfoReference.getElement();
 
         assertEquals("http://www.w3.org/2009/xmldsig11#", element.getNamespaceURI());
@@ -62,13 +63,13 @@ public class KeyInfoReferenceTest {
 
     @org.junit.jupiter.api.Test
     public void testURIOnConstruction() throws Exception {
-        KeyInfoReference keyInfoReference = new KeyInfoReference(XMLUtils.newDocument(), URI_CONTROL);
+        KeyInfoReference keyInfoReference = new KeyInfoReference(TestUtils.newDocument(), URI_CONTROL);
         assertEquals(URI_CONTROL, keyInfoReference.getURI());
     }
 
     @org.junit.jupiter.api.Test
     public void testId() throws Exception {
-        KeyInfoReference keyInfoReference = new KeyInfoReference(XMLUtils.newDocument(), URI_CONTROL);
+        KeyInfoReference keyInfoReference = new KeyInfoReference(TestUtils.newDocument(), URI_CONTROL);
         assertEquals("", keyInfoReference.getId());
         assertNull(keyInfoReference.getElement().getAttributeNodeNS(null, Constants._ATT_ID));
 

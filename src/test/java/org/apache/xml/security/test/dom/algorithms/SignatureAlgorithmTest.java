@@ -27,7 +27,7 @@ import java.util.Map;
 import org.apache.xml.security.algorithms.SignatureAlgorithm;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
-import org.apache.xml.security.utils.XMLUtils;
+import org.apache.xml.security.test.dom.TestUtils;
 import org.w3c.dom.Document;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -44,7 +44,7 @@ public class SignatureAlgorithmTest {
 
     @org.junit.jupiter.api.Test
     public void testSameKeySeveralAlgorithmSigning() throws Exception {
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
         SignatureAlgorithm signatureAlgorithm =
             new SignatureAlgorithm(doc, XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1);
         PrivateKey pk = KeyPairGenerator.getInstance("RSA").genKeyPair().getPrivate();
@@ -76,7 +76,7 @@ public class SignatureAlgorithmTest {
         Map<String, Class<?>> algorithmHash = (Map<String, Class<?>>)algorithmHashField.get(null);
         assertFalse(algorithmHash.isEmpty());
 
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
         Provider provider = new org.bouncycastle.jce.provider.BouncyCastleProvider();
 
         for (String algorithmURI : algorithmHash.keySet()) {

@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.xml.security.c14n.implementations.NameSpaceSymbTable;
-import org.apache.xml.security.utils.XMLUtils;
+import org.apache.xml.security.test.dom.TestUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 
@@ -38,7 +38,7 @@ public class NameSpaceSymbTableTest {
     static Attr node1, node2;
     static {
         try {
-            Document doc = XMLUtils.newDocument();
+            Document doc = TestUtils.newDocument();
             node1 = doc.createAttributeNS("a","b");
             node2 = doc.createAttributeNS("b","c");
         } catch (Exception e) {

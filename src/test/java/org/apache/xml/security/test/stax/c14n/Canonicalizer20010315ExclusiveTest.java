@@ -23,8 +23,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer20010315_ExclOmitCommentsTransformer;
 import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer20010315_ExclWithCommentsTransformer;
+import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
-import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -236,7 +236,7 @@ public class Canonicalizer20010315ExclusiveTest {
      */
     @org.junit.jupiter.api.Test
     public void test24Aexcl() throws Exception {
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
         Element local = doc.createElementNS("foo:bar", "dsig:local");
         Element test = doc.createElementNS("http://example.net", "etsi:test");
         Element elem2 = doc.createElementNS("http://example.net", "etsi:elem2");

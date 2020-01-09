@@ -24,6 +24,7 @@ import java.security.cert.X509Certificate;
 
 import org.apache.xml.security.Init;
 import org.apache.xml.security.keys.content.x509.XMLX509Digest;
+import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
@@ -57,7 +58,7 @@ public class XMLX509DigestTest {
 
     @org.junit.jupiter.api.Test
     public void testSchema() throws Exception {
-        XMLX509Digest x509Digest = new XMLX509Digest(XMLUtils.newDocument(), digestControl, ALG_URI_CONTROL);
+        XMLX509Digest x509Digest = new XMLX509Digest(TestUtils.newDocument(), digestControl, ALG_URI_CONTROL);
         Element element = x509Digest.getElement();
 
         assertEquals("http://www.w3.org/2009/xmldsig11#", element.getNamespaceURI());
@@ -77,14 +78,14 @@ public class XMLX509DigestTest {
 
     @org.junit.jupiter.api.Test
     public void testDigestOnConstructionWithCert() throws Exception {
-        XMLX509Digest x509Digest = new XMLX509Digest(XMLUtils.newDocument(), certControl, ALG_URI_CONTROL);
+        XMLX509Digest x509Digest = new XMLX509Digest(TestUtils.newDocument(), certControl, ALG_URI_CONTROL);
         assertEquals(ALG_URI_CONTROL, x509Digest.getAlgorithm());
         assertArrayEquals(digestControl, x509Digest.getDigestBytes());
     }
 
     @org.junit.jupiter.api.Test
     public void testDigestOnConstructionWithBytes() throws Exception {
-        XMLX509Digest x509Digest = new XMLX509Digest(XMLUtils.newDocument(), digestControl, ALG_URI_CONTROL);
+        XMLX509Digest x509Digest = new XMLX509Digest(TestUtils.newDocument(), digestControl, ALG_URI_CONTROL);
         assertEquals(ALG_URI_CONTROL, x509Digest.getAlgorithm());
         assertArrayEquals(digestControl, x509Digest.getDigestBytes());
     }

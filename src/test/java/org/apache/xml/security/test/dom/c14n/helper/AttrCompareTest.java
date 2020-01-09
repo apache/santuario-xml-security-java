@@ -22,8 +22,8 @@ package org.apache.xml.security.test.dom.c14n.helper;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.xml.security.c14n.helper.AttrCompare;
+import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.utils.Constants;
-import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -220,7 +220,7 @@ public class AttrCompareTest {
     private static Document createDoc(
         String documentElement
     ) throws ParserConfigurationException {
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
         Element root = doc.createElementNS(null, documentElement);
 
         doc.appendChild(root);

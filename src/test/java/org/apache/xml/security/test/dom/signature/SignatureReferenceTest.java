@@ -47,6 +47,7 @@ import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.signature.reference.ReferenceData;
 import org.apache.xml.security.signature.reference.ReferenceNodeSetData;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
+import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.ElementProxy;
@@ -112,7 +113,7 @@ public class SignatureReferenceTest {
     // See SANTUARIO-465
     @org.junit.jupiter.api.Test
     public void testNoReferenceChildren() throws ParserConfigurationException, XMLSecurityException {
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
         Element referenceElement = doc.createElementNS(Constants.SignatureSpecNS, "Reference");
         referenceElement.setAttributeNS(null, "URI", "#_12345");
 
@@ -230,7 +231,7 @@ public class SignatureReferenceTest {
     }
 
     private Document getOriginalDocument() throws Throwable {
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
 
         Element rootElement = doc.createElementNS("http://ns.example.org/", "root");
         rootElement.appendChild(doc.createTextNode("Hello World!"));

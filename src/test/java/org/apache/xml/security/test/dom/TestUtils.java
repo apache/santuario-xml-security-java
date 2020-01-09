@@ -18,11 +18,26 @@
  */
 package org.apache.xml.security.test.dom;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.apache.xml.security.utils.Constants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class TestUtils {
+
+    private static final DocumentBuilderFactory DBF = DocumentBuilderFactory.newInstance();
+
+    static {
+        DBF.setNamespaceAware(true);
+        try {
+            DBF.setFeature(javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING, true);
+        } catch (ParserConfigurationException e) {
+            // Ignore: DocumentBuilderFactory is required to support the secure processing feature
+            e.printStackTrace();        // NOPMD
+        }
+    }
 
     /**
      * Method createDSctx
@@ -42,4 +57,7 @@ public class TestUtils {
         return ctx;
     }
 
+    public static Document newDocument() throws ParserConfigurationException {
+        return DBF.newDocumentBuilder().newDocument();
+    }
 }

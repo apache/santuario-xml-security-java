@@ -45,8 +45,6 @@ import javax.xml.crypto.test.KeySelectors;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import org.apache.xml.security.utils.XMLUtils;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -112,7 +110,7 @@ public class CreatePhaosXMLDSig3Test {
         // create XMLSignature
         XMLSignature sig = fac.newXMLSignature(si, null);
 
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
         DOMSignContext dsc = new DOMSignContext
             (new KeySelectors.SecretKeySelector
              ("test".getBytes(StandardCharsets.US_ASCII)), doc);
@@ -154,7 +152,7 @@ public class CreatePhaosXMLDSig3Test {
         // create XMLSignature
         XMLSignature sig = fac.newXMLSignature(si, null);
 
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
         Element player = doc.createElementNS(null, "player");
         player.setAttributeNS(null, "bats", "left");
         player.setAttributeNS(null, "id", "10012");

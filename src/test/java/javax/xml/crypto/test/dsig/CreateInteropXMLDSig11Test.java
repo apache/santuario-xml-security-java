@@ -30,7 +30,6 @@ import javax.xml.crypto.dsig.dom.*;
 import javax.xml.crypto.dsig.keyinfo.*;
 import javax.xml.crypto.dsig.spec.*;
 
-import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.*;
 
 import javax.xml.crypto.test.KeySelectors;
@@ -294,7 +293,7 @@ public class CreateInteropXMLDSig11Test {
         SignedInfo si = fac.newSignedInfo(withoutComments, sm,
                                           Collections.singletonList(ref));
 
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
         // create Objects
         Element webElem = doc.createElementNS(null, "Web");
         Text text = doc.createTextNode("up up and away");

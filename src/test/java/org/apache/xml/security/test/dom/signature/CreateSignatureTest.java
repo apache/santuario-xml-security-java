@@ -45,6 +45,7 @@ import org.apache.xml.security.signature.SignedInfo;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
+import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.transforms.params.XPath2FilterContainer;
 import org.apache.xml.security.transforms.params.XPathContainer;
@@ -82,7 +83,7 @@ public class CreateSignatureTest {
      */
     @org.junit.jupiter.api.Test
     public void testEmptyNodeSet() throws Exception {
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
         Element envelope = doc.createElementNS("http://www.usps.gov/", "Envelope");
         envelope.appendChild(doc.createTextNode("\n"));
         doc.appendChild(envelope);
@@ -157,7 +158,7 @@ public class CreateSignatureTest {
 
     @org.junit.jupiter.api.Test
     public void testXFilter2Signature() throws Exception {
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
         doc.appendChild(doc.createComment(" Comment before "));
         Element root = doc.createElementNS("", "RootElement");
 
@@ -260,7 +261,7 @@ public class CreateSignatureTest {
     @org.junit.jupiter.api.Test
     public void testSHA256Digest() throws Exception {
         PrivateKey privateKey = kp.getPrivate();
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
         doc.appendChild(doc.createComment(" Comment before "));
         Element root = doc.createElementNS("", "RootElement");
 
@@ -299,7 +300,7 @@ public class CreateSignatureTest {
     @org.junit.jupiter.api.Test
     public void testSignatureProperties() throws Exception {
         PrivateKey privateKey = kp.getPrivate();
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
         Element root = doc.createElementNS("", "RootElement");
 
         doc.appendChild(root);
@@ -348,7 +349,7 @@ public class CreateSignatureTest {
     @org.junit.jupiter.api.Test
     public void testAddDuplicateKeyInfo() throws Exception {
         PrivateKey privateKey = kp.getPrivate();
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
         Element root = doc.createElementNS("", "RootElement");
 
         doc.appendChild(root);
@@ -395,7 +396,7 @@ public class CreateSignatureTest {
     @org.junit.jupiter.api.Test
     public void testWrongSignatureName() throws Exception {
         PrivateKey privateKey = kp.getPrivate();
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
         Element root = doc.createElementNS("", "RootElement");
 
         doc.appendChild(root);
@@ -462,7 +463,7 @@ public class CreateSignatureTest {
 
     private String doSign() throws Exception {
         PrivateKey privateKey = kp.getPrivate();
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
         doc.appendChild(doc.createComment(" Comment before "));
         Element root = doc.createElementNS("", "RootElement");
 
@@ -507,7 +508,7 @@ public class CreateSignatureTest {
         }
         ks.load(fis, "changeit".toCharArray());
         PrivateKey privateKey = (PrivateKey) ks.getKey("mullan", "changeit".toCharArray());
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
         X509Certificate signingCert = (X509Certificate) ks.getCertificate("mullan");
         doc.appendChild(doc.createComment(" Comment before "));
         Element root = doc.createElementNS("", "RootElement");

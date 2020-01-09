@@ -136,7 +136,7 @@ public class CreateBaltimore23Test {
         // create XMLSignature
         XMLSignature sig = fac.newXMLSignature(si, dsa);
 
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
         Element envelope = doc.createElementNS
             ("http://example.org/envelope", "Envelope");
         envelope.setAttributeNS
@@ -434,7 +434,7 @@ public class CreateBaltimore23Test {
             (Transform.XPATH, xpf)));
         KeyInfo ki = kifac.newKeyInfo(Collections.singletonList(rm), null);
 
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
 
         // create objects
         List<XMLObject> objs = new ArrayList<>();
@@ -658,7 +658,7 @@ public class CreateBaltimore23Test {
         SignedInfo si = fac.newSignedInfo(withoutComments, sm,
             Collections.singletonList(ref));
 
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
 
         // create XMLSignature
         XMLSignature sig = fac.newXMLSignature(si, ki);
@@ -710,7 +710,7 @@ public class CreateBaltimore23Test {
         SignedInfo si = fac.newSignedInfo(withoutComments, sm,
             Collections.singletonList(ref));
 
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
         // create Objects
         XMLObject obj = fac.newXMLObject(Collections.singletonList
             (new DOMStructure(doc.createTextNode("some text"))),

@@ -1008,24 +1008,6 @@ public final class XMLUtils {
         return true;
     }
 
-    public static Document newDocument() throws ParserConfigurationException {
-        ClassLoader loader = getContextClassLoader();
-        if (loader == null) {
-            loader = getClassLoader(XMLUtils.class);
-        }
-        // If the ClassLoader is null then just create a DocumentBuilder and use it
-        if (loader == null) {
-            DocumentBuilder documentBuilder = createDocumentBuilder(true);
-            return documentBuilder.newDocument();
-        }
-
-        Queue<DocumentBuilder> queue = getDocumentBuilderQueue(true, loader);
-        DocumentBuilder documentBuilder = getDocumentBuilder(true, queue);
-        Document doc = documentBuilder.newDocument();
-        repoolDocumentBuilder(documentBuilder, queue);
-        return doc;
-    }
-
     public static Document read(InputStream inputStream, boolean disAllowDocTypeDeclarations) throws ParserConfigurationException, SAXException, IOException {
         ClassLoader loader = getContextClassLoader();
         if (loader == null) {

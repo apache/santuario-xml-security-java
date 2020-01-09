@@ -33,7 +33,7 @@ import javax.xml.crypto.dsig.keyinfo.KeyInfo;
 import javax.xml.crypto.dsig.keyinfo.KeyInfoFactory;
 
 import org.apache.jcp.xml.dsig.internal.dom.DOMUtils;
-import org.apache.xml.security.utils.XMLUtils;
+import org.apache.xml.security.test.dom.TestUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -120,7 +120,7 @@ public class KeyInfoTest {
             fail("Should raise a NullPointerException");
         } catch (NullPointerException npe) {}
 
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
         Element elem = doc.createElementNS("http://acme.org", "parent");
         doc.appendChild(elem);
         DOMStructure parent = new DOMStructure(elem);
@@ -140,7 +140,7 @@ public class KeyInfoTest {
         }
 
         // check if key info is inserted before nextSibling
-        doc = XMLUtils.newDocument();
+        doc = TestUtils.newDocument();
         elem = doc.createElementNS("http://acme.org", "parent");
         doc.appendChild(elem);
         Element nextSib = doc.createElementNS("http://acme.org", "nextSib");

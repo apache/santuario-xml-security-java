@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.test.stax.utils;
 
-import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.*;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -36,7 +35,7 @@ public class StAX2DOM {
         //skip possible text at the beginning of a document and go directly to the root tag
         while (xmlStreamReader.hasNext() && xmlStreamReader.next() != XMLStreamConstants.START_ELEMENT) {       //NOPMD
         }
-        Document document = XMLUtils.newDocument();
+        Document document = org.apache.xml.security.test.dom.TestUtils.newDocument();
         StAX2DOM.readDocElements(document, document, xmlStreamReader, false, false);
         xmlStreamReader.close();
         return document;

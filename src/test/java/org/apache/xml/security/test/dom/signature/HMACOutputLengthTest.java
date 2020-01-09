@@ -32,6 +32,7 @@ import org.apache.xml.security.Init;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
+import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 
@@ -78,7 +79,7 @@ public class HMACOutputLengthTest {
 
     @org.junit.jupiter.api.Test
     public void test_generate_hmac_sha1_40() throws Exception {
-        Document doc = XMLUtils.newDocument();
+        Document doc = TestUtils.newDocument();
         XMLSignature sig =
             new XMLSignature(
                 doc, null, XMLSignature.ALGO_ID_MAC_HMAC_SHA1,

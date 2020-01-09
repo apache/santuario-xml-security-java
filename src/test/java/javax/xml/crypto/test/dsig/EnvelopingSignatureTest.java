@@ -162,7 +162,7 @@ public class EnvelopingSignatureTest {
         XMLObject obj = fac.newXMLObject(
             Collections.singletonList(new DOMStructure(child)),
             "object", null, "UTF-8");
-      
+
         // Create a KeyInfo and add the KeyValue to it
         KeyValue kv = kif.newKeyValue(rsaKeyPair.getPublic());
         KeyInfo ki = kif.newKeyInfo(Collections.singletonList(kv));
@@ -170,7 +170,7 @@ public class EnvelopingSignatureTest {
         XMLSignature sig = fac.newXMLSignature(si, ki,
                                                Collections.singletonList(obj),
                                                "signature", null);
-        DOMSignContext dsc = new DOMSignContext(rsaKeyPair.getPrivate(), doc);       
+        DOMSignContext dsc = new DOMSignContext(rsaKeyPair.getPrivate(), doc);
         sig.sign(dsc);
 
         // validate signature
