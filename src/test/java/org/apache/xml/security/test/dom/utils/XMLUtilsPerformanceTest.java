@@ -18,7 +18,10 @@
  */
 package org.apache.xml.security.test.dom.utils;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
@@ -39,8 +42,8 @@ public class XMLUtilsPerformanceTest extends AbstractBenchmark {
     @BenchmarkOptions(callgc = false, benchmarkRounds = 100000, warmupRounds = 100)
     @Test
     public void testXMLUtils() throws Exception {
-        InputSource inputSource = new InputSource(new StringReader("<xml>123</xml>"));
-        XMLUtils.read(inputSource, false);
+        InputStream inputStream = new ByteArrayInputStream("<xml>123</xml>".getBytes(StandardCharsets.UTF_8));
+        XMLUtils.read(inputStream, false);
     }
 
     @BenchmarkOptions(callgc = false, benchmarkRounds = 100000, warmupRounds = 100)

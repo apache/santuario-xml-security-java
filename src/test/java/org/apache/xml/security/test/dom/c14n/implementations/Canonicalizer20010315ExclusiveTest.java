@@ -19,9 +19,10 @@
 package org.apache.xml.security.test.dom.c14n.implementations;
 
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -44,7 +45,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -238,7 +238,7 @@ public class Canonicalizer20010315ExclusiveTest {
             + "</ns0:Ping>"
             + "</env:Body>";
 
-        Document doc = XMLUtils.read(new InputSource(new StringReader(XML)), false);
+        Document doc = XMLUtils.read(new ByteArrayInputStream(XML.getBytes(StandardCharsets.UTF_8)), false);
         Canonicalizer20010315ExclOmitComments c14n =
             new Canonicalizer20010315ExclOmitComments();
         Set<Node> nodeSet = new HashSet<>();
@@ -332,7 +332,7 @@ public class Canonicalizer20010315ExclusiveTest {
                         + "</ns0:Ping>"
                         + "</env:Body>";
 
-        Document doc = XMLUtils.read(new InputSource(new StringReader(XML)), false);
+        Document doc = XMLUtils.read(new ByteArrayInputStream(XML.getBytes(StandardCharsets.UTF_8)), false);
         {
             Canonicalizer20010315ExclOmitComments c14n =
                     new Canonicalizer20010315ExclOmitComments();
@@ -395,7 +395,7 @@ public class Canonicalizer20010315ExclusiveTest {
                         + "</ns0:Ping>"
                         + "</env:Body>";
 
-        Document doc = XMLUtils.read(new InputSource(new StringReader(XML)), false);
+        Document doc = XMLUtils.read(new ByteArrayInputStream(XML.getBytes(StandardCharsets.UTF_8)), false);
         {
             Canonicalizer20010315ExclOmitComments c14n =
                     new Canonicalizer20010315ExclOmitComments();
@@ -445,7 +445,7 @@ public class Canonicalizer20010315ExclusiveTest {
                         + "</ns0:Ping>"
                         + "</env:Body>";
 
-        Document doc = XMLUtils.read(new InputSource(new StringReader(XML)), false);
+        Document doc = XMLUtils.read(new ByteArrayInputStream(XML.getBytes(StandardCharsets.UTF_8)), false);
         {
             Canonicalizer20010315ExclOmitComments c14n =
                     new Canonicalizer20010315ExclOmitComments();
@@ -495,7 +495,7 @@ public class Canonicalizer20010315ExclusiveTest {
                         + "</ns0:Ping>"
                         + "</env:Body>";
 
-        Document doc = XMLUtils.read(new InputSource(new StringReader(XML)), false);
+        Document doc = XMLUtils.read(new ByteArrayInputStream(XML.getBytes(StandardCharsets.UTF_8)), false);
         {
             Canonicalizer20010315ExclOmitComments c14n =
                     new Canonicalizer20010315ExclOmitComments();
@@ -545,7 +545,7 @@ public class Canonicalizer20010315ExclusiveTest {
                         + "</ns0:Ping>"
                         + "</env:Body>";
 
-        Document doc = XMLUtils.read(new InputSource(new StringReader(XML)), false);
+        Document doc = XMLUtils.read(new ByteArrayInputStream(XML.getBytes(StandardCharsets.UTF_8)), false);
         Canonicalizer20010315ExclOmitComments c14n =
                 new Canonicalizer20010315ExclOmitComments();
         byte[] bytes = c14n.engineCanonicalizeSubTree(doc.getDocumentElement().getFirstChild(), "#default", true);
@@ -580,7 +580,7 @@ public class Canonicalizer20010315ExclusiveTest {
                         + "</ns0:Ping>"
                         + "</env:Body>";
 
-        Document doc = XMLUtils.read(new InputSource(new StringReader(XML)), false);
+        Document doc = XMLUtils.read(new ByteArrayInputStream(XML.getBytes(StandardCharsets.UTF_8)), false);
         Canonicalizer20010315ExclOmitComments c14n =
                 new Canonicalizer20010315ExclOmitComments();
         byte[] bytes = c14n.engineCanonicalizeSubTree(doc.getDocumentElement().getFirstChild(), "#default", true);
@@ -615,7 +615,7 @@ public class Canonicalizer20010315ExclusiveTest {
                         + "</ns0:Ping>"
                         + "</env:Body>";
 
-        Document doc = XMLUtils.read(new InputSource(new StringReader(XML)), false);
+        Document doc = XMLUtils.read(new ByteArrayInputStream(XML.getBytes(StandardCharsets.UTF_8)), false);
         Canonicalizer20010315ExclOmitComments c14n =
                 new Canonicalizer20010315ExclOmitComments();
         byte[] bytes = c14n.engineCanonicalizeSubTree(doc.getDocumentElement().getFirstChild(), "#default", true);
@@ -650,7 +650,7 @@ public class Canonicalizer20010315ExclusiveTest {
                         + "</ns0:Ping>"
                         + "</env:Body>";
 
-        Document doc = XMLUtils.read(new InputSource(new StringReader(XML)), false);
+        Document doc = XMLUtils.read(new ByteArrayInputStream(XML.getBytes(StandardCharsets.UTF_8)), false);
         Canonicalizer20010315ExclOmitComments c14n =
                 new Canonicalizer20010315ExclOmitComments();
         byte[] bytes = c14n.engineCanonicalizeSubTree(doc.getDocumentElement().getFirstChild(), "#default", true);
@@ -680,7 +680,7 @@ public class Canonicalizer20010315ExclusiveTest {
                         + "<ns0:text xsi:type=\"xsd:string\">hello</ns0:text>"
                         + "</ns0:Ping>";
 
-        Document doc = XMLUtils.read(new InputSource(new StringReader(XML)), false);
+        Document doc = XMLUtils.read(new ByteArrayInputStream(XML.getBytes(StandardCharsets.UTF_8)), false);
         Canonicalizer20010315ExclOmitComments c14n =
                 new Canonicalizer20010315ExclOmitComments();
         byte[] bytes = c14n.engineCanonicalizeSubTree(doc.getDocumentElement().getFirstChild().getFirstChild(), "#default", true);

@@ -35,7 +35,6 @@ import java.security.cert.X509CRL;
 import java.util.*;
 
 import org.w3c.dom.*;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXParseException;
 
 import javax.xml.crypto.KeySelector;
@@ -599,7 +598,7 @@ public class CreateBaltimore23Test {
 
         // read document back into DOM tree
         try {
-            doc = XMLUtils.read(new InputSource(new StringReader(sw.toString())), false);
+            doc = XMLUtils.read(new ByteArrayInputStream(sw.toString().getBytes(StandardCharsets.UTF_8)), false);
         } catch (SAXParseException spe) {
             System.err.println("line:" + spe.getLineNumber());
             System.err.println("xml:" + sw.toString());

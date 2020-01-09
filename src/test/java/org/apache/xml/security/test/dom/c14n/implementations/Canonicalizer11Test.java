@@ -24,6 +24,7 @@ import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
@@ -31,7 +32,6 @@ import javax.xml.xpath.XPathFactory;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.utils.JavaUtils;
-import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
@@ -237,7 +237,11 @@ public class Canonicalizer11Test {
         Map<String, String> namespaces
     ) throws Exception {
 
-        Document doc = XMLUtils.read(fileIn, false);
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        dbf.setFeature(javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING, true);
+        dbf.setNamespaceAware(true);
+
+        Document doc = dbf.newDocumentBuilder().parse(fileIn);
 
         Canonicalizer c14n = Canonicalizer.getInstance(c14nURI);
         byte[] c14nBytes = null;

@@ -50,7 +50,6 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
@@ -1027,10 +1026,6 @@ public final class XMLUtils {
         return doc;
     }
 
-    public static Document read(InputStream inputStream) throws ParserConfigurationException, SAXException, IOException {
-        return read(inputStream, true);
-    }
-
     public static Document read(InputStream inputStream, boolean disAllowDocTypeDeclarations) throws ParserConfigurationException, SAXException, IOException {
         ClassLoader loader = getContextClassLoader();
         if (loader == null) {
@@ -1045,48 +1040,6 @@ public final class XMLUtils {
         Queue<DocumentBuilder> queue = getDocumentBuilderQueue(disAllowDocTypeDeclarations, loader);
         DocumentBuilder documentBuilder = getDocumentBuilder(disAllowDocTypeDeclarations, queue);
         Document doc = documentBuilder.parse(inputStream);
-        repoolDocumentBuilder(documentBuilder, queue);
-        return doc;
-    }
-
-    public static Document read(String uri, boolean disAllowDocTypeDeclarations)
-        throws ParserConfigurationException, SAXException, IOException {
-        ClassLoader loader = getContextClassLoader();
-        if (loader == null) {
-            loader = getClassLoader(XMLUtils.class);
-        }
-        // If the ClassLoader is null then just create a DocumentBuilder and use it
-        if (loader == null) {
-            DocumentBuilder documentBuilder = createDocumentBuilder(disAllowDocTypeDeclarations);
-            return documentBuilder.parse(uri);
-        }
-
-        Queue<DocumentBuilder> queue = getDocumentBuilderQueue(disAllowDocTypeDeclarations, loader);
-        DocumentBuilder documentBuilder = getDocumentBuilder(disAllowDocTypeDeclarations, queue);
-        Document doc = documentBuilder.parse(uri);
-        repoolDocumentBuilder(documentBuilder, queue);
-        return doc;
-    }
-
-    public static Document read(InputSource inputSource) throws ParserConfigurationException, SAXException, IOException {
-        return read(inputSource, true);
-    }
-
-    public static Document read(InputSource inputSource, boolean disAllowDocTypeDeclarations)
-        throws ParserConfigurationException, SAXException, IOException {
-        ClassLoader loader = getContextClassLoader();
-        if (loader == null) {
-            loader = getClassLoader(XMLUtils.class);
-        }
-        // If the ClassLoader is null then just create a DocumentBuilder and use it
-        if (loader == null) {
-            DocumentBuilder documentBuilder = createDocumentBuilder(disAllowDocTypeDeclarations);
-            return documentBuilder.parse(inputSource);
-        }
-
-        Queue<DocumentBuilder> queue = getDocumentBuilderQueue(disAllowDocTypeDeclarations, loader);
-        DocumentBuilder documentBuilder = getDocumentBuilder(disAllowDocTypeDeclarations, queue);
-        Document doc = documentBuilder.parse(inputSource);
         repoolDocumentBuilder(documentBuilder, queue);
         return doc;
     }

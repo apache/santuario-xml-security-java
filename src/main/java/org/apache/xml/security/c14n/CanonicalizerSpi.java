@@ -26,7 +26,6 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
 
 /**
  * Base class which all Canonicalization algorithms extend.
@@ -55,9 +54,7 @@ public abstract class CanonicalizerSpi {
 
         Document document = null;
         try (java.io.InputStream bais = new ByteArrayInputStream(inputBytes)) {
-            InputSource in = new InputSource(bais);
-
-            document = XMLUtils.read(in, secureValidation);
+            document = XMLUtils.read(bais, secureValidation);
         }
         return this.engineCanonicalizeSubTree(document);
     }

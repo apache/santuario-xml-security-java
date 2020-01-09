@@ -40,7 +40,6 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
 
 /**
  *
@@ -252,7 +251,6 @@ public final class Canonicalizer {
         java.io.IOException, org.xml.sax.SAXException, CanonicalizationException {
         Document document = null;
         try (InputStream bais = new ByteArrayInputStream(inputBytes)) {
-            InputSource in = new InputSource(bais);
 
             /*
              * Text from the spec:
@@ -268,7 +266,7 @@ public final class Canonicalizer {
              * though the document type declaration is not retained in the
              * canonical form.
              */
-            document = XMLUtils.read(in, secureValidation);
+            document = XMLUtils.read(bais, secureValidation);
         }
         return this.canonicalizeSubtree(document);
     }
