@@ -20,6 +20,7 @@ package org.apache.xml.security.test.dom.encryption;
 
 import java.security.cert.X509Certificate;
 import java.nio.charset.StandardCharsets;
+import java.security.PrivateKey;
 import java.security.PublicKey;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
@@ -44,15 +45,8 @@ public class BobKeyResolver extends KeyResolverSpi {
 
     private KeyName _kn;
 
-    /**
-     * Method engineCanResolve
-     *
-     * @param element
-     * @param BaseURI
-     * @param storage
-     *
-     */
-    public boolean engineCanResolve(Element element, String BaseURI, StorageResolver storage) {
+    @Override
+    protected boolean engineCanResolve(Element element, String BaseURI, StorageResolver storage) {
         if (element == null) {
             return false;
         }
@@ -73,65 +67,43 @@ public class BobKeyResolver extends KeyResolverSpi {
         return false;
     }
 
-    /**
-     * Method engineResolvePublicKey
-     *
-     * @param element
-     * @param BaseURI
-     * @param storage
-     * @return null if no {@link PublicKey} could be obtained
-     * @throws KeyResolverException
-     */
-    public PublicKey engineLookupAndResolvePublicKey(
-        Element element, String BaseURI, StorageResolver storage
+    @Override
+    protected PublicKey engineResolvePublicKey(
+        Element element, String BaseURI, StorageResolver storage, boolean secureValidation
     ) throws KeyResolverException {
         return null;
     }
 
-    /**
-     * Method engineResolveX509Certificate
-     *
-     * @param element
-     * @param BaseURI
-     * @param storage
-     *
-     * @throws KeyResolverException
-     */
-    public X509Certificate engineLookupResolveX509Certificate(
-        Element element, String BaseURI, StorageResolver storage
+    @Override
+    protected X509Certificate engineResolveX509Certificate(
+        Element element, String BaseURI, StorageResolver storage, boolean secureValidation
     ) throws KeyResolverException {
         return null;
     }
 
-    /**
-     * Method engineResolveSecretKey
-     *
-     * @param element
-     * @param BaseURI
-     * @param storage
-     *
-     * @throws KeyResolverException
-     */
-    public SecretKey engineLookupAndResolveSecretKey(
-        Element element, String BaseURI, StorageResolver storage
+    @Override
+    protected SecretKey engineResolveSecretKey(
+        Element element, String BaseURI, StorageResolver storage, boolean secureValidation
     ) throws KeyResolverException {
-        if (engineCanResolve(element, BaseURI, storage)) {
-            try {
-                DESedeKeySpec keySpec =
-                    new DESedeKeySpec("abcdefghijklmnopqrstuvwx".getBytes(StandardCharsets.US_ASCII));
-                SecretKeyFactory keyFactory =
-                    SecretKeyFactory.getInstance("DESede");
-                SecretKey key = keyFactory.generateSecret(keySpec);
+        try {
+            DESedeKeySpec keySpec =
+                new DESedeKeySpec("abcdefghijklmnopqrstuvwx".getBytes(StandardCharsets.US_ASCII));
+            SecretKeyFactory keyFactory =
+                SecretKeyFactory.getInstance("DESede");
+            SecretKey key = keyFactory.generateSecret(keySpec);
 
-                return key;
-            }
-            catch (Exception e) {
-                throw new KeyResolverException("Something badly wrong in creation of bob's key");
-            }
+            return key;
         }
-
-        return null;
+        catch (Exception e) {
+            throw new KeyResolverException("Something badly wrong in creation of bob's key");
+        }
     }
 
+    @Override
+    protected PrivateKey engineResolvePrivateKey(
+        Element element, String BaseURI, StorageResolver storage, boolean secureValidation
+    ) throws KeyResolverException {
+        return null;
+    }
 }
 

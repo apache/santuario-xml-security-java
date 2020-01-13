@@ -127,7 +127,7 @@ public class BaltimoreEncTest {
         org.apache.xml.security.Init.init();
 
         // Register our key resolver
-        KeyResolver.register("org.apache.xml.security.test.dom.encryption.BobKeyResolver", false);
+        KeyResolver.register("org.apache.xml.security.test.dom.encryption.BobKeyResolver");
 
         // Check what algorithms are available
 

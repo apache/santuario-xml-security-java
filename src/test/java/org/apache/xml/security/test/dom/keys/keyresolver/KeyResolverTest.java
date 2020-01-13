@@ -289,7 +289,7 @@ public class KeyResolverTest {
         decryptDocument(document, new MyPrivateKeyResolver());
 
         // Now test with a static KeyResolver
-        KeyResolver.registerAtStart(MyPrivateKeyResolver.class.getName(), false);
+        KeyResolver.registerAtStart(MyPrivateKeyResolver.class.getName());
         KeyResolverSpi resolver = KeyResolver.iterator().next();
         assertEquals(MyPrivateKeyResolver.class.getName(), resolver.getClass().getName());
 
@@ -321,21 +321,41 @@ public class KeyResolverTest {
         private static PrivateKey pk;
         private static String pkName;
 
-        public boolean engineCanResolve(Element element, String BaseURI, StorageResolver storage) {
-            return false;
+        @Override
+        protected boolean engineCanResolve(Element element, String baseURI, StorageResolver storage) {
+            return Constants.SignatureSpecNS.equals(element.getNamespaceURI()) &&
+                Constants._TAG_KEYNAME.equals(element.getLocalName());
         }
 
-        public PrivateKey engineLookupAndResolvePrivateKey(
-            Element element, String BaseURI, StorageResolver storage
+        @Override
+        protected PublicKey engineResolvePublicKey(
+            Element element, String BaseURI, StorageResolver storage, boolean secureValidation
         ) throws KeyResolverException {
-            if (Constants.SignatureSpecNS.equals(element.getNamespaceURI()) &&
-                Constants._TAG_KEYNAME.equals(element.getLocalName())) {
-                String keyName = element.getFirstChild().getNodeValue();
-                if (pkName.equals(keyName)) {
-                    return pk;
-                }
-            }
+            return null;
+        }
 
+        @Override
+        protected X509Certificate engineResolveX509Certificate(
+            Element element, String BaseURI, StorageResolver storage, boolean secureValidation
+        ) throws KeyResolverException {
+            return null;
+        }
+
+        @Override
+        protected PrivateKey engineResolvePrivateKey(
+            Element element, String baseURI, StorageResolver storage, boolean secureValidation
+        ) throws KeyResolverException {
+            String keyName = element.getFirstChild().getNodeValue();
+            if (pkName.equals(keyName)) {
+                return pk;
+            }
+            return null;
+        }
+
+        @Override
+        protected javax.crypto.SecretKey engineResolveSecretKey(
+            Element element, String baseURI, StorageResolver storage, boolean secureValidation
+        ) {
             return null;
         }
     }

@@ -25,7 +25,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import javax.crypto.SecretKey;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import org.apache.xml.security.keys.keyresolver.implementations.DEREncodedKeyValueResolver;
 import org.apache.xml.security.keys.keyresolver.implementations.DSAKeyValueResolver;
@@ -41,8 +42,6 @@ import org.apache.xml.security.keys.keyresolver.implementations.X509SubjectNameR
 import org.apache.xml.security.keys.storage.StorageResolver;
 import org.apache.xml.security.utils.ClassLoaderUtils;
 import org.apache.xml.security.utils.JavaUtils;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 /**
  * KeyResolver is factory class for subclass of KeyResolverSpi that
@@ -53,20 +52,7 @@ public class KeyResolver {
     private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(KeyResolver.class);
 
-    /** Field resolverVector */
-    private static List<KeyResolver> resolverVector = new CopyOnWriteArrayList<>();
-
-    /** Field resolverSpi */
-    private final KeyResolverSpi resolverSpi;
-
-    /**
-     * Constructor.
-     *
-     * @param keyResolverSpi a KeyResolverSpi instance
-     */
-    private KeyResolver(KeyResolverSpi keyResolverSpi) {
-        resolverSpi = keyResolverSpi;
-    }
+    private static List<KeyResolverSpi> resolverList = new CopyOnWriteArrayList<>();
 
     /**
      * Method length
@@ -74,7 +60,7 @@ public class KeyResolver {
      * @return the length of resolvers registered
      */
     public static int length() {
-        return resolverVector.size();
+        return resolverList.size();
     }
 
     /**
@@ -83,14 +69,15 @@ public class KeyResolver {
      * @param element
      * @param baseURI
      * @param storage
+     * @param secureValidation
      * @return The certificate represented by the element.
      *
      * @throws KeyResolverException
      */
     public static final X509Certificate getX509Certificate(
-        Element element, String baseURI, StorageResolver storage
+        Element element, String baseURI, StorageResolver storage, boolean secureValidation
     ) throws KeyResolverException {
-        for (KeyResolver resolver : resolverVector) {
+        for (KeyResolverSpi resolver : resolverList) {
             if (resolver == null) {
                 Object[] exArgs = {
                                    element != null
@@ -102,7 +89,7 @@ public class KeyResolver {
             }
             LOG.debug("check resolvability by class {}", resolver.getClass());
 
-            X509Certificate cert = resolver.resolveX509Certificate(element, baseURI, storage);
+            X509Certificate cert = resolver.engineLookupResolveX509Certificate(element, baseURI, storage, secureValidation);
             if (cert != null) {
                 return cert;
             }
@@ -122,14 +109,15 @@ public class KeyResolver {
      * @param element
      * @param baseURI
      * @param storage
+     * @param secureValidation
      * @return the public key contained in the element
      *
      * @throws KeyResolverException
      */
     public static final PublicKey getPublicKey(
-        Element element, String baseURI, StorageResolver storage
+        Element element, String baseURI, StorageResolver storage, boolean secureValidation
     ) throws KeyResolverException {
-        for (KeyResolver resolver : resolverVector) {
+        for (KeyResolverSpi resolver : resolverList) {
             if (resolver == null) {
                 Object[] exArgs = {
                                    element != null
@@ -141,7 +129,7 @@ public class KeyResolver {
             }
             LOG.debug("check resolvability by class {}", resolver.getClass());
 
-            PublicKey cert = resolver.resolvePublicKey(element, baseURI, storage);
+            PublicKey cert = resolver.engineLookupAndResolvePublicKey(element, baseURI, storage, secureValidation);
             if (cert != null) {
                 return cert;
             }
@@ -165,19 +153,17 @@ public class KeyResolver {
      * underlying collection is a CopyOnWriteArrayList.
      *
      * @param className
-     * @param globalResolver Whether the KeyResolverSpi is a global resolver or not
      * @throws InstantiationException
      * @throws IllegalAccessException
      * @throws ClassNotFoundException
      * @throws SecurityException if a security manager is installed and the
      *    caller does not have permission to register the key resolver
      */
-    public static void register(String className, boolean globalResolver)
+    public static void register(String className)
         throws ClassNotFoundException, IllegalAccessException, InstantiationException {
         JavaUtils.checkRegisterPermission();
         KeyResolverSpi keyResolverSpi =
             (KeyResolverSpi) ClassLoaderUtils.loadClass(className, KeyResolver.class).newInstance();
-        keyResolverSpi.setGlobalResolver(globalResolver);
         register(keyResolverSpi, false);
     }
 
@@ -191,17 +177,15 @@ public class KeyResolver {
      * underlying collection is a CopyOnWriteArrayList.
      *
      * @param className
-     * @param globalResolver Whether the KeyResolverSpi is a global resolver or not
      * @throws SecurityException if a security manager is installed and the
      *    caller does not have permission to register the key resolver
      */
-    public static void registerAtStart(String className, boolean globalResolver) {
+    public static void registerAtStart(String className) {
         JavaUtils.checkRegisterPermission();
         KeyResolverSpi keyResolverSpi = null;
         Exception ex = null;
         try {
             keyResolverSpi = (KeyResolverSpi) ClassLoaderUtils.loadClass(className, KeyResolver.class).newInstance();
-            keyResolverSpi.setGlobalResolver(globalResolver);
             register(keyResolverSpi, true);
         } catch (ClassNotFoundException e) {
             ex = e;
@@ -236,11 +220,10 @@ public class KeyResolver {
         boolean start
     ) {
         JavaUtils.checkRegisterPermission();
-        KeyResolver resolver = new KeyResolver(keyResolverSpi);
         if (start) {
-            resolverVector.add(0, resolver);
+            resolverList.add(0, keyResolverSpi);
         } else {
-            resolverVector.add(resolver);
+            resolverList.add(keyResolverSpi);
         }
     }
 
@@ -263,14 +246,13 @@ public class KeyResolver {
     public static void registerClassNames(List<String> classNames)
         throws ClassNotFoundException, IllegalAccessException, InstantiationException {
         JavaUtils.checkRegisterPermission();
-        List<KeyResolver> keyResolverList = new ArrayList<>(classNames.size());
+        List<KeyResolverSpi> keyResolverList = new ArrayList<>(classNames.size());
         for (String className : classNames) {
             KeyResolverSpi keyResolverSpi =
                 (KeyResolverSpi)ClassLoaderUtils.loadClass(className, KeyResolver.class).newInstance();
-            keyResolverSpi.setGlobalResolver(false);
-            keyResolverList.add(new KeyResolver(keyResolverSpi));
+            keyResolverList.add(keyResolverSpi);
         }
-        resolverVector.addAll(keyResolverList);
+        resolverList.addAll(keyResolverList);
     }
 
     /**
@@ -278,116 +260,30 @@ public class KeyResolver {
      */
     public static void registerDefaultResolvers() {
 
-        List<KeyResolver> keyResolverList = new ArrayList<>();
-        keyResolverList.add(new KeyResolver(new RSAKeyValueResolver()));
-        keyResolverList.add(new KeyResolver(new DSAKeyValueResolver()));
-        keyResolverList.add(new KeyResolver(new X509CertificateResolver()));
-        keyResolverList.add(new KeyResolver(new X509SKIResolver()));
-        keyResolverList.add(new KeyResolver(new RetrievalMethodResolver()));
-        keyResolverList.add(new KeyResolver(new X509SubjectNameResolver()));
-        keyResolverList.add(new KeyResolver(new X509IssuerSerialResolver()));
-        keyResolverList.add(new KeyResolver(new DEREncodedKeyValueResolver()));
-        keyResolverList.add(new KeyResolver(new KeyInfoReferenceResolver()));
-        keyResolverList.add(new KeyResolver(new X509DigestResolver()));
-        keyResolverList.add(new KeyResolver(new ECKeyValueResolver()));
+        List<KeyResolverSpi> keyResolverList = new ArrayList<>();
+        keyResolverList.add(new RSAKeyValueResolver());
+        keyResolverList.add(new DSAKeyValueResolver());
+        keyResolverList.add(new X509CertificateResolver());
+        keyResolverList.add(new X509SKIResolver());
+        keyResolverList.add(new RetrievalMethodResolver());
+        keyResolverList.add(new X509SubjectNameResolver());
+        keyResolverList.add(new X509IssuerSerialResolver());
+        keyResolverList.add(new DEREncodedKeyValueResolver());
+        keyResolverList.add(new KeyInfoReferenceResolver());
+        keyResolverList.add(new X509DigestResolver());
+        keyResolverList.add(new ECKeyValueResolver());
 
-        resolverVector.addAll(keyResolverList);
-    }
-
-    /**
-     * Method resolvePublicKey
-     *
-     * @param element
-     * @param baseURI
-     * @param storage
-     * @return resolved public key from the registered from the elements
-     *
-     * @throws KeyResolverException
-     */
-    public PublicKey resolvePublicKey(
-        Element element, String baseURI, StorageResolver storage
-    ) throws KeyResolverException {
-        return resolverSpi.engineLookupAndResolvePublicKey(element, baseURI, storage);
-    }
-
-    /**
-     * Method resolveX509Certificate
-     *
-     * @param element
-     * @param baseURI
-     * @param storage
-     * @return resolved X509certificate key from the registered from the elements
-     *
-     * @throws KeyResolverException
-     */
-    public X509Certificate resolveX509Certificate(
-        Element element, String baseURI, StorageResolver storage
-    ) throws KeyResolverException {
-        return resolverSpi.engineLookupResolveX509Certificate(element, baseURI, storage);
-    }
-
-    /**
-     * @param element
-     * @param baseURI
-     * @param storage
-     * @return resolved SecretKey key from the registered from the elements
-     * @throws KeyResolverException
-     */
-    public SecretKey resolveSecretKey(
-        Element element, String baseURI, StorageResolver storage
-    ) throws KeyResolverException {
-        return resolverSpi.engineLookupAndResolveSecretKey(element, baseURI, storage);
-    }
-
-    /**
-     * Method setProperty
-     *
-     * @param key
-     * @param value
-     */
-    public void setProperty(String key, String value) {
-        resolverSpi.engineSetProperty(key, value);
-    }
-
-    /**
-     * Method getProperty
-     *
-     * @param key
-     * @return the property set for this resolver
-     */
-    public String getProperty(String key) {
-        return resolverSpi.engineGetProperty(key);
-    }
-
-
-    /**
-     * Method understandsProperty
-     *
-     * @param propertyToTest
-     * @return true if the resolver understands property propertyToTest
-     */
-    public boolean understandsProperty(String propertyToTest) {
-        return resolverSpi.understandsProperty(propertyToTest);
-    }
-
-
-    /**
-     * Method resolverClassName
-     *
-     * @return the name of the resolver.
-     */
-    public String resolverClassName() {
-        return resolverSpi.getClass().getName();
+        resolverList.addAll(keyResolverList);
     }
 
     /**
      * Iterate over the KeyResolverSpi instances
      */
     static class ResolverIterator implements Iterator<KeyResolverSpi> {
-        List<KeyResolver> res;
-        Iterator<KeyResolver> it;
+        private List<KeyResolverSpi> res;
+        private Iterator<KeyResolverSpi> it;
 
-        public ResolverIterator(List<KeyResolver> list) {
+        public ResolverIterator(List<KeyResolverSpi> list) {
             res = list;
             it = res.iterator();
         }
@@ -397,12 +293,12 @@ public class KeyResolver {
         }
 
         public KeyResolverSpi next() {
-            KeyResolver resolver = it.next();
+            KeyResolverSpi resolver = it.next();
             if (resolver == null) {
                 throw new RuntimeException("utils.resolver.noClass");
             }
 
-            return resolver.resolverSpi;
+            return resolver;
         }
 
         public void remove() {
@@ -411,6 +307,6 @@ public class KeyResolver {
     }
 
     public static Iterator<KeyResolverSpi> iterator() {
-        return new ResolverIterator(resolverVector);
+        return new ResolverIterator(resolverList);
     }
 }

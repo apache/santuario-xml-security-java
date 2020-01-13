@@ -21,6 +21,7 @@ package org.apache.xml.security.keys.keyresolver.implementations;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
@@ -66,20 +67,17 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
     private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(RetrievalMethodResolver.class);
 
-    /**
-     * Method engineResolvePublicKey
-     * {@inheritDoc}
-     * @param element
-     * @param baseURI
-     * @param storage
-     */
-    public PublicKey engineLookupAndResolvePublicKey(
-           Element element, String baseURI, StorageResolver storage
-    ) {
-        if (!XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_RETRIEVALMETHOD)) {
-            return null;
-        }
+    /** {@inheritDoc} */
+    @Override
+    protected boolean engineCanResolve(Element element, String baseURI, StorageResolver storage) {
+        return XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_RETRIEVALMETHOD);
+    }
 
+    /** {@inheritDoc} */
+    @Override
+    protected PublicKey engineResolvePublicKey(
+           Element element, String baseURI, StorageResolver storage, boolean secureValidation
+    ) {
         try {
             // Create a retrieval method over the given element
             RetrievalMethod rm = new RetrievalMethod(element, baseURI);
@@ -115,7 +113,7 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
                  }
              }
 
-             return resolveKey(e, baseURI, storage);
+             return resolveKey(e, baseURI, storage, secureValidation);
          } catch (XMLSecurityException ex) {
              LOG.debug("XMLSecurityException", ex);
          } catch (CertificateException ex) {
@@ -130,19 +128,10 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
          return null;
     }
 
-    /**
-     * Method engineResolveX509Certificate
-     * {@inheritDoc}
-     * @param element
-     * @param baseURI
-     * @param storage
-     */
-    public X509Certificate engineLookupResolveX509Certificate(
-        Element element, String baseURI, StorageResolver storage) {
-        if (!XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_RETRIEVALMETHOD)) {
-             return null;
-        }
-
+    /** {@inheritDoc} */
+    @Override
+    protected X509Certificate engineResolveX509Certificate(
+        Element element, String baseURI, StorageResolver storage, boolean secureValidation) {
         try {
             RetrievalMethod rm = new RetrievalMethod(element, baseURI);
             String type = rm.getType();
@@ -173,7 +162,7 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
                 }
             }
 
-            return resolveCertificate(e, baseURI, storage);
+            return resolveCertificate(e, baseURI, storage, secureValidation);
         } catch (XMLSecurityException ex) {
             LOG.debug("XMLSecurityException", ex);
         } catch (CertificateException ex) {
@@ -197,7 +186,7 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
      * @throws KeyResolverException
      */
     private static X509Certificate resolveCertificate(
-        Element e, String baseURI, StorageResolver storage
+        Element e, String baseURI, StorageResolver storage, boolean secureValidation
     ) throws KeyResolverException {
         // An element has been provided
         if (e != null) {
@@ -205,7 +194,7 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
                 LOG.debug("Now we have a {" + e.getNamespaceURI() + "}"
                     + e.getLocalName() + " Element");
             }
-            return KeyResolver.getX509Certificate(e, baseURI, storage);
+            return KeyResolver.getX509Certificate(e, baseURI, storage, secureValidation);
         }
         return null;
     }
@@ -215,11 +204,12 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
      * @param e
      * @param baseURI
      * @param storage
+     * @param secureValidation
      * @return a PublicKey from the given information
      * @throws KeyResolverException
      */
     private static PublicKey resolveKey(
-        Element e, String baseURI, StorageResolver storage
+        Element e, String baseURI, StorageResolver storage, boolean secureValidation
     ) throws KeyResolverException {
         // An element has been provided
         if (e != null) {
@@ -227,7 +217,7 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
                 LOG.debug("Now we have a {" + e.getNamespaceURI() + "}"
                     + e.getLocalName() + " Element");
             }
-            return KeyResolver.getPublicKey(e, baseURI, storage);
+            return KeyResolver.getPublicKey(e, baseURI, storage, secureValidation);
         }
         return null;
     }
@@ -282,15 +272,18 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
         return resource;
     }
 
-    /**
-     * Method engineResolveSecretKey
-     * {@inheritDoc}
-     * @param element
-     * @param baseURI
-     * @param storage
-     */
-    public javax.crypto.SecretKey engineLookupAndResolveSecretKey(
-        Element element, String baseURI, StorageResolver storage
+    /** {@inheritDoc} */
+    @Override
+    public javax.crypto.SecretKey engineResolveSecretKey(
+        Element element, String baseURI, StorageResolver storage, boolean secureValidation
+    ) {
+        return null;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected PrivateKey engineResolvePrivateKey(
+        Element element, String baseURI, StorageResolver storage, boolean secureValidation
     ) {
         return null;
     }

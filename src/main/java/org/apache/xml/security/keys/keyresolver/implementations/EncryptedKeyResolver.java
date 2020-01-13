@@ -19,9 +19,11 @@
 package org.apache.xml.security.keys.keyresolver.implementations;
 
 import java.security.Key;
+import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.crypto.SecretKey;
@@ -51,60 +53,63 @@ public class EncryptedKeyResolver extends KeyResolverSpi {
     private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(RSAKeyValueResolver.class);
 
-    private Key kek;
-    private String algorithm;
-    private List<KeyResolverSpi> internalKeyResolvers;
+    private final Key kek;
+    private final String algorithm;
+    private final List<KeyResolverSpi> internalKeyResolvers;
 
     /**
      * Constructor for use when a KEK needs to be derived from a KeyInfo
      * list
      * @param algorithm
+     * @param internalKeyResolvers
      */
-    public EncryptedKeyResolver(String algorithm) {
-        kek = null;
-        this.algorithm = algorithm;
+    public EncryptedKeyResolver(String algorithm, List<KeyResolverSpi> internalKeyResolvers) {
+        this(algorithm, null, internalKeyResolvers);
     }
 
     /**
      * Constructor used for when a KEK has been set
      * @param algorithm
      * @param kek
+     * @param internalKeyResolvers
      */
-    public EncryptedKeyResolver(String algorithm, Key kek) {
+    public EncryptedKeyResolver(String algorithm, Key kek, List<KeyResolverSpi> internalKeyResolvers) {
         this.algorithm = algorithm;
         this.kek = kek;
-    }
-
-    /**
-     * This method is used to add a custom {@link KeyResolverSpi} to help
-     * resolve the KEK.
-     *
-     * @param realKeyResolver
-     */
-    public void registerInternalKeyResolver(KeyResolverSpi realKeyResolver) {
-        if (internalKeyResolvers == null) {
-            internalKeyResolvers = new ArrayList<>();
+        if (internalKeyResolvers != null) {
+            this.internalKeyResolvers = new ArrayList<>(internalKeyResolvers);
+        } else {
+            this.internalKeyResolvers = Collections.emptyList();
         }
-        internalKeyResolvers.add(realKeyResolver);
     }
 
     /** {@inheritDoc} */
-    public PublicKey engineLookupAndResolvePublicKey(
-        Element element, String baseURI, StorageResolver storage
+    @Override
+    protected boolean engineCanResolve(Element element, String baseURI, StorageResolver storage) {
+        return XMLUtils.elementIsInEncryptionSpace(element, EncryptionConstants._TAG_ENCRYPTEDKEY);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected PublicKey engineResolvePublicKey(
+        Element element, String baseURI, StorageResolver storage, boolean secureValidation
     ) {
         return null;
     }
 
     /** {@inheritDoc} */
-    public X509Certificate engineLookupResolveX509Certificate(
-        Element element, String baseURI, StorageResolver storage
+    @Override
+    protected X509Certificate engineResolveX509Certificate(
+        Element element, String baseURI, StorageResolver storage, boolean secureValidation
     ) {
         return null;
     }
 
     /** {@inheritDoc} */
-    public SecretKey engineLookupAndResolveSecretKey(
-        Element element, String baseURI, StorageResolver storage
+    @Override
+    protected SecretKey engineResolveSecretKey(
+        Element element, String baseURI, StorageResolver storage, boolean secureValidation
     ) {
         if (element == null) {
             return null;
@@ -113,26 +118,28 @@ public class EncryptedKeyResolver extends KeyResolverSpi {
         LOG.debug("EncryptedKeyResolver - Can I resolve {}", element.getTagName());
 
         SecretKey key = null;
-        boolean isEncryptedKey =
-            XMLUtils.elementIsInEncryptionSpace(element, EncryptionConstants._TAG_ENCRYPTEDKEY);
-        if (isEncryptedKey) {
-            LOG.debug("Passed an Encrypted Key");
-            try {
-                XMLCipher cipher = XMLCipher.getInstance();
-                cipher.init(XMLCipher.UNWRAP_MODE, kek);
-                if (internalKeyResolvers != null) {
-                    int size = internalKeyResolvers.size();
-                    for (int i = 0; i < size; i++) {
-                        cipher.registerInternalKeyResolver(internalKeyResolvers.get(i));
-                    }
-                }
-                EncryptedKey ek = cipher.loadEncryptedKey(element);
-                key = (SecretKey) cipher.decryptKey(ek, algorithm);
-            } catch (XMLEncryptionException e) {
-                LOG.debug(e.getMessage(), e);
+        LOG.debug("Passed an Encrypted Key");
+        try {
+            XMLCipher cipher = XMLCipher.getInstance();
+            cipher.init(XMLCipher.UNWRAP_MODE, kek);
+            int size = internalKeyResolvers.size();
+            for (int i = 0; i < size; i++) {
+                cipher.registerInternalKeyResolver(internalKeyResolvers.get(i));
             }
+            EncryptedKey ek = cipher.loadEncryptedKey(element);
+            key = (SecretKey) cipher.decryptKey(ek, algorithm);
+        } catch (XMLEncryptionException e) {
+            LOG.debug(e.getMessage(), e);
         }
 
         return key;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected PrivateKey engineResolvePrivateKey(
+        Element element, String baseURI, StorageResolver storage, boolean secureValidation
+    ) {
+        return null;
     }
 }

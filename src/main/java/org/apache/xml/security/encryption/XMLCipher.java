@@ -1738,13 +1738,7 @@ public class XMLCipher {
             if (ki != null) {
                 try {
                     // Add an EncryptedKey resolver
-                    EncryptedKeyResolver resolver = new EncryptedKeyResolver(encMethodAlgorithm, kek);
-                    if (internalKeyResolvers != null) {
-                        int size = internalKeyResolvers.size();
-                        for (int i = 0; i < size; i++) {
-                            resolver.registerInternalKeyResolver(internalKeyResolvers.get(i));
-                        }
-                    }
+                    EncryptedKeyResolver resolver = new EncryptedKeyResolver(encMethodAlgorithm, kek, internalKeyResolvers);
                     ki.registerInternalKeyResolver(resolver);
                     ki.setSecureValidation(secureValidation);
                     key = ki.getSecretKey();
