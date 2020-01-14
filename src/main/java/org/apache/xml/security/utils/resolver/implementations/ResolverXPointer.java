@@ -49,11 +49,6 @@ public class ResolverXPointer extends ResourceResolverSpi {
     private static final String XP = "#xpointer(id(";
     private static final int XP_LENGTH = XP.length();
 
-    @Override
-    public boolean engineIsThreadSafe() {
-        return true;
-    }
-
     /**
      * {@inheritDoc}
      */

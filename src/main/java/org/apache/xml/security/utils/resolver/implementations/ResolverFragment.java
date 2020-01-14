@@ -39,11 +39,6 @@ public class ResolverFragment extends ResourceResolverSpi {
     private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(ResolverFragment.class);
 
-    @Override
-    public boolean engineIsThreadSafe() {
-        return true;
-    }
-
     /**
      * {@inheritDoc}
      */

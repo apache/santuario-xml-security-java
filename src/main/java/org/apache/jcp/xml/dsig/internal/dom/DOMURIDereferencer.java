@@ -28,6 +28,7 @@ import org.w3c.dom.Node;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.utils.XMLUtils;
 import org.apache.xml.security.utils.resolver.ResourceResolver;
+import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.apache.xml.security.signature.XMLSignatureInput;
 
 import javax.xml.crypto.*;
@@ -102,9 +103,8 @@ public final class DOMURIDereferencer implements URIDereferencer {
         }
 
         try {
-            ResourceResolver apacheResolver =
-                ResourceResolver.getInstance(uriAttr, baseURI, secVal);
-            XMLSignatureInput in = apacheResolver.resolve(uriAttr, baseURI, secVal);
+            ResourceResolverContext resContext = new ResourceResolverContext(uriAttr, baseURI, secVal);
+            XMLSignatureInput in = ResourceResolver.resolve(resContext);
             if (in.isOctetStream()) {
                 return new ApacheOctetStreamData(in);
             } else {

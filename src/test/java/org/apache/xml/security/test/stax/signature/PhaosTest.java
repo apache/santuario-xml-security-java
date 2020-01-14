@@ -29,7 +29,6 @@ import org.apache.xml.security.test.stax.utils.StAX2DOM;
 import org.apache.xml.security.test.stax.utils.TestUtils;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.utils.XMLUtils;
-import org.apache.xml.security.utils.resolver.implementations.ResolverDirectHTTP;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
@@ -46,7 +45,6 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.nio.charset.StandardCharsets;
 
@@ -83,10 +81,6 @@ public class PhaosTest {
 
         try {
             ResolverHttp.setProxy(proxy);
-
-            ResolverDirectHTTP resolverDirectHTTP = new ResolverDirectHTTP();
-            resolverDirectHTTP.engineSetProperty("http.proxy.host", ((InetSocketAddress) proxy.address()).getAddress().getHostAddress());
-            resolverDirectHTTP.engineSetProperty("http.proxy.port", "" + ((InetSocketAddress) proxy.address()).getPort());
 
             TestUtils.switchAllowNotSameDocumentReferences(true);
 
@@ -191,10 +185,6 @@ public class PhaosTest {
 
         try {
             ResolverHttp.setProxy(proxy);
-
-            ResolverDirectHTTP resolverDirectHTTP = new ResolverDirectHTTP();
-            resolverDirectHTTP.engineSetProperty("http.proxy.host", ((InetSocketAddress) proxy.address()).getAddress().getHostAddress());
-            resolverDirectHTTP.engineSetProperty("http.proxy.port", "" + ((InetSocketAddress) proxy.address()).getPort());
 
             TestUtils.switchAllowNotSameDocumentReferences(true);
 
@@ -319,10 +309,6 @@ public class PhaosTest {
 
         try {
             ResolverHttp.setProxy(proxy);
-
-            ResolverDirectHTTP resolverDirectHTTP = new ResolverDirectHTTP();
-            resolverDirectHTTP.engineSetProperty("http.proxy.host", ((InetSocketAddress) proxy.address()).getAddress().getHostAddress());
-            resolverDirectHTTP.engineSetProperty("http.proxy.port", "" + ((InetSocketAddress) proxy.address()).getPort());
 
             TestUtils.switchAllowNotSameDocumentReferences(true);
 

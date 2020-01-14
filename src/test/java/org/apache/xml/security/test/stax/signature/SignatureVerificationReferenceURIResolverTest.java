@@ -28,7 +28,9 @@ import java.security.Key;
 import java.security.KeyStore;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.xml.stream.XMLStreamReader;
@@ -204,9 +206,10 @@ public class SignatureVerificationReferenceURIResolverTest extends AbstractSigna
         try {
             ResolverHttp.setProxy(proxy);
 
-            ResolverDirectHTTP resolverDirectHTTP = new ResolverDirectHTTP();
-            resolverDirectHTTP.engineSetProperty("http.proxy.host", ((InetSocketAddress)proxy.address()).getAddress().getHostAddress());
-            resolverDirectHTTP.engineSetProperty("http.proxy.port", "" + ((InetSocketAddress)proxy.address()).getPort());
+            Map<String, String> resolverProperties = new HashMap<>();
+            resolverProperties.put("http.proxy.host", ((InetSocketAddress)proxy.address()).getAddress().getHostAddress());
+            resolverProperties.put("http.proxy.port", "" + ((InetSocketAddress)proxy.address()).getPort());
+            ResolverDirectHTTP resolverDirectHTTP = new ResolverDirectHTTP(resolverProperties);
 
             TestUtils.switchAllowNotSameDocumentReferences(true);
 

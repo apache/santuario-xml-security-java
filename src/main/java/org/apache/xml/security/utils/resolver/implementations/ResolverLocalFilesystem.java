@@ -39,11 +39,6 @@ public class ResolverLocalFilesystem extends ResourceResolverSpi {
     private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(ResolverLocalFilesystem.class);
 
-    @Override
-    public boolean engineIsThreadSafe() {
-        return true;
-    }
-
     /**
      * {@inheritDoc}
      */

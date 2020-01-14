@@ -23,6 +23,7 @@ import java.io.IOException;
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.utils.XMLUtils;
 import org.apache.xml.security.utils.resolver.ResourceResolver;
+import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.apache.xml.security.utils.resolver.ResourceResolverException;
 import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.transforms.TransformationException;
@@ -123,9 +124,9 @@ public class XMLCipherInput {
             XMLSignatureInput input = null;
 
             try {
-                ResourceResolver resolver =
-                    ResourceResolver.getInstance(uriAttr, null, secureValidation);
-                input = resolver.resolve(uriAttr, null, secureValidation);
+                ResourceResolverContext resolverContext =
+                    new ResourceResolverContext(uriAttr, null, secureValidation);
+                input = ResourceResolver.resolve(resolverContext);
             } catch (ResourceResolverException ex) {
                 throw new XMLEncryptionException(ex);
             }

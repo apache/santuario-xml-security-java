@@ -38,6 +38,7 @@ import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 import org.apache.xml.security.utils.resolver.ResourceResolver;
+import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -200,8 +201,8 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
      */
     private XMLSignatureInput resolveInput(Attr uri, String baseURI, boolean secureValidation)
         throws XMLSecurityException {
-        ResourceResolver resRes = ResourceResolver.getInstance(uri, baseURI, secureValidation);
-        return resRes.resolve(uri, baseURI, secureValidation);
+        ResourceResolverContext resContext = new ResourceResolverContext(uri, baseURI, secureValidation);
+        return ResourceResolver.resolve(resContext);
     }
 
     /**

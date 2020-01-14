@@ -46,6 +46,7 @@ import org.apache.xml.security.utils.SignatureElementProxy;
 import org.apache.xml.security.utils.UnsyncBufferedOutputStream;
 import org.apache.xml.security.utils.XMLUtils;
 import org.apache.xml.security.utils.resolver.ResourceResolver;
+import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.apache.xml.security.utils.resolver.ResourceResolverException;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -416,13 +417,11 @@ public class Reference extends SignatureElementProxy {
             Attr uriAttr =
                 getElement().getAttributeNodeNS(null, Constants._ATT_URI);
 
-            ResourceResolver resolver =
-                ResourceResolver.getInstance(
-                    uriAttr, this.baseURI, this.manifest.getPerManifestResolvers(), secureValidation
-                );
-            resolver.addProperties(this.manifest.getResolverProperties());
+            ResourceResolverContext resolverContext =
+                new ResourceResolverContext(uriAttr, this.baseURI,
+                    secureValidation, this.manifest.getResolverProperties());
 
-            return resolver.resolve(uriAttr, this.baseURI, secureValidation);
+            return ResourceResolver.resolve(this.manifest.getPerManifestResolvers(), resolverContext);
         }  catch (ResourceResolverException ex) {
             throw new ReferenceNotInitializedException(ex);
         }

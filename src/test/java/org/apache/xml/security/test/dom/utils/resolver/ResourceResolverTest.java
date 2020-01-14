@@ -23,9 +23,11 @@ import java.io.File;
 
 import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.utils.resolver.ResourceResolver;
+import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
@@ -53,18 +55,21 @@ public class ResourceResolverTest {
         Document doc = TestUtils.newDocument();
         Attr uriAttr = doc.createAttribute("URI");
         uriAttr.setValue("http://www.apache.org");
-        ResourceResolver res =
-            ResourceResolver.getInstance(uriAttr, "http://www.apache.org", true);
+
+        ResourceResolverContext resolverContext =
+            new ResourceResolverContext(uriAttr, "http://www.apache.org", true);
         try {
             uriAttr.setValue("http://xmldsig.pothole.com/xml-stylesheet.txt");
-            res.resolve(uriAttr, null, true);
+            resolverContext = new ResourceResolverContext(uriAttr, null, true);
+            assertNotNull(ResourceResolver.resolve(resolverContext));
         } catch (Exception e) {
             fail(uriAttr.getValue()
                 + " should be resolvable by the OfflineResolver");
         }
         try {
             uriAttr.setValue("http://www.apache.org");
-            res.resolve(uriAttr, null, true);
+            resolverContext = new ResourceResolverContext(uriAttr, null, true);
+            ResourceResolver.resolve(resolverContext);
             fail(uriAttr.getValue() + " should not be resolvable by the OfflineResolver");
         } catch (Exception e) {
             //
@@ -78,9 +83,12 @@ public class ResourceResolverTest {
         String basedir = System.getProperty("basedir");
         String file = new File(basedir, "pom.xml").toURI().toString();
         uriAttr.setValue(file);
-        ResourceResolver res = ResourceResolver.getInstance(uriAttr, file, false);
+
+        ResourceResolverContext resolverContext =
+            new ResourceResolverContext(uriAttr, file, false);
         try {
-            res.resolve(uriAttr, "", true);
+            resolverContext = new ResourceResolverContext(uriAttr, "", false);
+            assertNotNull(ResourceResolver.resolve(resolverContext));
         } catch (Exception e) {
             fail(e.getMessage());
         }

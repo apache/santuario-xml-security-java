@@ -39,7 +39,6 @@ import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.I18n;
 import org.apache.xml.security.utils.SignatureElementProxy;
 import org.apache.xml.security.utils.XMLUtils;
-import org.apache.xml.security.utils.resolver.ResourceResolver;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
@@ -78,7 +77,7 @@ public class Manifest extends SignatureElementProxy {
     private Map<String, String> resolverProperties;
 
     /** Field perManifestResolvers */
-    private List<ResourceResolver> perManifestResolvers;
+    private List<ResourceResolverSpi> perManifestResolvers;
 
     private boolean secureValidation;
 
@@ -466,10 +465,10 @@ public class Manifest extends SignatureElementProxy {
      * Adds Resource Resolver for retrieving resources at specified <code>URI</code> attribute
      * in <code>reference</code> element
      *
-     * @param resolver {@link ResourceResolver} can provide the implementation subclass of
+     * @param resolver {@link ResourceResolverSpi} can provide the implementation subclass of
      * {@link ResourceResolverSpi} for retrieving resource.
      */
-    public void addResourceResolver(ResourceResolver resolver) {
+    public void addResourceResolver(ResourceResolverSpi resolver) {
         if (resolver == null) {
             return;
         }
@@ -480,27 +479,10 @@ public class Manifest extends SignatureElementProxy {
     }
 
     /**
-     * Adds Resource Resolver for retrieving resources at specified <code>URI</code> attribute
-     * in <code>reference</code> element
-     *
-     * @param resolverSpi the implementation subclass of {@link ResourceResolverSpi} for
-     * retrieving the resource.
-     */
-    public void addResourceResolver(ResourceResolverSpi resolverSpi) {
-        if (resolverSpi == null) {
-            return;
-        }
-        if (perManifestResolvers == null) {
-            perManifestResolvers = new ArrayList<>();
-        }
-        perManifestResolvers.add(new ResourceResolver(resolverSpi));
-    }
-
-    /**
      * Get the Per-Manifest Resolver List
      * @return the per-manifest Resolver List
      */
-    public List<ResourceResolver> getPerManifestResolvers() {
+    public List<ResourceResolverSpi> getPerManifestResolvers() {
         return perManifestResolvers;
     }
 

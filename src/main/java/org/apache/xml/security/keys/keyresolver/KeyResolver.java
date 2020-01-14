@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -53,6 +54,8 @@ public class KeyResolver {
         org.slf4j.LoggerFactory.getLogger(KeyResolver.class);
 
     private static List<KeyResolverSpi> resolverList = new CopyOnWriteArrayList<>();
+
+    private static final AtomicBoolean defaultResolversAdded = new AtomicBoolean();
 
     /**
      * Method length
@@ -259,21 +262,23 @@ public class KeyResolver {
      * This method registers the default resolvers.
      */
     public static void registerDefaultResolvers() {
+        // Add a guard so that we don't repeatedly add the default resolvers
+        if (defaultResolversAdded.compareAndSet(false, true)) {
+            List<KeyResolverSpi> keyResolverList = new ArrayList<>();
+            keyResolverList.add(new RSAKeyValueResolver());
+            keyResolverList.add(new DSAKeyValueResolver());
+            keyResolverList.add(new X509CertificateResolver());
+            keyResolverList.add(new X509SKIResolver());
+            keyResolverList.add(new RetrievalMethodResolver());
+            keyResolverList.add(new X509SubjectNameResolver());
+            keyResolverList.add(new X509IssuerSerialResolver());
+            keyResolverList.add(new DEREncodedKeyValueResolver());
+            keyResolverList.add(new KeyInfoReferenceResolver());
+            keyResolverList.add(new X509DigestResolver());
+            keyResolverList.add(new ECKeyValueResolver());
 
-        List<KeyResolverSpi> keyResolverList = new ArrayList<>();
-        keyResolverList.add(new RSAKeyValueResolver());
-        keyResolverList.add(new DSAKeyValueResolver());
-        keyResolverList.add(new X509CertificateResolver());
-        keyResolverList.add(new X509SKIResolver());
-        keyResolverList.add(new RetrievalMethodResolver());
-        keyResolverList.add(new X509SubjectNameResolver());
-        keyResolverList.add(new X509IssuerSerialResolver());
-        keyResolverList.add(new DEREncodedKeyValueResolver());
-        keyResolverList.add(new KeyInfoReferenceResolver());
-        keyResolverList.add(new X509DigestResolver());
-        keyResolverList.add(new ECKeyValueResolver());
-
-        resolverList.addAll(keyResolverList);
+            resolverList.addAll(keyResolverList);
+        }
     }
 
     /**

@@ -47,6 +47,7 @@ import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 import org.apache.xml.security.utils.resolver.ResourceResolver;
+import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -263,8 +264,8 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
         Attr uri = rm.getURIAttr();
         // Apply the transforms
         Transforms transforms = rm.getTransforms();
-        ResourceResolver resRes = ResourceResolver.getInstance(uri, baseURI, secureValidation);
-        XMLSignatureInput resource = resRes.resolve(uri, baseURI, secureValidation);
+        ResourceResolverContext resContext = new ResourceResolverContext(uri, baseURI, secureValidation);
+        XMLSignatureInput resource = ResourceResolver.resolve(resContext);
         if (transforms != null) {
             LOG.debug("We have Transforms");
             resource = transforms.performTransforms(resource);

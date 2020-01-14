@@ -20,7 +20,8 @@ package org.apache.xml.security.utils.resolver;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.utils.ClassLoaderUtils;
@@ -29,7 +30,6 @@ import org.apache.xml.security.utils.resolver.implementations.ResolverDirectHTTP
 import org.apache.xml.security.utils.resolver.implementations.ResolverFragment;
 import org.apache.xml.security.utils.resolver.implementations.ResolverLocalFilesystem;
 import org.apache.xml.security.utils.resolver.implementations.ResolverXPointer;
-import org.w3c.dom.Attr;
 
 /**
  * During reference validation, we have to retrieve resources from somewhere.
@@ -43,67 +43,128 @@ public class ResourceResolver {
         org.slf4j.LoggerFactory.getLogger(ResourceResolver.class);
 
     /** these are the system-wide resolvers */
-    private static final List<ResourceResolver> resolverList = new ArrayList<>();
+    private static final List<ResourceResolverSpi> resolverList = new CopyOnWriteArrayList<>();
 
-    /** Field resolverSpi */
-    private final ResourceResolverSpi resolverSpi;
+    private static final AtomicBoolean defaultResolversAdded = new AtomicBoolean();
 
     /**
-     * Constructor ResourceResolver
+     * Registers a ResourceResolverSpi class.
      *
-     * @param resourceResolver
+     * @param className the name of the ResourceResolverSpi class to be registered
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws ClassNotFoundException
+     * @throws SecurityException if a security manager is installed and the
+     *    caller does not have permission to register a resource resolver
      */
-    public ResourceResolver(ResourceResolverSpi resourceResolver) {
-        this.resolverSpi = resourceResolver;
+    @SuppressWarnings("unchecked")
+    public static void register(String className) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+        JavaUtils.checkRegisterPermission();
+        Class<ResourceResolverSpi> resourceResolverClass =
+            (Class<ResourceResolverSpi>)
+            ClassLoaderUtils.loadClass(className, ResourceResolver.class);
+        register(resourceResolverClass.newInstance(), false);
     }
 
     /**
-     * Method getInstance
+     * Registers a ResourceResolverSpi class at the beginning of the provider list.
      *
-     * @param uriAttr
-     * @param baseURI
-     * @param secureValidation
-     * @return the instance
+     * @param className the name of the ResourceResolverSpi class to be registered
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws ClassNotFoundException
+     * @throws SecurityException if a security manager is installed and the
+     *    caller does not have permission to register a resource resolver
+     */
+    @SuppressWarnings("unchecked")
+    public static void registerAtStart(String className) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+        JavaUtils.checkRegisterPermission();
+        Class<ResourceResolverSpi> resourceResolverClass =
+            (Class<ResourceResolverSpi>)
+            ClassLoaderUtils.loadClass(className, ResourceResolver.class);
+        register(resourceResolverClass.newInstance(), true);
+    }
+
+    /**
+     * Registers a ResourceResolverSpi instance.
+     * @param resourceResolverSpi
+     * @param start
+     * @throws SecurityException if a security manager is installed and the
+     *    caller does not have permission to register a resource resolver
+     */
+    public static void register(ResourceResolverSpi resourceResolverSpi, boolean start) {
+        JavaUtils.checkRegisterPermission();
+        if (start) {
+            resolverList.add(0, resourceResolverSpi);
+        } else {
+            resolverList.add(resourceResolverSpi);
+        }
+        LOG.debug("Registered resolver: {}", resourceResolverSpi.toString());
+    }
+
+    /**
+     * Registers a list of ResourceResolverSpi classes.
+     *
+     * @param classNames
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws ClassNotFoundException
+     * @throws SecurityException if a security manager is installed and the
+     *    caller does not have permission to register the key resolver
+     */
+    public static void registerClassNames(List<String> classNames)
+        throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+        JavaUtils.checkRegisterPermission();
+
+        List<ResourceResolverSpi> resourceResolversToAdd = new ArrayList<>(classNames.size());
+        for (String className : classNames) {
+            ResourceResolverSpi resourceResolverSpi =
+                (ResourceResolverSpi)ClassLoaderUtils.loadClass(className, ResourceResolver.class).newInstance();
+            resourceResolversToAdd.add(resourceResolverSpi);
+        }
+        resolverList.addAll(resourceResolversToAdd);
+    }
+
+    /**
+     * This method registers the default resolvers.
+     */
+    public static void registerDefaultResolvers() {
+        // Add a guard so that we don't repeatedly add the default resolvers
+        if (defaultResolversAdded.compareAndSet(false, true)) {
+            List<ResourceResolverSpi> resourceResolversToAdd = new ArrayList<>();
+            resourceResolversToAdd.add(new ResolverFragment());
+            resourceResolversToAdd.add(new ResolverLocalFilesystem());
+            resourceResolversToAdd.add(new ResolverXPointer());
+            resourceResolversToAdd.add(new ResolverDirectHTTP());
+
+            resolverList.addAll(resourceResolversToAdd);
+        }
+    }
+
+    /**
+     * Method resolve
+     *
+     * @param context
+     * @return the resource
      *
      * @throws ResourceResolverException
      */
-    public static final ResourceResolver getInstance(
-        Attr uriAttr, String baseURI, boolean secureValidation
-    ) throws ResourceResolverException {
-        ResourceResolverContext context = new ResourceResolverContext(uriAttr, baseURI, secureValidation);
-        return internalGetInstance(context);
-    }
+    public static XMLSignatureInput resolve(ResourceResolverContext context)
+        throws ResourceResolverException {
+        for (ResourceResolverSpi resolver : resolverList) {
+            LOG.debug("check resolvability by class {}", resolver.getClass().getName());
 
-    private static <N> ResourceResolver internalGetInstance(ResourceResolverContext context)
-            throws ResourceResolverException {
-        synchronized (resolverList) {
-            for (ResourceResolver resolver : resolverList) {
-                ResourceResolver resolverTmp = resolver;
-                if (!resolver.resolverSpi.engineIsThreadSafe()) {
-                    try {
-                        resolverTmp =
-                            new ResourceResolver(resolver.resolverSpi.getClass().newInstance());
-                    } catch (InstantiationException e) {
-                        throw new ResourceResolverException(e, context.uriToResolve, context.baseUri, "");
-                    } catch (IllegalAccessException e) {
-                        throw new ResourceResolverException(e, context.uriToResolve, context.baseUri, "");
-                    }
+            if (resolver.engineCanResolveURI(context)) {
+                // Check to see whether the Resolver is allowed
+                if (context.secureValidation
+                    && (resolver instanceof ResolverLocalFilesystem
+                        || resolver instanceof ResolverDirectHTTP)) {
+                    Object[] exArgs = { resolver.getClass().getName() };
+                    throw new ResourceResolverException(
+                        "signature.Reference.ForbiddenResolver", exArgs, context.uriToResolve, context.baseUri
+                    );
                 }
-
-                LOG.debug("check resolvability by class {}", resolverTmp.getClass().getName());
-
-                if (resolverTmp.canResolve(context)) {
-                    // Check to see whether the Resolver is allowed
-                    if (context.secureValidation
-                        && (resolverTmp.resolverSpi instanceof ResolverLocalFilesystem
-                            || resolverTmp.resolverSpi instanceof ResolverDirectHTTP)) {
-                        Object[] exArgs = { resolverTmp.resolverSpi.getClass().getName() };
-                        throw new ResourceResolverException(
-                            "signature.Reference.ForbiddenResolver", exArgs, context.uriToResolve, context.baseUri
-                        );
-                    }
-                    return resolverTmp;
-                }
+                return resolver.engineResolveURI(context);
             }
         }
 
@@ -114,225 +175,34 @@ public class ResourceResolver {
     }
 
     /**
-     * Method getInstance
+     * Method resolve
      *
-     * @param uri
-     * @param baseURI
      * @param individualResolvers
-     * @return the instance
+     * @param context
+     * @return the resource
      *
      * @throws ResourceResolverException
      */
-    public static ResourceResolver getInstance(
-        Attr uri, String baseURI, List<ResourceResolver> individualResolvers
-    ) throws ResourceResolverException {
-        return getInstance(uri, baseURI, individualResolvers, true);
-    }
-
-    /**
-     * Method getInstance
-     *
-     * @param uri
-     * @param baseURI
-     * @param individualResolvers
-     * @param secureValidation
-     * @return the instance
-     *
-     * @throws ResourceResolverException
-     */
-    public static ResourceResolver getInstance(
-        Attr uri, String baseURI, List<ResourceResolver> individualResolvers, boolean secureValidation
+    public static XMLSignatureInput resolve(
+        List<ResourceResolverSpi> individualResolvers, ResourceResolverContext context
     ) throws ResourceResolverException {
         LOG.debug(
             "I was asked to create a ResourceResolver and got {}",
             individualResolvers == null ? 0 : individualResolvers.size()
         );
 
-        ResourceResolverContext context = new ResourceResolverContext(uri, baseURI, secureValidation);
-
         // first check the individual Resolvers
         if (individualResolvers != null) {
-            for (int i = 0; i < individualResolvers.size(); i++) {
-                ResourceResolver resolver = individualResolvers.get(i);
+            for (ResourceResolverSpi resolver : individualResolvers) {
+                String currentClass = resolver.getClass().getName();
+                LOG.debug("check resolvability by class {}", currentClass);
 
-                if (resolver != null) {
-                    String currentClass = resolver.resolverSpi.getClass().getName();
-                    LOG.debug("check resolvability by class {}", currentClass);
-
-                    if (resolver.canResolve(context)) {
-                        return resolver;
-                    }
+                if (resolver.engineCanResolveURI(context)) {
+                    return resolver.engineResolveURI(context);
                 }
             }
         }
 
-        return internalGetInstance(context);
-    }
-
-    /**
-     * Registers a ResourceResolverSpi class. This method LOGs a warning if
-     * the class cannot be registered.
-     *
-     * @param className the name of the ResourceResolverSpi class to be registered
-     * @throws SecurityException if a security manager is installed and the
-     *    caller does not have permission to register a resource resolver
-     */
-    @SuppressWarnings("unchecked")
-    public static void register(String className) {
-        JavaUtils.checkRegisterPermission();
-        try {
-            Class<ResourceResolverSpi> resourceResolverClass =
-                (Class<ResourceResolverSpi>)
-                ClassLoaderUtils.loadClass(className, ResourceResolver.class);
-            register(resourceResolverClass, false);
-        } catch (ClassNotFoundException e) {
-            LOG.warn("Error loading resolver " + className + " disabling it");
-        }
-    }
-
-    /**
-     * Registers a ResourceResolverSpi class at the beginning of the provider
-     * list. This method LOGs a warning if the class cannot be registered.
-     *
-     * @param className the name of the ResourceResolverSpi class to be registered
-     * @throws SecurityException if a security manager is installed and the
-     *    caller does not have permission to register a resource resolver
-     */
-    @SuppressWarnings("unchecked")
-    public static void registerAtStart(String className) {
-        JavaUtils.checkRegisterPermission();
-        try {
-            Class<ResourceResolverSpi> resourceResolverClass =
-                (Class<ResourceResolverSpi>)
-                ClassLoaderUtils.loadClass(className, ResourceResolver.class);
-            register(resourceResolverClass, true);
-        } catch (ClassNotFoundException e) {
-            LOG.warn("Error loading resolver " + className + " disabling it");
-        }
-    }
-
-    /**
-     * Registers a ResourceResolverSpi class. This method LOGs a warning if the class
-     * cannot be registered.
-     * @param className
-     * @param start
-     * @throws SecurityException if a security manager is installed and the
-     *    caller does not have permission to register a resource resolver
-     */
-    public static void register(Class<? extends ResourceResolverSpi> className, boolean start) {
-        JavaUtils.checkRegisterPermission();
-        try {
-            ResourceResolverSpi resourceResolverSpi = className.newInstance();
-            register(resourceResolverSpi, start);
-        } catch (IllegalAccessException e) {
-            LOG.warn("Error loading resolver " + className + " disabling it");
-        } catch (InstantiationException e) {
-            LOG.warn("Error loading resolver " + className + " disabling it");
-        }
-    }
-
-    /**
-     * Registers a ResourceResolverSpi instance. This method LOGs a warning if the class
-     * cannot be registered.
-     * @param resourceResolverSpi
-     * @param start
-     * @throws SecurityException if a security manager is installed and the
-     *    caller does not have permission to register a resource resolver
-     */
-    public static void register(ResourceResolverSpi resourceResolverSpi, boolean start) {
-        JavaUtils.checkRegisterPermission();
-        synchronized(resolverList) {
-            if (start) {
-                resolverList.add(0, new ResourceResolver(resourceResolverSpi));
-            } else {
-                resolverList.add(new ResourceResolver(resourceResolverSpi));
-            }
-        }
-        LOG.debug("Registered resolver: {}", resourceResolverSpi.toString());
-    }
-
-    /**
-     * This method registers the default resolvers.
-     */
-    public static void registerDefaultResolvers() {
-        synchronized(resolverList) {
-            resolverList.add(new ResourceResolver(new ResolverFragment()));
-            resolverList.add(new ResourceResolver(new ResolverLocalFilesystem()));
-            resolverList.add(new ResourceResolver(new ResolverXPointer()));
-            resolverList.add(new ResourceResolver(new ResolverDirectHTTP()));
-        }
-    }
-
-    /**
-     * Method resolve
-     *
-     * @param uri
-     * @param baseURI
-     * @return the resource
-     *
-     * @throws ResourceResolverException
-     */
-    public XMLSignatureInput resolve(Attr uri, String baseURI, boolean secureValidation)
-        throws ResourceResolverException {
-        ResourceResolverContext context = new ResourceResolverContext(uri, baseURI, secureValidation);
-        return resolverSpi.engineResolveURI(context);
-    }
-
-    /**
-     * Method setProperty
-     *
-     * @param key
-     * @param value
-     */
-    public void setProperty(String key, String value) {
-        resolverSpi.engineSetProperty(key, value);
-    }
-
-    /**
-     * Method getProperty
-     *
-     * @param key
-     * @return the value of the property
-     */
-    public String getProperty(String key) {
-        return resolverSpi.engineGetProperty(key);
-    }
-
-    /**
-     * Method addProperties
-     *
-     * @param properties
-     */
-    public void addProperties(Map<String, String> properties) {
-        resolverSpi.engineAddProperies(properties);
-    }
-
-    /**
-     * Method getPropertyKeys
-     *
-     * @return all property keys.
-     */
-    public String[] getPropertyKeys() {
-        return resolverSpi.engineGetPropertyKeys();
-    }
-
-    /**
-     * Method understandsProperty
-     *
-     * @param propertyToTest
-     * @return true if the resolver understands the property
-     */
-    public boolean understandsProperty(String propertyToTest) {
-        return resolverSpi.understandsProperty(propertyToTest);
-    }
-
-    /**
-     * Method canResolve
-     *
-     * @param context
-     * @return true if it can resolve the uri
-     */
-    private boolean canResolve(ResourceResolverContext context) {
-        return this.resolverSpi.engineCanResolveURI(context);
+        return resolve(context);
     }
 }

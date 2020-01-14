@@ -41,7 +41,6 @@ import org.apache.xml.security.utils.SignatureElementProxy;
 import org.apache.xml.security.utils.SignerOutputStream;
 import org.apache.xml.security.utils.UnsyncBufferedOutputStream;
 import org.apache.xml.security.utils.XMLUtils;
-import org.apache.xml.security.utils.resolver.ResourceResolver;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -787,15 +786,6 @@ public final class XMLSignature extends SignatureElementProxy {
         } catch (IOException ex) {
             throw new XMLSignatureException(ex);
         }
-    }
-
-    /**
-     * Adds a {@link ResourceResolver} to enable the retrieval of resources.
-     *
-     * @param resolver
-     */
-    public void addResourceResolver(ResourceResolver resolver) {
-        this.getSignedInfo().addResourceResolver(resolver);
     }
 
     /**

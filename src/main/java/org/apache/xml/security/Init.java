@@ -263,7 +263,7 @@ public class Init {
                 if ("ResourceResolvers".equals(tag)) {
                     Element[] resolverElem =
                         XMLUtils.selectNodes(el.getFirstChild(), CONF_NS, "Resolver");
-
+                    List<String> classNames = new ArrayList<>(resolverElem.length);
                     for (Element element : resolverElem) {
                         String javaClass =
                             element.getAttributeNS(null, "JAVACLASS");
@@ -275,16 +275,9 @@ public class Init {
                         } else {
                             LOG.debug("Register Resolver: {}: For unknown purposes", javaClass);
                         }
-                        try {
-                            ResourceResolver.register(javaClass);
-                        } catch (Throwable e) {
-                            LOG.warn(
-                                 "Cannot register:" + javaClass
-                                 + " perhaps some needed jars are not installed",
-                                 e
-                             );
-                        }
+                        classNames.add(javaClass);
                     }
+                    ResourceResolver.registerClassNames(classNames);
                 }
 
                 if ("KeyResolver".equals(tag)){
