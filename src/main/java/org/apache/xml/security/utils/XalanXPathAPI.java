@@ -107,7 +107,7 @@ public class XalanXPathAPI implements XPathAPI {
         context = null;
     }
 
-    public static synchronized boolean isInstalled() {
+    public static boolean isInstalled() {
         return installed;
     }
 

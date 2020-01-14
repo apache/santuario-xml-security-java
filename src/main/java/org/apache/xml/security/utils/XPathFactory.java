@@ -25,29 +25,27 @@ package org.apache.xml.security.utils;
  */
 public abstract class XPathFactory {
 
-    private static boolean xalanInstalled;
+    private static final boolean xalanInstalled;
 
     static {
+        boolean installed = false;
         try {
             Class<?> funcTableClass =
                 ClassLoaderUtils.loadClass("org.apache.xpath.compiler.FunctionTable", XPathFactory.class);
             if (funcTableClass != null) {
-                xalanInstalled = true;
+                installed = true;
             }
         } catch (Exception e) { //NOPMD
             //ignore
         }
-    }
-
-    protected static synchronized boolean isXalanInstalled() {
-        return xalanInstalled;
+        xalanInstalled = installed;
     }
 
     /**
      * Get a new XPathFactory instance
      */
     public static XPathFactory newInstance() {
-        if (!isXalanInstalled()) {
+        if (!xalanInstalled) {
             return new JDKXPathFactory();
         }
         // Xalan is available
