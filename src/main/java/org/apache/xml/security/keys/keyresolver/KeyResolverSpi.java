@@ -43,6 +43,8 @@ import org.xml.sax.SAXException;
  *  &lt;KeyResolver URI="http://www.w3.org/2000/09/xmldsig#KeyValue"
  *   JAVACLASS="MyPackage.MyKeyValueImpl"//gt;
  * </PRE>
+ *
+ * Extensions of this class must be thread-safe.
  */
 public abstract class KeyResolverSpi {
 

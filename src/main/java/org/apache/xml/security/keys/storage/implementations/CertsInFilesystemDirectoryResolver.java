@@ -31,8 +31,10 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.apache.xml.security.keys.storage.StorageResolverException;
 import org.apache.xml.security.keys.storage.StorageResolverSpi;
@@ -49,11 +51,8 @@ public class CertsInFilesystemDirectoryResolver extends StorageResolverSpi {
             CertsInFilesystemDirectoryResolver.class
         );
 
-    /** Field merlinsCertificatesDir */
-    private String merlinsCertificatesDir;
-
     /** Field certs */
-    private List<X509Certificate> certs = new ArrayList<>();
+    private final List<X509Certificate> certs;
 
     /**
      * @param directoryName
@@ -61,19 +60,8 @@ public class CertsInFilesystemDirectoryResolver extends StorageResolverSpi {
      */
     public CertsInFilesystemDirectoryResolver(String directoryName)
         throws StorageResolverException {
-        this.merlinsCertificatesDir = directoryName;
 
-        this.readCertsFromHarddrive();
-    }
-
-    /**
-     * Method readCertsFromHarddrive
-     *
-     * @throws StorageResolverException
-     */
-    private void readCertsFromHarddrive() throws StorageResolverException {
-
-        File certDir = new File(this.merlinsCertificatesDir);
+        File certDir = new File(directoryName);
         List<String> al = new ArrayList<>();
         String[] names = certDir.list();
 
@@ -88,13 +76,13 @@ public class CertsInFilesystemDirectoryResolver extends StorageResolverSpi {
         }
 
         CertificateFactory cf = null;
-
         try {
             cf = CertificateFactory.getInstance("X.509");
         } catch (CertificateException ex) {
             throw new StorageResolverException(ex);
         }
 
+        List<X509Certificate> tmpCerts = new ArrayList<>();
         for (int i = 0; i < al.size(); i++) {
             String filename = certDir.getAbsolutePath() + File.separator + al.get(i);
             boolean added = false;
@@ -106,7 +94,7 @@ public class CertsInFilesystemDirectoryResolver extends StorageResolverSpi {
 
                 //add to ArrayList
                 cert.checkValidity();
-                this.certs.add(cert);
+                tmpCerts.add(cert);
 
                 dn = cert.getSubjectX500Principal().getName();
                 added = true;
@@ -136,6 +124,8 @@ public class CertsInFilesystemDirectoryResolver extends StorageResolverSpi {
                 LOG.debug("Added certificate: {}", dn);
             }
         }
+
+        certs = Collections.unmodifiableList(tmpCerts);
     }
 
     /** {@inheritDoc} */
@@ -149,7 +139,7 @@ public class CertsInFilesystemDirectoryResolver extends StorageResolverSpi {
     private static class FilesystemIterator implements Iterator<Certificate> {
 
         /** Field certs */
-        private List<X509Certificate> certs;
+        private final List<X509Certificate> certs;
 
         /** Field i */
         private int i;
@@ -171,7 +161,11 @@ public class CertsInFilesystemDirectoryResolver extends StorageResolverSpi {
 
         /** {@inheritDoc} */
         public Certificate next() {
-            return this.certs.get(this.i++);
+            if (hasNext()) {
+                return this.certs.get(this.i++);
+            }
+
+            throw new NoSuchElementException();
         }
 
         /**

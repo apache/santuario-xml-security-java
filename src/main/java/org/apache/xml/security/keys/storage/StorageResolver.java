@@ -38,7 +38,7 @@ public class StorageResolver {
         org.slf4j.LoggerFactory.getLogger(StorageResolver.class);
 
     /** Field storageResolvers */
-    private List<StorageResolverSpi> storageResolvers;
+    private final List<StorageResolverSpi> storageResolvers = new ArrayList<>();
 
     /**
      * Constructor StorageResolver
@@ -61,9 +61,6 @@ public class StorageResolver {
      * @param resolver
      */
     public void add(StorageResolverSpi resolver) {
-        if (storageResolvers == null) {
-            storageResolvers = new ArrayList<>();
-        }
         this.storageResolvers.add(resolver);
     }
 
@@ -122,10 +119,10 @@ public class StorageResolver {
     static class StorageResolverIterator implements Iterator<Certificate> {
 
         /** Field resolvers */
-        Iterator<StorageResolverSpi> resolvers = null;
+        private final Iterator<StorageResolverSpi> resolvers;
 
         /** Field currentResolver */
-        Iterator<Certificate> currentResolver = null;
+        private Iterator<Certificate> currentResolver;
 
         /**
          * Constructor StorageResolverIterator
