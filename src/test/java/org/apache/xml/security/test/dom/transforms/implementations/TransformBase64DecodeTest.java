@@ -31,7 +31,6 @@ import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.transforms.Transforms;
-import org.apache.xml.security.transforms.implementations.TransformBase64Decode;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -61,7 +60,7 @@ public class TransformBase64DecodeTest {
         Document doc = TransformBase64DecodeTest.createDocument();
         Transforms t = new Transforms(doc);
         doc.appendChild(t.getElement());
-        t.addTransform(TransformBase64Decode.implementedTransformURI);
+        t.addTransform(Transforms.TRANSFORM_BASE64_DECODE);
 
         XMLSignatureInput in = null;
         try (InputStream is = new ByteArrayInputStream(s1.getBytes())) {
@@ -83,7 +82,7 @@ public class TransformBase64DecodeTest {
         Transforms t = new Transforms(doc);
         doc.appendChild(t.getElement());
 
-        t.addTransform(TransformBase64Decode.implementedTransformURI);
+        t.addTransform(Transforms.TRANSFORM_BASE64_DECODE);
 
         XMLSignatureInput in = null;
         try (InputStream is = new ByteArrayInputStream(s2.getBytes())) {

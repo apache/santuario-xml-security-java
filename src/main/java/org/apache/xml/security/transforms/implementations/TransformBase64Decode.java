@@ -25,7 +25,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.signature.XMLSignatureInput;
-import org.apache.xml.security.transforms.Transform;
 import org.apache.xml.security.transforms.TransformSpi;
 import org.apache.xml.security.transforms.TransformationException;
 import org.apache.xml.security.transforms.Transforms;
@@ -64,37 +63,21 @@ import org.apache.xml.security.utils.JavaUtils;
  */
 public class TransformBase64Decode extends TransformSpi {
 
-    /** Field implementedTransformURI */
-    public static final String implementedTransformURI =
-        Transforms.TRANSFORM_BASE64_DECODE;
-
     /**
-     * Method engineGetURI
-     *
      * {@inheritDoc}
      */
+    @Override
     protected String engineGetURI() {
-        return TransformBase64Decode.implementedTransformURI;
+        return Transforms.TRANSFORM_BASE64_DECODE;
     }
 
     /**
-     * Method enginePerformTransform
-     *
-     * @param input
-     * @return {@link XMLSignatureInput} as the result of transformation
      * {@inheritDoc}
-     * @throws CanonicalizationException
-     * @throws IOException
-     * @throws TransformationException
      */
+    @Override
     protected XMLSignatureInput enginePerformTransform(
-        XMLSignatureInput input, Transform transformObject
-    ) throws IOException, CanonicalizationException, TransformationException {
-        return enginePerformTransform(input, null, transformObject);
-    }
-
-    protected XMLSignatureInput enginePerformTransform(
-        XMLSignatureInput input, OutputStream os, Transform transformObject
+        XMLSignatureInput input, OutputStream os, Element transformElement,
+        String baseURI, boolean secureValidation
     ) throws IOException, CanonicalizationException, TransformationException {
         if (input.isElement()) {
             Node el = input.getSubNode();

@@ -21,15 +21,16 @@ package org.apache.xml.security.transforms.implementations;
 import java.io.OutputStream;
 
 import org.apache.xml.security.c14n.CanonicalizationException;
+import org.apache.xml.security.c14n.implementations.Canonicalizer20010315Excl;
 import org.apache.xml.security.c14n.implementations.Canonicalizer20010315ExclOmitComments;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignatureInput;
-import org.apache.xml.security.transforms.Transform;
 import org.apache.xml.security.transforms.TransformSpi;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.transforms.params.InclusiveNamespaces;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 /**
  * Class TransformC14NExclusive
@@ -37,32 +38,32 @@ import org.w3c.dom.Element;
  */
 public class TransformC14NExclusive extends TransformSpi {
 
-    /** Field implementedTransformURI */
-    public static final String implementedTransformURI =
-        Transforms.TRANSFORM_C14N_EXCL_OMIT_COMMENTS;
-
     /**
-     * Method engineGetURI
-     *
      * {@inheritDoc}
      */
+    @Override
     protected String engineGetURI() {
-        return implementedTransformURI;
+        return Transforms.TRANSFORM_C14N_EXCL_OMIT_COMMENTS;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     protected XMLSignatureInput enginePerformTransform(
-        XMLSignatureInput input, OutputStream os, Transform transformObject
+        XMLSignatureInput input, OutputStream os, Element transformElement,
+        String baseURI, boolean secureValidation
     ) throws CanonicalizationException {
         try {
             String inclusiveNamespaces = null;
 
-            if (transformObject.length(
+            if (length(transformElement,
                 InclusiveNamespaces.ExclusiveCanonicalizationNamespace,
                 InclusiveNamespaces._TAG_EC_INCLUSIVENAMESPACES) == 1
             ) {
                 Element inclusiveElement =
                     XMLUtils.selectNode(
-                        transformObject.getElement().getFirstChild(),
+                        transformElement.getFirstChild(),
                         InclusiveNamespaces.ExclusiveCanonicalizationNamespace,
                         InclusiveNamespaces._TAG_EC_INCLUSIVENAMESPACES,
                         0
@@ -70,11 +71,10 @@ public class TransformC14NExclusive extends TransformSpi {
 
                 inclusiveNamespaces =
                     new InclusiveNamespaces(
-                        inclusiveElement, transformObject.getBaseURI()).getInclusiveNamespaces();
+                        inclusiveElement, baseURI).getInclusiveNamespaces();
             }
 
-            Canonicalizer20010315ExclOmitComments c14n =
-                new Canonicalizer20010315ExclOmitComments();
+            Canonicalizer20010315Excl c14n = getCanonicalizer();
             c14n.setSecureValidation(secureValidation);
             if (os != null) {
                 c14n.setWriter(os);
@@ -90,5 +90,29 @@ public class TransformC14NExclusive extends TransformSpi {
         } catch (XMLSecurityException ex) {
             throw new CanonicalizationException(ex);
         }
+    }
+
+    protected Canonicalizer20010315Excl getCanonicalizer() {
+        return new Canonicalizer20010315ExclOmitComments();
+    }
+
+    /**
+     * Method length
+     *
+     * @param namespace
+     * @param localname
+     * @return the number of elements {namespace}:localname under this element
+     */
+    private int length(Element element, String namespace, String localname) {
+        int number = 0;
+        Node sibling = element.getFirstChild();
+        while (sibling != null) {
+            if (localname.equals(sibling.getLocalName())
+                && namespace.equals(sibling.getNamespaceURI())) {
+                number++;
+            }
+            sibling = sibling.getNextSibling();
+        }
+        return number;
     }
 }

@@ -25,7 +25,6 @@ import javax.xml.transform.TransformerException;
 import org.apache.xml.security.exceptions.XMLSecurityRuntimeException;
 import org.apache.xml.security.signature.NodeFilter;
 import org.apache.xml.security.signature.XMLSignatureInput;
-import org.apache.xml.security.transforms.Transform;
 import org.apache.xml.security.transforms.TransformSpi;
 import org.apache.xml.security.transforms.TransformationException;
 import org.apache.xml.security.transforms.Transforms;
@@ -48,27 +47,21 @@ import org.w3c.dom.Node;
  */
 public class TransformXPath extends TransformSpi {
 
-    /** Field implementedTransformURI */
-    public static final String implementedTransformURI = Transforms.TRANSFORM_XPATH;
-
     /**
-     * Method engineGetURI
-     *
      * {@inheritDoc}
      */
+    @Override
     protected String engineGetURI() {
-        return implementedTransformURI;
+        return Transforms.TRANSFORM_XPATH;
     }
 
     /**
-     * Method enginePerformTransform
      * {@inheritDoc}
-     * @param input
-     *
-     * @throws TransformationException
      */
+    @Override
     protected XMLSignatureInput enginePerformTransform(
-        XMLSignatureInput input, OutputStream os, Transform transformObject
+        XMLSignatureInput input, OutputStream os, Element transformElement,
+        String baseURI, boolean secureValidation
     ) throws TransformationException {
         try {
             /**
@@ -84,7 +77,7 @@ public class TransformXPath extends TransformSpi {
              */
             Element xpathElement =
                 XMLUtils.selectDsNode(
-                    transformObject.getElement().getFirstChild(), Constants._TAG_XPATH, 0);
+                    transformElement.getFirstChild(), Constants._TAG_XPATH, 0);
 
             if (xpathElement == null) {
                 Object[] exArgs = { "ds:XPath", "Transform" };
@@ -120,10 +113,10 @@ public class TransformXPath extends TransformSpi {
 
     static class XPathNodeFilter implements NodeFilter {
 
-        XPathAPI xPathAPI;
-        Node xpathnode;
-        Element xpathElement;
-        String str;
+        private final XPathAPI xPathAPI;
+        private final Node xpathnode;
+        private final Element xpathElement;
+        private final String str;
 
         XPathNodeFilter(Element xpathElement, Node xpathnode, String str, XPathAPI xPathAPI) {
             this.xpathnode = xpathnode;

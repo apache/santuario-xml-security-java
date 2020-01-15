@@ -80,7 +80,7 @@ public class TransformXSLTTest {
         Transform transform =
             new Transform(doc1, Transforms.TRANSFORM_XSLT, transformEl.getChildNodes());
 
-        transform.performTransform(new XMLSignatureInput(doc2));
+        transform.performTransform(new XMLSignatureInput(doc2), false);
     }
 
     private static Document getDocument(File file) throws Exception {

@@ -258,13 +258,13 @@ public class Transforms extends SignatureElementProxy {
                 Transform t = this.item(i);
                 LOG.debug("Perform the ({})th {} transform", i, t.getURI());
                 checkSecureValidation(t);
-                xmlSignatureInput = t.performTransform(xmlSignatureInput);
+                xmlSignatureInput = t.performTransform(xmlSignatureInput, secureValidation);
             }
             if (last >= 0) {
                 Transform t = this.item(last);
                 LOG.debug("Perform the ({})th {} transform", last, t.getURI());
                 checkSecureValidation(t);
-                xmlSignatureInput = t.performTransform(xmlSignatureInput, os);
+                xmlSignatureInput = t.performTransform(xmlSignatureInput, os, secureValidation);
             }
 
             return xmlSignatureInput;
@@ -286,7 +286,6 @@ public class Transforms extends SignatureElementProxy {
                 "signature.Transform.ForbiddenTransform", exArgs
             );
         }
-        transform.setSecureValidation(secureValidation);
     }
 
     /**

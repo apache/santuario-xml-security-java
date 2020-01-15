@@ -130,8 +130,6 @@ public abstract class ApacheTransform extends TransformService {
                 transform =
                     new Transform(ownerDoc, getAlgorithm(), transformElem.getChildNodes());
                 transform.setElement(transformElem, xc.getBaseURI());
-                boolean secVal = Utils.secureValidation(xc);
-                transform.setSecureValidation(secVal);
                 LOG.debug("Created transform for algorithm: {}", getAlgorithm());
             } catch (Exception ex) {
                 throw new TransformException("Couldn't find Transform for: " +
@@ -179,12 +177,12 @@ public abstract class ApacheTransform extends TransformService {
 
         try {
             if (os != null) {
-                in = transform.performTransform(in, os);
+                in = transform.performTransform(in, os, secVal);
                 if (!in.isNodeSet() && !in.isElement()) {
                     return null;
                 }
             } else {
-                in = transform.performTransform(in);
+                in = transform.performTransform(in, secVal);
             }
             if (in.isOctetStream()) {
                 return new ApacheOctetStreamData(in);

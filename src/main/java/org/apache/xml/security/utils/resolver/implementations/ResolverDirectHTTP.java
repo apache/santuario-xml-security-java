@@ -232,13 +232,6 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public String[] engineGetPropertyKeys() {
-        return ResolverDirectHTTP.properties.clone();
-    }
-
     private static URI getNewURI(String uri, String baseURI) throws URISyntaxException {
         URI newUri = null;
         if (baseURI == null || "".equals(baseURI)) {

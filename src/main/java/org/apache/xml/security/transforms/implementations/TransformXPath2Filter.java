@@ -33,7 +33,6 @@ import org.apache.xml.security.c14n.InvalidCanonicalizerException;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.NodeFilter;
 import org.apache.xml.security.signature.XMLSignatureInput;
-import org.apache.xml.security.transforms.Transform;
 import org.apache.xml.security.transforms.TransformSpi;
 import org.apache.xml.security.transforms.TransformationException;
 import org.apache.xml.security.transforms.Transforms;
@@ -55,28 +54,21 @@ import org.xml.sax.SAXException;
  */
 public class TransformXPath2Filter extends TransformSpi {
 
-    /** Field implementedTransformURI */
-    public static final String implementedTransformURI =
-        Transforms.TRANSFORM_XPATH2FILTER;
-
     /**
-     * Method engineGetURI
-     *
      * {@inheritDoc}
      */
+    @Override
     protected String engineGetURI() {
-        return implementedTransformURI;
+        return Transforms.TRANSFORM_XPATH2FILTER;
     }
 
     /**
-     * Method enginePerformTransform
      * {@inheritDoc}
-     * @param input
-     *
-     * @throws TransformationException
      */
+    @Override
     protected XMLSignatureInput enginePerformTransform(
-        XMLSignatureInput input, OutputStream os, Transform transformObject
+        XMLSignatureInput input, OutputStream os, Element transformElement,
+        String baseURI, boolean secureValidation
     ) throws TransformationException {
         try {
             List<NodeList> unionNodes = new ArrayList<>();
@@ -85,7 +77,7 @@ public class TransformXPath2Filter extends TransformSpi {
 
             Element[] xpathElements =
                 XMLUtils.selectNodes(
-                    transformObject.getElement().getFirstChild(),
+                    transformElement.getFirstChild(),
                     XPath2FilterContainer.XPathFilter2NS,
                     XPath2FilterContainer._TAG_XPATH2
                 );
@@ -156,15 +148,15 @@ public class TransformXPath2Filter extends TransformSpi {
 
 class XPath2NodeFilter implements NodeFilter {
 
-    boolean hasUnionFilter;
-    boolean hasSubtractFilter;
-    boolean hasIntersectFilter;
-    Set<Node> unionNodes;
-    Set<Node> subtractNodes;
-    Set<Node> intersectNodes;
-    int inSubtract = -1;
-    int inIntersect = -1;
-    int inUnion = -1;
+    private final boolean hasUnionFilter;
+    private final boolean hasSubtractFilter;
+    private final boolean hasIntersectFilter;
+    private final Set<Node> unionNodes;
+    private final Set<Node> subtractNodes;
+    private final Set<Node> intersectNodes;
+    private int inSubtract = -1;
+    private int inIntersect = -1;
+    private int inUnion = -1;
 
     XPath2NodeFilter(List<NodeList> unionNodes, List<NodeList> subtractNodes,
                      List<NodeList> intersectNodes) {

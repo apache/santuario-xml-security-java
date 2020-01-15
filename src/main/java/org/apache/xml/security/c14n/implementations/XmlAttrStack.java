@@ -37,17 +37,18 @@ class XmlAttrStack {
     private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(XmlAttrStack.class);
 
-    static class XmlsStackElement {
+    private static class XmlsStackElement {
         int level;
         boolean rendered = false;
-        List<Attr> nodes = new ArrayList<>();
+        final List<Attr> nodes = new ArrayList<>();
     }
 
     private int currentLevel = 0;
     private int lastlevel = 0;
     private XmlsStackElement cur;
-    private List<XmlsStackElement> levels = new ArrayList<>();
-    private boolean c14n11;
+
+    private final List<XmlsStackElement> levels = new ArrayList<>();
+    private final boolean c14n11;
 
     public XmlAttrStack(boolean c14n11) {
         this.c14n11 = c14n11;

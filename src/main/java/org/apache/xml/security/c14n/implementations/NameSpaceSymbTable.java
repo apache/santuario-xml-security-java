@@ -50,14 +50,13 @@ public class NameSpaceSymbTable {
     private SymbMap symb;
 
     /**The stacks for removing the definitions when doing pop.*/
-    private List<SymbMap> level;
+    private final List<SymbMap> level = new ArrayList<>();
     private boolean cloned = true;
 
     /**
      * Default constractor
      **/
     public NameSpaceSymbTable() {
-        level = new ArrayList<>();
         //Insert the default binding for xmlns.
         try {
             symb = initialMap.clone();
@@ -289,19 +288,19 @@ public class NameSpaceSymbTable {
  **/
 class NameSpaceSymbEntry implements Cloneable {
 
-    String prefix;
+    final String prefix;
 
     /**The URI that the prefix defines */
-    String uri;
+    final String uri;
+
+    /**The attribute to include.*/
+    final Attr n;
 
     /**The last output in the URI for this prefix (This for speed reason).*/
     String lastrendered = null;
 
     /**This prefix-URI has been already render or not.*/
     boolean rendered = false;
-
-    /**The attribute to include.*/
-    Attr n;
 
     NameSpaceSymbEntry(String name, Attr n, boolean rendered, String prefix) {
         this.uri = name;

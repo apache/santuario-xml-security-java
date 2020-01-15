@@ -23,9 +23,9 @@ import java.io.OutputStream;
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.implementations.Canonicalizer11_WithComments;
 import org.apache.xml.security.signature.XMLSignatureInput;
-import org.apache.xml.security.transforms.Transform;
 import org.apache.xml.security.transforms.TransformSpi;
 import org.apache.xml.security.transforms.Transforms;
+import org.w3c.dom.Element;
 
 /**
  * Implements the <CODE>http://www.w3.org/2006/12/xml-c14n-11#WithComments</CODE>
@@ -34,12 +34,21 @@ import org.apache.xml.security.transforms.Transforms;
  */
 public class TransformC14N11_WithComments extends TransformSpi {
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     protected String engineGetURI() {
         return Transforms.TRANSFORM_C14N11_WITH_COMMENTS;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     protected XMLSignatureInput enginePerformTransform(
-        XMLSignatureInput input, OutputStream os, Transform transform
+        XMLSignatureInput input, OutputStream os, Element transformElement,
+        String baseURI, boolean secureValidation
     ) throws CanonicalizationException {
 
         Canonicalizer11_WithComments c14n = new Canonicalizer11_WithComments();
@@ -48,8 +57,7 @@ public class TransformC14N11_WithComments extends TransformSpi {
             c14n.setWriter(os);
         }
 
-        byte[] result = null;
-        result = c14n.engineCanonicalize(input);
+        byte[] result = c14n.engineCanonicalize(input);
         XMLSignatureInput output = new XMLSignatureInput(result);
         output.setSecureValidation(secureValidation);
         if (os != null) {

@@ -19,6 +19,7 @@
 package org.apache.xml.security.test.dom.transforms;
 
 import java.io.IOException;
+import java.io.OutputStream;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -29,6 +30,7 @@ import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.transforms.Transform;
 import org.apache.xml.security.transforms.TransformSpi;
 import org.apache.xml.security.transforms.TransformationException;
+import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 public class SampleTransform extends TransformSpi {
@@ -43,14 +45,23 @@ public class SampleTransform extends TransformSpi {
         } catch (AlgorithmAlreadyRegisteredException e) { }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     protected String engineGetURI() {
         return uri;
     }
 
-    protected XMLSignatureInput enginePerformTransform(XMLSignatureInput input)
-        throws IOException, CanonicalizationException,
-               InvalidCanonicalizerException, TransformationException,
-               ParserConfigurationException, SAXException {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected XMLSignatureInput enginePerformTransform(XMLSignatureInput input, OutputStream os,
+                                                    Element transformElement, String baseURI,
+                                                    boolean secureValidation)
+        throws IOException, CanonicalizationException, InvalidCanonicalizerException,
+        TransformationException, ParserConfigurationException, SAXException {
         throw new UnsupportedOperationException();
     }
 }

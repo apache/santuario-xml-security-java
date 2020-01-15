@@ -21,10 +21,10 @@ package org.apache.xml.security.transforms.implementations;
 import java.io.OutputStream;
 
 import org.apache.xml.security.signature.XMLSignatureInput;
-import org.apache.xml.security.transforms.Transform;
 import org.apache.xml.security.transforms.TransformSpi;
 import org.apache.xml.security.transforms.TransformationException;
 import org.apache.xml.security.transforms.Transforms;
+import org.w3c.dom.Element;
 
 /**
  * Class TransformXPointer
@@ -32,28 +32,24 @@ import org.apache.xml.security.transforms.Transforms;
  */
 public class TransformXPointer extends TransformSpi {
 
-    /** Field implementedTransformURI */
-    public static final String implementedTransformURI =
-        Transforms.TRANSFORM_XPOINTER;
-
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     protected String engineGetURI() {
-        return implementedTransformURI;
+        return Transforms.TRANSFORM_XPOINTER;
     }
 
     /**
-     * Method enginePerformTransform
-     *
-     * @param input
-     * @return  {@link XMLSignatureInput} as the result of transformation
-     * @throws TransformationException
+     * {@inheritDoc}
      */
+    @Override
     protected XMLSignatureInput enginePerformTransform(
-        XMLSignatureInput input, OutputStream os, Transform transformObject
+        XMLSignatureInput input, OutputStream os, Element transformElement,
+        String baseURI, boolean secureValidation
     ) throws TransformationException {
 
-        Object[] exArgs = { implementedTransformURI };
+        Object[] exArgs = { Transforms.TRANSFORM_XPOINTER };
 
         throw new TransformationException("signature.Transform.NotYetImplemented", exArgs);
     }

@@ -36,7 +36,6 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignatureInput;
-import org.apache.xml.security.transforms.Transform;
 import org.apache.xml.security.transforms.TransformSpi;
 import org.apache.xml.security.transforms.TransformationException;
 import org.apache.xml.security.transforms.Transforms;
@@ -52,10 +51,6 @@ import org.w3c.dom.Element;
  */
 public class TransformXSLT extends TransformSpi {
 
-    /** Field implementedTransformURI */
-    public static final String implementedTransformURI =
-        Transforms.TRANSFORM_XSLT;
-
     static final String XSLTSpecNS = "http://www.w3.org/1999/XSL/Transform";
     static final String defaultXSLTSpecNSprefix = "xslt";
     static final String XSLTSTYLESHEET = "stylesheet";
@@ -64,20 +59,22 @@ public class TransformXSLT extends TransformSpi {
         org.slf4j.LoggerFactory.getLogger(TransformXSLT.class);
 
     /**
-     * Method engineGetURI
-     *
      * {@inheritDoc}
      */
+    @Override
     protected String engineGetURI() {
-        return implementedTransformURI;
+        return Transforms.TRANSFORM_XSLT;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     protected XMLSignatureInput enginePerformTransform(
-        XMLSignatureInput input, OutputStream baos, Transform transformObject
+        XMLSignatureInput input, OutputStream baos, Element transformElement,
+        String baseURI, boolean secureValidation
     ) throws IOException, TransformationException {
         try {
-            Element transformElement = transformObject.getElement();
-
             Element xsltElement =
                 XMLUtils.selectNode(transformElement.getFirstChild(), XSLTSpecNS, "stylesheet", 0);
             if (xsltElement == null) {

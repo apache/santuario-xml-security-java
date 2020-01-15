@@ -499,7 +499,7 @@ public class Reference extends SignatureElementProxy {
                         break;
                     }
 
-                    output = t.performTransform(output, null);
+                    output = t.performTransform(output, null, secureValidation);
                 }
 
                 output.setSourceURI(input.getSourceURI());
