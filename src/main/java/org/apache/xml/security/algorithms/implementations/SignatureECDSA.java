@@ -45,11 +45,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
     private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(SignatureECDSA.class);
 
-    /** {@inheritDoc} */
-    public abstract String engineGetURI();
-
-    /** Field algorithm */
-    private Signature signatureAlgorithm;
+    private final Signature signatureAlgorithm;
 
     /**
      * Converts an ASN.1 ECDSA value to a XML Signature ECDSA Value.
@@ -166,17 +162,6 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
         try {
             this.signatureAlgorithm.initVerify((PublicKey) publicKey);
         } catch (InvalidKeyException ex) {
-            // reinstantiate Signature object to work around bug in JDK
-            // see: http://bugs.sun.com/view_bug.do?bug_id=4953555
-            Signature sig = this.signatureAlgorithm;
-            try {
-                this.signatureAlgorithm = Signature.getInstance(signatureAlgorithm.getAlgorithm());
-            } catch (Exception e) {
-                // this shouldn't occur, but if it does, restore previous
-                // Signature
-                LOG.debug("Exception when reinstantiating Signature: {}", e);
-                this.signatureAlgorithm = sig;
-            }
             throw new XMLSignatureException(ex);
         }
     }
@@ -293,6 +278,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
         }
 
         /** {@inheritDoc} */
+        @Override
         public String engineGetURI() {
             return XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA1;
         }
@@ -317,6 +303,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
         }
 
         /** {@inheritDoc} */
+        @Override
         public String engineGetURI() {
             return XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA224;
         }
@@ -342,6 +329,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
         }
 
         /** {@inheritDoc} */
+        @Override
         public String engineGetURI() {
             return XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA256;
         }
@@ -367,6 +355,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
         }
 
         /** {@inheritDoc} */
+        @Override
         public String engineGetURI() {
             return XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA384;
         }
@@ -392,6 +381,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
         }
 
         /** {@inheritDoc} */
+        @Override
         public String engineGetURI() {
             return XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA512;
         }
@@ -416,6 +406,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
         }
 
         /** {@inheritDoc} */
+        @Override
         public String engineGetURI() {
             return XMLSignature.ALGO_ID_SIGNATURE_ECDSA_RIPEMD160;
         }

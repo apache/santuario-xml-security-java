@@ -164,8 +164,7 @@ public class SignatureAlgorithm extends Algorithm {
     private static SignatureAlgorithmSpi getSignatureAlgorithmSpi(String algorithmURI, Provider provider)
         throws XMLSignatureException {
         try {
-            Class<? extends SignatureAlgorithmSpi> implementingClass =
-                algorithmHash.get(algorithmURI);
+            Class<? extends SignatureAlgorithmSpi> implementingClass = algorithmHash.get(algorithmURI);
             LOG.debug("Create URI \"{}\" class \"{}\"", algorithmURI, implementingClass);
             if (implementingClass == null) {
                 Object[] exArgs = { algorithmURI };

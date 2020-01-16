@@ -156,7 +156,7 @@ public abstract class SignatureAlgorithmSpi {
      *
      * @param element
      */
-    protected void engineGetContextFromElement(Element element) {
+    protected void engineGetContextFromElement(Element element) throws XMLSignatureException {
     }
 
     /**
@@ -168,6 +168,4 @@ public abstract class SignatureAlgorithmSpi {
     protected abstract void engineSetHMACOutputLength(int HMACOutputLength)
         throws XMLSignatureException;
 
-    public void reset() {
-    }
 }

@@ -80,13 +80,11 @@ public class HMACOutputLengthTest {
     @org.junit.jupiter.api.Test
     public void test_generate_hmac_sha1_40() throws Exception {
         Document doc = TestUtils.newDocument();
-        XMLSignature sig =
+        try {
             new XMLSignature(
                 doc, null, XMLSignature.ALGO_ID_MAC_HMAC_SHA1,
-                40, Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS
+                 40, Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS
             );
-        try {
-            sig.sign(getSecretKey("secret".getBytes(StandardCharsets.US_ASCII)));
             fail("Expected HMACOutputLength Exception");
         } catch (XMLSignatureException xse) {
             // System.out.println(xse.getMessage());
@@ -111,15 +109,6 @@ public class HMACOutputLengthTest {
         XMLSignature signature = new XMLSignature(sigElement, file.toURI().toString());
         SecretKey sk = signature.createSecretKey("secret".getBytes(StandardCharsets.US_ASCII));
         return signature.checkSignatureValue(sk);
-    }
-
-    private SecretKey getSecretKey(final byte[] secret) {
-        return new SecretKey() {
-            private static final long serialVersionUID = -6527915934685938837L;
-            public String getFormat()   { return "RAW"; }
-            public byte[] getEncoded()  { return secret; }
-            public String getAlgorithm(){ return "SECRET"; }
-        };
     }
 
 }

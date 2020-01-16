@@ -49,7 +49,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
         org.slf4j.LoggerFactory.getLogger(SignatureDSA.class);
 
     /** Field algorithm */
-    private Signature signatureAlgorithm;
+    private final Signature signatureAlgorithm;
 
     /** size of Q */
     private int size;
@@ -122,8 +122,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
                 LOG.debug("Called DSA.verify() on " + XMLUtils.encodeToString(signature));
             }
 
-            byte[] jcebytes = JavaUtils.convertDsaXMLDSIGtoASN1(signature,
-                                                                size/8);
+            byte[] jcebytes = JavaUtils.convertDsaXMLDSIGtoASN1(signature, size / 8);
 
             return this.signatureAlgorithm.verify(jcebytes);
         } catch (SignatureException ex) {
@@ -151,17 +150,6 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
         try {
             this.signatureAlgorithm.initVerify((PublicKey) publicKey);
         } catch (InvalidKeyException ex) {
-            // reinstantiate Signature object to work around bug in JDK
-            // see: http://bugs.sun.com/view_bug.do?bug_id=4953555
-            Signature sig = this.signatureAlgorithm;
-            try {
-                this.signatureAlgorithm = Signature.getInstance(signatureAlgorithm.getAlgorithm());
-            } catch (Exception e) {
-                // this shouldn't occur, but if it does, restore previous
-                // Signature
-                LOG.debug("Exception when reinstantiating Signature: {}", e);
-                this.signatureAlgorithm = sig;
-            }
             throw new XMLSignatureException(ex);
         }
         size = ((DSAKey)publicKey).getParams().getQ().bitLength();
@@ -174,7 +162,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
         try {
             byte[] jcebytes = this.signatureAlgorithm.sign();
 
-            return JavaUtils.convertDsaASN1toXMLDSIG(jcebytes, size/8);
+            return JavaUtils.convertDsaASN1toXMLDSIG(jcebytes, size / 8);
         } catch (IOException ex) {
             throw new XMLSignatureException(ex);
         } catch (SignatureException ex) {
@@ -301,6 +289,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
             super(provider);
         }
 
+        @Override
         public String engineGetURI() {
             return XMLSignature.ALGO_ID_SIGNATURE_DSA_SHA256;
         }
