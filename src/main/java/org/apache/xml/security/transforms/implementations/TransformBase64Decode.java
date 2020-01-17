@@ -21,19 +21,15 @@ package org.apache.xml.security.transforms.implementations;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.transforms.TransformSpi;
 import org.apache.xml.security.transforms.TransformationException;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.XMLUtils;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
-import org.xml.sax.SAXException;
 
 import org.apache.xml.security.utils.JavaUtils;
 
@@ -98,9 +94,7 @@ public class TransformBase64Decode extends TransformSpi {
             output.setSecureValidation(secureValidation);
             output.setOutputStream(os);
             return output;
-        }
-
-        if (input.isOctetStream() || input.isNodeSet()) {
+        } else if (input.isOctetStream() || input.isNodeSet()) {
             if (os == null) {
                 byte[] base64Bytes = input.getBytes();
                 byte[] decodedBytes = XMLUtils.decode(base64Bytes);
@@ -122,27 +116,10 @@ public class TransformBase64Decode extends TransformSpi {
             return output;
         }
 
-        try {
-            //Exceptional case there is current not text case testing this(Before it was a
-            //a common case).
-            Document doc =
-                XMLUtils.read(input.getOctetStream(), secureValidation);
-
-            Element rootNode = doc.getDocumentElement();
-            StringBuilder sb = new StringBuilder();
-            traverseElement(rootNode, sb);
-            byte[] decodedBytes = XMLUtils.decode(sb.toString());
-            XMLSignatureInput output = new XMLSignatureInput(decodedBytes);
-            output.setSecureValidation(secureValidation);
-            return output;
-        } catch (ParserConfigurationException e) {
-            throw new TransformationException(e, "c14n.Canonicalizer.Exception");
-        } catch (SAXException e) {
-            throw new TransformationException(e, "SAX exception");
-        }
+        throw new TransformationException("empty", new Object[] {"Unrecognized XMLSignatureInput state"});
     }
 
-    void traverseElement(Element node, StringBuilder sb) {
+    private void traverseElement(Element node, StringBuilder sb) {
         Node sibling = node.getFirstChild();
         while (sibling != null) {
             if (Node.ELEMENT_NODE == sibling.getNodeType()) {
