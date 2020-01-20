@@ -25,7 +25,6 @@ import java.util.Set;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 /**
  * Base class which all Canonicalization algorithms extend.
@@ -57,35 +56,6 @@ public abstract class CanonicalizerSpi {
             document = XMLUtils.read(bais, secureValidation);
         }
         return this.engineCanonicalizeSubTree(document);
-    }
-
-    /**
-     * Method engineCanonicalizeXPathNodeSet
-     *
-     * @param xpathNodeSet
-     * @return the c14n bytes
-     * @throws CanonicalizationException
-     */
-    public byte[] engineCanonicalizeXPathNodeSet(NodeList xpathNodeSet)
-        throws CanonicalizationException {
-        return this.engineCanonicalizeXPathNodeSet(
-            XMLUtils.convertNodelistToSet(xpathNodeSet)
-        );
-    }
-
-    /**
-     * Method engineCanonicalizeXPathNodeSet
-     *
-     * @param xpathNodeSet
-     * @param inclusiveNamespaces
-     * @return the c14n bytes
-     * @throws CanonicalizationException
-     */
-    public byte[] engineCanonicalizeXPathNodeSet(NodeList xpathNodeSet, String inclusiveNamespaces)
-        throws CanonicalizationException {
-        return this.engineCanonicalizeXPathNodeSet(
-            XMLUtils.convertNodelistToSet(xpathNodeSet), inclusiveNamespaces
-        );
     }
 
     /**

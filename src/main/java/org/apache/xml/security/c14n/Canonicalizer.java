@@ -35,7 +35,6 @@ import org.apache.xml.security.exceptions.AlgorithmAlreadyRegisteredException;
 import org.apache.xml.security.utils.ClassLoaderUtils;
 import org.apache.xml.security.utils.JavaUtils;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 /**
  *
@@ -287,35 +286,6 @@ public final class Canonicalizer {
     }
 
     /**
-     * Canonicalizes an XPath node set. The <CODE>xpathNodeSet</CODE> is treated
-     * as a list of XPath nodes, not as a list of subtrees.
-     *
-     * @param xpathNodeSet
-     * @return the result of the c14n.
-     * @throws CanonicalizationException
-     */
-    public byte[] canonicalizeXPathNodeSet(NodeList xpathNodeSet)
-        throws CanonicalizationException {
-        return canonicalizerSpi.engineCanonicalizeXPathNodeSet(xpathNodeSet);
-    }
-
-    /**
-     * Canonicalizes an XPath node set. The <CODE>xpathNodeSet</CODE> is treated
-     * as a list of XPath nodes, not as a list of subtrees.
-     *
-     * @param xpathNodeSet
-     * @param inclusiveNamespaces
-     * @return the result of the c14n.
-     * @throws CanonicalizationException
-     */
-    public byte[] canonicalizeXPathNodeSet(
-        NodeList xpathNodeSet, String inclusiveNamespaces
-    ) throws CanonicalizationException {
-        return
-            canonicalizerSpi.engineCanonicalizeXPathNodeSet(xpathNodeSet, inclusiveNamespaces);
-    }
-
-    /**
      * Canonicalizes an XPath node set.
      *
      * @param xpathNodeSet
@@ -338,8 +308,7 @@ public final class Canonicalizer {
     public byte[] canonicalizeXPathNodeSet(
         Set<Node> xpathNodeSet, String inclusiveNamespaces
     ) throws CanonicalizationException {
-        return
-            canonicalizerSpi.engineCanonicalizeXPathNodeSet(xpathNodeSet, inclusiveNamespaces);
+        return canonicalizerSpi.engineCanonicalizeXPathNodeSet(xpathNodeSet, inclusiveNamespaces);
     }
 
     /**

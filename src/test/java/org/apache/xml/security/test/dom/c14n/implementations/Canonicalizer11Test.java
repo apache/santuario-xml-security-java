@@ -32,6 +32,7 @@ import javax.xml.xpath.XPathFactory;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.utils.JavaUtils;
+import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
@@ -249,17 +250,15 @@ public class Canonicalizer11Test {
         if (xpath == null) {
             c14nBytes = c14n.canonicalizeSubtree(doc);
         } else {
-            NodeList nl = null;
-
             XPathFactory xpf = XPathFactory.newInstance();
             XPath xPath = xpf.newXPath();
             DSNamespaceContext namespaceContext =
                 new DSNamespaceContext(namespaces);
             xPath.setNamespaceContext(namespaceContext);
 
-            nl = (NodeList)xPath.evaluate(xpath, doc, XPathConstants.NODESET);
+            NodeList nl = (NodeList)xPath.evaluate(xpath, doc, XPathConstants.NODESET);
 
-            c14nBytes = c14n.canonicalizeXPathNodeSet(nl);
+            c14nBytes = c14n.canonicalizeXPathNodeSet(XMLUtils.convertNodelistToSet(nl));
         }
 
         // org.xml.sax.InputSource refIs = resolver.resolveEntity(null, fileRef);

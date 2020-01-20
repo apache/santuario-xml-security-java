@@ -409,7 +409,7 @@ public class Canonicalizer20010315Test {
         NodeList nodes = (NodeList)xPath.evaluate(xpath, doc, XPathConstants.NODESET);
         Canonicalizer c14n =
             Canonicalizer.getInstance(Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS);
-        byte[] c14nBytes = c14n.canonicalizeXPathNodeSet(nodes);
+        byte[] c14nBytes = c14n.canonicalizeXPathNodeSet(XMLUtils.convertNodelistToSet(nodes));
         InputStream refStream = new FileInputStream(fileRef);
         byte[] refBytes = JavaUtils.getBytesFromStream(refStream);
         assertEquals(new String(refBytes),new String(c14nBytes));
@@ -669,7 +669,7 @@ public class Canonicalizer20010315Test {
         NodeList nodes =
             (NodeList)xPath.evaluate(xpath, doc, XPathConstants.NODESET);
 
-        byte[] result = c14nizer.canonicalizeXPathNodeSet(nodes);
+        byte[] result = c14nizer.canonicalizeXPathNodeSet(XMLUtils.convertNodelistToSet(nodes));
         byte[] defined = definedOutput.getBytes();
         assertEquals(definedOutput, new String(result));
         return java.security.MessageDigest.isEqual(defined, result);
@@ -708,17 +708,15 @@ public class Canonicalizer20010315Test {
         if (xpath == null) {
             c14nBytes = c14n.canonicalizeSubtree(doc);
         } else {
-            NodeList nl = null;
-
             XPathFactory xpf = XPathFactory.newInstance();
             XPath xPath = xpf.newXPath();
             DSNamespaceContext namespaceContext =
                 new DSNamespaceContext(namespaces);
             xPath.setNamespaceContext(namespaceContext);
 
-            nl = (NodeList)xPath.evaluate(xpath, doc, XPathConstants.NODESET);
+            NodeList nl = (NodeList)xPath.evaluate(xpath, doc, XPathConstants.NODESET);
 
-            c14nBytes = c14n.canonicalizeXPathNodeSet(nl);
+            c14nBytes = c14n.canonicalizeXPathNodeSet(XMLUtils.convertNodelistToSet(nl));
         }
 
         // org.xml.sax.InputSource refIs = resolver.resolveEntity(null, fileRef);

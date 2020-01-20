@@ -203,7 +203,7 @@ public class Canonicalizer20010315ExclusiveTest {
             getAbsolutePath(
                 "src/test/resources/org/apache/xml/security/c14n/inExcl/example2_2_3_c14nized_exclusive.xml")
             );
-        byte[] result = c.engineCanonicalizeXPathNodeSet(nodes);
+        byte[] result = c.engineCanonicalizeXPathNodeSet(XMLUtils.convertNodelistToSet(nodes));
         assertEquals(new String(reference), new String(result));
     }
 
