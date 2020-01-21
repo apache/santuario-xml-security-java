@@ -105,7 +105,6 @@ public final class Canonicalizer {
                 canonicalizerHash.get(algorithmURI);
 
             canonicalizerSpi = implementingClass.newInstance();
-            canonicalizerSpi.reset = true;
         } catch (Exception e) {
             Object[] exArgs = { algorithmURI };
             throw new InvalidCanonicalizerException(
@@ -212,24 +211,6 @@ public final class Canonicalizer {
     }
 
     /**
-     * Method getURI
-     *
-     * @return the URI defined for this c14n instance.
-     */
-    public final String getURI() {
-        return canonicalizerSpi.engineGetURI();
-    }
-
-    /**
-     * Method getIncludeComments
-     *
-     * @return true if the c14n respect the comments.
-     */
-    public boolean getIncludeComments() {
-        return canonicalizerSpi.engineGetIncludeComments();
-    }
-
-    /**
      * This method tries to canonicalize the given bytes. It's possible to even
      * canonicalize non-wellformed sequences if they are well-formed after being
      * wrapped with a <CODE>&gt;a&lt;...&gt;/a&lt;</CODE>.
@@ -318,22 +299,6 @@ public final class Canonicalizer {
      */
     public void setWriter(OutputStream os) {
         canonicalizerSpi.setWriter(os);
-    }
-
-    /**
-     * Returns the name of the implementing {@link CanonicalizerSpi} class
-     *
-     * @return the name of the implementing {@link CanonicalizerSpi} class
-     */
-    public String getImplementingCanonicalizerClass() {
-        return canonicalizerSpi.getClass().getName();
-    }
-
-    /**
-     * Set the canonicalizer behaviour to not reset.
-     */
-    public void notReset() {
-        canonicalizerSpi.reset = false;
     }
 
     public boolean isSecureValidation() {

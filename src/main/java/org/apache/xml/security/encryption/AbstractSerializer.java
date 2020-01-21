@@ -100,7 +100,6 @@ public abstract class AbstractSerializer implements Serializer {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             canon.setSecureValidation(secureValidation);
             canon.setWriter(baos);
-            canon.notReset();
             for (int i = 0; i < content.getLength(); i++) {
                 canon.canonicalizeSubtree(content.item(i));
             }
@@ -123,7 +122,6 @@ public abstract class AbstractSerializer implements Serializer {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             canon.setSecureValidation(secureValidation);
             canon.setWriter(baos);
-            canon.notReset();
             for (int i = 0; i < content.getLength(); i++) {
                 canon.canonicalizeSubtree(content.item(i));
             }
@@ -141,7 +139,6 @@ public abstract class AbstractSerializer implements Serializer {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             canon.setSecureValidation(secureValidation);
             canon.setWriter(baos);
-            canon.notReset();
             canon.canonicalizeSubtree(node);
             String ret = baos.toString(StandardCharsets.UTF_8.name());
             baos.reset();
@@ -159,7 +156,6 @@ public abstract class AbstractSerializer implements Serializer {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             canon.setSecureValidation(secureValidation);
             canon.setWriter(baos);
-            canon.notReset();
             canon.canonicalizeSubtree(node);
             return baos.toByteArray();
         }

@@ -831,7 +831,6 @@ public class XMLCipherTest {
             Canonicalizer.getInstance(Canonicalizer.ALGO_ID_C14N_WITH_COMMENTS);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         canon.setWriter(baos);
-        canon.notReset();
         canon.canonicalizeSubtree(e);
         baos.close();
         String before = baos.toString(StandardCharsets.UTF_8.name());

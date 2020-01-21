@@ -32,8 +32,6 @@ import org.w3c.dom.Node;
  */
 public abstract class CanonicalizerSpi {
 
-    /** Reset the writer after a c14n */
-    protected boolean reset = false;
     protected boolean secureValidation;
 
     /**
