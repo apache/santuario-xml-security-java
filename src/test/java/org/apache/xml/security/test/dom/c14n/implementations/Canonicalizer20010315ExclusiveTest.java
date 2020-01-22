@@ -20,6 +20,7 @@ package org.apache.xml.security.test.dom.c14n.implementations;
 
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
@@ -115,10 +116,12 @@ public class Canonicalizer20010315ExclusiveTest {
         Canonicalizer20010315 c = new Canonicalizer20010315WithComments();
         byte[] reference = JavaUtils.getBytesFromFile(getAbsolutePath(
             "src/test/resources/org/apache/xml/security/c14n/inExcl/example2_2_1_c14nized.xml"));
-        byte[] result = c.engineCanonicalizeSubTree(root);
-        boolean equals = java.security.MessageDigest.isEqual(reference, result);
+        try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
+            c.engineCanonicalizeSubTree(root, writer);
+            boolean equals = java.security.MessageDigest.isEqual(reference, writer.toByteArray());
 
-        assertTrue(equals);
+            assertTrue(equals);
+        }
     }
 
     /**
@@ -134,10 +137,12 @@ public class Canonicalizer20010315ExclusiveTest {
         Canonicalizer20010315 c = new Canonicalizer20010315WithComments();
         byte[] reference = JavaUtils.getBytesFromFile(getAbsolutePath(
             "src/test/resources/org/apache/xml/security/c14n/inExcl/example2_2_2_c14nized.xml"));
-        byte[] result = c.engineCanonicalizeSubTree(root);
-        boolean equals = java.security.MessageDigest.isEqual(reference, result);
+        try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
+            c.engineCanonicalizeSubTree(root, writer);
+            boolean equals = java.security.MessageDigest.isEqual(reference, writer.toByteArray());
 
-        assertTrue(equals);
+            assertTrue(equals);
+        }
     }
 
     /**
@@ -153,10 +158,12 @@ public class Canonicalizer20010315ExclusiveTest {
         Canonicalizer20010315Excl c = new Canonicalizer20010315ExclWithComments();
         byte[] reference = JavaUtils.getBytesFromFile(getAbsolutePath(
             "src/test/resources/org/apache/xml/security/c14n/inExcl/example2_2_c14nized_exclusive.xml"));
-        byte[] result = c.engineCanonicalizeSubTree(root);
-        boolean equals = java.security.MessageDigest.isEqual(reference, result);
+        try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
+            c.engineCanonicalizeSubTree(root, writer);
+            boolean equals = java.security.MessageDigest.isEqual(reference, writer.toByteArray());
 
-        assertTrue(equals);
+            assertTrue(equals);
+        }
     }
 
     /**
@@ -172,10 +179,12 @@ public class Canonicalizer20010315ExclusiveTest {
         Canonicalizer20010315Excl c = new Canonicalizer20010315ExclWithComments();
         byte[] reference = JavaUtils.getBytesFromFile(getAbsolutePath(
             "src/test/resources/org/apache/xml/security/c14n/inExcl/example2_2_c14nized_exclusive.xml") );
-        byte[] result = c.engineCanonicalizeSubTree(root);
-        boolean equals = java.security.MessageDigest.isEqual(reference, result);
+        try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
+            c.engineCanonicalizeSubTree(root, writer);
+            boolean equals = java.security.MessageDigest.isEqual(reference, writer.toByteArray());
 
-        assertTrue(equals);
+            assertTrue(equals);
+        }
     }
 
     /**
@@ -203,8 +212,10 @@ public class Canonicalizer20010315ExclusiveTest {
             getAbsolutePath(
                 "src/test/resources/org/apache/xml/security/c14n/inExcl/example2_2_3_c14nized_exclusive.xml")
             );
-        byte[] result = c.engineCanonicalizeXPathNodeSet(XMLUtils.convertNodelistToSet(nodes));
-        assertEquals(new String(reference), new String(result));
+        try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
+            c.engineCanonicalizeXPathNodeSet(XMLUtils.convertNodelistToSet(nodes), writer);
+            assertEquals(new String(reference), new String(writer.toByteArray()));
+        }
     }
 
     /**
@@ -245,8 +256,10 @@ public class Canonicalizer20010315ExclusiveTest {
         Set<Node> nodeSet = new HashSet<>();
         XMLUtils.getSet(doc.getDocumentElement().getFirstChild(), nodeSet, null, false);
         XMLSignatureInput input = new XMLSignatureInput(nodeSet);
-        byte[] bytes = c14n.engineCanonicalize(input, "env ns0 xsi wsu");
-        assertEquals(c14nXML, new String(bytes));
+        try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
+            c14n.engineCanonicalize(input, "env ns0 xsi wsu", writer);
+            assertEquals(c14nXML, new String(writer.toByteArray()));
+        }
     }
 
     /**
@@ -267,10 +280,12 @@ public class Canonicalizer20010315ExclusiveTest {
         byte[] reference =
             JavaUtils.getBytesFromFile(getAbsolutePath(
                 "src/test/resources/org/apache/xml/security/c14n/inExcl/example2_4_c14nized.xml"));
-        byte[] result = c.engineCanonicalizeSubTree(root);
-        boolean equals = java.security.MessageDigest.isEqual(reference, result);
+        try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
+            c.engineCanonicalizeSubTree(root, writer);
+            boolean equals = java.security.MessageDigest.isEqual(reference, writer.toByteArray());
 
-        assertTrue(equals);
+            assertTrue(equals);
+        }
     }
 
     /**
@@ -295,10 +310,12 @@ public class Canonicalizer20010315ExclusiveTest {
         byte[] reference =
             JavaUtils.getBytesFromFile(getAbsolutePath(
                 "src/test/resources/org/apache/xml/security/c14n/inExcl/example2_4_c14nized.xml"));
-        byte[] result = c.engineCanonicalizeSubTree(root);
-        boolean equals = java.security.MessageDigest.isEqual(reference, result);
+        try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
+            c.engineCanonicalizeSubTree(root, writer);
+            boolean equals = java.security.MessageDigest.isEqual(reference, writer.toByteArray());
 
-        assertTrue(equals);
+            assertTrue(equals);
+        }
     }
 
     /**
@@ -338,16 +355,20 @@ public class Canonicalizer20010315ExclusiveTest {
             Canonicalizer20010315ExclOmitComments c14n =
                     new Canonicalizer20010315ExclOmitComments();
             XMLSignatureInput input = new XMLSignatureInput(doc.getDocumentElement().getFirstChild());
-            byte[] bytes = c14n.engineCanonicalize(input, "#default xsi");
-            assertEquals(c14nXML, new String(bytes));
+            try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
+                c14n.engineCanonicalize(input, "#default xsi", writer);
+                assertEquals(c14nXML, new String(writer.toByteArray()));
+            }
         }
         {
             //exactly the same outcome is expected if #default is not set:
             Canonicalizer20010315ExclOmitComments c14n =
                     new Canonicalizer20010315ExclOmitComments();
             XMLSignatureInput input = new XMLSignatureInput(doc.getDocumentElement().getFirstChild());
-            byte[] bytes = c14n.engineCanonicalize(input, "xsi");
-            assertEquals(c14nXML, new String(bytes));
+            try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
+                c14n.engineCanonicalize(input, "xsi", writer);
+                assertEquals(c14nXML, new String(writer.toByteArray()));
+            }
         }
     }
 
@@ -401,15 +422,19 @@ public class Canonicalizer20010315ExclusiveTest {
             Canonicalizer20010315ExclOmitComments c14n =
                     new Canonicalizer20010315ExclOmitComments();
             XMLSignatureInput input = new XMLSignatureInput(doc.getDocumentElement().getFirstChild());
-            byte[] bytes = c14n.engineCanonicalize(input, "#default xsi");
-            assertEquals(c14nXML1, new String(bytes));
+            try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
+                c14n.engineCanonicalize(input, "#default xsi", writer);
+                assertEquals(c14nXML1, new String(writer.toByteArray()));
+            }
         }
         {
             Canonicalizer20010315ExclOmitComments c14n =
                     new Canonicalizer20010315ExclOmitComments();
             XMLSignatureInput input = new XMLSignatureInput(doc.getDocumentElement().getFirstChild());
-            byte[] bytes = c14n.engineCanonicalize(input, "xsi");
-            assertEquals(c14nXML2, new String(bytes));
+            try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
+                c14n.engineCanonicalize(input, "xsi", writer);
+                assertEquals(c14nXML2, new String(writer.toByteArray()));
+            }
         }
     }
 
@@ -451,16 +476,20 @@ public class Canonicalizer20010315ExclusiveTest {
             Canonicalizer20010315ExclOmitComments c14n =
                     new Canonicalizer20010315ExclOmitComments();
             XMLSignatureInput input = new XMLSignatureInput(doc.getDocumentElement().getFirstChild());
-            byte[] bytes = c14n.engineCanonicalize(input, "#default xsi");
-            assertEquals(c14nXML, new String(bytes));
+            try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
+                c14n.engineCanonicalize(input, "#default xsi", writer);
+                assertEquals(c14nXML, new String(writer.toByteArray()));
+            }
         }
         {
             //exactly the same outcome is expected if #default is not set:
             Canonicalizer20010315ExclOmitComments c14n =
                     new Canonicalizer20010315ExclOmitComments();
             XMLSignatureInput input = new XMLSignatureInput(doc.getDocumentElement().getFirstChild());
-            byte[] bytes = c14n.engineCanonicalize(input, "xsi");
-            assertEquals(c14nXML, new String(bytes));
+            try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
+                c14n.engineCanonicalize(input, "xsi", writer);
+                assertEquals(c14nXML, new String(writer.toByteArray()));
+            }
         }
     }
 
@@ -501,16 +530,20 @@ public class Canonicalizer20010315ExclusiveTest {
             Canonicalizer20010315ExclOmitComments c14n =
                     new Canonicalizer20010315ExclOmitComments();
             XMLSignatureInput input = new XMLSignatureInput(doc.getDocumentElement().getFirstChild());
-            byte[] bytes = c14n.engineCanonicalize(input, "#default xsi");
-            assertEquals(c14nXML, new String(bytes));
+            try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
+                c14n.engineCanonicalize(input, "#default xsi", writer);
+                assertEquals(c14nXML, new String(writer.toByteArray()));
+            }
         }
         {
             //exactly the same outcome is expected if #default is not set:
             Canonicalizer20010315ExclOmitComments c14n =
                     new Canonicalizer20010315ExclOmitComments();
             XMLSignatureInput input = new XMLSignatureInput(doc.getDocumentElement().getFirstChild());
-            byte[] bytes = c14n.engineCanonicalize(input, "xsi");
-            assertEquals(c14nXML, new String(bytes));
+            try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
+                c14n.engineCanonicalize(input, "xsi", writer);
+                assertEquals(c14nXML, new String(writer.toByteArray()));
+            }
         }
     }
 
@@ -549,8 +582,10 @@ public class Canonicalizer20010315ExclusiveTest {
         Document doc = XMLUtils.read(new ByteArrayInputStream(XML.getBytes(StandardCharsets.UTF_8)), false);
         Canonicalizer20010315ExclOmitComments c14n =
                 new Canonicalizer20010315ExclOmitComments();
-        byte[] bytes = c14n.engineCanonicalizeSubTree(doc.getDocumentElement().getFirstChild(), "#default", true);
-        assertEquals(c14nXML, new String(bytes));
+        try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
+            c14n.engineCanonicalizeSubTree(doc.getDocumentElement().getFirstChild(), "#default", true, writer);
+            assertEquals(c14nXML, new String(writer.toByteArray()));
+        }
     }
 
     @org.junit.jupiter.api.Test
@@ -584,8 +619,10 @@ public class Canonicalizer20010315ExclusiveTest {
         Document doc = XMLUtils.read(new ByteArrayInputStream(XML.getBytes(StandardCharsets.UTF_8)), false);
         Canonicalizer20010315ExclOmitComments c14n =
                 new Canonicalizer20010315ExclOmitComments();
-        byte[] bytes = c14n.engineCanonicalizeSubTree(doc.getDocumentElement().getFirstChild(), "#default", true);
-        assertEquals(c14nXML, new String(bytes));
+        try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
+            c14n.engineCanonicalizeSubTree(doc.getDocumentElement().getFirstChild(), "#default", true, writer);
+            assertEquals(c14nXML, new String(writer.toByteArray()));
+        }
     }
 
     @org.junit.jupiter.api.Test
@@ -619,8 +656,10 @@ public class Canonicalizer20010315ExclusiveTest {
         Document doc = XMLUtils.read(new ByteArrayInputStream(XML.getBytes(StandardCharsets.UTF_8)), false);
         Canonicalizer20010315ExclOmitComments c14n =
                 new Canonicalizer20010315ExclOmitComments();
-        byte[] bytes = c14n.engineCanonicalizeSubTree(doc.getDocumentElement().getFirstChild(), "#default", true);
-        assertEquals(c14nXML, new String(bytes));
+        try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
+            c14n.engineCanonicalizeSubTree(doc.getDocumentElement().getFirstChild(), "#default", true, writer);
+            assertEquals(c14nXML, new String(writer.toByteArray()));
+        }
     }
 
     @org.junit.jupiter.api.Test
@@ -654,8 +693,10 @@ public class Canonicalizer20010315ExclusiveTest {
         Document doc = XMLUtils.read(new ByteArrayInputStream(XML.getBytes(StandardCharsets.UTF_8)), false);
         Canonicalizer20010315ExclOmitComments c14n =
                 new Canonicalizer20010315ExclOmitComments();
-        byte[] bytes = c14n.engineCanonicalizeSubTree(doc.getDocumentElement().getFirstChild(), "#default", true);
-        assertEquals(c14nXML, new String(bytes));
+        try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
+            c14n.engineCanonicalizeSubTree(doc.getDocumentElement().getFirstChild(), "#default", true, writer);
+            assertEquals(c14nXML, new String(writer.toByteArray()));
+        }
     }
 
     @org.junit.jupiter.api.Test
@@ -684,8 +725,10 @@ public class Canonicalizer20010315ExclusiveTest {
         Document doc = XMLUtils.read(new ByteArrayInputStream(XML.getBytes(StandardCharsets.UTF_8)), false);
         Canonicalizer20010315ExclOmitComments c14n =
                 new Canonicalizer20010315ExclOmitComments();
-        byte[] bytes = c14n.engineCanonicalizeSubTree(doc.getDocumentElement().getFirstChild().getFirstChild(), "#default", true);
-        assertEquals(c14nXML, new String(bytes));
+        try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
+            c14n.engineCanonicalizeSubTree(doc.getDocumentElement().getFirstChild().getFirstChild(), "#default", true, writer);
+            assertEquals(c14nXML, new String(writer.toByteArray()));
+        }
     }
 
     private String getAbsolutePath(String path) {

@@ -830,8 +830,7 @@ public class XMLCipherTest {
         Canonicalizer canon =
             Canonicalizer.getInstance(Canonicalizer.ALGO_ID_C14N_WITH_COMMENTS);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        canon.setWriter(baos);
-        canon.canonicalizeSubtree(e);
+        canon.canonicalizeSubtree(e, baos);
         baos.close();
         String before = baos.toString(StandardCharsets.UTF_8.name());
 
@@ -975,12 +974,10 @@ public class XMLCipherTest {
 
     private String toString (Node n) throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        Canonicalizer c14n = Canonicalizer.getInstance
-        (Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS);
+        Canonicalizer c14n = Canonicalizer.getInstance(Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS);
 
-        byte[] serBytes = c14n.canonicalizeSubtree(n);
-        baos.write(serBytes);
-        baos.close();
+        c14n.canonicalizeSubtree(n, baos);
+        baos.flush();
 
         return baos.toString(StandardCharsets.UTF_8.name());
     }

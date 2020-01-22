@@ -120,12 +120,8 @@ public abstract class ApacheCanonicalizer extends TransformService {
             }
         }
 
-        if (os != null) {
-            canonicalizer.setWriter(os);
-        } else {
-            canonicalizer.setWriter(new ByteArrayOutputStream());
-        }
-
+        boolean isByteArrayOutputStream = os == null;
+        OutputStream writer = isByteArrayOutputStream ? new ByteArrayOutputStream() : os;
         try {
             Set<Node> nodeSet = null;
             if (data instanceof ApacheData) {
@@ -133,31 +129,26 @@ public abstract class ApacheCanonicalizer extends TransformService {
                     ((ApacheData)data).getXMLSignatureInput();
                 if (in.isElement()) {
                     if (inclusiveNamespaces != null) {
-                        return new OctetStreamData(new ByteArrayInputStream
-                            (canonicalizer.canonicalizeSubtree
-                                (in.getSubNode(), inclusiveNamespaces)));
+                        canonicalizer.canonicalizeSubtree(in.getSubNode(), inclusiveNamespaces, writer);
+                        return new OctetStreamData(new ByteArrayInputStream(getC14nBytes(writer, isByteArrayOutputStream)));
                     } else {
-                        return new OctetStreamData(new ByteArrayInputStream
-                            (canonicalizer.canonicalizeSubtree
-                                (in.getSubNode())));
+                        canonicalizer.canonicalizeSubtree(in.getSubNode(), writer);
+                        return new OctetStreamData(new ByteArrayInputStream(getC14nBytes(writer, isByteArrayOutputStream)));
                     }
                 } else if (in.isNodeSet()) {
                     nodeSet = in.getNodeSet();
                 } else {
-                    return new OctetStreamData(new ByteArrayInputStream(
-                        canonicalizer.canonicalize(
-                            Utils.readBytesFromStream(in.getOctetStream()))));
+                    canonicalizer.canonicalize(Utils.readBytesFromStream(in.getOctetStream()), writer);
+                    return new OctetStreamData(new ByteArrayInputStream(getC14nBytes(writer, isByteArrayOutputStream)));
                 }
             } else if (data instanceof DOMSubTreeData) {
                 DOMSubTreeData subTree = (DOMSubTreeData)data;
                 if (inclusiveNamespaces != null) {
-                    return new OctetStreamData(new ByteArrayInputStream
-                        (canonicalizer.canonicalizeSubtree
-                         (subTree.getRoot(), inclusiveNamespaces)));
+                    canonicalizer.canonicalizeSubtree(subTree.getRoot(), inclusiveNamespaces, writer);
+                    return new OctetStreamData(new ByteArrayInputStream(getC14nBytes(writer, isByteArrayOutputStream)));
                 } else {
-                    return new OctetStreamData(new ByteArrayInputStream
-                        (canonicalizer.canonicalizeSubtree
-                         (subTree.getRoot())));
+                    canonicalizer.canonicalizeSubtree(subTree.getRoot(), writer);
+                    return new OctetStreamData(new ByteArrayInputStream(getC14nBytes(writer, isByteArrayOutputStream)));
                 }
             } else if (data instanceof NodeSetData) {
                 NodeSetData nsd = (NodeSetData)data;
@@ -167,22 +158,27 @@ public abstract class ApacheCanonicalizer extends TransformService {
                 nodeSet = ns;
                 LOG.debug("Canonicalizing {} nodes", nodeSet.size());
             } else {
-                return new OctetStreamData(new ByteArrayInputStream(
-                    canonicalizer.canonicalize(
-                        Utils.readBytesFromStream(
-                        ((OctetStreamData)data).getOctetStream()))));
+                canonicalizer.canonicalize(Utils.readBytesFromStream(((OctetStreamData)data).getOctetStream()), writer);
+                return new OctetStreamData(new ByteArrayInputStream(getC14nBytes(writer, isByteArrayOutputStream)));
             }
+
             if (inclusiveNamespaces != null) {
-                return new OctetStreamData(new ByteArrayInputStream(
-                    canonicalizer.canonicalizeXPathNodeSet
-                        (nodeSet, inclusiveNamespaces)));
+                canonicalizer.canonicalizeXPathNodeSet(nodeSet, inclusiveNamespaces, writer);
+                return new OctetStreamData(new ByteArrayInputStream(getC14nBytes(writer, isByteArrayOutputStream)));
             } else {
-                return new OctetStreamData(new ByteArrayInputStream(
-                    canonicalizer.canonicalizeXPathNodeSet(nodeSet)));
+                canonicalizer.canonicalizeXPathNodeSet(nodeSet, writer);
+                return new OctetStreamData(new ByteArrayInputStream(getC14nBytes(writer, isByteArrayOutputStream)));
             }
         } catch (Exception e) {
             throw new TransformException(e);
         }
+    }
+
+    private byte[] getC14nBytes(OutputStream outputStream, boolean isByteArrayOutputStream) {    // NOPMD - preserving previous behavior here
+        if (isByteArrayOutputStream) {
+            return ((ByteArrayOutputStream)outputStream).toByteArray();
+        }
+        return null;
     }
 
     public Data transform(Data data, XMLCryptoContext xc, OutputStream os)

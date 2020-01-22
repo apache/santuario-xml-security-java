@@ -20,6 +20,7 @@ package org.apache.xml.security.test.dom.c14n.implementations;
 
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
 import javax.xml.xpath.XPath;
@@ -93,9 +94,11 @@ public class Santuario273Test {
 
         Node signedInfo =
             (Node) xPath.evaluate("//ds:SignedInfo[1]", doc, XPathConstants.NODE);
-        byte[] output = c14n.canonicalizeSubtree(signedInfo);
+        try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
+            c14n.canonicalizeSubtree(signedInfo, output);
 
-        assertEquals( new String(output, java.nio.charset.StandardCharsets.UTF_8), expectedResult);
+            assertEquals(new String(output.toByteArray(), java.nio.charset.StandardCharsets.UTF_8), expectedResult);
+        }
     }
 
 }

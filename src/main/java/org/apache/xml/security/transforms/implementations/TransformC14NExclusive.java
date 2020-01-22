@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.transforms.implementations;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 
 import org.apache.xml.security.c14n.CanonicalizationException;
@@ -76,17 +78,24 @@ public class TransformC14NExclusive extends TransformSpi {
 
             Canonicalizer20010315Excl c14n = getCanonicalizer();
             c14n.setSecureValidation(secureValidation);
-            if (os != null) {
-                c14n.setWriter(os);
-            }
-            byte[] result = c14n.engineCanonicalize(input, inclusiveNamespaces);
 
-            XMLSignatureInput output = new XMLSignatureInput(result);
-            output.setSecureValidation(secureValidation);
-            if (os != null) {
+            if (os == null) {
+                try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
+                    c14n.engineCanonicalize(input, inclusiveNamespaces, writer);
+                    writer.flush();
+                    XMLSignatureInput output = new XMLSignatureInput(writer.toByteArray());
+                    output.setSecureValidation(secureValidation);
+                    return output;
+                } catch (IOException ex) {
+                    throw new CanonicalizationException("empty", new Object[] {ex.getMessage()});
+                }
+            } else {
+                c14n.engineCanonicalize(input, inclusiveNamespaces, os);
+                XMLSignatureInput output = new XMLSignatureInput((byte[])null);
+                output.setSecureValidation(secureValidation);
                 output.setOutputStream(os);
+                return output;
             }
-            return output;
         } catch (XMLSecurityException ex) {
             throw new CanonicalizationException(ex);
         }

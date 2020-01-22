@@ -99,9 +99,8 @@ public abstract class AbstractSerializer implements Serializer {
     public String serialize(NodeList content) throws Exception {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             canon.setSecureValidation(secureValidation);
-            canon.setWriter(baos);
             for (int i = 0; i < content.getLength(); i++) {
-                canon.canonicalizeSubtree(content.item(i));
+                canon.canonicalizeSubtree(content.item(i), baos);
             }
             String ret = baos.toString(StandardCharsets.UTF_8.name());
             baos.reset();
@@ -121,9 +120,8 @@ public abstract class AbstractSerializer implements Serializer {
     public byte[] serializeToByteArray(NodeList content) throws Exception {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             canon.setSecureValidation(secureValidation);
-            canon.setWriter(baos);
             for (int i = 0; i < content.getLength(); i++) {
-                canon.canonicalizeSubtree(content.item(i));
+                canon.canonicalizeSubtree(content.item(i), baos);
             }
             return baos.toByteArray();
         }
@@ -138,8 +136,7 @@ public abstract class AbstractSerializer implements Serializer {
     public String canonSerialize(Node node) throws Exception {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             canon.setSecureValidation(secureValidation);
-            canon.setWriter(baos);
-            canon.canonicalizeSubtree(node);
+            canon.canonicalizeSubtree(node, baos);
             String ret = baos.toString(StandardCharsets.UTF_8.name());
             baos.reset();
             return ret;
@@ -155,8 +152,7 @@ public abstract class AbstractSerializer implements Serializer {
     public byte[] canonSerializeToByteArray(Node node) throws Exception {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             canon.setSecureValidation(secureValidation);
-            canon.setWriter(baos);
-            canon.canonicalizeSubtree(node);
+            canon.canonicalizeSubtree(node, baos);
             return baos.toByteArray();
         }
     }

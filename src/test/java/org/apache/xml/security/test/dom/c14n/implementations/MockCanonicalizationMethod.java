@@ -36,29 +36,30 @@ public class MockCanonicalizationMethod extends CanonicalizerSpi {
         _impl = new Canonicalizer11_OmitComments();
     }
 
-    public byte[] engineCanonicalizeSubTree(Node rootNode)
+    public void engineCanonicalizeSubTree(Node rootNode, OutputStream writer)
         throws CanonicalizationException {
-        return _impl.engineCanonicalizeSubTree(rootNode);
+        _impl.engineCanonicalizeSubTree(rootNode, writer);
     }
 
-    public byte[] engineCanonicalizeSubTree(Node rootNode, String inclusiveNamespaces)
+    public void engineCanonicalizeSubTree(Node rootNode, String inclusiveNamespaces, OutputStream writer)
         throws CanonicalizationException {
-        return _impl.engineCanonicalizeSubTree(rootNode, inclusiveNamespaces);
+        _impl.engineCanonicalizeSubTree(rootNode, inclusiveNamespaces, writer);
     }
 
-    public byte[] engineCanonicalizeSubTree(Node rootNode, String inclusiveNamespaces, boolean propagateDefaultNamespace)
+    public void engineCanonicalizeSubTree(Node rootNode, String inclusiveNamespaces,
+                                            boolean propagateDefaultNamespace, OutputStream writer)
             throws CanonicalizationException {
-        return _impl.engineCanonicalizeSubTree(rootNode, inclusiveNamespaces, propagateDefaultNamespace);
+        _impl.engineCanonicalizeSubTree(rootNode, inclusiveNamespaces, propagateDefaultNamespace, writer);
     }
 
-    public byte[] engineCanonicalizeXPathNodeSet(Set<Node> xpathNodeSet)
+    public void engineCanonicalizeXPathNodeSet(Set<Node> xpathNodeSet, OutputStream writer)
         throws CanonicalizationException {
-        return _impl.engineCanonicalizeXPathNodeSet(xpathNodeSet);
+        _impl.engineCanonicalizeXPathNodeSet(xpathNodeSet, writer);
     }
 
-    public byte[] engineCanonicalizeXPathNodeSet(Set<Node> xpathNodeSet, String inclusiveNamespaces)
+    public void engineCanonicalizeXPathNodeSet(Set<Node> xpathNodeSet, String inclusiveNamespaces, OutputStream writer)
         throws CanonicalizationException {
-        return _impl.engineCanonicalizeXPathNodeSet(xpathNodeSet, inclusiveNamespaces);
+        _impl.engineCanonicalizeXPathNodeSet(xpathNodeSet, inclusiveNamespaces, writer);
     }
 
     public boolean engineGetIncludeComments() {
@@ -67,10 +68,6 @@ public class MockCanonicalizationMethod extends CanonicalizerSpi {
 
     public String engineGetURI() {
         return MOCK_CANONICALIZATION_METHOD;
-    }
-
-    public void setWriter(OutputStream os) {
-        _impl.setWriter(os);
     }
 
 }

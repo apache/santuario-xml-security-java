@@ -19,6 +19,7 @@
 package org.apache.xml.security.test.dom.c14n.implementations;
 
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.HashMap;
@@ -247,18 +248,22 @@ public class Canonicalizer11Test {
         Canonicalizer c14n = Canonicalizer.getInstance(c14nURI);
         byte[] c14nBytes = null;
 
-        if (xpath == null) {
-            c14nBytes = c14n.canonicalizeSubtree(doc);
-        } else {
-            XPathFactory xpf = XPathFactory.newInstance();
-            XPath xPath = xpf.newXPath();
-            DSNamespaceContext namespaceContext =
-                new DSNamespaceContext(namespaces);
-            xPath.setNamespaceContext(namespaceContext);
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            if (xpath == null) {
+                c14n.canonicalizeSubtree(doc, baos);
+                c14nBytes = baos.toByteArray();
+            } else {
+                XPathFactory xpf = XPathFactory.newInstance();
+                XPath xPath = xpf.newXPath();
+                DSNamespaceContext namespaceContext =
+                    new DSNamespaceContext(namespaces);
+                xPath.setNamespaceContext(namespaceContext);
 
-            NodeList nl = (NodeList)xPath.evaluate(xpath, doc, XPathConstants.NODESET);
+                NodeList nl = (NodeList)xPath.evaluate(xpath, doc, XPathConstants.NODESET);
 
-            c14nBytes = c14n.canonicalizeXPathNodeSet(XMLUtils.convertNodelistToSet(nl));
+                c14n.canonicalizeXPathNodeSet(XMLUtils.convertNodelistToSet(nl), baos);
+                c14nBytes = baos.toByteArray();
+            }
         }
 
         // org.xml.sax.InputSource refIs = resolver.resolveEntity(null, fileRef);

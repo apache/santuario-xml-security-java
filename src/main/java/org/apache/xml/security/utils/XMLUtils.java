@@ -223,9 +223,8 @@ public final class XMLUtils {
                 os.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".getBytes(java.nio.charset.StandardCharsets.UTF_8));
             }
 
-            os.write(Canonicalizer.getInstance(
-                Canonicalizer.ALGO_ID_C14N_PHYSICAL).canonicalizeSubtree(contextNode)
-            );
+            Canonicalizer.getInstance(
+                Canonicalizer.ALGO_ID_C14N_PHYSICAL).canonicalizeSubtree(contextNode, os);
         } catch (IOException ex) {
             LOG.debug(ex.getMessage(), ex);
         }
@@ -251,12 +250,8 @@ public final class XMLUtils {
      */
     public static void outputDOMc14nWithComments(Node contextNode, OutputStream os) {
         try {
-            os.write(Canonicalizer.getInstance(
-                Canonicalizer.ALGO_ID_C14N_WITH_COMMENTS).canonicalizeSubtree(contextNode)
-            );
-        } catch (IOException ex) {
-            LOG.debug(ex.getMessage(), ex);
-            // throw new RuntimeException(ex.getMessage());
+            Canonicalizer.getInstance(
+                Canonicalizer.ALGO_ID_C14N_WITH_COMMENTS).canonicalizeSubtree(contextNode, os);
         } catch (InvalidCanonicalizerException ex) {
             LOG.debug(ex.getMessage(), ex);
             // throw new RuntimeException(ex.getMessage());

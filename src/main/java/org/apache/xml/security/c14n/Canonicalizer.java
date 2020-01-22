@@ -216,28 +216,28 @@ public final class Canonicalizer {
      * wrapped with a <CODE>&gt;a&lt;...&gt;/a&lt;</CODE>.
      *
      * @param inputBytes
-     * @return the result of the canonicalization.
+     * param writer OutputStream to write the canonicalization result
      * @throws CanonicalizationException
      * @throws java.io.IOException
      * @throws javax.xml.parsers.ParserConfigurationException
      * @throws org.xml.sax.SAXException
      */
-    public byte[] canonicalize(byte[] inputBytes)
+    public void canonicalize(byte[] inputBytes, OutputStream writer)
         throws javax.xml.parsers.ParserConfigurationException,
         java.io.IOException, org.xml.sax.SAXException, CanonicalizationException {
-        return canonicalizerSpi.engineCanonicalize(inputBytes);
+        canonicalizerSpi.engineCanonicalize(inputBytes, writer);
     }
 
     /**
      * Canonicalizes the subtree rooted by <CODE>node</CODE>.
      *
      * @param node The node to canonicalize
-     * @return the result of the c14n.
+     * param writer OutputStream to write the canonicalization result
      *
      * @throws CanonicalizationException
      */
-    public byte[] canonicalizeSubtree(Node node) throws CanonicalizationException {
-        return canonicalizerSpi.engineCanonicalizeSubTree(node);
+    public void canonicalizeSubtree(Node node, OutputStream writer) throws CanonicalizationException {
+        canonicalizerSpi.engineCanonicalizeSubTree(node, writer);
     }
 
     /**
@@ -245,12 +245,12 @@ public final class Canonicalizer {
      *
      * @param node
      * @param inclusiveNamespaces
-     * @return the result of the c14n.
+     * param writer OutputStream to write the canonicalization result
      * @throws CanonicalizationException
      */
-    public byte[] canonicalizeSubtree(Node node, String inclusiveNamespaces)
+    public void canonicalizeSubtree(Node node, String inclusiveNamespaces, OutputStream writer)
         throws CanonicalizationException {
-        return canonicalizerSpi.engineCanonicalizeSubTree(node, inclusiveNamespaces);
+        canonicalizerSpi.engineCanonicalizeSubTree(node, inclusiveNamespaces, writer);
     }
 
     /**
@@ -258,24 +258,25 @@ public final class Canonicalizer {
      *
      * @param node
      * @param inclusiveNamespaces
-     * @return the result of the c14n.
+     * param writer OutputStream to write the canonicalization result
      * @throws CanonicalizationException
      */
-    public byte[] canonicalizeSubtree(Node node, String inclusiveNamespaces, boolean propagateDefaultNamespace)
+    public void canonicalizeSubtree(Node node, String inclusiveNamespaces,
+                                    boolean propagateDefaultNamespace, OutputStream writer)
             throws CanonicalizationException {
-        return canonicalizerSpi.engineCanonicalizeSubTree(node, inclusiveNamespaces, propagateDefaultNamespace);
+        canonicalizerSpi.engineCanonicalizeSubTree(node, inclusiveNamespaces, propagateDefaultNamespace, writer);
     }
 
     /**
      * Canonicalizes an XPath node set.
      *
      * @param xpathNodeSet
-     * @return the result of the c14n.
+     * param writer OutputStream to write the canonicalization result
      * @throws CanonicalizationException
      */
-    public byte[] canonicalizeXPathNodeSet(Set<Node> xpathNodeSet)
+    public void canonicalizeXPathNodeSet(Set<Node> xpathNodeSet, OutputStream writer)
         throws CanonicalizationException {
-        return canonicalizerSpi.engineCanonicalizeXPathNodeSet(xpathNodeSet);
+        canonicalizerSpi.engineCanonicalizeXPathNodeSet(xpathNodeSet, writer);
     }
 
     /**
@@ -283,22 +284,13 @@ public final class Canonicalizer {
      *
      * @param xpathNodeSet
      * @param inclusiveNamespaces
-     * @return the result of the c14n.
+     * param writer OutputStream to write the canonicalization result
      * @throws CanonicalizationException
      */
-    public byte[] canonicalizeXPathNodeSet(
-        Set<Node> xpathNodeSet, String inclusiveNamespaces
+    public void canonicalizeXPathNodeSet(
+        Set<Node> xpathNodeSet, String inclusiveNamespaces, OutputStream writer
     ) throws CanonicalizationException {
-        return canonicalizerSpi.engineCanonicalizeXPathNodeSet(xpathNodeSet, inclusiveNamespaces);
-    }
-
-    /**
-     * Sets the writer where the canonicalization ends.  ByteArrayOutputStream
-     * if none is set.
-     * @param os
-     */
-    public void setWriter(OutputStream os) {
-        canonicalizerSpi.setWriter(os);
+        canonicalizerSpi.engineCanonicalizeXPathNodeSet(xpathNodeSet, inclusiveNamespaces, writer);
     }
 
     public boolean isSecureValidation() {

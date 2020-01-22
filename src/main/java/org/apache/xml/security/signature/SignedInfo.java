@@ -19,6 +19,7 @@
 package org.apache.xml.security.signature;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -278,11 +279,14 @@ public class SignedInfo extends Manifest {
             // the c14n is not a secure one and can rewrite the URIs or like
             // so reparse the SignedInfo to be sure
             try {
-                Canonicalizer c14nizer =
-                    Canonicalizer.getInstance(c14nMethodURI);
+                Canonicalizer c14nizer = Canonicalizer.getInstance(c14nMethodURI);
                 c14nizer.setSecureValidation(secureValidation);
 
-                byte[] c14nizedBytes = c14nizer.canonicalizeSubtree(element);
+                byte[] c14nizedBytes = null;
+                try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+                    c14nizer.canonicalizeSubtree(element, baos);
+                    c14nizedBytes = baos.toByteArray();
+                }
                 try (InputStream is = new ByteArrayInputStream(c14nizedBytes)) {
                     Document newdoc = XMLUtils.read(is, secureValidation);
                     Node imported = element.getOwnerDocument().importNode(
@@ -333,19 +337,23 @@ public class SignedInfo extends Manifest {
      * @throws CanonicalizationException
      * @throws InvalidCanonicalizerException
      * @throws XMLSecurityException
+     * @throws IOException
      */
     public byte[] getCanonicalizedOctetStream()
-        throws CanonicalizationException, InvalidCanonicalizerException, XMLSecurityException {
+        throws CanonicalizationException, InvalidCanonicalizerException, XMLSecurityException, IOException {
         if (this.c14nizedBytes == null) {
             Canonicalizer c14nizer =
                 Canonicalizer.getInstance(this.getCanonicalizationMethodURI());
             c14nizer.setSecureValidation(isSecureValidation());
 
             String inclusiveNamespaces = this.getInclusiveNamespaces();
-            if (inclusiveNamespaces == null) {
-                this.c14nizedBytes = c14nizer.canonicalizeSubtree(getElement());
-            } else {
-                this.c14nizedBytes = c14nizer.canonicalizeSubtree(getElement(), inclusiveNamespaces);
+            try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+                if (inclusiveNamespaces == null) {
+                    c14nizer.canonicalizeSubtree(getElement(), baos);
+                } else {
+                    c14nizer.canonicalizeSubtree(getElement(), inclusiveNamespaces, baos);
+                }
+                this.c14nizedBytes = baos.toByteArray();
             }
         }
 
@@ -366,13 +374,12 @@ public class SignedInfo extends Manifest {
             Canonicalizer c14nizer =
                 Canonicalizer.getInstance(this.getCanonicalizationMethodURI());
             c14nizer.setSecureValidation(isSecureValidation());
-            c14nizer.setWriter(os);
             String inclusiveNamespaces = this.getInclusiveNamespaces();
 
             if (inclusiveNamespaces == null) {
-                c14nizer.canonicalizeSubtree(getElement());
+                c14nizer.canonicalizeSubtree(getElement(), os);
             } else {
-                c14nizer.canonicalizeSubtree(getElement(), inclusiveNamespaces);
+                c14nizer.canonicalizeSubtree(getElement(), inclusiveNamespaces, os);
             }
         } else {
             try {

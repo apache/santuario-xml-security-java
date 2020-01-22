@@ -75,12 +75,12 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
      * Method engineCanonicalizeSubTree
      * {@inheritDoc}
      * @param rootNode
-     *
+     * @param writer OutputStream to write the canonicalization result
      * @throws CanonicalizationException
      */
-    public byte[] engineCanonicalizeSubTree(Node rootNode)
+    public void engineCanonicalizeSubTree(Node rootNode, OutputStream writer)
         throws CanonicalizationException {
-        return engineCanonicalizeSubTree(rootNode, "", null);
+        engineCanonicalizeSubTree(rootNode, "", null, writer);
     }
 
     /**
@@ -88,13 +88,13 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
      *  {@inheritDoc}
      * @param rootNode
      * @param inclusiveNamespaces
-     *
+     * @param writer OutputStream to write the canonicalization result
      * @throws CanonicalizationException
      */
-    public byte[] engineCanonicalizeSubTree(
-        Node rootNode, String inclusiveNamespaces
+    public void engineCanonicalizeSubTree(
+        Node rootNode, String inclusiveNamespaces, OutputStream writer
     ) throws CanonicalizationException {
-        return engineCanonicalizeSubTree(rootNode, inclusiveNamespaces, null);
+        engineCanonicalizeSubTree(rootNode, inclusiveNamespaces, null, writer);
     }
 
     /**
@@ -103,14 +103,14 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
      * @param rootNode
      * @param inclusiveNamespaces
      * @param propagateDefaultNamespace If true the default namespace will be propagated to the c14n-ized root element
-     *
+     * @param writer OutputStream to write the canonicalization result
      * @throws CanonicalizationException
      */
-    public byte[] engineCanonicalizeSubTree(
-            Node rootNode, String inclusiveNamespaces, boolean propagateDefaultNamespace
+    public void engineCanonicalizeSubTree(
+        Node rootNode, String inclusiveNamespaces, boolean propagateDefaultNamespace, OutputStream writer
     ) throws CanonicalizationException {
         this.propagateDefaultNamespace = propagateDefaultNamespace;
-        return engineCanonicalizeSubTree(rootNode, inclusiveNamespaces, null);
+        engineCanonicalizeSubTree(rootNode, inclusiveNamespaces, null, writer);
     }
 
     /**
@@ -118,28 +118,28 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
      * @param rootNode
      * @param inclusiveNamespaces
      * @param excl A element to exclude from the c14n process.
-     * @return the rootNode c14n.
+     * @param writer OutputStream to write the canonicalization result
      * @throws CanonicalizationException
      */
-    public byte[] engineCanonicalizeSubTree(
-        Node rootNode, String inclusiveNamespaces, Node excl
+    public void engineCanonicalizeSubTree(
+        Node rootNode, String inclusiveNamespaces, Node excl, OutputStream writer
     ) throws CanonicalizationException{
         inclusiveNSSet = InclusiveNamespaces.prefixStr2Set(inclusiveNamespaces);
-        return super.engineCanonicalizeSubTree(rootNode, excl);
+        super.engineCanonicalizeSubTree(rootNode, excl, writer);
     }
 
     /**
      *
      * @param rootNode
      * @param inclusiveNamespaces
-     * @return the rootNode c14n.
+     * @param writer OutputStream to write the canonicalization result
      * @throws CanonicalizationException
      */
-    public byte[] engineCanonicalize(
-        XMLSignatureInput rootNode, String inclusiveNamespaces
+    public void engineCanonicalize(
+        XMLSignatureInput rootNode, String inclusiveNamespaces, OutputStream writer
     ) throws CanonicalizationException {
         inclusiveNSSet = InclusiveNamespaces.prefixStr2Set(inclusiveNamespaces);
-        return super.engineCanonicalize(rootNode);
+        super.engineCanonicalize(rootNode, writer);
     }
 
     /**
@@ -147,18 +147,19 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
      * {@inheritDoc}
      * @param xpathNodeSet
      * @param inclusiveNamespaces
+     * @param writer OutputStream to write the canonicalization result
      * @throws CanonicalizationException
      */
-    public byte[] engineCanonicalizeXPathNodeSet(
-        Set<Node> xpathNodeSet, String inclusiveNamespaces
+    public void engineCanonicalizeXPathNodeSet(
+        Set<Node> xpathNodeSet, String inclusiveNamespaces, OutputStream writer
     ) throws CanonicalizationException {
         inclusiveNSSet = InclusiveNamespaces.prefixStr2Set(inclusiveNamespaces);
-        return super.engineCanonicalizeXPathNodeSet(xpathNodeSet);
+        super.engineCanonicalizeXPathNodeSet(xpathNodeSet, writer);
     }
 
     @Override
     protected void outputAttributesSubtree(Element element, NameSpaceSymbTable ns,
-                                           Map<String, byte[]> cache)
+                                           Map<String, byte[]> cache, OutputStream writer)
         throws CanonicalizationException, DOMException, IOException {
         // result will contain the attrs which have to be output
         SortedSet<Attr> result = new TreeSet<>(COMPARE);
@@ -223,7 +224,6 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
             }
         }
 
-        OutputStream writer = getWriter();
         //we output all Attrs which are available
         for (Attr attr : result) {
             outputAttrToWriter(attr.getNodeName(), attr.getNodeValue(), writer, cache);
@@ -232,7 +232,7 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
 
     @Override
     protected void outputAttributes(Element element, NameSpaceSymbTable ns,
-                                    Map<String, byte[]> cache)
+                                    Map<String, byte[]> cache, OutputStream writer)
         throws CanonicalizationException, DOMException, IOException {
         // result will contain the attrs which have to be output
         SortedSet<Attr> result = new TreeSet<>(COMPARE);
@@ -325,7 +325,6 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
             }
         }
 
-        OutputStream writer = getWriter();
         //we output all Attrs which are available
         for (Attr attr : result) {
             outputAttrToWriter(attr.getNodeName(), attr.getNodeValue(), writer, cache);

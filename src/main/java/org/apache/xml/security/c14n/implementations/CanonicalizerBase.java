@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.c14n.implementations;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
@@ -38,7 +37,6 @@ import org.apache.xml.security.c14n.helper.AttrCompare;
 import org.apache.xml.security.signature.NodeFilter;
 import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.utils.Constants;
-import org.apache.xml.security.utils.UnsyncByteArrayOutputStream;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Comment;
@@ -87,11 +85,9 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
     private boolean includeComments;
     private Set<Node> xpathNodeSet;
 
-    private OutputStream writer = new ByteArrayOutputStream();
-
-   /**
-    * The null xmlns definition.
-    */
+    /**
+     * The null xmlns definition.
+     */
     private Attr nullNode;
 
     /**
@@ -107,53 +103,55 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
      * Method engineCanonicalizeSubTree
      * {@inheritDoc}
      * @param rootNode
+     * @param writer OutputStream to write the canonicalization result
      * @throws CanonicalizationException
      */
-    public byte[] engineCanonicalizeSubTree(Node rootNode)
+    public void engineCanonicalizeSubTree(Node rootNode, OutputStream writer)
         throws CanonicalizationException {
-        return engineCanonicalizeSubTree(rootNode, (Node)null);
+        engineCanonicalizeSubTree(rootNode, (Node)null, writer);
     }
 
     /**
      * Method engineCanonicalizeXPathNodeSet
      * {@inheritDoc}
      * @param xpathNodeSet
+     * @param writer OutputStream to write the canonicalization result
      * @throws CanonicalizationException
      */
-    public byte[] engineCanonicalizeXPathNodeSet(Set<Node> xpathNodeSet)
+    public void engineCanonicalizeXPathNodeSet(Set<Node> xpathNodeSet, OutputStream writer)
         throws CanonicalizationException {
         this.xpathNodeSet = xpathNodeSet;
-        return engineCanonicalizeXPathNodeSetInternal(XMLUtils.getOwnerDocument(this.xpathNodeSet));
+        engineCanonicalizeXPathNodeSetInternal(XMLUtils.getOwnerDocument(this.xpathNodeSet), writer);
     }
 
     /**
      * Canonicalizes a Subtree node.
      * @param input the root of the subtree to canicalize
-     * @return The canonicalize stream.
+     * @param writer OutputStream to write the canonicalization result
+     *
      * @throws CanonicalizationException
      */
-    public byte[] engineCanonicalize(XMLSignatureInput input) throws CanonicalizationException {
+    public void engineCanonicalize(XMLSignatureInput input, OutputStream writer) throws CanonicalizationException {
         try {
             if (input.isExcludeComments()) {
                 includeComments = false;
             }
             if (input.isOctetStream()) {
-                return engineCanonicalize(input.getBytes());
+                engineCanonicalize(input.getBytes(), writer);
             }
             if (input.isElement()) {
-                return engineCanonicalizeSubTree(input.getSubNode(), input.getExcludeNode());
+                engineCanonicalizeSubTree(input.getSubNode(), input.getExcludeNode(), writer);
             } else if (input.isNodeSet()) {
                 nodeFilter = input.getNodeFilters();
 
                 circumventBugIfNeeded(input);
 
                 if (input.getSubNode() != null) {
-                    return engineCanonicalizeXPathNodeSetInternal(input.getSubNode());
+                    engineCanonicalizeXPathNodeSetInternal(input.getSubNode(), writer);
                 } else {
-                    return engineCanonicalizeXPathNodeSet(input.getNodeSet());
+                    engineCanonicalizeXPathNodeSet(input.getNodeSet(), writer);
                 }
             }
-            return null;
         } catch (ParserConfigurationException ex) {
             throw new CanonicalizationException(ex);
         } catch (IOException ex) {
@@ -164,27 +162,16 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
     }
 
     /**
-     * @param writer The writer to set.
-     */
-    public void setWriter(OutputStream writer) {
-        this.writer = writer;
-    }
-
-    protected OutputStream getWriter() {
-        return writer;
-    }
-
-    /**
      * Canonicalizes a Subtree node.
      *
      * @param rootNode
      *            the root of the subtree to canonicalize
      * @param excludeNode
      *            a node to be excluded from the canonicalize operation
-     * @return The canonicalize stream.
+     * @param writer OutputStream to write the canonicalization result
      * @throws CanonicalizationException
      */
-    protected byte[] engineCanonicalizeSubTree(Node rootNode, Node excludeNode)
+    protected void engineCanonicalizeSubTree(Node rootNode, Node excludeNode, OutputStream writer)
         throws CanonicalizationException {
         try {
             NameSpaceSymbTable ns = new NameSpaceSymbTable();
@@ -194,21 +181,8 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
                 getParentNameSpaces((Element)rootNode, ns);
                 nodeLevel = NODE_NOT_BEFORE_OR_AFTER_DOCUMENT_ELEMENT;
             }
-            this.canonicalizeSubTree(rootNode, ns, rootNode, nodeLevel, excludeNode);
-            this.writer.flush();
-            if (this.writer instanceof ByteArrayOutputStream) {
-                byte[] result = ((ByteArrayOutputStream)this.writer).toByteArray();
-                this.writer.close();
-                return result;
-            } else if (this.writer instanceof UnsyncByteArrayOutputStream) {
-                byte[] result = ((UnsyncByteArrayOutputStream)this.writer).toByteArray();
-                this.writer.close();
-                return result;
-            } else {
-                this.writer.close();
-            }
-            return null;
-
+            this.canonicalizeSubTree(rootNode, ns, rootNode, nodeLevel, excludeNode, writer);
+            writer.flush();
         } catch (UnsupportedEncodingException ex) {
             throw new CanonicalizationException(ex);
         } catch (IOException ex) {
@@ -225,19 +199,19 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
      * @param endnode
      * @param documentLevel
      * @param excludeNode
+     * @param writer OutputStream to write the canonicalization result
      * @throws CanonicalizationException
      * @throws IOException
      */
     private void canonicalizeSubTree(
         Node currentNode, NameSpaceSymbTable ns, Node endnode, int documentLevel,
-        Node excludeNode
+        Node excludeNode, OutputStream writer
     ) throws CanonicalizationException, IOException {
         if (currentNode == null || isVisibleInt(currentNode) == -1) {
             return;
         }
         Node sibling = null;
         Node parentNode = null;
-        final OutputStream writer = this.writer;
         Map<String, byte[]> cache = new HashMap<>();
         do {
             switch (currentNode.getNodeType()) {
@@ -282,7 +256,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
                 String name = currentElement.getTagName();
                 UtfHelpper.writeByte(name, writer, cache);
 
-                outputAttributesSubtree(currentElement, ns, cache);
+                outputAttributesSubtree(currentElement, ns, cache, writer);
 
                 writer.write('>');
                 sibling = currentNode.getFirstChild();
@@ -329,25 +303,11 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
     }
 
 
-    private byte[] engineCanonicalizeXPathNodeSetInternal(Node doc)
+    private void engineCanonicalizeXPathNodeSetInternal(Node doc, OutputStream writer)
         throws CanonicalizationException {
         try {
-            this.canonicalizeXPathNodeSet(doc, doc);
-            this.writer.flush();
-            if (this.writer instanceof ByteArrayOutputStream) {
-                byte[] sol = ((ByteArrayOutputStream)this.writer).toByteArray();
-                this.writer.close();
-                return sol;
-            } else if (this.writer instanceof UnsyncByteArrayOutputStream) {
-                byte[] result = ((UnsyncByteArrayOutputStream)this.writer).toByteArray();
-                this.writer.close();
-                return result;
-            } else {
-                this.writer.close();
-            }
-            return null;
-        } catch (UnsupportedEncodingException ex) {
-            throw new CanonicalizationException(ex);
+            this.canonicalizeXPathNodeSet(doc, doc, writer);
+            writer.flush();
         } catch (IOException ex) {
             throw new CanonicalizationException(ex);
         }
@@ -359,10 +319,11 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
      *
      * @param currentNode
      * @param endnode
+     * @param writer OutputStream to write the canonicalization result
      * @throws CanonicalizationException
      * @throws IOException
      */
-    private void canonicalizeXPathNodeSet(Node currentNode, Node endnode)
+    private void canonicalizeXPathNodeSet(Node currentNode, Node endnode, OutputStream writer)
         throws CanonicalizationException, IOException {
         if (isVisibleInt(currentNode) == -1) {
             return;
@@ -442,7 +403,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
                     ns.push();
                 }
 
-                outputAttributes(currentElement, ns, cache);
+                outputAttributes(currentElement, ns, cache, writer);
 
                 if (currentNodeIsVisible) {
                     writer.write('>');
@@ -613,9 +574,11 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
      * @param element
      * @param ns
      * @param cache
+     * @param writer OutputStream to write the canonicalization result
      * @throws CanonicalizationException, DOMException, IOException
      */
-    abstract void outputAttributes(Element element, NameSpaceSymbTable ns, Map<String, byte[]> cache)
+    abstract void outputAttributes(Element element, NameSpaceSymbTable ns,
+                                   Map<String, byte[]> cache, OutputStream writer)
         throws CanonicalizationException, DOMException, IOException;
 
     /**
@@ -624,9 +587,11 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
      * @param element
      * @param ns
      * @param cache
+     * @param writer OutputStream to write the canonicalization result
      * @throws CanonicalizationException, DOMException, IOException
      */
-    abstract void outputAttributesSubtree(Element element, NameSpaceSymbTable ns, Map<String, byte[]> cache)
+    abstract void outputAttributesSubtree(Element element, NameSpaceSymbTable ns,
+                                          Map<String, byte[]> cache, OutputStream writer)
         throws CanonicalizationException, DOMException, IOException;
 
     abstract void circumventBugIfNeeded(XMLSignatureInput input)

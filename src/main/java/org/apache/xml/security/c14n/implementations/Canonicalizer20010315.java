@@ -78,10 +78,10 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
      *
      * @param xpathNodeSet
      * @param inclusiveNamespaces
-     * @return none it always fails
+     * @param writer OutputStream to write the canonicalization result
      * @throws CanonicalizationException always
      */
-    public byte[] engineCanonicalizeXPathNodeSet(Set<Node> xpathNodeSet, String inclusiveNamespaces)
+    public void engineCanonicalizeXPathNodeSet(Set<Node> xpathNodeSet, String inclusiveNamespaces, OutputStream writer)
         throws CanonicalizationException {
 
         /** $todo$ well, should we throw UnsupportedOperationException ? */
@@ -93,10 +93,10 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
      *
      * @param rootNode
      * @param inclusiveNamespaces
-     * @return none it always fails
+     * @param writer OutputStream to write the canonicalization result
      * @throws CanonicalizationException
      */
-    public byte[] engineCanonicalizeSubTree(Node rootNode, String inclusiveNamespaces)
+    public void engineCanonicalizeSubTree(Node rootNode, String inclusiveNamespaces, OutputStream writer)
         throws CanonicalizationException {
 
         /** $todo$ well, should we throw UnsupportedOperationException ? */
@@ -108,11 +108,11 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
      *
      * @param rootNode
      * @param inclusiveNamespaces
-     * @return none it always fails
+     * @param writer OutputStream to write the canonicalization result
      * @throws CanonicalizationException
      */
-    public byte[] engineCanonicalizeSubTree(
-            Node rootNode, String inclusiveNamespaces, boolean propagateDefaultNamespace)
+    public void engineCanonicalizeSubTree(
+            Node rootNode, String inclusiveNamespaces, boolean propagateDefaultNamespace, OutputStream writer)
             throws CanonicalizationException {
 
         /** $todo$ well, should we throw UnsupportedOperationException ? */
@@ -131,11 +131,12 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
      * @param element
      * @param ns
      * @param cache
+     * @param writer OutputStream to write the canonicalization result
      * @throws CanonicalizationException, DOMException, IOException
      */
     @Override
     protected void outputAttributesSubtree(Element element, NameSpaceSymbTable ns,
-                                           Map<String, byte[]> cache)
+                                           Map<String, byte[]> cache, OutputStream writer)
         throws CanonicalizationException, DOMException, IOException {
         if (!element.hasAttributes() && !firstCall) {
             return;
@@ -183,7 +184,6 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
             firstCall = false;
         }
 
-        OutputStream writer = getWriter();
         //we output all Attrs which are available
         for (Attr attr : result) {
             outputAttrToWriter(attr.getNodeName(), attr.getNodeValue(), writer, cache);
@@ -200,11 +200,12 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
      * @param element
      * @param ns
      * @param cache
+     * @param writer OutputStream to write the canonicalization result
      * @throws CanonicalizationException, DOMException, IOException
      */
     @Override
     protected void outputAttributes(Element element, NameSpaceSymbTable ns,
-                                    Map<String, byte[]> cache)
+                                    Map<String, byte[]> cache, OutputStream writer)
         throws CanonicalizationException, DOMException, IOException {
         // result will contain the attrs which have to be output
         xmlattrStack.push(ns.getLevel());
@@ -288,7 +289,6 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
             ns.getUnrenderedNodes(result);
         }
 
-        OutputStream writer = getWriter();
         //we output all Attrs which are available
         for (Attr attr : result) {
             outputAttrToWriter(attr.getNodeName(), attr.getNodeValue(), writer, cache);

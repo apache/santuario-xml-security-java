@@ -409,10 +409,12 @@ public class Canonicalizer20010315Test {
         NodeList nodes = (NodeList)xPath.evaluate(xpath, doc, XPathConstants.NODESET);
         Canonicalizer c14n =
             Canonicalizer.getInstance(Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS);
-        byte[] c14nBytes = c14n.canonicalizeXPathNodeSet(XMLUtils.convertNodelistToSet(nodes));
-        InputStream refStream = new FileInputStream(fileRef);
-        byte[] refBytes = JavaUtils.getBytesFromStream(refStream);
-        assertEquals(new String(refBytes),new String(c14nBytes));
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            c14n.canonicalizeXPathNodeSet(XMLUtils.convertNodelistToSet(nodes), baos);
+            InputStream refStream = new FileInputStream(fileRef);
+            byte[] refBytes = JavaUtils.getBytesFromStream(refStream);
+            assertEquals(new String(refBytes),new String(baos.toByteArray()));
+        }
     }
 
     /**
@@ -444,10 +446,10 @@ public class Canonicalizer20010315Test {
         }
         boolean weCatchedTheRelativeNS = false;
 
-        try {
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             Canonicalizer c14n =
                 Canonicalizer.getInstance(Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS);
-            c14n.canonicalizeSubtree(doc);
+            c14n.canonicalizeSubtree(doc, baos);
 
         } catch (CanonicalizationException cex) {
             // if we reach this point - good.
@@ -475,12 +477,14 @@ public class Canonicalizer20010315Test {
         byte[] utf16 = convertToUTF16(val.getBytes());
         Canonicalizer c14n =
             Canonicalizer.getInstance(Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS);
-        byte[] c14nBytes = c14n.canonicalize(utf16);
-        InputStream refStream = new FileInputStream(prefix + "/in/testTranslationFromUTF16toUTF8.xml");
-        byte[] refBytes = JavaUtils.getBytesFromStream(refStream);
-        boolean equal = java.security.MessageDigest.isEqual(refBytes, c14nBytes);
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            c14n.canonicalize(utf16, baos);
+            InputStream refStream = new FileInputStream(prefix + "/in/testTranslationFromUTF16toUTF8.xml");
+            byte[] refBytes = JavaUtils.getBytesFromStream(refStream);
+            boolean equal = java.security.MessageDigest.isEqual(refBytes, baos.toByteArray());
 
-        assertTrue(equal, "Parser does not translate to UCS character domain");
+            assertTrue(equal, "Parser does not translate to UCS character domain");
+        }
     }
 
     /**
@@ -669,10 +673,13 @@ public class Canonicalizer20010315Test {
         NodeList nodes =
             (NodeList)xPath.evaluate(xpath, doc, XPathConstants.NODESET);
 
-        byte[] result = c14nizer.canonicalizeXPathNodeSet(XMLUtils.convertNodelistToSet(nodes));
-        byte[] defined = definedOutput.getBytes();
-        assertEquals(definedOutput, new String(result));
-        return java.security.MessageDigest.isEqual(defined, result);
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            c14nizer.canonicalizeXPathNodeSet(XMLUtils.convertNodelistToSet(nodes), baos);
+            byte[] defined = definedOutput.getBytes();
+            byte[] result = baos.toByteArray();
+            assertEquals(definedOutput, new String(result));
+            return java.security.MessageDigest.isEqual(defined, result);
+        }
     }
 
     private boolean c14nAndCompare(
@@ -705,18 +712,22 @@ public class Canonicalizer20010315Test {
         Canonicalizer c14n = Canonicalizer.getInstance(c14nURI);
         byte[] c14nBytes = null;
 
-        if (xpath == null) {
-            c14nBytes = c14n.canonicalizeSubtree(doc);
-        } else {
-            XPathFactory xpf = XPathFactory.newInstance();
-            XPath xPath = xpf.newXPath();
-            DSNamespaceContext namespaceContext =
-                new DSNamespaceContext(namespaces);
-            xPath.setNamespaceContext(namespaceContext);
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            if (xpath == null) {
+                c14n.canonicalizeSubtree(doc, baos);
+                c14nBytes = baos.toByteArray();
+            } else {
+                XPathFactory xpf = XPathFactory.newInstance();
+                XPath xPath = xpf.newXPath();
+                DSNamespaceContext namespaceContext =
+                    new DSNamespaceContext(namespaces);
+                xPath.setNamespaceContext(namespaceContext);
 
-            NodeList nl = (NodeList)xPath.evaluate(xpath, doc, XPathConstants.NODESET);
+                NodeList nl = (NodeList)xPath.evaluate(xpath, doc, XPathConstants.NODESET);
 
-            c14nBytes = c14n.canonicalizeXPathNodeSet(XMLUtils.convertNodelistToSet(nl));
+                c14n.canonicalizeXPathNodeSet(XMLUtils.convertNodelistToSet(nl), baos);
+                c14nBytes = baos.toByteArray();
+            }
         }
 
         // org.xml.sax.InputSource refIs = resolver.resolveEntity(null, fileRef);

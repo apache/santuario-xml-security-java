@@ -19,6 +19,7 @@
 package org.apache.xml.security.signature;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -280,7 +281,10 @@ public class XMLSignatureInput {
             return inputBytes;
         }
         Canonicalizer20010315OmitComments c14nizer = new Canonicalizer20010315OmitComments();
-        bytes = c14nizer.engineCanonicalize(this);
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            c14nizer.engineCanonicalize(this, baos);
+            bytes = baos.toByteArray();
+        }
         return bytes;
     }
 
@@ -497,8 +501,7 @@ public class XMLSignatureInput {
             } else {
                 c14nizer = new Canonicalizer20010315OmitComments();
             }
-            c14nizer.setWriter(diOs);
-            c14nizer.engineCanonicalize(this);
+            c14nizer.engineCanonicalize(this, diOs);
         } else {
             byte[] buffer = new byte[4 * 1024];
             int bytesread = 0;

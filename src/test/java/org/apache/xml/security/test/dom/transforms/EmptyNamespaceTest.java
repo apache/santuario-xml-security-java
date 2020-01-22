@@ -102,10 +102,11 @@ public class EmptyNamespaceTest {
         }
 
         String inclusiveNamespaces = "SOAP-ENV ec ec1 ns0 ns1 ns11 ns2 ns4 ns9";
-        byte[] output =
-                transformer.engineCanonicalizeSubTree(document, inclusiveNamespaces);
+        try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
+            transformer.engineCanonicalizeSubTree(document, inclusiveNamespaces, output);
 
-        String result = new String(output, java.nio.charset.StandardCharsets.UTF_8);
-        assertEquals(message, result);
+            String result = new String(output.toByteArray(), java.nio.charset.StandardCharsets.UTF_8);
+            assertEquals(message, result);
+        }
     }
 }

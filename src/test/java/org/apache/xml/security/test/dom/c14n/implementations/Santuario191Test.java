@@ -73,14 +73,14 @@ public class Santuario191Test {
         //
         NodeList dataNodes = doc.getElementsByTagName("data");
         Canonicalizer11_OmitComments c14ner = new Canonicalizer11_OmitComments();
-        byte[] result = c14ner.engineCanonicalizeSubTree(dataNodes.item(0));
+        try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
+            c14ner.engineCanonicalizeSubTree(dataNodes.item(0), output);
 
-        //
-        // Test against expected result
-        //
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        out.write(result);
-        assertEquals(EXPECTED_RESULT, out.toString(StandardCharsets.UTF_8.name()));
+            //
+            // Test against expected result
+            //
+            assertEquals(EXPECTED_RESULT, output.toString(StandardCharsets.UTF_8.name()));
+        }
     }
 
 }
