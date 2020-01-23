@@ -103,14 +103,14 @@ public final class DOMExcC14NMethod extends ApacheCanonicalizer {
         String prefix = DOMUtils.getNSPrefix(context,
                                              CanonicalizationMethod.EXCLUSIVE);
         Element eElem = DOMUtils.createElement(ownerDoc,
-                                               "InclusiveNamespaces", 
+                                               "InclusiveNamespaces",
                                                CanonicalizationMethod.EXCLUSIVE,
                                                prefix);
         if (prefix == null || prefix.length() == 0) {
             eElem.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns",
                                  CanonicalizationMethod.EXCLUSIVE);
         } else {
-            eElem.setAttributeNS("http://www.w3.org/2000/xmlns/", 
+            eElem.setAttributeNS("http://www.w3.org/2000/xmlns/",
                                    "xmlns:" + prefix,
                                    CanonicalizationMethod.EXCLUSIVE);
         }
@@ -145,8 +145,6 @@ public final class DOMExcC14NMethod extends ApacheCanonicalizer {
                 try {
                     canonicalizer = Canonicalizer.getInstance
                         (CanonicalizationMethod.EXCLUSIVE);
-                    boolean secVal = Utils.secureValidation(xc);
-                    canonicalizer.setSecureValidation(secVal);
                 } catch (InvalidCanonicalizerException ice) {
                     throw new TransformException
                         ("Couldn't find Canonicalizer for: " +

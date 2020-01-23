@@ -91,7 +91,6 @@ public final class Canonicalizer {
         new ConcurrentHashMap<>();
 
     private final CanonicalizerSpi canonicalizerSpi;
-    private boolean secureValidation;
 
     /**
      * Constructor Canonicalizer
@@ -216,23 +215,23 @@ public final class Canonicalizer {
      * wrapped with a <CODE>&gt;a&lt;...&gt;/a&lt;</CODE>.
      *
      * @param inputBytes
-     * param writer OutputStream to write the canonicalization result
+     * @param writer OutputStream to write the canonicalization result
+     * @param secureValidation Whether secure validation is enabled
      * @throws CanonicalizationException
      * @throws java.io.IOException
-     * @throws javax.xml.parsers.ParserConfigurationException
      * @throws org.xml.sax.SAXException
      */
-    public void canonicalize(byte[] inputBytes, OutputStream writer)
+    public void canonicalize(byte[] inputBytes, OutputStream writer, boolean secureValidation)
         throws javax.xml.parsers.ParserConfigurationException,
         java.io.IOException, org.xml.sax.SAXException, CanonicalizationException {
-        canonicalizerSpi.engineCanonicalize(inputBytes, writer);
+        canonicalizerSpi.engineCanonicalize(inputBytes, writer, secureValidation);
     }
 
     /**
      * Canonicalizes the subtree rooted by <CODE>node</CODE>.
      *
      * @param node The node to canonicalize
-     * param writer OutputStream to write the canonicalization result
+     * @param writer OutputStream to write the canonicalization result
      *
      * @throws CanonicalizationException
      */
@@ -245,7 +244,7 @@ public final class Canonicalizer {
      *
      * @param node
      * @param inclusiveNamespaces
-     * param writer OutputStream to write the canonicalization result
+     * @param writer OutputStream to write the canonicalization result
      * @throws CanonicalizationException
      */
     public void canonicalizeSubtree(Node node, String inclusiveNamespaces, OutputStream writer)
@@ -258,7 +257,7 @@ public final class Canonicalizer {
      *
      * @param node
      * @param inclusiveNamespaces
-     * param writer OutputStream to write the canonicalization result
+     * @param writer OutputStream to write the canonicalization result
      * @throws CanonicalizationException
      */
     public void canonicalizeSubtree(Node node, String inclusiveNamespaces,
@@ -271,7 +270,7 @@ public final class Canonicalizer {
      * Canonicalizes an XPath node set.
      *
      * @param xpathNodeSet
-     * param writer OutputStream to write the canonicalization result
+     * @param writer OutputStream to write the canonicalization result
      * @throws CanonicalizationException
      */
     public void canonicalizeXPathNodeSet(Set<Node> xpathNodeSet, OutputStream writer)
@@ -284,22 +283,13 @@ public final class Canonicalizer {
      *
      * @param xpathNodeSet
      * @param inclusiveNamespaces
-     * param writer OutputStream to write the canonicalization result
+     * @param writer OutputStream to write the canonicalization result
      * @throws CanonicalizationException
      */
     public void canonicalizeXPathNodeSet(
         Set<Node> xpathNodeSet, String inclusiveNamespaces, OutputStream writer
     ) throws CanonicalizationException {
         canonicalizerSpi.engineCanonicalizeXPathNodeSet(xpathNodeSet, inclusiveNamespaces, writer);
-    }
-
-    public boolean isSecureValidation() {
-        return secureValidation;
-    }
-
-    public void setSecureValidation(boolean secureValidation) {
-        this.secureValidation = secureValidation;
-        canonicalizerSpi.secureValidation = secureValidation;
     }
 
 }

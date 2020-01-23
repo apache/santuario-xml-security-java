@@ -478,7 +478,7 @@ public class Canonicalizer20010315Test {
         Canonicalizer c14n =
             Canonicalizer.getInstance(Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS);
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            c14n.canonicalize(utf16, baos);
+            c14n.canonicalize(utf16, baos, true);
             InputStream refStream = new FileInputStream(prefix + "/in/testTranslationFromUTF16toUTF8.xml");
             byte[] refBytes = JavaUtils.getBytesFromStream(refStream);
             boolean equal = java.security.MessageDigest.isEqual(refBytes, baos.toByteArray());

@@ -32,20 +32,19 @@ import org.w3c.dom.Node;
  */
 public abstract class CanonicalizerSpi {
 
-    protected boolean secureValidation;
-
     /**
      * Method canonicalize
      *
      * @param inputBytes
      * @param writer OutputStream to write the canonicalization result
+     * @param secureValidation Whether secure validation is enabled
      *
      * @throws CanonicalizationException
      * @throws java.io.IOException
      * @throws javax.xml.parsers.ParserConfigurationException
      * @throws org.xml.sax.SAXException
      */
-    public void engineCanonicalize(byte[] inputBytes, OutputStream writer)
+    public void engineCanonicalize(byte[] inputBytes, OutputStream writer, boolean secureValidation)
         throws javax.xml.parsers.ParserConfigurationException, java.io.IOException,
         org.xml.sax.SAXException, CanonicalizationException {
 
@@ -124,12 +123,5 @@ public abstract class CanonicalizerSpi {
             Node rootNode, String inclusiveNamespaces, boolean propagateDefaultNamespace, OutputStream writer)
             throws CanonicalizationException;
 
-    public boolean isSecureValidation() {
-        return secureValidation;
-    }
-
-    public void setSecureValidation(boolean secureValidation) {
-        this.secureValidation = secureValidation;
-    }
 
 }

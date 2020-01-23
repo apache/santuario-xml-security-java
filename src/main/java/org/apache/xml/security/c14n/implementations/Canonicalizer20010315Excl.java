@@ -133,13 +133,14 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
      * @param rootNode
      * @param inclusiveNamespaces
      * @param writer OutputStream to write the canonicalization result
+     * @param secureValidation Whether secure validation is enabled
      * @throws CanonicalizationException
      */
     public void engineCanonicalize(
-        XMLSignatureInput rootNode, String inclusiveNamespaces, OutputStream writer
+        XMLSignatureInput rootNode, String inclusiveNamespaces, OutputStream writer, boolean secureValidation
     ) throws CanonicalizationException {
         inclusiveNSSet = InclusiveNamespaces.prefixStr2Set(inclusiveNamespaces);
-        super.engineCanonicalize(rootNode, writer);
+        super.engineCanonicalize(rootNode, writer, secureValidation);
     }
 
     /**

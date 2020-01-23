@@ -128,16 +128,17 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
      * Canonicalizes a Subtree node.
      * @param input the root of the subtree to canicalize
      * @param writer OutputStream to write the canonicalization result
+     * @param secureValidation Whether secure validation is enabled
      *
      * @throws CanonicalizationException
      */
-    public void engineCanonicalize(XMLSignatureInput input, OutputStream writer) throws CanonicalizationException {
+    public void engineCanonicalize(XMLSignatureInput input, OutputStream writer, boolean secureValidation) throws CanonicalizationException {
         try {
             if (input.isExcludeComments()) {
                 includeComments = false;
             }
             if (input.isOctetStream()) {
-                engineCanonicalize(input.getBytes(), writer);
+                engineCanonicalize(input.getBytes(), writer, secureValidation);
             }
             if (input.isElement()) {
                 engineCanonicalizeSubTree(input.getSubNode(), input.getExcludeNode(), writer);

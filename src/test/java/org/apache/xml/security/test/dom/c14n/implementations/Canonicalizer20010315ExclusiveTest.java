@@ -257,7 +257,7 @@ public class Canonicalizer20010315ExclusiveTest {
         XMLUtils.getSet(doc.getDocumentElement().getFirstChild(), nodeSet, null, false);
         XMLSignatureInput input = new XMLSignatureInput(nodeSet);
         try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
-            c14n.engineCanonicalize(input, "env ns0 xsi wsu", writer);
+            c14n.engineCanonicalize(input, "env ns0 xsi wsu", writer, false);
             assertEquals(c14nXML, new String(writer.toByteArray()));
         }
     }
@@ -356,7 +356,7 @@ public class Canonicalizer20010315ExclusiveTest {
                     new Canonicalizer20010315ExclOmitComments();
             XMLSignatureInput input = new XMLSignatureInput(doc.getDocumentElement().getFirstChild());
             try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
-                c14n.engineCanonicalize(input, "#default xsi", writer);
+                c14n.engineCanonicalize(input, "#default xsi", writer, false);
                 assertEquals(c14nXML, new String(writer.toByteArray()));
             }
         }
@@ -366,7 +366,7 @@ public class Canonicalizer20010315ExclusiveTest {
                     new Canonicalizer20010315ExclOmitComments();
             XMLSignatureInput input = new XMLSignatureInput(doc.getDocumentElement().getFirstChild());
             try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
-                c14n.engineCanonicalize(input, "xsi", writer);
+                c14n.engineCanonicalize(input, "xsi", writer, false);
                 assertEquals(c14nXML, new String(writer.toByteArray()));
             }
         }
@@ -423,7 +423,7 @@ public class Canonicalizer20010315ExclusiveTest {
                     new Canonicalizer20010315ExclOmitComments();
             XMLSignatureInput input = new XMLSignatureInput(doc.getDocumentElement().getFirstChild());
             try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
-                c14n.engineCanonicalize(input, "#default xsi", writer);
+                c14n.engineCanonicalize(input, "#default xsi", writer, false);
                 assertEquals(c14nXML1, new String(writer.toByteArray()));
             }
         }
@@ -432,7 +432,7 @@ public class Canonicalizer20010315ExclusiveTest {
                     new Canonicalizer20010315ExclOmitComments();
             XMLSignatureInput input = new XMLSignatureInput(doc.getDocumentElement().getFirstChild());
             try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
-                c14n.engineCanonicalize(input, "xsi", writer);
+                c14n.engineCanonicalize(input, "xsi", writer, false);
                 assertEquals(c14nXML2, new String(writer.toByteArray()));
             }
         }
@@ -477,7 +477,7 @@ public class Canonicalizer20010315ExclusiveTest {
                     new Canonicalizer20010315ExclOmitComments();
             XMLSignatureInput input = new XMLSignatureInput(doc.getDocumentElement().getFirstChild());
             try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
-                c14n.engineCanonicalize(input, "#default xsi", writer);
+                c14n.engineCanonicalize(input, "#default xsi", writer, false);
                 assertEquals(c14nXML, new String(writer.toByteArray()));
             }
         }
@@ -487,7 +487,7 @@ public class Canonicalizer20010315ExclusiveTest {
                     new Canonicalizer20010315ExclOmitComments();
             XMLSignatureInput input = new XMLSignatureInput(doc.getDocumentElement().getFirstChild());
             try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
-                c14n.engineCanonicalize(input, "xsi", writer);
+                c14n.engineCanonicalize(input, "xsi", writer, false);
                 assertEquals(c14nXML, new String(writer.toByteArray()));
             }
         }
@@ -531,7 +531,7 @@ public class Canonicalizer20010315ExclusiveTest {
                     new Canonicalizer20010315ExclOmitComments();
             XMLSignatureInput input = new XMLSignatureInput(doc.getDocumentElement().getFirstChild());
             try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
-                c14n.engineCanonicalize(input, "#default xsi", writer);
+                c14n.engineCanonicalize(input, "#default xsi", writer, false);
                 assertEquals(c14nXML, new String(writer.toByteArray()));
             }
         }
@@ -541,7 +541,7 @@ public class Canonicalizer20010315ExclusiveTest {
                     new Canonicalizer20010315ExclOmitComments();
             XMLSignatureInput input = new XMLSignatureInput(doc.getDocumentElement().getFirstChild());
             try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
-                c14n.engineCanonicalize(input, "xsi", writer);
+                c14n.engineCanonicalize(input, "xsi", writer, false);
                 assertEquals(c14nXML, new String(writer.toByteArray()));
             }
         }

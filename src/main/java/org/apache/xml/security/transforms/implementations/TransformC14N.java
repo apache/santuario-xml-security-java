@@ -54,11 +54,10 @@ public class TransformC14N extends TransformSpi {
     ) throws CanonicalizationException {
 
         Canonicalizer20010315OmitComments c14n = new Canonicalizer20010315OmitComments();
-        c14n.setSecureValidation(secureValidation);
 
         if (os == null) {
             try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
-                c14n.engineCanonicalize(input, writer);
+                c14n.engineCanonicalize(input, writer, secureValidation);
                 writer.flush();
                 XMLSignatureInput output = new XMLSignatureInput(writer.toByteArray());
                 output.setSecureValidation(secureValidation);
@@ -67,7 +66,7 @@ public class TransformC14N extends TransformSpi {
                 throw new CanonicalizationException("empty", new Object[] {ex.getMessage()});
             }
         } else {
-            c14n.engineCanonicalize(input, os);
+            c14n.engineCanonicalize(input, os, secureValidation);
             XMLSignatureInput output = new XMLSignatureInput((byte[])null);
             output.setSecureValidation(secureValidation);
             output.setOutputStream(os);

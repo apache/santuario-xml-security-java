@@ -39,7 +39,7 @@ import org.w3c.dom.NodeList;
  */
 public abstract class AbstractSerializer implements Serializer {
 
-    protected Canonicalizer canon;
+    private Canonicalizer canon;
     protected boolean secureValidation;
 
     public void setCanonicalizer(Canonicalizer canon) {
@@ -98,7 +98,6 @@ public abstract class AbstractSerializer implements Serializer {
      */
     public String serialize(NodeList content) throws Exception {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            canon.setSecureValidation(secureValidation);
             for (int i = 0; i < content.getLength(); i++) {
                 canon.canonicalizeSubtree(content.item(i), baos);
             }
@@ -119,7 +118,6 @@ public abstract class AbstractSerializer implements Serializer {
      */
     public byte[] serializeToByteArray(NodeList content) throws Exception {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            canon.setSecureValidation(secureValidation);
             for (int i = 0; i < content.getLength(); i++) {
                 canon.canonicalizeSubtree(content.item(i), baos);
             }
@@ -135,7 +133,6 @@ public abstract class AbstractSerializer implements Serializer {
      */
     public String canonSerialize(Node node) throws Exception {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            canon.setSecureValidation(secureValidation);
             canon.canonicalizeSubtree(node, baos);
             String ret = baos.toString(StandardCharsets.UTF_8.name());
             baos.reset();
@@ -151,7 +148,6 @@ public abstract class AbstractSerializer implements Serializer {
      */
     public byte[] canonSerializeToByteArray(Node node) throws Exception {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            canon.setSecureValidation(secureValidation);
             canon.canonicalizeSubtree(node, baos);
             return baos.toByteArray();
         }

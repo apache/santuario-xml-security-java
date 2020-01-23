@@ -57,8 +57,6 @@ public final class DOMCanonicalXMLC14NMethod extends ApacheCanonicalizer {
                 try {
                     canonicalizer = Canonicalizer.getInstance
                         (CanonicalizationMethod.INCLUSIVE);
-                    boolean secVal = Utils.secureValidation(xc);
-                    canonicalizer.setSecureValidation(secVal);
                 } catch (InvalidCanonicalizerException ice) {
                     throw new TransformException
                         ("Couldn't find Canonicalizer for: " +

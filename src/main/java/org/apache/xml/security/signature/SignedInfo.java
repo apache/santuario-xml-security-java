@@ -280,7 +280,6 @@ public class SignedInfo extends Manifest {
             // so reparse the SignedInfo to be sure
             try {
                 Canonicalizer c14nizer = Canonicalizer.getInstance(c14nMethodURI);
-                c14nizer.setSecureValidation(secureValidation);
 
                 byte[] c14nizedBytes = null;
                 try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
@@ -344,7 +343,6 @@ public class SignedInfo extends Manifest {
         if (this.c14nizedBytes == null) {
             Canonicalizer c14nizer =
                 Canonicalizer.getInstance(this.getCanonicalizationMethodURI());
-            c14nizer.setSecureValidation(isSecureValidation());
 
             String inclusiveNamespaces = this.getInclusiveNamespaces();
             try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
@@ -373,7 +371,6 @@ public class SignedInfo extends Manifest {
         if (this.c14nizedBytes == null) {
             Canonicalizer c14nizer =
                 Canonicalizer.getInstance(this.getCanonicalizationMethodURI());
-            c14nizer.setSecureValidation(isSecureValidation());
             String inclusiveNamespaces = this.getInclusiveNamespaces();
 
             if (inclusiveNamespaces == null) {

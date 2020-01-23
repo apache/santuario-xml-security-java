@@ -110,8 +110,6 @@ public abstract class ApacheCanonicalizer extends TransformService {
         if (canonicalizer == null) {
             try {
                 canonicalizer = Canonicalizer.getInstance(getAlgorithm());
-                boolean secVal = Utils.secureValidation(xc);
-                canonicalizer.setSecureValidation(secVal);
                 LOG.debug("Created canonicalizer for algorithm: {}", getAlgorithm());
             } catch (InvalidCanonicalizerException ice) {
                 throw new TransformException
@@ -123,6 +121,7 @@ public abstract class ApacheCanonicalizer extends TransformService {
         boolean isByteArrayOutputStream = os == null;
         OutputStream writer = isByteArrayOutputStream ? new ByteArrayOutputStream() : os;
         try {
+            boolean secVal = Utils.secureValidation(xc);
             Set<Node> nodeSet = null;
             if (data instanceof ApacheData) {
                 XMLSignatureInput in =
@@ -138,7 +137,7 @@ public abstract class ApacheCanonicalizer extends TransformService {
                 } else if (in.isNodeSet()) {
                     nodeSet = in.getNodeSet();
                 } else {
-                    canonicalizer.canonicalize(Utils.readBytesFromStream(in.getOctetStream()), writer);
+                    canonicalizer.canonicalize(Utils.readBytesFromStream(in.getOctetStream()), writer, secVal);
                     return new OctetStreamData(new ByteArrayInputStream(getC14nBytes(writer, isByteArrayOutputStream)));
                 }
             } else if (data instanceof DOMSubTreeData) {
@@ -158,7 +157,7 @@ public abstract class ApacheCanonicalizer extends TransformService {
                 nodeSet = ns;
                 LOG.debug("Canonicalizing {} nodes", nodeSet.size());
             } else {
-                canonicalizer.canonicalize(Utils.readBytesFromStream(((OctetStreamData)data).getOctetStream()), writer);
+                canonicalizer.canonicalize(Utils.readBytesFromStream(((OctetStreamData)data).getOctetStream()), writer, secVal);
                 return new OctetStreamData(new ByteArrayInputStream(getC14nBytes(writer, isByteArrayOutputStream)));
             }
 

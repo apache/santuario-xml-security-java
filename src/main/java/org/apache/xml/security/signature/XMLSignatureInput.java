@@ -282,7 +282,7 @@ public class XMLSignatureInput {
         }
         Canonicalizer20010315OmitComments c14nizer = new Canonicalizer20010315OmitComments();
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            c14nizer.engineCanonicalize(this, baos);
+            c14nizer.engineCanonicalize(this, baos, secureValidation);
             bytes = baos.toByteArray();
         }
         return bytes;
@@ -501,7 +501,7 @@ public class XMLSignatureInput {
             } else {
                 c14nizer = new Canonicalizer20010315OmitComments();
             }
-            c14nizer.engineCanonicalize(this, diOs);
+            c14nizer.engineCanonicalize(this, diOs, secureValidation);
         } else {
             byte[] buffer = new byte[4 * 1024];
             int bytesread = 0;
