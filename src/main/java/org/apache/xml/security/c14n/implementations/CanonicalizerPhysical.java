@@ -166,11 +166,6 @@ public class CanonicalizerPhysical extends CanonicalizerBase {
         return Canonicalizer.ALGO_ID_C14N_PHYSICAL;
     }
 
-    /** {@inheritDoc} */
-    public final boolean engineGetIncludeComments() {
-        return true;
-    }
-
     @Override
     protected void outputPItoWriter(ProcessingInstruction currentPI,
                                     OutputStream writer, int position) throws IOException {

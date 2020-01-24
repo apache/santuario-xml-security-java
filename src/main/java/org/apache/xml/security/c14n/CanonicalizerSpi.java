@@ -62,12 +62,6 @@ public abstract class CanonicalizerSpi {
     public abstract String engineGetURI();
 
     /**
-     * Returns true if comments are included
-     * @return true if comments are included
-     */
-    public abstract boolean engineGetIncludeComments();
-
-    /**
      * C14n a nodeset
      *
      * @param xpathNodeSet

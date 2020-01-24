@@ -62,10 +62,6 @@ public class MockCanonicalizationMethod extends CanonicalizerSpi {
         _impl.engineCanonicalizeXPathNodeSet(xpathNodeSet, inclusiveNamespaces, writer);
     }
 
-    public boolean engineGetIncludeComments() {
-        return _impl.engineGetIncludeComments();
-    }
-
     public String engineGetURI() {
         return MOCK_CANONICALIZATION_METHOD;
     }

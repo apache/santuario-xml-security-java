@@ -80,9 +80,9 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
     private static final byte[] AMP = {'&','a','m','p',';'};
     private static final byte[] EQUALS_STR = {'=','\"'};
 
+    private boolean includeComments;
     private List<NodeFilter> nodeFilter;
 
-    private boolean includeComments;
     private Set<Node> xpathNodeSet;
 
     /**
@@ -95,7 +95,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
      *
      * @param includeComments
      */
-    public CanonicalizerBase(boolean includeComments) {
+    protected CanonicalizerBase(boolean includeComments) {
         this.includeComments = includeComments;
     }
 
