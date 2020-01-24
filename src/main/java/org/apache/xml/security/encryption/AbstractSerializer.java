@@ -40,7 +40,6 @@ import org.w3c.dom.NodeList;
 public abstract class AbstractSerializer implements Serializer {
 
     private Canonicalizer canon;
-    protected boolean secureValidation;
 
     public void setCanonicalizer(Canonicalizer canon) {
         this.canon = canon;
@@ -153,22 +152,6 @@ public abstract class AbstractSerializer implements Serializer {
         }
     }
 
-    /**
-     * @param source
-     * @param ctx
-     * @return the Node resulting from the parse of the source
-     * @throws XMLEncryptionException
-     */
-    public abstract Node deserialize(String source, Node ctx) throws XMLEncryptionException;
-
-    /**
-     * @param source
-     * @param ctx
-     * @return the Node resulting from the parse of the source
-     * @throws XMLEncryptionException
-     */
-    public abstract Node deserialize(byte[] source, Node ctx) throws XMLEncryptionException, IOException;
-
     protected static byte[] createContext(byte[] source, Node ctx) throws XMLEncryptionException {
         // Create the context to parse the document against
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
@@ -242,14 +225,6 @@ public abstract class AbstractSerializer implements Serializer {
         sb.append(source);
         sb.append("</dummy>");
         return sb.toString();
-    }
-
-    public boolean isSecureValidation() {
-        return secureValidation;
-    }
-
-    public void setSecureValidation(boolean secureValidation) {
-        this.secureValidation = secureValidation;
     }
 
 }

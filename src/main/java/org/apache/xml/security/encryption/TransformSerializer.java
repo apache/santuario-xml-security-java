@@ -21,7 +21,6 @@ package org.apache.xml.security.encryption;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringReader;
 
 import javax.xml.XMLConstants;
 import javax.xml.transform.Source;
@@ -45,34 +44,25 @@ public class TransformSerializer extends AbstractSerializer {
     /**
      * @param source
      * @param ctx
+     * @param secureValidation
      * @return the Node resulting from the parse of the source
      * @throws XMLEncryptionException
      */
-    public Node deserialize(byte[] source, Node ctx) throws XMLEncryptionException, IOException {
+    public Node deserialize(byte[] source, Node ctx, boolean secureValidation) throws XMLEncryptionException, IOException {
         byte[] fragment = createContext(source, ctx);
         try (InputStream is = new ByteArrayInputStream(fragment)) {
-            return deserialize(ctx, new StreamSource(is));
+            return deserialize(ctx, new StreamSource(is), secureValidation);
         }
     }
 
     /**
-     * @param source
      * @param ctx
+     * @param source
+     * @param secureValidation
      * @return the Node resulting from the parse of the source
      * @throws XMLEncryptionException
      */
-    public Node deserialize(String source, Node ctx) throws XMLEncryptionException {
-        String fragment = createContext(source, ctx);
-        return deserialize(ctx, new StreamSource(new StringReader(fragment)));
-    }
-
-    /**
-     * @param ctx
-     * @param source
-     * @return the Node resulting from the parse of the source
-     * @throws XMLEncryptionException
-     */
-    private Node deserialize(Node ctx, Source source) throws XMLEncryptionException {
+    private Node deserialize(Node ctx, Source source, boolean secureValidation) throws XMLEncryptionException {
         try {
             Document contextDocument = null;
             if (Node.DOCUMENT_NODE == ctx.getNodeType()) {

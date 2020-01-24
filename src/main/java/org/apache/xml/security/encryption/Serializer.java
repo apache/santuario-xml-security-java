@@ -68,8 +68,9 @@ public interface Serializer {
     /**
      * @param source
      * @param ctx
+     * @param secureValidation
      * @return the Node resulting from the parse of the source
      * @throws XMLEncryptionException
      */
-    Node deserialize(byte[] source, Node ctx) throws XMLEncryptionException, IOException;
+    Node deserialize(byte[] source, Node ctx, boolean secureValidation) throws XMLEncryptionException, IOException;
 }

@@ -21,7 +21,6 @@ package org.apache.xml.security.encryption;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -40,34 +39,25 @@ public class DocumentSerializer extends AbstractSerializer {
     /**
      * @param source
      * @param ctx
+     * @param secureValidation
      * @return the Node resulting from the parse of the source
      * @throws XMLEncryptionException
      */
-    public Node deserialize(byte[] source, Node ctx) throws XMLEncryptionException, IOException {
+    public Node deserialize(byte[] source, Node ctx, boolean secureValidation) throws XMLEncryptionException, IOException {
         byte[] fragment = createContext(source, ctx);
         try (InputStream is = new ByteArrayInputStream(fragment)) {
-            return deserialize(ctx, is);
+            return deserialize(ctx, is, secureValidation);
         }
-    }
-
-    /**
-     * @param source
-     * @param ctx
-     * @return the Node resulting from the parse of the source
-     * @throws XMLEncryptionException
-     */
-    public Node deserialize(String source, Node ctx) throws XMLEncryptionException {
-        String fragment = createContext(source, ctx);
-        return deserialize(ctx, new ByteArrayInputStream(fragment.getBytes(StandardCharsets.UTF_8)));
     }
 
     /**
      * @param ctx
      * @param inputStream
+     * @param secureValidation
      * @return the Node resulting from the parse of the source
      * @throws XMLEncryptionException
      */
-    private Node deserialize(Node ctx, InputStream inputStream) throws XMLEncryptionException {
+    private Node deserialize(Node ctx, InputStream inputStream, boolean secureValidation) throws XMLEncryptionException {
         try {
             Document d = XMLUtils.read(inputStream, secureValidation);
 

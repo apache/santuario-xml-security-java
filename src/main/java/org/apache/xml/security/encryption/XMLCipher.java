@@ -232,13 +232,13 @@ public class XMLCipher {
     public static final int WRAP_MODE = Cipher.WRAP_MODE;
 
     private static final String ENC_ALGORITHMS = TRIPLEDES + "\n" +
-    AES_128 + "\n" + AES_256 + "\n" + AES_192 + "\n" + RSA_v1dot5 + "\n" +
-    RSA_OAEP + "\n" + RSA_OAEP_11 + "\n" + TRIPLEDES_KeyWrap + "\n" +
-    AES_128_KeyWrap + "\n" + AES_256_KeyWrap + "\n" + AES_192_KeyWrap + "\n" +
-    AES_128_GCM + "\n" + AES_192_GCM + "\n" + AES_256_GCM + "\n" + SEED_128 + "\n" +
-    CAMELLIA_128 + "\n" + CAMELLIA_192 + "\n" + CAMELLIA_256 + "\n" +
-    CAMELLIA_128_KeyWrap + "\n" + CAMELLIA_192_KeyWrap + "\n" + CAMELLIA_256_KeyWrap + "\n" +
-    SEED_128_KeyWrap + "\n";
+        AES_128 + "\n" + AES_256 + "\n" + AES_192 + "\n" + RSA_v1dot5 + "\n" +
+        RSA_OAEP + "\n" + RSA_OAEP_11 + "\n" + TRIPLEDES_KeyWrap + "\n" +
+        AES_128_KeyWrap + "\n" + AES_256_KeyWrap + "\n" + AES_192_KeyWrap + "\n" +
+        AES_128_GCM + "\n" + AES_192_GCM + "\n" + AES_256_GCM + "\n" + SEED_128 + "\n" +
+        CAMELLIA_128 + "\n" + CAMELLIA_192 + "\n" + CAMELLIA_256 + "\n" +
+        CAMELLIA_128_KeyWrap + "\n" + CAMELLIA_192_KeyWrap + "\n" + CAMELLIA_256_KeyWrap + "\n" +
+        SEED_128_KeyWrap + "\n";
 
     private static final boolean HAVE_FUNCTIONAL_IDENTITY_TRANSFORMER = haveFunctionalIdentityTransformer();
 
@@ -1090,9 +1090,6 @@ public class XMLCipher {
         if (algorithm == null) {
             throw new XMLEncryptionException("empty", "XMLCipher instance without transformation specified");
         }
-        if (serializer instanceof AbstractSerializer) {
-            ((AbstractSerializer)serializer).setSecureValidation(secureValidation);
-        }
         if (element != null && element.getParentNode() == null) {
             throw new XMLEncryptionException("empty", "The element can't be serialized as it has no parent");
         }
@@ -1655,9 +1652,6 @@ public class XMLCipher {
      */
     private Document decryptElement(Element element) throws XMLEncryptionException {
         LOG.debug("Decrypting element...");
-        if (serializer instanceof AbstractSerializer) {
-            ((AbstractSerializer)serializer).setSecureValidation(secureValidation);
-        }
 
         if (element != null && element.getParentNode() == null) {
             throw new XMLEncryptionException("empty", "The element can't be serialized as it has no parent");
@@ -1675,7 +1669,7 @@ public class XMLCipher {
 
         Node sourceParent = element.getParentNode();
         try {
-            Node decryptedNode = serializer.deserialize(octets, sourceParent);
+            Node decryptedNode = serializer.deserialize(octets, sourceParent, secureValidation);
 
             // The de-serialiser returns a node whose children we need to take on.
             if (sourceParent != null && Node.DOCUMENT_NODE == sourceParent.getNodeType()) {
