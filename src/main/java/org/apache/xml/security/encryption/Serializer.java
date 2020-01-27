@@ -40,7 +40,7 @@ public interface Serializer {
      * <code>Element</code>.
      *
      * @param element the <code>Element</code> to serialize.
-     * @return the <code>byte[]</code> representation of the serilaized
+     * @return the <code>byte[]</code> representation of the serialized
      *   <code>Element</code>.
      * @throws Exception
      */
@@ -56,14 +56,6 @@ public interface Serializer {
      * @throws Exception
      */
     byte[] serializeToByteArray(NodeList content) throws Exception;
-
-    /**
-     * Use the Canonicalizer to serialize the node
-     * @param node
-     * @return the (byte[]) canonicalization of the node
-     * @throws Exception
-     */
-    byte[] canonSerializeToByteArray(Node node) throws Exception;
 
     /**
      * @param source

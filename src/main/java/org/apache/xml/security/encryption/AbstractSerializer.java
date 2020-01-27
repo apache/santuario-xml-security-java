@@ -46,21 +46,6 @@ public abstract class AbstractSerializer implements Serializer {
     }
 
     /**
-     * Returns a <code>String</code> representation of the specified
-     * <code>Element</code>.
-     * <p></p>
-     * Refer also to comments about setup of format.
-     *
-     * @param element the <code>Element</code> to serialize.
-     * @return the <code>String</code> representation of the serilaized
-     *   <code>Element</code>.
-     * @throws Exception
-     */
-    public String serialize(Element element) throws Exception {
-        return canonSerialize(element);
-    }
-
-    /**
      * Returns a <code>byte[]</code> representation of the specified
      * <code>Element</code>.
      *
@@ -70,39 +55,9 @@ public abstract class AbstractSerializer implements Serializer {
      * @throws Exception
      */
     public byte[] serializeToByteArray(Element element) throws Exception {
-        return canonSerializeToByteArray(element);
-    }
-
-    /**
-     * Returns a <code>String</code> representation of the specified
-     * <code>NodeList</code>.
-     * <p></p>
-     * This is a special case because the NodeList may represent a
-     * <code>DocumentFragment</code>. A document fragment may be a
-     * non-valid XML document (refer to appropriate description of
-     * W3C) because it my start with a non-element node, e.g. a text
-     * node.
-     * <p></p>
-     * The methods first converts the node list into a document fragment.
-     * Special care is taken to not destroy the current document, thus
-     * the method clones the nodes (deep cloning) before it appends
-     * them to the document fragment.
-     * <p></p>
-     * Refer also to comments about setup of format.
-     *
-     * @param content the <code>NodeList</code> to serialize.
-     * @return the <code>String</code> representation of the serialized
-     *   <code>NodeList</code>.
-     * @throws Exception
-     */
-    public String serialize(NodeList content) throws Exception {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            for (int i = 0; i < content.getLength(); i++) {
-                canon.canonicalizeSubtree(content.item(i), baos);
-            }
-            String ret = baos.toString(StandardCharsets.UTF_8.name());
-            baos.reset();
-            return ret;
+            canon.canonicalizeSubtree(element, baos);
+            return baos.toByteArray();
         }
     }
 
@@ -120,34 +75,6 @@ public abstract class AbstractSerializer implements Serializer {
             for (int i = 0; i < content.getLength(); i++) {
                 canon.canonicalizeSubtree(content.item(i), baos);
             }
-            return baos.toByteArray();
-        }
-    }
-
-    /**
-     * Use the Canonicalizer to serialize the node
-     * @param node
-     * @return the canonicalization of the node
-     * @throws Exception
-     */
-    public String canonSerialize(Node node) throws Exception {
-        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            canon.canonicalizeSubtree(node, baos);
-            String ret = baos.toString(StandardCharsets.UTF_8.name());
-            baos.reset();
-            return ret;
-        }
-    }
-
-    /**
-     * Use the Canonicalizer to serialize the node
-     * @param node
-     * @return the (byte[]) canonicalization of the node
-     * @throws Exception
-     */
-    public byte[] canonSerializeToByteArray(Node node) throws Exception {
-        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            canon.canonicalizeSubtree(node, baos);
             return baos.toByteArray();
         }
     }
@@ -193,38 +120,6 @@ public abstract class AbstractSerializer implements Serializer {
         } catch (IOException e) {
             throw new XMLEncryptionException(e);
         }
-    }
-
-    protected static String createContext(String source, Node ctx) {
-        // Create the context to parse the document against
-        StringBuilder sb = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?><dummy");
-
-        // Run through each node up to the document node and find any xmlns: nodes
-        Map<String, String> storedNamespaces = new HashMap<>();
-        Node wk = ctx;
-        while (wk != null) {
-            NamedNodeMap atts = wk.getAttributes();
-            if (atts != null) {
-                for (int i = 0; i < atts.getLength(); ++i) {
-                    Node att = atts.item(i);
-                    String nodeName = att.getNodeName();
-                    if (("xmlns".equals(nodeName) || nodeName.startsWith("xmlns:"))
-                        && !storedNamespaces.containsKey(att.getNodeName())) {
-                        sb.append(' ');
-                        sb.append(nodeName);
-                        sb.append("=\"");
-                        sb.append(att.getNodeValue());
-                        sb.append('\"');
-                        storedNamespaces.put(nodeName, att.getNodeValue());
-                    }
-                }
-            }
-            wk = wk.getParentNode();
-        }
-        sb.append('>');
-        sb.append(source);
-        sb.append("</dummy>");
-        return sb.toString();
     }
 
 }
