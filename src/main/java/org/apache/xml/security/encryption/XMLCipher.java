@@ -47,6 +47,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.OAEPParameterSpec;
 import javax.crypto.spec.PSource;
+import javax.xml.transform.TransformerConfigurationException;
 
 import org.apache.xml.security.algorithms.JCEMapper;
 import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
@@ -249,22 +250,19 @@ public class XMLCipher {
     private int cipherMode = Integer.MIN_VALUE;
 
     /** URI of algorithm that is being used for cryptographic operation */
-    private String algorithm;
+    private final String algorithm;
 
     /** Cryptographic provider requested by caller */
-    private String requestedJCEProvider;
-
-    /** Holds c14n to serialize, if initialized then _always_ use this c14n to serialize */
-    private Canonicalizer canon;
+    private final String requestedJCEProvider;
 
     /** Used for creation of DOM nodes in WRAP and ENCRYPT modes */
     private Document contextDocument;
 
     /** Instance of factory used to create XML Encryption objects */
-    private Factory factory;
+    private final Factory factory;
 
     /** Serializer class for going to/from UTF-8 */
-    private Serializer serializer;
+    private final Serializer serializer;
 
     /** Local copy of user's key */
     private Key key;
@@ -289,21 +287,6 @@ public class XMLCipher {
     private List<KeyResolverSpi> internalKeyResolvers;
 
     /**
-     * Set the Serializer algorithm to use
-     */
-    public void setSerializer(Serializer serializer) {
-        this.serializer = serializer;
-        serializer.setCanonicalizer(this.canon);
-    }
-
-    /**
-     * Get the Serializer algorithm to use
-     */
-    public Serializer getSerializer() {
-        return serializer;
-    }
-
-    /**
      * Creates a new <code>XMLCipher</code>.
      *
      * @param transformation    the name of the transformation, e.g.,
@@ -312,15 +295,14 @@ public class XMLCipher {
      *                          is defined in the <code>EncryptionMethod</code> element.
      * @param provider          the JCE provider that supplies the transformation,
      *                          if null use the default provider.
-     * @param canonAlg             the name of the c14n algorithm, if
-     *                          <code>null</code> use standard serializer
      * @param digestMethod      An optional digestMethod to use.
+     * @param serializer        A Serializer instance to use
      */
     private XMLCipher(
         String transformation,
         String provider,
-        String canonAlg,
-        String digestMethod
+        String digestMethod,
+        Serializer serializer
     ) throws XMLEncryptionException {
         LOG.debug("Constructing XMLCipher...");
 
@@ -330,31 +312,27 @@ public class XMLCipher {
         requestedJCEProvider = provider;
         digestAlg = digestMethod;
 
-        // Create a canonicalizer - used when serializing DOM to octets
-        // prior to encryption (and for the reverse)
-
-        try {
-            if (canonAlg == null) {
-                // The default is to preserve the physical representation.
-                this.canon = Canonicalizer.getInstance(Canonicalizer.ALGO_ID_C14N_PHYSICAL);
-            } else {
-                this.canon = Canonicalizer.getInstance(canonAlg);
-            }
-        } catch (InvalidCanonicalizerException ice) {
-            throw new XMLEncryptionException(ice);
-        }
-
-        if (serializer == null) {
-            if (HAVE_FUNCTIONAL_IDENTITY_TRANSFORMER) {
-                serializer = new TransformSerializer();
-            } else {
-                serializer = new DocumentSerializer();
-            }
-        }
-        serializer.setCanonicalizer(this.canon);
+        this.serializer = serializer;
 
         if (transformation != null) {
             contextCipher = constructCipher(transformation, digestMethod);
+        }
+    }
+
+    private static Serializer createSerializer(boolean secureValidation) throws XMLEncryptionException {
+        return createSerializer(null, secureValidation);
+    }
+
+    private static Serializer createSerializer(String canonAlg, boolean secureValidation) throws XMLEncryptionException {
+        String c14nAlg = canonAlg != null ? canonAlg : Canonicalizer.ALGO_ID_C14N_PHYSICAL;
+
+        try {
+            if (HAVE_FUNCTIONAL_IDENTITY_TRANSFORMER) {
+                return new TransformSerializer(c14nAlg, secureValidation);
+            }
+            return new DocumentSerializer(c14nAlg, secureValidation);
+        } catch (InvalidCanonicalizerException | TransformerConfigurationException e) {
+            throw new XMLEncryptionException(e);
         }
     }
 
@@ -438,7 +416,25 @@ public class XMLCipher {
     public static XMLCipher getInstance(String transformation) throws XMLEncryptionException {
         LOG.debug("Getting XMLCipher with transformation");
         validateTransformation(transformation);
-        return new XMLCipher(transformation, null, null, null);
+        return new XMLCipher(transformation, null, null, createSerializer(true));
+    }
+
+    /**
+     * Returns an <code>XMLCipher</code> that implements the specified
+     * transformation, operates on the specified context document and serializes
+     * the document with the specified serializer before it
+     * encrypts the document.
+     * <p>
+     *
+     * @param transformation    the name of the transformation
+     * @param serializer        A custom Serializer instance
+     * @return the XMLCipher
+     * @throws XMLEncryptionException
+     */
+    public static XMLCipher getInstance(String transformation, Serializer serializer) throws XMLEncryptionException {
+        LOG.debug("Getting XMLCipher with transformation");
+        validateTransformation(transformation);
+        return new XMLCipher(transformation, null, null, serializer);
     }
 
     /**
@@ -458,7 +454,7 @@ public class XMLCipher {
         throws XMLEncryptionException {
         LOG.debug("Getting XMLCipher with transformation and c14n algorithm");
         validateTransformation(transformation);
-        return new XMLCipher(transformation, null, canon, null);
+        return new XMLCipher(transformation, null, null, createSerializer(canon, true));
     }
 
     /**
@@ -479,7 +475,7 @@ public class XMLCipher {
         throws XMLEncryptionException {
         LOG.debug("Getting XMLCipher with transformation and c14n algorithm");
         validateTransformation(transformation);
-        return new XMLCipher(transformation, null, canon, digestMethod);
+        return new XMLCipher(transformation, null, digestMethod, createSerializer(canon, true));
     }
 
     /**
@@ -498,7 +494,7 @@ public class XMLCipher {
             throw new NullPointerException("Provider unexpectedly null..");
         }
         validateTransformation(transformation);
-        return new XMLCipher(transformation, provider, null, null);
+        return new XMLCipher(transformation, provider, null, createSerializer(true));
     }
 
     /**
@@ -523,7 +519,7 @@ public class XMLCipher {
             throw new NullPointerException("Provider unexpectedly null..");
         }
         validateTransformation(transformation);
-        return new XMLCipher(transformation, provider, canon, null);
+        return new XMLCipher(transformation, provider, null, createSerializer(canon, true));
     }
 
     /**
@@ -549,7 +545,31 @@ public class XMLCipher {
             throw new NullPointerException("Provider unexpectedly null..");
         }
         validateTransformation(transformation);
-        return new XMLCipher(transformation, provider, canon, digestMethod);
+        return new XMLCipher(transformation, provider, digestMethod, createSerializer(canon, true));
+    }
+
+    /**
+     * Returns an <code>XMLCipher</code> that implements the specified
+     * transformation, operates on the specified context document and serializes
+     * the document with the specified Serializer before it encrypts the document.
+     * <p>
+     *
+     * @param transformation    the name of the transformation
+     * @param provider          the JCE provider that supplies the transformation
+     * @param serializer        A custom serializer instance to use
+     * @param digestMethod      An optional digestMethod to use
+     * @return the XMLCipher
+     * @throws XMLEncryptionException
+     */
+    public static XMLCipher getProviderInstance(
+        String transformation, String provider, Serializer serializer, String digestMethod
+    ) throws XMLEncryptionException {
+        LOG.debug("Getting XMLCipher with transformation, provider and c14n algorithm");
+        if (null == provider) {
+            throw new NullPointerException("Provider unexpectedly null..");
+        }
+        validateTransformation(transformation);
+        return new XMLCipher(transformation, provider, digestMethod, serializer);
     }
 
     /**
@@ -563,7 +583,7 @@ public class XMLCipher {
      */
     public static XMLCipher getInstance() throws XMLEncryptionException {
         LOG.debug("Getting XMLCipher with no arguments");
-        return new XMLCipher(null, null, null, null);
+        return new XMLCipher(null, null, null, createSerializer(true));
     }
 
     /**
@@ -581,7 +601,7 @@ public class XMLCipher {
      */
     public static XMLCipher getProviderInstance(String provider) throws XMLEncryptionException {
         LOG.debug("Getting XMLCipher with provider");
-        return new XMLCipher(null, provider, null, null);
+        return new XMLCipher(null, provider, null, createSerializer(true));
     }
 
     /**
@@ -1669,7 +1689,7 @@ public class XMLCipher {
 
         Node sourceParent = element.getParentNode();
         try {
-            Node decryptedNode = serializer.deserialize(octets, sourceParent, secureValidation);
+            Node decryptedNode = serializer.deserialize(octets, sourceParent);
 
             // The de-serialiser returns a node whose children we need to take on.
             if (sourceParent != null && Node.DOCUMENT_NODE == sourceParent.getNodeType()) {

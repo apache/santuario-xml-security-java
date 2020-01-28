@@ -24,6 +24,8 @@ import java.io.InputStream;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.xml.security.c14n.Canonicalizer;
+import org.apache.xml.security.c14n.InvalidCanonicalizerException;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentFragment;
@@ -36,28 +38,34 @@ import org.xml.sax.SAXException;
  */
 public class DocumentSerializer extends AbstractSerializer {
 
+    public DocumentSerializer(boolean secureValidation) throws InvalidCanonicalizerException {
+        this(Canonicalizer.ALGO_ID_C14N_PHYSICAL, secureValidation);
+    }
+
+    public DocumentSerializer(String canonAlg, boolean secureValidation) throws InvalidCanonicalizerException {
+        super(canonAlg, secureValidation);
+    }
+
     /**
      * @param source
      * @param ctx
-     * @param secureValidation
      * @return the Node resulting from the parse of the source
      * @throws XMLEncryptionException
      */
-    public Node deserialize(byte[] source, Node ctx, boolean secureValidation) throws XMLEncryptionException, IOException {
+    public Node deserialize(byte[] source, Node ctx) throws XMLEncryptionException, IOException {
         byte[] fragment = createContext(source, ctx);
         try (InputStream is = new ByteArrayInputStream(fragment)) {
-            return deserialize(ctx, is, secureValidation);
+            return deserialize(ctx, is);
         }
     }
 
     /**
      * @param ctx
      * @param inputStream
-     * @param secureValidation
      * @return the Node resulting from the parse of the source
      * @throws XMLEncryptionException
      */
-    private Node deserialize(Node ctx, InputStream inputStream, boolean secureValidation) throws XMLEncryptionException {
+    private Node deserialize(Node ctx, InputStream inputStream) throws XMLEncryptionException {
         try {
             Document d = XMLUtils.read(inputStream, secureValidation);
 

@@ -20,7 +20,6 @@ package org.apache.xml.security.encryption;
 
 import java.io.IOException;
 
-import org.apache.xml.security.c14n.Canonicalizer;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -29,11 +28,6 @@ import org.w3c.dom.NodeList;
  * Converts <code>String</code>s into <code>Node</code>s and visa versa.
  */
 public interface Serializer {
-
-    /**
-     * Set the Canonicalizer object to use.
-     */
-    void setCanonicalizer(Canonicalizer canon);
 
     /**
      * Returns a <code>byte[]</code> representation of the specified
@@ -60,9 +54,8 @@ public interface Serializer {
     /**
      * @param source
      * @param ctx
-     * @param secureValidation
      * @return the Node resulting from the parse of the source
      * @throws XMLEncryptionException
      */
-    Node deserialize(byte[] source, Node ctx, boolean secureValidation) throws XMLEncryptionException, IOException;
+    Node deserialize(byte[] source, Node ctx) throws XMLEncryptionException, IOException;
 }

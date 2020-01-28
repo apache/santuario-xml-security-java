@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.xml.security.c14n.Canonicalizer;
+import org.apache.xml.security.c14n.InvalidCanonicalizerException;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -39,10 +40,12 @@ import org.w3c.dom.NodeList;
  */
 public abstract class AbstractSerializer implements Serializer {
 
-    private Canonicalizer canon;
+    private final Canonicalizer canon;
+    protected final boolean secureValidation;
 
-    public void setCanonicalizer(Canonicalizer canon) {
-        this.canon = canon;
+    protected AbstractSerializer(String canonAlg, boolean secureValidation) throws InvalidCanonicalizerException {
+        this.canon = Canonicalizer.getInstance(canonAlg);
+        this.secureValidation = secureValidation;
     }
 
     /**

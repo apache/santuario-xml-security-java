@@ -25,10 +25,13 @@ import java.io.InputStream;
 import javax.xml.XMLConstants;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.xml.security.c14n.Canonicalizer;
+import org.apache.xml.security.c14n.InvalidCanonicalizerException;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Node;
@@ -39,30 +42,47 @@ import org.w3c.dom.Node;
  */
 public class TransformSerializer extends AbstractSerializer {
 
-    private TransformerFactory transformerFactory;
+    private final TransformerFactory transformerFactory;
+
+    public TransformSerializer(boolean secureValidation) throws InvalidCanonicalizerException, TransformerConfigurationException {
+        this(Canonicalizer.ALGO_ID_C14N_PHYSICAL, secureValidation);
+    }
+
+    public TransformSerializer(String canonAlg, boolean secureValidation) throws TransformerConfigurationException, InvalidCanonicalizerException {
+        super(canonAlg, secureValidation);
+
+        transformerFactory = TransformerFactory.newInstance();
+        transformerFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
+        if (secureValidation) {
+            try {
+                transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+                transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+            } catch (IllegalArgumentException ex) {
+                // ignore
+            }
+        }
+    }
 
     /**
      * @param source
      * @param ctx
-     * @param secureValidation
      * @return the Node resulting from the parse of the source
      * @throws XMLEncryptionException
      */
-    public Node deserialize(byte[] source, Node ctx, boolean secureValidation) throws XMLEncryptionException, IOException {
+    public Node deserialize(byte[] source, Node ctx) throws XMLEncryptionException, IOException {
         byte[] fragment = createContext(source, ctx);
         try (InputStream is = new ByteArrayInputStream(fragment)) {
-            return deserialize(ctx, new StreamSource(is), secureValidation);
+            return deserialize(ctx, new StreamSource(is));
         }
     }
 
     /**
      * @param ctx
      * @param source
-     * @param secureValidation
      * @return the Node resulting from the parse of the source
      * @throws XMLEncryptionException
      */
-    private Node deserialize(Node ctx, Source source, boolean secureValidation) throws XMLEncryptionException {
+    private Node deserialize(Node ctx, Source source) throws XMLEncryptionException {
         try {
             Document contextDocument = null;
             if (Node.DOCUMENT_NODE == ctx.getNodeType()) {
@@ -71,18 +91,6 @@ public class TransformSerializer extends AbstractSerializer {
                 contextDocument = ctx.getOwnerDocument();
             }
 
-            if (transformerFactory == null) {
-                transformerFactory = TransformerFactory.newInstance();
-                transformerFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
-                if (secureValidation) {
-                    try {
-                        transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-                        transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
-                    } catch (IllegalArgumentException ex) {
-                        // ignore
-                    }
-                }
-            }
             Transformer transformer = transformerFactory.newTransformer();
 
             DOMResult res = new DOMResult();
