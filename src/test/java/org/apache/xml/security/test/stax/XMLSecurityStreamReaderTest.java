@@ -19,6 +19,7 @@
 package org.apache.xml.security.test.stax;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -51,6 +52,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.xmlunit.matchers.CompareMatcher;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -106,6 +110,70 @@ public class XMLSecurityStreamReaderTest {
     }
 
     @Test
+    public void testDocumentDeclaration() throws Exception {
+        String xml = "<?xml version='1.1' encoding='ISO-8859-1' standalone='yes'?>\n"
+                + "<Document/>";
+        ByteArrayInputStream xmlInput = new ByteArrayInputStream(xml.getBytes(StandardCharsets.ISO_8859_1));
+        XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+        XMLStreamReader stdXmlStreamReader = xmlInputFactory.createXMLStreamReader(xmlInput);
+        InboundSecurityContextImpl securityContext = new InboundSecurityContextImpl();
+        InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(securityContext);
+        inputProcessorChain.addProcessor(new EventReaderProcessor(stdXmlStreamReader));
+        XMLSecurityProperties securityProperties = new XMLSecurityProperties();
+        securityProperties.setSkipDocumentEvents(false);
+        XMLSecurityStreamReader xmlSecurityStreamReader = new XMLSecurityStreamReader(inputProcessorChain, securityProperties);
+        advanceToFirstEvent(xmlSecurityStreamReader);
+        assertThat(xmlSecurityStreamReader.getEventType(), is(XMLStreamConstants.START_DOCUMENT));
+        assertThat(xmlSecurityStreamReader.getVersion(), is(equalTo("1.1")));
+        assertThat(xmlSecurityStreamReader.getCharacterEncodingScheme(), is(equalTo("ISO-8859-1")));
+        assertThat(xmlSecurityStreamReader.isStandalone(), is(true));
+        assertThat(xmlSecurityStreamReader.standaloneSet(), is(true));
+
+        assertThat(xmlSecurityStreamReader.hasNext(), is(true));
+        assertThat(xmlSecurityStreamReader.next(), is(XMLStreamConstants.START_ELEMENT));
+        // Strictly speaking, we should assert that getVersion() etc. throw when not on a START_DOCUMENT event.
+        // However, we have to be lenient to compensate for XML reader implementations such as Xalan,
+        // which access getVersion() etc. when they're positioned on START_ELEMENT, _beyond_ START_DOCUMENT.
+        assertThat(xmlSecurityStreamReader.getVersion(), is(equalTo("1.1")));
+        assertThat(xmlSecurityStreamReader.getCharacterEncodingScheme(), is(equalTo("ISO-8859-1")));
+        assertThat(xmlSecurityStreamReader.isStandalone(), is(true));
+        assertThat(xmlSecurityStreamReader.standaloneSet(), is(true));
+    }
+
+    @Test
+    public void testDocumentDeclarationWhenSkipDocumentEvents() throws Exception {
+        String xml = "<?xml version='1.1' encoding='ISO-8859-1' standalone='yes'?>\n"
+                + "<Document/>";
+        ByteArrayInputStream xmlInput = new ByteArrayInputStream(xml.getBytes(StandardCharsets.ISO_8859_1));
+        XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+        XMLStreamReader stdXmlStreamReader = xmlInputFactory.createXMLStreamReader(xmlInput);
+        InboundSecurityContextImpl securityContext = new InboundSecurityContextImpl();
+        InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(securityContext);
+        inputProcessorChain.addProcessor(new EventReaderProcessor(stdXmlStreamReader));
+        XMLSecurityProperties securityProperties = new XMLSecurityProperties();
+        securityProperties.setSkipDocumentEvents(true);
+        XMLSecurityStreamReader xmlSecurityStreamReader = new XMLSecurityStreamReader(inputProcessorChain, securityProperties);
+        advanceToFirstEvent(xmlSecurityStreamReader);
+        assertThat(xmlSecurityStreamReader.getEventType(), is(XMLStreamConstants.START_ELEMENT));
+        assertThat(xmlSecurityStreamReader.getVersion(), is(equalTo("1.1")));
+        assertThat(xmlSecurityStreamReader.getCharacterEncodingScheme(), is(equalTo("ISO-8859-1")));
+        assertThat(xmlSecurityStreamReader.isStandalone(), is(true));
+        assertThat(xmlSecurityStreamReader.standaloneSet(), is(true));
+    }
+
+    /**
+     * This method advances the reader until it's <i>on</i> the first event, if that's not already the case.
+     * Depending on the implementation, the {@code xmlStreamReader} may be positioned <i>before</i> or <i>on</i>
+     * the first event upon creation.
+     */
+    private static void advanceToFirstEvent(XMLStreamReader xmlStreamReader) throws XMLStreamException {
+        if (xmlStreamReader.getEventType() <= 0) {
+            assertThat(xmlStreamReader.hasNext(), is(true));
+            xmlStreamReader.next();
+        }
+    }
+
+    @Test
     public void testCorrectness() throws Exception {
         XMLSecurityProperties securityProperties = new XMLSecurityProperties();
         InboundSecurityContextImpl securityContext = new InboundSecurityContextImpl();
@@ -123,6 +191,9 @@ public class XMLSecurityStreamReaderTest {
                 "org/apache/xml/security/c14n/inExcl/plain-soap-1.1.xml"));
 
         //hmm why does a streamreader return a DOCUMENT_EVENT before we did call next() ??
+        // A: Because some implementations of XMLStreamReader are positioned _on_ the first event rather than before it.
+        // Woodstox is a typical example of such an implementation.
+        // We have to compensate for both types of implementation, see the method advanceToFirstEvent(XMLStreamReader).
         int stdXMLEventType = stdXmlStreamReader.getEventType();
         int secXMLEventType = xmlSecurityStreamReader.getEventType();
         do {
@@ -213,9 +284,9 @@ public class XMLSecurityStreamReaderTest {
                     assertEquals(stdXmlStreamReader.getTextLength(), xmlSecurityStreamReader.getTextLength());
                     break;
                 case XMLStreamConstants.START_DOCUMENT:
-                    assertEquals(stdXmlStreamReader.getCharacterEncodingScheme(), xmlSecurityStreamReader.getCharacterEncodingScheme());
+                    assertEquals(StandardCharsets.UTF_8.name(), xmlSecurityStreamReader.getCharacterEncodingScheme());
                     assertEquals(stdXmlStreamReader.getEncoding(), xmlSecurityStreamReader.getEncoding());
-                    //assertEquals(stdXmlStreamReader.getVersion(), xmlSecurityStreamReader.getVersion());
+                    assertEquals(stdXmlStreamReader.getVersion(), xmlSecurityStreamReader.getVersion());
                     break;
                 case XMLStreamConstants.END_DOCUMENT:
                     break;
@@ -269,17 +340,24 @@ public class XMLSecurityStreamReaderTest {
         return stringBuilder.toString();
     }
 
+    private static XMLStreamReader createXmlStreamReader() throws XMLStreamException {
+        XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+        xmlInputFactory.setProperty(XMLInputFactory.IS_COALESCING, true);
+        xmlInputFactory.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, true);
+        return xmlInputFactory.createXMLStreamReader(InputProcessor.class.getClassLoader().getResourceAsStream(
+                        "org/apache/xml/security/c14n/inExcl/plain-soap-1.1.xml"));
+    }
+
     class EventReaderProcessor implements InputProcessor {
 
         private XMLStreamReader xmlStreamReader;
 
+        EventReaderProcessor(XMLStreamReader xmlStreamReader) {
+            this.xmlStreamReader = xmlStreamReader;
+        }
+
         EventReaderProcessor() throws Exception {
-            XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
-            xmlInputFactory.setProperty(XMLInputFactory.IS_COALESCING, true);
-            xmlInputFactory.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, true);
-            xmlStreamReader =
-                xmlInputFactory.createXMLStreamReader(this.getClass().getClassLoader().getResourceAsStream(
-                    "org/apache/xml/security/c14n/inExcl/plain-soap-1.1.xml"));
+            this(createXmlStreamReader());
         }
 
         @Override
