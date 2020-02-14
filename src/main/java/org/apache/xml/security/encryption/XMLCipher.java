@@ -1226,7 +1226,7 @@ public class XMLCipher {
      *         specified algorithm
      */
     private AlgorithmParameterSpec constructBlockCipherParameters(String algorithm, byte[] iv) {
-        return XMLCipherUtil.constructBlockCipherParameters(algorithm, iv, this.getClass());
+        return XMLCipherUtil.constructBlockCipherParameters(algorithm, iv);
     }
 
     /**

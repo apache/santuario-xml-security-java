@@ -64,7 +64,7 @@ public class IVSplittingOutputStream extends FilterOutputStream {
     }
 
     private void initializeCipher() throws IOException {
-        AlgorithmParameterSpec iv = XMLCipherUtil.constructBlockCipherParameters(cipher.getAlgorithm().toUpperCase().contains("GCM"), this.getIv(), this.getClass());
+        AlgorithmParameterSpec iv = XMLCipherUtil.constructBlockCipherParameters(cipher.getAlgorithm().toUpperCase().contains("GCM"), this.getIv());
         try {
             cipher.init(Cipher.DECRYPT_MODE, secretKey, iv);
         } catch (InvalidKeyException e) {

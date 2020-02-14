@@ -22,9 +22,9 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.security.spec.AlgorithmParameterSpec;
 
+import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.IvParameterSpec;
 
-import org.apache.xml.security.utils.ClassLoaderUtils;
 import org.apache.xml.security.utils.EncryptionConstants;
 
 public final class XMLCipherUtil {
@@ -45,27 +45,27 @@ public final class XMLCipherUtil {
      * @return the newly constructed AlgorithmParameterSpec instance, appropriate for the
      *         specified algorithm
      */
-    public static AlgorithmParameterSpec constructBlockCipherParameters(String algorithm, byte[] iv, Class<?> callingClass) {
+    public static AlgorithmParameterSpec constructBlockCipherParameters(String algorithm, byte[] iv) {
         if (EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM.equals(algorithm)
                 || EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192_GCM.equals(algorithm)
                 || EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256_GCM.equals(algorithm)) {
-            return constructBlockCipherParametersForGCMAlgorithm(algorithm, iv, callingClass);
+            return constructBlockCipherParametersForGCMAlgorithm(algorithm, iv);
         } else {
             LOG.debug("Saw non-AES-GCM mode block cipher, returning IvParameterSpec: {}", algorithm);
             return new IvParameterSpec(iv);
         }
     }
 
-    public static AlgorithmParameterSpec constructBlockCipherParameters(boolean gcmAlgorithm, byte[] iv, Class<?> callingClass) {
+    public static AlgorithmParameterSpec constructBlockCipherParameters(boolean gcmAlgorithm, byte[] iv) {
         if (gcmAlgorithm) {
-            return constructBlockCipherParametersForGCMAlgorithm("AES/GCM/NoPadding", iv, callingClass);
+            return constructBlockCipherParametersForGCMAlgorithm("AES/GCM/NoPadding", iv);
         } else {
             LOG.debug("Saw non-AES-GCM mode block cipher, returning IvParameterSpec");
             return new IvParameterSpec(iv);
         }
     }
 
-    private static AlgorithmParameterSpec constructBlockCipherParametersForGCMAlgorithm(String algorithm, byte[] iv, Class<?> callingClass) {
+    private static AlgorithmParameterSpec constructBlockCipherParametersForGCMAlgorithm(String algorithm, byte[] iv) {
         if (gcmUseIvParameterSpec) {
             // This override allows to support Java 1.7+ with (usually older versions of) third-party security
             // providers which support or even require GCM via IvParameterSpec rather than GCMParameterSpec,
@@ -76,20 +76,8 @@ public final class XMLCipherUtil {
 
         LOG.debug("Saw AES-GCM block cipher, attempting to create GCMParameterSpec: {}", algorithm);
 
-        try {
-            // This class only added in Java 1.7. So load reflectively until Santuario starts targeting a minimum of Java 1.7.
-            Class<?> gcmSpecClass = ClassLoaderUtils.loadClass("javax.crypto.spec.GCMParameterSpec", callingClass);
-
-            // XML Encryption 1.1 mandates a 128-bit Authentication Tag for AES GCM modes.
-            AlgorithmParameterSpec gcmSpec = (AlgorithmParameterSpec) gcmSpecClass.getConstructor(int.class, byte[].class)
-                    .newInstance(128, iv);
-            LOG.debug("Successfully created GCMParameterSpec");
-            return gcmSpec;
-        } catch (Exception e) {
-            // This handles the case of Java < 1.7 with a third-party security provider that
-            // supports GCM mode using only an IvParameterSpec, such as BouncyCastle.
-            LOG.debug("Failed to create GCMParameterSpec, falling back to returning IvParameterSpec", e);
-            return new IvParameterSpec(iv);
-        }
+        GCMParameterSpec gcmSpec = new GCMParameterSpec(128, iv);
+        LOG.debug("Successfully created GCMParameterSpec");
+        return gcmSpec;
     }
 }

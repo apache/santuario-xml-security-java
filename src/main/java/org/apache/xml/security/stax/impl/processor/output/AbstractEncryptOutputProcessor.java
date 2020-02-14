@@ -170,7 +170,7 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
                 int ivLen = JCEMapper.getIVLengthFromURI(encryptionSymAlgorithm) / 8;
                 byte[] iv = XMLSecurityConstants.generateBytes(ivLen);
                 AlgorithmParameterSpec parameterSpec =
-                    XMLCipherUtil.constructBlockCipherParameters(encryptionSymAlgorithm, iv, this.getClass());
+                    XMLCipherUtil.constructBlockCipherParameters(encryptionSymAlgorithm, iv);
                 symmetricCipher.init(Cipher.ENCRYPT_MODE, encryptionPartDef.getSymmetricKey(), parameterSpec);
 
                 characterEventGeneratorOutputStream = new CharacterEventGeneratorOutputStream();
