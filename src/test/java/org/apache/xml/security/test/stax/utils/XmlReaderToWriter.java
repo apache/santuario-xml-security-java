@@ -31,6 +31,13 @@ public final class XmlReaderToWriter {
 
     public static void writeAll(XMLStreamReader xmlr, XMLStreamWriter writer)
             throws XMLStreamException {
+        // Some implementations, Woodstox for example, already position their reader ON the first event, which is.
+        // typically a START_DOCUMENT event.
+        // If already positioned on an event, that is indicated by the event type.
+        // Make sure we don't miss the initial event.
+        if (xmlr.getEventType() > 0) {
+            write(xmlr, writer);
+        }
         while (xmlr.hasNext()) {
             xmlr.next();
             write(xmlr, writer);

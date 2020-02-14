@@ -33,6 +33,7 @@ import javax.xml.stream.events.DTD;
 import javax.xml.stream.events.EntityReference;
 import javax.xml.stream.events.Namespace;
 import javax.xml.stream.events.ProcessingInstruction;
+import javax.xml.stream.events.StartDocument;
 
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.ext.InputProcessorChain;
@@ -49,7 +50,11 @@ public class XMLSecurityStreamReader implements XMLStreamReader {
 
     private final InputProcessorChain inputProcessorChain;
     private XMLSecEvent currentXMLSecEvent;
-    private boolean skipDocumentEvents = false;
+    private final boolean skipDocumentEvents;
+    private String version;
+    private boolean standalone;
+    private boolean standaloneSet;
+    private String characterEncodingScheme;
 
     private static final String ERR_STATE_NOT_ELEM = "Current state not START_ELEMENT or END_ELEMENT";
     private static final String ERR_STATE_NOT_STELEM = "Current state not START_ELEMENT";
@@ -75,9 +80,20 @@ public class XMLSecurityStreamReader implements XMLStreamReader {
             inputProcessorChain.reset();
             currentXMLSecEvent = inputProcessorChain.processEvent();
             eventType = currentXMLSecEvent.getEventType();
-            if (eventType == START_DOCUMENT && this.skipDocumentEvents) {
-                currentXMLSecEvent = inputProcessorChain.processEvent();
-                eventType = currentXMLSecEvent.getEventType();
+            if (eventType == START_DOCUMENT) {
+                // Even when skipDocumentEvents is true, we still want to get the information out of the event.
+                // We only skip the event itself.
+                StartDocument startDocument = (StartDocument) currentXMLSecEvent;
+                version = startDocument.getVersion();
+                if (startDocument.encodingSet()) {
+                    characterEncodingScheme = startDocument.getCharacterEncodingScheme();
+                }
+                standalone = startDocument.isStandalone();
+                standaloneSet = startDocument.standaloneSet();
+                if (skipDocumentEvents) {
+                    currentXMLSecEvent = inputProcessorChain.processEvent();
+                    eventType = currentXMLSecEvent.getEventType();
+                }
             }
         } catch (XMLSecurityException e) {
             throw new XMLStreamException(e);
@@ -592,22 +608,22 @@ public class XMLSecurityStreamReader implements XMLStreamReader {
 
     @Override
     public String getVersion() {
-        return null;
+        return version;
     }
 
     @Override
     public boolean isStandalone() {
-        return false;
+        return standalone;
     }
 
     @Override
     public boolean standaloneSet() {
-        return false;
+        return standaloneSet;
     }
 
     @Override
     public String getCharacterEncodingScheme() {
-        return null;
+        return characterEncodingScheme;
     }
 
     @Override
