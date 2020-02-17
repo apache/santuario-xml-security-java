@@ -74,6 +74,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 
 /**
@@ -85,6 +86,7 @@ public class XMLEncryption11Test {
 
     private XMLInputFactory xmlInputFactory;
     private TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    private boolean isIBMJdK = System.getProperty("java.vendor").contains("IBM");
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -106,6 +108,8 @@ public class XMLEncryption11Test {
      */
     @org.junit.jupiter.api.Test
     public void testKeyWrappingRSA2048Outbound() throws Exception {
+        assumeFalse(isIBMJdK);
+
         String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-2048_SHA256WithRSA.jks";
         KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(this.getClass().getClassLoader().getResourceAsStream(keystore), "passwd".toCharArray());
@@ -125,6 +129,9 @@ public class XMLEncryption11Test {
      */
     @org.junit.jupiter.api.Test
     public void testKeyWrappingRSA2048EncryptDecrypt() throws Exception {
+
+        assumeFalse(isIBMJdK);
+
         String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-2048_SHA256WithRSA.jks";
         KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(this.getClass().getClassLoader().getResourceAsStream(keystore), "passwd".toCharArray());
@@ -161,6 +168,9 @@ public class XMLEncryption11Test {
      */
     @org.junit.jupiter.api.Test
     public void testKeyWrappingRSA3072() throws Exception {
+
+        assumeFalse(isIBMJdK);
+
         String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-3072_SHA256WithRSA.jks";
         KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(this.getClass().getClassLoader().getResourceAsStream(keystore), "passwd".toCharArray());
@@ -181,6 +191,9 @@ public class XMLEncryption11Test {
      */
     @org.junit.jupiter.api.Test
     public void testKeyWrappingRSA3072EncryptDecrypt() throws Exception {
+
+        assumeFalse(isIBMJdK);
+
         String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-3072_SHA256WithRSA.jks";
         KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(this.getClass().getClassLoader().getResourceAsStream(keystore), "passwd".toCharArray());
@@ -219,6 +232,9 @@ public class XMLEncryption11Test {
      */
     @org.junit.jupiter.api.Test
     public void testKeyWrappingRSA3072OAEP() throws Exception {
+
+        assumeFalse(isIBMJdK);
+
         String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-3072_SHA256WithRSA.jks";
         KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(this.getClass().getClassLoader().getResourceAsStream(keystore), "passwd".toCharArray());
@@ -239,6 +255,9 @@ public class XMLEncryption11Test {
      */
     @org.junit.jupiter.api.Test
     public void testKeyWrappingRSA3072OAEPEncryptDecrypt() throws Exception {
+
+        assumeFalse(isIBMJdK);
+
         String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-3072_SHA256WithRSA.jks";
         KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(this.getClass().getClassLoader().getResourceAsStream(keystore), "passwd".toCharArray());
@@ -277,6 +296,9 @@ public class XMLEncryption11Test {
      */
     @org.junit.jupiter.api.Test
     public void testKeyWrappingRSA4096() throws Exception {
+
+        assumeFalse(isIBMJdK);
+
         String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-4096_SHA256WithRSA.jks";
         KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(this.getClass().getClassLoader().getResourceAsStream(keystore), "passwd".toCharArray());
@@ -297,6 +319,9 @@ public class XMLEncryption11Test {
      */
     @org.junit.jupiter.api.Test
     public void testKeyWrappingRSA4096EncryptDecrypt() throws Exception {
+
+        assumeFalse(isIBMJdK);
+
         String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-4096_SHA256WithRSA.jks";
 
         KeyStore keyStore = KeyStore.getInstance("jks");
@@ -336,6 +361,9 @@ public class XMLEncryption11Test {
      */
     @org.junit.jupiter.api.Test
     public void testKeyWrappingRSA4096MGFSHA512EncryptDecrypt() throws Exception {
+
+        assumeFalse(isIBMJdK);
+
         String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-4096_SHA256WithRSA.jks";
 
         KeyStore keyStore = KeyStore.getInstance("jks");
@@ -375,6 +403,8 @@ public class XMLEncryption11Test {
      */
     @org.junit.jupiter.api.Test
     public void testAESGCMAuthentication() throws Exception {
+
+        assumeFalse(isIBMJdK);
 
         String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-4096_SHA256WithRSA.jks";
 

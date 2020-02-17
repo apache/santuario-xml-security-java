@@ -65,6 +65,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 
 /**
@@ -74,6 +75,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class EncryptionCreationTest {
 
     private XMLInputFactory xmlInputFactory;
+
+    private boolean isIBMJdK = System.getProperty("java.vendor").contains("IBM");
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -1107,6 +1110,8 @@ public class EncryptionCreationTest {
     // Test encryption using a generated AES 192 bit key that is encrypted using a 3DES key.
     @Test
     public void testAES192Element3DESKWCipher() throws Exception {
+        assumeFalse(isIBMJdK);
+
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();

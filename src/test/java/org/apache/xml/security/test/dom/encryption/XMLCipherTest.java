@@ -68,6 +68,7 @@ import org.xml.sax.SAXException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 
 /**
@@ -91,6 +92,8 @@ public class XMLCipherTest {
     private boolean haveKeyWraps;
     private String tstBase64EncodedString;
     private boolean bcInstalled;
+
+    private boolean isIBMJdK = System.getProperty("java.vendor").contains("IBM");
 
     public XMLCipherTest() throws Exception {
         basedir = System.getProperty("basedir",".");
@@ -268,6 +271,8 @@ public class XMLCipherTest {
      */
     @org.junit.jupiter.api.Test
     public void testAES192Element3DESKWCipher() throws Exception {
+
+        assumeFalse(isIBMJdK);
 
         Document d = document(); // source
         Document ed = null;

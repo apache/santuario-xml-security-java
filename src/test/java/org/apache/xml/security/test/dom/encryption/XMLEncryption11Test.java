@@ -54,6 +54,7 @@ import org.w3c.dom.Node;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 
 /**
@@ -70,6 +71,7 @@ public class XMLEncryption11Test {
     private static String cardNumber;
     private static int nodeCount = 0;
     private boolean haveISOPadding;
+    private boolean isIBMJdK = System.getProperty("java.vendor").contains("IBM");
 
     static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(XMLEncryption11Test.class);
@@ -159,6 +161,9 @@ public class XMLEncryption11Test {
      */
     @org.junit.jupiter.api.Test
     public void testKeyWrappingRSA2048EncryptDecrypt() throws Exception {
+
+        assumeFalse(isIBMJdK);
+
         if (haveISOPadding) {
             String keystore =
                 "src/test/resources/org/w3c/www/interop/xmlenc-core-11/RSA-2048_SHA256WithRSA.jks";
@@ -325,6 +330,8 @@ public class XMLEncryption11Test {
      */
     @org.junit.jupiter.api.Test
     public void testKeyWrappingRSA3072EncryptDecrypt() throws Exception {
+        assumeFalse(isIBMJdK);
+
         if (haveISOPadding) {
             String keystore =
                 "src/test/resources/org/w3c/www/interop/xmlenc-core-11/RSA-3072_SHA256WithRSA.jks";

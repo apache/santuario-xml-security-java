@@ -57,6 +57,7 @@ import org.w3c.dom.Node;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 
 /**
@@ -71,6 +72,7 @@ public class BaltimoreEncTest {
 
     private XMLInputFactory xmlInputFactory;
     private TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    private boolean isIBMJdK = System.getProperty("java.vendor").contains("IBM");
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -110,6 +112,7 @@ public class BaltimoreEncTest {
 
     @Test
     public void test_five_content_3des_cbc() throws Exception {
+
         // Read in document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -147,6 +150,7 @@ public class BaltimoreEncTest {
 
     @Test
     public void test_five_content_aes256_cbc() throws Exception {
+
         // Read in document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -326,6 +330,8 @@ public class BaltimoreEncTest {
 
     @Test
     public void test_five_data_aes256_cbc_3des() throws Exception {
+        assumeFalse(isIBMJdK);
+
         // Read in document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(

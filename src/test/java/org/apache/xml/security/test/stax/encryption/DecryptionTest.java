@@ -80,6 +80,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 
 /**
@@ -90,6 +91,8 @@ public class DecryptionTest {
 
     private XMLInputFactory xmlInputFactory;
     private TransformerFactory transformerFactory = TransformerFactory.newInstance();
+
+    private boolean isIBMJdK = System.getProperty("java.vendor").contains("IBM");
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -545,6 +548,8 @@ public class DecryptionTest {
      */
     @Test
     public void testAES192Element3DESKWCipherInbound() throws Exception {
+        assumeFalse(isIBMJdK);
+
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(

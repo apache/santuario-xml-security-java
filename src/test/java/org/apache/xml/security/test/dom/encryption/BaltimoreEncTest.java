@@ -57,6 +57,7 @@ import org.w3c.dom.Node;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 
 /**
@@ -75,6 +76,7 @@ public class BaltimoreEncTest {
     private static PrivateKey rsaKey;
     private boolean haveISOPadding;
     private boolean haveKeyWraps;
+    private boolean isIBMJdK = System.getProperty("java.vendor").contains("IBM");
 
     static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(BaltimoreEncTest.class);
@@ -158,6 +160,7 @@ public class BaltimoreEncTest {
      */
     @org.junit.jupiter.api.Test
     public void test_five_content_3des_cbc() throws Exception {
+
         if (haveISOPadding) {
             String filename =
                 "src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-content-tripledes-cbc.xml";
@@ -315,6 +318,8 @@ public class BaltimoreEncTest {
      */
     @org.junit.jupiter.api.Test
     public void test_five_data_aes256_cbc_3des() throws Exception {
+        assumeFalse(isIBMJdK);
+
         if (haveISOPadding && haveKeyWraps) {
             String filename =
                 "src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-data-aes256-cbc-kw-tripledes.xml";

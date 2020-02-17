@@ -120,7 +120,7 @@ public class SecurityTokenFactoryImplTest {
 
         SecurityTokenConstants.KeyUsage keyUsage = SecurityTokenConstants.KeyUsage_Signature_Verification;
 
-        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("DSA", "SUN");
+        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("DSA");
         KeyPair keyPair = keyGen.generateKeyPair();
         Key privateKey = keyPair.getPrivate();
 
