@@ -85,7 +85,9 @@ public class XMLSecurityStreamReader implements XMLStreamReader {
                 // We only skip the event itself.
                 StartDocument startDocument = (StartDocument) currentXMLSecEvent;
                 version = startDocument.getVersion();
-                characterEncodingScheme = startDocument.getCharacterEncodingScheme();
+                if (startDocument.encodingSet()) {
+                    characterEncodingScheme = startDocument.getCharacterEncodingScheme();
+                }
                 standalone = startDocument.isStandalone();
                 standaloneSet = startDocument.standaloneSet();
                 if (skipDocumentEvents) {

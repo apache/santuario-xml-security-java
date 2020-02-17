@@ -55,6 +55,7 @@ import org.xmlunit.matchers.CompareMatcher;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -138,6 +139,27 @@ public class XMLSecurityStreamReaderTest {
         assertThat(xmlSecurityStreamReader.getCharacterEncodingScheme(), is(equalTo("ISO-8859-1")));
         assertThat(xmlSecurityStreamReader.isStandalone(), is(true));
         assertThat(xmlSecurityStreamReader.standaloneSet(), is(true));
+    }
+
+    @Test
+    public void testDocumentDeclarationWithoutOptionalAttributes() throws Exception {
+        String xml = "<?xml version='1.1'?>\n"
+                + "<Document/>";
+        ByteArrayInputStream xmlInput = new ByteArrayInputStream(xml.getBytes(StandardCharsets.ISO_8859_1));
+        XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+        XMLStreamReader stdXmlStreamReader = xmlInputFactory.createXMLStreamReader(xmlInput);
+        InboundSecurityContextImpl securityContext = new InboundSecurityContextImpl();
+        InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(securityContext);
+        inputProcessorChain.addProcessor(new EventReaderProcessor(stdXmlStreamReader));
+        XMLSecurityProperties securityProperties = new XMLSecurityProperties();
+        securityProperties.setSkipDocumentEvents(false);
+        XMLSecurityStreamReader xmlSecurityStreamReader = new XMLSecurityStreamReader(inputProcessorChain, securityProperties);
+        advanceToFirstEvent(xmlSecurityStreamReader);
+        assertThat(xmlSecurityStreamReader.getEventType(), is(XMLStreamConstants.START_DOCUMENT));
+        assertThat(xmlSecurityStreamReader.getVersion(), is(equalTo("1.1")));
+        assertThat(xmlSecurityStreamReader.getCharacterEncodingScheme(), is(nullValue()));
+        assertThat(xmlSecurityStreamReader.isStandalone(), is(false));
+        assertThat(xmlSecurityStreamReader.standaloneSet(), is(false));
     }
 
     @Test
@@ -284,7 +306,7 @@ public class XMLSecurityStreamReaderTest {
                     assertEquals(stdXmlStreamReader.getTextLength(), xmlSecurityStreamReader.getTextLength());
                     break;
                 case XMLStreamConstants.START_DOCUMENT:
-                    assertEquals(StandardCharsets.UTF_8.name(), xmlSecurityStreamReader.getCharacterEncodingScheme());
+                    assertEquals(stdXmlStreamReader.getCharacterEncodingScheme(), xmlSecurityStreamReader.getCharacterEncodingScheme());
                     assertEquals(stdXmlStreamReader.getEncoding(), xmlSecurityStreamReader.getEncoding());
                     assertEquals(stdXmlStreamReader.getVersion(), xmlSecurityStreamReader.getVersion());
                     break;
