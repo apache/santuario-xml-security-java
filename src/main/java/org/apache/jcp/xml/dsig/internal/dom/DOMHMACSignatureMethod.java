@@ -34,6 +34,7 @@ import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.Provider;
 import java.security.SignatureException;
 import java.security.spec.AlgorithmParameterSpec;
 import javax.crypto.Mac;
@@ -48,6 +49,8 @@ import org.apache.jcp.xml.dsig.internal.MacOutputStream;
  *
  */
 public abstract class DOMHMACSignatureMethod extends AbstractDOMSignatureMethod {
+
+    private static final String DOM_SIGNATURE_PROVIDER = "org.jcp.xml.dsig.internal.dom.MacProvider";
 
     private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(DOMHMACSignatureMethod.class);
@@ -151,7 +154,10 @@ public abstract class DOMHMACSignatureMethod extends AbstractDOMSignatureMethod 
         }
         if (hmac == null) {
             try {
-                hmac = Mac.getInstance(getJCAAlgorithm());
+                Provider p = (Provider)context.getProperty(DOM_SIGNATURE_PROVIDER);
+                hmac = (p == null)
+                    ? Mac.getInstance(getJCAAlgorithm())
+                    : Mac.getInstance(getJCAAlgorithm(), p);
             } catch (NoSuchAlgorithmException nsae) {
                 throw new XMLSignatureException(nsae);
             }
@@ -178,7 +184,10 @@ public abstract class DOMHMACSignatureMethod extends AbstractDOMSignatureMethod 
         }
         if (hmac == null) {
             try {
-                hmac = Mac.getInstance(getJCAAlgorithm());
+                Provider p = (Provider)context.getProperty(DOM_SIGNATURE_PROVIDER);
+                hmac = (p == null)
+                    ? Mac.getInstance(getJCAAlgorithm())
+                    : Mac.getInstance(getJCAAlgorithm(), p);
             } catch (NoSuchAlgorithmException nsae) {
                 throw new XMLSignatureException(nsae);
             }

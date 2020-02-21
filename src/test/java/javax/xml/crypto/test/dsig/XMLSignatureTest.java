@@ -198,7 +198,7 @@ public class XMLSignatureTest {
         KeyInfo ki = null;
         XMLSignContext signContext;
         Provider p = new TestProvider();
-        for (int i = SIGN_KEYS.length-2; i>=0 ; i--) {
+        for (int i = SIGN_KEYS.length-1; i>=0 ; i--) {
             si = createSignedInfo(SIG_METHODS[i]);
             if (VALIDATE_KEYS[i] instanceof PublicKey) {
                 ki = kifac.newKeyInfo(Collections.singletonList
@@ -210,8 +210,12 @@ public class XMLSignatureTest {
             sig = fac.newXMLSignature(si, ki, objs, id, sigValueId);
             Document doc = TestUtils.newDocument();
             signContext = new DOMSignContext(SIGN_KEYS[i], doc);
-            signContext.setProperty
-                ("org.jcp.xml.dsig.internal.dom.SignatureProvider", p);
+            if (SIGN_KEYS[i] instanceof PrivateKey) {
+                signContext.setProperty("org.jcp.xml.dsig.internal.dom.SignatureProvider", p);
+            } else {
+                signContext.setProperty("org.jcp.xml.dsig.internal.dom.MacProvider", p);
+            }
+
             signContext.setURIDereferencer(ud);
             try {
                 sig.sign(signContext);
