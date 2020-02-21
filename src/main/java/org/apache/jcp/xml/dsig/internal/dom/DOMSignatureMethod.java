@@ -41,6 +41,8 @@ import org.apache.jcp.xml.dsig.internal.SignerOutputStream;
  */
 public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
 
+    private static final String DOM_SIGNATURE_PROVIDER = "org.jcp.xml.dsig.internal.dom.SignatureProvider";
+
     private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(DOMSignatureMethod.class);
 
@@ -202,8 +204,7 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
         }
         if (signature == null) {
             try {
-                Provider p = (Provider)context.getProperty
-                    ("org.jcp.xml.dsig.internal.dom.SignatureProvider");
+                Provider p = (Provider)context.getProperty(DOM_SIGNATURE_PROVIDER);
                 signature = (p == null)
                     ? Signature.getInstance(getJCAAlgorithm())
                     : Signature.getInstance(getJCAAlgorithm(), p);
@@ -247,8 +248,7 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
         }
         if (signature == null) {
             try {
-                Provider p = (Provider)context.getProperty
-                    ("org.jcp.xml.dsig.internal.dom.SignatureProvider");
+                Provider p = (Provider)context.getProperty(DOM_SIGNATURE_PROVIDER);
                 signature = (p == null)
                     ? Signature.getInstance(getJCAAlgorithm())
                     : Signature.getInstance(getJCAAlgorithm(), p);
