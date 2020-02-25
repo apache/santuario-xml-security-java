@@ -693,17 +693,23 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
 
             Element digestMethodElement = XMLUtils.createElementInSignatureSpace(rsaPssParamsElement.getOwnerDocument(), Constants._TAG_DIGESTMETHOD);
             digestMethodElement.setAttribute(Constants._ATT_ALGORITHM, DigestAlgorithm.fromDigestAlgorithm(pssParameterSpec.getDigestAlgorithm()).getXmlDigestAlgorithm());
+            XMLUtils.addReturnToElement(rsaPssParamsElement);
             rsaPssParamsElement.appendChild(digestMethodElement);
+            XMLUtils.addReturnToElement(rsaPssParamsElement);
 
             Element saltLengthElement = rsaPssParamsElement.getOwnerDocument().createElementNS(Constants.XML_DSIG_NS_MORE_07_05, "pss" + ":" + Constants._TAG_SALTLENGTH);
             Text saltLengthText = rsaPssParamsElement.getOwnerDocument().createTextNode(String.valueOf(pssParameterSpec.getSaltLength()));
             saltLengthElement.appendChild(saltLengthText);
+
             rsaPssParamsElement.appendChild(saltLengthElement);
+            XMLUtils.addReturnToElement(rsaPssParamsElement);
 
             Element trailerFieldElement = rsaPssParamsElement.getOwnerDocument().createElementNS(Constants.XML_DSIG_NS_MORE_07_05, "pss" + ":" + Constants._TAG_TRAILERFIELD);
             Text trailerFieldText = rsaPssParamsElement.getOwnerDocument().createTextNode(String.valueOf(pssParameterSpec.getTrailerField()));
             trailerFieldElement.appendChild(trailerFieldText);
+
             rsaPssParamsElement.appendChild(trailerFieldElement);
+            XMLUtils.addReturnToElement(rsaPssParamsElement);
 
             XMLUtils.addReturnToElement(element);
             element.appendChild(rsaPssParamsElement);
@@ -715,6 +721,10 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
             if (pssParameterSpec == null) {
                 super.engineGetContextFromElement(element);
                 Element rsaPssParams = XMLUtils.selectNode(element.getFirstChild(), Constants.XML_DSIG_NS_MORE_07_05, Constants._TAG_RSAPSSPARAMS, 0);
+                if (rsaPssParams == null) {
+                    throw new XMLSignatureException("algorithms.MissingRSAPSSParams");
+                }
+
                 Element saltLengthNode = XMLUtils.selectNode(rsaPssParams.getFirstChild(), Constants.XML_DSIG_NS_MORE_07_05, Constants._TAG_SALTLENGTH, 0);
                 Element trailerFieldNode = XMLUtils.selectNode(rsaPssParams.getFirstChild(), Constants.XML_DSIG_NS_MORE_07_05, Constants._TAG_TRAILERFIELD, 0);
                 int trailerField = trailerFieldNode == null ? 1: Integer.parseInt(trailerFieldNode.getTextContent());

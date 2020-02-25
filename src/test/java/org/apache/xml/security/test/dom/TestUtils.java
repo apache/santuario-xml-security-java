@@ -28,6 +28,7 @@ import org.w3c.dom.Element;
 public class TestUtils {
 
     private static final DocumentBuilderFactory DBF = DocumentBuilderFactory.newInstance();
+    private static final boolean isJava11Compatible;
 
     static {
         DBF.setNamespaceAware(true);
@@ -37,6 +38,16 @@ public class TestUtils {
             // Ignore: DocumentBuilderFactory is required to support the secure processing feature
             e.printStackTrace();        // NOPMD
         }
+
+        String version = System.getProperty("java.version");
+        if (version.indexOf('.') > 0) {
+            version = version.substring(0, version.indexOf('.'));
+        }
+        if (version.indexOf('-') > 0) {
+            version = version.substring(0, version.indexOf('-'));
+        }
+
+        isJava11Compatible = Integer.valueOf(version) >= 11;
     }
 
     /**
@@ -59,5 +70,9 @@ public class TestUtils {
 
     public static Document newDocument() throws ParserConfigurationException {
         return DBF.newDocumentBuilder().newDocument();
+    }
+
+    public static boolean isJava11Compatible() {
+        return isJava11Compatible;
     }
 }

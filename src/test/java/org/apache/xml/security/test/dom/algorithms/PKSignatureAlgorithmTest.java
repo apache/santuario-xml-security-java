@@ -25,6 +25,9 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.Provider;
 import java.security.Security;
+import java.security.spec.AlgorithmParameterSpec;
+import java.security.spec.MGF1ParameterSpec;
+import java.security.spec.PSSParameterSpec;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -35,6 +38,7 @@ import javax.xml.xpath.XPathFactory;
 
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
+import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.jupiter.api.Assumptions;
@@ -368,6 +372,24 @@ public class PKSignatureAlgorithmTest {
     }
 
     @org.junit.jupiter.api.Test
+    public void testRSA_PSS() throws Exception {
+        Assumptions.assumeTrue(bcInstalled || TestUtils.isJava11Compatible());
+        // Read in plaintext document
+        InputStream sourceDocument =
+                this.getClass().getClassLoader().getResourceAsStream(
+                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
+        Document document = XMLUtils.read(sourceDocument, false);
+
+        List<String> localNames = new ArrayList<>();
+        localNames.add("PaymentInfo");
+
+        sign(XMLSignature.ALGO_ID_SIGNATURE_RSA_PSS, document, localNames, rsaKeyPair.getPrivate(),
+             new PSSParameterSpec("SHA-256", "MGF1", MGF1ParameterSpec.SHA256, 64, 1));
+        // XMLUtils.outputDOM(document, System.out);
+        verify(document, rsaKeyPair.getPublic(), localNames);
+    }
+
+    @org.junit.jupiter.api.Test
     public void testECDSA_SHA1() throws Exception {
         // Read in plaintext document
         InputStream sourceDocument =
@@ -471,8 +493,18 @@ public class PKSignatureAlgorithmTest {
         List<String> localNames,
         Key signingKey
     ) throws Exception {
+        return sign(algorithm, document, localNames, signingKey, null);
+    }
+
+    private XMLSignature sign(
+        String algorithm,
+        Document document,
+        List<String> localNames,
+        Key signingKey,
+        AlgorithmParameterSpec parameterSpec
+    ) throws Exception {
         String c14nMethod = "http://www.w3.org/2001/10/xml-exc-c14n#";
-        XMLSignature sig = new XMLSignature(document, "", algorithm, c14nMethod);
+        XMLSignature sig = new XMLSignature(document, "", algorithm, 0, c14nMethod, null, parameterSpec);
 
         Element root = document.getDocumentElement();
         root.appendChild(sig.getElement());
