@@ -39,6 +39,7 @@ import javax.xml.crypto.dsig.dom.DOMSignContext;
 import javax.xml.crypto.dsig.dom.DOMValidateContext;
 import javax.xml.crypto.dsig.keyinfo.KeyInfo;
 import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
+import javax.xml.crypto.dsig.spec.HMACParameterSpec;
 import javax.xml.crypto.test.KeySelectors;
 
 import org.apache.xml.security.utils.XMLUtils;
@@ -57,7 +58,7 @@ public class HMACSignatureAlgorithmTest {
     private KeySelector sks;
     private CanonicalizationMethod withoutComments;
     private DigestMethod sha1;
-    private SignatureMethod hmacSha1, hmacSha224, hmacSha256, hmacSha384, hmacSha512, ripemd160;
+    private SignatureMethod hmacSha1, hmacSha224, hmacSha256, hmacSha384, hmacSha512, ripemd160, hmacSha256ParamSpec;
     private XMLSignatureFactory fac;
 
     static {
@@ -100,6 +101,8 @@ public class HMACSignatureAlgorithmTest {
         hmacSha1 = fac.newSignatureMethod("http://www.w3.org/2000/09/xmldsig#hmac-sha1", null);
         hmacSha224 = fac.newSignatureMethod("http://www.w3.org/2001/04/xmldsig-more#hmac-sha224", null);
         hmacSha256 = fac.newSignatureMethod("http://www.w3.org/2001/04/xmldsig-more#hmac-sha256", null);
+        hmacSha256ParamSpec  = fac.newSignatureMethod("http://www.w3.org/2001/04/xmldsig-more#hmac-sha256",
+                                                      new HMACParameterSpec(256));
         hmacSha384 = fac.newSignatureMethod("http://www.w3.org/2001/04/xmldsig-more#hmac-sha384", null);
         hmacSha512 = fac.newSignatureMethod("http://www.w3.org/2001/04/xmldsig-more#hmac-sha512", null);
         ripemd160 = fac.newSignatureMethod("http://www.w3.org/2001/04/xmldsig-more#hmac-ripemd160", null);
@@ -127,6 +130,12 @@ public class HMACSignatureAlgorithmTest {
     @org.junit.Test
     public void testHMACSHA_256() throws Exception {
         test_create_signature_enveloping(hmacSha256, sha1, null,
+                                         TestUtils.getSecretKey("testkey".getBytes(StandardCharsets.US_ASCII)), sks);
+    }
+
+    @org.junit.Test
+    public void testHMACSHA_256_ParamSpec() throws Exception {
+        test_create_signature_enveloping(hmacSha256ParamSpec, sha1, null,
                                          TestUtils.getSecretKey("testkey".getBytes(StandardCharsets.US_ASCII)), sks);
     }
 

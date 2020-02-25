@@ -18,8 +18,10 @@
  */
 package org.apache.xml.security.test.dom.signature;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
@@ -30,9 +32,11 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.apache.xml.security.Init;
+import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
+import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 
@@ -92,6 +96,53 @@ public class HMACOutputLengthTest {
                 fail(xse.getMessage());
             }
         }
+    }
+
+    @org.junit.Test
+    public void testValidHMACOutputLength() throws Exception {
+        Document doc = XMLUtils.newDocument();
+
+        doc.appendChild(doc.createComment(" Comment before "));
+        Element root = doc.createElementNS("", "RootElement");
+
+        doc.appendChild(root);
+        root.appendChild(doc.createTextNode("Some simple text\n"));
+
+        Element canonElem =
+            XMLUtils.createElementInSignatureSpace(doc, Constants._TAG_CANONICALIZATIONMETHOD);
+        canonElem.setAttributeNS(
+            null, Constants._ATT_ALGORITHM, Canonicalizer.ALGO_ID_C14N_EXCL_OMIT_COMMENTS
+        );
+
+        XMLSignature sig =
+            new XMLSignature(doc, null, XMLSignature.ALGO_ID_MAC_HMAC_SHA1, 160);
+
+        root.appendChild(sig.getElement());
+        doc.appendChild(doc.createComment(" Comment after "));
+        Transforms transforms = new Transforms(doc);
+        transforms.addTransform(Transforms.TRANSFORM_ENVELOPED_SIGNATURE);
+        transforms.addTransform(Transforms.TRANSFORM_C14N_WITH_COMMENTS);
+        sig.addDocument("", transforms, MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256);
+
+        SecretKey sk = sig.createSecretKey("secret".getBytes(StandardCharsets.US_ASCII));
+        sig.sign(sk);
+
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+        XMLUtils.outputDOMc14nWithComments(doc, bos);
+        String signedContent = new String(bos.toByteArray());
+
+        assertTrue(signedContent.contains("ds:HMACOutputLength>160</ds:HMACOutputLength>"));
+
+        // Verify
+        NodeList nl =
+            doc.getElementsByTagNameNS(Constants.SignatureSpecNS, "Signature");
+        if (nl.getLength() == 0) {
+            throw new Exception("Couldn't find signature Element");
+        }
+        Element sigElement = (Element) nl.item(0);
+        XMLSignature signature = new XMLSignature(sigElement, null);
+        assertTrue(signature.checkSignatureValue(sk));
     }
 
     private boolean validate(String data) throws Exception {
