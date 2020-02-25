@@ -318,7 +318,8 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
      *
      * @param element
      */
-    public void engineAddContextToElement(Element element) {
+    @Override
+    protected void engineAddContextToElement(Element element) throws XMLSignatureException {
         if (element == null) {
             throw new IllegalArgumentException("null element");
         }

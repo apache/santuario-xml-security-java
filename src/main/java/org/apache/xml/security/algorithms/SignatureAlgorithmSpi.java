@@ -159,6 +159,9 @@ public abstract class SignatureAlgorithmSpi {
     protected void engineGetContextFromElement(Element element) throws XMLSignatureException {
     }
 
+    protected void engineAddContextToElement(Element element) throws XMLSignatureException {
+    }
+
     /**
      * Method engineSetHMACOutputLength
      *

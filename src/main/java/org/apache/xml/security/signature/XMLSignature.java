@@ -24,6 +24,7 @@ import java.security.Key;
 import java.security.Provider;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
+import java.security.spec.AlgorithmParameterSpec;
 
 import javax.crypto.SecretKey;
 
@@ -198,6 +199,10 @@ public final class XMLSignature extends SignatureElementProxy {
     public static final String ALGO_ID_SIGNATURE_ECDSA_RIPEMD160 =
         "http://www.w3.org/2007/05/xmldsig-more#ecdsa-ripemd160";
 
+    /** Signature - Optional RSASSA-PSS */
+    public static final String ALGO_ID_SIGNATURE_RSA_PSS =
+            Constants.XML_DSIG_NS_MORE_07_05 + "rsa-pss";
+
     private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(XMLSignature.class);
 
@@ -234,7 +239,7 @@ public final class XMLSignature extends SignatureElementProxy {
      */
     public XMLSignature(Document doc, String baseURI, String signatureMethodURI)
         throws XMLSecurityException {
-        this(doc, baseURI, signatureMethodURI, 0, Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS, null);
+        this(doc, baseURI, signatureMethodURI, 0, Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS, null, null);
     }
 
     /**
@@ -252,14 +257,14 @@ public final class XMLSignature extends SignatureElementProxy {
      */
     public XMLSignature(Document doc, String baseURI, String signatureMethodURI, Provider provider)
         throws XMLSecurityException {
-        this(doc, baseURI, signatureMethodURI, 0, Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS, provider);
+        this(doc, baseURI, signatureMethodURI, 0, Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS, provider, null);
     }
 
     /**
      * Constructor XMLSignature
      *
-     * @param doc
-     * @param baseURI
+     * @param doc Document in which the signature will be appended after creation.
+     * @param baseURI URI to be used as context for all relative URIs.
      * @param signatureMethodURI the Signature method to be used.
      * @param hmacOutputLength
      * @throws XMLSecurityException
@@ -268,15 +273,15 @@ public final class XMLSignature extends SignatureElementProxy {
                         int hmacOutputLength) throws XMLSecurityException {
         this(
             doc, baseURI, signatureMethodURI, hmacOutputLength,
-            Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS, null
+            Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS, null, null
         );
     }
 
     /**
      * Constructor XMLSignature
      *
-     * @param doc
-     * @param baseURI
+     * @param doc Document in which the signature will be appended after creation.
+     * @param baseURI URI to be used as context for all relative URIs.
      * @param signatureMethodURI the Signature method to be used.
      * @param hmacOutputLength
      * @param provider security provider to use.
@@ -286,18 +291,17 @@ public final class XMLSignature extends SignatureElementProxy {
                         int hmacOutputLength, Provider provider) throws XMLSecurityException {
         this(
             doc, baseURI, signatureMethodURI, hmacOutputLength,
-            Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS, provider
+            Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS, provider, null
         );
     }
 
     /**
      * Constructor XMLSignature
      *
-     * @param doc
-     * @param baseURI
+     * @param doc Document in which the signature will be appended after creation.
+     * @param baseURI URI to be used as context for all relative URIs.
      * @param signatureMethodURI the Signature method to be used.
-     * @param canonicalizationMethodURI the canonicalization algorithm to be
-     * used to c14nize the SignedInfo element.
+     * @param canonicalizationMethodURI the canonicalization algorithm to be used to c14nize the SignedInfo element.
      * @throws XMLSecurityException
      */
     public XMLSignature(
@@ -306,17 +310,16 @@ public final class XMLSignature extends SignatureElementProxy {
         String signatureMethodURI,
         String canonicalizationMethodURI
     ) throws XMLSecurityException {
-        this(doc, baseURI, signatureMethodURI, 0, canonicalizationMethodURI, null);
+        this(doc, baseURI, signatureMethodURI, 0, canonicalizationMethodURI, null, null);
     }
 
     /**
      * Constructor XMLSignature
      *
-     * @param doc
-     * @param baseURI
+     * @param doc Document in which the signature will be appended after creation.
+     * @param baseURI URI to be used as context for all relative URIs.
      * @param signatureMethodURI the Signature method to be used.
-     * @param canonicalizationMethodURI the canonicalization algorithm to be
-     * used to c14nize the SignedInfo element.
+     * @param canonicalizationMethodURI the canonicalization algorithm to be used to c14nize the SignedInfo element.
      * @param provider security provider to use.
      * @throws XMLSecurityException
      */
@@ -327,17 +330,17 @@ public final class XMLSignature extends SignatureElementProxy {
         String canonicalizationMethodURI,
         Provider provider
     ) throws XMLSecurityException {
-        this(doc, baseURI, signatureMethodURI, 0, canonicalizationMethodURI, provider);
+        this(doc, baseURI, signatureMethodURI, 0, canonicalizationMethodURI, provider, null);
     }
 
     /**
      * Constructor XMLSignature
      *
-     * @param doc
-     * @param baseURI
-     * @param signatureMethodURI
+     * @param doc Document in which the signature will be appended after creation.
+     * @param baseURI URI to be used as context for all relative URIs.
+     * @param signatureMethodURI the Signature method to be used.
      * @param hmacOutputLength
-     * @param canonicalizationMethodURI
+     * @param canonicalizationMethodURI the canonicalization algorithm to be used to c14nize the SignedInfo element.
      * @throws XMLSecurityException
      */
     public XMLSignature(
@@ -347,16 +350,29 @@ public final class XMLSignature extends SignatureElementProxy {
         int hmacOutputLength,
         String canonicalizationMethodURI
     ) throws XMLSecurityException {
-        this(doc, baseURI, signatureMethodURI, hmacOutputLength, canonicalizationMethodURI, null);
+        this(doc, baseURI, signatureMethodURI, hmacOutputLength, canonicalizationMethodURI, null, null);
     }
 
+    /**
+     * Constructor XMLSignature
+     *
+     * @param doc Document in which the signature will be appended after creation.
+     * @param baseURI URI to be used as context for all relative URIs.
+     * @param signatureMethodURI the Signature method to be used.
+     * @param hmacOutputLength
+     * @param canonicalizationMethodURI the canonicalization algorithm to be used to c14nize the SignedInfo element.
+     * @param provider security provider to use.
+     * @param spec
+     * @throws XMLSecurityException
+     */
     public XMLSignature(
         Document doc,
         String baseURI,
         String signatureMethodURI,
         int hmacOutputLength,
         String canonicalizationMethodURI,
-        Provider provider
+        Provider provider,
+        AlgorithmParameterSpec spec
     ) throws XMLSecurityException {
         super(doc);
 
@@ -375,7 +391,7 @@ public final class XMLSignature extends SignatureElementProxy {
         this.baseURI = baseURI;
         this.signedInfo =
             new SignedInfo(
-                getDocument(), signatureMethodURI, hmacOutputLength, canonicalizationMethodURI, provider
+                getDocument(), signatureMethodURI, hmacOutputLength, canonicalizationMethodURI, provider, spec
             );
 
         appendSelf(this.signedInfo);

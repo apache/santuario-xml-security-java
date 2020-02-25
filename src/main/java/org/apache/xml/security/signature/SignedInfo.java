@@ -23,6 +23,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.security.spec.AlgorithmParameterSpec;
 import java.security.Provider;
 
 import javax.crypto.SecretKey;
@@ -86,7 +87,7 @@ public class SignedInfo extends Manifest {
     public SignedInfo(
         Document doc, String signatureMethodURI, String canonicalizationMethodURI
     ) throws XMLSecurityException {
-        this(doc, signatureMethodURI, 0, canonicalizationMethodURI, null);
+        this(doc, signatureMethodURI, 0, canonicalizationMethodURI, null, null);
     }
 
     /**
@@ -104,7 +105,7 @@ public class SignedInfo extends Manifest {
     public SignedInfo(
         Document doc, String signatureMethodURI, String canonicalizationMethodURI, Provider provider
     ) throws XMLSecurityException {
-        this(doc, signatureMethodURI, 0, canonicalizationMethodURI, provider);
+        this(doc, signatureMethodURI, 0, canonicalizationMethodURI, provider, null);
     }
 
     /**
@@ -122,12 +123,26 @@ public class SignedInfo extends Manifest {
         Document doc, String signatureMethodURI,
         int hMACOutputLength, String canonicalizationMethodURI
     ) throws XMLSecurityException {
-        this(doc, signatureMethodURI, hMACOutputLength, canonicalizationMethodURI, null);
+        this(doc, signatureMethodURI, hMACOutputLength, canonicalizationMethodURI, null, null);
     }
 
+    /**
+     * Constructs {@link SignedInfo} using given Canonicalization algorithm and
+     * Signature algorithm.
+     *
+     * @param doc <code>SignedInfo</code> is placed in this document
+     * @param signatureMethodURI URI representation of the Digest and
+     *    Signature algorithm
+     * @param hMACOutputLength
+     * @param canonicalizationMethodURI URI representation of the
+     *    Canonicalization method
+     * @param provider security provider to use
+     * @param spec AlgorithmParameterSpec to use
+     * @throws XMLSecurityException
+     */
     public SignedInfo(
         Document doc, String signatureMethodURI,
-        int hMACOutputLength, String canonicalizationMethodURI, Provider provider
+        int hMACOutputLength, String canonicalizationMethodURI, Provider provider, AlgorithmParameterSpec spec
     ) throws XMLSecurityException {
         super(doc);
 
@@ -142,7 +157,7 @@ public class SignedInfo extends Manifest {
             this.signatureAlgorithm =
                 new SignatureAlgorithm(getDocument(), signatureMethodURI, hMACOutputLength, provider);
         } else {
-            this.signatureAlgorithm = new SignatureAlgorithm(getDocument(), signatureMethodURI, provider);
+            this.signatureAlgorithm = new SignatureAlgorithm(getDocument(), signatureMethodURI, provider, spec);
         }
 
         signatureMethod = this.signatureAlgorithm.getElement();

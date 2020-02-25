@@ -179,6 +179,10 @@ public class JCEMapper {
              new Algorithm("RSA", "SHA3-512withRSAandMGF1", "Signature")
         );
         algorithmsMap.put(
+             XMLSignature.ALGO_ID_SIGNATURE_RSA_PSS,
+             new Algorithm("RSA", "RSASSA-PSS", "Signature")
+        );
+        algorithmsMap.put(
             XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA1,
             new Algorithm("EC", "SHA1withECDSA", "Signature")
         );

@@ -64,7 +64,7 @@ public class PKSignatureAlgorithmTest {
     private CanonicalizationMethod withoutComments;
     private DigestMethod sha1;
     private SignatureMethod rsaSha1, rsaSha224, rsaSha256, rsaSha384, rsaSha512, rsaRipemd160;
-    private SignatureMethod rsaSha1Mgf1, rsaSha224Mgf1, rsaSha256Mgf1, rsaSha384Mgf1, rsaSha512Mgf1;
+    private SignatureMethod rsaSha1Mgf1, rsaSha224Mgf1, rsaSha256Mgf1, rsaSha384Mgf1, rsaSha512Mgf1, rsaPss;
     private SignatureMethod ecdsaSha1, ecdsaSha224, ecdsaSha256, ecdsaSha384, ecdsaSha512, ecdsaRipemd160;
     private XMLSignatureFactory fac;
     private KeyPair rsaKeyPair, ecKeyPair;
@@ -129,6 +129,7 @@ public class PKSignatureAlgorithmTest {
         rsaSha256Mgf1 = fac.newSignatureMethod("http://www.w3.org/2007/05/xmldsig-more#sha256-rsa-MGF1", null);
         rsaSha384Mgf1 = fac.newSignatureMethod("http://www.w3.org/2007/05/xmldsig-more#sha384-rsa-MGF1", null);
         rsaSha512Mgf1 = fac.newSignatureMethod("http://www.w3.org/2007/05/xmldsig-more#sha512-rsa-MGF1", null);
+        rsaPss = fac.newSignatureMethod("http://www.w3.org/2007/05/xmldsig-more#rsa-pss", null);
 
         ecdsaSha1 = fac.newSignatureMethod("http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1", null);
         ecdsaSha224 = fac.newSignatureMethod("http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha224", null);
@@ -234,6 +235,14 @@ public class PKSignatureAlgorithmTest {
         test_create_signature_enveloping(rsaSha512Mgf1, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
+
+    @org.junit.jupiter.api.Test
+    public void testRSA_PSS() throws Exception {
+        Assumptions.assumeTrue(bcInstalled);
+        test_create_signature_enveloping(rsaPss, sha1, rsaki,
+                rsaKeyPair.getPrivate(), kvks);
+    }
+
 
     @org.junit.jupiter.api.Test
     public void testECDSA_SHA1() throws Exception {

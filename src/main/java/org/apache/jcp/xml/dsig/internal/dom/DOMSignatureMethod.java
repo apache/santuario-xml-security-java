@@ -86,6 +86,8 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
         "http://www.w3.org/2007/05/xmldsig-more#sha384-rsa-MGF1";
     static final String RSA_SHA512_MGF1 =
         "http://www.w3.org/2007/05/xmldsig-more#sha512-rsa-MGF1";
+    static final String RSA_PSS =
+        "http://www.w3.org/2007/05/xmldsig-more#rsa-pss";
     static final String RSA_RIPEMD160_MGF1 =
         "http://www.w3.org/2007/05/xmldsig-more#ripemd160-rsa-MGF1";
 
@@ -151,6 +153,8 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
             return new SHA384withRSAandMGF1(smElem);
         } else if (alg.equals(RSA_SHA512_MGF1)) {
             return new SHA512withRSAandMGF1(smElem);
+        } else if (alg.equals(RSA_PSS)) {
+            return new RSAPSS(smElem);
         } else if (alg.equals(RSA_RIPEMD160_MGF1)) {
             return new RIPEMD160withRSAandMGF1(smElem);
         } else if (alg.equals(SignatureMethod.DSA_SHA1)) {
@@ -504,6 +508,28 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
         @Override
         String getJCAAlgorithm() {
             return "SHA512withRSAandMGF1";
+        }
+        @Override
+        Type getAlgorithmType() {
+            return Type.RSA;
+        }
+    }
+
+    static final class RSAPSS extends DOMSignatureMethod {
+        RSAPSS(AlgorithmParameterSpec params)
+                throws InvalidAlgorithmParameterException {
+            super(params);
+        }
+        RSAPSS(Element dmElem) throws MarshalException {
+            super(dmElem);
+        }
+        @Override
+        public String getAlgorithm() {
+            return RSA_PSS;
+        }
+        @Override
+        String getJCAAlgorithm() {
+            return "RSASSA-PSS";
         }
         @Override
         Type getAlgorithmType() {

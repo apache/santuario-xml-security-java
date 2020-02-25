@@ -73,11 +73,18 @@ public class SignatureAlgorithm extends Algorithm {
     }
 
     public SignatureAlgorithm(Document doc, String algorithmURI, Provider provider) throws XMLSecurityException {
+        this(doc, algorithmURI, provider, null);
+    }
+
+    public SignatureAlgorithm(Document doc, String algorithmURI, Provider provider, AlgorithmParameterSpec parameterSpec) throws XMLSecurityException {
         super(doc, algorithmURI);
         this.algorithmURI = algorithmURI;
 
         signatureAlgorithmSpi = getSignatureAlgorithmSpi(algorithmURI, provider);
-        signatureAlgorithmSpi.engineGetContextFromElement(getElement());
+        if (parameterSpec != null) {
+            signatureAlgorithmSpi.engineSetParameter(parameterSpec);
+            signatureAlgorithmSpi.engineAddContextToElement(getElement());
+        }
     }
 
     /**
@@ -101,10 +108,9 @@ public class SignatureAlgorithm extends Algorithm {
         this.algorithmURI = algorithmURI;
 
         signatureAlgorithmSpi = getSignatureAlgorithmSpi(algorithmURI, provider);
-        signatureAlgorithmSpi.engineGetContextFromElement(getElement());
 
         signatureAlgorithmSpi.engineSetHMACOutputLength(hmacOutputLength);
-        ((IntegrityHmac)signatureAlgorithmSpi).engineAddContextToElement(getElement());
+        signatureAlgorithmSpi.engineAddContextToElement(getElement());
     }
 
     /**
@@ -453,6 +459,9 @@ public class SignatureAlgorithm extends Algorithm {
         );
         algorithmHash.put(
             XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA512_MGF1, SignatureBaseRSA.SignatureRSASHA512MGF1.class
+        );
+        algorithmHash.put(
+            XMLSignature.ALGO_ID_SIGNATURE_RSA_PSS, SignatureBaseRSA.SignatureRSASSAPSS.class
         );
         algorithmHash.put(
             XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA3_224_MGF1, SignatureBaseRSA.SignatureRSASHA3_224MGF1.class

@@ -134,6 +134,15 @@ public final class Constants {
     /** Tag of Element HMACOutputLength **/
     public static final String _TAG_HMACOUTPUTLENGTH = "HMACOutputLength";
 
+    /** Tag of Element RSAPSSParams **/
+    public static final String _TAG_RSAPSSPARAMS = "RSAPSSParams";
+
+    /** Tag of Element SaltLength **/
+    public static final String _TAG_SALTLENGTH = "SaltLength";
+
+    /** Tag of Element TrailerField **/
+    public static final String _TAG_TRAILERFIELD = "TrailerField";
+
     /** Tag of Element SignatureProperties **/
     public static final String _TAG_SIGNATUREPROPERTIES = "SignatureProperties";
 

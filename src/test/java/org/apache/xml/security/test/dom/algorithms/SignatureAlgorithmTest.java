@@ -22,6 +22,10 @@ import java.lang.reflect.Field;
 import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.Provider;
+import java.security.spec.AlgorithmParameterSpec;
+import java.security.spec.MGF1ParameterSpec;
+import java.security.spec.PSSParameterSpec;
+import java.util.Arrays;
 import java.util.Map;
 
 import org.apache.xml.security.algorithms.SignatureAlgorithm;
@@ -80,8 +84,15 @@ public class SignatureAlgorithmTest {
         Provider provider = new org.bouncycastle.jce.provider.BouncyCastleProvider();
 
         for (String algorithmURI : algorithmHash.keySet()) {
-            SignatureAlgorithm signatureAlgorithm = new SignatureAlgorithm(doc, algorithmURI, provider);
-            assertEquals(provider.getName(), signatureAlgorithm.getJCEProviderName());
+            try {
+                AlgorithmParameterSpec spec = algorithmURI.equals(XMLSignature.ALGO_ID_SIGNATURE_RSA_PSS)
+                        ? new PSSParameterSpec("SHA-256", "MGF1", MGF1ParameterSpec.SHA256, 32, 1)
+                        : null;
+                SignatureAlgorithm signatureAlgorithm = new SignatureAlgorithm(doc, algorithmURI, provider, spec);
+                assertEquals(provider.getName(), signatureAlgorithm.getJCEProviderName());
+            } catch (XMLSecurityException e) {
+                assertEquals("", Arrays.asList(e.getStackTrace()).toString());
+            }
         }
     }
 }
