@@ -692,7 +692,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
             rsaPssParamsElement.setAttributeNS(Constants.NamespaceSpecNS, "xmlns:" + "pss", Constants.XML_DSIG_NS_MORE_07_05);
 
             Element digestMethodElement = XMLUtils.createElementInSignatureSpace(rsaPssParamsElement.getOwnerDocument(), Constants._TAG_DIGESTMETHOD);
-            digestMethodElement.setAttribute(Constants._ATT_ALGORITHM, DigestAlgorithm.fromDigestAlgorithm(pssParameterSpec.getDigestAlgorithm()).getXmlDigestAlgorithm());
+            digestMethodElement.setAttributeNS(null, Constants._ATT_ALGORITHM, DigestAlgorithm.fromDigestAlgorithm(pssParameterSpec.getDigestAlgorithm()).getXmlDigestAlgorithm());
             XMLUtils.addReturnToElement(rsaPssParamsElement);
             rsaPssParamsElement.appendChild(digestMethodElement);
             XMLUtils.addReturnToElement(rsaPssParamsElement);

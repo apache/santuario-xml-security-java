@@ -26,6 +26,7 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.Provider;
 import java.security.Security;
+import java.security.spec.PSSParameterSpec;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,8 +45,11 @@ import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
+
+import static java.security.spec.MGF1ParameterSpec.SHA256;
 
 /**
  * A set of test-cases for Signature verification with various PublicKey algorithms
@@ -497,6 +501,53 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
         XMLStreamReader xmlStreamReader = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
            xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
+        }
+
+        // Verify signature
+        XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setSignatureVerificationKey(rsaKeyPair.getPublic());
+        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        XMLStreamReader securityStreamReader =
+                inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
+
+        StAX2DOM.readDoc(securityStreamReader);
+    }
+
+    @Test
+    @Disabled   // Disabled as I didn't want to have to change the XML Signature core schema
+    public void testRSA_SSA_PSS() throws Exception {
+        Assumptions.assumeTrue(bcInstalled);
+
+        // Read in plaintext document
+        InputStream sourceDocument =
+                this.getClass().getClassLoader().getResourceAsStream(
+                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
+        Document document = XMLUtils.read(sourceDocument, false);
+
+        String signatureAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#rsa-pss";
+        List<String> localNames = new ArrayList<>();
+        localNames.add("PaymentInfo");
+
+        PSSParameterSpec spec = new PSSParameterSpec("SHA-256", "MGF1", SHA256, 64, 1);
+        String c14nMethod = "http://www.w3.org/2001/10/xml-exc-c14n#";
+        String digestMethod = "http://www.w3.org/2000/09/xmldsig#sha1";
+
+        signUsingDOM(
+                signatureAlgorithm, document, localNames, rsaKeyPair.getPrivate(),
+                c14nMethod, digestMethod, null, null, spec
+        );
+
+        XMLUtils.outputDOM(document, System.out);
+
+        // Convert Document to a Stream Reader
+        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        transformer.transform(new DOMSource(document), new StreamResult(baos));
+
+        XMLStreamReader xmlStreamReader = null;
+        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+            xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
         }
 
         // Verify signature

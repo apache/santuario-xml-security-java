@@ -21,6 +21,7 @@ package org.apache.xml.security.test.stax.signature;
 import java.io.File;
 import java.security.Key;
 import java.security.cert.X509Certificate;
+import java.security.spec.AlgorithmParameterSpec;
 import java.util.List;
 import java.util.UUID;
 
@@ -158,7 +159,7 @@ public class AbstractSignatureVerificationTest {
             String c14nMethod
     ) throws Exception {
         String digestMethod = "http://www.w3.org/2000/09/xmldsig#sha1";
-        return signUsingDOM(algorithm, document, localNames, signingKey, c14nMethod, digestMethod, null, c14nMethod, null);
+        return signUsingDOM(algorithm, document, localNames, signingKey, c14nMethod, digestMethod, null, null, null);
     }
 
     /**
@@ -175,7 +176,7 @@ public class AbstractSignatureVerificationTest {
     ) throws Exception {
         String digestMethod = "http://www.w3.org/2000/09/xmldsig#sha1";
         return signUsingDOM(algorithm, document, localNames, signingKey,
-                c14nMethod, digestMethod, additionalReferences, c14nMethod, resourceResolverSpi);
+                c14nMethod, digestMethod, additionalReferences, resourceResolverSpi, null);
     }
 
     /**
@@ -191,7 +192,7 @@ public class AbstractSignatureVerificationTest {
     ) throws Exception {
         String digestMethod = "http://www.w3.org/2000/09/xmldsig#sha1";
         return signUsingDOM(algorithm, document, localNames, signingKey,
-                c14nMethod, digestMethod, additionalReferences, c14nMethod, null);
+                c14nMethod, digestMethod, additionalReferences, null, null);
     }
 
     /**
@@ -205,7 +206,7 @@ public class AbstractSignatureVerificationTest {
             String c14nMethod,
             String digestMethod
     ) throws Exception {
-        return signUsingDOM(algorithm, document, localNames, signingKey, c14nMethod, digestMethod, null, c14nMethod, null);
+        return signUsingDOM(algorithm, document, localNames, signingKey, c14nMethod, digestMethod, null, null, null);
     }
 
     /**
@@ -219,10 +220,10 @@ public class AbstractSignatureVerificationTest {
             String c14nMethod,
             String digestMethod,
             List<ReferenceInfo> additionalReferences,
-            String referenceC14NMethod,
-            ResourceResolverSpi resourceResolverSpi
+            ResourceResolverSpi resourceResolverSpi,
+            AlgorithmParameterSpec spec
     ) throws Exception {
-        XMLSignature sig = new XMLSignature(document, "", algorithm, c14nMethod);
+        XMLSignature sig = new XMLSignature(document, "", algorithm, 0, c14nMethod, null, spec);
         if (resourceResolverSpi != null) {
             sig.addResourceResolver(resourceResolverSpi);
         }
@@ -245,7 +246,7 @@ public class AbstractSignatureVerificationTest {
                 elementToSign.setIdAttributeNS(null, "Id", true);
 
                 Transforms transforms = new Transforms(document);
-                transforms.addTransform(referenceC14NMethod);
+                transforms.addTransform(c14nMethod);
                 sig.addDocument("#" + id, transforms, digestMethod);
             }
         }

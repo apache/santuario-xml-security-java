@@ -538,6 +538,11 @@ public class XMLSecurityUtils {
                     concreteLSInput.setByteStream(
                             ClassLoaderUtils.getResourceAsStream("bindings/schemas/xml.xsd", XMLSecurityConstants.class));
                     return concreteLSInput;
+                } else if ("rsa-pss.xsd".equals(systemId)) {
+                    ConcreteLSInput concreteLSInput = new ConcreteLSInput();
+                    concreteLSInput.setByteStream(
+                            ClassLoaderUtils.getResourceAsStream("bindings/schemas/rsa-pss.xsd", XMLSecurityConstants.class));
+                    return concreteLSInput;
                 }
                 return null;
             }
@@ -550,6 +555,7 @@ public class XMLSecurityUtils {
                         new StreamSource(ClassLoaderUtils.getResourceAsStream("bindings/schemas/xenc-schema.xsd", XMLSecurityConstants.class)),
                         new StreamSource(ClassLoaderUtils.getResourceAsStream("bindings/schemas/xenc-schema-11.xsd", XMLSecurityConstants.class)),
                         new StreamSource(ClassLoaderUtils.getResourceAsStream("bindings/schemas/xmldsig11-schema.xsd", XMLSecurityConstants.class)),
+                        new StreamSource(ClassLoaderUtils.getResourceAsStream("bindings/schemas/rsa-pss.xsd", XMLSecurityConstants.class))
                 }
                 );
         return schema;

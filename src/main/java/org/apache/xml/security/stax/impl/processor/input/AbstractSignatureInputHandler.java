@@ -18,11 +18,15 @@
  */
 package org.apache.xml.security.stax.impl.processor.input;
 
+import org.apache.xml.security.algorithms.implementations.SignatureBaseRSA.SignatureRSASSAPSS.DigestAlgorithm;
 import org.apache.xml.security.binding.excc14n.InclusiveNamespaces;
 import org.apache.xml.security.binding.xmldsig.CanonicalizationMethodType;
+import org.apache.xml.security.binding.xmldsig.SignatureMethodType;
 import org.apache.xml.security.binding.xmldsig.SignatureType;
 import org.apache.xml.security.binding.xmldsig.SignedInfoType;
+import org.apache.xml.security.binding.xmldsig.pss.RSAPSSParams;
 import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer20010315_Excl;
 import org.apache.xml.security.stax.impl.util.IDGenerator;
 import org.apache.xml.security.stax.impl.util.SignerOutputStream;
@@ -57,7 +61,16 @@ import java.io.OutputStream;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-import java.util.*;
+import java.security.spec.MGF1ParameterSpec;
+import java.security.spec.PSSParameterSpec;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import static org.apache.xml.security.algorithms.implementations.SignatureBaseRSA.SignatureRSASSAPSS.DigestAlgorithm.SHA256;
+import static org.apache.xml.security.algorithms.implementations.SignatureBaseRSA.SignatureRSASSAPSS.DigestAlgorithm.fromXmlDigestAlgorithm;
 
 /**
  */
@@ -306,6 +319,10 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
                 SignatureAlgorithm signatureAlgorithm =
                         SignatureAlgorithmFactory.getInstance().getSignatureAlgorithm(
                                 algorithmURI);
+                if (XMLSignature.ALGO_ID_SIGNATURE_RSA_PSS.equals(algorithmURI)) {
+                    PSSParameterSpec spec = rsaPSSParameterSpec(signatureType);
+                    signatureAlgorithm.engineSetParameter(spec);
+                }
                 signatureAlgorithm.engineInitVerify(verifyKey);
                 signerOutputStream = new SignerOutputStream(signatureAlgorithm);
                 bufferedSignerOutputStream = new UnsyncBufferedOutputStream(signerOutputStream);
@@ -345,6 +362,31 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
                     LOG.debug("Error destroying key: {}", e.getMessage());
                 }
             }
+        }
+
+        private PSSParameterSpec rsaPSSParameterSpec(SignatureType signatureType) throws XMLSecurityException {
+            SignatureMethodType signatureMethod = signatureType.getSignedInfo().getSignatureMethod();
+            RSAPSSParams rsapssParams = null;
+            for (Object o : signatureMethod.getContent()) {
+                if (o instanceof RSAPSSParams) {
+                    rsapssParams = (RSAPSSParams) o;
+                    break;
+                }
+            }
+            if (rsapssParams == null) {
+                throw new XMLSecurityException("algorithms.MissingRSAPSSParams");
+            }
+
+            String digestMethod = rsapssParams.getDigestMethod() == null ? SHA256.getXmlDigestAlgorithm() : rsapssParams.getDigestMethod().getAlgorithm();
+            String maskGenerationDigestMethod = rsapssParams.getMaskGenerationFunction() == null ? SHA256.getXmlDigestAlgorithm() : rsapssParams.getMaskGenerationFunction().getDigestMethod().getAlgorithm();
+            DigestAlgorithm digestAlgorithm = fromXmlDigestAlgorithm(digestMethod);
+
+            int saltLength = rsapssParams.getSaltLength() == null ? digestAlgorithm.getSaltLength() : rsapssParams.getSaltLength();
+            int trailerField = rsapssParams.getTrailerField() == null ? 1 : rsapssParams.getTrailerField();
+            String maskDigestAlgorithm = fromXmlDigestAlgorithm(maskGenerationDigestMethod).getDigestAlgorithm();
+
+            return new PSSParameterSpec(digestAlgorithm.getDigestAlgorithm(), "MGF1",
+                                        new MGF1ParameterSpec(maskDigestAlgorithm), saltLength, trailerField);
         }
 
         protected void processEvent(XMLSecEvent xmlSecEvent) throws XMLStreamException {

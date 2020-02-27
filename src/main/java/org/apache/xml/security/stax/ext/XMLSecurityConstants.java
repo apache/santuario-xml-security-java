@@ -124,6 +124,7 @@ public class XMLSecurityConstants {
     public static final String NS_XMLENC11 = "http://www.w3.org/2009/xmlenc11#";
     public static final String NS_DSIG = "http://www.w3.org/2000/09/xmldsig#";
     public static final String NS_DSIG_MORE ="http://www.w3.org/2001/04/xmldsig-more#";
+    public static final String NS_DSIG_MORE_2007_05 = "http://www.w3.org/2007/05/xmldsig-more#";
     public static final String NS_DSIG11 = "http://www.w3.org/2009/xmldsig11#";
     public static final String NS_WSSE11 = "http://docs.oasis-open.org/wss/oasis-wss-wssecurity-secext-1.1.xsd";
     public static final String NS_XOP = "http://www.w3.org/2004/08/xop/include";
@@ -144,6 +145,7 @@ public class XMLSecurityConstants {
     public static final QName TAG_xenc11_MGF = new QName(NS_XMLENC11, "MGF", PREFIX_XENC11);
 
     public static final String PREFIX_DSIG = "dsig";
+    public static final String PREFIX_DSIG_MORE_PSS = "pss";
     public static final QName TAG_dsig_KeyInfo = new QName(NS_DSIG, "KeyInfo", PREFIX_DSIG);
 
     public static final QName TAG_xenc_EncryptionProperties = new QName(NS_XMLENC, "EncryptionProperties", PREFIX_XENC);
@@ -260,6 +262,10 @@ public class XMLSecurityConstants {
 
     public static final Action SIGNATURE = new Action("Signature");
     public static final Action ENCRYPT = new Action("Encrypt");
+
+    public static final QName TAG_dsigmore_RSAPSSPARAMS = new QName(NS_DSIG_MORE_2007_05, "RSAPSSParams", PREFIX_DSIG_MORE_PSS);
+    public static final QName TAG_dsigmore_SALTLENGTH = new QName(NS_DSIG_MORE_2007_05, "SaltLength", PREFIX_DSIG_MORE_PSS);
+    public static final QName TAG_dsigmore_TRAILERFIELD = new QName(NS_DSIG_MORE_2007_05, "TrailerField", PREFIX_DSIG_MORE_PSS);
 
     public static class Action extends ComparableType<Action> {
         public Action(String name) {

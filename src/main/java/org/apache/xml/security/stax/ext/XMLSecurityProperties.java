@@ -22,6 +22,7 @@ import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 
 import java.security.Key;
 import java.security.cert.X509Certificate;
+import java.security.spec.AlgorithmParameterSpec;
 import java.util.*;
 
 import javax.xml.namespace.QName;
@@ -78,6 +79,7 @@ public class XMLSecurityProperties {
 
     private QName signaturePositionQName;
     private boolean signaturePositionStart = false;
+    private AlgorithmParameterSpec algorithmParameterSpec;
 
     public XMLSecurityProperties() {
     }
@@ -117,6 +119,7 @@ public class XMLSecurityProperties {
         this.signatureIncludeDigestTransform = xmlSecurityProperties.signatureIncludeDigestTransform;
         this.signaturePositionQName = xmlSecurityProperties.signaturePositionQName;
         this.signaturePositionStart = xmlSecurityProperties.signaturePositionStart;
+        this.algorithmParameterSpec = xmlSecurityProperties.algorithmParameterSpec;
     }
 
     public boolean isSignaturePositionStart() {
@@ -527,5 +530,13 @@ public class XMLSecurityProperties {
 
     public void setSignaturePositionQName(QName signaturePositionQName) {
         this.signaturePositionQName = signaturePositionQName;
+    }
+
+    public AlgorithmParameterSpec getAlgorithmParameterSpec() {
+        return algorithmParameterSpec;
+    }
+
+    public void setAlgorithmParameterSpec(AlgorithmParameterSpec algorithmParameterSpec) {
+        this.algorithmParameterSpec = algorithmParameterSpec;
     }
 }

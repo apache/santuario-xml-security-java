@@ -23,6 +23,7 @@ import java.io.OutputStream;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.security.spec.PSSParameterSpec;
 import java.util.*;
 
 import javax.security.auth.DestroyFailedException;
@@ -52,6 +53,8 @@ import org.apache.xml.security.utils.UnsyncBufferedOutputStream;
 import org.apache.xml.security.utils.XMLUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static org.apache.xml.security.algorithms.implementations.SignatureBaseRSA.SignatureRSASSAPSS.DigestAlgorithm.fromDigestAlgorithm;
 
 /**
  */
@@ -124,6 +127,9 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
         try {
             signatureAlgorithm = SignatureAlgorithmFactory.getInstance().getSignatureAlgorithm(
                     getSecurityProperties().getSignatureAlgorithm());
+            if (getSecurityProperties().getAlgorithmParameterSpec() != null) {
+                signatureAlgorithm.engineSetParameter(getSecurityProperties().getAlgorithmParameterSpec());
+            }
         } catch (NoSuchAlgorithmException e) {
             throw new XMLSecurityException(e);
         } catch (NoSuchProviderException e) {
@@ -173,6 +179,27 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
         attributes = new ArrayList<>(1);
         attributes.add(createAttribute(XMLSecurityConstants.ATT_NULL_Algorithm, getSecurityProperties().getSignatureAlgorithm()));
         createStartElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsig_SignatureMethod, false, attributes);
+
+        if (getSecurityProperties().getAlgorithmParameterSpec() instanceof PSSParameterSpec) {
+            PSSParameterSpec pssParams = (PSSParameterSpec) getSecurityProperties().getAlgorithmParameterSpec();
+            createStartElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsigmore_RSAPSSPARAMS, false, null);
+
+            attributes = new ArrayList<>(1);
+            attributes.add(createAttribute(XMLSecurityConstants.ATT_NULL_Algorithm, fromDigestAlgorithm(pssParams.getDigestAlgorithm()).getXmlDigestAlgorithm()));
+            createStartElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsig_DigestMethod, false, attributes);
+            createEndElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsig_DigestMethod);
+
+            createStartElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsigmore_SALTLENGTH, false, null);
+            createCharactersAndOutputAsEvent(subOutputProcessorChain, String.valueOf(pssParams.getSaltLength()));
+            createEndElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsigmore_SALTLENGTH);
+
+            createStartElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsigmore_TRAILERFIELD, false, null);
+            createCharactersAndOutputAsEvent(subOutputProcessorChain, String.valueOf(pssParams.getTrailerField()));
+            createEndElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsigmore_TRAILERFIELD);
+
+            createEndElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsigmore_RSAPSSPARAMS);
+        }
+
         createEndElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsig_SignatureMethod);
 
         Iterator<SignaturePartDef> signaturePartDefIterator = signaturePartDefList.iterator();

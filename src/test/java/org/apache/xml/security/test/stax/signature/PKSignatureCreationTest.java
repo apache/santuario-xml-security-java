@@ -27,6 +27,7 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.Provider;
 import java.security.Security;
+import java.security.spec.PSSParameterSpec;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,12 +41,15 @@ import org.apache.xml.security.stax.ext.XMLSec;
 import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.stax.ext.XMLSecurityProperties;
 import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
+import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
+
+import static java.security.spec.MGF1ParameterSpec.SHA256;
 
 /**
  * A set of test-cases for Signature creation with various PublicKey algorithms
@@ -511,6 +515,52 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+
+        InputStream sourceDocument =
+                this.getClass().getClassLoader().getResourceAsStream(
+                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
+        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+
+        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
+        xmlStreamWriter.close();
+
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
+        Document document = null;
+        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+            document = XMLUtils.read(is, false);
+        }
+
+        // Verify using DOM
+        verifyUsingDOM(document, rsaKeyPair.getPublic(), properties.getSignatureSecureParts());
+    }
+
+    @Test
+    public void testRSA_SSA_PSS() throws Exception {
+        Assumptions.assumeTrue(bcInstalled || TestUtils.isJava11Compatible());
+
+        // Set up the Configuration
+        XMLSecurityProperties properties = new XMLSecurityProperties();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        actions.add(XMLSecurityConstants.SIGNATURE);
+        properties.setActions(actions);
+        properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyValue);
+
+        String signatureAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#rsa-pss";
+        properties.setAlgorithmParameterSpec(new PSSParameterSpec("SHA-256", "MGF1", SHA256, 32, 1));
+        properties.setSignatureAlgorithm(signatureAlgorithm);
+        properties.setSignatureKey(rsaKeyPair.getPrivate());
+        properties.setSignatureVerificationKey(rsaKeyPair.getPublic());
+
+        SecurePart securePart = new SecurePart(
+                new QName("urn:example:po", "PaymentInfo"),
+                SecurePart.Modifier.Content,
+                new String[]{"http://www.w3.org/2001/10/xml-exc-c14n#"},
+                "http://www.w3.org/2000/09/xmldsig#sha1");
+        properties.addSignaturePart(securePart);
+
+        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, "UTF-8");
 
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
