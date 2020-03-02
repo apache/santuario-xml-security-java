@@ -160,7 +160,9 @@ public class TransformBase64Decode extends TransformIdentity {
                             }
                         };
                     }
-                    childOutputMethod.transform(xmlSecEvent.asCharacters().getData().getBytes());
+                    if (childOutputMethod != null) {
+                        childOutputMethod.transform(xmlSecEvent.asCharacters().getData().getBytes());
+                    }
                 }
             }
         }

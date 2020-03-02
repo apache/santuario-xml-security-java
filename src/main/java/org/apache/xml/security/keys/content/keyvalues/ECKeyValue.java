@@ -176,7 +176,7 @@ public class ECKeyValue extends Signature11ElementProxy implements KeyValueConte
                     uri = curElem.getAttributeNS(null, "URI");
                 }
                 // strip off "urn:oid"
-                if (uri.startsWith("urn:oid:")) {
+                if (uri != null && uri.startsWith("urn:oid:")) {
                     String oid = uri.substring("urn:oid:".length());
                     ecParams = getECParameterSpec(oid);
                     if (ecParams == null) {

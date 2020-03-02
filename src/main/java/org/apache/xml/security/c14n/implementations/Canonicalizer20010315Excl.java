@@ -20,6 +20,7 @@ package org.apache.xml.security.c14n.implementations;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
@@ -59,7 +60,7 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
      * This Set contains the names (Strings like "xmlns" or "xmlns:foo") of
      * the inclusive namespaces.
      */
-    private SortedSet<String> inclusiveNSSet;
+    private SortedSet<String> inclusiveNSSet = Collections.emptySortedSet();
     private boolean propagateDefaultNamespace = false;
 
     /**
@@ -168,7 +169,7 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
         // The prefix visibly utilized (in the attribute or in the name) in
         // the element
         SortedSet<String> visiblyUtilized = new TreeSet<>();
-        if (inclusiveNSSet != null && !inclusiveNSSet.isEmpty()) {
+        if (!inclusiveNSSet.isEmpty()) {
             visiblyUtilized.addAll(inclusiveNSSet);
         }
 
@@ -245,7 +246,7 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
         boolean isOutputElement = isVisibleDO(element, ns.getLevel()) == 1;
         if (isOutputElement) {
             visiblyUtilized = new TreeSet<>();
-            if (inclusiveNSSet != null && !inclusiveNSSet.isEmpty()) {
+            if (!inclusiveNSSet.isEmpty()) {
                 visiblyUtilized.addAll(inclusiveNSSet);
             }
         }

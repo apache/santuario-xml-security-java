@@ -94,7 +94,7 @@ public class XMLSecurityConstants {
         XMLSecurityConstants.schema = schema;
     }
 
-    public static Schema getJaxbSchemas() {
+    public static synchronized Schema getJaxbSchemas() {
         return XMLSecurityConstants.schema;
     }
 

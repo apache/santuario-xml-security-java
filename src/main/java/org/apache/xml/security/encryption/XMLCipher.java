@@ -1117,6 +1117,9 @@ public class XMLCipher {
         byte[] serializedOctets = null;
         if (serializedData == null) {
             if (EncryptionConstants.TYPE_CONTENT.equals(type)) {
+                if (element == null) {
+                    throw new XMLEncryptionException("empty", "Cannot encrypt null element");
+                }
                 NodeList children = element.getChildNodes();
                 if (null != children) {
                     serializedOctets = serializer.serializeToByteArray(children);
@@ -1673,7 +1676,9 @@ public class XMLCipher {
     private Document decryptElement(Element element) throws XMLEncryptionException {
         LOG.debug("Decrypting element...");
 
-        if (element != null && element.getParentNode() == null) {
+        if (element == null) {
+            throw new XMLEncryptionException("empty", "Cannot decrypt null element");
+        } else if (element.getParentNode() == null) {
             throw new XMLEncryptionException("empty", "The element can't be serialized as it has no parent");
         }
 
