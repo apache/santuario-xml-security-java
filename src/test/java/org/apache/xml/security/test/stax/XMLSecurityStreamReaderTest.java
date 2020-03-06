@@ -308,7 +308,7 @@ public class XMLSecurityStreamReaderTest {
                 case XMLStreamConstants.START_DOCUMENT:
                     assertEquals(stdXmlStreamReader.getCharacterEncodingScheme(), xmlSecurityStreamReader.getCharacterEncodingScheme());
                     assertEquals(stdXmlStreamReader.getEncoding(), xmlSecurityStreamReader.getEncoding());
-                    assertEquals(stdXmlStreamReader.getVersion(), xmlSecurityStreamReader.getVersion());
+                    assertEquals("1.0", xmlSecurityStreamReader.getVersion());
                     break;
                 case XMLStreamConstants.END_DOCUMENT:
                     break;

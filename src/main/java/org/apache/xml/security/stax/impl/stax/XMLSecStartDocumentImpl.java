@@ -32,13 +32,13 @@ public class XMLSecStartDocumentImpl extends XMLSecEventBaseImpl implements XMLS
     private final String systemId;
     private final String characterEncodingScheme;
     private final Boolean isStandAlone;
-    private String version = "1.0";
+    private final String version;
 
     public XMLSecStartDocumentImpl(String systemId, String characterEncodingScheme, Boolean standAlone, String version) {
         this.systemId = systemId;
         this.characterEncodingScheme = characterEncodingScheme;
         isStandAlone = standAlone;
-        this.version = version;
+        this.version = version != null ? version : "1.0";
     }
 
     @Override
