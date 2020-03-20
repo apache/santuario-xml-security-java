@@ -45,6 +45,7 @@ import javax.xml.crypto.dsig.keyinfo.KeyInfoFactory;
 import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 import javax.xml.crypto.test.KeySelectors;
 
+import org.apache.jcp.xml.dsig.internal.dom.RSAPSSParameterSpec;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.w3c.dom.Document;
@@ -64,7 +65,7 @@ public class PKSignatureAlgorithmTest {
     private CanonicalizationMethod withoutComments;
     private DigestMethod sha1;
     private SignatureMethod rsaSha1, rsaSha224, rsaSha256, rsaSha384, rsaSha512, rsaRipemd160;
-    private SignatureMethod rsaSha1Mgf1, rsaSha224Mgf1, rsaSha256Mgf1, rsaSha384Mgf1, rsaSha512Mgf1, rsaPss;
+    private SignatureMethod rsaSha1Mgf1, rsaSha224Mgf1, rsaSha256Mgf1, rsaSha384Mgf1, rsaSha512Mgf1, rsaPss, rsaPssSha512;
     private SignatureMethod ecdsaSha1, ecdsaSha224, ecdsaSha256, ecdsaSha384, ecdsaSha512, ecdsaRipemd160;
     private XMLSignatureFactory fac;
     private KeyPair rsaKeyPair, ecKeyPair;
@@ -130,6 +131,11 @@ public class PKSignatureAlgorithmTest {
         rsaSha384Mgf1 = fac.newSignatureMethod("http://www.w3.org/2007/05/xmldsig-more#sha384-rsa-MGF1", null);
         rsaSha512Mgf1 = fac.newSignatureMethod("http://www.w3.org/2007/05/xmldsig-more#sha512-rsa-MGF1", null);
         rsaPss = fac.newSignatureMethod("http://www.w3.org/2007/05/xmldsig-more#rsa-pss", null);
+        RSAPSSParameterSpec params = new RSAPSSParameterSpec();
+        params.setTrailerField(1);
+        params.setSaltLength(64);
+        params.setDigestName("SHA-512");
+        rsaPssSha512 = fac.newSignatureMethod("http://www.w3.org/2007/05/xmldsig-more#rsa-pss", params);
 
         ecdsaSha1 = fac.newSignatureMethod("http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1", null);
         ecdsaSha224 = fac.newSignatureMethod("http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha224", null);
@@ -238,11 +244,17 @@ public class PKSignatureAlgorithmTest {
 
     @org.junit.jupiter.api.Test
     public void testRSA_PSS() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled || org.apache.xml.security.test.dom.TestUtils.isJava11Compatible());
         test_create_signature_enveloping(rsaPss, sha1, rsaki,
                 rsaKeyPair.getPrivate(), kvks);
     }
 
+    @org.junit.jupiter.api.Test
+    public void testRSA_PSS_SHA512() throws Exception {
+        Assumptions.assumeTrue(bcInstalled || org.apache.xml.security.test.dom.TestUtils.isJava11Compatible());
+        test_create_signature_enveloping(rsaPssSha512, sha1, rsaki,
+                rsaKeyPair.getPrivate(), kvks);
+    }
 
     @org.junit.jupiter.api.Test
     public void testECDSA_SHA1() throws Exception {
@@ -319,8 +331,7 @@ public class PKSignatureAlgorithmTest {
 
         // XMLUtils.outputDOM(doc.getDocumentElement(), System.out);
 
-        DOMValidateContext dvc = new DOMValidateContext
-        (ks, doc.getDocumentElement());
+        DOMValidateContext dvc = new DOMValidateContext(ks, doc.getDocumentElement());
         XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
 
         assertEquals(sig, sig2);

@@ -384,7 +384,7 @@ public class PKSignatureAlgorithmTest {
         localNames.add("PaymentInfo");
 
         sign(XMLSignature.ALGO_ID_SIGNATURE_RSA_PSS, document, localNames, rsaKeyPair.getPrivate(),
-             new PSSParameterSpec("SHA-256", "MGF1", MGF1ParameterSpec.SHA256, 64, 1));
+             new PSSParameterSpec("SHA-256", "MGF1", MGF1ParameterSpec.SHA256, 32, 1));
         // XMLUtils.outputDOM(document, System.out);
         verify(document, rsaKeyPair.getPublic(), localNames);
     }
