@@ -18,9 +18,7 @@
  */
 package org.apache.xml.security.test.stax.utils;
 
-import org.apache.xml.security.stax.impl.InboundSecurityContextImpl;
 import org.apache.xml.security.stax.impl.processor.input.AbstractSignatureReferenceVerifyInputProcessor;
-import org.apache.xml.security.stax.impl.processor.input.XMLEventReaderInputProcessor;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -54,5 +52,5 @@ public class TestUtils {
         field.set(null, value);
         return oldval;
     }
-    
+
 }
