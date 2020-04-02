@@ -33,18 +33,6 @@ public class TestUtils {
     //we can also change "private static final" fields for testing:-)
     //But keep in mind that this only works for Objects and not primitive types. Primitive types will be inlined...
 
-    public static void switchAllowNotSameDocumentReferences(Boolean value) throws NoSuchFieldException, IllegalAccessException {
-
-        Field field = AbstractSignatureReferenceVerifyInputProcessor.class.getDeclaredField("allowNotSameDocumentReferences");
-        field.setAccessible(true);
-
-        Field modifiersField = Field.class.getDeclaredField("modifiers");
-        modifiersField.setAccessible(true);
-        modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-
-        field.set(null, value);
-    }
-
     public static void switchDoNotThrowExceptionForManifests(Boolean value) throws NoSuchFieldException, IllegalAccessException {
         Field field = AbstractSignatureReferenceVerifyInputProcessor.class.getDeclaredField("doNotThrowExceptionForManifests");
         field.setAccessible(true);

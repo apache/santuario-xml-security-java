@@ -23,8 +23,6 @@ import org.apache.xml.security.stax.config.Init;
 import org.apache.xml.security.stax.ext.InboundXMLSec;
 import org.apache.xml.security.stax.ext.XMLSec;
 import org.apache.xml.security.stax.ext.XMLSecurityProperties;
-import org.apache.xml.security.stax.impl.resourceResolvers.ResolverHttp;
-import org.apache.xml.security.test.stax.utils.HttpRequestRedirectorProxy;
 import org.apache.xml.security.test.stax.utils.StAX2DOM;
 import org.apache.xml.security.test.stax.utils.TestUtils;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
@@ -45,7 +43,6 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.net.Proxy;
 import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -70,50 +67,6 @@ public class PhaosTest {
 
         xmlInputFactory = XMLInputFactory.newInstance();
         xmlInputFactory.setEventAllocator(new XMLSecEventAllocator());
-    }
-
-
-    // See SANTUARIO-319
-    @Test
-    public void test_signature_dsa_detached() throws Exception {
-
-        Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
-
-        try {
-            ResolverHttp.setProxy(proxy);
-
-            TestUtils.switchAllowNotSameDocumentReferences(true);
-
-            // Read in plaintext document
-            InputStream sourceDocument =
-                    this.getClass().getClassLoader().getResourceAsStream(
-                            "com/phaos/phaos-xmldsig-three/signature-dsa-detached.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
-
-            // XMLUtils.outputDOM(document, System.out);
-
-            // Convert Document to a Stream Reader
-            javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            transformer.transform(new DOMSource(document), new StreamResult(baos));
-
-            XMLStreamReader xmlStreamReader = null;
-            try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-               xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
-            }
-
-            // Verify signature
-            XMLSecurityProperties properties = new XMLSecurityProperties();
-            InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-            TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-            XMLStreamReader securityStreamReader =
-                    inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
-
-            StAX2DOM.readDoc(securityStreamReader);
-        } finally {
-            TestUtils.switchAllowNotSameDocumentReferences(false);
-            HttpRequestRedirectorProxy.stopHttpEngine();
-        }
     }
 
     // See Santuario-320
@@ -175,54 +128,6 @@ public class PhaosTest {
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         StAX2DOM.readDoc(securityStreamReader);
-    }
-
-    // See SANTUARIO-319
-    @Test
-    public void test_signature_hmac_sha1_exclusive_c14n_comments_detached() throws Exception {
-
-        Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
-
-        try {
-            ResolverHttp.setProxy(proxy);
-
-            TestUtils.switchAllowNotSameDocumentReferences(true);
-
-            // Read in plaintext document
-            InputStream sourceDocument =
-                    this.getClass().getClassLoader().getResourceAsStream(
-                            "com/phaos/phaos-xmldsig-three/signature-hmac-sha1-exclusive-c14n-comments-detached.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
-
-            // Set up the key
-            byte[] hmacKey = "test".getBytes(StandardCharsets.US_ASCII);
-            SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2000/09/xmldsig#hmac-sha1");
-
-            // XMLUtils.outputDOM(document, System.out);
-
-            // Convert Document to a Stream Reader
-            javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            transformer.transform(new DOMSource(document), new StreamResult(baos));
-
-            XMLStreamReader xmlStreamReader = null;
-            try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-               xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
-            }
-
-            // Verify signature
-            XMLSecurityProperties properties = new XMLSecurityProperties();
-            properties.setSignatureVerificationKey(key);
-            InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-            TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-            XMLStreamReader securityStreamReader =
-                    inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
-
-            StAX2DOM.readDoc(securityStreamReader);
-        } finally {
-            TestUtils.switchAllowNotSameDocumentReferences(false);
-            HttpRequestRedirectorProxy.stopHttpEngine();
-        }
     }
 
     // See Santuario-320
@@ -298,49 +203,6 @@ public class PhaosTest {
             StAX2DOM.readDoc(securityStreamReader);
         } finally {
             TestUtils.switchDoNotThrowExceptionForManifests(false);
-        }
-    }
-
-    // See SANTUARIO-319
-    @Test
-    public void test_signature_rsa_detached() throws Exception {
-
-        Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
-
-        try {
-            ResolverHttp.setProxy(proxy);
-
-            TestUtils.switchAllowNotSameDocumentReferences(true);
-
-            // Read in plaintext document
-            InputStream sourceDocument =
-                    this.getClass().getClassLoader().getResourceAsStream(
-                            "com/phaos/phaos-xmldsig-three/signature-rsa-detached.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
-
-            // XMLUtils.outputDOM(document, System.out);
-
-            // Convert Document to a Stream Reader
-            javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            transformer.transform(new DOMSource(document), new StreamResult(baos));
-
-            XMLStreamReader xmlStreamReader = null;
-            try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-               xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
-            }
-
-            // Verify signature
-            XMLSecurityProperties properties = new XMLSecurityProperties();
-            InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-            TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-            XMLStreamReader securityStreamReader =
-                    inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
-
-            StAX2DOM.readDoc(securityStreamReader);
-        } finally {
-            TestUtils.switchAllowNotSameDocumentReferences(false);
-            HttpRequestRedirectorProxy.stopHttpEngine();
         }
     }
 

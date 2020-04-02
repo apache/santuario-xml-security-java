@@ -18,11 +18,7 @@
  */
 package org.apache.xml.security.test.stax.signature;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
@@ -31,15 +27,9 @@ import java.security.spec.DSAPublicKeySpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.security.spec.RSAPublicKeySpec;
-
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.config.Init;
@@ -57,23 +47,23 @@ import org.apache.xml.security.stax.securityEvent.X509TokenSecurityEvent;
 import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 import org.apache.xml.security.test.stax.utils.StAX2DOM;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
-import org.apache.xml.security.utils.XMLUtils;
-import org.junit.jupiter.api.BeforeEach;
+
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.w3c.dom.Document;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
  * This test is to ensure interoperability with the examples provided by the IAIK
  * XML Signature implementation. Thanks to Gregor Karlinger who provided these
  * test vectors. They are located in the directory <CODE>data/at/iaik/ixsil/</CODE>.
+ *
+ * These are separated out from IAIKTest as we have to change the default configuration to set
+ * "AllowNotSameDocumentReferences" to "true".
  */
-public class IAIKTest {
+public class IAIKRemoteReferenceTest {
 
     // Define the Keys
     private static final String DSA_Y =
@@ -90,150 +80,37 @@ public class IAIKTest {
     private static final String RSA_PUB =
             "3";
 
-    private XMLInputFactory xmlInputFactory;
-    private TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    private XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
 
-    @BeforeEach
-    public void setUp() throws Exception {
-        Init.init(IAIKTest.class.getClassLoader().getResource("security-config.xml").toURI(),
-                this.getClass());
+    @BeforeAll
+    public static void setUp() throws Exception {
+        XMLSec.init();
+        Init.init(IAIKRemoteReferenceTest.class.getClassLoader().getResource("security-config-allow-same-doc.xml").toURI(),
+                IAIKRemoteReferenceTest.class);
         org.apache.xml.security.Init.init();
+    }
 
-        xmlInputFactory = XMLInputFactory.newInstance();
+    public IAIKRemoteReferenceTest() throws Exception {
         xmlInputFactory.setEventAllocator(new XMLSecEventAllocator());
     }
 
-
+    // See SANTUARIO-322
     @Test
-    public void test_signatureAlgorithms_signatures_hMACSignature() throws Exception {
-        // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "at/iaik/ixsil/signatureAlgorithms/signatures/hMACSignature.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
-
+    public void test_transforms_signatures_base64DecodeSignature() throws Exception {
         // Set up the Key
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
-        SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2000/09/xmldsig#hmac-sha1");
+        Key publicKey = getPublicKey("RSA");
 
-        // XMLUtils.outputDOM(document, System.out);
-
-        // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        transformer.transform(new DOMSource(document), new StreamResult(baos));
-
-        XMLStreamReader xmlStreamReader = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
-        }
-
-        // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        properties.setSignatureVerificationKey(key);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
-            inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
-
-        StAX2DOM.readDoc(securityStreamReader);
-
-        // Check the SecurityEvents
-        checkSignatureToken(securityEventListener, key, SecurityTokenConstants.KeyIdentifier_NoKeyInfo);
-    }
-
-    @Test
-    public void test_signatureAlgorithms_signatures_hMACShortSignature() throws Exception {
-        // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "at/iaik/ixsil/signatureAlgorithms/signatures/hMACShortSignature.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
-
-        // Set up the Key
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
-        SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2000/09/xmldsig#hmac-sha1");
-
-        // XMLUtils.outputDOM(document, System.out);
-
-        // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        transformer.transform(new DOMSource(document), new StreamResult(baos));
         final XMLStreamReader xmlStreamReader =
-                xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
+                xmlInputFactory.createXMLStreamReader(
+                        new StreamSource(
+                                this.getClass().getClassLoader().getResource(
+                                        "at/iaik/ixsil/transforms/signatures/base64DecodeSignature.xml").toExternalForm()
+                        )
+                );
 
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        properties.setSignatureVerificationKey(key);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
-
-        try {
-            StAX2DOM.readDoc(securityStreamReader);
-            fail("Failure expected on a short HMAC length");
-        } catch (XMLStreamException ex) {
-            assertTrue(ex.getCause() instanceof XMLSecurityException);
-            assertEquals("INVALID signature -- core validation failed.", ex.getCause().getMessage());
-        }
-    }
-
-    @Test
-    public void test_signatureAlgorithms_signatures_dSASignature() throws Exception {
-        // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "at/iaik/ixsil/signatureAlgorithms/signatures/dSASignature.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
-
-        // XMLUtils.outputDOM(document, System.out);
-
-        // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        transformer.transform(new DOMSource(document), new StreamResult(baos));
-
-        XMLStreamReader xmlStreamReader = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
-        }
-
-        // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
-            inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
-
-        StAX2DOM.readDoc(securityStreamReader);
-
-        // Check the SecurityEvents
-        checkSignatureToken(securityEventListener, getPublicKey("DSA"),
-                              SecurityTokenConstants.KeyIdentifier_KeyValue);
-    }
-
-    @Test
-    public void test_signatureAlgorithms_signatures_rSASignature() throws Exception {
-        // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "at/iaik/ixsil/signatureAlgorithms/signatures/rSASignature.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
-
-        // XMLUtils.outputDOM(document, System.out);
-
-        // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        transformer.transform(new DOMSource(document), new StreamResult(baos));
-
-        XMLStreamReader xmlStreamReader = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
-        }
-
-        // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setSignatureVerificationKey(publicKey);
         InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
         TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
         XMLStreamReader securityStreamReader =
@@ -246,28 +123,19 @@ public class IAIKTest {
                             SecurityTokenConstants.KeyIdentifier_KeyValue);
     }
 
+    // See SANTUARIO-322
     @Test
-    public void test_transforms_signatures_envelopedSignatureSignature() throws Exception {
-        // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "at/iaik/ixsil/transforms/signatures/envelopedSignatureSignature.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
-
+    public void test_transforms_signatures_c14nSignature() throws Exception {
         // Set up the Key
         Key publicKey = getPublicKey("RSA");
 
-        // XMLUtils.outputDOM(document, System.out);
-
-        // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        transformer.transform(new DOMSource(document), new StreamResult(baos));
-
-        XMLStreamReader xmlStreamReader = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
-        }
+        final XMLStreamReader xmlStreamReader =
+                xmlInputFactory.createXMLStreamReader(
+                        new StreamSource(
+                                this.getClass().getClassLoader().getResource(
+                                        "at/iaik/ixsil/transforms/signatures/c14nSignature.xml").toExternalForm()
+                        )
+                );
 
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();

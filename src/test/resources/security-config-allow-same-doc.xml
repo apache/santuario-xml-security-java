@@ -25,7 +25,7 @@
         <Property NAME="MaximumAllowedReferencesPerManifest" VAL="30"/>
         <Property NAME="DoNotThrowExceptionForManifests" VAL="false"/>
         <Property NAME="AllowMD5Algorithm" VAL="false"/>
-        <Property NAME="AllowNotSameDocumentReferences" VAL="false"/>
+        <Property NAME="AllowNotSameDocumentReferences" VAL="true"/>
         <Property NAME="MaximumAllowedXMLStructureDepth" VAL="100"/>
         <Property NAME="MaximumAllowedEncryptedDataEvents" VAL="200"/>
         <Property NAME="DefaultLanguageCode" VAL="en"/>
