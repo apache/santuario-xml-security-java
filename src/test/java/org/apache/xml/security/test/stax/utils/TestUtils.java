@@ -29,21 +29,6 @@ import java.lang.reflect.Modifier;
  */
 public class TestUtils {
 
-    //sometimes I really like reflection. We can fix jdk bugs which will never be fixed, we can do other funny things and
-    //we can also change "private static final" fields for testing:-)
-    //But keep in mind that this only works for Objects and not primitive types. Primitive types will be inlined...
-
-    public static void switchDoNotThrowExceptionForManifests(Boolean value) throws NoSuchFieldException, IllegalAccessException {
-        Field field = AbstractSignatureReferenceVerifyInputProcessor.class.getDeclaredField("doNotThrowExceptionForManifests");
-        field.setAccessible(true);
-
-        Field modifiersField = Field.class.getDeclaredField("modifiers");
-        modifiersField.setAccessible(true);
-        modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-
-        field.set(null, value);
-    }
-
     public static int changeValueOfMaximumAllowedReferencesPerManifest(Integer value) throws NoSuchFieldException, IllegalAccessException {
         Field field = AbstractSignatureReferenceVerifyInputProcessor.class.getDeclaredField("maximumAllowedReferencesPerManifest");
         field.setAccessible(true);

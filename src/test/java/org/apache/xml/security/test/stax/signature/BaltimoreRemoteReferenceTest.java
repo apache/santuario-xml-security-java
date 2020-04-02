@@ -60,7 +60,7 @@ import org.apache.xml.security.test.stax.utils.StAX2DOM;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.utils.XMLUtils;
 
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import org.w3c.dom.Document;
@@ -108,8 +108,8 @@ public class BaltimoreRemoteReferenceTest {
     private XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
     private TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
-    @BeforeEach
-    public void setUp() throws Exception {
+    @BeforeAll
+    public static void setUp() throws Exception {
         XMLSec.init();
         Init.init(BaltimoreRemoteReferenceTest.class.getClassLoader().getResource("security-config-allow-same-doc.xml").toURI(),
                 BaltimoreRemoteReferenceTest.class);
