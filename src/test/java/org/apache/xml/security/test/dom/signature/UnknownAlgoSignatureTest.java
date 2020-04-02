@@ -30,7 +30,6 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
 import org.apache.xml.security.Init;
-import org.apache.xml.security.c14n.InvalidCanonicalizerException;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
@@ -92,7 +91,7 @@ public class UnknownAlgoSignatureTest {
         try {
             assertTrue(checkSignature("signature-bad-c14n-algo.xml"));
             fail("Exception not caught");
-        } catch (InvalidCanonicalizerException e) {
+        } catch (XMLSignatureException e) {
             // succeed
         }
     }

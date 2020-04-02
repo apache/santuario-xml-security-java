@@ -222,7 +222,7 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
         IOException, SAXException, KeyResolverException {
 
         Element e;
-        if (resource.isElement()){
+        if (resource.isElement()) {
             e = (Element) resource.getSubNode();
         } else if (resource.isNodeSet()) {
             LOG.debug("De-reference of KeyInfoReference returned an unsupported NodeSet");

@@ -568,7 +568,7 @@ public class XMLSignatureInput {
         isNodeSet = b;
     }
 
-    void convertToNodes() throws CanonicalizationException,
+    private void convertToNodes() throws CanonicalizationException,
         ParserConfigurationException, IOException, SAXException {
         // select all nodes, also the comments.
         try {

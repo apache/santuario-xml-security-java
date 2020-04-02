@@ -18,17 +18,13 @@
  */
 package org.apache.xml.security.signature;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.security.spec.AlgorithmParameterSpec;
 import java.security.Provider;
-
+import java.security.spec.AlgorithmParameterSpec;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.xml.security.algorithms.SignatureAlgorithm;
 import org.apache.xml.security.c14n.CanonicalizationException;
@@ -38,10 +34,9 @@ import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.transforms.params.InclusiveNamespaces;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
 
 /**
  * Handles <code>&lt;ds:SignedInfo&gt;</code> elements
@@ -244,8 +239,7 @@ public class SignedInfo extends Manifest {
     public SignedInfo(
         Element element, String baseURI, boolean secureValidation, Provider provider
     ) throws XMLSecurityException {
-        // Parse the Reference children and Id attribute in the Manifest
-        super(reparseSignedInfoElem(element, secureValidation), baseURI, secureValidation);
+        super(element, baseURI, secureValidation);
 
         c14nMethod = XMLUtils.getNextElement(element.getFirstChild());
         if (c14nMethod == null ||
@@ -265,58 +259,6 @@ public class SignedInfo extends Manifest {
 
         this.signatureAlgorithm =
             new SignatureAlgorithm(signatureMethod, this.getBaseURI(), secureValidation, provider);
-    }
-
-    private static Element reparseSignedInfoElem(Element element, boolean secureValidation)
-        throws XMLSecurityException {
-        /*
-         * If a custom canonicalizationMethod is used, canonicalize
-         * ds:SignedInfo, reparse it into a new document
-         * and replace the original not-canonicalized ds:SignedInfo by
-         * the re-parsed canonicalized one.
-         */
-        Element c14nMethod = XMLUtils.getNextElement(element.getFirstChild());
-        if (c14nMethod == null ||
-            !(Constants.SignatureSpecNS.equals(c14nMethod.getNamespaceURI())
-                && Constants._TAG_CANONICALIZATIONMETHOD.equals(c14nMethod.getLocalName()))) {
-            Object[] exArgs = { Constants._TAG_CANONICALIZATIONMETHOD, Constants._TAG_SIGNEDINFO };
-            throw new XMLSignatureException("xml.WrongContent", exArgs);
-        }
-
-        String c14nMethodURI =
-            c14nMethod.getAttributeNS(null, Constants._ATT_ALGORITHM);
-        if (!(c14nMethodURI.equals(Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS) ||
-            c14nMethodURI.equals(Canonicalizer.ALGO_ID_C14N_WITH_COMMENTS) ||
-            c14nMethodURI.equals(Canonicalizer.ALGO_ID_C14N_EXCL_OMIT_COMMENTS) ||
-            c14nMethodURI.equals(Canonicalizer.ALGO_ID_C14N_EXCL_WITH_COMMENTS) ||
-            c14nMethodURI.equals(Canonicalizer.ALGO_ID_C14N11_OMIT_COMMENTS) ||
-            c14nMethodURI.equals(Canonicalizer.ALGO_ID_C14N11_WITH_COMMENTS))) {
-            // the c14n is not a secure one and can rewrite the URIs or like
-            // so reparse the SignedInfo to be sure
-            try {
-                Canonicalizer c14nizer = Canonicalizer.getInstance(c14nMethodURI);
-
-                byte[] c14nizedBytes = null;
-                try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-                    c14nizer.canonicalizeSubtree(element, baos);
-                    c14nizedBytes = baos.toByteArray();
-                }
-                try (InputStream is = new ByteArrayInputStream(c14nizedBytes)) {
-                    Document newdoc = XMLUtils.read(is, secureValidation);
-                    Node imported = element.getOwnerDocument().importNode(
-                            newdoc.getDocumentElement(), true);
-                    element.getParentNode().replaceChild(imported, element);
-                    return (Element) imported;
-                }
-            } catch (ParserConfigurationException ex) {
-                throw new XMLSecurityException(ex);
-            } catch (IOException ex) {
-                throw new XMLSecurityException(ex);
-            } catch (SAXException ex) {
-                throw new XMLSecurityException(ex);
-            }
-        }
-        return element;
     }
 
     /**

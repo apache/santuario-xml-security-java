@@ -227,7 +227,7 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
         throws CanonicalizationException, ParserConfigurationException,
         IOException, SAXException, KeyResolverException {
         Element e;
-        if (resource.isElement()){
+        if (resource.isElement()) {
             e = (Element) resource.getSubNode();
         } else if (resource.isNodeSet()) {
             // Retrieved resource is a nodeSet
