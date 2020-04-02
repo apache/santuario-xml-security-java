@@ -159,13 +159,13 @@
                     <target>${targetJdk}</target>
                     <compilerArgs>
                         <arg>-XDcompilePolicy=simple</arg>
-                        <arg>-Xplugin:ErrorProne</arg>
+                        <!-- TODO Disabled until JDK 14 is supported <arg>-Xplugin:ErrorProne</arg>-->
                     </compilerArgs>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>com.google.errorprone</groupId>
                             <artifactId>error_prone_core</artifactId>
-                            <version>2.3.2</version>
+                            <version>2.3.4</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
