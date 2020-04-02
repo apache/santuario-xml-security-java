@@ -54,28 +54,5 @@ public class TestUtils {
         field.set(null, value);
         return oldval;
     }
-
-    public static void switchAllowMD5Algorithm(Boolean value) throws NoSuchFieldException, IllegalAccessException {
-        Field field = InboundSecurityContextImpl.class.getDeclaredField("allowMD5Algorithm");
-        field.setAccessible(true);
-
-        Field modifiersField = Field.class.getDeclaredField("modifiers");
-        modifiersField.setAccessible(true);
-        modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-
-        field.set(null, value);
-    }
-
-    public static int changeValueOfMaximumAllowedXMLStructureDepth(Integer value) throws NoSuchFieldException, IllegalAccessException {
-        Field field = XMLEventReaderInputProcessor.class.getDeclaredField("maximumAllowedXMLStructureDepth");
-        field.setAccessible(true);
-
-        Field modifiersField = Field.class.getDeclaredField("modifiers");
-        modifiersField.setAccessible(true);
-        modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-
-        Integer oldval = (Integer) field.get(null);
-        field.set(null, value);
-        return oldval;
-    }
+    
 }
