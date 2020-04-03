@@ -25,10 +25,9 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.helper.C14nHelper;
+import org.apache.xml.security.parser.XMLParserException;
 import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Attr;
@@ -37,7 +36,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
 
 /**
  * Implements <A HREF="http://www.w3.org/TR/2001/REC-xml-c14n-20010315">Canonical
@@ -296,7 +294,7 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
     }
 
     protected void circumventBugIfNeeded(XMLSignatureInput input)
-        throws CanonicalizationException, ParserConfigurationException, IOException, SAXException {
+        throws XMLParserException, IOException {
         if (!input.isNeedsToBeExpanded()) {
             return;
         }

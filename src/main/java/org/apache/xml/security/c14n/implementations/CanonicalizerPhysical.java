@@ -25,10 +25,9 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.Canonicalizer;
+import org.apache.xml.security.parser.XMLParserException;
 import org.apache.xml.security.signature.XMLSignatureInput;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Comment;
@@ -37,7 +36,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.ProcessingInstruction;
-import org.xml.sax.SAXException;
 
 /**
  * Serializes the physical representation of the subtree. All the attributes
@@ -151,8 +149,9 @@ public class CanonicalizerPhysical extends CanonicalizerBase {
         throw new CanonicalizationException("c14n.Canonicalizer.UnsupportedOperation");
     }
 
+    @Override
     protected void circumventBugIfNeeded(XMLSignatureInput input)
-        throws CanonicalizationException, ParserConfigurationException, IOException, SAXException {
+        throws XMLParserException, IOException {
         // nothing to do
     }
 

@@ -22,16 +22,14 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.c14n.InvalidCanonicalizerException;
+import org.apache.xml.security.parser.XMLParserException;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
 
 /**
  * Converts <code>String</code>s into <code>Node</code>s and visa versa.
@@ -86,12 +84,8 @@ public class DocumentSerializer extends AbstractSerializer {
                 child = fragElt.getFirstChild();
             }
             return result;
-        } catch (SAXException se) {
-            throw new XMLEncryptionException(se);
-        } catch (ParserConfigurationException pce) {
+        } catch (XMLParserException pce) {
             throw new XMLEncryptionException(pce);
-        } catch (IOException ioe) {
-            throw new XMLEncryptionException(ioe);
         }
     }
 

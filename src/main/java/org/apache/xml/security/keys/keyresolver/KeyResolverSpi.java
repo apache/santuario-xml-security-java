@@ -26,13 +26,12 @@ import java.security.PublicKey;
 import java.security.cert.X509Certificate;
 
 import javax.crypto.SecretKey;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.xml.security.keys.storage.StorageResolver;
+import org.apache.xml.security.parser.XMLParserException;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
 /**
  * This class is an abstract class to resolve a Key of some kind given a KeyInfo element.
@@ -209,11 +208,9 @@ public abstract class KeyResolverSpi {
         try (InputStream is = new ByteArrayInputStream(bytes)) {
             Document doc = XMLUtils.read(is, secureValidation);
             return doc.getDocumentElement();
-        } catch (SAXException ex) {
+        } catch (XMLParserException ex) {
             throw new KeyResolverException(ex);
         } catch (IOException ex) {
-            throw new KeyResolverException(ex);
-        } catch (ParserConfigurationException ex) {
             throw new KeyResolverException(ex);
         }
     }

@@ -28,18 +28,16 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.implementations.Canonicalizer11_OmitComments;
 import org.apache.xml.security.c14n.implementations.Canonicalizer20010315OmitComments;
 import org.apache.xml.security.c14n.implementations.CanonicalizerBase;
 import org.apache.xml.security.exceptions.XMLSecurityRuntimeException;
+import org.apache.xml.security.parser.XMLParserException;
 import org.apache.xml.security.utils.JavaUtils;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
 
 /**
  * Class XMLSignatureInput
@@ -186,13 +184,10 @@ public class XMLSignatureInput {
      * {@link XMLSignatureInput} constructor
      *
      * @return the node set
-     * @throws SAXException
+     * @throws XMLParserException
      * @throws IOException
-     * @throws ParserConfigurationException
-     * @throws CanonicalizationException
      */
-    public Set<Node> getNodeSet() throws CanonicalizationException, ParserConfigurationException,
-        IOException, SAXException {
+    public Set<Node> getNodeSet() throws XMLParserException, IOException {
         return getNodeSet(false);
     }
 
@@ -210,13 +205,10 @@ public class XMLSignatureInput {
      * @param circumvent
      *
      * @return the node set
-     * @throws SAXException
+     * @throws XMLParserException
      * @throws IOException
-     * @throws ParserConfigurationException
-     * @throws CanonicalizationException
      */
-    public Set<Node> getNodeSet(boolean circumvent) throws ParserConfigurationException,
-        IOException, SAXException, CanonicalizationException {
+    public Set<Node> getNodeSet(boolean circumvent) throws XMLParserException, IOException {
         if (inputNodeSet != null) {
             return inputNodeSet;
         }
@@ -568,8 +560,7 @@ public class XMLSignatureInput {
         isNodeSet = b;
     }
 
-    private void convertToNodes() throws CanonicalizationException,
-        ParserConfigurationException, IOException, SAXException {
+    private void convertToNodes() throws XMLParserException, IOException {
         // select all nodes, also the comments.
         try {
             Document doc = XMLUtils.read(this.getOctetStream(), secureValidation);

@@ -32,6 +32,7 @@ import org.apache.xml.security.c14n.implementations.Canonicalizer20010315OmitCom
 import org.apache.xml.security.c14n.implementations.Canonicalizer20010315WithComments;
 import org.apache.xml.security.c14n.implementations.CanonicalizerPhysical;
 import org.apache.xml.security.exceptions.AlgorithmAlreadyRegisteredException;
+import org.apache.xml.security.parser.XMLParserException;
 import org.apache.xml.security.utils.ClassLoaderUtils;
 import org.apache.xml.security.utils.JavaUtils;
 import org.w3c.dom.Node;
@@ -219,11 +220,10 @@ public final class Canonicalizer {
      * @param secureValidation Whether secure validation is enabled
      * @throws CanonicalizationException
      * @throws java.io.IOException
-     * @throws org.xml.sax.SAXException
+     * @throws XMLParserException
      */
     public void canonicalize(byte[] inputBytes, OutputStream writer, boolean secureValidation)
-        throws javax.xml.parsers.ParserConfigurationException,
-        java.io.IOException, org.xml.sax.SAXException, CanonicalizationException {
+        throws XMLParserException, java.io.IOException, CanonicalizationException {
         canonicalizerSpi.engineCanonicalize(inputBytes, writer, secureValidation);
     }
 

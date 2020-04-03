@@ -22,6 +22,7 @@ import java.io.ByteArrayInputStream;
 import java.io.OutputStream;
 import java.util.Set;
 
+import org.apache.xml.security.parser.XMLParserException;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -39,14 +40,12 @@ public abstract class CanonicalizerSpi {
      * @param writer OutputStream to write the canonicalization result
      * @param secureValidation Whether secure validation is enabled
      *
-     * @throws CanonicalizationException
+     * @throws XMLParserException
      * @throws java.io.IOException
      * @throws javax.xml.parsers.ParserConfigurationException
-     * @throws org.xml.sax.SAXException
      */
     public void engineCanonicalize(byte[] inputBytes, OutputStream writer, boolean secureValidation)
-        throws javax.xml.parsers.ParserConfigurationException, java.io.IOException,
-        org.xml.sax.SAXException, CanonicalizationException {
+        throws XMLParserException, java.io.IOException, CanonicalizationException {
 
         Document document = null;
         try (java.io.InputStream bais = new ByteArrayInputStream(inputBytes)) {

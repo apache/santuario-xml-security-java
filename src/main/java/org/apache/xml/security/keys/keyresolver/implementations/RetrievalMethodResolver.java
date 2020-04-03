@@ -32,8 +32,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.keys.content.RetrievalMethod;
@@ -42,6 +40,7 @@ import org.apache.xml.security.keys.keyresolver.KeyResolver;
 import org.apache.xml.security.keys.keyresolver.KeyResolverException;
 import org.apache.xml.security.keys.keyresolver.KeyResolverSpi;
 import org.apache.xml.security.keys.storage.StorageResolver;
+import org.apache.xml.security.parser.XMLParserException;
 import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.Constants;
@@ -51,7 +50,6 @@ import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
 
 /**
  * The RetrievalMethodResolver can retrieve public keys and certificates from
@@ -121,10 +119,6 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
              LOG.debug("CertificateException", ex);
          } catch (IOException ex) {
              LOG.debug("IOException", ex);
-         } catch (ParserConfigurationException e) {
-             LOG.debug("ParserConfigurationException", e);
-         } catch (SAXException e) {
-             LOG.debug("SAXException", e);
          }
          return null;
     }
@@ -170,10 +164,6 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
             LOG.debug("CertificateException", ex);
         } catch (IOException ex) {
             LOG.debug("IOException", ex);
-        } catch (ParserConfigurationException e) {
-            LOG.debug("ParserConfigurationException", e);
-        } catch (SAXException e) {
-            LOG.debug("SAXException", e);
         }
         return null;
     }
@@ -224,8 +214,7 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
     }
 
     private static Element obtainReferenceElement(XMLSignatureInput resource, boolean secureValidation)
-        throws CanonicalizationException, ParserConfigurationException,
-        IOException, SAXException, KeyResolverException {
+        throws CanonicalizationException, XMLParserException, IOException, KeyResolverException {
         Element e;
         if (resource.isElement()) {
             e = (Element) resource.getSubNode();

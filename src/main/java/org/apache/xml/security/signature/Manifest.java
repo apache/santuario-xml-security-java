@@ -29,11 +29,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.InvalidCanonicalizerException;
 import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.parser.XMLParserException;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.I18n;
@@ -45,7 +44,6 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
 
 /**
  * Handles <code>&lt;ds:Manifest&gt;</code> elements.
@@ -400,9 +398,7 @@ public class Manifest extends SignatureElementProxy {
                         manifestReferences = referencedManifest.getVerificationResults();
                     } catch (IOException ex) {
                         throw new ReferenceNotInitializedException(ex);
-                    } catch (ParserConfigurationException ex) {
-                        throw new ReferenceNotInitializedException(ex);
-                    } catch (SAXException ex) {
+                    } catch (XMLParserException ex) {
                         throw new ReferenceNotInitializedException(ex);
                     }
                 }

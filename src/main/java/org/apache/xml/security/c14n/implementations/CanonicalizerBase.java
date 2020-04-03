@@ -29,11 +29,10 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.CanonicalizerSpi;
 import org.apache.xml.security.c14n.helper.AttrCompare;
+import org.apache.xml.security.parser.XMLParserException;
 import org.apache.xml.security.signature.NodeFilter;
 import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.utils.Constants;
@@ -46,7 +45,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.ProcessingInstruction;
-import org.xml.sax.SAXException;
 
 /**
  * Abstract base class for canonicalization algorithms.
@@ -153,11 +151,9 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
                     engineCanonicalizeXPathNodeSet(input.getNodeSet(), writer);
                 }
             }
-        } catch (ParserConfigurationException ex) {
+        } catch (XMLParserException ex) {
             throw new CanonicalizationException(ex);
         } catch (IOException ex) {
-            throw new CanonicalizationException(ex);
-        } catch (SAXException ex) {
             throw new CanonicalizationException(ex);
         }
     }
@@ -596,7 +592,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
         throws CanonicalizationException, DOMException, IOException;
 
     abstract void circumventBugIfNeeded(XMLSignatureInput input)
-        throws CanonicalizationException, ParserConfigurationException, IOException, SAXException;
+        throws XMLParserException, IOException;
 
     /**
      * Outputs an Attribute to the internal Writer.

@@ -25,7 +25,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
 import org.apache.xml.security.c14n.CanonicalizationException;
@@ -45,7 +44,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 /**
  * Implements the <I>XML Signature XPath Filter v2.0</I>
@@ -136,11 +134,7 @@ public class TransformXPath2Filter extends TransformSpi {
             throw new TransformationException(ex);
         } catch (XMLSecurityException ex) {
             throw new TransformationException(ex);
-        } catch (SAXException ex) {
-            throw new TransformationException(ex);
         } catch (IOException ex) {
-            throw new TransformationException(ex);
-        } catch (ParserConfigurationException ex) {
             throw new TransformationException(ex);
         }
     }
