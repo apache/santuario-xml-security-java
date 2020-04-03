@@ -65,7 +65,6 @@ import org.apache.xml.security.stax.securityEvent.SignedElementSecurityEvent;
 import org.apache.xml.security.stax.securityEvent.X509TokenSecurityEvent;
 import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 import org.apache.xml.security.test.stax.utils.StAX2DOM;
-import org.apache.xml.security.test.stax.utils.TestUtils;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.transforms.Transform;
 import org.apache.xml.security.transforms.implementations.TransformC14N;
@@ -1265,126 +1264,6 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         assertEquals(3, signedElementSecurityEvents.size());
         assertEquals(securityEventListener.getSecurityEvents().size(),
                 signatureSecurityEvents.size() + signedElementSecurityEvents.size());
-    }
-
-    @Test
-    public void testMaximumAllowedReferencesPerManifest() throws Exception {
-        // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
-
-        // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-                this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-                "default".toCharArray()
-        );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
-        X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
-
-        // Sign using DOM
-        List<String> localNames = new ArrayList<>();
-        localNames.add("Item");
-        localNames.add("PaymentInfo");
-        localNames.add("ShippingAddress");
-        XMLSignature sig = signUsingDOM(
-                "http://www.w3.org/2000/09/xmldsig#rsa-sha1", document, localNames, key
-        );
-
-        // Add KeyInfo
-        sig.addKeyInfo(cert);
-
-        // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        transformer.transform(new DOMSource(document), new StreamResult(baos));
-
-        XMLStreamReader xmlStreamReader = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
-        }
-
-        // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
-                inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
-
-        int oldval = 0;
-        try {
-            oldval = TestUtils.changeValueOfMaximumAllowedReferencesPerManifest(2);
-            document = StAX2DOM.readDoc(securityStreamReader);
-            fail("Exception expected");
-        } catch (XMLStreamException e) {
-            assertTrue(e.getCause() instanceof XMLSecurityException);
-            assertEquals("4 references are contained in the Manifest, maximum 2 are allowed. You can raise the maximum " +
-                    "via the \"MaximumAllowedReferencesPerManifest\" property in the configuration.",
-                    e.getCause().getMessage());
-        } finally {
-            TestUtils.changeValueOfMaximumAllowedReferencesPerManifest(oldval);
-        }
-    }
-
-    @Test
-    public void testMaximumAllowedTransformsPerReference() throws Exception {
-        // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
-
-        // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-                this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-                "default".toCharArray()
-        );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
-        X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
-
-        // Sign using DOM
-        List<String> localNames = new ArrayList<>();
-        localNames.add("PaymentInfo");
-        XMLSignature sig = signUsingDOM(
-                "http://www.w3.org/2000/09/xmldsig#rsa-sha1", document, localNames, key
-        );
-
-        // Add KeyInfo
-        sig.addKeyInfo(cert);
-
-        // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        transformer.transform(new DOMSource(document), new StreamResult(baos));
-
-        XMLStreamReader xmlStreamReader = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-           xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
-        }
-
-        // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
-                inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
-
-        int oldval = 0;
-        try {
-            oldval = TestUtils.changeValueOfMaximumAllowedTransformsPerReference(0);
-            document = StAX2DOM.readDoc(securityStreamReader);
-            fail("Exception expected");
-        } catch (XMLStreamException e) {
-            assertTrue(e.getCause() instanceof XMLSecurityException);
-            assertEquals("1 transforms are contained in the Reference, maximum 0 are allowed. You can raise the maximum " +
-                    "via the \"MaximumAllowedTransformsPerReference\" property in the configuration.",
-                    e.getCause().getMessage());
-        } finally {
-            TestUtils.changeValueOfMaximumAllowedTransformsPerReference(oldval);
-        }
     }
 
     @Test
