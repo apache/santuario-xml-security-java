@@ -1472,7 +1472,7 @@ public class XMLCipher {
                 }
             }
             if (key == null) {
-                LOG.error("XMLCipher::decryptKey called without a KEK and cannot resolve");
+                LOG.error("XMLCipher::decryptKey unable to resolve a KEK");
                 throw new XMLEncryptionException("empty", "Unable to decrypt without a KEK");
             }
         }
@@ -1768,7 +1768,7 @@ public class XMLCipher {
 
             if (key == null) {
                 LOG.error(
-                    "XMLCipher::decryptElement called without a key and unable to resolve"
+                    "XMLCipher::decryptElement unable to resolve a decryption key"
                 );
                 throw new XMLEncryptionException("empty", "encryption.nokey");
             }
