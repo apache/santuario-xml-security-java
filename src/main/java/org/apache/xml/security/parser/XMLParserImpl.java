@@ -52,7 +52,7 @@ public class XMLParserImpl implements XMLParser {
             Collections.synchronizedMap(new WeakHashMap<ClassLoader, Queue<DocumentBuilder>>());
 
     @Override
-    public Document parse(InputStream inputStream, boolean disAllowDocTypeDeclarations) throws XMLParserException {
+    public Document parse(InputStream inputStream, boolean disallowDocTypeDeclarations) throws XMLParserException {
         try {
             ClassLoader loader = getContextClassLoader();
             if (loader == null) {
@@ -60,12 +60,12 @@ public class XMLParserImpl implements XMLParser {
             }
             // If the ClassLoader is null then just create a DocumentBuilder and use it
             if (loader == null) {
-                DocumentBuilder documentBuilder = createDocumentBuilder(disAllowDocTypeDeclarations);
+                DocumentBuilder documentBuilder = createDocumentBuilder(disallowDocTypeDeclarations);
                 return documentBuilder.parse(inputStream);
             }
 
-            Queue<DocumentBuilder> queue = getDocumentBuilderQueue(disAllowDocTypeDeclarations, loader);
-            DocumentBuilder documentBuilder = getDocumentBuilder(disAllowDocTypeDeclarations, queue);
+            Queue<DocumentBuilder> queue = getDocumentBuilderQueue(disallowDocTypeDeclarations, loader);
+            DocumentBuilder documentBuilder = getDocumentBuilder(disallowDocTypeDeclarations, queue);
             Document doc = documentBuilder.parse(inputStream);
             repoolDocumentBuilder(documentBuilder, queue);
             return doc;
@@ -74,9 +74,9 @@ public class XMLParserImpl implements XMLParser {
         }
     }
 
-    private static Queue<DocumentBuilder> getDocumentBuilderQueue(boolean disAllowDocTypeDeclarations, ClassLoader loader) throws ParserConfigurationException {
+    private static Queue<DocumentBuilder> getDocumentBuilderQueue(boolean disallowDocTypeDeclarations, ClassLoader loader) throws ParserConfigurationException {
         Map<ClassLoader, Queue<DocumentBuilder>> docBuilderCache =
-                disAllowDocTypeDeclarations ? DOCUMENT_BUILDERS_DISALLOW_DOCTYPE : DOCUMENT_BUILDERS;
+                disallowDocTypeDeclarations ? DOCUMENT_BUILDERS_DISALLOW_DOCTYPE : DOCUMENT_BUILDERS;
         Queue<DocumentBuilder> queue = docBuilderCache.get(loader);
         if (queue == null) {
             queue = new ArrayBlockingQueue<>(parserPoolSize);
@@ -86,19 +86,19 @@ public class XMLParserImpl implements XMLParser {
         return queue;
     }
 
-    private static DocumentBuilder getDocumentBuilder(boolean disAllowDocTypeDeclarations, Queue<DocumentBuilder> queue) throws ParserConfigurationException {
+    private static DocumentBuilder getDocumentBuilder(boolean disallowDocTypeDeclarations, Queue<DocumentBuilder> queue) throws ParserConfigurationException {
         DocumentBuilder db = queue.poll();
         if (db == null) {
-            db = createDocumentBuilder(disAllowDocTypeDeclarations);
+            db = createDocumentBuilder(disallowDocTypeDeclarations);
         }
         return db;
     }
 
-    private static DocumentBuilder createDocumentBuilder(boolean disAllowDocTypeDeclarations) throws ParserConfigurationException {
+    private static DocumentBuilder createDocumentBuilder(boolean disallowDocTypeDeclarations) throws ParserConfigurationException {
         DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
         f.setNamespaceAware(true);
         f.setFeature(javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING, true);
-        f.setFeature("http://apache.org/xml/features/disallow-doctype-decl", disAllowDocTypeDeclarations);
+        f.setFeature("http://apache.org/xml/features/disallow-doctype-decl", disallowDocTypeDeclarations);
         return f.newDocumentBuilder();
     }
 

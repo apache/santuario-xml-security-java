@@ -1000,9 +1000,9 @@ public final class XMLUtils {
         return true;
     }
 
-    public static Document read(InputStream inputStream, boolean disAllowDocTypeDeclarations) throws XMLParserException {
+    public static Document read(InputStream inputStream, boolean disallowDocTypeDeclarations) throws XMLParserException {
         // Delegate to XMLParser implementation
-        return xmlParserImpl.parse(inputStream, disAllowDocTypeDeclarations);
+        return xmlParserImpl.parse(inputStream, disallowDocTypeDeclarations);
     }
 
     /**

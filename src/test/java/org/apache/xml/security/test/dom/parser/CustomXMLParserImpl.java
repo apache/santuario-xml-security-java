@@ -33,8 +33,8 @@ public class CustomXMLParserImpl extends XMLParserImpl {
     private static boolean called;
 
     @Override
-    public Document parse(InputStream inputStream, boolean disAllowDocTypeDeclarations) throws XMLParserException {
-        Document doc = super.parse(inputStream, disAllowDocTypeDeclarations);
+    public Document parse(InputStream inputStream, boolean disallowDocTypeDeclarations) throws XMLParserException {
+        Document doc = super.parse(inputStream, disallowDocTypeDeclarations);
         called = true;
         return doc;
     }

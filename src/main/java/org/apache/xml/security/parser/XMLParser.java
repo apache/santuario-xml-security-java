@@ -27,6 +27,6 @@ import org.w3c.dom.Document;
  */
 public interface XMLParser {
 
-    Document parse(InputStream inputStream, boolean disAllowDocTypeDeclarations) throws XMLParserException;
+    Document parse(InputStream inputStream, boolean disallowDocTypeDeclarations) throws XMLParserException;
 
 }
