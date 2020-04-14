@@ -79,6 +79,16 @@ public class AbstractSignatureCreationTest {
         verifyUsingDOM(document, cert, secureParts, null);
     }
 
+    protected void verifyUsingDOM(
+            Document document,
+            X509Certificate cert,
+            List<SecurePart> secureParts,
+            boolean secureValidation
+    ) throws Exception {
+        verifyUsingDOM(document, cert, secureParts, null,
+                true, "Id", secureValidation);
+    }
+
     /**
      * Verify the document using DOM
      */
@@ -88,7 +98,7 @@ public class AbstractSignatureCreationTest {
             List<SecurePart> secureParts,
             ResourceResolverSpi resourceResolverSpi
     ) throws Exception {
-        verifyUsingDOM(document, cert, secureParts, resourceResolverSpi, true, "Id");
+        verifyUsingDOM(document, cert, secureParts, resourceResolverSpi, true, "Id", true);
     }
 
     /**
@@ -100,9 +110,10 @@ public class AbstractSignatureCreationTest {
             List<SecurePart> secureParts,
             ResourceResolverSpi resourceResolverSpi,
             boolean keyInfoRequired,
-            String idAttributeNS
+            String idAttributeNS,
+            boolean secureValidation
     ) throws Exception {
-        XPath xpath = getxPath();
+        XPath xpath = getXPath();
 
         String expression = "//dsig:Signature[1]";
         Element sigElement =
@@ -120,7 +131,7 @@ public class AbstractSignatureCreationTest {
             signedElement.setIdAttributeNS(null, idAttributeNS, true);
         }
 
-        XMLSignature signature = new XMLSignature(sigElement, "");
+        XMLSignature signature = new XMLSignature(sigElement, "", secureValidation, null);
         if (resourceResolverSpi != null) {
             signature.addResourceResolver(resourceResolverSpi);
         }
@@ -140,7 +151,7 @@ public class AbstractSignatureCreationTest {
             Key key,
             List<SecurePart> secureParts
     ) throws Exception {
-        XPath xpath = getxPath();
+        XPath xpath = getXPath();
 
         String expression = "//dsig:Signature[1]";
         Element sigElement =
@@ -159,12 +170,12 @@ public class AbstractSignatureCreationTest {
         assertTrue(signature.checkSignatureValue(key));
     }
 
-    protected void verifyUsingDOMWihtoutId(
+    protected void verifyUsingDOMWithoutId(
             Document document,
             Key key,
             List<SecurePart> secureParts
     ) throws Exception {
-        XPath xpath = getxPath();
+        XPath xpath = getXPath();
 
         String expression = "//dsig:Signature[1]";
         Element sigElement =
@@ -187,12 +198,12 @@ public class AbstractSignatureCreationTest {
         assertTrue(signature.checkSignatureValue(key));
     }
 
-    protected void verifyUsingDOMWihtoutIdAndDefaultTransform (
+    protected void verifyUsingDOMWithoutIdAndDefaultTransform (
             Document document,
             Key key,
             List<SecurePart> secureParts
     ) throws Exception {
-        XPath xpath = getxPath();
+        XPath xpath = getXPath();
 
         String expression = "//dsig:Signature[1]";
         Element sigElement =
@@ -213,7 +224,7 @@ public class AbstractSignatureCreationTest {
         assertTrue(signature.checkSignatureValue(key));
     }
 
-    private XPath getxPath() {
+    private XPath getXPath() {
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();
         xpath.setNamespaceContext(new DSNamespaceContext());

@@ -108,7 +108,7 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getSignatureSecureParts(), false);
     }
 
     @Test
@@ -159,7 +159,7 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getSignatureSecureParts(), false);
     }
 
     @Test

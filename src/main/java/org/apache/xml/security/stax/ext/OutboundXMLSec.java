@@ -128,6 +128,12 @@ public class OutboundXMLSec {
                                 securePart.getIdToSign(),
                                 securePart
                         );
+                    } else if (securePart.getExternalReference() != null) {
+                        outputProcessorChain.getSecurityContext().putAsMap(
+                                XMLSecurityConstants.SIGNATURE_PARTS,
+                                securePart.getExternalReference(),
+                                securePart
+                        );
                     } else if (securePart.isSecureEntireRequest()) {
                         // Special functionality to sign the first element in the request
                         signEntireRequestPart = securePart;

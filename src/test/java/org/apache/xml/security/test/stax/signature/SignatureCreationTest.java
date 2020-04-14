@@ -518,7 +518,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts(), null, true, "ID");
+        verifyUsingDOM(document, cert, properties.getSignatureSecureParts(), null, true, "ID", true);
     }
 
 
@@ -1478,7 +1478,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts(), null, false, "Id");
+        verifyUsingDOM(document, cert, properties.getSignatureSecureParts(), null, false, "Id", true);
 
     }
 
@@ -1580,7 +1580,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         assertEquals(cert.getIssuerDN().getName(), nodeList.item(0).getFirstChild().getTextContent());
 
         // Verify using DOM
-        verifyUsingDOMWihtoutId(document, cert.getPublicKey(), properties.getSignatureSecureParts());
+        verifyUsingDOMWithoutId(document, cert.getPublicKey(), properties.getSignatureSecureParts());
     }
 
     @Test
@@ -1635,6 +1635,6 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         assertEquals(cert.getIssuerDN().getName(), nodeList.item(0).getFirstChild().getTextContent());
 
         // Verify using DOM
-        verifyUsingDOMWihtoutIdAndDefaultTransform(document, cert.getPublicKey(), properties.getSignatureSecureParts());
+        verifyUsingDOMWithoutIdAndDefaultTransform(document, cert.getPublicKey(), properties.getSignatureSecureParts());
     }
 }
