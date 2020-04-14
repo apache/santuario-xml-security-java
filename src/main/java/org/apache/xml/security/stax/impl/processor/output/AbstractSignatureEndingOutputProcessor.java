@@ -357,7 +357,7 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
         }
 
         @Override
-        public void processEvent(XMLSecEvent xmlSecEvent, OutputProcessorChain outputProcessorChain)
+        public void processNextEvent(XMLSecEvent xmlSecEvent, OutputProcessorChain outputProcessorChain)
                 throws XMLStreamException, XMLSecurityException {
             transformer.transform(xmlSecEvent);
             outputProcessorChain.processEvent(xmlSecEvent);

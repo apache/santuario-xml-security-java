@@ -68,7 +68,7 @@ public class XMLEncryptOutputProcessor extends AbstractEncryptOutputProcessor {
     }
 
     @Override
-    public void processEvent(XMLSecEvent xmlSecEvent, OutputProcessorChain outputProcessorChain) throws XMLStreamException, XMLSecurityException {
+    public void processNextEvent(XMLSecEvent xmlSecEvent, OutputProcessorChain outputProcessorChain) throws XMLStreamException, XMLSecurityException {
         if (xmlSecEvent.getEventType() == XMLStreamConstants.START_ELEMENT) {
             XMLSecStartElement xmlSecStartElement = xmlSecEvent.asStartElement();
 

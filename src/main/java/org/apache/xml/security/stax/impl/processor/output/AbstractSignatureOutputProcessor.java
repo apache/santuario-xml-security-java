@@ -74,7 +74,7 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
     }
 
     @Override
-    public abstract void processEvent(XMLSecEvent xmlSecEvent, OutputProcessorChain outputProcessorChain)
+    public abstract void processNextEvent(XMLSecEvent xmlSecEvent, OutputProcessorChain outputProcessorChain)
             throws XMLStreamException, XMLSecurityException;
 
     @Override
@@ -282,7 +282,7 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
         }
 
         @Override
-        public void processEvent(XMLSecEvent xmlSecEvent, OutputProcessorChain outputProcessorChain)
+        public void processNextEvent(XMLSecEvent xmlSecEvent, OutputProcessorChain outputProcessorChain)
                 throws XMLStreamException, XMLSecurityException {
 
             transformer.transform(xmlSecEvent);

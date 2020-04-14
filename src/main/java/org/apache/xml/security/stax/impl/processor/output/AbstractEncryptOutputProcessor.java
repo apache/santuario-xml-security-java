@@ -80,7 +80,7 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
     }
 
     @Override
-    public abstract void processEvent(XMLSecEvent xmlSecEvent, OutputProcessorChain outputProcessorChain)
+    public abstract void processNextEvent(XMLSecEvent xmlSecEvent, OutputProcessorChain outputProcessorChain)
             throws XMLStreamException, XMLSecurityException;
 
     @Override
@@ -215,7 +215,7 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
         }
 
         @Override
-        public void processEvent(final XMLSecEvent xmlSecEvent, OutputProcessorChain outputProcessorChain)
+        public void processNextEvent(final XMLSecEvent xmlSecEvent, OutputProcessorChain outputProcessorChain)
                 throws XMLStreamException, XMLSecurityException {
 
             switch (xmlSecEvent.getEventType()) {

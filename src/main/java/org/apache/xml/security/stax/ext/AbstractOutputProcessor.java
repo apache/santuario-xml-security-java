@@ -124,15 +124,6 @@ public abstract class AbstractOutputProcessor implements OutputProcessor {
         return action;
     }
 
-    public abstract void processEvent(XMLSecEvent xmlSecEvent, OutputProcessorChain outputProcessorChain)
-            throws XMLStreamException, XMLSecurityException;
-
-    @Override
-    public void processNextEvent(XMLSecEvent xmlSecEvent, OutputProcessorChain outputProcessorChain)
-            throws XMLStreamException, XMLSecurityException {
-        processEvent(xmlSecEvent, outputProcessorChain);
-    }
-
     @Override
     public void doFinal(OutputProcessorChain outputProcessorChain) throws XMLStreamException, XMLSecurityException {
         outputProcessorChain.doFinal();
