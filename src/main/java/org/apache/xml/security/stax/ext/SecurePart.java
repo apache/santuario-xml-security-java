@@ -60,7 +60,6 @@ public class SecurePart {
     private boolean generateXPointer;
     private Modifier modifier;
     private String idToSign;
-    private String idToReference;
     private String externalReference;
     private String[] transforms;
     private String digestMethod;
@@ -87,13 +86,6 @@ public class SecurePart {
         this.modifier = modifier;
         this.transforms = transforms;
         this.digestMethod = digestMethod;
-    }
-
-    public SecurePart(QName name, String idToSign, String idToReference, Modifier modifier) {
-        this.name = name;
-        this.idToSign = idToSign;
-        this.idToReference = idToReference;
-        this.modifier = modifier;
     }
 
     public SecurePart(String externalReference) {
@@ -143,14 +135,6 @@ public class SecurePart {
 
     public void setIdToSign(String idToSign) {
         this.idToSign = idToSign;
-    }
-
-    public String getIdToReference() {
-        return idToReference;
-    }
-
-    public void setIdToReference(String idToReference) {
-        this.idToReference = idToReference;
     }
 
     public boolean isGenerateXPointer() {
