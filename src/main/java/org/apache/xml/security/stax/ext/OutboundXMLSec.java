@@ -139,7 +139,7 @@ public class OutboundXMLSec {
                         signEntireRequestPart = securePart;
                     }
                 }
-            } else if (XMLSecurityConstants.ENCRYPT.equals(action)) {
+            } else if (XMLSecurityConstants.ENCRYPTION.equals(action)) {
                 XMLEncryptOutputProcessor encryptOutputProcessor = new XMLEncryptOutputProcessor();
                 initializeOutputProcessor(outputProcessorChain, encryptOutputProcessor, action);
 

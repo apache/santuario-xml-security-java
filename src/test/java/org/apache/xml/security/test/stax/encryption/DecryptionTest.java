@@ -1845,7 +1845,7 @@ public class DecryptionTest {
         // Decrypt
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(secretKey);
-        properties.addAction(XMLSecurityConstants.ENCRYPT);
+        properties.addAction(XMLSecurityConstants.ENCRYPTION);
         InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
         TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
         XMLStreamReader securityStreamReader =
@@ -1906,7 +1906,7 @@ public class DecryptionTest {
         // Decrypt
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(secretKey);
-        properties.addAction(XMLSecurityConstants.ENCRYPT);
+        properties.addAction(XMLSecurityConstants.ENCRYPTION);
         InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
         TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
         XMLStreamReader securityStreamReader =
@@ -1964,7 +1964,7 @@ public class DecryptionTest {
         // Decrypt
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(secretKey);
-        properties.addAction(XMLSecurityConstants.ENCRYPT);
+        properties.addAction(XMLSecurityConstants.ENCRYPTION);
         InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
         TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
         XMLStreamReader securityStreamReader =

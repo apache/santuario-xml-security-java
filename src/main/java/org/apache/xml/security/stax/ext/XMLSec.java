@@ -165,7 +165,7 @@ public class XMLSec {
                 if (securityProperties.getSignatureKeyIdentifiers().isEmpty()) {
                     securityProperties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_IssuerSerial);
                 }
-            } else if (XMLSecurityConstants.ENCRYPT.equals(action)) {
+            } else if (XMLSecurityConstants.ENCRYPTION.equals(action)) {
                 if (securityProperties.getEncryptionKeyTransportAlgorithm() == null) {
                     //@see http://www.w3.org/TR/2002/REC-xmlenc-core-20021210/Overview.html#rsa-1_5 :
                     //"RSA-OAEP is RECOMMENDED for the transport of AES keys"

@@ -261,7 +261,12 @@ public class XMLSecurityConstants {
     public static final String ENCRYPTION_PARTS = "encryptionParts";
 
     public static final Action SIGNATURE = new Action("Signature");
-    public static final Action ENCRYPT = new Action("Encrypt");
+    public static final Action ENCRYPTION = new Action("Encryption");
+    /**
+     * Use {@link #ENCRYPTION} instead.
+     */
+    @Deprecated
+    public static final Action ENCRYPT = ENCRYPTION;
 
     public static final QName TAG_dsigmore_RSAPSSPARAMS = new QName(NS_DSIG_MORE_2007_05, "RSAPSSParams", PREFIX_DSIG_MORE_PSS);
     public static final QName TAG_dsigmore_SALTLENGTH = new QName(NS_DSIG_MORE_2007_05, "SaltLength", PREFIX_DSIG_MORE_PSS);

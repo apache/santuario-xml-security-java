@@ -54,7 +54,7 @@ public class XMLSecurityInputProcessor extends AbstractInputProcessor {
         // If no actions are set (default behaviour) we do signature and decryption processing
         // If the only action is XMLSecurityConstants.ENCRYPT then we only do decryption and skip signature processing
         decryptOnly = securityProperties.getActions().size() == 1 &&
-                securityProperties.getActions().contains(XMLSecurityConstants.ENCRYPT);
+                securityProperties.getActions().contains(XMLSecurityConstants.ENCRYPTION);
     }
 
     @Override

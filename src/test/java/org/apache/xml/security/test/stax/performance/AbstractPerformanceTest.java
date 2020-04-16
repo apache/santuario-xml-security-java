@@ -181,7 +181,7 @@ public abstract class AbstractPerformanceTest {
     protected void setUpOutboundEncryptionXMLSec() throws XMLSecurityException {
         XMLSecurityProperties xmlSecurityProperties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
-        actions.add(XMLSecurityConstants.ENCRYPT);
+        actions.add(XMLSecurityConstants.ENCRYPTION);
         xmlSecurityProperties.setActions(actions);
         xmlSecurityProperties.setEncryptionKey(encryptionSymKey);
         xmlSecurityProperties.setEncryptionSymAlgorithm("http://www.w3.org/2001/04/xmlenc#aes256-cbc");
