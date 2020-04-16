@@ -83,7 +83,7 @@ public class XMLSignatureOutputProcessor extends AbstractSignatureOutputProcesso
                     }
 
                     if (securityProperties.isSignatureGenerateIds()) {
-                        if (securePart.getIdToSign() == null) {
+                        if (securePart.getIdToSecure() == null) {
                             signaturePartDef.setGenerateXPointer(securePart.isGenerateXPointer());
                             signaturePartDef.setSigRefId(IDGenerator.generateID(null));
 
@@ -96,7 +96,7 @@ public class XMLSignatureOutputProcessor extends AbstractSignatureOutputProcesso
                                 xmlSecEvent = addAttributes(xmlSecStartElement, attributeList);
                             }
                         } else {
-                            signaturePartDef.setSigRefId(securePart.getIdToSign());
+                            signaturePartDef.setSigRefId(securePart.getIdToSecure());
                         }
                     }
 

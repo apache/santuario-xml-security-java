@@ -59,12 +59,16 @@ public class SecurePart {
     private QName name;
     private boolean generateXPointer;
     private Modifier modifier;
-    private String idToSign;
+    private String idToSecure;
     private String externalReference;
     private String[] transforms;
     private String digestMethod;
     private boolean required = true;
     private boolean secureEntireRequest;
+
+    public SecurePart(Modifier modifier) {
+        this(null, false, modifier);
+    }
 
     public SecurePart(QName name, Modifier modifier) {
         this(name, false, modifier);
@@ -125,16 +129,35 @@ public class SecurePart {
     }
 
     /**
-     * The id of the Element
+     * The ID of the element to secure (encrypt or sign), possibly {@code null}.
+     * This matches the attribute value of an element that has an attribute with a name given by
+     * {@link XMLSecurityProperties#getIdAttributeNS()}.
      *
-     * @return The id
+     * @return The ID of the element to secure, possibly {@code null}.
      */
-    public String getIdToSign() {
-        return idToSign;
+    public String getIdToSecure() {
+        return idToSecure;
     }
 
+    public void setIdToSecure(String idToSecure) {
+        this.idToSecure = idToSecure;
+    }
+
+    /**
+     * Use {@link #getIdToSecure()} instead.
+     */
+    @Deprecated
+    public String getIdToSign() {
+        return getIdToSecure();
+    }
+
+    /**
+     * Use {@link #setIdToSecure(String)} instead.
+     * @param idToSign
+     */
+    @Deprecated
     public void setIdToSign(String idToSign) {
-        this.idToSign = idToSign;
+        setIdToSecure(idToSign);
     }
 
     public boolean isGenerateXPointer() {

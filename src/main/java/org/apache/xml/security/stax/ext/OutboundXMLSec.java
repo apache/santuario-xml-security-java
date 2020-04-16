@@ -116,16 +116,16 @@ public class OutboundXMLSec {
                 configureSignatureKeys(outboundSecurityContext);
                 List<SecurePart> signatureParts = securityProperties.getSignatureSecureParts();
                 for (SecurePart securePart : signatureParts) {
-                    if (securePart.getIdToSign() == null && securePart.getName() != null) {
+                    if (securePart.getIdToSecure() == null && securePart.getName() != null) {
                         outputProcessorChain.getSecurityContext().putAsMap(
                                 XMLSecurityConstants.SIGNATURE_PARTS,
                                 securePart.getName(),
                                 securePart
                         );
-                    } else if (securePart.getIdToSign() != null) {
+                    } else if (securePart.getIdToSecure() != null) {
                         outputProcessorChain.getSecurityContext().putAsMap(
                                 XMLSecurityConstants.SIGNATURE_PARTS,
-                                securePart.getIdToSign(),
+                                securePart.getIdToSecure(),
                                 securePart
                         );
                     } else if (securePart.getExternalReference() != null) {
@@ -146,16 +146,16 @@ public class OutboundXMLSec {
                 configureEncryptionKeys(outboundSecurityContext);
                 List<SecurePart> encryptionParts = securityProperties.getEncryptionSecureParts();
                 for (SecurePart securePart : encryptionParts) {
-                    if (securePart.getIdToSign() == null && securePart.getName() != null) {
+                    if (securePart.getIdToSecure() == null && securePart.getName() != null) {
                         outputProcessorChain.getSecurityContext().putAsMap(
                                 XMLSecurityConstants.ENCRYPTION_PARTS,
                                 securePart.getName(),
                                 securePart
                         );
-                    } else if (securePart.getIdToSign() != null) {
+                    } else if (securePart.getIdToSecure() != null) {
                         outputProcessorChain.getSecurityContext().putAsMap(
                                 XMLSecurityConstants.ENCRYPTION_PARTS,
-                                securePart.getIdToSign(),
+                                securePart.getIdToSecure(),
                                 securePart
                         );
                     } else if (securePart.isSecureEntireRequest()) {

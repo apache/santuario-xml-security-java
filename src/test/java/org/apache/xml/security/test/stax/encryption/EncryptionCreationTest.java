@@ -30,6 +30,7 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.crypto.KeyGenerator;
@@ -1694,6 +1695,88 @@ public class EncryptionCreationTest {
         DESedeKeySpec keySpec = new DESedeKeySpec(bits192);
         SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
         return keyFactory.generateSecret(keySpec);
+    }
+
+    @Test
+    public void testEncryptionIdToEncrypt() throws Exception {
+        SecurePart securePart = new SecurePart(SecurePart.Modifier.Element);
+        securePart.setIdToSecure("abc");
+        testEncryptionIdToEncrypt(securePart);
+    }
+
+    @Test
+    public void testEncryptionIdToSign() throws Exception {
+        SecurePart securePart = new SecurePart(SecurePart.Modifier.Element);
+        securePart.setIdToSign("abc");
+        testEncryptionIdToEncrypt(securePart);
+    }
+
+    private void testEncryptionIdToEncrypt(SecurePart securePart) throws Exception {
+        String xml = "<?xml version='1.0'?>\n" +
+                "<Root>\n" +
+                "  <Branch attr1='abc'/>\n" +
+                "</Root>\n";
+        XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setIdAttributeNS(new QName("attr1"));
+        properties.setActions(Collections.singletonList(XMLSecurityConstants.ENCRYPT));
+        properties.addEncryptionPart(securePart);
+        byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes(StandardCharsets.US_ASCII);
+        SecretKey transportKey = new SecretKeySpec(bits192, "AES");
+        properties.setEncryptionKeyTransportAlgorithm("http://www.w3.org/2001/04/xmlenc#kw-aes192");
+        properties.setEncryptionTransportKey(transportKey);
+        properties.setEncryptionSymAlgorithm("http://www.w3.org/2001/04/xmlenc#aes128-cbc");
+        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        ByteArrayOutputStream encryptedOut = new ByteArrayOutputStream();
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(encryptedOut, StandardCharsets.UTF_8.name());
+        InputStream sourceDocument = new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8));
+        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
+        xmlStreamWriter.close();
+        byte[] encryptedData = encryptedOut.toByteArray();
+//        System.out.println(new String(encryptedOut.toByteArray(), StandardCharsets.UTF_8));
+        Document document = XMLUtils.read(new ByteArrayInputStream(encryptedData), false);
+        NodeList encryptedElements = document.getElementsByTagNameNS(
+                XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
+                XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
+        );
+        assertEquals(encryptedElements.getLength(), 1);
+    }
+
+    @Test
+    public void testEncryptionIdToSecureSupersedesName() throws Exception {
+        String xml = "<?xml version='1.0'?>\n" +
+                "<Root>\n" +
+                "  <Branch1 attr1='abc'/>\n" +
+                "  <Branch2 attr1='def'/>\n" +
+                "</Root>\n";
+        XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setIdAttributeNS(new QName("attr1"));
+        properties.setActions(Collections.singletonList(XMLSecurityConstants.ENCRYPT));
+        SecurePart securePart = new SecurePart(new QName("Branch1"), SecurePart.Modifier.Element);
+        securePart.setIdToSecure("def");
+        properties.addEncryptionPart(securePart);
+        byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes(StandardCharsets.US_ASCII);
+        SecretKey transportKey = new SecretKeySpec(bits192, "AES");
+        properties.setEncryptionKeyTransportAlgorithm("http://www.w3.org/2001/04/xmlenc#kw-aes192");
+        properties.setEncryptionTransportKey(transportKey);
+        properties.setEncryptionSymAlgorithm("http://www.w3.org/2001/04/xmlenc#aes128-cbc");
+        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        ByteArrayOutputStream encryptedOut = new ByteArrayOutputStream();
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(encryptedOut, StandardCharsets.UTF_8.name());
+        InputStream sourceDocument = new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8));
+        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
+        xmlStreamWriter.close();
+        byte[] encryptedData = encryptedOut.toByteArray();
+//        System.out.println(new String(encryptedOut.toByteArray(), StandardCharsets.UTF_8));
+        Document document = XMLUtils.read(new ByteArrayInputStream(encryptedData), false);
+        NodeList encryptedElements = document.getElementsByTagNameNS(
+                XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
+                XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
+        );
+        assertEquals(1, encryptedElements.getLength());
+        assertEquals(1, document.getElementsByTagName("Branch1").getLength());
+        assertEquals(0, document.getElementsByTagName("Branch2").getLength());
     }
 
     /**
