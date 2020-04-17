@@ -1177,14 +1177,9 @@ public class XMLCipher {
                 LOG.debug("Actual cipher.outputSize = "
                              + Integer.toString(encryptedBytes.length));
             }
-        } catch (IllegalStateException ise) {
-            throw new XMLEncryptionException(ise);
-        } catch (IllegalBlockSizeException ibse) {
-            throw new XMLEncryptionException(ibse);
-        } catch (BadPaddingException bpe) {
-            throw new XMLEncryptionException(bpe);
-        } catch (UnsupportedEncodingException uee) {
-            throw new XMLEncryptionException(uee);
+        } catch (IllegalStateException | IllegalBlockSizeException
+                | BadPaddingException | UnsupportedEncodingException e) {
+            throw new XMLEncryptionException(e);
         }
 
         // Get IV from Cipher Object. If this is null (see BouncyCastle issue BJA-473) then use
@@ -1404,11 +1399,7 @@ public class XMLCipher {
                 }
             }
             encryptedBytes = c.wrap(key);
-        } catch (InvalidKeyException ike) {
-            throw new XMLEncryptionException(ike);
-        } catch (IllegalBlockSizeException ibse) {
-            throw new XMLEncryptionException(ibse);
-        } catch (InvalidAlgorithmParameterException e) {
+        } catch (InvalidKeyException | IllegalBlockSizeException | InvalidAlgorithmParameterException e) {
             throw new XMLEncryptionException(e);
         }
 
@@ -1512,11 +1503,7 @@ public class XMLCipher {
                 c.init(Cipher.UNWRAP_MODE, key, oaepParameters);
             }
             ret = c.unwrap(encryptedBytes, jceKeyAlgorithm, Cipher.SECRET_KEY);
-        } catch (InvalidKeyException ike) {
-            throw new XMLEncryptionException(ike);
-        } catch (NoSuchAlgorithmException nsae) {
-            throw new XMLEncryptionException( nsae);
-        } catch (InvalidAlgorithmParameterException e) {
+        } catch (InvalidKeyException | NoSuchAlgorithmException | InvalidAlgorithmParameterException e) {
             throw new XMLEncryptionException(e);
         }
         LOG.debug("Decryption of key type {} OK", algorithm);
@@ -1580,10 +1567,8 @@ public class XMLCipher {
             // Check to see if an RSA OAEP MGF-1 with SHA-1 algorithm was requested
             // Some JDKs don't support RSA/ECB/OAEPPadding
             c = constructCipher(algorithm, digestAlgorithm, nsae);
-        } catch (NoSuchProviderException nspre) {
-            throw new XMLEncryptionException(nspre);
-        } catch (NoSuchPaddingException nspae) {
-            throw new XMLEncryptionException(nspae);
+        } catch (NoSuchProviderException | NoSuchPaddingException e) {
+            throw new XMLEncryptionException(e);
         }
 
         return c;
@@ -1791,12 +1776,8 @@ public class XMLCipher {
             } else {
                 c = Cipher.getInstance(jceAlgorithm, requestedJCEProvider);
             }
-        } catch (NoSuchAlgorithmException nsae) {
-            throw new XMLEncryptionException(nsae);
-        } catch (NoSuchProviderException nspre) {
-            throw new XMLEncryptionException(nspre);
-        } catch (NoSuchPaddingException nspae) {
-            throw new XMLEncryptionException(nspae);
+        } catch (NoSuchAlgorithmException | NoSuchProviderException | NoSuchPaddingException e) {
+            throw new XMLEncryptionException(e);
         }
 
         int ivLen = JCEMapper.getIVLengthFromURI(encMethodAlgorithm) / 8;
@@ -1817,18 +1798,14 @@ public class XMLCipher {
 
         try {
             c.init(cipherMode, key, paramSpec);
-        } catch (InvalidKeyException ike) {
-            throw new XMLEncryptionException(ike);
-        } catch (InvalidAlgorithmParameterException iape) {
-            throw new XMLEncryptionException(iape);
+        } catch (InvalidKeyException | InvalidAlgorithmParameterException e) {
+            throw new XMLEncryptionException(e);
         }
 
         try {
             return c.doFinal(encryptedBytes, ivLen, encryptedBytes.length - ivLen);
-        } catch (IllegalBlockSizeException ibse) {
-            throw new XMLEncryptionException(ibse);
-        } catch (BadPaddingException bpe) {
-            throw new XMLEncryptionException(bpe);
+        } catch (IllegalBlockSizeException | BadPaddingException e) {
+            throw new XMLEncryptionException(e);
         }
     }
 
@@ -2209,12 +2186,8 @@ public class XMLCipher {
                 LOG.debug("Creating a DSIG based Transforms element");
                 try {
                     result.setTransforms(new TransformsImpl(transformsElement));
-                } catch (XMLSignatureException xse) {
-                    throw new XMLEncryptionException(xse);
-                } catch (InvalidTransformException ite) {
-                    throw new XMLEncryptionException(ite);
-                } catch (XMLSecurityException xse) {
-                    throw new XMLEncryptionException(xse);
+                } catch (XMLSecurityException e) {
+                    throw new XMLEncryptionException(e);
                 }
             }
 
@@ -2554,7 +2527,7 @@ public class XMLCipher {
                     tmpAlgorithm = new URI(algorithm);
                 } catch (URISyntaxException ex) {
                     throw (IllegalArgumentException)
-                    new IllegalArgumentException().initCause(ex);
+                            new IllegalArgumentException().initCause(ex);
                 }
                 algorithmURI = tmpAlgorithm.toString();
             }
@@ -2970,7 +2943,7 @@ public class XMLCipher {
                         tmpType = new URI(type);
                     } catch (URISyntaxException ex) {
                         throw (IllegalArgumentException)
-                        new IllegalArgumentException().initCause(ex);
+                                new IllegalArgumentException().initCause(ex);
                     }
                     this.type = tmpType.toString();
                 }
@@ -3012,7 +2985,7 @@ public class XMLCipher {
                         tmpEncoding = new URI(encoding);
                     } catch (URISyntaxException ex) {
                         throw (IllegalArgumentException)
-                        new IllegalArgumentException().initCause(ex);
+                                new IllegalArgumentException().initCause(ex);
                     }
                     this.encoding = tmpEncoding.toString();
                 }
@@ -3093,7 +3066,7 @@ public class XMLCipher {
                     tmpAlgorithm = new URI(algorithm);
                 } catch (URISyntaxException ex) {
                     throw (IllegalArgumentException)
-                    new IllegalArgumentException().initCause(ex);
+                            new IllegalArgumentException().initCause(ex);
                 }
                 this.algorithm = tmpAlgorithm.toString();
                 encryptionMethodInformation = new LinkedList<>();
@@ -3300,7 +3273,7 @@ public class XMLCipher {
                         tmpTarget = new URI(target);
                     } catch (URISyntaxException ex) {
                         throw (IllegalArgumentException)
-                        new IllegalArgumentException().initCause(ex);
+                                new IllegalArgumentException().initCause(ex);
                     }
                     this.target = tmpTarget.toString();
                 }

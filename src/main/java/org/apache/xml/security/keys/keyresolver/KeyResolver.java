@@ -83,9 +83,9 @@ public class KeyResolver {
         for (KeyResolverSpi resolver : resolverList) {
             if (resolver == null) {
                 Object[] exArgs = {
-                                   element != null
-                                       && element.getNodeType() == Node.ELEMENT_NODE
-                                       ? element.getTagName() : "null"
+                        element != null
+                                && element.getNodeType() == Node.ELEMENT_NODE
+                                ? element.getTagName() : "null"
                 };
 
                 throw new KeyResolverException("utils.resolver.noClass", exArgs);
@@ -99,9 +99,9 @@ public class KeyResolver {
         }
 
         Object[] exArgs = {
-                           element != null && element.getNodeType() == Node.ELEMENT_NODE
-                           ? element.getTagName() : "null"
-                          };
+                element != null && element.getNodeType() == Node.ELEMENT_NODE
+                        ? element.getTagName() : "null"
+        };
 
         throw new KeyResolverException("utils.resolver.noClass", exArgs);
     }
@@ -123,9 +123,9 @@ public class KeyResolver {
         for (KeyResolverSpi resolver : resolverList) {
             if (resolver == null) {
                 Object[] exArgs = {
-                                   element != null
-                                       && element.getNodeType() == Node.ELEMENT_NODE
-                                       ? element.getTagName() : "null"
+                        element != null
+                                && element.getNodeType() == Node.ELEMENT_NODE
+                                ? element.getTagName() : "null"
                 };
 
                 throw new KeyResolverException("utils.resolver.noClass", exArgs);
@@ -139,9 +139,9 @@ public class KeyResolver {
         }
 
         Object[] exArgs = {
-                           element != null && element.getNodeType() == Node.ELEMENT_NODE
-                           ? element.getTagName() : "null"
-                          };
+                element != null && element.getNodeType() == Node.ELEMENT_NODE
+                        ? element.getTagName() : "null"
+        };
 
         throw new KeyResolverException("utils.resolver.noClass", exArgs);
     }
@@ -190,17 +190,13 @@ public class KeyResolver {
         try {
             keyResolverSpi = (KeyResolverSpi) ClassLoaderUtils.loadClass(className, KeyResolver.class).newInstance();
             register(keyResolverSpi, true);
-        } catch (ClassNotFoundException e) {
-            ex = e;
-        } catch (IllegalAccessException e) {
-            ex = e;
-        } catch (InstantiationException e) {
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
             ex = e;
         }
 
         if (ex != null) {
             throw (IllegalArgumentException) new
-            IllegalArgumentException("Invalid KeyResolver class name").initCause(ex);
+                    IllegalArgumentException("Invalid KeyResolver class name").initCause(ex);
         }
     }
 
