@@ -251,7 +251,7 @@ public class XMLSecurityStreamWriterTest {
         }
 
         @Override
-        public void processNextEvent(XMLSecEvent xmlSecEvent, OutputProcessorChain outputProcessorChain) throws XMLStreamException, XMLSecurityException {
+        public void processEvent(XMLSecEvent xmlSecEvent, OutputProcessorChain outputProcessorChain) throws XMLStreamException, XMLSecurityException {
             outputProcessorChain.reset();
             xmlEventWriter.add(xmlSecEvent);
         }
