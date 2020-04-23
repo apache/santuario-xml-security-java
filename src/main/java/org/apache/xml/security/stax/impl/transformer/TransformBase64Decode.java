@@ -116,7 +116,7 @@ public class TransformBase64Decode extends TransformIdentity {
                                         );
                                     XMLSecEvent xmlSecEvent;
                                     do {
-                                        xmlSecEvent = xmlEventReaderInputProcessor.processNextEvent(null);
+                                        xmlSecEvent = xmlEventReaderInputProcessor.processEvent(null);
                                         getTransformer().transform(xmlSecEvent);
                                     } while (xmlSecEvent.getEventType() != XMLStreamConstants.END_DOCUMENT);
                                 } catch (XMLSecurityException | IOException e) {

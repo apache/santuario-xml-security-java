@@ -73,7 +73,7 @@ public interface InputProcessor {
      * @throws XMLStreamException   thrown when a streaming error occurs
      * @throws XMLSecurityException thrown when a Security failure occurs
      */
-    XMLSecEvent processNextHeaderEvent(InputProcessorChain inputProcessorChain) throws XMLStreamException, XMLSecurityException;
+    XMLSecEvent processHeaderEvent(InputProcessorChain inputProcessorChain) throws XMLStreamException, XMLSecurityException;
 
     /**
      * Will be called from the framework when the next XMLEvent is requested
@@ -83,7 +83,7 @@ public interface InputProcessor {
      * @throws XMLStreamException   thrown when a streaming error occurs
      * @throws XMLSecurityException thrown when a Security failure occurs
      */
-    XMLSecEvent processNextEvent(InputProcessorChain inputProcessorChain) throws XMLStreamException, XMLSecurityException;
+    XMLSecEvent processEvent(InputProcessorChain inputProcessorChain) throws XMLStreamException, XMLSecurityException;
 
     /**
      * Will be called when the whole document is processed.

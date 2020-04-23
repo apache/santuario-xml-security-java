@@ -164,13 +164,13 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
     */
 
     @Override
-    public XMLSecEvent processNextHeaderEvent(InputProcessorChain inputProcessorChain)
+    public XMLSecEvent processHeaderEvent(InputProcessorChain inputProcessorChain)
             throws XMLStreamException, XMLSecurityException {
         return processEvent(inputProcessorChain, true);
     }
 
     @Override
-    public XMLSecEvent processNextEvent(InputProcessorChain inputProcessorChain)
+    public XMLSecEvent processEvent(InputProcessorChain inputProcessorChain)
             throws XMLStreamException, XMLSecurityException {
         return processEvent(inputProcessorChain, false);
     }
@@ -356,9 +356,9 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                 decryptedEventReaderInputProcessor.setXmlStreamReader(xmlStreamReader);
 
                 if (isSecurityHeaderEvent) {
-                    return decryptedEventReaderInputProcessor.processNextHeaderEvent(inputProcessorChain);
+                    return decryptedEventReaderInputProcessor.processHeaderEvent(inputProcessorChain);
                 } else {
-                    return decryptedEventReaderInputProcessor.processNextEvent(inputProcessorChain);
+                    return decryptedEventReaderInputProcessor.processEvent(inputProcessorChain);
                 }
             }
         }
@@ -661,20 +661,20 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
         }
 
         @Override
-        public XMLSecEvent processNextHeaderEvent(InputProcessorChain inputProcessorChain)
+        public XMLSecEvent processHeaderEvent(InputProcessorChain inputProcessorChain)
                 throws XMLStreamException, XMLSecurityException {
             return processEvent(inputProcessorChain, true);
         }
 
         @Override
-        public XMLSecEvent processNextEvent(InputProcessorChain inputProcessorChain)
+        public XMLSecEvent processEvent(InputProcessorChain inputProcessorChain)
                 throws XMLStreamException, XMLSecurityException {
             return processEvent(inputProcessorChain, false);
         }
 
         private XMLSecEvent processEvent(InputProcessorChain inputProcessorChain, boolean headerEvent)
                 throws XMLStreamException, XMLSecurityException {
-            //did a execption occur during decryption in the decryption thread?
+            //did an exception occur during decryption in the decryption thread?
             testAndThrowUncaughtException();
 
             XMLSecEvent xmlSecEvent = XMLSecEventFactory.allocate(xmlStreamReader, parentXmlSecStartElement);

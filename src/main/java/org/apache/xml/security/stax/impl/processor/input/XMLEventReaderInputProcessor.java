@@ -55,18 +55,18 @@ public class XMLEventReaderInputProcessor extends AbstractInputProcessor {
     }
 
     @Override
-    public XMLSecEvent processNextHeaderEvent(InputProcessorChain inputProcessorChain)
+    public XMLSecEvent processHeaderEvent(InputProcessorChain inputProcessorChain)
             throws XMLStreamException, XMLSecurityException {
-        return processNextEventInternal();
+        return processEventInternal();
     }
 
     @Override
-    public XMLSecEvent processNextEvent(InputProcessorChain inputProcessorChain)
+    public XMLSecEvent processEvent(InputProcessorChain inputProcessorChain)
             throws XMLStreamException, XMLSecurityException {
-        return processNextEventInternal();
+        return processEventInternal();
     }
 
-    private XMLSecEvent processNextEventInternal() throws XMLStreamException {
+    private XMLSecEvent processEventInternal() throws XMLStreamException {
         XMLSecEvent xmlSecEvent = XMLSecEventFactory.allocate(xmlStreamReader, parentXmlSecStartElement);
         if (XMLStreamConstants.START_ELEMENT == xmlSecEvent.getEventType()) {
             currentXMLStructureDepth++;

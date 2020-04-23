@@ -185,12 +185,12 @@ public class InputProcessorChainImpl implements InputProcessorChain {
 
     @Override
     public XMLSecEvent processHeaderEvent() throws XMLStreamException, XMLSecurityException {
-        return inputProcessors.get(this.curPos++).processNextHeaderEvent(this);
+        return inputProcessors.get(this.curPos++).processHeaderEvent(this);
     }
 
     @Override
     public XMLSecEvent processEvent() throws XMLStreamException, XMLSecurityException {
-        return inputProcessors.get(this.curPos++).processNextEvent(this);
+        return inputProcessors.get(this.curPos++).processEvent(this);
     }
 
     @Override

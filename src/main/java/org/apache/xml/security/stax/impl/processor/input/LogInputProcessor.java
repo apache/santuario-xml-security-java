@@ -43,13 +43,13 @@ public class LogInputProcessor extends AbstractInputProcessor {
     }
 
     @Override
-    public XMLSecEvent processNextHeaderEvent(InputProcessorChain inputProcessorChain)
+    public XMLSecEvent processHeaderEvent(InputProcessorChain inputProcessorChain)
             throws XMLStreamException, XMLSecurityException {
         return inputProcessorChain.processHeaderEvent();
     }
 
     @Override
-    public XMLSecEvent processNextEvent(InputProcessorChain inputProcessorChain)
+    public XMLSecEvent processEvent(InputProcessorChain inputProcessorChain)
             throws XMLStreamException, XMLSecurityException {
         XMLSecEvent xmlSecEvent = inputProcessorChain.processEvent();
         StringWriter stringWriter = new StringWriter();

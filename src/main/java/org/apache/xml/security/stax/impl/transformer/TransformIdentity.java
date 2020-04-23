@@ -203,7 +203,7 @@ public class TransformIdentity implements Transformer {
                             try {
                                 XMLSecEvent xmlSecEvent;
                                 do {
-                                    xmlSecEvent = xmlEventReaderInputProcessor.processNextEvent(null);
+                                    xmlSecEvent = xmlEventReaderInputProcessor.processEvent(null);
                                     getTransformer().transform(xmlSecEvent);
                                 } while (xmlSecEvent.getEventType() != XMLStreamConstants.END_DOCUMENT);
                             } catch (XMLSecurityException e) {

@@ -19,7 +19,6 @@
 package org.apache.xml.security.stax.ext;
 
 import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
 
 import javax.xml.stream.XMLStreamException;
@@ -80,12 +79,6 @@ public abstract class AbstractInputProcessor implements InputProcessor {
         }
         return this.afterProcessors;
     }
-
-    @Override
-    public abstract XMLSecEvent processNextHeaderEvent(InputProcessorChain inputProcessorChain) throws XMLStreamException, XMLSecurityException;
-
-    @Override
-    public abstract XMLSecEvent processNextEvent(InputProcessorChain inputProcessorChain) throws XMLStreamException, XMLSecurityException;
 
     @Override
     public void doFinal(InputProcessorChain inputProcessorChain) throws XMLStreamException, XMLSecurityException {

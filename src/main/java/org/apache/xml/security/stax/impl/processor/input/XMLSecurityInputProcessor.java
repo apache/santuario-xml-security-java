@@ -58,13 +58,13 @@ public class XMLSecurityInputProcessor extends AbstractInputProcessor {
     }
 
     @Override
-    public XMLSecEvent processNextHeaderEvent(InputProcessorChain inputProcessorChain)
+    public XMLSecEvent processHeaderEvent(InputProcessorChain inputProcessorChain)
             throws XMLStreamException, XMLSecurityException {
         return null;
     }
 
     @Override
-    public XMLSecEvent processNextEvent(InputProcessorChain inputProcessorChain)
+    public XMLSecEvent processEvent(InputProcessorChain inputProcessorChain)
             throws XMLStreamException, XMLSecurityException {
 
         //add the buffer processor (for signature) when this processor is called for the first time
@@ -102,13 +102,13 @@ public class XMLSecurityInputProcessor extends AbstractInputProcessor {
                 // temporary processor to return the EncryptedData element for the DecryptionProcessor
                 AbstractInputProcessor abstractInputProcessor = new AbstractInputProcessor(getSecurityProperties()) {
                     @Override
-                    public XMLSecEvent processNextHeaderEvent(InputProcessorChain inputProcessorChain)
+                    public XMLSecEvent processHeaderEvent(InputProcessorChain inputProcessorChain)
                         throws XMLStreamException, XMLSecurityException {
-                        return processNextEvent(inputProcessorChain);
+                        return processEvent(inputProcessorChain);
                     }
 
                     @Override
-                    public XMLSecEvent processNextEvent(InputProcessorChain inputProcessorChain)
+                    public XMLSecEvent processEvent(InputProcessorChain inputProcessorChain)
                         throws XMLStreamException, XMLSecurityException {
                         inputProcessorChain.removeProcessor(this);
                         return xmlSecStartElement;
@@ -194,13 +194,13 @@ public class XMLSecurityInputProcessor extends AbstractInputProcessor {
         }
 
         @Override
-        public XMLSecEvent processNextHeaderEvent(InputProcessorChain inputProcessorChain)
+        public XMLSecEvent processHeaderEvent(InputProcessorChain inputProcessorChain)
                 throws XMLStreamException, XMLSecurityException {
             return null;
         }
 
         @Override
-        public XMLSecEvent processNextEvent(InputProcessorChain inputProcessorChain)
+        public XMLSecEvent processEvent(InputProcessorChain inputProcessorChain)
                 throws XMLStreamException, XMLSecurityException {
             XMLSecEvent xmlSecEvent = inputProcessorChain.processEvent();
             xmlSecEventList.push(xmlSecEvent);
@@ -221,13 +221,13 @@ public class XMLSecurityInputProcessor extends AbstractInputProcessor {
         }
 
         @Override
-        public XMLSecEvent processNextHeaderEvent(InputProcessorChain inputProcessorChain)
+        public XMLSecEvent processHeaderEvent(InputProcessorChain inputProcessorChain)
                 throws XMLStreamException, XMLSecurityException {
             return null;
         }
 
         @Override
-        public XMLSecEvent processNextEvent(InputProcessorChain inputProcessorChain)
+        public XMLSecEvent processEvent(InputProcessorChain inputProcessorChain)
                 throws XMLStreamException, XMLSecurityException {
 
             if (!xmlSecEventList.isEmpty()) {

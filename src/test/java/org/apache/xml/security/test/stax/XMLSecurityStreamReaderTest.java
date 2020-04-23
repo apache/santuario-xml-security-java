@@ -406,12 +406,12 @@ public class XMLSecurityStreamReaderTest {
         }
 
         @Override
-        public XMLSecEvent processNextHeaderEvent(InputProcessorChain inputProcessorChain) throws XMLStreamException, XMLSecurityException {
+        public XMLSecEvent processHeaderEvent(InputProcessorChain inputProcessorChain) throws XMLStreamException, XMLSecurityException {
             return null;
         }
 
         @Override
-        public XMLSecEvent processNextEvent(InputProcessorChain inputProcessorChain) throws XMLStreamException, XMLSecurityException {
+        public XMLSecEvent processEvent(InputProcessorChain inputProcessorChain) throws XMLStreamException, XMLSecurityException {
             inputProcessorChain.reset();
             XMLSecEvent xmlSecEvent = XMLSecEventFactory.allocate(xmlStreamReader, null);
             if (xmlStreamReader.hasNext()) {
