@@ -515,7 +515,7 @@
         <bcprov.version>1.65</bcprov.version>
         <hamcrest.version>2.2</hamcrest.version>
         <xmlunit.version>2.6.3</xmlunit.version>
-        <commons.codec.version>1.13</commons.codec.version>
+        <commons.codec.version>1.14</commons.codec.version>
         <woodstox.core.version>5.2.1</woodstox.core.version>
         <jetty.version>9.4.24.v20191120</jetty.version>
         <xmlsec.jaxb.context.class />
