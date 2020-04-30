@@ -50,11 +50,7 @@ public abstract class SecurityTokenFactory {
                 Class<SecurityTokenFactory> securityTokenFactoryClass =
                         (Class<SecurityTokenFactory>) ClassLoaderUtils.loadClass(stf, callingClass);
                 instance = securityTokenFactoryClass.newInstance();
-            } catch (ClassNotFoundException e) {
-                throw new XMLSecurityException(e, "algorithm.ClassDoesNotExist", new Object[]{stf});
-            } catch (InstantiationException e) {
-                throw new XMLSecurityException(e, "algorithm.ClassDoesNotExist", new Object[]{stf});
-            } catch (IllegalAccessException e) {
+            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
                 throw new XMLSecurityException(e, "algorithm.ClassDoesNotExist", new Object[]{stf});
             }
         }

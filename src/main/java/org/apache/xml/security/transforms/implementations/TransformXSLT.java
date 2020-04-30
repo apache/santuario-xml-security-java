@@ -27,7 +27,6 @@ import java.io.OutputStream;
 import javax.xml.XMLConstants;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -160,11 +159,7 @@ public class TransformXSLT extends TransformSpi {
             output.setSecureValidation(secureValidation);
             output.setOutputStream(baos);
             return output;
-        } catch (XMLSecurityException ex) {
-            throw new TransformationException(ex);
-        } catch (TransformerConfigurationException ex) {
-            throw new TransformationException(ex);
-        } catch (TransformerException ex) {
+        } catch (XMLSecurityException | TransformerException ex) {
             throw new TransformationException(ex);
         }
     }

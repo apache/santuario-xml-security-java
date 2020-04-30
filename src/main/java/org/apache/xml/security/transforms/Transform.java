@@ -196,12 +196,7 @@ public final class Transform extends SignatureElementProxy {
                 ClassLoaderUtils.loadClass(implementingClass, Transform.class);
         try {
             transformSpiHash.put(algorithmURI, transformSpiClass.newInstance());
-        } catch (InstantiationException ex) {
-            Object[] exArgs = { algorithmURI };
-            throw new InvalidTransformException(
-                ex, "signature.Transform.UnknownTransform", exArgs
-            );
-        } catch (IllegalAccessException ex) {
+        } catch (InstantiationException | IllegalAccessException ex) {
             Object[] exArgs = { algorithmURI };
             throw new InvalidTransformException(
                 ex, "signature.Transform.UnknownTransform", exArgs
@@ -232,12 +227,7 @@ public final class Transform extends SignatureElementProxy {
         }
         try {
             transformSpiHash.put(algorithmURI, implementingClass.newInstance());
-        } catch (InstantiationException ex) {
-            Object[] exArgs = { algorithmURI };
-            throw new InvalidTransformException(
-                ex, "signature.Transform.UnknownTransform", exArgs
-            );
-        } catch (IllegalAccessException ex) {
+        } catch (InstantiationException | IllegalAccessException ex) {
             Object[] exArgs = { algorithmURI };
             throw new InvalidTransformException(
                 ex, "signature.Transform.UnknownTransform", exArgs

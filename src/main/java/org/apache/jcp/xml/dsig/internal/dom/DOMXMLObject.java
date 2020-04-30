@@ -162,7 +162,7 @@ public final class DOMXMLObject extends DOMStructure implements XMLObject {
         throws MarshalException {
         Document ownerDoc = DOMUtils.getOwnerDocument(parent);
 
-        Element objElem = objectElem != null ? objectElem : null;
+        Element objElem = objectElem;
         if (objElem == null) {
             objElem = DOMUtils.createElement(ownerDoc, "Object",
                                              XMLSignature.XMLNS, dsPrefix);

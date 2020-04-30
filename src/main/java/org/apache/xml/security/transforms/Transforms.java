@@ -268,11 +268,7 @@ public class Transforms extends SignatureElementProxy {
             }
 
             return xmlSignatureInput;
-        } catch (IOException ex) {
-            throw new TransformationException(ex);
-        } catch (CanonicalizationException ex) {
-            throw new TransformationException(ex);
-        } catch (InvalidCanonicalizerException ex) {
+        } catch (IOException | CanonicalizationException | InvalidCanonicalizerException ex) {
             throw new TransformationException(ex);
         }
     }

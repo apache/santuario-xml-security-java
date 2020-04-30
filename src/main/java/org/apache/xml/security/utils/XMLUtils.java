@@ -27,9 +27,9 @@ import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.Canonicalizer;
@@ -222,12 +222,7 @@ public final class XMLUtils {
 
             Canonicalizer.getInstance(
                 Canonicalizer.ALGO_ID_C14N_PHYSICAL).canonicalizeSubtree(contextNode, os);
-        } catch (IOException ex) {
-            LOG.debug(ex.getMessage(), ex);
-        }
-        catch (InvalidCanonicalizerException ex) {
-            LOG.debug(ex.getMessage(), ex);
-        } catch (CanonicalizationException ex) {
+        } catch (IOException | InvalidCanonicalizerException | CanonicalizationException ex) {
             LOG.debug(ex.getMessage(), ex);
         }
     }
@@ -249,10 +244,7 @@ public final class XMLUtils {
         try {
             Canonicalizer.getInstance(
                 Canonicalizer.ALGO_ID_C14N_WITH_COMMENTS).canonicalizeSubtree(contextNode, os);
-        } catch (InvalidCanonicalizerException ex) {
-            LOG.debug(ex.getMessage(), ex);
-            // throw new RuntimeException(ex.getMessage());
-        } catch (CanonicalizationException ex) {
+        } catch (InvalidCanonicalizerException | CanonicalizationException ex) {
             LOG.debug(ex.getMessage(), ex);
             // throw new RuntimeException(ex.getMessage());
         }
@@ -779,17 +771,8 @@ public final class XMLUtils {
      * @return nodes with the constrain
      */
     public static Set<Node> excludeNodeFromSet(Node signatureElement, Set<Node> inputSet) {
-        Set<Node> resultSet = new HashSet<>();
-        Iterator<Node> iterator = inputSet.iterator();
-
-        while (iterator.hasNext()) {
-            Node inputNode = iterator.next();
-
-            if (!XMLUtils.isDescendantOrSelf(signatureElement, inputNode)) {
-                resultSet.add(inputNode);
-            }
-        }
-        return resultSet;
+        return inputSet.stream().filter((inputNode) ->
+                !XMLUtils.isDescendantOrSelf(signatureElement, inputNode)).collect(Collectors.toSet());
     }
 
     /**

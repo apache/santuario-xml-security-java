@@ -87,7 +87,7 @@ public final class Utils {
             return null;
         }
         String id = uri.substring(1);
-        if (id != null && id.startsWith("xpointer(id(")) {
+        if (id.startsWith("xpointer(id(")) {
             int i1 = id.indexOf('\'');
             int i2 = id.indexOf('\'', i1+1);
             id = id.substring(i1+1, i2);
@@ -111,6 +111,6 @@ public final class Utils {
 
     private static boolean getBoolean(XMLCryptoContext xc, String name) {
         Boolean value = (Boolean)xc.getProperty(name);
-        return value != null && value.booleanValue();
+        return value != null && value;
     }
 }

@@ -19,6 +19,7 @@
 package org.apache.xml.security.algorithms;
 
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 
 import org.apache.xml.security.signature.XMLSignatureException;
@@ -114,11 +115,7 @@ public final class MessageDigestAlgorithm extends Algorithm {
             } else {
                 md = MessageDigest.getInstance(algorithmID, provider);
             }
-        } catch (java.security.NoSuchAlgorithmException ex) {
-            Object[] exArgs = { algorithmID, ex.getLocalizedMessage() };
-
-            throw new XMLSignatureException("algorithms.NoSuchAlgorithm", exArgs);
-        } catch (NoSuchProviderException ex) {
+        } catch (NoSuchAlgorithmException | NoSuchProviderException ex) {
             Object[] exArgs = { algorithmID, ex.getLocalizedMessage() };
 
             throw new XMLSignatureException("algorithms.NoSuchAlgorithm", exArgs);

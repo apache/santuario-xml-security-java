@@ -233,15 +233,8 @@ public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHand
                                     || encryptedKeyType.getCipherData().getCipherValue().getContent().isEmpty()) {
                                 throw new XMLSecurityException("stax.encryption.noCipherValue");
                             }
-                        } catch (NoSuchPaddingException e) {
-                            throw new XMLSecurityException(e);
-                        } catch (NoSuchAlgorithmException e) {
-                            throw new XMLSecurityException(e);
-                        } catch (InvalidAlgorithmParameterException e) {
-                            throw new XMLSecurityException(e);
-                        } catch (InvalidKeyException e) {
-                            throw new XMLSecurityException(e);
-                        } catch (NoSuchProviderException e) {
+                        } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidAlgorithmParameterException
+                                | InvalidKeyException | NoSuchProviderException e) {
                             throw new XMLSecurityException(e);
                         }
 
