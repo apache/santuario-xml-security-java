@@ -31,6 +31,7 @@ import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.keys.keyresolver.KeyResolver;
 import org.apache.xml.security.transforms.Transform;
+import org.apache.xml.security.utils.ClassLoaderUtils;
 import org.apache.xml.security.utils.ElementProxy;
 import org.apache.xml.security.utils.I18n;
 import org.apache.xml.security.utils.XMLUtils;
@@ -84,7 +85,7 @@ public class Init {
                         if (cfile == null) {
                             return null;
                         }
-                        return Init.class.getResourceAsStream(cfile);
+                        return ClassLoaderUtils.getResourceAsStream(cfile, Init.class);
                     }
                 );
         if (is == null) {
