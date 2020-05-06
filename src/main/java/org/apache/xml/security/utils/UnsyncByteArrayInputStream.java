@@ -56,9 +56,7 @@ public class UnsyncByteArrayInputStream extends InputStream {
      *            the byte array to stream over.
      */
     public UnsyncByteArrayInputStream(byte[] buf) {
-        this.mark = 0;
-        this.buf = buf;
-        this.count = buf.length;
+        this(buf, 0, buf.length);
     }
 
     /**

@@ -93,7 +93,7 @@ public class TransformXPath extends TransformSpi {
             String str = XMLUtils.getStrFromNode(xpathnode);
             input.setNeedsToBeExpanded(needsCircumvent(str));
 
-            XPathFactory xpathFactory = XPathFactory.newInstance();
+            XPathFactory xpathFactory = getXPathFactory();
             XPathAPI xpathAPIInstance = xpathFactory.newXPathAPI();
             input.addNodeFilter(new XPathNodeFilter(xpathElement, xpathnode, str, xpathAPIInstance));
             input.setNodeSet(true);
@@ -101,6 +101,10 @@ public class TransformXPath extends TransformSpi {
         } catch (DOMException ex) {
             throw new TransformationException(ex);
         }
+    }
+
+    protected XPathFactory getXPathFactory() {
+        return XPathFactory.newInstance();
     }
 
     /**

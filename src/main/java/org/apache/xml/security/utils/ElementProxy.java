@@ -206,7 +206,7 @@ public abstract class ElementProxy {
     }
 
     protected Text createText(String text) {
-        return this.wrappedDoc.createTextNode(text);
+        return getDocument().createTextNode(text);
     }
 
     /**
@@ -286,15 +286,7 @@ public abstract class ElementProxy {
      */
     public void addBase64Element(byte[] bytes, String localname) {
         if (bytes != null) {
-            Element el = XMLUtils.createElementInSignatureSpace(getDocument(), localname);
-            Text text = getDocument().createTextNode(XMLUtils.encodeToString(bytes));
-
-            el.appendChild(text);
-
-            appendSelf(el);
-            if (!XMLUtils.ignoreLineBreaks()) {
-                appendSelf(createText("\n"));
-            }
+            addTextElement(XMLUtils.encodeToString(bytes), localname);
         }
     }
 

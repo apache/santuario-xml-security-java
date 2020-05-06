@@ -42,7 +42,7 @@ import org.w3c.dom.NodeList;
  * An implementation of XPathAPI using Xalan. This supports the "here()" function defined in the digital
  * signature spec.
  */
-public class XalanXPathAPI implements XPathAPI {
+class XalanXPathAPI implements XPathAPI {
 
     private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(XalanXPathAPI.class);

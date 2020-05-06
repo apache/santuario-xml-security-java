@@ -29,9 +29,7 @@ import java.security.spec.AlgorithmParameterSpec;
 import javax.crypto.SecretKey;
 
 import org.apache.xml.security.algorithms.SignatureAlgorithm;
-import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.Canonicalizer;
-import org.apache.xml.security.c14n.InvalidCanonicalizerException;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.keys.content.X509Data;
@@ -793,13 +791,7 @@ public final class XMLSignature extends SignatureElementProxy {
             this.setSignatureValueElement(sa.sign());
         } catch (XMLSignatureException ex) {
             throw ex;
-        } catch (CanonicalizationException ex) {
-            throw new XMLSignatureException(ex);
-        } catch (InvalidCanonicalizerException ex) {
-            throw new XMLSignatureException(ex);
-        } catch (XMLSecurityException ex) {
-            throw new XMLSignatureException(ex);
-        } catch (IOException ex) {
+        } catch (XMLSecurityException | IOException ex) {
             throw new XMLSignatureException(ex);
         }
     }

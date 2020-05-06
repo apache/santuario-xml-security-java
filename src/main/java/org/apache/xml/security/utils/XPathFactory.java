@@ -45,11 +45,8 @@ public abstract class XPathFactory {
      * Get a new XPathFactory instance
      */
     public static XPathFactory newInstance() {
-        if (!xalanInstalled) {
-            return new JDKXPathFactory();
-        }
         // Xalan is available
-        if (XalanXPathAPI.isInstalled()) {
+        if (xalanInstalled && XalanXPathAPI.isInstalled()) {
             return new XalanXPathFactory();
         }
         // Some problem was encountered in fixing up the Xalan FunctionTable so fall back to the
