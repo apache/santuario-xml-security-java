@@ -55,6 +55,8 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -396,7 +398,7 @@ public class CreateSignatureTest {
 
         XMLUtils.outputDOMc14nWithComments(doc, bos);
         String signedContent = new String(bos.toByteArray());
-        doVerify(signedContent);
+        doVerify(signedContent, 1);
     }
 
     @org.junit.jupiter.api.Test
@@ -598,6 +600,10 @@ public class CreateSignatureTest {
     }
 
     private void doVerify(String signedXML) throws Exception {
+        doVerify(signedXML, 0);
+    }
+
+    private void doVerify(String signedXML, int expectedObjectCount) throws Exception {
         Document doc = null;
         try (InputStream is = new ByteArrayInputStream(signedXML.getBytes())) {
             doc = XMLUtils.read(is, false);
@@ -623,6 +629,13 @@ public class CreateSignatureTest {
             throw new RuntimeException("No public key");
         }
         assertTrue(signature.checkSignatureValue(pk));
+
+        assertEquals(expectedObjectCount, signature.getObjectLength());
+        if (expectedObjectCount > 0) {
+            for (int i = 0; i < expectedObjectCount; i++) {
+                assertNotNull(signature.getObjectItem(i));
+            }
+        }
     }
 
 }

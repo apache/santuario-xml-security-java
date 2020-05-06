@@ -26,10 +26,12 @@ import java.io.InputStream;
 
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.InvalidCanonicalizerException;
+import org.apache.xml.security.signature.XMLSignatureException;
 import org.apache.xml.security.signature.XMLSignatureInput;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -138,6 +140,28 @@ public class XMLSignatureInputTest {
             XMLSignatureInput input = new XMLSignatureInput(inputStream);
 
             assertFalse(input.isNodeSet(), "Input is not node set");
+        }
+    }
+
+    @org.junit.jupiter.api.Test
+    public void testToString() throws IOException {
+        try (InputStream inputStream =
+                     new ByteArrayInputStream(_octetStreamTextInput.getBytes())) {
+            XMLSignatureInput input = new XMLSignatureInput(inputStream);
+
+            assertTrue(input.isInitialized(), "Input is initialized");
+            assertTrue(input.toString().startsWith("XMLSignatureInput"));
+        }
+    }
+
+    @org.junit.jupiter.api.Test
+    public void testHTMLRepresentation() throws IOException, XMLSignatureException {
+        try (InputStream inputStream =
+                     new ByteArrayInputStream(_octetStreamTextInput.getBytes())) {
+            XMLSignatureInput input = new XMLSignatureInput(inputStream);
+
+            assertTrue(input.isInitialized(), "Input is initialized");
+            assertNotNull(input.getHTMLRepresentation());
         }
     }
 

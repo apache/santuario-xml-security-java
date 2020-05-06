@@ -638,7 +638,7 @@ public final class XMLUtils {
         while (sibling != null) {
             if (Constants.SignatureSpecNS.equals(sibling.getNamespaceURI())
                 && sibling.getLocalName().equals(nodeName)) {
-                if (number == 0){
+                if (number == 0) {
                     return (Element)sibling;
                 }
                 number--;
@@ -658,7 +658,7 @@ public final class XMLUtils {
         while (sibling != null) {
             if (Constants.SignatureSpec11NS.equals(sibling.getNamespaceURI())
                 && sibling.getLocalName().equals(nodeName)) {
-                if (number == 0){
+                if (number == 0) {
                     return (Element)sibling;
                 }
                 number--;

@@ -52,7 +52,7 @@ public class XMLSignatureInputDebugger {
         "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n"
         + "<html>\n"
         + "<head>\n"
-        + "<title>Caninical XML node set</title>\n"
+        + "<title>Canonical XML node set</title>\n"
         + "<style type=\"text/css\">\n"
         + "<!-- \n"
         + ".INCLUDED { \n"
