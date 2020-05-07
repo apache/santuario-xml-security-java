@@ -50,9 +50,6 @@ public class XMLCipherInput {
     /** The data we are working with */
     private CipherData cipherData;
 
-    /** MODES */
-    private int mode;
-
     private boolean secureValidation;
 
     /**
@@ -63,7 +60,6 @@ public class XMLCipherInput {
      */
     public XMLCipherInput(CipherData data) throws XMLEncryptionException {
         cipherData = data;
-        mode = XMLCipher.DECRYPT_MODE;
         if (cipherData == null) {
             throw new XMLEncryptionException("CipherData is null");
         }
@@ -77,11 +73,7 @@ public class XMLCipherInput {
      * @throws XMLEncryptionException {@link XMLEncryptionException}
      */
     public XMLCipherInput(EncryptedType input) throws XMLEncryptionException {
-        cipherData = input == null ? null : input.getCipherData();
-        mode = XMLCipher.DECRYPT_MODE;
-        if (cipherData == null) {
-            throw new XMLEncryptionException("CipherData is null");
-        }
+        this(input == null ? null : input.getCipherData());
     }
 
     /**
@@ -98,10 +90,7 @@ public class XMLCipherInput {
      * @return The decripted bytes.
      */
     public byte[] getBytes() throws XMLEncryptionException {  //NOPMD
-        if (mode == XMLCipher.DECRYPT_MODE) {
-            return getDecryptBytes();
-        }
-        return null;
+        return getDecryptBytes();
     }
 
     /**
@@ -153,9 +142,7 @@ public class XMLCipherInput {
 
             try {
                 return input.getBytes();
-            } catch (IOException ex) {
-                throw new XMLEncryptionException(ex);
-            } catch (CanonicalizationException ex) {
+            } catch (IOException | CanonicalizationException ex) {
                 throw new XMLEncryptionException(ex);
             }
 

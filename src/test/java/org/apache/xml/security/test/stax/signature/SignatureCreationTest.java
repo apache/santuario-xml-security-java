@@ -20,6 +20,7 @@ package org.apache.xml.security.test.stax.signature;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
@@ -732,6 +733,69 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
             document = XMLUtils.read(is, false);
+        }
+
+        // Verify using DOM
+        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+    }
+
+    @Test
+    public void testDSASignatureCreation() throws Exception {
+        // Set up the Configuration
+        XMLSecurityProperties properties = new XMLSecurityProperties();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        actions.add(XMLSecurityConstants.SIGNATURE);
+        properties.setActions(actions);
+
+        // Set the key up
+        KeyStore keyStore = KeyStore.getInstance("jks");
+        FileInputStream fis = null;
+        if (BASEDIR != null && !"".equals(BASEDIR)) {
+            fis =
+                    new FileInputStream(BASEDIR + System.getProperty("file.separator")
+                            + "src/test/resources/org/apache/xml/security/samples/input/keystore.jks"
+                    );
+        } else {
+            fis =
+                    new FileInputStream("src/test/resources/org/apache/xml/security/samples/input/keystore.jks");
+        }
+        keyStore.load(fis, "xmlsecurity".toCharArray());
+        Key key = keyStore.getKey("test", "xmlsecurity".toCharArray());
+        properties.setSignatureKey(key);
+        X509Certificate cert = (X509Certificate)keyStore.getCertificate("test");
+        properties.setSignatureCerts(new X509Certificate[]{cert});
+
+        SecurePart securePart =
+                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Content);
+        properties.addSignaturePart(securePart);
+
+        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+
+        InputStream sourceDocument =
+                this.getClass().getClassLoader().getResourceAsStream(
+                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
+        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+
+        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
+        xmlStreamWriter.close();
+
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
+        Document document = null;
+        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+            document = XMLUtils.read(is, false);
+        }
+
+        //first child element must be the dsig:Signature @see SANTUARIO-324:
+        Node childNode = document.getDocumentElement().getFirstChild();
+        while (childNode != null) {
+            if (childNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element element = (Element)childNode;
+                assertEquals(element.getLocalName(), "Signature");
+                break;
+            }
+            childNode = childNode.getNextSibling();
         }
 
         // Verify using DOM

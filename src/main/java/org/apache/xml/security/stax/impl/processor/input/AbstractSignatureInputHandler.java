@@ -64,10 +64,13 @@ import java.security.NoSuchProviderException;
 import java.security.spec.MGF1ParameterSpec;
 import java.security.spec.PSSParameterSpec;
 import java.util.ArrayDeque;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import static org.apache.xml.security.algorithms.implementations.SignatureBaseRSA.SignatureRSASSAPSS.DigestAlgorithm.SHA256;
 import static org.apache.xml.security.algorithms.implementations.SignatureBaseRSA.SignatureRSASSAPSS.DigestAlgorithm.fromXmlDigestAlgorithm;
@@ -77,6 +80,18 @@ import static org.apache.xml.security.algorithms.implementations.SignatureBaseRS
 public abstract class AbstractSignatureInputHandler extends AbstractInputSecurityHeaderHandler {
 
     private static final transient Logger LOG = LoggerFactory.getLogger(AbstractSignatureInputHandler.class);
+    private static final Set<String> C14N_ALGORITHMS;
+
+    static {
+        Set<String> algorithms = new HashSet<>();
+        algorithms.add(XMLSecurityConstants.NS_C14N_OMIT_COMMENTS);
+        algorithms.add(XMLSecurityConstants.NS_C14N_WITH_COMMENTS);
+        algorithms.add(XMLSecurityConstants.NS_C14N_EXCL_OMIT_COMMENTS);
+        algorithms.add(XMLSecurityConstants.NS_C14N_EXCL_WITH_COMMENTS);
+        algorithms.add(XMLSecurityConstants.NS_C14N11_OMIT_COMMENTS);
+        algorithms.add(XMLSecurityConstants.NS_C14N11_WITH_COMMENTS);
+        C14N_ALGORITHMS = Collections.unmodifiableSet(algorithms);
+    }
 
     @Override
     public void handle(final InputProcessorChain inputProcessorChain, final XMLSecurityProperties securityProperties,
@@ -114,12 +129,7 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
         Iterator<XMLSecEvent> iterator;
 
         String c14NMethod = signatureType.getSignedInfo().getCanonicalizationMethod().getAlgorithm();
-        if (XMLSecurityConstants.NS_C14N_OMIT_COMMENTS.equals(c14NMethod) ||
-                XMLSecurityConstants.NS_C14N_WITH_COMMENTS.equals(c14NMethod) ||
-                XMLSecurityConstants.NS_C14N_EXCL_OMIT_COMMENTS.equals(c14NMethod) ||
-                XMLSecurityConstants.NS_C14N_EXCL_WITH_COMMENTS.equals(c14NMethod) ||
-                XMLSecurityConstants.NS_C14N11_OMIT_COMMENTS.equals(c14NMethod) ||
-                XMLSecurityConstants.NS_C14N11_WITH_COMMENTS.equals(c14NMethod)) {
+        if (c14NMethod != null && C14N_ALGORITHMS.contains(c14NMethod)) {
 
             iterator = eventDeque.descendingIterator();
             //forward to <Signature> Element
@@ -348,9 +358,7 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
                         transformerProperties,
                         canonicalizationMethodType.getAlgorithm(),
                         XMLSecurityConstants.DIRECTION.IN);
-            } catch (NoSuchAlgorithmException e) {
-                throw new XMLSecurityException(e);
-            } catch (NoSuchProviderException e) {
+            } catch (NoSuchAlgorithmException | NoSuchProviderException e) {
                 throw new XMLSecurityException(e);
             }
 
@@ -397,9 +405,7 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
             try {
                 transformer.doFinal();
                 bufferedSignerOutputStream.close();
-            } catch (IOException e) {
-                throw new XMLSecurityException(e);
-            } catch (XMLStreamException e) {
+            } catch (IOException | XMLStreamException e) {
                 throw new XMLSecurityException(e);
             }
             if (!signerOutputStream.verify(signatureType.getSignatureValue().getValue())) {

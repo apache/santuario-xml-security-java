@@ -146,26 +146,10 @@ public class XMLSecurityUtils {
             } else {
                 childTransformer.setTransformer(transformer);
             }
-        } catch (InstantiationException e) {
-            throw new XMLSecurityException(e);
-        } catch (IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             throw new XMLSecurityException(e);
         }
         return childTransformer;
-    }
-
-    @SuppressWarnings("unchecked")
-    public static <T> T getType(List<Object> objects, Class<T> clazz) {
-        for (int i = 0; i < objects.size(); i++) {
-            Object o = objects.get(i);
-            if (o instanceof JAXBElement) {
-                o = ((JAXBElement<?>) o).getValue();
-            }
-            if (clazz.isAssignableFrom(o.getClass())) {
-                return (T) o;
-            }
-        }
-        return null;
     }
 
     @SuppressWarnings("unchecked")

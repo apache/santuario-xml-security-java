@@ -24,7 +24,6 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
@@ -335,8 +334,6 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                 try {
                     prologInputStream = writeWrapperStartElement(xmlSecStartElement);
                     epilogInputStream = writeWrapperEndElement();
-                } catch (UnsupportedEncodingException e) {
-                    throw new XMLSecurityException(e);
                 } catch (IOException e) {
                     throw new XMLSecurityException(e);
                 }
@@ -452,11 +449,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                 symCipher = Cipher.getInstance(jceName);
             }
             //we have to defer the initialization of the cipher until we can extract the IV...
-        } catch (NoSuchAlgorithmException e) {
-            throw new XMLSecurityException(e);
-        } catch (NoSuchPaddingException e) {
-            throw new XMLSecurityException(e);
-        } catch (NoSuchProviderException e) {
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException | NoSuchProviderException e) {
             throw new XMLSecurityException(e);
         }
         return symCipher;
@@ -843,9 +836,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                             byte[] bytes = cipher.doFinal();
                             outputStream.write(bytes);
                             outputStream.close();
-                        } catch (IllegalBlockSizeException e) {
-                            throw new IOException(e);
-                        } catch (BadPaddingException e) {
+                        } catch (IllegalBlockSizeException | BadPaddingException e) {
                             throw new IOException(e);
                         }
                     }

@@ -156,6 +156,7 @@ public class XMLCipherTest {
 
             cipher = XMLCipher.getInstance(XMLCipher.AES_192_KeyWrap);
             cipher.init(XMLCipher.WRAP_MODE, kek);
+            cipher.setSecureValidation(true);
             EncryptedKey encryptedKey = cipher.encryptKey(d, key);
 
             // encrypt
@@ -179,6 +180,7 @@ public class XMLCipherTest {
             cipher = XMLCipher.getInstance(XMLCipher.AES_128);
             cipher.init(XMLCipher.DECRYPT_MODE, null);
             cipher.setKEK(kek);
+            cipher.setSecureValidation(true);
             dd = cipher.doFinal(ed, ee);
 
             target = toString(dd);
@@ -224,6 +226,7 @@ public class XMLCipherTest {
 
             cipher = XMLCipher.getInstance(XMLCipher.RSA_v1dot5);
             cipher.init(XMLCipher.WRAP_MODE, pub);
+            cipher.setSecureValidation(true);
             EncryptedKey encryptedKey = cipher.encryptKey(d, key);
 
             // encrypt
@@ -250,6 +253,7 @@ public class XMLCipherTest {
             cipher = XMLCipher.getInstance(XMLCipher.AES_256);
             cipher.init(XMLCipher.DECRYPT_MODE, null);
             cipher.setKEK(priv);
+            cipher.setSecureValidation(true);
             dd = cipher.doFinal(ed, ee);
 
             target = toString(dd);

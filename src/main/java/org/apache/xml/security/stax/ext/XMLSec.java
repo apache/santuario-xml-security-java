@@ -64,14 +64,10 @@ public class XMLSec {
 
                 Schema schema = XMLSecurityUtils.loadXMLSecuritySchemas();
                 XMLSecurityConstants.setJaxbSchemas(schema);
-            } catch (JAXBException e) {
-                throw new RuntimeException(e);
-            } catch (SAXException e) {
+            } catch (JAXBException | SAXException e) {
                 throw new RuntimeException(e);
             }
-        } catch (XMLSecurityException e) {
-            throw new RuntimeException(e.getMessage(), e);
-        } catch (URISyntaxException e) {
+        } catch (XMLSecurityException | URISyntaxException e) {
             throw new RuntimeException(e.getMessage(), e);
         }
     }

@@ -34,12 +34,15 @@ import java.security.SecureRandom;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.MGF1ParameterSpec;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -241,6 +244,8 @@ public class XMLCipher {
         CAMELLIA_128_KeyWrap + "\n" + CAMELLIA_192_KeyWrap + "\n" + CAMELLIA_256_KeyWrap + "\n" +
         SEED_128_KeyWrap + "\n";
 
+    private static final Set<String> SUPPORTED_ALGORITHMS;
+
     private static final boolean HAVE_FUNCTIONAL_IDENTITY_TRANSFORMER = haveFunctionalIdentityTransformer();
 
     /** Cipher created during initialisation that is used for encryption */
@@ -285,6 +290,33 @@ public class XMLCipher {
 
     /** List of internal KeyResolvers for DECRYPT and UNWRAP modes. */
     private List<KeyResolverSpi> internalKeyResolvers;
+
+    static {
+        Set<String> encryptionAlgorithms = new HashSet<>();
+        encryptionAlgorithms.add(TRIPLEDES);
+        encryptionAlgorithms.add(AES_128);
+        encryptionAlgorithms.add(AES_256);
+        encryptionAlgorithms.add(AES_192);
+        encryptionAlgorithms.add(AES_128_GCM);
+        encryptionAlgorithms.add(AES_192_GCM);
+        encryptionAlgorithms.add(AES_256_GCM);
+        encryptionAlgorithms.add(SEED_128);
+        encryptionAlgorithms.add(CAMELLIA_128);
+        encryptionAlgorithms.add(CAMELLIA_192);
+        encryptionAlgorithms.add(CAMELLIA_256);
+        encryptionAlgorithms.add(RSA_v1dot5);
+        encryptionAlgorithms.add(RSA_OAEP);
+        encryptionAlgorithms.add(RSA_OAEP_11);
+        encryptionAlgorithms.add(TRIPLEDES_KeyWrap);
+        encryptionAlgorithms.add(AES_128_KeyWrap);
+        encryptionAlgorithms.add(AES_256_KeyWrap);
+        encryptionAlgorithms.add(AES_192_KeyWrap);
+        encryptionAlgorithms.add(CAMELLIA_128_KeyWrap);
+        encryptionAlgorithms.add(CAMELLIA_192_KeyWrap);
+        encryptionAlgorithms.add(CAMELLIA_256_KeyWrap);
+        encryptionAlgorithms.add(SEED_128_KeyWrap);
+        SUPPORTED_ALGORITHMS = Collections.unmodifiableSet(encryptionAlgorithms);
+    }
 
     /**
      * Creates a new <code>XMLCipher</code>.
@@ -344,29 +376,7 @@ public class XMLCipher {
      * @since 1.0.
      */
     private static boolean isValidEncryptionAlgorithm(String algorithm) {
-        return
-            algorithm.equals(TRIPLEDES) ||
-            algorithm.equals(AES_128) ||
-            algorithm.equals(AES_256) ||
-            algorithm.equals(AES_192) ||
-            algorithm.equals(AES_128_GCM) ||
-            algorithm.equals(AES_192_GCM) ||
-            algorithm.equals(AES_256_GCM) ||
-            algorithm.equals(SEED_128) ||
-            algorithm.equals(CAMELLIA_128) ||
-            algorithm.equals(CAMELLIA_192) ||
-            algorithm.equals(CAMELLIA_256) ||
-            algorithm.equals(RSA_v1dot5) ||
-            algorithm.equals(RSA_OAEP) ||
-            algorithm.equals(RSA_OAEP_11) ||
-            algorithm.equals(TRIPLEDES_KeyWrap) ||
-            algorithm.equals(AES_128_KeyWrap) ||
-            algorithm.equals(AES_256_KeyWrap) ||
-            algorithm.equals(AES_192_KeyWrap) ||
-            algorithm.equals(CAMELLIA_128_KeyWrap) ||
-            algorithm.equals(CAMELLIA_192_KeyWrap) ||
-            algorithm.equals(CAMELLIA_256_KeyWrap) ||
-            algorithm.equals(SEED_128_KeyWrap);
+        return SUPPORTED_ALGORITHMS.contains(algorithm);
     }
 
     /**
@@ -903,32 +913,10 @@ public class XMLCipher {
      */
     public Document doFinal(Document context, Document source) throws /* XMLEncryption */Exception {
         LOG.debug("Processing source document...");
-        if (null == context) {
-            throw new XMLEncryptionException("empty", "Context document unexpectedly null...");
-        }
         if (null == source) {
             throw new XMLEncryptionException("empty", "Source document unexpectedly null...");
         }
-
-        contextDocument = context;
-
-        Document result = null;
-
-        switch (cipherMode) {
-        case DECRYPT_MODE:
-            result = decryptElement(source.getDocumentElement());
-            break;
-        case ENCRYPT_MODE:
-            result = encryptElement(source.getDocumentElement());
-            break;
-        case UNWRAP_MODE:
-        case WRAP_MODE:
-            break;
-        default:
-            throw new XMLEncryptionException(new IllegalStateException());
-        }
-
-        return result;
+        return doFinal(context, source.getDocumentElement());
     }
 
     /**

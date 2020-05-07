@@ -144,9 +144,9 @@ public class InboundXMLSec {
         inputProcessorChain.addProcessor(new XMLSecurityInputProcessor(securityProperties));
 
         if (LOG.isTraceEnabled()) {
-            LogInputProcessor LOGInputProcessor = new LogInputProcessor(securityProperties);
-            LOGInputProcessor.addAfterProcessor(XMLSecurityInputProcessor.class.getName());
-            inputProcessorChain.addProcessor(LOGInputProcessor);
+            LogInputProcessor logInputProcessor = new LogInputProcessor(securityProperties);
+            logInputProcessor.addAfterProcessor(XMLSecurityInputProcessor.class.getName());
+            inputProcessorChain.addProcessor(logInputProcessor);
         }
 
         return new XMLSecurityStreamReader(inputProcessorChain, securityProperties);
