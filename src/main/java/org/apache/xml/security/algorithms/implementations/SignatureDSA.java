@@ -125,9 +125,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
             byte[] jcebytes = JavaUtils.convertDsaXMLDSIGtoASN1(signature, size / 8);
 
             return this.signatureAlgorithm.verify(jcebytes);
-        } catch (SignatureException ex) {
-            throw new XMLSignatureException(ex);
-        } catch (IOException ex) {
+        } catch (SignatureException | IOException ex) {
             throw new XMLSignatureException(ex);
         }
     }
@@ -163,9 +161,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
             byte[] jcebytes = this.signatureAlgorithm.sign();
 
             return JavaUtils.convertDsaASN1toXMLDSIG(jcebytes, size / 8);
-        } catch (IOException ex) {
-            throw new XMLSignatureException(ex);
-        } catch (SignatureException ex) {
+        } catch (IOException | SignatureException ex) {
             throw new XMLSignatureException(ex);
         }
     }

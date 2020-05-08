@@ -138,9 +138,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
             }
 
             return this.signatureAlgorithm.verify(jcebytes);
-        } catch (SignatureException ex) {
-            throw new XMLSignatureException(ex);
-        } catch (IOException ex) {
+        } catch (SignatureException | IOException ex) {
             throw new XMLSignatureException(ex);
         }
     }
@@ -172,9 +170,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
             byte[] jcebytes = this.signatureAlgorithm.sign();
 
             return SignatureECDSA.convertASN1toXMLDSIG(jcebytes);
-        } catch (SignatureException ex) {
-            throw new XMLSignatureException(ex);
-        } catch (IOException ex) {
+        } catch (SignatureException | IOException ex) {
             throw new XMLSignatureException(ex);
         }
     }

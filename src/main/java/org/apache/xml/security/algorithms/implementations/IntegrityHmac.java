@@ -197,9 +197,7 @@ public abstract class IntegrityHmac extends SignatureAlgorithmSpi {
             } else {
                 this.macAlgorithm.init(secretKey, algorithmParameterSpec);
             }
-        } catch (InvalidKeyException ex) {
-            throw new XMLSignatureException(ex);
-        } catch (InvalidAlgorithmParameterException ex) {
+        } catch (InvalidKeyException | InvalidAlgorithmParameterException ex) {
             throw new XMLSignatureException(ex);
         }
     }

@@ -19,7 +19,9 @@
 package org.apache.xml.security.test.dom.algorithms;
 
 import java.lang.reflect.Field;
+import java.security.KeyPair;
 import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.Provider;
 import java.security.spec.AlgorithmParameterSpec;
@@ -28,14 +30,19 @@ import java.security.spec.PSSParameterSpec;
 import java.util.Arrays;
 import java.util.Map;
 
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+
 import org.apache.xml.security.algorithms.SignatureAlgorithm;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
+import org.apache.xml.security.signature.XMLSignatureException;
 import org.apache.xml.security.test.dom.TestUtils;
 import org.w3c.dom.Document;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class SignatureAlgorithmTest {
 
@@ -46,12 +53,24 @@ public class SignatureAlgorithmTest {
         org.apache.xml.security.Init.init();
     }
 
+    private final SecretKey secretKey;
+    private final KeyPair keyPair;
+
+    public SignatureAlgorithmTest() throws NoSuchAlgorithmException {
+        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        keygen.init(256);
+        secretKey = keygen.generateKey();
+
+        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+        keyPair = keyPairGenerator.generateKeyPair();
+    }
+
     @org.junit.jupiter.api.Test
     public void testSameKeySeveralAlgorithmSigning() throws Exception {
         Document doc = TestUtils.newDocument();
         SignatureAlgorithm signatureAlgorithm =
             new SignatureAlgorithm(doc, XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1);
-        PrivateKey pk = KeyPairGenerator.getInstance("RSA").genKeyPair().getPrivate();
+        PrivateKey pk = keyPair.getPrivate();
         signatureAlgorithm.initSign(pk);
         signatureAlgorithm.update((byte)2);
         signatureAlgorithm.sign();
@@ -94,5 +113,85 @@ public class SignatureAlgorithmTest {
                 assertEquals("", Arrays.asList(e.getStackTrace()).toString());
             }
         }
+    }
+
+    @org.junit.jupiter.api.Test
+    public void testRSASigningKeyIsPrivateKey() throws Exception {
+        Document doc = TestUtils.newDocument();
+        SignatureAlgorithm signatureAlgorithm =
+                new SignatureAlgorithm(doc, XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1);
+
+        assertThrows(XMLSignatureException.class, () ->
+            signatureAlgorithm.initSign(secretKey));
+    }
+
+    @org.junit.jupiter.api.Test
+    public void testDSASigningKeyIsPrivateKey() throws Exception {
+        Document doc = TestUtils.newDocument();
+        SignatureAlgorithm signatureAlgorithm =
+                new SignatureAlgorithm(doc, XMLSignature.ALGO_ID_SIGNATURE_DSA);
+
+        assertThrows(XMLSignatureException.class, () ->
+                signatureAlgorithm.initSign(secretKey));
+    }
+
+    @org.junit.jupiter.api.Test
+    public void testECDSASigningKeyIsPrivateKey() throws Exception {
+        Document doc = TestUtils.newDocument();
+        SignatureAlgorithm signatureAlgorithm =
+                new SignatureAlgorithm(doc, XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA1);
+
+        assertThrows(XMLSignatureException.class, () ->
+                signatureAlgorithm.initSign(secretKey));
+    }
+
+    @org.junit.jupiter.api.Test
+    public void testRSAVerifyingKeyIsPublicKey() throws Exception {
+        Document doc = TestUtils.newDocument();
+        SignatureAlgorithm signatureAlgorithm =
+                new SignatureAlgorithm(doc, XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1);
+
+        assertThrows(XMLSignatureException.class, () ->
+                signatureAlgorithm.initVerify(secretKey));
+    }
+
+    @org.junit.jupiter.api.Test
+    public void testDSAVerifyingKeyIsPublicKey() throws Exception {
+        Document doc = TestUtils.newDocument();
+        SignatureAlgorithm signatureAlgorithm =
+                new SignatureAlgorithm(doc, XMLSignature.ALGO_ID_SIGNATURE_DSA);
+
+        assertThrows(XMLSignatureException.class, () ->
+                signatureAlgorithm.initVerify(secretKey));
+    }
+
+    @org.junit.jupiter.api.Test
+    public void testECDSAVerifyingKeyIsPublicKey() throws Exception {
+        Document doc = TestUtils.newDocument();
+        SignatureAlgorithm signatureAlgorithm =
+                new SignatureAlgorithm(doc, XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA1);
+
+        assertThrows(XMLSignatureException.class, () ->
+                signatureAlgorithm.initVerify(secretKey));
+    }
+
+    @org.junit.jupiter.api.Test
+    public void testHMACSigningKeyIsSecretKey() throws Exception {
+        Document doc = TestUtils.newDocument();
+        SignatureAlgorithm signatureAlgorithm =
+                new SignatureAlgorithm(doc, XMLSignature.ALGO_ID_MAC_HMAC_SHA1);
+
+        assertThrows(XMLSignatureException.class, () ->
+                signatureAlgorithm.initSign(keyPair.getPrivate()));
+    }
+
+    @org.junit.jupiter.api.Test
+    public void testHMACVerifyingKeyIsSecretKey() throws Exception {
+        Document doc = TestUtils.newDocument();
+        SignatureAlgorithm signatureAlgorithm =
+                new SignatureAlgorithm(doc, XMLSignature.ALGO_ID_MAC_HMAC_SHA1);
+
+        assertThrows(XMLSignatureException.class, () ->
+                signatureAlgorithm.initVerify(keyPair.getPublic()));
     }
 }
