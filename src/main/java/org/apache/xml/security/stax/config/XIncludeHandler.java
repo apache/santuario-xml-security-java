@@ -68,10 +68,10 @@ public class XIncludeHandler extends DefaultHandler {
     private URL systemId;
     private boolean skipEvents = false;
 
-    Map<URI, Document> uriDocMap = new HashMap<>();
+    private final Map<URI, Document> uriDocMap;
 
     public XIncludeHandler(ContentHandler contentHandler) {
-        this.contentHandler = contentHandler;
+        this(contentHandler, new HashMap<>());
     }
 
     private XIncludeHandler(ContentHandler contentHandler, Map<URI, Document> uriDocMap) {

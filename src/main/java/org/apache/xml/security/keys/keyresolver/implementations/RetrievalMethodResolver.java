@@ -89,30 +89,30 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
                     return cert.getPublicKey();
                 }
                 return null;
-             }
-             Element e = obtainReferenceElement(resource, secureValidation);
+            }
+            Element e = obtainReferenceElement(resource, secureValidation);
 
-             // Check to make sure that the reference is not to another RetrievalMethod
-             // which points to this element
-             if (XMLUtils.elementIsInSignatureSpace(e, Constants._TAG_RETRIEVALMETHOD)) {
-                 if (secureValidation) {
-                     if (LOG.isDebugEnabled()) {
-                         String error = "Error: It is forbidden to have one RetrievalMethod "
-                             + "point to another with secure validation";
-                         LOG.debug(error);
-                     }
-                     return null;
-                 }
-                 RetrievalMethod rm2 = new RetrievalMethod(e, baseURI);
-                 XMLSignatureInput resource2 = resolveInput(rm2, baseURI, secureValidation);
-                 Element e2 = obtainReferenceElement(resource2, secureValidation);
-                 if (e2 == element) {
-                     LOG.debug("Error: Can't have RetrievalMethods pointing to each other");
-                     return null;
-                 }
-             }
+            // Check to make sure that the reference is not to another RetrievalMethod
+            // which points to this element
+            if (XMLUtils.elementIsInSignatureSpace(e, Constants._TAG_RETRIEVALMETHOD)) {
+                if (secureValidation) {
+                    if (LOG.isDebugEnabled()) {
+                        String error = "Error: It is forbidden to have one RetrievalMethod "
+                                + "point to another with secure validation";
+                        LOG.debug(error);
+                    }
+                    return null;
+                }
+                RetrievalMethod rm2 = new RetrievalMethod(e, baseURI);
+                XMLSignatureInput resource2 = resolveInput(rm2, baseURI, secureValidation);
+                Element e2 = obtainReferenceElement(resource2, secureValidation);
+                if (e2 == element) {
+                    LOG.debug("Error: Can't have RetrievalMethods pointing to each other");
+                    return null;
+                }
+            }
 
-             return resolveKey(e, baseURI, storage, secureValidation);
+            return resolveKey(e, baseURI, storage, secureValidation);
          } catch (XMLSecurityException ex) {
              LOG.debug("XMLSecurityException", ex);
          } catch (CertificateException ex) {
