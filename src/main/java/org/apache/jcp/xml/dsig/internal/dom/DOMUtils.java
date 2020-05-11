@@ -357,15 +357,10 @@ public final class DOMUtils {
     }
 
     /**
-     * Compares 2 nodes for equality. Implementation is not complete.
+     * Compares 2 nodes for equality.
      */
     public static boolean nodesEqual(Node thisNode, Node otherNode) {
-        if (thisNode == otherNode) {
-            return true;
-        }
-
-        // FIXME - test content, etc
-        return thisNode.getNodeType() == otherNode.getNodeType();
+        return thisNode.isEqualNode(otherNode);
     }
 
     /**
