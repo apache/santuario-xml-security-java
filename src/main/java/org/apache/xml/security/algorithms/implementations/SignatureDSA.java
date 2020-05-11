@@ -20,13 +20,10 @@ package org.apache.xml.security.algorithms.implementations;
 
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-import java.security.PrivateKey;
 import java.security.Provider;
-import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.security.Signature;
 import java.security.SignatureException;
@@ -90,11 +87,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
                 this.signatureAlgorithm = Signature.getInstance(algorithmID, provider);
             }
 
-        } catch (NoSuchAlgorithmException ex) {
-            Object[] exArgs = {algorithmID, ex.getLocalizedMessage()};
-            throw new XMLSignatureException("algorithms.NoSuchAlgorithm", exArgs);
-
-        } catch (NoSuchProviderException ex) {
+        } catch (NoSuchAlgorithmException | NoSuchProviderException ex) {
             Object[] exArgs = {algorithmID, ex.getLocalizedMessage()};
             throw new XMLSignatureException("algorithms.NoSuchAlgorithm", exArgs);
         }
@@ -134,22 +127,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
      * {@inheritDoc}
      */
     protected void engineInitVerify(Key publicKey) throws XMLSignatureException {
-        if (!(publicKey instanceof PublicKey)) {
-            String supplied = null;
-            if (publicKey != null) {
-                supplied = publicKey.getClass().getName();
-            }
-            String needed = PublicKey.class.getName();
-            Object[] exArgs = { supplied, needed };
-
-            throw new XMLSignatureException("algorithms.WrongKeyForThisOperation", exArgs);
-        }
-
-        try {
-            this.signatureAlgorithm.initVerify((PublicKey) publicKey);
-        } catch (InvalidKeyException ex) {
-            throw new XMLSignatureException(ex);
-        }
+        engineInitVerify(publicKey, this.signatureAlgorithm);
         size = ((DSAKey)publicKey).getParams().getQ().bitLength();
     }
 
@@ -171,26 +149,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
      */
     protected void engineInitSign(Key privateKey, SecureRandom secureRandom)
         throws XMLSignatureException {
-        if (!(privateKey instanceof PrivateKey)) {
-            String supplied = null;
-            if (privateKey != null) {
-                supplied = privateKey.getClass().getName();
-            }
-            String needed = PrivateKey.class.getName();
-            Object[] exArgs = { supplied, needed };
-
-            throw new XMLSignatureException("algorithms.WrongKeyForThisOperation", exArgs);
-        }
-
-        try {
-            if (secureRandom == null) {
-                this.signatureAlgorithm.initSign((PrivateKey) privateKey);
-            } else {
-                this.signatureAlgorithm.initSign((PrivateKey) privateKey, secureRandom);
-            }
-        } catch (InvalidKeyException ex) {
-            throw new XMLSignatureException(ex);
-        }
+        engineInitSign(privateKey, secureRandom, this.signatureAlgorithm);
         size = ((DSAKey)privateKey).getParams().getQ().bitLength();
     }
 
