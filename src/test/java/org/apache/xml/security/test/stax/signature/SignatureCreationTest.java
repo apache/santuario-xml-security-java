@@ -290,6 +290,70 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
+    public void testEnvelopedSignatureCreationC14n11() throws Exception {
+        // Set up the Configuration
+        XMLSecurityProperties properties = new XMLSecurityProperties();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        actions.add(XMLSecurityConstants.SIGNATURE);
+        properties.setActions(actions);
+
+        // Set the key up
+        KeyStore keyStore = KeyStore.getInstance("jks");
+        keyStore.load(
+                this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
+                "default".toCharArray()
+        );
+        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        properties.setSignatureKey(key);
+        X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
+        properties.setSignatureCerts(new X509Certificate[]{cert});
+
+        SecurePart securePart =
+                new SecurePart(
+                        new QName("urn:example:po", "PurchaseOrder"),
+                        SecurePart.Modifier.Content,
+                        new String[]{
+                                "http://www.w3.org/2000/09/xmldsig#enveloped-signature",
+                                "http://www.w3.org/2006/12/xml-c14n11"
+                        },
+                        "http://www.w3.org/2000/09/xmldsig#sha1"
+                );
+        properties.addSignaturePart(securePart);
+
+        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+
+        InputStream sourceDocument =
+                this.getClass().getClassLoader().getResourceAsStream(
+                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
+        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+
+        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
+        xmlStreamWriter.close();
+
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
+        Document document = null;
+        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+            document = XMLUtils.read(is, false);
+        }
+
+        //first child element must be the dsig:Signature @see SANTUARIO-324:
+        Node childNode = document.getDocumentElement().getFirstChild();
+        while (childNode != null) {
+            if (childNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element element = (Element)childNode;
+                assertEquals(element.getLocalName(), "Signature");
+                break;
+            }
+            childNode = childNode.getNextSibling();
+        }
+
+        // Verify using DOM
+        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+    }
+
+    @Test
     public void testSignRootElementInRequest() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
