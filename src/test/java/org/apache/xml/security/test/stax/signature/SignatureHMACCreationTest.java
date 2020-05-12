@@ -21,10 +21,7 @@ package org.apache.xml.security.test.stax.signature;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.lang.reflect.Constructor;
 import java.nio.charset.StandardCharsets;
-import java.security.Provider;
-import java.security.Security;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +39,6 @@ import org.apache.xml.security.stax.ext.XMLSecurityProperties;
 import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 
@@ -50,35 +46,6 @@ import org.w3c.dom.Document;
  * A set of test-cases for Signature creation with various HMAC algorithms
  */
 public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
-
-    private static boolean bcInstalled;
-
-    @BeforeAll
-    public static void setup() throws Exception {
-        //
-        // If the BouncyCastle provider is not installed, then try to load it
-        // via reflection.
-        //
-        if (Security.getProvider("BC") == null) {
-            Constructor<?> cons = null;
-            try {
-                Class<?> c = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
-                cons = c.getConstructor(new Class[] {});
-            } catch (Exception e) {
-                //ignore
-            }
-            if (cons != null) {
-                Provider provider = (Provider)cons.newInstance();
-                Security.insertProviderAt(provider, 2);
-                bcInstalled = true;
-            }
-        }
-    }
-
-    @org.junit.jupiter.api.AfterAll
-    public static void cleanup() throws Exception {
-        Security.removeProvider("BC");
-    }
 
     @Test
     public void testHMACSHA1() throws Exception {

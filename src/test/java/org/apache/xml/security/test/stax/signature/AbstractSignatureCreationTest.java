@@ -19,7 +19,10 @@
 package org.apache.xml.security.test.stax.signature;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
 import java.security.Key;
+import java.security.Provider;
+import java.security.Security;
 import java.security.cert.X509Certificate;
 import java.util.List;
 
@@ -37,6 +40,8 @@ import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.apache.xml.security.utils.resolver.ResourceResolverException;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
+
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -51,19 +56,47 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class AbstractSignatureCreationTest {
 
     protected static String BASEDIR;
+    protected static boolean bcInstalled;
 
     protected XMLInputFactory xmlInputFactory;
 
-    @BeforeEach
-    public void setUp() throws Exception {
-
-        BASEDIR = System.getProperty("basedir");
-        if (BASEDIR == null) {
-            BASEDIR = new File(".").getCanonicalPath();
+    @BeforeAll
+    public static void setup() throws Exception {
+        String baseDir = System.getProperty("basedir");
+        if (baseDir == null) {
+            baseDir = new File(".").getCanonicalPath();
         }
+        BASEDIR = baseDir;
 
         org.apache.xml.security.Init.init();
 
+        //
+        // If the BouncyCastle provider is not installed, then try to load it
+        // via reflection.
+        //
+        if (Security.getProvider("BC") == null) {
+            Constructor<?> cons = null;
+            try {
+                Class<?> c = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
+                cons = c.getConstructor(new Class[] {});
+            } catch (Exception e) {
+                //ignore
+            }
+            if (cons != null) {
+                Provider provider = (Provider)cons.newInstance();
+                Security.insertProviderAt(provider, 2);
+                bcInstalled = true;
+            }
+        }
+    }
+
+    @org.junit.jupiter.api.AfterAll
+    public static void cleanup() throws Exception {
+        Security.removeProvider("BC");
+    }
+
+    @BeforeEach
+    public void createXMLInputFactory() throws Exception {
         xmlInputFactory = XMLInputFactory.newInstance();
         xmlInputFactory.setEventAllocator(new XMLSecEventAllocator());
     }

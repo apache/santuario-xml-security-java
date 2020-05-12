@@ -33,7 +33,6 @@ import java.util.Map;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.TransformerFactory;
@@ -51,7 +50,6 @@ import org.apache.xml.security.keys.content.KeyName;
 import org.apache.xml.security.keys.content.X509Data;
 import org.apache.xml.security.keys.content.x509.XMLX509IssuerSerial;
 import org.apache.xml.security.signature.XMLSignature;
-import org.apache.xml.security.stax.config.Init;
 import org.apache.xml.security.stax.config.TransformerAlgorithmMapper;
 import org.apache.xml.security.stax.ext.InboundXMLSec;
 import org.apache.xml.security.stax.ext.XMLSec;
@@ -65,12 +63,10 @@ import org.apache.xml.security.stax.securityEvent.SignedElementSecurityEvent;
 import org.apache.xml.security.stax.securityEvent.X509TokenSecurityEvent;
 import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 import org.apache.xml.security.test.stax.utils.StAX2DOM;
-import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.transforms.Transform;
 import org.apache.xml.security.transforms.implementations.TransformC14N;
 import org.apache.xml.security.utils.XMLUtils;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -83,19 +79,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class SignatureVerificationTest extends AbstractSignatureVerificationTest {
 
-    private XMLInputFactory xmlInputFactory;
     private TransformerFactory transformerFactory = TransformerFactory.newInstance();
-
-    @BeforeEach
-    public void setUp() throws Exception {
-        Init.init(SignatureVerificationTest.class.getClassLoader().getResource("security-config.xml").toURI(),
-                this.getClass());
-        org.apache.xml.security.Init.init();
-
-        xmlInputFactory = XMLInputFactory.newInstance();
-        xmlInputFactory.setEventAllocator(new XMLSecEventAllocator());
-    }
-
 
     @Test
     public void testSignatureVerification() throws Exception {

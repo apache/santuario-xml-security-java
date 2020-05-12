@@ -25,7 +25,6 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.KeyStore;
-import java.security.Security;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,6 +40,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
+import org.junit.jupiter.api.Assumptions;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -805,9 +805,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     @Test
     public void testECDSASignatureCreation() throws Exception {
 
-        if (Security.getProvider("BC") == null) {
-            return;
-        }
+        Assumptions.assumeTrue(bcInstalled);
 
         //
         // This test fails with the IBM JDK
@@ -865,9 +863,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     @Test
     public void testStrongECDSASignatureCreation() throws Exception {
 
-        if (Security.getProvider("BC") == null) {
-            return;
-        }
+        Assumptions.assumeTrue(bcInstalled);
 
         //
         // This test fails with the IBM JDK
@@ -1207,7 +1203,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testSignatureCreationKeyValue() throws Exception {
+    public void testSignatureCreationRSAKeyValue() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -1228,6 +1224,65 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         SecurePart securePart =
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Content);
+        properties.addSignaturePart(securePart);
+
+        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+
+        InputStream sourceDocument =
+                this.getClass().getClassLoader().getResourceAsStream(
+                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
+        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+
+        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
+        xmlStreamWriter.close();
+
+        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8.name()));
+        Document document = null;
+        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+            document = XMLUtils.read(is, false);
+        }
+
+        // Verify using DOM
+        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+    }
+
+    @Test
+    public void testSignatureCreationECDSAKeyValue() throws Exception {
+
+        Assumptions.assumeTrue(bcInstalled);
+
+        //
+        // This test fails with the IBM JDK
+        //
+        if ("IBM Corporation".equals(System.getProperty("java.vendor"))) {
+            return;
+        }
+
+        // Set up the Configuration
+        XMLSecurityProperties properties = new XMLSecurityProperties();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        actions.add(XMLSecurityConstants.SIGNATURE);
+        properties.setActions(actions);
+        properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyValue);
+
+        // Set the key up
+        KeyStore keyStore = KeyStore.getInstance("jks");
+        keyStore.load(
+                this.getClass().getClassLoader().getResource(
+                        "org/apache/xml/security/samples/input/ecdsa.jks").openStream(),
+                "security".toCharArray()
+        );
+        Key key = keyStore.getKey("ECDSA", "security".toCharArray());
+        properties.setSignatureKey(key);
+        X509Certificate cert = (X509Certificate)keyStore.getCertificate("ECDSA");
+        properties.setSignatureCerts(new X509Certificate[]{cert});
+
+        properties.setSignatureAlgorithm("http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1");
+
+        SecurePart securePart =
+                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Content);
         properties.addSignaturePart(securePart);
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);

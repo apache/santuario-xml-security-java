@@ -21,30 +21,23 @@ package org.apache.xml.security.test.stax.signature;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.lang.reflect.Constructor;
 import java.nio.charset.StandardCharsets;
-import java.security.Provider;
-import java.security.Security;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.apache.xml.security.stax.config.Init;
 import org.apache.xml.security.stax.ext.InboundXMLSec;
 import org.apache.xml.security.stax.ext.XMLSec;
 import org.apache.xml.security.stax.ext.XMLSecurityProperties;
 import org.apache.xml.security.test.stax.utils.StAX2DOM;
-import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 
@@ -53,45 +46,7 @@ import org.w3c.dom.Document;
  */
 public class SignatureHMACVerificationTest extends AbstractSignatureVerificationTest {
 
-    private static boolean bcInstalled;
-    private XMLInputFactory xmlInputFactory;
     private TransformerFactory transformerFactory = TransformerFactory.newInstance();
-
-    @BeforeAll
-    public static void setup() throws Exception {
-        //
-        // If the BouncyCastle provider is not installed, then try to load it
-        // via reflection.
-        //
-        if (Security.getProvider("BC") == null) {
-            Constructor<?> cons = null;
-            try {
-                Class<?> c = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
-                cons = c.getConstructor(new Class[] {});
-            } catch (Exception e) {
-                //ignore
-            }
-            if (cons != null) {
-                Provider provider = (Provider)cons.newInstance();
-                Security.insertProviderAt(provider, 2);
-                bcInstalled = true;
-            }
-        }
-    }
-
-    public SignatureHMACVerificationTest() throws Exception {
-        Init.init(SignatureHMACVerificationTest.class.getClassLoader().getResource("security-config.xml").toURI(),
-                this.getClass());
-        org.apache.xml.security.Init.init();
-
-        xmlInputFactory = XMLInputFactory.newInstance();
-        xmlInputFactory.setEventAllocator(new XMLSecEventAllocator());
-    }
-
-    @org.junit.jupiter.api.AfterAll
-    public static void cleanup() throws Exception {
-        Security.removeProvider("BC");
-    }
 
     @Test
     public void testHMACSHA1() throws Exception {

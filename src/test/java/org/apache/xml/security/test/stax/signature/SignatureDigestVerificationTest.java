@@ -27,22 +27,18 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.apache.xml.security.signature.XMLSignature;
-import org.apache.xml.security.stax.config.Init;
 import org.apache.xml.security.stax.ext.InboundXMLSec;
 import org.apache.xml.security.stax.ext.XMLSec;
 import org.apache.xml.security.stax.ext.XMLSecurityProperties;
 import org.apache.xml.security.test.stax.utils.StAX2DOM;
-import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 
@@ -51,19 +47,7 @@ import org.w3c.dom.Document;
  */
 public class SignatureDigestVerificationTest extends AbstractSignatureVerificationTest {
 
-    private boolean bcInstalled;
-    private XMLInputFactory xmlInputFactory;
     private TransformerFactory transformerFactory = TransformerFactory.newInstance();
-
-    @BeforeEach
-    public void setUp() throws Exception {
-        Init.init(SignatureDigestVerificationTest.class.getClassLoader().getResource("security-config.xml").toURI(),
-                this.getClass());
-        org.apache.xml.security.Init.init();
-
-        xmlInputFactory = XMLInputFactory.newInstance();
-        xmlInputFactory.setEventAllocator(new XMLSecEventAllocator());
-    }
 
     @Test
     public void testSHA1() throws Exception {

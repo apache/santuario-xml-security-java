@@ -20,14 +20,12 @@ package org.apache.xml.security.test.stax.signature;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.InputStream;
 import java.security.Key;
 import java.security.KeyStore;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.TransformerFactory;
@@ -41,11 +39,9 @@ import org.apache.xml.security.stax.ext.InboundXMLSec;
 import org.apache.xml.security.stax.ext.XMLSec;
 import org.apache.xml.security.stax.ext.XMLSecurityProperties;
 import org.apache.xml.security.test.stax.utils.StAX2DOM;
-import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.utils.XMLUtils;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 
@@ -62,27 +58,14 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class SignatureVerificationMaxRefTest extends AbstractSignatureVerificationTest {
 
-    private XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
     private TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
     @BeforeAll
-    public static void globalSetUp() throws Exception {
+    public static void setup() throws Exception {
         XMLSec.init();
         Init.init(SignatureVerificationMaxRefTest.class.getClassLoader().getResource("security-config-max-ref-per.xml").toURI(),
                 SignatureVerificationMaxRefTest.class);
         org.apache.xml.security.Init.init();
-    }
-
-    @BeforeEach
-    @Override
-    public void setUp() throws Exception {
-
-        BASEDIR = System.getProperty("basedir");
-        if (BASEDIR == null) {
-            BASEDIR = new File(".").getCanonicalPath();
-        }
-
-        xmlInputFactory.setEventAllocator(new XMLSecEventAllocator());
     }
 
     @Test

@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -44,12 +43,10 @@ import org.apache.xml.security.stax.ext.XMLSecurityProperties;
 import org.apache.xml.security.stax.impl.resourceResolvers.ResolverHttp;
 import org.apache.xml.security.test.stax.utils.HttpRequestRedirectorProxy;
 import org.apache.xml.security.test.stax.utils.StAX2DOM;
-import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.utils.XMLUtils;
 import org.apache.xml.security.utils.resolver.implementations.ResolverDirectHTTP;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.w3c.dom.Document;
@@ -61,25 +58,18 @@ import org.w3c.dom.Document;
 public class SignatureVerificationReferenceURIResolverRemoteReferenceTest extends AbstractSignatureVerificationTest {
 
     @BeforeAll
-    public static void globalSetUp() throws Exception {
+    public static void setup() throws Exception {
+        String baseDir = System.getProperty("basedir");
+        if (baseDir == null) {
+            baseDir = new File(".").getCanonicalPath();
+        }
+        BASEDIR = baseDir;
+
         XMLSec.init();
         Init.init(SignatureVerificationReferenceURIResolverRemoteReferenceTest.class.getClassLoader()
                         .getResource("security-config-allow-same-doc.xml").toURI(),
                 SignatureVerificationReferenceURIResolverRemoteReferenceTest.class);
         org.apache.xml.security.Init.init();
-    }
-
-    @BeforeEach
-    @Override
-    public void setUp() throws Exception {
-
-        BASEDIR = System.getProperty("basedir");
-        if (BASEDIR == null) {
-            BASEDIR = new File(".").getCanonicalPath();
-        }
-
-        xmlInputFactory = XMLInputFactory.newInstance();
-        xmlInputFactory.setEventAllocator(new XMLSecEventAllocator());
     }
 
     @Test
