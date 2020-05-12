@@ -90,6 +90,7 @@ public class TransformXPath2Filter extends TransformSpi {
                 inputDoc = XMLUtils.getOwnerDocument(input.getNodeSet());
             }
 
+            XPathFactory xpathFactory = XPathFactory.newInstance();
             for (int i = 0; i < xpathElements.length; i++) {
                 Element xpathElement = xpathElements[i];
 
@@ -99,7 +100,6 @@ public class TransformXPath2Filter extends TransformSpi {
                 String str =
                     XMLUtils.getStrFromNode(xpathContainer.getXPathFilterTextNode());
 
-                XPathFactory xpathFactory = XPathFactory.newInstance();
                 XPathAPI xpathAPIInstance = xpathFactory.newXPathAPI();
 
                 NodeList subtreeRoots =

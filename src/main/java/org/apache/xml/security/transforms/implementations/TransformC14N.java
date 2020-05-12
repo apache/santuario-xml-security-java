@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import org.apache.xml.security.c14n.CanonicalizationException;
+import org.apache.xml.security.c14n.implementations.Canonicalizer20010315;
 import org.apache.xml.security.c14n.implementations.Canonicalizer20010315OmitComments;
 import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.transforms.TransformSpi;
@@ -53,7 +54,7 @@ public class TransformC14N extends TransformSpi {
         String baseURI, boolean secureValidation
     ) throws CanonicalizationException {
 
-        Canonicalizer20010315OmitComments c14n = new Canonicalizer20010315OmitComments();
+        Canonicalizer20010315 c14n = getCanonicalizer();
 
         if (os == null) {
             try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
@@ -72,5 +73,9 @@ public class TransformC14N extends TransformSpi {
             output.setOutputStream(os);
             return output;
         }
+    }
+
+    protected Canonicalizer20010315 getCanonicalizer() {
+        return new Canonicalizer20010315OmitComments();
     }
 }
