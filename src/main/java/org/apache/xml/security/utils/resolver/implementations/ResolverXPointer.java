@@ -101,9 +101,6 @@ public class ResolverXPointer extends ResourceResolverSpi {
      * {@inheritDoc}
      */
     public boolean engineCanResolveURI(ResourceResolverContext context) {
-        if (context.uriToResolve == null) {
-            return false;
-        }
         return isXPointerSlash(context.uriToResolve) || isXPointerId(context.uriToResolve);
     }
 
@@ -124,7 +121,7 @@ public class ResolverXPointer extends ResourceResolverSpi {
      * @return whether it has an xpointer id
      */
     private static boolean isXPointerId(String uri) {
-        if (uri.startsWith(XP) && uri.endsWith("))")) {
+        if (uri != null && uri.startsWith(XP) && uri.endsWith("))")) {
             String idPlusDelim = uri.substring(XP_LENGTH, uri.length() - 2);
 
             int idLen = idPlusDelim.length() -1;

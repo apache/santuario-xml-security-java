@@ -116,9 +116,7 @@ public class DEREncodedKeyValue extends Signature11ElementProxy implements KeyIn
                 if (publicKey != null) {
                     return publicKey;
                 }
-            } catch (NoSuchAlgorithmException e) { //NOPMD
-                // Do nothing, try the next type
-            } catch (InvalidKeySpecException e) { //NOPMD
+            } catch (NoSuchAlgorithmException | InvalidKeySpecException e) { //NOPMD
                 // Do nothing, try the next type
             }
         }
@@ -136,10 +134,7 @@ public class DEREncodedKeyValue extends Signature11ElementProxy implements KeyIn
             KeyFactory keyFactory = KeyFactory.getInstance(publicKey.getAlgorithm());
             X509EncodedKeySpec keySpec = keyFactory.getKeySpec(publicKey, X509EncodedKeySpec.class);
             return keySpec.getEncoded();
-        } catch (NoSuchAlgorithmException e) {
-            Object[] exArgs = { publicKey.getAlgorithm(), publicKey.getFormat(), publicKey.getClass().getName() };
-            throw new XMLSecurityException(e, "DEREncodedKeyValue.UnsupportedPublicKey", exArgs);
-        } catch (InvalidKeySpecException e) {
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             Object[] exArgs = { publicKey.getAlgorithm(), publicKey.getFormat(), publicKey.getClass().getName() };
             throw new XMLSecurityException(e, "DEREncodedKeyValue.UnsupportedPublicKey", exArgs);
         }

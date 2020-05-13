@@ -22,7 +22,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetSocketAddress;
-import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.URISyntaxException;
 import java.net.URI;
@@ -157,14 +156,8 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
                 return result;
             }
 
-        } catch (URISyntaxException ex) {
+        } catch (URISyntaxException | IOException | IllegalArgumentException ex) {
             throw new ResourceResolverException(ex, context.uriToResolve, context.baseUri, "generic.EmptyMessage");
-        } catch (MalformedURLException ex) {
-            throw new ResourceResolverException(ex, context.uriToResolve, context.baseUri, "generic.EmptyMessage");
-        } catch (IOException ex) {
-            throw new ResourceResolverException(ex, context.uriToResolve, context.baseUri, "generic.EmptyMessage");
-        } catch (IllegalArgumentException e) {
-            throw new ResourceResolverException(e, context.uriToResolve, context.baseUri, "generic.EmptyMessage");
         }
     }
 
