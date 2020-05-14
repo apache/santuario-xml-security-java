@@ -34,6 +34,8 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
 import org.apache.xml.security.algorithms.SignatureAlgorithm;
+import org.apache.xml.security.algorithms.implementations.SignatureBaseRSA;
+import org.apache.xml.security.exceptions.AlgorithmAlreadyRegisteredException;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
@@ -193,5 +195,21 @@ public class SignatureAlgorithmTest {
 
         assertThrows(XMLSignatureException.class, () ->
                 signatureAlgorithm.initVerify(keyPair.getPublic()));
+    }
+
+    @org.junit.jupiter.api.Test
+    public void testAlreadyRegisteredException() throws Exception {
+        assertThrows(AlgorithmAlreadyRegisteredException.class, () ->
+            SignatureAlgorithm.register(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA256,
+                    SignatureBaseRSA.SignatureRSASHA256.class)
+        );
+    }
+
+    @org.junit.jupiter.api.Test
+    public void testAlreadyRegisteredExceptionFromString() throws Exception {
+        assertThrows(AlgorithmAlreadyRegisteredException.class, () ->
+                SignatureAlgorithm.register(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA256,
+                        SignatureBaseRSA.SignatureRSASHA256.class.getName())
+        );
     }
 }

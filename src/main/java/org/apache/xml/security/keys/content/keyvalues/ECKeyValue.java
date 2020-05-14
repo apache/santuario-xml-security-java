@@ -200,11 +200,7 @@ public class ECKeyValue extends Signature11ElementProxy implements KeyValueConte
 
             ECPublicKeySpec spec = new ECPublicKeySpec(ecPoint, ecParams);
             return KeyFactory.getInstance("EC").generatePublic(spec);
-        } catch (NoSuchAlgorithmException ex) {
-            throw new XMLSecurityException(ex);
-        } catch (InvalidKeySpecException ex) {
-            throw new XMLSecurityException(ex);
-        } catch (MarshalException ex) {
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException | MarshalException ex) {
             throw new XMLSecurityException(ex);
         }
     }

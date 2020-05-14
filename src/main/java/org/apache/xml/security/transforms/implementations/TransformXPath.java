@@ -115,7 +115,7 @@ public class TransformXPath extends TransformSpi {
         return str.indexOf("namespace") != -1 || str.indexOf("name()") != -1;
     }
 
-    static class XPathNodeFilter implements NodeFilter {
+    private static class XPathNodeFilter implements NodeFilter {
 
         private final XPathAPI xPathAPI;
         private final Node xpathnode;

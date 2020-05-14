@@ -114,9 +114,7 @@ public class DSAKeyValue extends SignatureElementProxy implements KeyValueConten
             PublicKey pk = dsaFactory.generatePublic(pkspec);
 
             return pk;
-        } catch (NoSuchAlgorithmException ex) {
-            throw new XMLSecurityException(ex);
-        } catch (InvalidKeySpecException ex) {
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException ex) {
             throw new XMLSecurityException(ex);
         }
     }

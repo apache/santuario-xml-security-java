@@ -137,9 +137,7 @@ public class ResolverLocalFilesystem extends ResourceResolverSpi {
 
         // if the URI contains a fragment, ignore it
         if (newUri.getFragment() != null) {
-            URI uriNewNoFrag =
-                new URI(newUri.getScheme(), newUri.getSchemeSpecificPart(), null);
-            return uriNewNoFrag;
+            return new URI(newUri.getScheme(), newUri.getSchemeSpecificPart(), null);
         }
         return newUri;
     }

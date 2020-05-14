@@ -25,6 +25,7 @@ import java.security.Provider;
 import java.security.Security;
 
 import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
+import org.apache.xml.security.signature.XMLSignatureException;
 import org.apache.xml.security.test.dom.TestUtils;
 import org.junit.jupiter.api.Assumptions;
 import org.w3c.dom.Document;
@@ -32,6 +33,7 @@ import org.w3c.dom.Document;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
@@ -294,4 +296,15 @@ public class DigestAlgorithmTest {
         assertArrayEquals(digest, digest2);
     }
 
+    @org.junit.jupiter.api.Test
+    public void testNullAlgorithm() throws Exception {
+        assertThrows(XMLSignatureException.class, () ->
+                MessageDigestAlgorithm.getInstance(TestUtils.newDocument(), null));
+    }
+
+    @org.junit.jupiter.api.Test
+    public void testNoSuchAlgorithm() throws Exception {
+        assertThrows(XMLSignatureException.class, () ->
+                MessageDigestAlgorithm.getInstance(TestUtils.newDocument(), "xyz"));
+    }
 }
