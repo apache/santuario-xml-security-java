@@ -30,8 +30,11 @@ import java.util.Collection;
 import java.util.Collections;
 
 import org.apache.xml.security.keys.content.x509.XMLX509SKI;
+import org.apache.xml.security.test.dom.TestUtils;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Test bugfix 41892: XML Security 1.4.0 does not build with IBM's JDK
@@ -79,5 +82,15 @@ public class XMLX509SKITest {
 
         Collection<?> certs = cs.getCertificates(xcs);
         assertFalse(certs.isEmpty());
+
+        XMLX509SKI xmlx509SKI = new XMLX509SKI(TestUtils.newDocument(), skid);
+        assertNotNull(xmlx509SKI.getSKIBytes());
+
+        XMLX509SKI xmlx509SKI2 = new XMLX509SKI(TestUtils.newDocument(), cert);
+        assertNotNull(xmlx509SKI2.getSKIBytes());
+
+        assertEquals(xmlx509SKI, xmlx509SKI2);
+        assertEquals(xmlx509SKI.hashCode(), xmlx509SKI2.hashCode());
+
     }
 }

@@ -50,4 +50,16 @@ public class XMLX509IssuerSerialTest {
         assertEquals("CN=\\#abc123", is.getIssuerName());
         // System.out.println(is.getIssuerName());
     }
+
+    @org.junit.jupiter.api.Test
+    public void testEqualsHashcode() throws Exception {
+        XMLX509IssuerSerial is1 = new XMLX509IssuerSerial(doc, "1234", 0);
+        assertEquals("1234", is1.getIssuerName());
+
+        XMLX509IssuerSerial is2 = new XMLX509IssuerSerial(doc, "1234", 0);
+        assertEquals("1234", is2.getIssuerName());
+
+        assertEquals(is1, is2);
+        assertEquals(is1.hashCode(), is2.hashCode());
+    }
 }
