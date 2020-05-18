@@ -75,9 +75,7 @@ public class HMACSignatureAlgorithm implements SignatureAlgorithm {
     public void engineInitSign(Key signingKey, AlgorithmParameterSpec algorithmParameterSpec) throws XMLSecurityException {
         try {
             mac.init(signingKey, algorithmParameterSpec);
-        } catch (InvalidKeyException e) {
-            throw new XMLSecurityException(e);
-        } catch (InvalidAlgorithmParameterException e) {
+        } catch (InvalidKeyException | InvalidAlgorithmParameterException e) {
             throw new XMLSecurityException(e);
         }
     }
