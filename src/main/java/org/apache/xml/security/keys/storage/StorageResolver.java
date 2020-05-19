@@ -43,25 +43,10 @@ public class StorageResolver {
     /**
      * Constructor StorageResolver
      *
-     */
-    public StorageResolver() {}
-
-    /**
-     * Constructor StorageResolver
-     *
      * @param resolver
      */
     public StorageResolver(StorageResolverSpi resolver) {
         this.add(resolver);
-    }
-
-    /**
-     * Method addResolver
-     *
-     * @param resolver
-     */
-    public void add(StorageResolverSpi resolver) {
-        this.storageResolvers.add(resolver);
     }
 
     /**
@@ -71,6 +56,24 @@ public class StorageResolver {
      */
     public StorageResolver(KeyStore keyStore) {
         this.add(keyStore);
+    }
+
+    /**
+     * Constructor StorageResolver
+     *
+     * @param x509certificate
+     */
+    public StorageResolver(X509Certificate x509certificate) {
+        this.add(x509certificate);
+    }
+
+    /**
+     * Method addResolver
+     *
+     * @param resolver
+     */
+    public void add(StorageResolverSpi resolver) {
+        this.storageResolvers.add(resolver);
     }
 
     /**
@@ -84,15 +87,6 @@ public class StorageResolver {
         } catch (StorageResolverException ex) {
             LOG.error("Could not add KeyStore because of: ", ex);
         }
-    }
-
-    /**
-     * Constructor StorageResolver
-     *
-     * @param x509certificate
-     */
-    public StorageResolver(X509Certificate x509certificate) {
-        this.add(x509certificate);
     }
 
     /**

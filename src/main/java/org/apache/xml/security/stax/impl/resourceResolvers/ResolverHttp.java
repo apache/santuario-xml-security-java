@@ -99,11 +99,7 @@ public class ResolverHttp implements ResourceResolver, ResourceResolverLookup {
                 urlConnection = (HttpURLConnection)url.openConnection();
             }
             return urlConnection.getInputStream();
-        } catch (MalformedURLException e) {
-            throw new XMLSecurityException(e);
-        } catch (IOException e) {
-            throw new XMLSecurityException(e);
-        } catch (URISyntaxException e) {
+        } catch (URISyntaxException | IOException e) {
             throw new XMLSecurityException(e);
         }
     }
