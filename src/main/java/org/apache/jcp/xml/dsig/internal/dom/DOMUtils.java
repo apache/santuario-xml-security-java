@@ -22,11 +22,7 @@
 package org.apache.jcp.xml.dsig.internal.dom;
 
 import java.security.spec.AlgorithmParameterSpec;
-import java.util.AbstractSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Set;
 
 import javax.xml.XMLConstants;
 import javax.xml.crypto.MarshalException;
@@ -43,7 +39,6 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 /**
  * Useful static DOM utility methods.
@@ -274,44 +269,6 @@ public final class DOMUtils {
             elem.setIdAttributeNode(attr, true);
         }
         return (attr == null) ? null : attr.getValue();
-    }
-
-    /**
-     * Returns a Set of <code>Node</code>s, backed by the specified
-     * <code>NodeList</code>.
-     *
-     * @param nl the NodeList
-     * @return a Set of Nodes
-     */
-    public static Set<Node> nodeSet(NodeList nl) {
-        return new NodeSet(nl);
-    }
-
-    static class NodeSet extends AbstractSet<Node> {
-        private NodeList nl;
-        public NodeSet(NodeList nl) {
-            this.nl = nl;
-        }
-
-        public int size() { return nl.getLength(); }
-        public Iterator<Node> iterator() {
-            return new Iterator<Node>() {
-                private int index;
-
-                public void remove() {
-                    throw new UnsupportedOperationException();
-                }
-                public Node next() {
-                    if (!hasNext()) {
-                        throw new NoSuchElementException();
-                    }
-                    return nl.item(index++);
-                }
-                public boolean hasNext() {
-                    return index < nl.getLength();
-                }
-            };
-        }
     }
 
     /**

@@ -267,10 +267,8 @@ public abstract class DOMRSAPSSSignatureMethod extends AbstractDOMSignatureMetho
             ((DOMSignedInfo)si).canonicalize(context, outputStream);
 
             return signature.sign();
-        } catch (SignatureException se) {
-            throw new XMLSignatureException(se);
-        } catch (IOException ioe) {
-            throw new XMLSignatureException(ioe);
+        } catch (SignatureException | IOException e) {
+            throw new XMLSignatureException(e);
         }
     }
 

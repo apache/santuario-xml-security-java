@@ -295,6 +295,7 @@ public class XMLSignatureTest {
 
         DOMValidateContext dvc = new DOMValidateContext
             (VALIDATE_KEYS[1], doc.getDocumentElement());
+        dvc.setProperty("org.jcp.xml.dsig.validateManifests", Boolean.TRUE);
         XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
 
         if (!sig.equals(sig2)) {
