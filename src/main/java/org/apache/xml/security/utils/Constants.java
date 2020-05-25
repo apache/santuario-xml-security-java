@@ -254,13 +254,13 @@ public final class Constants {
     /** Tag of Element PGPKeyPacket **/
     public static final String _TAG_PGPKEYPACKET = "PGPKeyPacket";
 
-    /** Tag of Element PGPKeyPacket **/
+    /** Tag of Element DEREncodedKeyValue **/
     public static final String _TAG_DERENCODEDKEYVALUE = "DEREncodedKeyValue";
 
-    /** Tag of Element PGPKeyPacket **/
+    /** Tag of Element KeyInfoReference **/
     public static final String _TAG_KEYINFOREFERENCE = "KeyInfoReference";
 
-    /** Tag of Element PGPKeyPacket **/
+    /** Tag of Element X509Digest **/
     public static final String _TAG_X509DIGEST = "X509Digest";
 
     /** Tag of Element SPKISexp **/
