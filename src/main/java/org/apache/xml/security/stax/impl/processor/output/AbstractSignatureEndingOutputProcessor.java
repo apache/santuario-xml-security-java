@@ -130,9 +130,7 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
             if (getSecurityProperties().getAlgorithmParameterSpec() != null) {
                 signatureAlgorithm.engineSetParameter(getSecurityProperties().getAlgorithmParameterSpec());
             }
-        } catch (NoSuchAlgorithmException e) {
-            throw new XMLSecurityException(e);
-        } catch (NoSuchProviderException e) {
+        } catch (NoSuchAlgorithmException | NoSuchProviderException e) {
             throw new XMLSecurityException(e);
         }
 
@@ -341,9 +339,7 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
                 bufferedSignerOutputStream.close();
                 signatureValue = signerOutputStream.sign();
                 return signatureValue;
-            } catch (IOException e) {
-                throw new XMLSecurityException(e);
-            } catch (XMLStreamException e) {
+            } catch (IOException | XMLStreamException e) {
                 throw new XMLSecurityException(e);
             }
         }

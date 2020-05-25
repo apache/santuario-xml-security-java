@@ -87,9 +87,7 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
         Map<Object, SecurePart> dynamicSecureParts =
                 outputProcessorChain.getSecurityContext().getAsMap(XMLSecurityConstants.SIGNATURE_PARTS);
         if (dynamicSecureParts != null) {
-            Iterator<Map.Entry<Object, SecurePart>> securePartsMapIterator = dynamicSecureParts.entrySet().iterator();
-            while (securePartsMapIterator.hasNext()) {
-                Map.Entry<Object, SecurePart> securePartEntry = securePartsMapIterator.next();
+            for (Map.Entry<Object, SecurePart> securePartEntry : dynamicSecureParts.entrySet()) {
                 final SecurePart securePart = securePartEntry.getValue();
                 if (securePart.getExternalReference() != null) {
                     digestExternalReference(outputProcessorChain, securePart);
@@ -197,9 +195,7 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
             } else {
                 messageDigest = MessageDigest.getInstance(jceName);
             }
-        } catch (NoSuchAlgorithmException e) {
-            throw new XMLSecurityException(e);
-        } catch (NoSuchProviderException e) {
+        } catch (NoSuchAlgorithmException | NoSuchProviderException e) {
             throw new XMLSecurityException(e);
         }
         return new DigestOutputStream(messageDigest);
