@@ -56,14 +56,11 @@
         </license>
     </licenses>
     <scm>
-        <connection>
-            scm:svn:https://svn.apache.org/repos/asf/santuario/xml-security-java/trunk/
-        </connection>
-        <developerConnection>
-            scm:svn:https://svn.apache.org/repos/asf/santuario/xml-security-java/trunk/
-        </developerConnection>
-        <url>https://svn.apache.org/repos/asf/santuario/xml-security-java/trunk/</url>
+        <connection>scm:git:https://gitbox.apache.org/repos/asf/santuario-xml-security-java.git</connection>
+        <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/santuario-xml-security-java.git</developerConnection>
+        <url>https://gitbox.apache.org/repos/asf?p=santuario-xml-security-java.git;a=summary</url>
     </scm>
+
     <organization>
         <name>The Apache Software Foundation</name>
         <url>https://www.apache.org/</url>
