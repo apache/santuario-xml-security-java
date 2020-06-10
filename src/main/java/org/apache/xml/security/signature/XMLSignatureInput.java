@@ -272,10 +272,12 @@ public class XMLSignatureInput {
         if (inputBytes != null) {
             return inputBytes;
         }
-        Canonicalizer20010315OmitComments c14nizer = new Canonicalizer20010315OmitComments();
-        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            c14nizer.engineCanonicalize(this, baos, secureValidation);
-            bytes = baos.toByteArray();
+        if (isOctetStream() || isElement() || isNodeSet()) {
+            Canonicalizer20010315OmitComments c14nizer = new Canonicalizer20010315OmitComments();
+            try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+                c14nizer.engineCanonicalize(this, baos, secureValidation);
+                bytes = baos.toByteArray();
+            }
         }
         return bytes;
     }

@@ -23,15 +23,19 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.MessageDigest;
+import java.util.Base64;
 
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.InvalidCanonicalizerException;
 import org.apache.xml.security.signature.XMLSignatureException;
 import org.apache.xml.security.signature.XMLSignatureInput;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -89,7 +93,7 @@ public class XMLSignatureInputTest {
         org.apache.xml.security.Init.init();
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSetOctetStreamGetOctetStream()
         throws IOException, CanonicalizationException, InvalidCanonicalizerException {
         InputStream inputStream =
@@ -113,7 +117,7 @@ public class XMLSignatureInputTest {
         assertEquals(resString, _octetStreamTextInput);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testIsInitializedWithOctetStream() throws IOException {
         try (InputStream inputStream =
             new ByteArrayInputStream(_octetStreamTextInput.getBytes())) {
@@ -123,7 +127,7 @@ public class XMLSignatureInputTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testOctetStreamIsOctetStream() throws IOException {
         try (InputStream inputStream =
             new ByteArrayInputStream(_octetStreamTextInput.getBytes())) {
@@ -133,7 +137,7 @@ public class XMLSignatureInputTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testOctetStreamIsNotNodeSet() throws IOException {
         try (InputStream inputStream =
             new ByteArrayInputStream(_octetStreamTextInput.getBytes())) {
@@ -143,7 +147,7 @@ public class XMLSignatureInputTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testToString() throws IOException {
         try (InputStream inputStream =
                      new ByteArrayInputStream(_octetStreamTextInput.getBytes())) {
@@ -154,7 +158,7 @@ public class XMLSignatureInputTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testHTMLRepresentation() throws IOException, XMLSignatureException {
         try (InputStream inputStream =
                      new ByteArrayInputStream(_octetStreamTextInput.getBytes())) {
@@ -165,4 +169,11 @@ public class XMLSignatureInputTest {
         }
     }
 
+    @Test
+    public void test() throws Exception {
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        byte[] digest = md.digest("Hello world!".getBytes());
+        XMLSignatureInput input = new XMLSignatureInput(Base64.getEncoder().encodeToString(digest));
+        assertNull(input.getBytes());
+    }
 }
