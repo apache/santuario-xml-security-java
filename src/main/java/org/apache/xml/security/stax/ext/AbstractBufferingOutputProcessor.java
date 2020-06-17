@@ -53,7 +53,7 @@ public abstract class AbstractBufferingOutputProcessor extends AbstractOutputPro
         //call final on the rest of the chain
         subOutputProcessorChain.doFinal();
         //this processor is now finished and we can remove it now
-        subOutputProcessorChain.removeProcessor(this);
+        outputProcessorChain.removeProcessor(this);
     }
 
     protected abstract void processHeaderEvent(OutputProcessorChain outputProcessorChain)
