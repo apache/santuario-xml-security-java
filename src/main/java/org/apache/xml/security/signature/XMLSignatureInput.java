@@ -399,11 +399,11 @@ public class XMLSignatureInput {
                 + excludeComments +"/" + getSourceURI();
         }
         try {
-            return "XMLSignatureInput/OctetStream/" + getBytes().length
+            byte[] bytes = getBytes();
+            return "XMLSignatureInput/OctetStream/"
+                   + (bytes != null ? bytes.length : 0)
                    + " octets/" + getSourceURI();
-        } catch (IOException iex) {
-            return "XMLSignatureInput/OctetStream//" + getSourceURI();
-        } catch (CanonicalizationException cex) {
+        } catch (IOException | CanonicalizationException ex) {
             return "XMLSignatureInput/OctetStream//" + getSourceURI();
         }
     }
