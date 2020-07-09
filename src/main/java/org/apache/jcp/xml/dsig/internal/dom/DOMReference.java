@@ -1,5 +1,5 @@
 /**
- * Licensed to the Apache Software Foundation (ASF) under one
+ *r Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
  * regarding copyright ownership. The ASF licenses this file
@@ -529,6 +529,10 @@ public final class DOMReference extends DOMStructure
                 } else {
                     xi.updateOutputStream(os);
                 }
+            } else {
+                LOG.warn("The input bytes to the digest operation are null. " +
+                   "This may be due to a problem with the Reference URI " +
+                   "or its Transforms.");
             }
             os.flush();
             if (cache != null && cache) {
