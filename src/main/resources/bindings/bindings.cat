@@ -1,8 +1,15 @@
-PUBLIC "-//W3C//DTD XMLSchema 200102//EN" "schemas/XMLSchema.dtd"
-PUBLIC "http://www.w3.org/2001/XMLSchema.dtd" "schemas/XMLSchema.dtd"
-SYSTEM "http://www.w3.org/2001/XMLSchema.dtd" "schemas/XMLSchema.dtd"
-
-PUBLIC "datatypes" "schemas/datatypes.dtd"
-SYSTEM "datatypes.dtd" "schemas/datatypes.dtd"
-
-SYSTEM "http://www.w3.org/2001/xml.xsd" "schemas/xml.xsd"
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog"
+         prefer="public">
+    <public publicId="-//W3C//DTD XMLSchema 200102//EN"
+            uri="schemas/XMLSchema.dtd"/>
+    <public publicId="http://www.w3.org/2001/XMLSchema.dtd"
+            uri="schemas/XMLSchema.dtd"/>
+    <system systemId="http://www.w3.org/2001/XMLSchema.dtd"
+            uri="schemas/XMLSchema.dtd"/>
+    <public publicId="datatypes"
+            uri="schemas/datatypes.dtd"/>
+    <system systemId="datatypes.dtd"
+            uri="schemas/datatypes.dtd"/>
+    <system systemId="http://www.w3.org/2001/xml.xsd"
+            uri="schemas/xml.xsd"/>
+</catalog>
