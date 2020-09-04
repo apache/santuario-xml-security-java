@@ -749,7 +749,6 @@ public final class XMLSignature extends SignatureElementProxy {
             SignatureAlgorithm sa = si.getSignatureAlgorithm();
             LOG.debug("signatureMethodURI = {}", sa.getAlgorithmURI());
             LOG.debug("jceSigAlgorithm = {}", sa.getJCEAlgorithmString());
-            LOG.debug("PublicKey = {}", pk);
 
             byte sigBytes[] = null;
             try (SignerOutputStream so = new SignerOutputStream(sa);
@@ -757,6 +756,7 @@ public final class XMLSignature extends SignatureElementProxy {
 
                 sa.initVerify(pk);
                 LOG.debug("jceSigProvider = {}", sa.getJCEProviderName());
+                LOG.debug("PublicKey = {}", pk);
 
                 // Get the canonicalized (normalized) SignedInfo
                 si.signInOctetStream(bos);
