@@ -51,8 +51,8 @@ public class OutputProcessorChainTest {
     abstract class AbstractOutputProcessor implements OutputProcessor {
 
         private XMLSecurityConstants.Phase phase = XMLSecurityConstants.Phase.PROCESSING;
-        private Set<Object> beforeProcessors = new HashSet<>();
-        private Set<Object> afterProcessors = new HashSet<>();
+        private Set<Class<? extends OutputProcessor>> beforeProcessors = new HashSet<>();
+        private Set<Class<? extends OutputProcessor>> afterProcessors = new HashSet<>();
 
         @Override
         public void setXMLSecurityProperties(XMLSecurityProperties xmlSecurityProperties) {
@@ -67,22 +67,22 @@ public class OutputProcessorChainTest {
         }
 
         @Override
-        public void addBeforeProcessor(Object processor) {
+        public void addBeforeProcessor(Class<? extends OutputProcessor> processor) {
             this.beforeProcessors.add(processor);
         }
 
         @Override
-        public Set<Object> getBeforeProcessors() {
+        public Set<Class<? extends OutputProcessor>> getBeforeProcessors() {
             return beforeProcessors;
         }
 
         @Override
-        public void addAfterProcessor(Object processor) {
+        public void addAfterProcessor(Class<? extends OutputProcessor> processor) {
             this.afterProcessors.add(processor);
         }
 
         @Override
-        public Set<Object> getAfterProcessors() {
+        public Set<Class<? extends OutputProcessor>> getAfterProcessors() {
             return afterProcessors;
         }
 
@@ -186,18 +186,18 @@ public class OutputProcessorChainTest {
         AbstractOutputProcessor outputProcessor4 = new AbstractOutputProcessor() {
         };
         outputProcessor4.setPhase(XMLSecurityConstants.Phase.POSTPROCESSING);
-        outputProcessor4.addBeforeProcessor(outputProcessor3.getClass().getName());
+        outputProcessor4.addBeforeProcessor(outputProcessor3.getClass());
         outputProcessorChain.addProcessor(outputProcessor4);
 
         AbstractOutputProcessor outputProcessor5 = new AbstractOutputProcessor() {
         };
         outputProcessor5.setPhase(XMLSecurityConstants.Phase.PREPROCESSING);
-        outputProcessor5.addBeforeProcessor(outputProcessor2.getClass().getName());
+        outputProcessor5.addBeforeProcessor(outputProcessor2.getClass());
         outputProcessorChain.addProcessor(outputProcessor5);
 
         AbstractOutputProcessor outputProcessor6 = new AbstractOutputProcessor() {
         };
-        outputProcessor6.addBeforeProcessor(outputProcessor1.getClass().getName());
+        outputProcessor6.addBeforeProcessor(outputProcessor1.getClass());
         outputProcessorChain.addProcessor(outputProcessor6);
 
         assertEquals(outputProcessorChain.getProcessors().get(0), outputProcessor5);
@@ -229,18 +229,18 @@ public class OutputProcessorChainTest {
         AbstractOutputProcessor outputProcessor4 = new AbstractOutputProcessor() {
         };
         outputProcessor4.setPhase(XMLSecurityConstants.Phase.POSTPROCESSING);
-        outputProcessor4.addAfterProcessor(outputProcessor3.getClass().getName());
+        outputProcessor4.addAfterProcessor(outputProcessor3.getClass());
         outputProcessorChain.addProcessor(outputProcessor4);
 
         AbstractOutputProcessor outputProcessor5 = new AbstractOutputProcessor() {
         };
         outputProcessor5.setPhase(XMLSecurityConstants.Phase.PREPROCESSING);
-        outputProcessor5.addAfterProcessor(outputProcessor2.getClass().getName());
+        outputProcessor5.addAfterProcessor(outputProcessor2.getClass());
         outputProcessorChain.addProcessor(outputProcessor5);
 
         AbstractOutputProcessor outputProcessor6 = new AbstractOutputProcessor() {
         };
-        outputProcessor6.addAfterProcessor(outputProcessor1.getClass().getName());
+        outputProcessor6.addAfterProcessor(outputProcessor1.getClass());
         outputProcessorChain.addProcessor(outputProcessor6);
 
         assertEquals(outputProcessorChain.getProcessors().get(0), outputProcessor2);
@@ -273,14 +273,14 @@ public class OutputProcessorChainTest {
 
         AbstractOutputProcessor outputProcessor5 = new AbstractOutputProcessor() {
         };
-        outputProcessor5.addBeforeProcessor("");
-        outputProcessor5.addAfterProcessor(outputProcessor3.getClass().getName());
+        outputProcessor5.addBeforeProcessor(outputProcessor4.getClass());
+        outputProcessor5.addAfterProcessor(outputProcessor3.getClass());
         outputProcessorChain.addProcessor(outputProcessor5);
 
         AbstractOutputProcessor outputProcessor6 = new AbstractOutputProcessor() {
         };
-        outputProcessor6.addBeforeProcessor(outputProcessor5.getClass().getName());
-        outputProcessor6.addAfterProcessor("");
+        outputProcessor6.addBeforeProcessor(outputProcessor5.getClass());
+        outputProcessor6.addAfterProcessor(outputProcessor3.getClass());
         outputProcessorChain.addProcessor(outputProcessor6);
 
         assertEquals(outputProcessorChain.getProcessors().get(0), outputProcessor1);

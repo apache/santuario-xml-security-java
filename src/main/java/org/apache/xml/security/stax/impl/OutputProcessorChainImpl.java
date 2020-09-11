@@ -117,8 +117,7 @@ public class OutputProcessorChainImpl implements OutputProcessorChain {
 
             for (int i = endPhaseIdx - 1; i >= startPhaseIdx; i--) {
                 OutputProcessor outputProcessor = outputProcessors.get(i);
-                if (newOutputProcessor.getAfterProcessors().contains(outputProcessor)
-                        || newOutputProcessor.getAfterProcessors().contains(outputProcessor.getClass().getName())) {
+                if (newOutputProcessor.getAfterProcessors().contains(outputProcessor.getClass())) {
                     idxToInsert = i + 1;
                     break;
                 }
@@ -129,8 +128,7 @@ public class OutputProcessorChainImpl implements OutputProcessorChain {
 
             for (int i = startPhaseIdx; i < endPhaseIdx; i++) {
                 OutputProcessor outputProcessor = outputProcessors.get(i);
-                if (newOutputProcessor.getBeforeProcessors().contains(outputProcessor)
-                        || newOutputProcessor.getBeforeProcessors().contains(outputProcessor.getClass().getName())) {
+                if (newOutputProcessor.getBeforeProcessors().contains(outputProcessor.getClass())) {
                     idxToInsert = i;
                     break;
                 }
@@ -142,8 +140,7 @@ public class OutputProcessorChainImpl implements OutputProcessorChain {
 
             for (int i = startPhaseIdx; i < endPhaseIdx; i++) {
                 OutputProcessor outputProcessor = outputProcessors.get(i);
-                if (newOutputProcessor.getBeforeProcessors().contains(outputProcessor)
-                        || newOutputProcessor.getBeforeProcessors().contains(outputProcessor.getClass().getName())) {
+                if (newOutputProcessor.getBeforeProcessors().contains(outputProcessor.getClass())) {
                     idxToInsert = i;
                     found = true;
                     break;
@@ -154,8 +151,7 @@ public class OutputProcessorChainImpl implements OutputProcessorChain {
             } else {
                 for (int i = endPhaseIdx - 1; i >= startPhaseIdx; i--) {
                     OutputProcessor outputProcessor = outputProcessors.get(i);
-                    if (newOutputProcessor.getAfterProcessors().contains(outputProcessor)
-                            || newOutputProcessor.getAfterProcessors().contains(outputProcessor.getClass().getName())) {
+                    if (newOutputProcessor.getAfterProcessors().contains(outputProcessor.getClass())) {
                         idxToInsert = i + 1;
                         break;
                     }

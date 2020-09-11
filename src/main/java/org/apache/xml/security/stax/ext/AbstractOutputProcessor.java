@@ -53,8 +53,8 @@ public abstract class AbstractOutputProcessor implements OutputProcessor {
     protected XMLSecurityConstants.Action action;
 
     private XMLSecurityConstants.Phase phase = XMLSecurityConstants.Phase.PROCESSING;
-    private Set<Object> beforeProcessors;
-    private Set<Object> afterProcessors;
+    private Set<Class<? extends OutputProcessor>> beforeProcessors;
+    private Set<Class<? extends OutputProcessor>> afterProcessors;
 
     protected AbstractOutputProcessor() throws XMLSecurityException {
         super();
@@ -85,7 +85,7 @@ public abstract class AbstractOutputProcessor implements OutputProcessor {
     }
 
     @Override
-    public void addBeforeProcessor(Object processor) {
+    public void addBeforeProcessor(Class<? extends OutputProcessor> processor) {
         if (this.beforeProcessors == null) {
             this.beforeProcessors = new HashSet<>();
         }
@@ -93,7 +93,7 @@ public abstract class AbstractOutputProcessor implements OutputProcessor {
     }
 
     @Override
-    public Set<Object> getBeforeProcessors() {
+    public Set<Class<? extends OutputProcessor>> getBeforeProcessors() {
         if (this.beforeProcessors == null) {
             return Collections.emptySet();
         }
@@ -101,7 +101,7 @@ public abstract class AbstractOutputProcessor implements OutputProcessor {
     }
 
     @Override
-    public void addAfterProcessor(Object processor) {
+    public void addAfterProcessor(Class<? extends OutputProcessor> processor) {
         if (this.afterProcessors == null) {
             this.afterProcessors = new HashSet<>();
         }
@@ -109,7 +109,7 @@ public abstract class AbstractOutputProcessor implements OutputProcessor {
     }
 
     @Override
-    public Set<Object> getAfterProcessors() {
+    public Set<Class<? extends OutputProcessor>> getAfterProcessors() {
         if (this.afterProcessors == null) {
             return Collections.emptySet();
         }

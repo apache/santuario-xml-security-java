@@ -50,7 +50,7 @@ public class XMLSignatureEndingOutputProcessor extends AbstractSignatureEndingOu
 
     public XMLSignatureEndingOutputProcessor(XMLSignatureOutputProcessor signatureOutputProcessor) throws XMLSecurityException {
         super(signatureOutputProcessor);
-        this.addAfterProcessor(XMLSignatureOutputProcessor.class.getName());
+        this.addAfterProcessor(XMLSignatureOutputProcessor.class);
     }
 
     @Override
@@ -61,7 +61,7 @@ public class XMLSignatureEndingOutputProcessor extends AbstractSignatureEndingOu
         this.signedInfoProcessor = new SignedInfoProcessor(signatureAlgorithm, signatureId, xmlSecStartElement);
         this.signedInfoProcessor.setXMLSecurityProperties(getSecurityProperties());
         this.signedInfoProcessor.setAction(getAction());
-        this.signedInfoProcessor.addAfterProcessor(XMLSignatureEndingOutputProcessor.class.getName());
+        this.signedInfoProcessor.addAfterProcessor(XMLSignatureEndingOutputProcessor.class);
         this.signedInfoProcessor.init(outputProcessorChain);
         return this.signedInfoProcessor;
     }

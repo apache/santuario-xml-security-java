@@ -146,9 +146,9 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
                 throws XMLSecurityException {
 
             super();
-            this.addBeforeProcessor(AbstractEncryptEndingOutputProcessor.class.getName());
-            this.addBeforeProcessor(AbstractInternalEncryptionOutputProcessor.class.getName());
-            this.addAfterProcessor(AbstractEncryptOutputProcessor.class.getName());
+            this.addBeforeProcessor(AbstractEncryptEndingOutputProcessor.class);
+            this.addBeforeProcessor(AbstractInternalEncryptionOutputProcessor.class);
+            this.addAfterProcessor(AbstractEncryptOutputProcessor.class);
             this.setEncryptionPartDef(encryptionPartDef);
             this.setXmlSecStartElement(xmlSecStartElement);
             this.setEncoding(encoding);
