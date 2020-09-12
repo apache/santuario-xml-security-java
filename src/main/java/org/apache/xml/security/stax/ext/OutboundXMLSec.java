@@ -108,10 +108,11 @@ public class OutboundXMLSec {
         SecurePart signEntireRequestPart = null;
         SecurePart encryptEntireRequestPart = null;
 
+        int actionOrder = 0;
         for (XMLSecurityConstants.Action action : securityProperties.getActions()) {
             if (XMLSecurityConstants.SIGNATURE.equals(action)) {
                 XMLSignatureOutputProcessor signatureOutputProcessor = new XMLSignatureOutputProcessor();
-                initializeOutputProcessor(outputProcessorChain, signatureOutputProcessor, action);
+                initializeOutputProcessor(outputProcessorChain, signatureOutputProcessor, action, actionOrder++);
 
                 configureSignatureKeys(outboundSecurityContext);
                 List<SecurePart> signatureParts = securityProperties.getSignatureSecureParts();
@@ -141,7 +142,7 @@ public class OutboundXMLSec {
                 }
             } else if (XMLSecurityConstants.ENCRYPTION.equals(action)) {
                 XMLEncryptOutputProcessor encryptOutputProcessor = new XMLEncryptOutputProcessor();
-                initializeOutputProcessor(outputProcessorChain, encryptOutputProcessor, action);
+                initializeOutputProcessor(outputProcessorChain, encryptOutputProcessor, action, actionOrder++);
 
                 configureEncryptionKeys(outboundSecurityContext);
                 List<SecurePart> encryptionParts = securityProperties.getEncryptionSecureParts();
@@ -167,11 +168,11 @@ public class OutboundXMLSec {
         }
         if (output instanceof OutputStream) {
             final FinalOutputProcessor finalOutputProcessor = new FinalOutputProcessor((OutputStream) output, encoding);
-            initializeOutputProcessor(outputProcessorChain, finalOutputProcessor, null);
+            initializeOutputProcessor(outputProcessorChain, finalOutputProcessor, null, -1);
 
         } else if (output instanceof XMLStreamWriter) {
             final FinalOutputProcessor finalOutputProcessor = new FinalOutputProcessor((XMLStreamWriter) output);
-            initializeOutputProcessor(outputProcessorChain, finalOutputProcessor, null);
+            initializeOutputProcessor(outputProcessorChain, finalOutputProcessor, null, -1);
 
         } else {
             throw new IllegalArgumentException(output + " is not supported as output");
@@ -184,9 +185,9 @@ public class OutboundXMLSec {
         return streamWriter;
     }
 
-    private void initializeOutputProcessor(OutputProcessorChainImpl outputProcessorChain, OutputProcessor outputProcessor, XMLSecurityConstants.Action action) throws XMLSecurityException {
+    private void initializeOutputProcessor(OutputProcessorChainImpl outputProcessorChain, OutputProcessor outputProcessor, XMLSecurityConstants.Action action, int actionOrder) throws XMLSecurityException {
         outputProcessor.setXMLSecurityProperties(securityProperties);
-        outputProcessor.setAction(action);
+        outputProcessor.setAction(action, actionOrder);
         outputProcessor.init(outputProcessorChain);
     }
 
