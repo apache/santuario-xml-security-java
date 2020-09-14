@@ -312,7 +312,7 @@ public class XMLEncryptOutputProcessor extends AbstractEncryptOutputProcessor {
                         }
                     }
                 };
-        processor.getAfterProcessors().add(XMLEncryptOutputProcessor.class.getName());
+        processor.getAfterProcessors().add(XMLEncryptOutputProcessor.class);
         return processor;
     }
 }

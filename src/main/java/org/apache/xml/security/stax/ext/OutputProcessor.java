@@ -54,28 +54,28 @@ public interface OutputProcessor {
      *
      * @param processor
      */
-    void addBeforeProcessor(Object processor);
+    void addBeforeProcessor(Class<? extends OutputProcessor> processor);
 
     /**
      * This OutputProcessor will be added before the processors in this set
      *
      * @return The set with the named OutputProcessor
      */
-    Set<Object> getBeforeProcessors();
+    Set<Class<? extends OutputProcessor>> getBeforeProcessors();
 
     /**
      * Add this processor after the given processor
      *
      * @param processor
      */
-    void addAfterProcessor(Object processor);
+    void addAfterProcessor(Class<? extends OutputProcessor> processor);
 
     /**
      * This OutputProcessor will be added after the processors in this set
      *
      * @return The set with the named OutputProcessor
      */
-    Set<Object> getAfterProcessors();
+    Set<Class<? extends OutputProcessor>> getAfterProcessors();
 
     /**
      * The Phase in which this OutputProcessor should be applied

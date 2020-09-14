@@ -264,7 +264,7 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
         public InternalSignatureOutputProcessor(SignaturePartDef signaturePartDef, XMLSecStartElement xmlSecStartElement)
                 throws XMLSecurityException {
             super();
-            this.addBeforeProcessor(InternalSignatureOutputProcessor.class.getName());
+            this.addBeforeProcessor(InternalSignatureOutputProcessor.class);
             this.signaturePartDef = signaturePartDef;
             this.xmlSecStartElement = xmlSecStartElement;
         }

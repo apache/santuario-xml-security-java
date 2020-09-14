@@ -104,8 +104,8 @@ public class XMLSignatureOutputProcessor extends AbstractSignatureOutputProcesso
                     internalSignatureOutputProcessor = new InternalSignatureOutputProcessor(signaturePartDef, xmlSecStartElement);
                     internalSignatureOutputProcessor.setXMLSecurityProperties(getSecurityProperties());
                     internalSignatureOutputProcessor.setAction(getAction());
-                    internalSignatureOutputProcessor.addAfterProcessor(XMLSignatureOutputProcessor.class.getName());
-                    internalSignatureOutputProcessor.addBeforeProcessor(XMLSignatureEndingOutputProcessor.class.getName());
+                    internalSignatureOutputProcessor.addAfterProcessor(XMLSignatureOutputProcessor.class);
+                    internalSignatureOutputProcessor.addBeforeProcessor(XMLSignatureEndingOutputProcessor.class);
                     internalSignatureOutputProcessor.init(outputProcessorChain);
 
                     setActiveInternalSignatureOutputProcessor(internalSignatureOutputProcessor);
