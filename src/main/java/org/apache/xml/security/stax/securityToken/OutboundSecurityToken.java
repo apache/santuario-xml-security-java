@@ -20,6 +20,7 @@ package org.apache.xml.security.stax.securityToken;
 
 import java.security.Key;
 
+import org.apache.xml.security.stax.ext.OutputProcessor;
 import org.w3c.dom.Element;
 
 import org.apache.xml.security.exceptions.XMLSecurityException;
@@ -33,7 +34,7 @@ public interface OutboundSecurityToken extends SecurityToken {
      *
      * @return the processor responsible for this token
      */
-    Object getProcessor();
+    OutputProcessor getProcessor();
 
     /**
      * Returns the secret key

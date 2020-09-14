@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.xml.security.stax.ext.OutputProcessor;
 import org.w3c.dom.Element;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.securityToken.OutboundSecurityToken;
@@ -36,7 +37,7 @@ import org.apache.xml.security.stax.securityToken.SecurityTokenConstants.KeyIden
 public class GenericOutboundSecurityToken extends AbstractSecurityToken implements OutboundSecurityToken {
 
     private SecurityTokenConstants.TokenType tokenType;
-    private Object processor;
+    private OutputProcessor processor;
     private final List<OutboundSecurityToken> wrappedTokens = new ArrayList<>();
     private OutboundSecurityToken keyWrappingToken;
     private Element customTokenReference;
@@ -60,11 +61,11 @@ public class GenericOutboundSecurityToken extends AbstractSecurityToken implemen
     }
 
     @Override
-    public Object getProcessor() {
+    public OutputProcessor getProcessor() {
         return processor;
     }
 
-    public void setProcessor(Object processor) {
+    public void setProcessor(OutputProcessor processor) {
         this.processor = processor;
     }
 
