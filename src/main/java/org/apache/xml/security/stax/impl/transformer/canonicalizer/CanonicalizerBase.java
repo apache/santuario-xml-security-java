@@ -63,7 +63,7 @@ public abstract class CanonicalizerBase extends TransformIdentity {
         NODE_AFTER_DOCUMENT_ELEMENT
     }
 
-    private static final Map<String, byte[]> cache = new WeakHashMap<String, byte[]>();
+    private static final Map<String, byte[]> CACHE = Collections.synchronizedMap(new WeakHashMap<String, byte[]>());
     private final C14NStack<XMLSecEvent> outputStack = new C14NStack<XMLSecEvent>();
     private boolean includeComments = false;
     private DocumentLevel currentDocumentLevel = DocumentLevel.NODE_BEFORE_DOCUMENT_ELEMENT;
@@ -268,11 +268,11 @@ public abstract class CanonicalizerBase extends TransformIdentity {
                     outputStream.write('<');
                     final String prefix = xmlSecStartElement.getName().getPrefix();
                     if (prefix != null && !prefix.isEmpty()) {
-                        UtfHelpper.writeByte(prefix, outputStream, cache);
+                        UtfHelpper.writeByte(prefix, outputStream, CACHE);
                         outputStream.write(DOUBLEPOINT);
                     }
                     final String name = xmlSecStartElement.getName().getLocalPart();
-                    UtfHelpper.writeByte(name, outputStream, cache);
+                    UtfHelpper.writeByte(name, outputStream, CACHE);
 
                     if (!utilizedNamespaces.isEmpty()) {
                         Collections.sort(utilizedNamespaces);
@@ -283,9 +283,9 @@ public abstract class CanonicalizerBase extends TransformIdentity {
                             }
 
                             if (xmlSecNamespace.isDefaultNamespaceDeclaration()) {
-                                outputAttrToWriter(null, XMLNS, xmlSecNamespace.getNamespaceURI(), outputStream, cache);
+                                outputAttrToWriter(null, XMLNS, xmlSecNamespace.getNamespaceURI(), outputStream, CACHE);
                             } else {
-                                outputAttrToWriter(XMLNS, xmlSecNamespace.getPrefix(), xmlSecNamespace.getNamespaceURI(), outputStream, cache);
+                                outputAttrToWriter(XMLNS, xmlSecNamespace.getPrefix(), xmlSecNamespace.getNamespaceURI(), outputStream, CACHE);
                             }
                         }
                     }
@@ -298,9 +298,9 @@ public abstract class CanonicalizerBase extends TransformIdentity {
                             final QName attributeName = xmlSecAttribute.getName();
                             final String attributeNamePrefix = attributeName.getPrefix();
                             if (attributeNamePrefix != null && !attributeNamePrefix.isEmpty()) {
-                                outputAttrToWriter(attributeNamePrefix, attributeName.getLocalPart(), xmlSecAttribute.getValue(), outputStream, cache);
+                                outputAttrToWriter(attributeNamePrefix, attributeName.getLocalPart(), xmlSecAttribute.getValue(), outputStream, CACHE);
                             } else {
-                                outputAttrToWriter(null, attributeName.getLocalPart(), xmlSecAttribute.getValue(), outputStream, cache);
+                                outputAttrToWriter(null, attributeName.getLocalPart(), xmlSecAttribute.getValue(), outputStream, CACHE);
                             }
                         }
                     }
@@ -312,10 +312,10 @@ public abstract class CanonicalizerBase extends TransformIdentity {
                     final String localPrefix = xmlSecEndElement.getName().getPrefix();
                     outputStream.write(_END_TAG);
                     if (localPrefix != null && !localPrefix.isEmpty()) {
-                        UtfHelpper.writeByte(localPrefix, outputStream, cache);
+                        UtfHelpper.writeByte(localPrefix, outputStream, CACHE);
                         outputStream.write(DOUBLEPOINT);
                     }
-                    UtfHelpper.writeByte(xmlSecEndElement.getName().getLocalPart(), outputStream, cache);
+                    UtfHelpper.writeByte(xmlSecEndElement.getName().getLocalPart(), outputStream, CACHE);
                     outputStream.write('>');
 
                     //We finished with this level, pop to the previous definitions.
@@ -399,13 +399,13 @@ public abstract class CanonicalizerBase extends TransformIdentity {
     }
 
     protected static void outputAttrToWriter(final String prefix, final String name, final String value, final OutputStream writer,
-                                             final Map<String, byte[]> cache) throws IOException {
+                                             final Map<String, byte[]> CACHE) throws IOException {
         writer.write(' ');
         if (prefix != null) {
-            UtfHelpper.writeByte(prefix, writer, cache);
+            UtfHelpper.writeByte(prefix, writer, CACHE);
             UtfHelpper.writeCodePointToUtf8(DOUBLEPOINT, writer);
         }
-        UtfHelpper.writeByte(name, writer, cache);
+        UtfHelpper.writeByte(name, writer, CACHE);
         writer.write(EQUAL_STRING);
         byte[] toWrite;
         final int length = value.length();
