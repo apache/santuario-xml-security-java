@@ -26,6 +26,7 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Collections;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -35,8 +36,8 @@ import java.util.WeakHashMap;
  */
 public final class XMLSecNamespaceImpl extends XMLSecEventBaseImpl implements XMLSecNamespace {
 
-    private static final Map<String, Map<String, XMLSecNamespace>> xmlSecNamespaceMap =
-            new WeakHashMap<>();
+    private static final Map<String, Map<String, XMLSecNamespace>> XMLSEC_NS_MAP =
+            Collections.synchronizedMap(new WeakHashMap<String, Map<String, XMLSecNamespace>>());
 
     private String prefix;
     private final String uri;
@@ -57,7 +58,7 @@ public final class XMLSecNamespaceImpl extends XMLSecEventBaseImpl implements XM
         if (uriToUse == null) {
             uriToUse = "";
         }
-        Map<String, XMLSecNamespace> nsMap = xmlSecNamespaceMap.get(prefixToUse);
+        Map<String, XMLSecNamespace> nsMap = XMLSEC_NS_MAP.get(prefixToUse);
         if (nsMap != null) {
             XMLSecNamespace xmlSecNamespace = nsMap.get(uriToUse);
             if (xmlSecNamespace != null) {
@@ -71,7 +72,7 @@ public final class XMLSecNamespaceImpl extends XMLSecEventBaseImpl implements XM
             nsMap = new WeakHashMap<>();
             XMLSecNamespace xmlSecNamespace = new XMLSecNamespaceImpl(prefixToUse, uriToUse);
             nsMap.put(uriToUse, xmlSecNamespace);
-            xmlSecNamespaceMap.put(prefixToUse, nsMap);
+            XMLSEC_NS_MAP.put(prefixToUse, nsMap);
             return xmlSecNamespace;
         }
     }
