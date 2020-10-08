@@ -42,7 +42,7 @@ jobs:
       if: ${{ github.event_name == 'pull_request' }}
 
     - name: Cache local Maven repository
-    - uses: actions/cache@v2.1.1
+      uses: actions/cache@v2.1.1
       with:
         path: ~/.m2
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
