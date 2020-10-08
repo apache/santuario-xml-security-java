@@ -70,7 +70,7 @@ public class UnknownAlgoSignatureTest {
 
     public UnknownAlgoSignatureTest() throws Exception {
         FileInputStream fis = null;
-        if (BASEDIR != null && !"".equals(BASEDIR)) {
+        if (BASEDIR != null && BASEDIR.length() != 0) {
             fis = new FileInputStream(BASEDIR + SEP + KEYSTORE_FILE);
         } else {
             fis = new FileInputStream(KEYSTORE_FILE);
@@ -128,7 +128,7 @@ public class UnknownAlgoSignatureTest {
 
     private XMLSignature unmarshalXMLSignature(String fileName) throws Exception {
         File file = null;
-        if (BASEDIR != null && !"".equals(BASEDIR)) {
+        if (BASEDIR != null && BASEDIR.length() != 0) {
             file = new File(BASEDIR + SEP + SIGNATURE_SOURCE_PATH, fileName);
         } else {
             file = new File(SIGNATURE_SOURCE_PATH, fileName);

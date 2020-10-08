@@ -85,7 +85,7 @@ public class XMLEncryption11Test {
         String filename =
             "src/test/resources/org/w3c/www/interop/xmlenc-core-11/plaintext.xml";
         String basedir = System.getProperty("basedir");
-        if (basedir != null && !"".equals(basedir)) {
+        if (basedir != null && basedir.length() != 0) {
             filename = basedir + "/" + filename;
         }
         File f = new File(filename);
@@ -128,7 +128,7 @@ public class XMLEncryption11Test {
             String keystore =
                 "src/test/resources/org/w3c/www/interop/xmlenc-core-11/RSA-2048_SHA256WithRSA.jks";
             String basedir = System.getProperty("basedir");
-            if (basedir != null && !"".equals(basedir)) {
+            if (basedir != null && basedir.length() != 0) {
                 keystore = basedir + "/" + keystore;
             }
 
@@ -168,7 +168,7 @@ public class XMLEncryption11Test {
             String keystore =
                 "src/test/resources/org/w3c/www/interop/xmlenc-core-11/RSA-2048_SHA256WithRSA.jks";
             String basedir = System.getProperty("basedir");
-            if (basedir != null && !"".equals(basedir)) {
+            if (basedir != null && basedir.length() != 0) {
                 keystore = basedir + "/" + keystore;
             }
 
@@ -183,7 +183,7 @@ public class XMLEncryption11Test {
 
             // Perform encryption
             String filename = "src/test/resources/org/w3c/www/interop/xmlenc-core-11/plaintext.xml";
-            if (basedir != null && !"".equals(basedir)) {
+            if (basedir != null && basedir.length() != 0) {
                 filename = basedir + "/" + filename;
             }
             File f = new File(filename);
@@ -232,7 +232,7 @@ public class XMLEncryption11Test {
             String keystore =
                 "src/test/resources/org/w3c/www/interop/xmlenc-core-11/RSA-2048_SHA256WithRSA.jks";
             String basedir = System.getProperty("basedir");
-            if (basedir != null && !"".equals(basedir)) {
+            if (basedir != null && basedir.length() != 0) {
                 keystore = basedir + "/" + keystore;
             }
 
@@ -247,7 +247,7 @@ public class XMLEncryption11Test {
 
             // Perform encryption
             String filename = "src/test/resources/org/w3c/www/interop/xmlenc-core-11/plaintext.xml";
-            if (basedir != null && !"".equals(basedir)) {
+            if (basedir != null && basedir.length() != 0) {
                 filename = basedir + "/" + filename;
             }
             File f = new File(filename);
@@ -297,7 +297,7 @@ public class XMLEncryption11Test {
             String keystore =
                 "src/test/resources/org/w3c/www/interop/xmlenc-core-11/RSA-3072_SHA256WithRSA.jks";
             String basedir = System.getProperty("basedir");
-            if (basedir != null && !"".equals(basedir)) {
+            if (basedir != null && basedir.length() != 0) {
                 keystore = basedir + "/" + keystore;
             }
 
@@ -336,7 +336,7 @@ public class XMLEncryption11Test {
             String keystore =
                 "src/test/resources/org/w3c/www/interop/xmlenc-core-11/RSA-3072_SHA256WithRSA.jks";
             String basedir = System.getProperty("basedir");
-            if (basedir != null && !"".equals(basedir)) {
+            if (basedir != null && basedir.length() != 0) {
                 keystore = basedir + "/" + keystore;
             }
 
@@ -351,7 +351,7 @@ public class XMLEncryption11Test {
 
             // Perform encryption
             String filename = "src/test/resources/org/w3c/www/interop/xmlenc-core-11/plaintext.xml";
-            if (basedir != null && !"".equals(basedir)) {
+            if (basedir != null && basedir.length() != 0) {
                 filename = basedir + "/" + filename;
             }
             File f = new File(filename);
@@ -400,7 +400,7 @@ public class XMLEncryption11Test {
             String keystore =
                 "src/test/resources/org/w3c/www/interop/xmlenc-core-11/RSA-3072_SHA256WithRSA.jks";
             String basedir = System.getProperty("basedir");
-            if (basedir != null && !"".equals(basedir)) {
+            if (basedir != null && basedir.length() != 0) {
                 keystore = basedir + "/" + keystore;
             }
 
@@ -437,7 +437,7 @@ public class XMLEncryption11Test {
             String keystore =
                 "src/test/resources/org/w3c/www/interop/xmlenc-core-11/RSA-3072_SHA256WithRSA.jks";
             String basedir = System.getProperty("basedir");
-            if (basedir != null && !"".equals(basedir)) {
+            if (basedir != null && basedir.length() != 0) {
                 keystore = basedir + "/" + keystore;
             }
 
@@ -452,7 +452,7 @@ public class XMLEncryption11Test {
 
             // Perform encryption
             String filename = "src/test/resources/org/w3c/www/interop/xmlenc-core-11/plaintext.xml";
-            if (basedir != null && !"".equals(basedir)) {
+            if (basedir != null && basedir.length() != 0) {
                 filename = basedir + "/" + filename;
             }
             File f = new File(filename);
@@ -501,7 +501,7 @@ public class XMLEncryption11Test {
             String keystore =
                 "src/test/resources/org/w3c/www/interop/xmlenc-core-11/RSA-4096_SHA256WithRSA.jks";
             String basedir = System.getProperty("basedir");
-            if (basedir != null && !"".equals(basedir)) {
+            if (basedir != null && basedir.length() != 0) {
                 keystore = basedir + "/" + keystore;
             }
 
@@ -538,7 +538,7 @@ public class XMLEncryption11Test {
             String keystore =
                 "src/test/resources/org/w3c/www/interop/xmlenc-core-11/RSA-4096_SHA256WithRSA.jks";
             String basedir = System.getProperty("basedir");
-            if (basedir != null && !"".equals(basedir)) {
+            if (basedir != null && basedir.length() != 0) {
                 keystore = basedir + "/" + keystore;
             }
 
@@ -553,7 +553,7 @@ public class XMLEncryption11Test {
 
             // Perform encryption
             String filename = "src/test/resources/org/w3c/www/interop/xmlenc-core-11/plaintext.xml";
-            if (basedir != null && !"".equals(basedir)) {
+            if (basedir != null && basedir.length() != 0) {
                 filename = basedir + "/" + filename;
             }
             File f = new File(filename);
@@ -605,7 +605,7 @@ public class XMLEncryption11Test {
     private Document decryptElement(String filename, Key rsaKey, X509Certificate rsaCert) throws Exception {
         // Parse the document in question
         String basedir = System.getProperty("basedir");
-        if (basedir != null && !"".equals(basedir)) {
+        if (basedir != null && basedir.length() != 0) {
             filename = basedir + "/" + filename;
         }
         File f = new File(filename);

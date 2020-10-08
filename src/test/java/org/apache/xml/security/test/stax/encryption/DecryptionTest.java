@@ -1257,7 +1257,7 @@ public class DecryptionTest {
         }
 
         assertTrue(matchedEncryptionAlgorithm);
-        if (keywrapAlgorithm != null && !"".equals(keywrapAlgorithm)) {
+        if (keywrapAlgorithm != null && keywrapAlgorithm.length() != 0) {
             assertTrue(matchedKeywrapAlgorithm);
         }
     }

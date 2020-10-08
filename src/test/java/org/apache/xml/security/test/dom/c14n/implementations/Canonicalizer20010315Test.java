@@ -70,7 +70,7 @@ public class Canonicalizer20010315Test {
     public Canonicalizer20010315Test() {
         prefix = "src/test/resources/org/apache/xml/security/c14n/";
         String basedir = System.getProperty("basedir");
-        if (basedir != null && !"".equals(basedir)) {
+        if (basedir != null && basedir.length() != 0) {
             prefix = basedir + "/" + prefix;
         }
     }

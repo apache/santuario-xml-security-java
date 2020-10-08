@@ -733,7 +733,7 @@ public class Canonicalizer20010315ExclusiveTest {
 
     private String getAbsolutePath(String path) {
         String basedir = System.getProperty("basedir");
-        if (basedir != null && !"".equals(basedir)) {
+        if (basedir != null && basedir.length() != 0) {
             path = basedir + "/" + path;
         }
         return path;

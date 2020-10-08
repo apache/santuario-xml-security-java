@@ -190,7 +190,7 @@ public class PreCalculatedDigestSignatureTest {
 
     private String getAbsolutePath(String path) {
         String basedir = System.getProperty("basedir");
-        if (basedir != null && !"".equals(basedir)) {
+        if (basedir != null && basedir.length() != 0) {
             path = basedir + "/" + path;
         }
         return path;

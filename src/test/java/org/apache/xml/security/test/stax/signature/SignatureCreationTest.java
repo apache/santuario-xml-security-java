@@ -814,7 +814,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // Set the key up
         KeyStore keyStore = KeyStore.getInstance("jks");
         FileInputStream fis = null;
-        if (BASEDIR != null && !"".equals(BASEDIR)) {
+        if (BASEDIR != null && BASEDIR.length() != 0) {
             fis =
                     new FileInputStream(BASEDIR + System.getProperty("file.separator")
                             + "src/test/resources/org/apache/xml/security/samples/input/keystore.jks"

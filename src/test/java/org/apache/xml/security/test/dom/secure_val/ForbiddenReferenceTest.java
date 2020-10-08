@@ -69,7 +69,7 @@ public class ForbiddenReferenceTest extends InteropTestBase {
         String directory, String file, boolean secValidation
     ) throws Exception {
         String basedir = System.getProperty("basedir");
-        if (basedir != null && !"".equals(basedir)) {
+        if (basedir != null && basedir.length() != 0) {
             directory = basedir + "/" + directory;
         }
 

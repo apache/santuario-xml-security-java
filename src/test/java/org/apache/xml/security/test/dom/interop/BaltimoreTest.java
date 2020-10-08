@@ -53,7 +53,7 @@ public class BaltimoreTest extends InteropTestBase {
 
     static {
         String basedir = System.getProperty("basedir");
-        if(basedir != null && !"".equals(basedir)) {
+        if(basedir != null && basedir.length() != 0) {
             merlinsDir15 = basedir + "/" + merlinsDir15;
             merlinsDir16 = basedir + "/" + merlinsDir16;
             merlinsDir23 = basedir + "/" + merlinsDir23;

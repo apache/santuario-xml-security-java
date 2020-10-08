@@ -95,7 +95,7 @@ public class X509DataTest {
         String keystorePass = "xmlsecurity";
         ks = KeyStore.getInstance(keystoreType);
         FileInputStream fis = null;
-        if (BASEDIR != null && !"".equals(BASEDIR)) {
+        if (BASEDIR != null && BASEDIR.length() != 0) {
             fis = new FileInputStream(BASEDIR + "/" + keystoreFile);
         } else {
             fis = new FileInputStream(keystoreFile);

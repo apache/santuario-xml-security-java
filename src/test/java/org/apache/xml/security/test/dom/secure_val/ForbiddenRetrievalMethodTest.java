@@ -45,7 +45,7 @@ public class ForbiddenRetrievalMethodTest {
     public void testMultipleRetrievalMethods() throws Exception {
         FileInputStream fis = null;
         String filename = "src/test/resources/org/apache/xml/security/keyresolver/retrievalmethod3.xml";
-        if (BASEDIR != null && !"".equals(BASEDIR)) {
+        if (BASEDIR != null && BASEDIR.length() != 0) {
             fis = new FileInputStream(BASEDIR + SEP + filename);
         } else {
             fis = new FileInputStream(filename);

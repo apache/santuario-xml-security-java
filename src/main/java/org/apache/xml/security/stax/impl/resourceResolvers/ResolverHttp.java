@@ -82,7 +82,7 @@ public class ResolverHttp implements ResourceResolver, ResourceResolverLookup {
     public InputStream getInputStreamFromExternalReference() throws XMLSecurityException {
         try {
             URI tmp;
-            if (baseURI == null || "".equals(baseURI)) {
+            if (baseURI == null || baseURI.length() == 0) {
                 tmp = new URI(uri);
             } else {
                 tmp = new URI(baseURI).resolve(uri);

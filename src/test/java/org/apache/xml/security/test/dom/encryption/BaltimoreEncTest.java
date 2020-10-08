@@ -89,7 +89,7 @@ public class BaltimoreEncTest {
         String filename =
             "src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml";
         String basedir = System.getProperty("basedir");
-        if (basedir != null && !"".equals(basedir)) {
+        if (basedir != null && basedir.length() != 0) {
             filename = basedir + "/" + filename;
         }
         File f = new File(filename);
@@ -114,7 +114,7 @@ public class BaltimoreEncTest {
 
         // rsaKey
         filename = "src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/rsa.p8";
-        if (basedir != null && !"".equals(basedir)) {
+        if (basedir != null && basedir.length() != 0) {
             filename = basedir + "/" + filename;
         }
 
@@ -392,7 +392,7 @@ public class BaltimoreEncTest {
         // Parse the document in question
 
         String basedir = System.getProperty("basedir");
-        if (basedir != null && !"".equals(basedir)) {
+        if (basedir != null && basedir.length() != 0) {
             filename = basedir + "/" + filename;
         }
         File f = new File(filename);
@@ -431,7 +431,7 @@ public class BaltimoreEncTest {
 
         // Parse the document in question
         String basedir = System.getProperty("basedir");
-        if (basedir != null && !"".equals(basedir)) {
+        if (basedir != null && basedir.length() != 0) {
             filename = basedir + "/" + filename;
         }
         File f = new File(filename);

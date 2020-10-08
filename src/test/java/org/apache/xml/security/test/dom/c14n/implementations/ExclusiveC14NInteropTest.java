@@ -114,7 +114,7 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
 
     private String t(String directory, String file, boolean secureValidation) throws Exception {
         String basedir = System.getProperty("basedir");
-        if (basedir != null && !"".equals(basedir)) {
+        if (basedir != null && basedir.length() != 0) {
             directory = basedir + "/" + directory;
         }
 

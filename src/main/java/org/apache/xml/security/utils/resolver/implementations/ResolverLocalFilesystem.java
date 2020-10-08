@@ -129,7 +129,7 @@ public class ResolverLocalFilesystem extends ResourceResolverSpi {
 
     private static URI getNewURI(String uri, String baseURI) throws URISyntaxException {
         URI newUri = null;
-        if (baseURI == null || "".equals(baseURI)) {
+        if (baseURI == null || baseURI.length() == 0) {
             newUri = new URI(uri);
         } else {
             newUri = new URI(baseURI).resolve(uri);

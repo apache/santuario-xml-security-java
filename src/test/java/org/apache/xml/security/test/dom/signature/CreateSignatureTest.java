@@ -119,7 +119,7 @@ public class CreateSignatureTest {
 
         KeyStore ks = KeyStore.getInstance("JKS");
         FileInputStream fis = null;
-        if (BASEDIR != null && !"".equals(BASEDIR)) {
+        if (BASEDIR != null && BASEDIR.length() != 0) {
             fis =
                 new FileInputStream(BASEDIR + SEP
                     + "src/test/resources/org/apache/xml/security/samples/input/keystore.jks"
@@ -183,7 +183,7 @@ public class CreateSignatureTest {
 
         KeyStore ks = KeyStore.getInstance("JKS");
         FileInputStream fis = null;
-        if (BASEDIR != null && !"".equals(BASEDIR)) {
+        if (BASEDIR != null && BASEDIR.length() != 0) {
             fis =
                 new FileInputStream(BASEDIR + SEP
                     + "src/test/resources/org/apache/xml/security/samples/input/keystore.jks"
@@ -555,7 +555,7 @@ public class CreateSignatureTest {
     private String doSignWithCert() throws Exception {
         KeyStore ks = KeyStore.getInstance("JKS");
         FileInputStream fis = null;
-        if (BASEDIR != null && !"".equals(BASEDIR)) {
+        if (BASEDIR != null && BASEDIR.length() != 0) {
             fis = new FileInputStream(BASEDIR + SEP +
             "src/test/resources/test.jks");
         } else {

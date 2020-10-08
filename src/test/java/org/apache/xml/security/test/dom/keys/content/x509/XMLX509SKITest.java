@@ -52,7 +52,7 @@ public class XMLX509SKITest {
     @org.junit.jupiter.api.Test
     public void testGetSKIBytesFromCert() throws Exception {
         File f = null;
-        if (BASEDIR != null && !"".equals(BASEDIR)) {
+        if (BASEDIR != null && BASEDIR.length() != 0) {
             f = new File(BASEDIR + SEP +
                 "src/test/resources/ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/certs/lugh.crt");
         } else {

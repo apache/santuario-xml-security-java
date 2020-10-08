@@ -44,7 +44,7 @@ public class RetrievalMethodResolverTest {
     public void testReferenceToSameRetrievalMethod() throws Exception {
         FileInputStream fis = null;
         String filename = "src/test/resources/org/apache/xml/security/keyresolver/retrievalmethod1.xml";
-        if (BASEDIR != null && !"".equals(BASEDIR)) {
+        if (BASEDIR != null && BASEDIR.length() != 0) {
             fis = new FileInputStream(BASEDIR + SEP + filename);
         } else {
             fis = new FileInputStream(filename);
@@ -63,7 +63,7 @@ public class RetrievalMethodResolverTest {
     public void testLoopBetweenRetrievalMethods() throws Exception {
         FileInputStream fis = null;
         String filename = "src/test/resources/org/apache/xml/security/keyresolver/retrievalmethod2.xml";
-        if (BASEDIR != null && !"".equals(BASEDIR)) {
+        if (BASEDIR != null && BASEDIR.length() != 0) {
             fis = new FileInputStream(BASEDIR + SEP + filename);
         } else {
             fis = new FileInputStream(filename);

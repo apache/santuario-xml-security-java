@@ -48,7 +48,7 @@ public class IAIKTest extends InteropTestBase {
 
     static {
         String basedir = System.getProperty("basedir");
-        if (basedir != null && !"".equals(basedir)) {
+        if (basedir != null && basedir.length() != 0) {
             gregorsDir = basedir + "/" + gregorsDir;
         }
         org.apache.xml.security.Init.init();

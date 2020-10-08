@@ -47,7 +47,7 @@ public class NoKeyInfoTest {
         File f = null;
         String filename =
             "src/test/resources/ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-enveloping-hmac-sha1.xml";
-        if (BASEDIR != null && !"".equals(BASEDIR)) {
+        if (BASEDIR != null && BASEDIR.length() != 0) {
             f = new File(BASEDIR + SEP + filename);
         } else {
             f = new File(filename);

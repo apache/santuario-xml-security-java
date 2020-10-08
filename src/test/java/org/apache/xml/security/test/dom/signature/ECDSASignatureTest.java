@@ -195,7 +195,7 @@ public class ECDSASignatureTest {
     }
 
     private File makeDataFile(String relPath) {
-        if (BASEDIR != null && !"".equals(BASEDIR)) {
+        if (BASEDIR != null && BASEDIR.length() != 0) {
             return new File(BASEDIR + SEP + relPath);
         } else {
             return new File(relPath);

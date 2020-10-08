@@ -93,7 +93,7 @@ public class KeyResolverTest {
         char[] pwd = "secret".toCharArray();
         KeyStore ks = KeyStore.getInstance("JCEKS");
         FileInputStream fis = null;
-        if (BASEDIR != null && !"".equals(BASEDIR)) {
+        if (BASEDIR != null && BASEDIR.length() != 0) {
             fis = new FileInputStream(BASEDIR + SEP + "src/test/resources/test.jceks");
         } else {
             fis = new FileInputStream("src/test/resources/test.jceks");

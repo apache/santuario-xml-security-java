@@ -68,7 +68,7 @@ public class JSRForbiddenRefCountTest {
         String directory, String file
     ) throws Exception {
         String basedir = System.getProperty("basedir");
-        if (basedir != null && !"".equals(basedir)) {
+        if (basedir != null && basedir.length() != 0) {
             directory = basedir + "/" + directory;
         }
 

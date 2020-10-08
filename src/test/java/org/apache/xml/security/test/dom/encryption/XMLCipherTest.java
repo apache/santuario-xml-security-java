@@ -866,7 +866,7 @@ public class XMLCipherTest {
     public void testEncryptedKeyWithRecipient() throws Exception {
         String filename =
             "src/test/resources/org/apache/xml/security/encryption/encryptedKey.xml";
-        if (basedir != null && !"".equals(basedir)) {
+        if (basedir != null && basedir.length() != 0) {
             filename = basedir + "/" + filename;
         }
         File f = new File(filename);
