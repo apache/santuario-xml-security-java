@@ -1,5 +1,0 @@
-name: "Apache Santuario CodeQL config"
-
-paths-ignore:
-  - '**/src/test/java/**'
-
