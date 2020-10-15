@@ -138,7 +138,7 @@ public abstract class AbstractOutputProcessor implements OutputProcessor {
             xmlSecStartElement.addAttribute(xmlSecAttribute);
 
             final QName attributeName = xmlSecAttribute.getName();
-            if (attributeName.getNamespaceURI() != null && !"".equals(attributeName.getNamespaceURI())
+            if (attributeName.getNamespaceURI() != null && attributeName.getNamespaceURI().length() != 0
                 && !declaredNamespaces.contains(xmlSecAttribute.getAttributeNamespace())) {
                 xmlSecStartElement.addNamespace(xmlSecAttribute.getAttributeNamespace());
             }
