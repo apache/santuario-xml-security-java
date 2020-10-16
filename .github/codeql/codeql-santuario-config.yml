@@ -1,15 +1,13 @@
 
 name: "Apache Santuario CodeQL config"
 
-#disable-default-queries: true
-#queries:
-  #- name: Custom Security and Quality
-    #uses: ./.github/codeql/santuario.qls
-
-
+disable-default-queries: true
 queries:
-  - uses: security-and-quality
-    exclude:
-      query path: Advisory/Declarations/MissingOverrideAnnotation.ql
+  - name: Custom Security and Quality
+    uses: ./.github/codeql/santuario.qls
+
+
+#queries:
+#  - uses: security-and-quality
 
 
