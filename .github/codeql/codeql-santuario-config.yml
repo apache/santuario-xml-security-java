@@ -5,6 +5,9 @@ disable-default-queries: true
 queries:
   - name: Custom Security and Quality
     uses: ./.github/codeql/santuario.qls
+    exclude:
+        query name: MissingOverrideAnnotation.ql
+
 
 #queries:
   #- uses: security-and-quality
