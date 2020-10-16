@@ -1,4 +1,5 @@
 - import: java-security-and-quality
   from: codeql-java
-  exclude: java/MissingOverrideAnnotation
+  exclude:
+    query name: MissingOverrideAnnotation.ql
 
