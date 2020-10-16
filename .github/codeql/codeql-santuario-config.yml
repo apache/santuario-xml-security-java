@@ -9,6 +9,6 @@ name: "Apache Santuario CodeQL config"
 
 queries:
   - uses: security-and-quality
-  exclude:
-    query name: MissingOverrideAnnotation.ql
+    exclude:
+      query name: MissingOverrideAnnotation.ql
 
