@@ -55,6 +55,7 @@ public class TransformIdentity implements Transformer {
         synchronized(TransformIdentity.class) {
             if (xmlInputFactory == null) {
                 xmlInputFactory = XMLInputFactory.newInstance();
+                xmlInputFactory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
                 xmlInputFactory.setProperty("javax.xml.stream.isSupportingExternalEntities", false);
             }
         }
