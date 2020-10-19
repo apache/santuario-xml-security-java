@@ -123,7 +123,7 @@ public class DOMNamespaceContext implements NamespaceContext {
                 return DEFAULT_NS_PREFIX;
             }
         }
-        if (namespaceURI == null) {
+        if (namespaceURI == null && context != null) {
             return context.lookupNamespaceURI(null) != null ? null : DEFAULT_NS_PREFIX;
         } else if (namespaceURI.equals(XML_NS_URI)) {
             return XML_NS_PREFIX;

@@ -124,6 +124,7 @@ public class XMLCipherInput {
                 LOG.debug("Managed to resolve URI \"{}\"", cr.getURI());
             } else {
                 LOG.debug("Failed to resolve URI \"{}\"", cr.getURI());
+                throw new XMLEncryptionException();
             }
 
             // Lets see if there are any transforms

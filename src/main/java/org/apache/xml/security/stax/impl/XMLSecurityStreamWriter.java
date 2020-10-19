@@ -462,7 +462,7 @@ public class XMLSecurityStreamWriter implements XMLStreamWriter {
 
         private NSContext getNamespaceContext() {
             if (this.namespaceContext == null) {
-                if (emptyElement) {
+                if (emptyElement && parentElement != null) {
                     this.namespaceContext = parentElement.getNamespaceContext();
                 } else if (parentElement != null) {
                     this.namespaceContext = new NSContext(parentElement.getNamespaceContext());
