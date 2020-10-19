@@ -686,11 +686,25 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
 
                 Element saltLengthNode = XMLUtils.selectNode(rsaPssParams.getFirstChild(), Constants.XML_DSIG_NS_MORE_07_05, Constants._TAG_SALTLENGTH, 0);
                 Element trailerFieldNode = XMLUtils.selectNode(rsaPssParams.getFirstChild(), Constants.XML_DSIG_NS_MORE_07_05, Constants._TAG_TRAILERFIELD, 0);
-                int trailerField = trailerFieldNode == null ? 1: Integer.parseInt(trailerFieldNode.getTextContent());
+                int trailerField = 1;
+                if (trailerFieldNode != null) {
+                    try {
+                        trailerField = Integer.parseInt(trailerFieldNode.getTextContent());
+                    } catch (NumberFormatException ex) {
+                        throw new XMLSignatureException("empty", new Object[] {"Invalid trailer field value supplied"});
+                    }
+                }
                 String xmlAlgorithm = XMLUtils.selectDsNode(rsaPssParams.getFirstChild(), Constants._TAG_DIGESTMETHOD, 0).getAttribute(Constants._ATT_ALGORITHM);
                 DigestAlgorithm digestAlgorithm = DigestAlgorithm.fromXmlDigestAlgorithm(xmlAlgorithm);
                 String digestAlgorithmName = digestAlgorithm.getDigestAlgorithm();
-                int saltLength = saltLengthNode == null ? digestAlgorithm.getSaltLength() : Integer.parseInt(saltLengthNode.getTextContent());
+                int saltLength = digestAlgorithm.getSaltLength();
+                if (saltLengthNode != null) {
+                    try {
+                        saltLength = Integer.parseInt(saltLengthNode.getTextContent());
+                    } catch (NumberFormatException ex) {
+                        throw new XMLSignatureException("empty", new Object[] {"Invalid salt length value supplied"});
+                    }
+                }
                 engineSetParameter(new PSSParameterSpec(digestAlgorithmName, "MGF1", new MGF1ParameterSpec(digestAlgorithmName), saltLength, trailerField));
             }
         }

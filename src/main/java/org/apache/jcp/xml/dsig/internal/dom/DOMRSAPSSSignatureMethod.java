@@ -172,7 +172,14 @@ public abstract class DOMRSAPSSSignatureMethod extends AbstractDOMSignatureMetho
         if (paramsElem != null) {
             Element saltLengthNode = XMLUtils.selectNode(paramsElem.getFirstChild(), Constants.XML_DSIG_NS_MORE_07_05, Constants._TAG_SALTLENGTH, 0);
             Element trailerFieldNode = XMLUtils.selectNode(paramsElem.getFirstChild(), Constants.XML_DSIG_NS_MORE_07_05, Constants._TAG_TRAILERFIELD, 0);
-            int trailerField = trailerFieldNode == null ? 1: Integer.parseInt(trailerFieldNode.getTextContent());
+            int trailerField = 1;
+            if (trailerFieldNode != null) {
+                try {
+                    trailerField = Integer.parseInt(trailerFieldNode.getTextContent());
+                } catch (NumberFormatException ex) {
+                    throw new MarshalException("Invalid trailer field supplied: " + trailerFieldNode.getTextContent());
+                }
+            }
             String xmlAlgorithm = XMLUtils.selectDsNode(paramsElem.getFirstChild(), Constants._TAG_DIGESTMETHOD, 0).getAttribute(Constants._ATT_ALGORITHM);
             DigestAlgorithm digestAlgorithm;
             try {
@@ -181,11 +188,15 @@ public abstract class DOMRSAPSSSignatureMethod extends AbstractDOMSignatureMetho
                 throw new MarshalException("Invalid digest algorithm supplied: " + xmlAlgorithm);
             }
             String digestName = digestAlgorithm.getDigestAlgorithm();
-            int saltLength = saltLengthNode == null ? digestAlgorithm.getSaltLength() : Integer.parseInt(saltLengthNode.getTextContent());
 
             RSAPSSParameterSpec params = new RSAPSSParameterSpec();
             params.setTrailerField(trailerField);
-            params.setSaltLength(saltLength);
+            try {
+                int saltLength = saltLengthNode == null ? digestAlgorithm.getSaltLength() : Integer.parseInt(saltLengthNode.getTextContent());
+                params.setSaltLength(saltLength);
+            } catch (NumberFormatException ex) {
+                throw new MarshalException("Invalid salt length supplied: " + saltLengthNode.getTextContent());
+            }
             params.setDigestName(digestName);
             return params;
         }
