@@ -444,6 +444,7 @@ public final class DOMReference extends DOMStructure
             dos = new DigesterOutputStream(md);
         }
         Data data = dereferencedData;
+        XMLSignatureInput xi = null;
         try (OutputStream os = new UnsyncBufferedOutputStream(dos)) {
             for (int i = 0, size = transforms.size(); i < size; i++) {
                 DOMTransform transform = (DOMTransform)transforms.get(i);
@@ -455,7 +456,6 @@ public final class DOMReference extends DOMStructure
             }
 
             if (data != null) {
-                XMLSignatureInput xi;
                 // explicitly use C14N 1.1 when generating signature
                 // first check system property, then context property
                 boolean c14n11 = useC14N11;
@@ -549,7 +549,14 @@ public final class DOMReference extends DOMStructure
             throw new XMLSignatureException(e);
         } catch (org.apache.xml.security.c14n.CanonicalizationException e) {
             throw new XMLSignatureException(e);
-        } finally {
+        } finally { //NOPMD
+            if (xi != null && xi.getOctetStreamReal() != null) {
+                try {
+                    xi.getOctetStreamReal().close();
+                } catch (IOException e) {
+                    throw new XMLSignatureException(e);
+                }
+            }
             if (dos != null) {
                 try {
                     dos.close();

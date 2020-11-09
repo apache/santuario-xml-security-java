@@ -727,10 +727,11 @@ public class Reference extends SignatureElementProxy {
         MessageDigestAlgorithm mda = this.getMessageDigestAlgorithm();
         mda.reset();
 
+        XMLSignatureInput output = null;
         try (DigesterOutputStream diOs = new DigesterOutputStream(mda);
             OutputStream os = new UnsyncBufferedOutputStream(diOs)) {
 
-            XMLSignatureInput output = this.getContentsAfterTransformation(input, os);
+            output = this.getContentsAfterTransformation(input, os);
             this.transformsOutput = output;
 
             // if signing and c14n11 property == true explicitly add
@@ -749,10 +750,6 @@ public class Reference extends SignatureElementProxy {
             }
             os.flush();
 
-            if (output.getOctetStreamReal() != null) {
-                output.getOctetStreamReal().close();
-            }
-
             //this.getReferencedBytes(diOs);
             //mda.update(data);
 
@@ -761,6 +758,14 @@ public class Reference extends SignatureElementProxy {
             throw new ReferenceNotInitializedException(ex);
         } catch (IOException ex) {
             throw new ReferenceNotInitializedException(ex);
+        } finally { //NOPMD
+            try {
+                if (output != null && output.getOctetStreamReal() != null) {
+                    output.getOctetStreamReal().close();
+                }
+            } catch (IOException ex) {
+                throw new ReferenceNotInitializedException(ex);
+            }
         }
     }
 
