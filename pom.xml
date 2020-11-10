@@ -256,7 +256,7 @@
                                 <mkdir dir="${dest}/META-INF"/>
                                 <xjc fork="true"
                                      destdir="${dest}"
-                                     target="2.1"
+                                     target="3.0"
                                      extension="true"
                                      catalog="${project.basedir}/src/main/resources/bindings/bindings.cat"
                                      >
@@ -607,8 +607,8 @@
     </profiles>
 
     <properties>
-        <xml.bind.api.version>3.0.0-RC3</xml.bind.api.version>
-        <xml.bind.impl.version>3.0.0-M3</xml.bind.impl.version>
+        <xml.bind.api.version>3.0.0</xml.bind.api.version>
+        <xml.bind.impl.version>3.0.0-M5</xml.bind.impl.version>
         <xml.apis.version>1.4.01</xml.apis.version>
         <slf4j.version>1.7.29</slf4j.version>
         <xalan.version>2.7.2</xalan.version>

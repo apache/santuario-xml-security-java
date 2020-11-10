@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet  version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:xbinding="http://java.sun.com/xml/ns/jaxb">
+    xmlns:xbinding="https://jakarta.ee/xml/ns/jaxb">
 
     <xsl:template match="xbinding:bindings">
         <xsl:copy>
