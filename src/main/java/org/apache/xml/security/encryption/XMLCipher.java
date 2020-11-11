@@ -436,12 +436,12 @@ public class XMLCipher {
      * encrypts the document.
      * <p>
      *
-     * @param transformation    the name of the transformation
      * @param serializer        A custom Serializer instance
+     * @param transformation    the name of the transformation
      * @return the XMLCipher
      * @throws XMLEncryptionException
      */
-    public static XMLCipher getInstance(String transformation, Serializer serializer) throws XMLEncryptionException {
+    public static XMLCipher getInstance(Serializer serializer, String transformation) throws XMLEncryptionException {
         LOG.debug("Getting XMLCipher with transformation");
         validateTransformation(transformation);
         return new XMLCipher(transformation, null, null, serializer);
@@ -564,15 +564,15 @@ public class XMLCipher {
      * the document with the specified Serializer before it encrypts the document.
      * <p>
      *
+     * @param serializer        A custom serializer instance to use
      * @param transformation    the name of the transformation
      * @param provider          the JCE provider that supplies the transformation
-     * @param serializer        A custom serializer instance to use
      * @param digestMethod      An optional digestMethod to use
      * @return the XMLCipher
      * @throws XMLEncryptionException
      */
     public static XMLCipher getProviderInstance(
-        String transformation, String provider, Serializer serializer, String digestMethod
+        Serializer serializer, String transformation, String provider, String digestMethod
     ) throws XMLEncryptionException {
         LOG.debug("Getting XMLCipher with transformation, provider and c14n algorithm");
         if (null == provider) {

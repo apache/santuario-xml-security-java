@@ -145,13 +145,13 @@ public class SignedEncryptedTest {
 
         XMLCipher deCipher = null;
         if (useDocumentSerializer) {
-            deCipher = XMLCipher.getInstance(XMLCipher.AES_128, new DocumentSerializer(true));
+            deCipher = XMLCipher.getInstance(new DocumentSerializer(true), XMLCipher.AES_128);
         } else {
             TransformSerializer serializer = new TransformSerializer(true);
             Field f = serializer.getClass().getDeclaredField("transformerFactory");
             f.setAccessible(true);
             f.set(serializer, transformerFactory);
-            deCipher = XMLCipher.getInstance(XMLCipher.AES_128, serializer);
+            deCipher = XMLCipher.getInstance(serializer, XMLCipher.AES_128);
         }
         deCipher.init(XMLCipher.DECRYPT_MODE, secretKey);
         deCipher.doFinal(document, element, true);
