@@ -51,6 +51,7 @@ public abstract class AbstractOutputProcessor implements OutputProcessor {
 
     protected XMLSecurityProperties securityProperties;
     protected XMLSecurityConstants.Action action;
+    protected int actionOrder = -1;
 
     private XMLSecurityConstants.Phase phase = XMLSecurityConstants.Phase.PROCESSING;
     private Set<Class<? extends OutputProcessor>> beforeProcessors;
@@ -66,8 +67,9 @@ public abstract class AbstractOutputProcessor implements OutputProcessor {
     }
 
     @Override
-    public void setAction(XMLSecurityConstants.Action action) {
+    public void setAction(XMLSecurityConstants.Action action, int actionOrder) {
         this.action = action;
+        this.actionOrder = actionOrder;
     }
 
     @Override
@@ -120,8 +122,14 @@ public abstract class AbstractOutputProcessor implements OutputProcessor {
         return securityProperties;
     }
 
+    @Override
     public XMLSecurityConstants.Action getAction() {
         return action;
+    }
+
+    @Override
+    public int getActionOrder() {
+        return actionOrder;
     }
 
     @Override

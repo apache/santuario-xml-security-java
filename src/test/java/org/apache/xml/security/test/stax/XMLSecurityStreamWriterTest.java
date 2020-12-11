@@ -220,7 +220,17 @@ public class XMLSecurityStreamWriterTest {
         }
 
         @Override
-        public void setAction(XMLSecurityConstants.Action action) {
+        public void setAction(XMLSecurityConstants.Action action, int actionOrder) {
+        }
+
+        @Override
+        public XMLSecurityConstants.Action getAction() {
+            return null;
+        }
+
+        @Override
+        public int getActionOrder() {
+            return -1;
         }
 
         @Override
