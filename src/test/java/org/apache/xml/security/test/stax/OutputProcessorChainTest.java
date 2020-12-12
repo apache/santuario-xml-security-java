@@ -449,4 +449,24 @@ public class OutputProcessorChainTest {
         assertEquals(outputProcessor1, outputProcessors.get(0));
         assertEquals(outputProcessor2, outputProcessors.get(1));
     }
+
+    @Test
+    public void testOrderOfProcessorsWithMatchingAbstractSuperclass() {
+        AbstractOutputProcessor outputProcessor1 = new AbstractOutputProcessor() {
+        };
+        outputProcessor1.setAction(null, -1);
+        AbstractOutputProcessor outputProcessor2 = new AbstractOutputProcessor() {
+        };
+        outputProcessor2.setAction(null, -1);
+        outputProcessor2.addBeforeProcessor(AbstractOutputProcessor.class);
+
+        OutputProcessorChain outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl());
+        outputProcessorChain.addProcessor(outputProcessor1);
+        outputProcessorChain.addProcessor(outputProcessor2);
+
+        List<OutputProcessor> outputProcessors = outputProcessorChain.getProcessors();
+        assertEquals(2, outputProcessors.size());
+        assertEquals(outputProcessor2, outputProcessors.get(0));
+        assertEquals(outputProcessor1, outputProcessors.get(1));
+    }
 }

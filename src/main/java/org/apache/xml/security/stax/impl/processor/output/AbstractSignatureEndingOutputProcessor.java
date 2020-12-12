@@ -55,6 +55,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static org.apache.xml.security.algorithms.implementations.SignatureBaseRSA.SignatureRSASSAPSS.DigestAlgorithm.fromDigestAlgorithm;
+import static org.apache.xml.security.stax.impl.processor.output.IndentationContext.Instruction.START;
+import static org.apache.xml.security.stax.impl.processor.output.IndentationContext.Instruction.STOP;
+import static org.apache.xml.security.stax.impl.processor.output.IndentationContext.When.AFTER_CURRENT;
 
 /**
  */
@@ -110,17 +113,16 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
 
         OutputProcessorChain subOutputProcessorChain = outputProcessorChain.createSubChain(this);
 
-        List<XMLSecAttribute> attributes = new ArrayList<>(1);
+        List<XMLSecAttribute> attributes = Collections.emptyList();
         String signatureId = null;
         if (securityProperties.isSignatureGenerateIds()) {
             attributes = new ArrayList<>(1);
             signatureId = IDGenerator.generateID(null);
             attributes.add(createAttribute(XMLSecurityConstants.ATT_NULL_Id, signatureId));
-        } else {
-            attributes = Collections.emptyList();
         }
 
-        XMLSecStartElement signatureElement = createStartElementAndOutputAsEvent(subOutputProcessorChain,
+        XMLSecStartElement signatureElement = createStartElementAndOutputAsEvent(
+                IndentationContext.giveIndentingInstruction(subOutputProcessorChain, getActionOrder(), START, AFTER_CURRENT),
                 XMLSecurityConstants.TAG_dsig_Signature, true, attributes);
 
         SignatureAlgorithm signatureAlgorithm;
@@ -250,7 +252,9 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
             createKeyInfoStructureForSignature(subOutputProcessorChain, wrappingSecurityToken, getSecurityProperties().isUseSingleCert());
             createEndElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsig_KeyInfo);
         }
-        createEndElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsig_Signature);
+        createEndElementAndOutputAsEvent(
+                IndentationContext.giveIndentingInstruction(subOutputProcessorChain, getActionOrder(), STOP, AFTER_CURRENT),
+                XMLSecurityConstants.TAG_dsig_Signature);
 
         // Clean the secret key from memory now that we're done with it
         if (key instanceof Destroyable) {
@@ -277,7 +281,7 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
             boolean useSingleCertificate) throws XMLStreamException, XMLSecurityException;
 
 
-    protected static class SignedInfoProcessor extends AbstractOutputProcessor {
+    public static class SignedInfoProcessor extends AbstractOutputProcessor {
 
         private SignerOutputStream signerOutputStream;
         private OutputStream bufferedSignerOutputStream;
@@ -287,6 +291,7 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
         private SignatureAlgorithm signatureAlgorithm;
         private XMLSecStartElement xmlSecStartElement;
         private String signatureId;
+        private boolean active = false;
 
         public SignedInfoProcessor(SignatureAlgorithm signatureAlgorithm, String signatureId, XMLSecStartElement xmlSecStartElement)
                 throws XMLSecurityException {
@@ -355,7 +360,19 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
         @Override
         public void processEvent(XMLSecEvent xmlSecEvent, OutputProcessorChain outputProcessorChain)
                 throws XMLStreamException, XMLSecurityException {
-            transformer.transform(xmlSecEvent);
+            if (active) {
+                transformer.transform(xmlSecEvent);
+                if (xmlSecEvent.isEndElement() && Objects.equals(xmlSecEvent.asEndElement().getName(), XMLSecurityConstants.TAG_dsig_SignedInfo)) {
+                    // Exclude trailing whitespace or anything that comes after the "SignedInfo" element from the signature.
+                    active = false;
+                }
+            } else {
+                // Exclude leading whitespace of anything that comes before the "SignedInfo" element from the signature.
+                if (xmlSecEvent.isStartElement() && Objects.equals(xmlSecEvent.asStartElement().getName(), XMLSecurityConstants.TAG_dsig_SignedInfo)) {
+                    active = true;
+                    transformer.transform(xmlSecEvent);
+                }
+            }
             outputProcessorChain.processEvent(xmlSecEvent);
         }
     }

@@ -80,6 +80,7 @@ public class XMLSecurityProperties {
     private QName signaturePositionQName;
     private boolean signaturePositionStart = false;
     private AlgorithmParameterSpec algorithmParameterSpec;
+    private boolean autoIndent = true;
 
     public XMLSecurityProperties() {
     }
@@ -120,12 +121,22 @@ public class XMLSecurityProperties {
         this.signaturePositionQName = xmlSecurityProperties.signaturePositionQName;
         this.signaturePositionStart = xmlSecurityProperties.signaturePositionStart;
         this.algorithmParameterSpec = xmlSecurityProperties.algorithmParameterSpec;
+        this.autoIndent = xmlSecurityProperties.autoIndent;
     }
 
     public boolean isSignaturePositionStart() {
         return signaturePositionStart;
     }
 
+    /**
+     * When using QName-based positioning, sets the signature to be inserted after the start or end tag of the element
+     * matching the QName.
+     * The default is {@code false}.
+     *
+     * @param signaturePositionStart {@code true} to insert the signature after the start tag, {@code false} to insert
+     * it after the end tag.
+     * @see #setSignaturePositionQName(QName)
+     */
     public void setSignaturePositionStart(boolean signaturePositionStart) {
         this.signaturePositionStart = signaturePositionStart;
     }
@@ -163,7 +174,17 @@ public class XMLSecurityProperties {
     }
 
     /**
-     * Specifies the position of the signature
+     * Specifies the insertion position of the signature element as a 0-based child index of the root element.
+     * The default is 0, which inserts the signature immediately after the start tag of the root element.
+     * If the position is out of range, no exception will be thrown, but instead the signature element will be inserted
+     * at the end of the document, right before the end tag of the root element.
+     * If you want to ensure that the signature is inserted at the end, you can use {@link Integer#MAX_VALUE}.
+     * <p/>
+     * This index-based way is one of two ways to position the signature.
+     * The other way is to use QName-based positioning using {@link #setSignaturePositionQName(QName)} and
+     * {@link #setSignaturePositionStart(boolean)}.
+     * If both index-based and QName-based positioning are specified, the QName-based positioning takes precedence and
+     * the index-based configuration is ignored.
      *
      * @param signaturePosition Position of the signature (by default: 0)
      */
@@ -528,6 +549,22 @@ public class XMLSecurityProperties {
         return signaturePositionQName;
     }
 
+    /**
+     * Sets the signature position by QName.
+     * In contrast to the index-based positioning, which acts as an insertion index where the signature element is added
+     * <i>before</i> the indexed element, this QName-based positioning inserts the signature <i>after</i> the element
+     * that matches the given QName.
+     * You can choose to match the start tag or the end tag of the QName using
+     * {@link #setSignaturePositionStart(boolean)}.
+     * When you set to match the <i>start</i> of a QName, the signature will be inserted as first child of the element
+     * matching the QName, but if you set to match the <i>end</i> of a QName, the signature will be inserted
+     * <i>after</i> the end tag, so <i>outside</i> of the element matching the QName.
+     * The default is {@code null}, meaning that index-based position is used.
+     * If both index-based and QName-based positioning are set, the QName-based settings take precedence.
+     *
+     * @param signaturePositionQName The QName where the signature element must be inserted after, or {@code null} to
+     * disable QName matching and fall back to index-based signature positioning (the default).
+     */
     public void setSignaturePositionQName(QName signaturePositionQName) {
         this.signaturePositionQName = signaturePositionQName;
     }
@@ -538,5 +575,28 @@ public class XMLSecurityProperties {
 
     public void setAlgorithmParameterSpec(AlgorithmParameterSpec algorithmParameterSpec) {
         this.algorithmParameterSpec = algorithmParameterSpec;
+    }
+
+    /**
+     * Sets auto-indentation of secure elements.
+     * The default is {@code true}, which means that secure elements will be automatically indented according to the
+     * code style of the surrounding elements.
+     * If the input has no indentation, then neither will the secure elements.
+     * If the input has indentation, then that indentation is automatically applied to the secure elements.
+     * If the input has changing indentation, then the indentation is adjusted according to the surrounding elements.
+     * If the input has really messy and inconsistent indentation, then the secure elements will have unpredictable yet
+     * deterministic indentation.
+     * There is really no logical reason to turn this off, but it's a new feature so I've foreseen the possibility
+     * nonetheless. Maybe for backward compatibility with older versions of Santuario, or maybe you have another good
+     * reason I didn't think of.
+     *
+     * @param autoIndent {@code false} to switch auto-indentation of secure elements off, {@code false} otherwise.
+     */
+    public void setAutoIndent(boolean autoIndent) {
+        this.autoIndent = autoIndent;
+    }
+
+    public boolean isAutoIndent() {
+        return autoIndent;
     }
 }

@@ -20,6 +20,7 @@ package org.apache.xml.security.stax.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
@@ -98,19 +99,27 @@ public class OutputProcessorChainImpl implements OutputProcessorChain {
                 return d;
             }
         }
-        if (o1.getBeforeProcessors().contains(o2.getClass()) || o2.getAfterProcessors().contains(o1.getClass())) {
+        if (containsAssignableFrom(o1.getBeforeProcessors(), o2.getClass())
+                || containsAssignableFrom(o2.getAfterProcessors(), o1.getClass())) {
             if (o1.getAfterProcessors().contains(o2.getClass()) || o2.getBeforeProcessors().contains(o1.getClass())) {
                 throw new IllegalArgumentException(String.format("Conflicting order of processors %s and %s", o1, o2));
             }
             return -1;
         }
-        if (o1.getAfterProcessors().contains(o2.getClass()) || o2.getBeforeProcessors().contains(o1.getClass())) {
+        if (containsAssignableFrom(o1.getAfterProcessors(), o2.getClass())
+                || containsAssignableFrom(o2.getBeforeProcessors(), o1.getClass())) {
             if (o2.getAfterProcessors().contains(o1.getClass())) {
                 throw new IllegalArgumentException(String.format("Conflicting order of processors %s and %s", o1, o2));
             }
             return 1;
         }
         return 0;
+    }
+
+    private static boolean containsAssignableFrom(
+            Set<Class<? extends OutputProcessor>> assignableClasses, Class<? extends OutputProcessor> concreteClass) {
+        return assignableClasses.stream().filter(assignableClass -> assignableClass.isAssignableFrom(concreteClass))
+                .findAny().isPresent();
     }
 
     @Override
@@ -205,7 +214,7 @@ public class OutputProcessorChainImpl implements OutputProcessorChain {
 
     @Override
     public OutputProcessorChain createSubChain(OutputProcessor outputProcessor) throws XMLStreamException, XMLSecurityException {
-        return createSubChain(outputProcessor, null);
+        return createSubChain(outputProcessor, parentXmlSecStartElement);
     }
 
     @Override
@@ -218,11 +227,7 @@ public class OutputProcessorChainImpl implements OutputProcessorChain {
         } catch (CloneNotSupportedException e) {
             throw new XMLSecurityException(e);
         }
-        if (parentXMLSecStartElement != null) {
-            outputProcessorChain.setParentXmlSecStartElement(parentXMLSecStartElement);
-        } else {
-            outputProcessorChain.setParentXmlSecStartElement(this.parentXmlSecStartElement);
-        }
+        outputProcessorChain.setParentXmlSecStartElement(parentXMLSecStartElement);
         return outputProcessorChain;
     }
 }

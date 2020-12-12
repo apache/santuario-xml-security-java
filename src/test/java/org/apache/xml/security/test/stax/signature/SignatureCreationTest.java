@@ -21,13 +21,19 @@ package org.apache.xml.security.test.stax.signature;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.crypto.SecretKey;
@@ -61,9 +67,15 @@ import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
 import org.apache.xml.security.utils.XMLUtils;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.apache.xml.security.stax.ext.XMLSecurityConstants.NS_C14N_EXCL;
 import static org.apache.xml.security.stax.ext.XMLSecurityConstants.NS_XMLDSIG_ENVELOPED_SIGNATURE;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.endsWith;
+import static org.hamcrest.Matchers.not;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -74,10 +86,12 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
-    @Test
-    public void testSignatureCreation() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testSignatureCreation(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
@@ -131,9 +145,75 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testSignatureCreationRetrieveSignatureValue() throws Exception {
+    public void testSignaturePreservesIndentation() throws Exception {
+        String xml = "<?xml version='1.0'?>\n" +
+                "<Root>\n" +
+                "  <Branch/>\n" +
+                "</Root>\n";
+        SecurePart securePart = new SecurePart(new QName("Branch"), SecurePart.Modifier.Element);
+        securePart.setSecureEntireRequest(true);
+        String signedXml = signXml(xml, securePart);
+//        System.out.println(signedXml);
+        assertThat(signedXml, containsString("\n<Root>"));
+        assertThat(signedXml, containsString(">\n  <dsig:Signature"));
+        assertThat(signedXml, containsString(">\n  </dsig:Signature"));
+        assertThat(signedXml, containsString(">\n  <Branch Id="));
+        assertThat(signedXml, endsWith(">\n</Root>\n"));
+        assertThat(signedXml, not(containsString("><")));
+    }
+
+    @Test
+    public void testSignaturePreservesIndentationWhenSignEntireRequest() throws Exception {
+        String xml = "<Root>\n" +
+                "\t<Branch/>\n" +
+                "</Root>";
+        SecurePart securePart = new SecurePart((String) null);
+        securePart.setSecureEntireRequest(true);
+        String signedXml = signXml(xml, securePart);
+//        System.out.println(signedXml);
+        assertThat(signedXml, containsString("<Root Id="));
+        assertThat(signedXml, containsString(">\n\t<dsig:Signature"));
+        assertThat(signedXml, containsString(">\n\t</dsig:Signature"));
+        assertThat(signedXml, containsString(">\n\t<Branch"));
+        assertThat(signedXml, endsWith(">\n</Root>"));
+        assertThat(signedXml, not(containsString("><")));
+    }
+
+    private String signXml(String xml, SecurePart... secureParts) throws XMLStreamException, XMLSecurityException, KeyStoreException, IOException, UnrecoverableKeyException, NoSuchAlgorithmException, CertificateException {
+        XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(true);
+        properties.setActions(Collections.singletonList(XMLSecurityConstants.SIGNATURE));
+        for (SecurePart securePart : secureParts) {
+            properties.addSignaturePart(securePart);
+        }
+        KeyStore keyStore = KeyStore.getInstance("jks");
+        keyStore.load(
+                this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
+                "default".toCharArray()
+        );
+        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        properties.setSignatureKey(key);
+        X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
+        properties.setSignatureCerts(new X509Certificate[]{cert});
+        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        ByteArrayOutputStream signedOut = new ByteArrayOutputStream();
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(signedOut, StandardCharsets.UTF_8.name());
+        InputStream sourceDocument = new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8));
+        // Make sure we get the whitespace characters right before the first START_ELEMENT and after the last
+        // END_ELEMENT.
+        xmlInputFactory.setProperty("org.codehaus.stax2.reportPrologWhitespace", true);
+        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
+        xmlStreamWriter.close();
+        return new String(signedOut.toByteArray(), StandardCharsets.UTF_8);
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testSignatureCreationRetrieveSignatureValue(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
@@ -183,10 +263,12 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
     }
 
-    @Test
-    public void testExceptionOnElementToSignNotFound() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testExceptionOnElementToSignNotFound(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
@@ -225,10 +307,12 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         }
     }
 
-    @Test
-    public void testEnvelopedSignatureCreation() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testEnvelopedSignatureCreation(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
@@ -289,10 +373,12 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
     }
 
-    @Test
-    public void testEnvelopedSignatureCreationC14n11() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testEnvelopedSignatureCreationC14n11(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
@@ -353,10 +439,12 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
     }
 
-    @Test
-    public void testSignRootElementInRequest() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testSignRootElementInRequest(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
@@ -417,31 +505,54 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
     }
 
-    @Test
-    public void testSignAtSpecificPosition() throws Exception {
-        signAtSpecificPosition(-1);
-        signAtSpecificPosition(0);
-        signAtSpecificPosition(1);
-        signAtSpecificPosition(2);
-        signAtSpecificPosition(999);
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testSignAtSpecificPosition(boolean autoIndent) throws Exception {
+        signAtSpecificPosition(autoIndent, -1);
+        signAtSpecificPosition(autoIndent, 0);
+        signAtSpecificPosition(autoIndent, 1);
+        signAtSpecificPosition(autoIndent, 2);
+        signAtSpecificPosition(autoIndent, 999);
     }
 
-    @Test
-    public void testSignAtSpecificPositionViaQName() throws Exception {
-        signAtSpecificPosition(0, new QName("urn:example:po", "PurchaseOrder"), true);
-        signAtSpecificPosition(0, new QName("urn:example:po", "Items"), true);
-        signAtSpecificPosition(0, new QName("urn:example:po", "Items"), false);
-        signAtSpecificPosition(0, new QName("urn:example:po", "ShippingAddress"), true);
-        signAtSpecificPosition(0, new QName("urn:example:po", "ShippingAddress"), false);
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testSignAtSpecificPositionViaQName(boolean autoIndent) throws Exception {
+        signAtSpecificPosition(autoIndent, 0, new QName("urn:example:po", "PurchaseOrder"), true);
+        signAtSpecificPosition(autoIndent, 0, new QName("urn:example:po", "Items"), true);
+        signAtSpecificPosition(autoIndent, 0, new QName("urn:example:po", "Items"), false);
+        signAtSpecificPosition(autoIndent, 0, new QName("urn:example:po", "ShippingAddress"), true);
+        signAtSpecificPosition(autoIndent, 0, new QName("urn:example:po", "ShippingAddress"), false);
     }
 
-    private void signAtSpecificPosition(int position) throws Exception {
-        signAtSpecificPosition(position, null, false);
+    private void signAtSpecificPosition(boolean autoIndent, int position) throws Exception {
+        signAtSpecificPosition(autoIndent, position, null, false);
     }
 
-    private void signAtSpecificPosition(int position, QName positionQName, boolean start) throws Exception {
+    @SuppressWarnings("PMD.AvoidUsingShortType")
+    private static Node getFirstChildOfType(Node node, short nodeType) {
+        for (Node child = node.getFirstChild(); child != null; child = child.getNextSibling()) {
+            if (child.getNodeType() == nodeType) {
+                return child;
+            }
+        }
+        return null;
+    }
+
+    @SuppressWarnings("PMD.AvoidUsingShortType")
+    private static Node getNextSiblingOfType(Node node, short nodeType) {
+        for (Node sibling = node.getNextSibling(); sibling != null; sibling = sibling.getNextSibling()) {
+            if (sibling.getNodeType() == nodeType) {
+                return sibling;
+            }
+        }
+        return null;
+    }
+
+    private void signAtSpecificPosition(boolean autoIndent, int position, QName positionQName, boolean start) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
@@ -505,9 +616,9 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
                     childNode = XMLUtils.getNextElement(childNode.getNextSibling());
                 }
                 if (start) {
-                    childNode = childNode.getFirstChild();
+                    childNode = getFirstChildOfType(childNode, Element.ELEMENT_NODE);
                 } else {
-                    childNode = childNode.getNextSibling();
+                    childNode = getNextSiblingOfType(childNode, Element.ELEMENT_NODE);
                 }
             }
         } else {
@@ -524,16 +635,18 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
             }
         }
 
-        assertEquals(childNode.getLocalName(), "Signature");
+        assertEquals("Signature", childNode.getLocalName());
 
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
     }
 
-    @Test
-    public void testIdAttributeNS() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testIdAttributeNS(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
@@ -587,10 +700,12 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
 
-    @Test
-    public void testMultipleElements() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testMultipleElements(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
@@ -635,10 +750,12 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
     }
 
-    @Test
-    public void testMultipleSignatures() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testMultipleSignatures(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
@@ -714,10 +831,12 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         }
     }
 
-    @Test
-    public void testHMACSignatureCreation() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testHMACSignatureCreation(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
@@ -755,10 +874,12 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         verifyUsingDOM(document, key, properties.getSignatureSecureParts());
     }
 
-    @Test
-    public void testStrongSignatureCreation() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testStrongSignatureCreation(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
@@ -803,10 +924,12 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
     }
 
-    @Test
-    public void testDSASignatureCreation() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testDSASignatureCreation(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
@@ -866,8 +989,9 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
     }
 
-    @Test
-    public void testECDSASignatureCreation() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testECDSASignatureCreation(boolean autoIndent) throws Exception {
 
         Assumptions.assumeTrue(bcInstalled);
 
@@ -880,6 +1004,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
@@ -924,8 +1049,9 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
     }
 
-    @Test
-    public void testStrongECDSASignatureCreation() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testStrongECDSASignatureCreation(boolean autoIndent) throws Exception {
 
         Assumptions.assumeTrue(bcInstalled);
 
@@ -938,6 +1064,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
@@ -983,10 +1110,12 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
     }
 
-    @Test
-    public void testDifferentC14nMethod() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testDifferentC14nMethod(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
@@ -1030,10 +1159,12 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
     }
 
-    @Test
-    public void testDifferentC14nMethodForReference() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testDifferentC14nMethodForReference(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
@@ -1098,10 +1229,12 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
     }
 
-    @Test
-    public void testDifferentDigestMethodForReference() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testDifferentDigestMethodForReference(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
@@ -1166,10 +1299,12 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
     }
 
-    @Test
-    public void testC14n11Method() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testC14n11Method(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
@@ -1213,10 +1348,12 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
     }
 
-    @Test
-    public void testExcC14nInclusivePrefixes() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testExcC14nInclusivePrefixes(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
@@ -1266,10 +1403,12 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
     }
 
-    @Test
-    public void testSignatureCreationRSAKeyValue() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testSignatureCreationRSAKeyValue(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
@@ -1312,8 +1451,9 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
     }
 
-    @Test
-    public void testSignatureCreationECDSAKeyValue() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testSignatureCreationECDSAKeyValue(boolean autoIndent) throws Exception {
 
         Assumptions.assumeTrue(bcInstalled);
 
@@ -1326,6 +1466,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
@@ -1371,8 +1512,9 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
     }
 
-    @Test
-    public void testSignatureCreationSKI() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testSignatureCreationSKI(boolean autoIndent) throws Exception {
 
         //
         // This test fails with the IBM JDK
@@ -1383,6 +1525,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
@@ -1426,10 +1569,12 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
     }
 
-    @Test
-    public void testSignatureCreationX509Certificate() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testSignatureCreationX509Certificate(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
@@ -1472,10 +1617,12 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
     }
 
-    @Test
-    public void testSignatureCreationX509SubjectName() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testSignatureCreationX509SubjectName(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
@@ -1518,10 +1665,12 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
     }
 
-    @Test
-    public void testSignatureCreationMultipleKeyIdentifiers() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testSignatureCreationMultipleKeyIdentifiers(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
@@ -1568,10 +1717,12 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
     }
 
-    @Test
-    public void testSignatureCreationTransformBase64() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testSignatureCreationTransformBase64(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
@@ -1616,10 +1767,12 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
     }
 
-    @Test
-    public void testNoKeyInfo() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testNoKeyInfo(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
@@ -1665,10 +1818,12 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
     }
 
-    @Test
-    public void testSignatureCreationKeyName() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testSignatureCreationKeyName(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
@@ -1716,10 +1871,12 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
     }
 
-    @Test
-    public void testSignatureCreationWithoutId() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testSignatureCreationWithoutId(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
@@ -1766,10 +1923,12 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         verifyUsingDOMWithoutId(document, cert.getPublicKey(), properties.getSignatureSecureParts());
     }
 
-    @Test
-    public void testSignatureCreationWithoutOmittedDefaultTransform() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testSignatureCreationWithoutOmittedDefaultTransform(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
