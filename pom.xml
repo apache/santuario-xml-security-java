@@ -532,7 +532,7 @@
         <hamcrest.version>2.2</hamcrest.version>
         <xmlunit.version>2.6.3</xmlunit.version>
         <commons.codec.version>1.15</commons.codec.version>
-        <woodstox.core.version>5.2.1</woodstox.core.version>
+        <woodstox.core.version>6.2.3</woodstox.core.version>
         <jetty.version>9.4.24.v20191120</jetty.version>
         <xmlsec.jaxb.context.class />
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
