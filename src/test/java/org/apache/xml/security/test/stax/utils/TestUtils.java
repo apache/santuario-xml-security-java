@@ -19,9 +19,11 @@
 package org.apache.xml.security.test.stax.utils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import javax.xml.XMLConstants;
@@ -33,19 +35,23 @@ import org.apache.xml.security.stax.ext.SecurePart;
 import org.apache.xml.security.stax.ext.SecurePartSelector;
 import org.apache.xml.security.stax.ext.XMLSecurityProperties;
 import org.apache.xml.security.stax.ext.stax.XMLSecAttribute;
+import org.apache.xml.security.stax.ext.stax.XMLSecEndElement;
 import org.apache.xml.security.stax.ext.stax.XMLSecNamespace;
 import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
 import org.apache.xml.security.stax.impl.OutboundSecurityContextImpl;
 import org.apache.xml.security.stax.impl.OutputProcessorChainImpl;
 import org.apache.xml.security.stax.impl.stax.XMLSecAttributeImpl;
+import org.apache.xml.security.stax.impl.stax.XMLSecEndElementImpl;
 import org.apache.xml.security.stax.impl.stax.XMLSecNamespaceImpl;
 import org.apache.xml.security.stax.impl.stax.XMLSecStartElementImpl;
 import org.apache.xml.security.utils.KeyValue;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
+import org.mockito.ArgumentMatcher;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.traversal.DocumentTraversal;
@@ -123,6 +129,33 @@ public class TestUtils {
                 return matches;
             }
         };
+    }
+
+    public static ArgumentMatcher<XMLSecStartElement> matchesName(QName name) {
+        return element -> element != null && Objects.equals(element.getName(), name);
+    }
+
+    public static XMLSecStartElement convertNodeToStartElement(Node node) {
+        Element element = (Element) node;
+        NamedNodeMap attributes = element.getAttributes();
+        List<XMLSecAttribute> secAttributes = new ArrayList<>(attributes.getLength());
+        Collection<XMLSecNamespace> secNamespaces = new ArrayList<>(attributes.getLength());
+        for (int i = 0, n = attributes.getLength(); i != n; i++) {
+            Attr attribute = (Attr) attributes.item(i);
+            String name = attribute.getName();
+            if (name.startsWith("xmlns")) {
+                XMLSecNamespace secNamespace = XMLSecNamespaceImpl.getInstance(name.startsWith("xmlns:") ? name.substring(6) : XMLConstants.DEFAULT_NS_PREFIX, attribute.getNodeValue());
+                secNamespaces.add(secNamespace);
+            } else {
+                XMLSecAttribute secAttribute = new XMLSecAttributeImpl(convertNodeToQName(attribute), attribute.getNodeValue());
+                secAttributes.add(secAttribute);
+            }
+        }
+        return new XMLSecStartElementImpl(convertNodeToQName(element), secAttributes, null);
+    }
+
+    public static XMLSecEndElement convertStartToEndElement(XMLSecStartElement startElement) {
+        return new XMLSecEndElementImpl(startElement.getName(), startElement.getParentXMLSecStartElement());
     }
 
     public static QName convertNodeToQName(Node node) {

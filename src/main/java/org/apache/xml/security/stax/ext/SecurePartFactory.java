@@ -40,6 +40,7 @@ public interface SecurePartFactory {
      * It may be {@code null} to deselect the element for securing after all, overriding the selector's decision.
      *
      * @param element The selected element to create a secure part for, possibly {@code null}.
+     * @param outputProcessorChain The output processor chain, never {@code null}.
      * @return A secure part, or {@code null} to override the selection and skip this element after all.
      * @see ElementSelector#select(XMLSecStartElement, OutputProcessorChain)
      */

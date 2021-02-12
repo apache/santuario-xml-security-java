@@ -21,6 +21,8 @@ package org.apache.xml.security.test.stax.encryption;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.KeyPair;
@@ -32,6 +34,7 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -39,37 +42,66 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESedeKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.namespace.QName;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.apache.xml.security.encryption.XMLCipher;
 import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.stax.ext.ElementSelector;
 import org.apache.xml.security.stax.ext.OutboundXMLSec;
+import org.apache.xml.security.stax.ext.OutputProcessorChain;
 import org.apache.xml.security.stax.ext.SecurePart;
+import org.apache.xml.security.stax.ext.SecurePartFactory;
 import org.apache.xml.security.stax.ext.XMLSec;
 import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.stax.ext.XMLSecurityProperties;
+import org.apache.xml.security.stax.ext.XPathElementSelector;
+import org.apache.xml.security.stax.ext.XPathModifier;
+import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
 import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+import org.mockito.InOrder;
+import org.mockito.stubbing.Answer;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
+import static org.apache.xml.security.test.stax.utils.TestUtils.containsRegex;
+import static org.apache.xml.security.test.stax.utils.TestUtils.matchesName;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.spy;
 
 
 /**
@@ -1690,6 +1722,247 @@ public class EncryptionCreationTest {
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
         assertEquals(nodeList.getLength(), 1);
+    }
+
+    @ParameterizedTest
+    @EnumSource(XPathModifier.class)
+    public void testEncryptionMultipleElementsMatchingXPathExpression(XPathModifier modifier) throws Exception {
+        String xml = "<?xml version='1.0'?>\n" +
+                "<Fortune>\n" +
+                "  <Wallet>\n" +
+                "    <Banknotes currency='EUR'>50</Banknotes>\n" +
+                "    <Banknotes currency='USD'>50</Banknotes>\n" +
+                "    <Coins currency='EUR'>2.50</Coins>\n" +
+                "  </Wallet>\n" +
+                "  <BankAccount>\n" +
+                "    <Balance currency='EUR'>102.50</Balance>\n" +
+                "    <Balance currency='USD'>12.31</Balance>\n" +
+                "  </BankAccount>\n" +
+                "</Fortune>\n";
+
+        XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setActions(Collections.singletonList(XMLSecurityConstants.ENCRYPTION));
+
+        byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes(StandardCharsets.US_ASCII);
+        SecretKey transportKey = new SecretKeySpec(bits192, "AES");
+        properties.setEncryptionKeyTransportAlgorithm("http://www.w3.org/2001/04/xmlenc#kw-aes192");
+        properties.setEncryptionTransportKey(transportKey);
+        properties.setEncryptionSymAlgorithm("http://www.w3.org/2001/04/xmlenc#aes128-cbc");
+
+        // The selector is node-local, so works with any ElementModifier.
+        ElementSelector elementSelector = new XPathElementSelector("//*[@currency='EUR']", modifier);
+        SecurePartFactory securePartFactory = (element, outputProcessorChain) -> element != null ? new SecurePart(element.getName(), SecurePart.Modifier.Content) : null;
+        properties.addEncryptionPartSelector(elementSelector, securePartFactory, -1);
+
+        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        ByteArrayOutputStream encryptedOut = new ByteArrayOutputStream();
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(encryptedOut, StandardCharsets.UTF_8.name());
+
+        InputStream sourceDocument = new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8));
+        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+
+        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
+        xmlStreamWriter.close();
+
+        String encryptedXml = new String(encryptedOut.toByteArray(), StandardCharsets.UTF_8);
+//        System.out.println(encryptedXml);
+        // Verify that all currency='EUR' have been encrypted, while currency='USD' have not.
+        assertThat(encryptedXml, not(containsRegex("<Banknotes currency=.EUR.>50</Banknotes>", true, 1)));
+        assertThat(encryptedXml, containsRegex("<Balance currency=.USD.>12\\.31</Balance>", 1));
+        assertThat(encryptedXml, not(containsRegex("<Coins currency=.EUR.>2\\.50</Coins>", true, 1)));
+        assertThat(encryptedXml, containsRegex(Pattern.compile("<Coins currency=.EUR.>\\s*<xenc:EncryptedData", Pattern.DOTALL), 1));
+        assertThat(encryptedXml, not(containsRegex("<Balance currency=.EUR.>120\\.50</Banknotes>", true, 1)));
+        assertThat(encryptedXml, containsRegex(Pattern.compile("<Banknotes currency=.EUR.>\\s*<xenc:EncryptedData", Pattern.DOTALL), 1));
+        assertThat(encryptedXml, containsRegex(Pattern.compile("<Balance currency=.EUR.>\\s*<xenc:EncryptedData", Pattern.DOTALL), 1));
+        assertThat(encryptedXml, containsRegex("<Banknotes currency=.USD.>50</Banknotes>", 1));
+        assertThat(encryptedXml, containsRegex("<Balance currency=.USD.>12\\.31</Balance>", 1));
+    }
+
+    @Test
+    public void testEncryptionOfSingleElementMatchingXPathExpressionThatRequiresTree() throws Exception {
+        String xml = "<?xml version='1.0'?>\n" +
+                "<Fortune>\n" +
+                "  <DomesticAccount>\n" +
+                "    <Balance currency='YEN'>102.50</Balance>\n" +
+                "    <Balance currency='USD'>12.31</Balance>\n" +
+                "  </DomesticAccount>\n" +
+                "  <OffshoreAccount>\n" +
+                "    <Balance currency='CHF'>20000000.00</Balance>\n" +
+                "    <Balance currency='EUR'>10000000.00</Balance>\n" +
+                "  </OffshoreAccount>\n" +
+                "</Fortune>\n";
+
+        XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setActions(Collections.singletonList(XMLSecurityConstants.ENCRYPTION));
+
+        byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes(StandardCharsets.US_ASCII);
+        SecretKey transportKey = new SecretKeySpec(bits192, "AES");
+        properties.setEncryptionKeyTransportAlgorithm("http://www.w3.org/2001/04/xmlenc#kw-aes192");
+        properties.setEncryptionTransportKey(transportKey);
+        properties.setEncryptionSymAlgorithm("http://www.w3.org/2001/04/xmlenc#aes128-cbc");
+
+        // The XPath expression needs the context of all siblings in order to be evaluated correctly,
+        // so it only works with ElementModifier.Tree.
+        ElementSelector elementSelector = new XPathElementSelector("//OffshoreAccount/Balance[2]", XPathModifier.Tree);
+        SecurePartFactory securePartFactory = (element, outputProcessorChain) -> element != null ? new SecurePart(element.getName(), SecurePart.Modifier.Content) : null;
+        properties.addEncryptionPartSelector(elementSelector, securePartFactory, -1);
+
+        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        ByteArrayOutputStream encryptedOut = new ByteArrayOutputStream();
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(encryptedOut, StandardCharsets.UTF_8.name());
+
+        InputStream sourceDocument = new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8));
+        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+
+        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
+        xmlStreamWriter.close();
+
+        String encryptedXml = new String(encryptedOut.toByteArray(), StandardCharsets.UTF_8);
+        System.out.println(encryptedXml);
+        // Verify that all currency='EUR' have been encrypted, while currency='USD' have not.
+        assertThat(encryptedXml, containsRegex("<Balance currency=.YEN.>102\\.50</Balance>", 1));
+        assertThat(encryptedXml, containsRegex("<Balance currency=.USD.>12\\.31</Balance>", 1));
+        assertThat(encryptedXml, not(containsRegex("<Balance currency=.EUR.>10000000\\.00</Balance>", true, 1)));
+        assertThat(encryptedXml, containsRegex(Pattern.compile("<Balance currency=.EUR.>\\s*<xenc:EncryptedData", Pattern.DOTALL), 1));
+        assertThat(encryptedXml, containsRegex("<Balance currency=.CHF.>20000000\\.00</Balance>", 1));
+    }
+
+    private void encrypt(String xml, ElementSelector elementSelector, int requiredNumOccurrences) throws Exception {
+        XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setActions(Collections.singletonList(XMLSecurityConstants.ENCRYPTION));
+
+        byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes(StandardCharsets.US_ASCII);
+        SecretKey transportKey = new SecretKeySpec(bits192, "AES");
+        properties.setEncryptionKeyTransportAlgorithm("http://www.w3.org/2001/04/xmlenc#kw-aes192");
+        properties.setEncryptionTransportKey(transportKey);
+        properties.setEncryptionSymAlgorithm("http://www.w3.org/2001/04/xmlenc#aes128-cbc");
+
+        SecurePartFactory securePartFactory = (element, outputProcessorChain) -> element != null ? new SecurePart(element.getName(), SecurePart.Modifier.Content) : null;
+        properties.addEncryptionPartSelector(elementSelector, securePartFactory, requiredNumOccurrences);
+
+        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        ByteArrayOutputStream encryptedOut = new ByteArrayOutputStream();
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(encryptedOut, StandardCharsets.UTF_8.name());
+
+        InputStream sourceDocument = new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8));
+        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+
+        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
+        xmlStreamWriter.close();
+    }
+
+    @Test
+    public void testEncryptionWithNodeModifier() throws Exception {
+        String xml = "<ns0:root a='a' xmlns:ns0='urn:ns0'><branch b='b' c='c'><leaf/></branch><branch d='d'>content</branch></ns0:root>";
+        ElementSelector elementSelector = spy(new XPathElementSelector("xyz", XPathModifier.Node));
+        List<String> recordedElementsXml = new ArrayList<>();
+        doAnswer(byRecordingElementXmlBeforeCallingRealMethod(recordedElementsXml)).when(elementSelector).select(any(XMLSecStartElement.class), any(OutputProcessorChain.class));
+
+        encrypt(xml, elementSelector, -1);
+
+        InOrder inOrder = inOrder(elementSelector);
+        inOrder.verify(elementSelector).select(argThat(matchesName(new QName("urn:ns0", "root", "ns0"))), any(OutputProcessorChain.class));
+        inOrder.verify(elementSelector).select(argThat(matchesName(new QName("branch"))), any(OutputProcessorChain.class));
+        inOrder.verify(elementSelector).select(argThat(matchesName(new QName("leaf"))), any(OutputProcessorChain.class));
+        inOrder.verify(elementSelector).select(argThat(matchesName(new QName("branch"))), any(OutputProcessorChain.class));
+
+        // Verify that the skeleton element preserves attributes and namespaces.
+        assertThat(recordedElementsXml.get(0), is(equalTo(toString(toDocument("<ns0:root a='a' xmlns:ns0='urn:ns0'/>")))));
+        // Verify that the skeleton element does NOT preserve the path to the document root.
+        assertThat(recordedElementsXml.get(1), is(equalTo(toString(toDocument("<branch b='b' c='c'/>")))));
+        assertThat(recordedElementsXml.get(2), is(equalTo(toString(toDocument("<leaf/>")))));
+        // Verify that the skeleton element does NOT preserve any content.
+        assertThat(recordedElementsXml.get(3), is(equalTo(toString(toDocument("<branch d='d'/>")))));
+    }
+
+    @Test
+    public void testEncryptionWithPathModifier() throws Exception {
+        String xml = "<ns0:root a='a' xmlns:ns0='urn:ns0'><branch b='b' c='c'><leaf/></branch><branch d='d'>content</branch></ns0:root>";
+        ElementSelector elementSelector = spy(new XPathElementSelector("", XPathModifier.Path));
+        List<String> actualElementsXml = new ArrayList<>();
+        doAnswer(byRecordingElementXmlBeforeCallingRealMethod(actualElementsXml)).when(elementSelector).select(any(XMLSecStartElement.class), any(OutputProcessorChain.class));
+
+        encrypt(xml, elementSelector, -1);
+
+        InOrder inOrder = inOrder(elementSelector);
+        inOrder.verify(elementSelector).select(argThat(matchesName(new QName("urn:ns0", "root", "ns0"))), any(OutputProcessorChain.class));
+        inOrder.verify(elementSelector).select(argThat(matchesName(new QName("branch"))), any(OutputProcessorChain.class));
+        inOrder.verify(elementSelector).select(argThat(matchesName(new QName("leaf"))), any(OutputProcessorChain.class));
+        inOrder.verify(elementSelector).select(argThat(matchesName(new QName("branch"))), any(OutputProcessorChain.class));
+
+        // Verify that the skeleton element preserves attributes and namespaces.
+        assertThat(actualElementsXml.get(0), is(equalTo(toString(toDocument("<ns0:root a='a' xmlns:ns0='urn:ns0'/>")))));
+        // Verify that the skeleton element preserves the path to the document root.
+        assertThat(actualElementsXml.get(1), is(equalTo(toString(toDocument("<ns0:root a='a' xmlns:ns0='urn:ns0'><branch b='b' c='c'/></ns0:root>")))));
+        assertThat(actualElementsXml.get(2), is(equalTo(toString(toDocument("<ns0:root a='a' xmlns:ns0='urn:ns0'><branch b='b' c='c'><leaf/></branch></ns0:root>")))));
+        // Verify that the skeleton element does NOT preserve any content.
+        // Verify that the skeleton element does NOT preserve the whole document content so far, only the path to the document root.
+        assertThat(actualElementsXml.get(3), is(equalTo(toString(toDocument("<ns0:root a='a' xmlns:ns0='urn:ns0'><branch d='d'/></ns0:root>")))));
+    }
+
+    @Test
+    public void testEncryptionWithTreeModifier() throws Exception {
+        String xml = "<ns0:root a='a' xmlns:ns0='urn:ns0'><branch b='b' c='c'><leaf/></branch><branch d='d'>content</branch></ns0:root>";
+        ElementSelector elementSelector = spy(new XPathElementSelector("", XPathModifier.Tree));
+        List<String> actualElementsXml = new ArrayList<>();
+        doAnswer(byRecordingElementXmlBeforeCallingRealMethod(actualElementsXml)).when(elementSelector).select(any(XMLSecStartElement.class), any(OutputProcessorChain.class));
+
+        encrypt(xml, elementSelector, -1);
+
+        InOrder inOrder = inOrder(elementSelector);
+        inOrder.verify(elementSelector).select(argThat(matchesName(new QName("urn:ns0", "root", "ns0"))), any(OutputProcessorChain.class));
+        inOrder.verify(elementSelector).select(argThat(matchesName(new QName("branch"))), any(OutputProcessorChain.class));
+        inOrder.verify(elementSelector).select(argThat(matchesName(new QName("leaf"))), any(OutputProcessorChain.class));
+        inOrder.verify(elementSelector).select(argThat(matchesName(new QName("branch"))), any(OutputProcessorChain.class));
+
+        // Verify that skeleton element preserves attributes and namespaces.
+        assertThat(actualElementsXml.get(0), is(equalTo(toString(toDocument("<ns0:root a='a' xmlns:ns0='urn:ns0'/>")))));
+        assertThat(actualElementsXml.get(1), is(equalTo(toString(toDocument("<ns0:root a='a' xmlns:ns0='urn:ns0'><branch b='b' c='c'/></ns0:root>")))));
+        assertThat(actualElementsXml.get(2), is(equalTo(toString(toDocument("<ns0:root a='a' xmlns:ns0='urn:ns0'><branch b='b' c='c'><leaf/></branch></ns0:root>")))));
+        // Verify that skeleton element preserves the whole document tree so far.
+        // Verify that skeleton element does NOT preserve any content.
+        assertThat(actualElementsXml.get(3), is(equalTo(toString(toDocument("<ns0:root a='a' xmlns:ns0='urn:ns0'><branch b='b' c='c'><leaf/></branch><branch d='d'/></ns0:root>")))));
+    }
+
+    private static <T> Answer<T> byRecordingElementXmlBeforeCallingRealMethod(List<String> recordedElementXml) {
+        return invocation -> {
+            OutputProcessorChain outputProcessorChain = invocation.getArgument(1);
+            Element element = outputProcessorChain.getSecurityContext().get(Element.class);
+            recordedElementXml.add(toString(element.getOwnerDocument()));
+            return (T) invocation.callRealMethod();
+        };
+    }
+
+    private static Document toDocument(String elementXml) throws Exception {
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        documentBuilderFactory.setNamespaceAware(true);
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        return documentBuilder.parse(new InputSource(new StringReader(elementXml)));
+    }
+
+    private static final String toString(Document document) {
+        try {
+            DOMSource source = new DOMSource(document);
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            StringWriter writer = new StringWriter();
+            StreamResult result = new StreamResult(writer);
+            transformer.transform(source, result);
+            return writer.toString();
+        } catch (TransformerException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    public void testRootElementMatchesOnlyOnceWithNodeElementModifier() throws Exception {
+        String xml = "<root><branch/></root>";
+        ElementSelector elementSelector = new XPathElementSelector("/*", XPathModifier.Path);
+
+        encrypt(xml, elementSelector, 1);
     }
 
     /**
