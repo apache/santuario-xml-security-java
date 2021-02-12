@@ -19,6 +19,7 @@
 package org.apache.xml.security.stax.impl;
 
 import org.apache.xml.security.stax.ext.SecurePart;
+import org.apache.xml.security.stax.ext.SecurePartSelector;
 
 import java.security.Key;
 
@@ -28,6 +29,7 @@ import java.security.Key;
  */
 public class EncryptionPartDef {
 
+    private SecurePartSelector securePartSelector;
     private SecurePart securePart;
     private SecurePart.Modifier modifier;
     private Key symmetricKey;
@@ -35,6 +37,14 @@ public class EncryptionPartDef {
     private String encRefId;
     private String cipherReferenceId;
     private String mimeType;
+
+    public SecurePartSelector getSecurePartSelector() {
+        return securePartSelector;
+    }
+
+    public void setSecurePartSelector(SecurePartSelector securePartSelector) {
+        this.securePartSelector = securePartSelector;
+    }
 
     public SecurePart getSecurePart() {
         return securePart;

@@ -41,6 +41,7 @@ import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.config.JCEAlgorithmMapper;
 import org.apache.xml.security.stax.ext.OutputProcessorChain;
 import org.apache.xml.security.stax.ext.SecurePart;
+import org.apache.xml.security.stax.ext.SecurePartSelector;
 import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.stax.ext.XMLSecurityUtils;
 import org.apache.xml.security.stax.ext.stax.XMLSecAttribute;
@@ -51,6 +52,7 @@ import org.apache.xml.security.stax.impl.util.IDGenerator;
 import org.apache.xml.security.stax.securityToken.OutboundSecurityToken;
 import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 import org.apache.xml.security.stax.securityToken.SecurityTokenProvider;
+import org.apache.xml.security.utils.KeyValue;
 import org.apache.xml.security.utils.XMLUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,8 +76,10 @@ public class XMLEncryptOutputProcessor extends AbstractEncryptOutputProcessor {
 
             //avoid double encryption when child elements matches too
             if (getActiveInternalEncryptionOutputProcessor() == null) {
-                SecurePart securePart = securePartMatches(xmlSecStartElement, outputProcessorChain, XMLSecurityConstants.ENCRYPTION_PARTS);
-                if (securePart != null) {
+                KeyValue<SecurePartSelector, SecurePart> match = securePartMatches(xmlSecStartElement, outputProcessorChain, XMLSecurityConstants.ENCRYPTION_PART_SELECTORS);
+                if (match != null) {
+                    SecurePartSelector securePartSelector = match.getKey();
+                    SecurePart securePart = match.getValue();
                     LOG.debug("Matched encryptionPart for encryption");
                     String tokenId = outputProcessorChain.getSecurityContext().get(
                             XMLSecurityConstants.PROP_USE_THIS_TOKEN_ID_FOR_ENCRYPTION);
@@ -84,12 +88,13 @@ public class XMLEncryptOutputProcessor extends AbstractEncryptOutputProcessor {
                     final OutboundSecurityToken securityToken = securityTokenProvider.getSecurityToken();
 
                     EncryptionPartDef encryptionPartDef = new EncryptionPartDef();
+                    encryptionPartDef.setSecurePartSelector(securePartSelector);
                     encryptionPartDef.setSecurePart(securePart);
                     encryptionPartDef.setModifier(securePart.getModifier());
                     encryptionPartDef.setEncRefId(IDGenerator.generateID(null));
                     encryptionPartDef.setKeyId(securityTokenProvider.getId());
                     encryptionPartDef.setSymmetricKey(securityToken.getSecretKey(getSecurityProperties().getEncryptionSymAlgorithm()));
-                    outputProcessorChain.getSecurityContext().putAsList(EncryptionPartDef.class, encryptionPartDef);
+                    getEncryptionPartDefList().add(encryptionPartDef);
 
                     AbstractInternalEncryptionOutputProcessor internalEncryptionOutputProcessor =
                             createInternalEncryptionOutputProcessor(

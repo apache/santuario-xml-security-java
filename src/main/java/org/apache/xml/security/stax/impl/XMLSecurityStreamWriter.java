@@ -20,8 +20,6 @@ package org.apache.xml.security.stax.impl;
 
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.ext.OutputProcessorChain;
-import org.apache.xml.security.stax.ext.SecurePart;
-import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.stax.ext.stax.XMLSecAttribute;
 import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 import org.apache.xml.security.stax.ext.stax.XMLSecEventFactory;
@@ -49,8 +47,6 @@ public class XMLSecurityStreamWriter implements XMLStreamWriter {
     private NSContext namespaceContext = new NSContext(null);
     private boolean endDocumentWritten = false;
     private boolean haveToWriteEndElement = false;
-    private SecurePart signEntireRequestPart;
-    private SecurePart encryptEntireRequestPart;
 
     public XMLSecurityStreamWriter(OutputProcessorChain outputProcessorChain) {
         this.outputProcessorChain = outputProcessorChain;
@@ -118,22 +114,6 @@ public class XMLSecurityStreamWriter implements XMLStreamWriter {
         Element element;
         if (elementStack == null) {
             element = new Element(elementStack, namespaceContext, namespaceURI, localName, prefix);
-            if (signEntireRequestPart != null) {
-                signEntireRequestPart.setName(new QName(namespaceURI, localName, prefix));
-                outputProcessorChain.getSecurityContext().putAsMap(
-                        XMLSecurityConstants.SIGNATURE_PARTS,
-                        signEntireRequestPart.getName(),
-                        signEntireRequestPart
-                );
-            }
-            if (encryptEntireRequestPart != null) {
-                encryptEntireRequestPart.setName(new QName(namespaceURI, localName, prefix));
-                outputProcessorChain.getSecurityContext().putAsMap(
-                        XMLSecurityConstants.ENCRYPTION_PARTS,
-                        encryptEntireRequestPart.getName(),
-                        encryptEntireRequestPart
-                );
-            }
         } else {
             element = new Element(elementStack, namespaceURI, localName, prefix);
         }
@@ -165,7 +145,6 @@ public class XMLSecurityStreamWriter implements XMLStreamWriter {
         Element element = this.elementStack;
         this.elementStack = this.elementStack.getParentElement();
         chainProcessEvent(XMLSecEventFactory.createXmlSecEndElement(element.getQName()));
-
     }
 
     @Override
@@ -351,22 +330,6 @@ public class XMLSecurityStreamWriter implements XMLStreamWriter {
     @Override
     public Object getProperty(String name) throws IllegalArgumentException {
         throw new IllegalArgumentException("Properties not supported");
-    }
-
-    public SecurePart getSignEntireRequestPart() {
-        return signEntireRequestPart;
-    }
-
-    public void setSignEntireRequestPart(SecurePart signEntireRequestPart) {
-        this.signEntireRequestPart = signEntireRequestPart;
-    }
-
-    public SecurePart getEncryptEntireRequestPart() {
-        return encryptEntireRequestPart;
-    }
-
-    public void setEncryptEntireRequestPart(SecurePart encryptEntireRequestPart) {
-        this.encryptEntireRequestPart = encryptEntireRequestPart;
     }
 
     private static class Element {

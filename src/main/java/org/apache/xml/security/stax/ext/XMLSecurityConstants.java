@@ -257,8 +257,8 @@ public class XMLSecurityConstants {
     public static final String PROP_USE_THIS_TOKEN_ID_FOR_ENCRYPTION = "PROP_USE_THIS_TOKEN_ID_FOR_ENCRYPTION";
     public static final String PROP_USE_THIS_TOKEN_ID_FOR_ENCRYPTED_KEY = "PROP_USE_THIS_TOKEN_ID_FOR_ENCRYPTED_KEY";
 
-    public static final String SIGNATURE_PARTS = "signatureParts";
-    public static final String ENCRYPTION_PARTS = "encryptionParts";
+    public static final String SIGNATURE_PART_SELECTORS = "signaturePartSelectors";
+    public static final String ENCRYPTION_PART_SELECTORS = "encryptionPartSelectors";
 
     public static final Action SIGNATURE = new Action("Signature");
     public static final Action ENCRYPTION = new Action("Encryption");

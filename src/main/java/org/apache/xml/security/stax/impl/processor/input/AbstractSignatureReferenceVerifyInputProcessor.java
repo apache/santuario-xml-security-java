@@ -61,9 +61,9 @@ import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer
 import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer20010315_OmitCommentsTransformer;
 import org.apache.xml.security.stax.impl.util.DigestOutputStream;
 import org.apache.xml.security.stax.impl.util.IDGenerator;
-import org.apache.xml.security.stax.impl.util.KeyValue;
 import org.apache.xml.security.stax.securityEvent.AlgorithmSuiteSecurityEvent;
 import org.apache.xml.security.stax.securityToken.InboundSecurityToken;
+import org.apache.xml.security.utils.KeyValue;
 import org.apache.xml.security.utils.UnsyncBufferedOutputStream;
 import org.apache.xml.security.utils.XMLUtils;
 import org.slf4j.Logger;

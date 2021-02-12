@@ -40,12 +40,6 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
-import org.junit.jupiter.api.Assumptions;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.stax.ext.OutboundXMLSec;
@@ -59,11 +53,19 @@ import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
 import org.apache.xml.security.utils.XMLUtils;
-
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import static org.apache.xml.security.stax.ext.XMLSecurityConstants.NS_C14N_EXCL;
 import static org.apache.xml.security.stax.ext.XMLSecurityConstants.NS_XMLDSIG_ENVELOPED_SIGNATURE;
+import static org.apache.xml.security.test.stax.utils.TestUtils.toSecureParts;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.startsWith;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -127,7 +129,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -180,7 +182,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         assertNotNull(sigValueEvent.getSignatureValue());
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -203,7 +205,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         properties.setSignatureCerts(new X509Certificate[]{cert});
 
         SecurePart securePart =
-                new SecurePart(new QName("urn:example:po", "NotExistingElement"), SecurePart.Modifier.Content);
+                new SecurePart(new QName("urn:example:po", "NonExistingElement"), SecurePart.Modifier.Content);
         properties.addSignaturePart(securePart);
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
@@ -221,7 +223,9 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
             fail("Exception expected");
         } catch (XMLStreamException e) {
             assertTrue(e.getCause() instanceof XMLSecurityException);
-            assertEquals("Part to sign not found: {urn:example:po}NotExistingElement", e.getCause().getMessage());
+            String message = e.getCause().getMessage();
+            assertThat(message, startsWith("Too few (0/1) elements found to sign:"));
+            assertThat(message, containsString("{urn:example:po}NonExistingElement"));
         }
     }
 
@@ -286,7 +290,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -350,7 +354,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -414,7 +418,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -527,7 +531,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         assertEquals(childNode.getLocalName(), "Signature");
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -583,7 +587,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts(), null, true, "ID", true);
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors(), null, true, "ID", true);
     }
 
 
@@ -632,7 +636,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -697,7 +701,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
                 (NodeList) xpath.evaluate(expression, document, XPathConstants.NODESET);
         assertTrue(sigElements.getLength() == 2);
 
-        for (SecurePart secPart : properties.getSignatureSecureParts()) {
+        for (SecurePart secPart : toSecureParts(document, properties.getSignaturePartSelectors())) {
             if (secPart.getName() == null) {
                 continue;
             }
@@ -752,7 +756,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, key, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, key, properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -800,7 +804,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -863,7 +867,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -921,7 +925,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -980,7 +984,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -1027,7 +1031,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -1095,7 +1099,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         assertEquals(XMLSecurityConstants.NS_XMLDSIG_SHA1, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -1163,7 +1167,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         assertEquals("http://www.w3.org/2001/04/xmlenc#sha256", element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -1210,7 +1214,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -1263,7 +1267,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         assertEquals("", ((Element)nodeList.item(1)).getAttribute(XMLSecurityConstants.ATT_NULL_PrefixList.getLocalPart()));
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -1309,7 +1313,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -1368,7 +1372,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -1423,7 +1427,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -1469,7 +1473,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -1515,7 +1519,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -1565,7 +1569,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -1613,7 +1617,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -1661,7 +1665,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts(), null, false, "Id", true);
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors(), null, false, "Id", true);
 
     }
 
@@ -1713,7 +1717,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         assertEquals(cert.getIssuerDN().getName(), nodeList.item(0).getFirstChild().getTextContent());
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -1763,7 +1767,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         assertEquals(cert.getIssuerDN().getName(), nodeList.item(0).getFirstChild().getTextContent());
 
         // Verify using DOM
-        verifyUsingDOMWithoutId(document, cert.getPublicKey(), properties.getSignatureSecureParts());
+        verifyUsingDOMWithoutId(document, cert.getPublicKey(), properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -1818,6 +1822,6 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         assertEquals(cert.getIssuerDN().getName(), nodeList.item(0).getFirstChild().getTextContent());
 
         // Verify using DOM
-        verifyUsingDOMWithoutIdAndDefaultTransform(document, cert.getPublicKey(), properties.getSignatureSecureParts());
+        verifyUsingDOMWithoutIdAndDefaultTransform(document, cert.getPublicKey(), properties.getSignaturePartSelectors());
     }
 }

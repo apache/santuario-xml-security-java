@@ -105,7 +105,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -160,7 +160,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -215,7 +215,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -270,7 +270,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -325,7 +325,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -382,7 +382,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -439,7 +439,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -496,7 +496,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -553,7 +553,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -610,7 +610,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -667,7 +667,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors());
     }
 
 }

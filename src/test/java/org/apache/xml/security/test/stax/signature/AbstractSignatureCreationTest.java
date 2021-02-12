@@ -35,17 +35,18 @@ import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.stax.ext.SecurePart;
+import org.apache.xml.security.stax.ext.SecurePartSelector;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.apache.xml.security.utils.resolver.ResourceResolverException;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import static org.apache.xml.security.test.stax.utils.TestUtils.toSecureParts;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -107,18 +108,18 @@ public class AbstractSignatureCreationTest {
     protected void verifyUsingDOM(
             Document document,
             X509Certificate cert,
-            List<SecurePart> secureParts
+            List<SecurePartSelector> securePartSelectors
     ) throws Exception {
-        verifyUsingDOM(document, cert, secureParts, null);
+        verifyUsingDOM(document, cert, securePartSelectors, null);
     }
 
     protected void verifyUsingDOM(
             Document document,
             X509Certificate cert,
-            List<SecurePart> secureParts,
+            List<SecurePartSelector> securePartSelectors,
             boolean secureValidation
     ) throws Exception {
-        verifyUsingDOM(document, cert, secureParts, null,
+        verifyUsingDOM(document, cert, securePartSelectors, null,
                 true, "Id", secureValidation);
     }
 
@@ -128,10 +129,10 @@ public class AbstractSignatureCreationTest {
     protected void verifyUsingDOM(
             Document document,
             X509Certificate cert,
-            List<SecurePart> secureParts,
+            List<SecurePartSelector> securePartSelectors,
             ResourceResolverSpi resourceResolverSpi
     ) throws Exception {
-        verifyUsingDOM(document, cert, secureParts, resourceResolverSpi, true, "Id", true);
+        verifyUsingDOM(document, cert, securePartSelectors, resourceResolverSpi, true, "Id", true);
     }
 
     /**
@@ -140,12 +141,13 @@ public class AbstractSignatureCreationTest {
     protected void verifyUsingDOM(
             Document document,
             X509Certificate cert,
-            List<SecurePart> secureParts,
+            List<SecurePartSelector> securePartSelectors,
             ResourceResolverSpi resourceResolverSpi,
             boolean keyInfoRequired,
             String idAttributeNS,
             boolean secureValidation
     ) throws Exception {
+        List<SecurePart> secureParts = toSecureParts(document, securePartSelectors);
         XPath xpath = getXPath();
 
         String expression = "//dsig:Signature[1]";
@@ -182,8 +184,9 @@ public class AbstractSignatureCreationTest {
     protected void verifyUsingDOM(
             Document document,
             Key key,
-            List<SecurePart> secureParts
+            List<SecurePartSelector> securePartSelectors
     ) throws Exception {
+        List<SecurePart> secureParts = toSecureParts(document, securePartSelectors);
         XPath xpath = getXPath();
 
         String expression = "//dsig:Signature[1]";
@@ -206,8 +209,9 @@ public class AbstractSignatureCreationTest {
     protected void verifyUsingDOMWithoutId(
             Document document,
             Key key,
-            List<SecurePart> secureParts
+            List<SecurePartSelector> securePartSelectors
     ) throws Exception {
+        List<SecurePart> secureParts = toSecureParts(document, securePartSelectors);
         XPath xpath = getXPath();
 
         String expression = "//dsig:Signature[1]";
@@ -234,8 +238,9 @@ public class AbstractSignatureCreationTest {
     protected void verifyUsingDOMWithoutIdAndDefaultTransform (
             Document document,
             Key key,
-            List<SecurePart> secureParts
+            List<SecurePartSelector> securePartSelectors
     ) throws Exception {
+        List<SecurePart> secureParts = toSecureParts(document, securePartSelectors);
         XPath xpath = getXPath();
 
         String expression = "//dsig:Signature[1]";

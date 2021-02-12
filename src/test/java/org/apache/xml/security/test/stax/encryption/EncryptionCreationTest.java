@@ -62,6 +62,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.startsWith;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -215,7 +218,7 @@ public class EncryptionCreationTest {
         properties.setEncryptionSymAlgorithm("http://www.w3.org/2001/04/xmlenc#tripledes-cbc");
 
         SecurePart securePart =
-                new SecurePart(new QName("urn:example:po", "NotExistingElement"), SecurePart.Modifier.Content);
+                new SecurePart(new QName("urn:example:po", "NonExistingElement"), SecurePart.Modifier.Content);
         properties.addEncryptionPart(securePart);
 
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
@@ -233,7 +236,9 @@ public class EncryptionCreationTest {
             fail("Exception expected");
         } catch (XMLStreamException e) {
             assertTrue(e.getCause() instanceof XMLSecurityException);
-            assertEquals("Part to encrypt not found: {urn:example:po}NotExistingElement", e.getCause().getMessage());
+            String message = e.getCause().getMessage();
+            assertThat(message, startsWith("Too few (0/1) elements found to encrypt:"));
+            assertThat(message, containsString("{urn:example:po}NonExistingElement"));
         }
     }
 
@@ -1718,7 +1723,7 @@ public class EncryptionCreationTest {
                 "</Root>\n";
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setIdAttributeNS(new QName("attr1"));
-        properties.setActions(Collections.singletonList(XMLSecurityConstants.ENCRYPT));
+        properties.setActions(Collections.singletonList(XMLSecurityConstants.ENCRYPTION));
         properties.addEncryptionPart(securePart);
         byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes(StandardCharsets.US_ASCII);
         SecretKey transportKey = new SecretKeySpec(bits192, "AES");
@@ -1751,7 +1756,7 @@ public class EncryptionCreationTest {
                 "</Root>\n";
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setIdAttributeNS(new QName("attr1"));
-        properties.setActions(Collections.singletonList(XMLSecurityConstants.ENCRYPT));
+        properties.setActions(Collections.singletonList(XMLSecurityConstants.ENCRYPTION));
         SecurePart securePart = new SecurePart(new QName("Branch1"), SecurePart.Modifier.Element);
         securePart.setIdToSecure("def");
         properties.addEncryptionPart(securePart);

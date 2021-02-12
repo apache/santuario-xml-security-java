@@ -122,7 +122,7 @@ public class OutputProcessorChainTest {
 
     @Test
     public void testAddProcessorPhase1() {
-        OutputProcessorChainImpl outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl());
+        OutputProcessorChainImpl outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl(new XMLSecurityProperties()));
 
         AbstractOutputProcessor outputProcessor1 = new AbstractOutputProcessor() {
         };
@@ -143,7 +143,7 @@ public class OutputProcessorChainTest {
 
     @Test
     public void testAddProcessorPhase2() {
-        OutputProcessorChainImpl outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl());
+        OutputProcessorChainImpl outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl(new XMLSecurityProperties()));
 
         AbstractOutputProcessor outputProcessor1 = new AbstractOutputProcessor() {
         };
@@ -183,7 +183,7 @@ public class OutputProcessorChainTest {
 
     @Test
     public void testAddProcessorBefore1() {
-        OutputProcessorChainImpl outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl());
+        OutputProcessorChainImpl outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl(new XMLSecurityProperties()));
 
         AbstractOutputProcessor outputProcessor1 = new AbstractOutputProcessor() {
         };
@@ -226,7 +226,7 @@ public class OutputProcessorChainTest {
 
     @Test
     public void testAddProcessorAfter1() {
-        OutputProcessorChainImpl outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl());
+        OutputProcessorChainImpl outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl(new XMLSecurityProperties()));
 
         AbstractOutputProcessor outputProcessor1 = new AbstractOutputProcessor() {
         };
@@ -269,7 +269,7 @@ public class OutputProcessorChainTest {
 
     @Test
     public void testAddProcessorBeforeAndAfter1() {
-        OutputProcessorChainImpl outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl());
+        OutputProcessorChainImpl outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl(new XMLSecurityProperties()));
 
         AbstractOutputProcessor outputProcessor1 = new AbstractOutputProcessor() {
         };
@@ -320,7 +320,7 @@ public class OutputProcessorChainTest {
         outputProcessor2.addAfterProcessor(outputProcessor1.getClass());
         outputProcessor3.addAfterProcessor(outputProcessor1.getClass());
 
-        OutputProcessorChain outputProcessorChain1 = new OutputProcessorChainImpl(new OutboundSecurityContextImpl());
+        OutputProcessorChain outputProcessorChain1 = new OutputProcessorChainImpl(new OutboundSecurityContextImpl(new XMLSecurityProperties()));
         outputProcessorChain1.addProcessor(outputProcessor1);
         outputProcessorChain1.addProcessor(outputProcessor2);
         outputProcessorChain1.addProcessor(outputProcessor3);
@@ -330,7 +330,7 @@ public class OutputProcessorChainTest {
         assertEquals(outputProcessor2, processors1.get(1));
         assertEquals(outputProcessor3, processors1.get(2));
 
-        OutputProcessorChain outputProcessorChain2 = new OutputProcessorChainImpl(new OutboundSecurityContextImpl());
+        OutputProcessorChain outputProcessorChain2 = new OutputProcessorChainImpl(new OutboundSecurityContextImpl(new XMLSecurityProperties()));
         outputProcessorChain2.addProcessor(outputProcessor1);
         outputProcessorChain2.addProcessor(outputProcessor3);
         outputProcessorChain2.addProcessor(outputProcessor2);
@@ -369,7 +369,7 @@ public class OutputProcessorChainTest {
         mySignatureOutputProcessor.addBeforeProcessor(finalOutputProcessor.getClass());
         mySignatureOutputProcessor.addAfterProcessor(initialSignatureOutputProcessor.getClass());
 
-        OutputProcessorChain outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl());
+        OutputProcessorChain outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl(new XMLSecurityProperties()));
         outputProcessorChain.addProcessor(finalOutputProcessor);
         outputProcessorChain.addProcessor(initialSignatureOutputProcessor);
         outputProcessorChain.addProcessor(mySignatureOutputProcessor);
@@ -395,7 +395,7 @@ public class OutputProcessorChainTest {
         outputProcessor2.addBeforeProcessor(outputProcessor1.getClass());
         outputProcessor2.addAfterProcessor(outputProcessor1.getClass());
 
-        OutputProcessorChain outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl());
+        OutputProcessorChain outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl(new XMLSecurityProperties()));
         outputProcessorChain.addProcessor(outputProcessor1);
         assertThrows(IllegalArgumentException.class, () -> outputProcessorChain.addProcessor(outputProcessor2));
 
@@ -415,7 +415,7 @@ public class OutputProcessorChainTest {
         outputProcessor1.addBeforeProcessor(outputProcessor2.getClass());
         outputProcessor1.addAfterProcessor(outputProcessor2.getClass());
 
-        OutputProcessorChain outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl());
+        OutputProcessorChain outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl(new XMLSecurityProperties()));
         outputProcessorChain.addProcessor(outputProcessor1);
         assertThrows(IllegalArgumentException.class, () -> outputProcessorChain.addProcessor(outputProcessor2));
 
@@ -439,7 +439,7 @@ public class OutputProcessorChainTest {
         outputProcessor2.addBeforeProcessor(outputProcessor3.getClass());
         outputProcessor3.addBeforeProcessor(outputProcessor1.getClass());
 
-        OutputProcessorChain outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl());
+        OutputProcessorChain outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl(new XMLSecurityProperties()));
         outputProcessorChain.addProcessor(outputProcessor1);
         outputProcessorChain.addProcessor(outputProcessor2);
         assertThrows(IllegalArgumentException.class, () -> outputProcessorChain.addProcessor(outputProcessor3));

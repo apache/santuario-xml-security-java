@@ -89,7 +89,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, key, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, key, properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -134,7 +134,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, key, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, key, properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -179,7 +179,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, key, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, key, properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -224,7 +224,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, key, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, key, properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -269,7 +269,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, key, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, key, properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -316,7 +316,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, key, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, key, properties.getSignaturePartSelectors());
     }
 
 

@@ -22,12 +22,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.Attribute;
 
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.ext.stax.XMLSecAttribute;
@@ -37,6 +35,7 @@ import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 import org.apache.xml.security.stax.ext.stax.XMLSecEventFactory;
 import org.apache.xml.security.stax.ext.stax.XMLSecNamespace;
 import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
+import org.apache.xml.security.utils.KeyValue;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -57,7 +56,7 @@ public abstract class AbstractOutputProcessor implements OutputProcessor {
     private Set<Class<? extends OutputProcessor>> beforeProcessors;
     private Set<Class<? extends OutputProcessor>> afterProcessors;
 
-    protected AbstractOutputProcessor() throws XMLSecurityException {
+    protected AbstractOutputProcessor() {
         super();
     }
 
@@ -238,24 +237,26 @@ public abstract class AbstractOutputProcessor implements OutputProcessor {
         outputProcessorChain.processEvent(xmlSecEvent);
     }
 
-    protected SecurePart securePartMatches(XMLSecStartElement xmlSecStartElement,
-                                           OutputProcessorChain outputProcessorChain, String dynamicParts) {
-        Map<Object, SecurePart> dynamicSecureParts = outputProcessorChain.getSecurityContext().getAsMap(dynamicParts);
-        return securePartMatches(xmlSecStartElement, dynamicSecureParts);
+    protected KeyValue<SecurePartSelector, SecurePart> securePartMatches(XMLSecStartElement xmlSecStartElement,
+                                                                         OutputProcessorChain outputProcessorChain,
+                                                                         String dynamicPartSelectors) {
+        OutboundSecurityContext securityContext = outputProcessorChain.getSecurityContext();
+        List<SecurePartSelector> dynamicSecurePartSelectors = securityContext.get(dynamicPartSelectors);
+        return securePartMatches(xmlSecStartElement, outputProcessorChain, dynamicSecurePartSelectors);
     }
 
-    protected SecurePart securePartMatches(XMLSecStartElement xmlSecStartElement, Map<Object, SecurePart> secureParts) {
-        SecurePart securePart = null;
-        if (secureParts != null) {
-            securePart = secureParts.get(xmlSecStartElement.getName());
-            if (securePart == null) {
-                Attribute attribute = xmlSecStartElement.getAttributeByName(securityProperties.getIdAttributeNS());
-                if (attribute != null) {
-                    securePart = secureParts.get(attribute.getValue());
+    protected KeyValue<SecurePartSelector, SecurePart> securePartMatches(XMLSecStartElement xmlSecStartElement,
+                                                                         OutputProcessorChain outputProcessorChain,
+                                                                         List<SecurePartSelector> securePartSelectors) {
+        if (securePartSelectors != null) {
+            for (SecurePartSelector securePartSelector : securePartSelectors) {
+                SecurePart securePart = securePartSelector.select(xmlSecStartElement, outputProcessorChain);
+                if (securePart != null) {
+                    return new KeyValue<>(securePartSelector, securePart);
                 }
             }
         }
-        return securePart;
+        return null;
     }
 
     protected void outputDOMElement(Element element, OutputProcessorChain outputProcessorChain)
