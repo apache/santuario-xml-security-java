@@ -21,6 +21,7 @@ package org.apache.xml.security.stax.impl;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.config.ConfigurationProperties;
 import org.apache.xml.security.stax.ext.InboundSecurityContext;
+import org.apache.xml.security.stax.ext.XMLSecurityProperties;
 import org.apache.xml.security.stax.securityToken.InboundSecurityToken;
 import org.apache.xml.security.stax.securityToken.SecurityTokenProvider;
 import org.apache.xml.security.stax.securityEvent.AlgorithmSuiteSecurityEvent;
@@ -38,6 +39,10 @@ public class InboundSecurityContextImpl extends AbstractSecurityContextImpl impl
     private static final Boolean allowMD5Algorithm = Boolean.valueOf(ConfigurationProperties.getProperty("AllowMD5Algorithm"));
     private final Map<String, SecurityTokenProvider<? extends InboundSecurityToken>> securityTokenProviders =
             new HashMap<>();
+
+    public InboundSecurityContextImpl(XMLSecurityProperties securityProperties) {
+        super(securityProperties);
+    }
 
     @Override
     protected void forwardSecurityEvent(SecurityEvent securityEvent) throws XMLSecurityException {

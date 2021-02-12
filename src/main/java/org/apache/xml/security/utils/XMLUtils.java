@@ -31,6 +31,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.xml.namespace.QName;
+import javax.xml.stream.events.Attribute;
+
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.c14n.InvalidCanonicalizerException;
@@ -994,6 +997,24 @@ public final class XMLUtils {
         return resizedBytes;
     }
 
+    public static Element convertQNameToElement(Document document, QName name) {
+        String prefix = name.getPrefix();
+        String qualifiedName = !prefix.isEmpty() ? prefix + ":" + name.getLocalPart() : name.getLocalPart();
+        String namespaceURI = name.getNamespaceURI();
+        if (namespaceURI.isEmpty()) {
+            namespaceURI = null;
+        }
+        return document.createElementNS(namespaceURI, qualifiedName);
+    }
 
-
+    public static void setAttributeNS(Element element, Attribute attribute) {
+        QName name = attribute.getName();
+        String prefix = name.getPrefix();
+        String qualifiedName = !prefix.isEmpty() ? prefix + ":" + name.getLocalPart() : name.getLocalPart();
+        String namespaceURI = name.getNamespaceURI();
+        if (namespaceURI.isEmpty()) {
+            namespaceURI = null;
+        }
+        element.setAttributeNS(namespaceURI, qualifiedName, attribute.getValue());
+    }
 }

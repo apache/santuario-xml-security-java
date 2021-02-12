@@ -19,6 +19,7 @@
 package org.apache.xml.security.stax.impl;
 
 import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.stax.ext.XMLSecurityProperties;
 import org.apache.xml.security.stax.securityEvent.SecurityEvent;
 import org.apache.xml.security.stax.securityEvent.SecurityEventListener;
 
@@ -30,6 +31,15 @@ public class AbstractSecurityContextImpl {
     @SuppressWarnings("unchecked")
     private final Map content = Collections.synchronizedMap(new HashMap());
     private final List<SecurityEventListener> securityEventListeners = new ArrayList<>(2);
+    private final XMLSecurityProperties securityProperties;
+
+    public AbstractSecurityContextImpl(XMLSecurityProperties securityProperties) {
+        this.securityProperties = securityProperties;
+    }
+
+    public XMLSecurityProperties getSecurityProperties() {
+        return securityProperties;
+    }
 
     public void addSecurityEventListener(SecurityEventListener securityEventListener) {
         if (securityEventListener != null) {
@@ -49,22 +59,22 @@ public class AbstractSecurityContextImpl {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> void put(String key, T value) {
+    public <K, T> void put(K key, T value) {
         content.put(key, value);
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T get(String key) {
+    public <K, T> T get(K key) {
         return (T) content.get(key);
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T remove(String key) {
+    public <K, T> T remove(K key) {
         return (T) content.remove(key);
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends List> void putList(Object key, T value) {
+    public <K, T extends List> void putList(K key, T value) {
         if (value == null) {
             return;
         }
@@ -74,35 +84,5 @@ public class AbstractSecurityContextImpl {
             content.put(key, entry);
         }
         entry.addAll(value);
-    }
-
-    @SuppressWarnings("unchecked")
-    public <T> void putAsList(Object key, T value) {
-        List<T> entry = (List<T>) content.get(key);
-        if (entry == null) {
-            entry = new ArrayList<>();
-            content.put(key, entry);
-        }
-        entry.add(value);
-    }
-
-    @SuppressWarnings("unchecked")
-    public <T> List<T> getAsList(Object key) {
-        return (List<T>) content.get(key);
-    }
-
-    @SuppressWarnings("unchecked")
-    public <T, U> void putAsMap(Object key, T mapKey, U mapValue) {
-        Map<T, U> entry = (Map<T, U>) content.get(key);
-        if (entry == null) {
-            entry = new HashMap<>();
-            content.put(key, entry);
-        }
-        entry.put(mapKey, mapValue);
-    }
-
-    @SuppressWarnings("unchecked")
-    public <T, U> Map<T, U> getAsMap(Object key) {
-        return (Map<T, U>) content.get(key);
     }
 }

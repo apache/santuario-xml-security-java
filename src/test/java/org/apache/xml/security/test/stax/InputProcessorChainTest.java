@@ -20,6 +20,7 @@ package org.apache.xml.security.test.stax;
 
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.config.Init;
+import org.apache.xml.security.stax.ext.XMLSecurityProperties;
 import org.apache.xml.security.stax.impl.InboundSecurityContextImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -98,7 +99,7 @@ public class InputProcessorChainTest {
 
     @Test
     public void testAddProcessorPhase1() {
-        InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(new InboundSecurityContextImpl());
+        InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(new InboundSecurityContextImpl(new XMLSecurityProperties()));
 
         AbstractInputProcessor inputProcessor1 = new AbstractInputProcessor() {
         };
@@ -119,7 +120,7 @@ public class InputProcessorChainTest {
 
     @Test
     public void testAddProcessorPhase2() {
-        InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(new InboundSecurityContextImpl());
+        InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(new InboundSecurityContextImpl(new XMLSecurityProperties()));
 
         AbstractInputProcessor inputProcessor1 = new AbstractInputProcessor() {
         };
@@ -159,7 +160,7 @@ public class InputProcessorChainTest {
 
     @Test
     public void testAddProcessorBefore1() {
-        InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(new InboundSecurityContextImpl());
+        InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(new InboundSecurityContextImpl(new XMLSecurityProperties()));
 
         AbstractInputProcessor inputProcessor1 = new AbstractInputProcessor() {
         };
@@ -202,7 +203,7 @@ public class InputProcessorChainTest {
 
     @Test
     public void testAddProcessorAfter1() {
-        InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(new InboundSecurityContextImpl());
+        InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(new InboundSecurityContextImpl(new XMLSecurityProperties()));
 
         AbstractInputProcessor inputProcessor1 = new AbstractInputProcessor() {
         };
@@ -245,7 +246,7 @@ public class InputProcessorChainTest {
 
     @Test
     public void testAddProcessorBeforeAndAfter1() {
-        InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(new InboundSecurityContextImpl());
+        InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(new InboundSecurityContextImpl(new XMLSecurityProperties()));
 
         AbstractInputProcessor inputProcessor1 = new AbstractInputProcessor() {
         };

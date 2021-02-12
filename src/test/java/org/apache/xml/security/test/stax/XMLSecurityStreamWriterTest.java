@@ -63,7 +63,7 @@ public class XMLSecurityStreamWriterTest {
     @Test
     public void testIdentityTransformResult() throws Exception {
         StringWriter securityStringWriter = new StringWriter();
-        OutboundSecurityContextImpl securityContext = new OutboundSecurityContextImpl();
+        OutboundSecurityContextImpl securityContext = new OutboundSecurityContextImpl(new XMLSecurityProperties());
         OutputProcessorChainImpl outputProcessorChain = new OutputProcessorChainImpl(securityContext);
         outputProcessorChain.addProcessor(new EventWriterProcessor(securityStringWriter));
         XMLSecurityStreamWriter xmlSecurityStreamWriter = new XMLSecurityStreamWriter(outputProcessorChain);
@@ -196,7 +196,7 @@ public class XMLSecurityStreamWriterTest {
     @Test
     public void testNullPrefix() throws Exception {
         StringWriter securityStringWriter = new StringWriter();
-        OutboundSecurityContextImpl securityContext = new OutboundSecurityContextImpl();
+        OutboundSecurityContextImpl securityContext = new OutboundSecurityContextImpl(new XMLSecurityProperties());
         OutputProcessorChainImpl outputProcessorChain = new OutputProcessorChainImpl(securityContext);
         outputProcessorChain.addProcessor(new EventWriterProcessor(securityStringWriter));
         XMLSecurityStreamWriter xmlSecurityStreamWriter = new XMLSecurityStreamWriter(outputProcessorChain);

@@ -19,6 +19,7 @@
 package org.apache.xml.security.stax.impl;
 
 import org.apache.xml.security.stax.ext.OutboundSecurityContext;
+import org.apache.xml.security.stax.ext.XMLSecurityProperties;
 import org.apache.xml.security.stax.securityToken.SecurityTokenProvider;
 import org.apache.xml.security.stax.securityToken.OutboundSecurityToken;
 
@@ -35,6 +36,10 @@ public class OutboundSecurityContextImpl extends AbstractSecurityContextImpl imp
 
     private final Map<String, SecurityTokenProvider<OutboundSecurityToken>> securityTokenProviders =
             new HashMap<>();
+
+    public OutboundSecurityContextImpl(XMLSecurityProperties securityProperties) {
+        super(securityProperties);
+    }
 
     @Override
     public void registerSecurityTokenProvider(String id, SecurityTokenProvider<OutboundSecurityToken> securityTokenProvider) {

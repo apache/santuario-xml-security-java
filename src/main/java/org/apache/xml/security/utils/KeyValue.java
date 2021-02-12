@@ -16,14 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.xml.security.stax.impl.util;
+package org.apache.xml.security.utils;
 
 /**
  */
 public class KeyValue<E, K> {
 
-    private E key;
-    private K value;
+    private final E key;
+    private final K value;
 
     public KeyValue(E key, K value) {
         this.key = key;

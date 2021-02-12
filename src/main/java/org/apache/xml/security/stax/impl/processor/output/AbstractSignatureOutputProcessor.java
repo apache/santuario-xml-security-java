@@ -41,6 +41,7 @@ import org.apache.xml.security.stax.ext.AbstractOutputProcessor;
 import org.apache.xml.security.stax.ext.OutputProcessorChain;
 import org.apache.xml.security.stax.ext.ResourceResolver;
 import org.apache.xml.security.stax.ext.SecurePart;
+import org.apache.xml.security.stax.ext.SecurePartSelector;
 import org.apache.xml.security.stax.ext.Transformer;
 import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.stax.ext.XMLSecurityUtils;
@@ -74,34 +75,28 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
     }
 
     @Override
-    public abstract void processEvent(XMLSecEvent xmlSecEvent, OutputProcessorChain outputProcessorChain)
-            throws XMLStreamException, XMLSecurityException;
-
-    @Override
     public void doFinal(OutputProcessorChain outputProcessorChain) throws XMLStreamException, XMLSecurityException {
         doFinalInternal(outputProcessorChain);
         super.doFinal(outputProcessorChain);
     }
 
     protected void doFinalInternal(OutputProcessorChain outputProcessorChain) throws XMLSecurityException, XMLStreamException {
-        Map<Object, SecurePart> dynamicSecureParts =
-                outputProcessorChain.getSecurityContext().getAsMap(XMLSecurityConstants.SIGNATURE_PARTS);
-        if (dynamicSecureParts != null) {
-            for (Map.Entry<Object, SecurePart> securePartEntry : dynamicSecureParts.entrySet()) {
-                final SecurePart securePart = securePartEntry.getValue();
-                if (securePart.getExternalReference() != null) {
-                    digestExternalReference(outputProcessorChain, securePart);
-                }
-            }
+        List<SecurePartSelector> securePartSelectors = getSecurityProperties().getSignaturePartSelectors();
+        for (SecurePartSelector securePartSelector : securePartSelectors) {
+            digestExternalReference(outputProcessorChain, securePartSelector);
         }
 
         verifySignatureParts(outputProcessorChain);
     }
 
     protected void digestExternalReference(
-            OutputProcessorChain outputProcessorChain, SecurePart securePart)
+            OutputProcessorChain outputProcessorChain, SecurePartSelector securePartSelector)
             throws XMLSecurityException, XMLStreamException {
 
+        final SecurePart securePart = securePartSelector.select(null, outputProcessorChain);
+        if (securePart == null || securePart.getExternalReference() == null) {
+            return;
+        }
         final String externalReference = securePart.getExternalReference();
         ResourceResolver resourceResolver =
                 ResourceResolverMapper.getResourceResolver(
@@ -116,6 +111,7 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
         InputStream inputStream = resourceResolver.getInputStreamFromExternalReference();
 
         SignaturePartDef signaturePartDef = new SignaturePartDef();
+        signaturePartDef.setSecurePartSelector(securePartSelector);
         signaturePartDef.setSecurePart(securePart);
         signaturePartDef.setSigRefId(externalReference);
         signaturePartDef.setExternalResource(true);
@@ -147,24 +143,25 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
 
     protected void verifySignatureParts(OutputProcessorChain outputProcessorChain) throws XMLSecurityException {
         List<SignaturePartDef> signaturePartDefs = getSignaturePartDefList();
-        Map<Object, SecurePart> dynamicSecureParts = outputProcessorChain.getSecurityContext().getAsMap(XMLSecurityConstants.SIGNATURE_PARTS);
-        if (dynamicSecureParts != null) {
-            Iterator<Map.Entry<Object, SecurePart>> securePartsMapIterator = dynamicSecureParts.entrySet().iterator();
+        List<SecurePartSelector> signaturePartSelectors = outputProcessorChain.getSecurityContext().get(XMLSecurityConstants.SIGNATURE_PART_SELECTORS);
+        if (signaturePartSelectors != null) {
             loop:
-            while (securePartsMapIterator.hasNext()) {
-                Map.Entry<Object, SecurePart> securePartEntry = securePartsMapIterator.next();
-                final SecurePart securePart = securePartEntry.getValue();
-
-                if (securePart.isRequired()) {
-                    for (int i = 0; i < signaturePartDefs.size(); i++) {
-                        SignaturePartDef signaturePartDef = signaturePartDefs.get(i);
-
-                        if (signaturePartDef.getSecurePart() == securePart) {
-                            continue loop;
+            for (SecurePartSelector signaturePartSelector : signaturePartSelectors) {
+                int requiredNumOccurrences = signaturePartSelector.getRequiredNumOccurrences();
+                if (requiredNumOccurrences >= 0) {
+                    int numOccurrences = 0;
+                    for (SignaturePartDef signaturePartDef : signaturePartDefs) {
+                        if (signaturePartDef.getSecurePartSelector().equals(signaturePartSelector)) {
+                            numOccurrences++;
                         }
                     }
-                    throw new XMLSecurityException("stax.signature.securePartNotFound",
-                                                   new Object[] {securePart.getName()});
+                    if (numOccurrences < requiredNumOccurrences) {
+                        throw new XMLSecurityException("stax.signature.tooFewOccurrences",
+                                new Object[]{numOccurrences, requiredNumOccurrences, signaturePartSelector});
+                    } else if (numOccurrences > requiredNumOccurrences) {
+                        throw new XMLSecurityException("stax.signature.tooManyOccurrences",
+                                new Object[]{numOccurrences, requiredNumOccurrences, signaturePartSelector});
+                    }
                 }
             }
         }

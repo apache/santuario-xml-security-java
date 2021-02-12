@@ -123,7 +123,7 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
         assertEquals(nodeList.getLength(), 1);
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors());
 
         TestSecurityEventListener testSecurityEventListener =
                 verifyUsingStAX(baos.toByteArray(), encryptionKey, cert.getPublicKey());
@@ -192,7 +192,7 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
         assertEquals(nodeList.getLength(), 1);
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getEncryptionPartSelectors());
 
         TestSecurityEventListener testSecurityEventListener =
                 verifyUsingStAX(baos.toByteArray(), encryptionKey, cert.getPublicKey());
@@ -269,7 +269,7 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
         assertEquals(nodeList.getLength(), 1);
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getEncryptionPartSelectors());
 
         TestSecurityEventListener testSecurityEventListener =
                 verifyUsingStAX(baos.toByteArray(), encryptionKey, cert.getPublicKey());
@@ -346,7 +346,7 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
         assertEquals(nodeList.getLength(), 1);
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getEncryptionPartSelectors());
 
         TestSecurityEventListener testSecurityEventListener =
                 verifyUsingStAX(baos.toByteArray(), encryptionKey, cert.getPublicKey());
@@ -415,7 +415,7 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getEncryptionPartSelectors());
 
         // Decrypt using DOM API
         Document doc =

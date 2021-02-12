@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import javax.crypto.Cipher;
 import javax.crypto.CipherOutputStream;
@@ -47,6 +46,7 @@ import org.apache.xml.security.stax.config.JCEAlgorithmMapper;
 import org.apache.xml.security.stax.ext.AbstractOutputProcessor;
 import org.apache.xml.security.stax.ext.OutputProcessorChain;
 import org.apache.xml.security.stax.ext.SecurePart;
+import org.apache.xml.security.stax.ext.SecurePartSelector;
 import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.stax.ext.stax.XMLSecAttribute;
 import org.apache.xml.security.stax.ext.stax.XMLSecCharacters;
@@ -74,14 +74,15 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
     }
 
     private AbstractInternalEncryptionOutputProcessor activeInternalEncryptionOutputProcessor;
+    private final List<EncryptionPartDef> encryptionPartDefList = new ArrayList<>();
 
     public AbstractEncryptOutputProcessor() throws XMLSecurityException {
         super();
     }
 
-    @Override
-    public abstract void processEvent(XMLSecEvent xmlSecEvent, OutputProcessorChain outputProcessorChain)
-            throws XMLStreamException, XMLSecurityException;
+    public List<EncryptionPartDef> getEncryptionPartDefList() {
+        return encryptionPartDefList;
+    }
 
     @Override
     public void doFinal(OutputProcessorChain outputProcessorChain) throws XMLStreamException, XMLSecurityException {
@@ -94,26 +95,27 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
     }
 
     protected void verifyEncryptionParts(OutputProcessorChain outputProcessorChain) throws XMLSecurityException {
-        List<EncryptionPartDef> encryptionPartDefs =
-                outputProcessorChain.getSecurityContext().getAsList(EncryptionPartDef.class);
-
-        Map<Object, SecurePart> dynamicSecureParts = outputProcessorChain.getSecurityContext().getAsMap(XMLSecurityConstants.ENCRYPTION_PARTS);
-        Iterator<Map.Entry<Object, SecurePart>> securePartsMapIterator = dynamicSecureParts.entrySet().iterator();
-        loop:
-        while (securePartsMapIterator.hasNext()) {
-            Map.Entry<Object, SecurePart> securePartEntry = securePartsMapIterator.next();
-            final SecurePart securePart = securePartEntry.getValue();
-
-            if (securePart.isRequired()) {
-                for (int i = 0; encryptionPartDefs != null && i < encryptionPartDefs.size(); i++) {
-                    EncryptionPartDef encryptionPartDef = encryptionPartDefs.get(i);
-
-                    if (encryptionPartDef.getSecurePart() == securePart) {
-                        continue loop;
+        List<EncryptionPartDef> encryptionPartDefs = getEncryptionPartDefList();
+        List<SecurePartSelector> encryptionPartSelectors = outputProcessorChain.getSecurityContext().get(XMLSecurityConstants.ENCRYPTION_PART_SELECTORS);
+        if (encryptionPartSelectors != null) {
+            loop:
+            for (SecurePartSelector encryptionPartSelector : encryptionPartSelectors) {
+                int requiredNumOccurrences = encryptionPartSelector.getRequiredNumOccurrences();
+                if (requiredNumOccurrences >= 0) {
+                    int numOccurrences = 0;
+                    for (EncryptionPartDef encryptionPartDef : encryptionPartDefs) {
+                        if (encryptionPartDef.getSecurePartSelector().equals(encryptionPartSelector)) {
+                            numOccurrences++;
+                        }
+                    }
+                    if (numOccurrences < requiredNumOccurrences) {
+                        throw new XMLSecurityException("stax.encryption.tooFewOccurrences",
+                                new Object[]{numOccurrences, requiredNumOccurrences, encryptionPartSelector});
+                    } else if (numOccurrences > requiredNumOccurrences) {
+                        throw new XMLSecurityException("stax.encryption.tooManyOccurrences",
+                                new Object[]{numOccurrences, requiredNumOccurrences, encryptionPartSelector});
                     }
                 }
-                throw new XMLSecurityException("stax.encryption.securePartNotFound",
-                                               new Object[] {securePart.getName()});
             }
         }
     }

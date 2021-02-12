@@ -23,6 +23,7 @@ import java.net.URL;
 import java.security.interfaces.DSAPrivateKey;
 import java.security.interfaces.RSAPrivateKey;
 import java.util.HashSet;
+import java.util.List;
 
 import javax.crypto.SecretKey;
 import javax.xml.bind.JAXBContext;
@@ -137,7 +138,8 @@ public class XMLSec {
             throw new XMLSecurityConfigurationException("stax.idsetbutnotgenerated");
         }
 
-        if (securityProperties.getSignatureSecureParts() != null && securityProperties.getSignatureSecureParts().size() > 1 && !securityProperties.isSignatureGenerateIds()) {
+        List<SecurePartSelector> signaturePartSelectors = securityProperties.getSignaturePartSelectors();
+        if (signaturePartSelectors != null && signaturePartSelectors.size() > 1 && !securityProperties.isSignatureGenerateIds()) {
             throw new XMLSecurityConfigurationException("stax.idgenerationdisablewithmultipleparts");
         }
 

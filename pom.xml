@@ -539,6 +539,7 @@
         <targetJdk>1.8</targetJdk>
         <clirr.version>2.8</clirr.version>
         <maven-owasp-plugin-version>6.0.2</maven-owasp-plugin-version>
+        <mockito.version>3.3.0</mockito.version>
 
         <!-- Allow Clirr severity to be overriden by the command-line option -DminSeverity=level -->
         <minSeverity>info</minSeverity>
@@ -572,6 +573,12 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
@@ -642,6 +649,12 @@
             <groupId>com.carrotsearch</groupId>
             <artifactId>junit-benchmarks</artifactId>
             <version>0.7.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
