@@ -75,7 +75,7 @@ public class XMLSecurityStreamReaderTest {
     public void testPassThroughDocumentEvents() throws Exception {
         XMLSecurityProperties securityProperties = new XMLSecurityProperties();
         securityProperties.setSkipDocumentEvents(false);
-        InboundSecurityContextImpl securityContext = new InboundSecurityContextImpl();
+        InboundSecurityContextImpl securityContext = new InboundSecurityContextImpl(securityProperties);
         InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(securityContext);
         inputProcessorChain.addProcessor(new EventReaderProcessor());
         XMLSecurityStreamReader xmlSecurityStreamReader = new XMLSecurityStreamReader(inputProcessorChain, securityProperties);
@@ -87,7 +87,7 @@ public class XMLSecurityStreamReaderTest {
     public void testSkipThroughDocumentEvents() throws Exception {
         XMLSecurityProperties securityProperties = new XMLSecurityProperties();
         securityProperties.setSkipDocumentEvents(true);
-        InboundSecurityContextImpl securityContext = new InboundSecurityContextImpl();
+        InboundSecurityContextImpl securityContext = new InboundSecurityContextImpl(securityProperties);
         InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(securityContext);
         inputProcessorChain.addProcessor(new EventReaderProcessor());
         XMLSecurityStreamReader xmlSecurityStreamReader = new XMLSecurityStreamReader(inputProcessorChain, securityProperties);
@@ -98,7 +98,7 @@ public class XMLSecurityStreamReaderTest {
     @Test
     public void testIdentityTransformSource() throws Exception {
         XMLSecurityProperties securityProperties = new XMLSecurityProperties();
-        InboundSecurityContextImpl securityContext = new InboundSecurityContextImpl();
+        InboundSecurityContextImpl securityContext = new InboundSecurityContextImpl(securityProperties);
         InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(securityContext);
         inputProcessorChain.addProcessor(new EventReaderProcessor());
         XMLSecurityStreamReader xmlSecurityStreamReader = new XMLSecurityStreamReader(inputProcessorChain, securityProperties);
@@ -117,11 +117,11 @@ public class XMLSecurityStreamReaderTest {
         ByteArrayInputStream xmlInput = new ByteArrayInputStream(xml.getBytes(StandardCharsets.ISO_8859_1));
         XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
         XMLStreamReader stdXmlStreamReader = xmlInputFactory.createXMLStreamReader(xmlInput);
-        InboundSecurityContextImpl securityContext = new InboundSecurityContextImpl();
-        InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(securityContext);
-        inputProcessorChain.addProcessor(new EventReaderProcessor(stdXmlStreamReader));
         XMLSecurityProperties securityProperties = new XMLSecurityProperties();
         securityProperties.setSkipDocumentEvents(false);
+        InboundSecurityContextImpl securityContext = new InboundSecurityContextImpl(securityProperties);
+        InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(securityContext);
+        inputProcessorChain.addProcessor(new EventReaderProcessor(stdXmlStreamReader));
         XMLSecurityStreamReader xmlSecurityStreamReader = new XMLSecurityStreamReader(inputProcessorChain, securityProperties);
         advanceToFirstEvent(xmlSecurityStreamReader);
         assertThat(xmlSecurityStreamReader.getEventType(), is(XMLStreamConstants.START_DOCUMENT));
@@ -148,11 +148,11 @@ public class XMLSecurityStreamReaderTest {
         ByteArrayInputStream xmlInput = new ByteArrayInputStream(xml.getBytes(StandardCharsets.ISO_8859_1));
         XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
         XMLStreamReader stdXmlStreamReader = xmlInputFactory.createXMLStreamReader(xmlInput);
-        InboundSecurityContextImpl securityContext = new InboundSecurityContextImpl();
-        InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(securityContext);
-        inputProcessorChain.addProcessor(new EventReaderProcessor(stdXmlStreamReader));
         XMLSecurityProperties securityProperties = new XMLSecurityProperties();
         securityProperties.setSkipDocumentEvents(false);
+        InboundSecurityContextImpl securityContext = new InboundSecurityContextImpl(securityProperties);
+        InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(securityContext);
+        inputProcessorChain.addProcessor(new EventReaderProcessor(stdXmlStreamReader));
         XMLSecurityStreamReader xmlSecurityStreamReader = new XMLSecurityStreamReader(inputProcessorChain, securityProperties);
         advanceToFirstEvent(xmlSecurityStreamReader);
         assertThat(xmlSecurityStreamReader.getEventType(), is(XMLStreamConstants.START_DOCUMENT));
@@ -169,11 +169,11 @@ public class XMLSecurityStreamReaderTest {
         ByteArrayInputStream xmlInput = new ByteArrayInputStream(xml.getBytes(StandardCharsets.ISO_8859_1));
         XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
         XMLStreamReader stdXmlStreamReader = xmlInputFactory.createXMLStreamReader(xmlInput);
-        InboundSecurityContextImpl securityContext = new InboundSecurityContextImpl();
-        InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(securityContext);
-        inputProcessorChain.addProcessor(new EventReaderProcessor(stdXmlStreamReader));
         XMLSecurityProperties securityProperties = new XMLSecurityProperties();
         securityProperties.setSkipDocumentEvents(true);
+        InboundSecurityContextImpl securityContext = new InboundSecurityContextImpl(securityProperties);
+        InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(securityContext);
+        inputProcessorChain.addProcessor(new EventReaderProcessor(stdXmlStreamReader));
         XMLSecurityStreamReader xmlSecurityStreamReader = new XMLSecurityStreamReader(inputProcessorChain, securityProperties);
         advanceToFirstEvent(xmlSecurityStreamReader);
         assertThat(xmlSecurityStreamReader.getEventType(), is(XMLStreamConstants.START_ELEMENT));
@@ -198,7 +198,7 @@ public class XMLSecurityStreamReaderTest {
     @Test
     public void testCorrectness() throws Exception {
         XMLSecurityProperties securityProperties = new XMLSecurityProperties();
-        InboundSecurityContextImpl securityContext = new InboundSecurityContextImpl();
+        InboundSecurityContextImpl securityContext = new InboundSecurityContextImpl(securityProperties);
         DocumentContextImpl documentContext = new DocumentContextImpl();
         documentContext.setEncoding(StandardCharsets.UTF_8.name());
         InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(securityContext, documentContext);

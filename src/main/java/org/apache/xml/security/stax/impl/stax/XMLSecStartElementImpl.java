@@ -89,8 +89,8 @@ public class XMLSecStartElementImpl extends XMLSecEventBaseImpl implements XMLSe
     @Override
     public void getAttributesFromCurrentScope(List<XMLSecAttribute> comparableAttributeList) {
         comparableAttributeList.addAll(attributes);
-        if (parentXMLSecStartELement != null) {
-            parentXMLSecStartELement.getAttributesFromCurrentScope(comparableAttributeList);
+        if (parentXMLSecStartElement != null) {
+            parentXMLSecStartElement.getAttributesFromCurrentScope(comparableAttributeList);
         }
     }
 
@@ -126,7 +126,7 @@ public class XMLSecStartElementImpl extends XMLSecEventBaseImpl implements XMLSe
         } else if (thisLevel == level) {
             return this;
         } else {
-            return parentXMLSecStartELement.getStartElementAtLevel(level);
+            return parentXMLSecStartElement.getStartElementAtLevel(level);
         }
     }
 
@@ -142,8 +142,8 @@ public class XMLSecStartElementImpl extends XMLSecEventBaseImpl implements XMLSe
 
     @Override
     public void getNamespacesFromCurrentScope(List<XMLSecNamespace> comparableNamespaceList) {
-        if (parentXMLSecStartELement != null) {
-            parentXMLSecStartELement.getNamespacesFromCurrentScope(comparableNamespaceList);
+        if (parentXMLSecStartElement != null) {
+            parentXMLSecStartElement.getNamespacesFromCurrentScope(comparableNamespaceList);
         }
         comparableNamespaceList.addAll(namespaces);
     }
@@ -183,8 +183,8 @@ public class XMLSecStartElementImpl extends XMLSecEventBaseImpl implements XMLSe
                         return comparableNamespace.getNamespaceURI();
                     }
                 }
-                if (parentXMLSecStartELement != null) {
-                    return parentXMLSecStartELement.getNamespaceURI(prefix);
+                if (parentXMLSecStartElement != null) {
+                    return parentXMLSecStartElement.getNamespaceURI(prefix);
                 }
                 return null;
             }
@@ -197,8 +197,8 @@ public class XMLSecStartElementImpl extends XMLSecEventBaseImpl implements XMLSe
                         return comparableNamespace.getPrefix();
                     }
                 }
-                if (parentXMLSecStartELement != null) {
-                    return parentXMLSecStartELement.getNamespaceContext().getPrefix(namespaceURI);
+                if (parentXMLSecStartElement != null) {
+                    return parentXMLSecStartElement.getNamespaceContext().getPrefix(namespaceURI);
                 }
                 return null;
             }
@@ -231,8 +231,8 @@ public class XMLSecStartElementImpl extends XMLSecEventBaseImpl implements XMLSe
                 return comparableNamespace.getNamespaceURI();
             }
         }
-        if (parentXMLSecStartELement != null) {
-            return parentXMLSecStartELement.getNamespaceURI(prefix);
+        if (parentXMLSecStartElement != null) {
+            return parentXMLSecStartElement.getNamespaceURI(prefix);
         }
         return null;
     }

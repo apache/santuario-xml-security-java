@@ -218,7 +218,7 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
 
             try (InputStream is = new UnsyncByteArrayInputStream(unsynchronizedByteArrayOutputStream.toByteArray())) {
                 XMLStreamReader xmlStreamReader = inputProcessorChain.getSecurityContext().
-                        <XMLInputFactory>get(XMLSecurityConstants.XMLINPUTFACTORY).
+                        <String, XMLInputFactory>get(XMLSecurityConstants.XMLINPUTFACTORY).
                         createXMLStreamReader(is);
 
                 while (xmlStreamReader.hasNext()) {

@@ -343,7 +343,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                 //spec says (4.2): "The cleartext octet sequence obtained in step 3 is
                 //interpreted as UTF-8 encoded character data."
                 XMLStreamReader xmlStreamReader =
-                        inputProcessorChain.getSecurityContext().<XMLInputFactory>get(
+                        inputProcessorChain.getSecurityContext().<String, XMLInputFactory>get(
                                 XMLSecurityConstants.XMLINPUTFACTORY).createXMLStreamReader(
                                 new MultiInputStream(prologInputStream, decryptInputStream, epilogInputStream), StandardCharsets.UTF_8.name());
 

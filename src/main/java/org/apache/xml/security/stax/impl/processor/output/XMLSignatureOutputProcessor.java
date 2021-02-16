@@ -25,6 +25,8 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
 
+import org.apache.xml.security.stax.ext.SecurePartSelector;
+import org.apache.xml.security.utils.KeyValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.xml.security.exceptions.XMLSecurityException;
@@ -64,13 +66,16 @@ public class XMLSignatureOutputProcessor extends AbstractSignatureOutputProcesso
 
             //avoid double signature when child elements matches too
             if (getActiveInternalSignatureOutputProcessor() == null) {
-                SecurePart securePart = securePartMatches(xmlSecStartElement, outputProcessorChain, XMLSecurityConstants.SIGNATURE_PARTS);
-                if (securePart != null) {
+                KeyValue<SecurePartSelector, SecurePart> match = securePartMatches(xmlSecStartElement, outputProcessorChain, XMLSecurityConstants.SIGNATURE_PART_SELECTORS);
+                if (match != null) {
+                    SecurePartSelector securePartSelector = match.getKey();
+                    SecurePart securePart = match.getValue();
                     LOG.debug("Matched securePart for signature");
 
                     InternalSignatureOutputProcessor internalSignatureOutputProcessor = null;
 
                     SignaturePartDef signaturePartDef = new SignaturePartDef();
+                    signaturePartDef.setSecurePartSelector(securePartSelector);
                     signaturePartDef.setSecurePart(securePart);
                     signaturePartDef.setTransforms(securePart.getTransforms());
                     if (signaturePartDef.getTransforms() == null) {

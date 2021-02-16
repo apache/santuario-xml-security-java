@@ -21,26 +21,20 @@ package org.apache.xml.security.stax.ext;
 import org.apache.xml.security.stax.securityEvent.SecurityEventListener;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  */
 public interface SecurityContext extends SecurityEventListener {
-    <T> void put(String key, T value);
 
-    <T> T get(String key);
+    XMLSecurityProperties getSecurityProperties();
 
-    <T> T remove(String key);
+    <K, T> void put(K key, T value);
 
-    <T extends List> void putList(Object key, T value);
+    <K, T> T get(K key);
 
-    <T> void putAsList(Object key, T value);
+    <K, T> T remove(K key);
 
-    <T> List<T> getAsList(Object key);
-
-    <T, U> void putAsMap(Object key, T mapKey, U mapValue);
-
-    <T, U> Map<T, U> getAsMap(Object key);
+    <K, T extends List> void putList(K key, T value);
 
     /**
      * Registers a SecurityEventListener to receive Security-Events

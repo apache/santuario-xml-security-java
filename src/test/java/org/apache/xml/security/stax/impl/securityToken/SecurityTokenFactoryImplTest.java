@@ -61,7 +61,7 @@ public class SecurityTokenFactoryImplTest {
 
         xmlSecurityProperties = new XMLSecurityProperties();
 
-        inboundSecurityContext = new InboundSecurityContextImpl();
+        inboundSecurityContext = new InboundSecurityContextImpl(xmlSecurityProperties);
 
     }
 
@@ -90,7 +90,7 @@ public class SecurityTokenFactoryImplTest {
         xmlSecurityProperties.addKeyNameMapping("mykey", loadPublicKey("dsa.key", "DSA"));
         xmlSecurityProperties.setSignatureVerificationKey(loadPublicKey("rsa.key", "RSA"));
 
-        InboundSecurityContext inboundSecurityContext = new InboundSecurityContextImpl();
+        InboundSecurityContext inboundSecurityContext = new InboundSecurityContextImpl(xmlSecurityProperties);
 
         InboundSecurityToken token =
                 factory.getSecurityToken(keyInfoType, keyUsage, xmlSecurityProperties, inboundSecurityContext);
@@ -106,7 +106,7 @@ public class SecurityTokenFactoryImplTest {
 
         SecurityTokenConstants.KeyUsage keyUsage = SecurityTokenConstants.KeyUsage_Signature_Verification;
 
-        InboundSecurityContext inboundSecurityContext = new InboundSecurityContextImpl();
+        InboundSecurityContext inboundSecurityContext = new InboundSecurityContextImpl(xmlSecurityProperties);
 
         XMLSecurityException exception = Assertions.assertThrows(XMLSecurityException.class, () -> {
             factory.getSecurityToken(keyInfoType, keyUsage, xmlSecurityProperties, inboundSecurityContext);
@@ -126,7 +126,7 @@ public class SecurityTokenFactoryImplTest {
 
         xmlSecurityProperties.addKeyNameMapping("mykey", privateKey);
 
-        InboundSecurityContext inboundSecurityContext = new InboundSecurityContextImpl();
+        InboundSecurityContext inboundSecurityContext = new InboundSecurityContextImpl(xmlSecurityProperties);
 
         XMLSecurityException exception = Assertions.assertThrows(XMLSecurityException.class, () -> {
             factory.getSecurityToken(keyInfoType, keyUsage, xmlSecurityProperties, inboundSecurityContext);

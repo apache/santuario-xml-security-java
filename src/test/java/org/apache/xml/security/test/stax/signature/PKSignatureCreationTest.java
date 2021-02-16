@@ -104,7 +104,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, rsaKeyPair.getPublic(), properties.getSignatureSecureParts());
+        verifyUsingDOM(document, rsaKeyPair.getPublic(), properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -147,7 +147,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, rsaKeyPair.getPublic(), properties.getSignatureSecureParts());
+        verifyUsingDOM(document, rsaKeyPair.getPublic(), properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -190,7 +190,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, rsaKeyPair.getPublic(), properties.getSignatureSecureParts());
+        verifyUsingDOM(document, rsaKeyPair.getPublic(), properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -233,7 +233,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, rsaKeyPair.getPublic(), properties.getSignatureSecureParts());
+        verifyUsingDOM(document, rsaKeyPair.getPublic(), properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -278,7 +278,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, rsaKeyPair.getPublic(), properties.getSignatureSecureParts());
+        verifyUsingDOM(document, rsaKeyPair.getPublic(), properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -323,7 +323,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, rsaKeyPair.getPublic(), properties.getSignatureSecureParts());
+        verifyUsingDOM(document, rsaKeyPair.getPublic(), properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -368,7 +368,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, rsaKeyPair.getPublic(), properties.getSignatureSecureParts());
+        verifyUsingDOM(document, rsaKeyPair.getPublic(), properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -413,7 +413,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, rsaKeyPair.getPublic(), properties.getSignatureSecureParts());
+        verifyUsingDOM(document, rsaKeyPair.getPublic(), properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -458,7 +458,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, rsaKeyPair.getPublic(), properties.getSignatureSecureParts());
+        verifyUsingDOM(document, rsaKeyPair.getPublic(), properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -503,7 +503,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, rsaKeyPair.getPublic(), properties.getSignatureSecureParts());
+        verifyUsingDOM(document, rsaKeyPair.getPublic(), properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -549,7 +549,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, rsaKeyPair.getPublic(), properties.getSignatureSecureParts());
+        verifyUsingDOM(document, rsaKeyPair.getPublic(), properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -592,7 +592,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, ecKeyPair.getPublic(), properties.getSignatureSecureParts());
+        verifyUsingDOM(document, ecKeyPair.getPublic(), properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -635,7 +635,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, ecKeyPair.getPublic(), properties.getSignatureSecureParts());
+        verifyUsingDOM(document, ecKeyPair.getPublic(), properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -678,7 +678,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, ecKeyPair.getPublic(), properties.getSignatureSecureParts());
+        verifyUsingDOM(document, ecKeyPair.getPublic(), properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -721,7 +721,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, ecKeyPair.getPublic(), properties.getSignatureSecureParts());
+        verifyUsingDOM(document, ecKeyPair.getPublic(), properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -764,7 +764,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, ecKeyPair.getPublic(), properties.getSignatureSecureParts());
+        verifyUsingDOM(document, ecKeyPair.getPublic(), properties.getSignaturePartSelectors());
     }
 
     @Test
@@ -809,7 +809,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, ecKeyPair.getPublic(), properties.getSignatureSecureParts());
+        verifyUsingDOM(document, ecKeyPair.getPublic(), properties.getSignaturePartSelectors());
     }
 
 

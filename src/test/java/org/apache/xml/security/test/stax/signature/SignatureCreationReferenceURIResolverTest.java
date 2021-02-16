@@ -108,7 +108,7 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts(), false);
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors(), false);
     }
 
     @Test
@@ -159,7 +159,7 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
         }
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts(), false);
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors(), false);
     }
 
     @Test
@@ -217,7 +217,7 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
             }
 
             // Verify using DOM
-            verifyUsingDOM(document, cert, properties.getSignatureSecureParts(), resolverDirectHTTP);
+            verifyUsingDOM(document, cert, properties.getSignaturePartSelectors(), resolverDirectHTTP);
         } finally {
             HttpRequestRedirectorProxy.stopHttpEngine();
         }
@@ -271,6 +271,6 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
         assertTrue(uri.startsWith("#xpointer"));
 
         // Verify using DOM
-        verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+        verifyUsingDOM(document, cert, properties.getSignaturePartSelectors());
     }
 }

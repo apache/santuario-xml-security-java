@@ -115,7 +115,7 @@ public class InboundXMLSec {
             requestSecurityEvents = Collections.emptyList();
         }
 
-        final InboundSecurityContextImpl inboundSecurityContext = new InboundSecurityContextImpl();
+        final InboundSecurityContextImpl inboundSecurityContext = new InboundSecurityContextImpl(securityProperties);
         inboundSecurityContext.putList(SecurityEvent.class, requestSecurityEvents);
         inboundSecurityContext.addSecurityEventListener(securityEventListener);
 

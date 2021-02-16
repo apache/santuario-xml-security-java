@@ -18,14 +18,17 @@
  */
 package org.apache.xml.security.stax.ext;
 
-import javax.xml.namespace.QName;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.namespace.QName;
+
 /**
- * Class to describe which and how an element must be secured
- *
+ * Class to describe which and how an element must be secured.
+ * The "which" is deprecated in favor of a dedicated and more flexible {@link ElementSelector}, and is only supported
+ * for backward compatibility.
+ * The "how" is the sole and dedicated purpose of this class.
  */
 public class SecurePart {
 
@@ -108,7 +111,7 @@ public class SecurePart {
     }
 
     /**
-     * The name of the element to be secured
+     * The name of the element to be secured.
      *
      * @return The Element-Local-Name
      */
@@ -116,6 +119,10 @@ public class SecurePart {
         return name;
     }
 
+    /**
+     * Sets which element to secure based on a given qualified name.
+     * Consider using {@link ByNameElementSelector} instead.
+     */
     public void setName(QName name) {
         this.name = name;
     }
@@ -124,6 +131,17 @@ public class SecurePart {
         return modifier;
     }
 
+    /**
+     * Sets the modifier of the part to secure, either the whole element or only its content.
+     * Consider using a lambda expression for a secure part factory instead:
+     * <pre>
+     * {@code
+     * SecurePartFactory securePartFactory = (element, context) -> new SecurePart(element.getName(), modifier);
+     * }
+     * </pre>
+     *
+     * @param modifier The modifier, which may be {@code null}.
+     */
     public void setModifier(Modifier modifier) {
         this.modifier = modifier;
     }
@@ -139,6 +157,10 @@ public class SecurePart {
         return idToSecure;
     }
 
+    /**
+     * Sets which element to secure based on a given attribute value.
+     * Consider using {@link ByAttributeElementSelector} instead.
+     */
     public void setIdToSecure(String idToSecure) {
         this.idToSecure = idToSecure;
     }
@@ -192,19 +214,47 @@ public class SecurePart {
         this.digestMethod = digestMethod;
     }
 
+    /**
+     * If this secure part is required or not.
+     */
     public boolean isRequired() {
         return required;
     }
 
+    /**
+     * Sets if this element is required, which is {@code true} by default.
+     * Consider using {@link XMLSecurityProperties#addEncryptionPartSelector(ElementSelector, SecurePartFactory, int)}
+     * instead, with a required number of occurrences of {@code 1} (required) or {@code -1} (not required).
+     */
     public void setRequired(boolean required) {
         this.required = required;
     }
 
+    /**
+     * If the entire request is to be secured.
+     */
     public boolean isSecureEntireRequest() {
         return secureEntireRequest;
     }
 
+    /**
+     * Sets if the entire request is to be secured.
+     * Setting this to {@code true} is equivalent to selecting the root element.
+     * Consider using {@link RootElementSelector} instead.
+     */
     public void setSecureEntireRequest(boolean secureEntireRequest) {
         this.secureEntireRequest = secureEntireRequest;
+    }
+
+    @Override
+    public String toString() {
+        if (idToSecure != null) {
+            return idToSecure;
+        } else if (name != null) {
+            return name.toString();
+        } else if (externalReference != null) {
+            return externalReference;
+        }
+        return super.toString();
     }
 }

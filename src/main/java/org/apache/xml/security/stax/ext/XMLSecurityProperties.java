@@ -18,15 +18,22 @@
  */
 package org.apache.xml.security.stax.ext;
 
-import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
-
 import java.security.Key;
 import java.security.cert.X509Certificate;
 import java.security.spec.AlgorithmParameterSpec;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import javax.xml.namespace.QName;
 
+import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
+import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * Main configuration class to supply keys etc.
@@ -47,7 +54,7 @@ public class XMLSecurityProperties {
     private String encryptionKeyTransportDigestAlgorithm;
     private String encryptionKeyTransportMGFAlgorithm;
     private byte[] encryptionKeyTransportOAEPParams;
-    private final List<SecurePart> encryptionParts = new LinkedList<>();
+    private final List<SecurePartSelector> encryptionPartSelectors = new LinkedList<>();
     private Key encryptionKey;
     private Key encryptionTransportKey;
     private SecurityTokenConstants.KeyIdentifier encryptionKeyIdentifier;
@@ -55,7 +62,7 @@ public class XMLSecurityProperties {
 
     private Key decryptionKey;
 
-    private final List<SecurePart> signatureParts = new LinkedList<>();
+    private final List<SecurePartSelector> signaturePartSelectors = new LinkedList<>();
     private String signatureAlgorithm;
     private String signatureDigestAlgorithm;
     private String signatureCanonicalizationAlgorithm;
@@ -95,12 +102,12 @@ public class XMLSecurityProperties {
         this.encryptionKeyTransportDigestAlgorithm = xmlSecurityProperties.encryptionKeyTransportDigestAlgorithm;
         this.encryptionKeyTransportMGFAlgorithm = xmlSecurityProperties.encryptionKeyTransportMGFAlgorithm;
         this.encryptionKeyTransportOAEPParams = xmlSecurityProperties.encryptionKeyTransportOAEPParams;
-        this.encryptionParts.addAll(xmlSecurityProperties.encryptionParts);
+        this.encryptionPartSelectors.addAll(xmlSecurityProperties.encryptionPartSelectors);
         this.encryptionKey = xmlSecurityProperties.encryptionKey;
         this.encryptionTransportKey = xmlSecurityProperties.encryptionTransportKey;
         this.encryptionKeyIdentifier = xmlSecurityProperties.encryptionKeyIdentifier;
         this.decryptionKey = xmlSecurityProperties.decryptionKey;
-        this.signatureParts.addAll(xmlSecurityProperties.signatureParts);
+        this.signaturePartSelectors.addAll(xmlSecurityProperties.signaturePartSelectors);
         this.signatureAlgorithm = xmlSecurityProperties.signatureAlgorithm;
         this.signatureDigestAlgorithm = xmlSecurityProperties.signatureDigestAlgorithm;
         this.signatureCanonicalizationAlgorithm = xmlSecurityProperties.signatureCanonicalizationAlgorithm;
@@ -250,12 +257,34 @@ public class XMLSecurityProperties {
     }
 
     /**
-     * Adds a part which must be encrypted by the framework
+     * Adds a part which must be encrypted by the framework.
+     * Consider using {@link #addEncryptionPartSelector(ElementSelector, SecurePartFactory, int)} instead.
      *
-     * @param securePart
+     * @see #addEncryptionPartSelector(ElementSelector, SecurePartFactory, int)
      */
+    @SuppressWarnings("PMD.AccessorClassGeneration")
     public void addEncryptionPart(SecurePart securePart) {
-        encryptionParts.add(securePart);
+        encryptionPartSelectors.add(createSecurePartSelector(securePart));
+    }
+
+    /**
+     * Adds a part to be signed by the framework using given element selector, secure part factory and required number
+     * of occurrences.
+     * The element selector defines <i>what</i> to secure.
+     * The secure part factory defines <i>how</i> to secure the element.
+     * The required number of occurrences defines <i>how many</i> elements must be signed, and is verified after having
+     * processed the entire document.
+     * Processing will fail when the number of occurrences mismatches the required number.
+     * Use {@code -1} to disable verification.
+     * Use {@code 0} to verify that a secure part <i>never</i> occurs.
+     *
+     * @param elementSelector An element selector, which must not be {@code null}.
+     * @param securePartFactory A secure part factory, which must not be {@code null}.
+     * @param requiredNumOccurrences A required number of occurrences, or {@code -1} for no such requirement.
+     */
+    @SuppressWarnings("PMD.AccessorClassGeneration")
+    public void addEncryptionPartSelector(ElementSelector elementSelector, SecurePartFactory securePartFactory, int requiredNumOccurrences) {
+        encryptionPartSelectors.add(new SecurePartSelector(elementSelector, securePartFactory, requiredNumOccurrences));
     }
 
     /**
@@ -263,8 +292,64 @@ public class XMLSecurityProperties {
      *
      * @return A List of SecurePart's
      */
-    public List<SecurePart> getEncryptionSecureParts() {
-        return encryptionParts;
+    public List<SecurePartSelector> getEncryptionPartSelectors() {
+        return encryptionPartSelectors;
+    }
+
+    private ElementSelector createElementSelector(SecurePart securePart) {
+        if (securePart.getExternalReference() != null) {
+            return DocumentElementSelector.getInstance();
+        } else if (securePart.getIdToSecure() != null) {
+            return new ByAttributeElementSelector(() -> getIdAttributeNS(), securePart.getIdToSecure());
+        } else if (securePart.getName() != null) {
+            return new ByNameElementSelector(securePart.getName());
+        } else if (securePart.isSecureEntireRequest()) {
+            return (element, context) -> {
+                boolean selected = RootElementSelector.getInstance().select(element, context);
+                if (selected) {
+                    // Preserve legacy behavior for backward compatibility.
+                    securePart.setName(element.getName());
+                }
+                return selected;
+            };
+        } else {
+            return NoElementSelector.getInstance();
+        }
+    }
+
+    private SecurePartSelector createSecurePartSelector(SecurePart securePart) {
+        requireNonNull(securePart, "secure part is null");
+        ElementSelector elementSelector = new ElementSelector() {
+
+            private final ElementSelector delegate = createElementSelector(securePart);
+
+            @Override
+            public boolean select(XMLSecStartElement element, OutputProcessorChain outputProcessorChain) {
+                boolean selected = delegate.select(element, outputProcessorChain);
+                outputProcessorChain.getSecurityContext().put(this, selected);
+                return selected;
+            }
+
+            @Override
+            public String toString() {
+                return delegate.toString();
+            }
+        };
+        SecurePartFactory securePartFactory = new SecurePartFactory() {
+
+            @Override
+            public SecurePart createSecurePart(XMLSecStartElement element, OutputProcessorChain outputProcessorChain) {
+                Boolean selected = outputProcessorChain.getSecurityContext().get(elementSelector);
+                return Boolean.TRUE.equals(selected) ? securePart : null;
+            }
+
+            @Override
+            public String toString() {
+                return securePart.toString();
+            }
+        };
+        int requiredNumOccurrences = securePart.isRequired() ? 1 : -1;
+        return new SecurePartSelector(elementSelector, securePartFactory, requiredNumOccurrences);
     }
 
     /**
@@ -344,12 +429,38 @@ public class XMLSecurityProperties {
         this.signatureCerts = signatureCerts;
     }
 
+    /**
+     * Adds a part to be signed by the framework.
+     * Consider using {@link #addSignaturePartSelector(ElementSelector, SecurePartFactory, int)} instead.
+     *
+     * @see #addSignaturePartSelector(ElementSelector, SecurePartFactory, int)
+     */
+    @SuppressWarnings("PMD.AccessorClassGeneration")
     public void addSignaturePart(SecurePart securePart) {
-        signatureParts.add(securePart);
+        signaturePartSelectors.add(createSecurePartSelector(securePart));
     }
 
-    public List<SecurePart> getSignatureSecureParts() {
-        return signatureParts;
+    /**
+     * Adds a part to be signed by the framework using given element selector, secure part factory and required number
+     * of occurrences.
+     * The element selector defines <i>what</i> to secure.
+     * The secure part factory defines <i>how</i> to secure the element.
+     * The required number of occurrences defines <i>how many</i> elements must be signed, and is verified after having
+     * processed the entire document.
+     * Processing will fail when the number of occurrences mismatches the required number.
+     * Use {@code -1} to disable verification.
+     * Use {@code 0} to verify that a secure part <i>never</i> occurs.
+     *
+     * @param elementSelector An element selector, which must not be {@code null}.
+     * @param securePartFactory A secure part factory, which must not be {@code null}.
+     * @param requiredNumOccurrences A required number of occurrences, or {@code -1} for no such requirement.
+     */
+    public void addSignaturePartSelector(ElementSelector elementSelector, SecurePartFactory securePartFactory, int requiredNumOccurrences) {
+        signaturePartSelectors.add(new SecurePartSelector(elementSelector, securePartFactory, requiredNumOccurrences));
+    }
+
+    public List<SecurePartSelector> getSignaturePartSelectors() {
+        return signaturePartSelectors;
     }
 
     public String getSignatureAlgorithm() {
