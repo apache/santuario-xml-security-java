@@ -127,7 +127,7 @@ public class ReferenceTest {
             assertEquals(uri, ref.getURI());
             assertEquals(id, ref.getId());
             assertEquals(type, ref.getType());
-            assertEquals(ref.getTransforms(), Collections.EMPTY_LIST);
+            assertEquals(ref.getTransforms(), Collections.emptyList());
 
         } catch(Exception ex) {
             fail("Unexpected Exception: " + ex);
