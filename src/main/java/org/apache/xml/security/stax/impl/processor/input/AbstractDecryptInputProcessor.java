@@ -856,25 +856,19 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                 //read the encrypted data from the stream until an end-element occurs and write then
                 //to the decrypter-stream
                 XMLSecEvent xmlSecEvent = firstEvent;
-                exitLoop:
-                do {
-                    switch (xmlSecEvent.getEventType()) {
-                        case XMLStreamConstants.END_ELEMENT:
-                            //this must be the CipherValue EndElement.
-                            break exitLoop;
-                        case XMLStreamConstants.CHARACTERS:
-                            final char[] data = xmlSecEvent.asCharacters().getText();
-                            outputStreamWriter.write(data);
-                            break;
-                        default:
-                            throw new XMLSecurityException(
-                                    "stax.unexpectedXMLEvent",
-                                    new Object[] {XMLSecurityUtils.getXMLEventAsString(xmlSecEvent)}
-                            );
+                // End element must be the CipherValue EndElement.
+                while (xmlSecEvent.getEventType() != XMLStreamConstants.END_ELEMENT) {
+                    if (xmlSecEvent.getEventType() == XMLStreamConstants.CHARACTERS) {
+                        final char[] data = xmlSecEvent.asCharacters().getText();
+                        outputStreamWriter.write(data);
+                    } else {
+                        throw new XMLSecurityException(
+                                "stax.unexpectedXMLEvent",
+                                new Object[] {XMLSecurityUtils.getXMLEventAsString(xmlSecEvent)}
+                        );
                     }
-
                     xmlSecEvent = processNextEvent();
-                } while (true);
+                }
 
                 //close to get Cipher.doFinal() called
                 outputStreamWriter.close();
