@@ -118,7 +118,7 @@
                     <sourceEncoding>UTF-8</sourceEncoding>
                     <failOnViolation>true</failOnViolation>
                     <verbose>true</verbose>
-                    <includeTests>true</includeTests>
+                    <includeTests>false</includeTests>
                     <targetJdk>${targetJdk}</targetJdk>
                 </configuration>
                 <executions>

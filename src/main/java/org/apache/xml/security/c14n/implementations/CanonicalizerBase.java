@@ -207,7 +207,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
         Node sibling = null;
         Node parentNode = null;
         Map<String, byte[]> cache = new HashMap<>();
-        do {
+        do {    //NOPMD
             switch (currentNode.getNodeType()) {
 
             case Node.ENTITY_NODE :
@@ -334,7 +334,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
         Node parentNode = null;
         int documentLevel = NODE_BEFORE_DOCUMENT_ELEMENT;
         Map<String, byte[]> cache = new HashMap<>();
-        do {
+        do {    //NOPMD
             switch (currentNode.getNodeType()) {
 
             case Node.ENTITY_NODE :

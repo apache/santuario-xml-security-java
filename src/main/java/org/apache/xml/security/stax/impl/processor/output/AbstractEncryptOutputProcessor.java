@@ -174,7 +174,7 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
                 symmetricCipher.init(Cipher.ENCRYPT_MODE, encryptionPartDef.getSymmetricKey(), parameterSpec);
 
                 characterEventGeneratorOutputStream = new CharacterEventGeneratorOutputStream();
-                Base64OutputStream base64EncoderStream = null;
+                Base64OutputStream base64EncoderStream = null;  //NOPMD
                 if (XMLUtils.isIgnoreLineBreaks()) {
                     base64EncoderStream = new Base64OutputStream(characterEventGeneratorOutputStream, true, 0, null);
                 } else {
@@ -182,7 +182,7 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
                 }
                 base64EncoderStream.write(iv);
 
-                OutputStream outputStream = new CipherOutputStream(base64EncoderStream, symmetricCipher);
+                OutputStream outputStream = new CipherOutputStream(base64EncoderStream, symmetricCipher);   //NOPMD
                 outputStream = applyTransforms(outputStream);
                 //the trimmer output stream is needed to strip away the dummy wrapping element which must be added
                 cipherOutputStream = new TrimmerOutputStream(outputStream, 8192 * 10, 3, 4);

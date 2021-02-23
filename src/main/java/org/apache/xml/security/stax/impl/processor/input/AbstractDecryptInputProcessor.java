@@ -281,7 +281,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                     nextEvent = subInputProcessorChain.processEvent();
                 }
 
-                InputStream decryptInputStream = null;
+                InputStream decryptInputStream = null;  //NOPMD
                 if (nextEvent.isStartElement() && nextEvent.asStartElement().getName().equals(XMLSecurityConstants.TAG_XOP_INCLUDE)) {
                     try {
                         // Unmarshal the XOP Include Element
@@ -329,8 +329,8 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                     decryptInputStream = decryptionThread.getPipedInputStream();
                 }
 
-                InputStream prologInputStream;
-                InputStream epilogInputStream;
+                InputStream prologInputStream;  //NOPMD
+                InputStream epilogInputStream;  //NOPMD
                 try {
                     prologInputStream = writeWrapperStartElement(xmlSecStartElement);
                     epilogInputStream = writeWrapperEndElement();
@@ -815,7 +815,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
         public void run() {
 
             try {
-                final OutputStream outputStream;
+                final OutputStream outputStream;    //NOPMD
 
                 final Cipher cipher = getSymmetricCipher();
                 if (cipher.getAlgorithm().toUpperCase().contains("GCM")) {
@@ -826,7 +826,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                     outputStream = pipedOutputStream;
                 }
 
-                final CipherOutputStream cipherOutputStream = new CipherOutputStream(outputStream, cipher) {
+                final CipherOutputStream cipherOutputStream = new CipherOutputStream(outputStream, cipher) { //NOPMD
                     //override close() to workaround a bug in oracle-jdk:
                     //authentication failures when using AEAD ciphers are silently ignored...
                     @Override
@@ -841,15 +841,15 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                         }
                     }
                 };
-                IVSplittingOutputStream ivSplittingOutputStream = new IVSplittingOutputStream(
+                IVSplittingOutputStream ivSplittingOutputStream = new IVSplittingOutputStream(  //NOPMD
                         cipherOutputStream,
                         cipher, getSecretKey(), getIvLength());
                 //buffering seems not to help
                 //bufferedOutputStream = new BufferedOutputStream(new Base64OutputStream(ivSplittingOutputStream, false), 8192 * 5);
-                ReplaceableOuputStream replaceableOuputStream = new ReplaceableOuputStream(ivSplittingOutputStream);
-                OutputStream base64OutputStream = new Base64OutputStream(replaceableOuputStream, false);
+                ReplaceableOuputStream replaceableOuputStream = new ReplaceableOuputStream(ivSplittingOutputStream);    //NOPMD
+                OutputStream base64OutputStream = new Base64OutputStream(replaceableOuputStream, false); //NOPMD
                 ivSplittingOutputStream.setParentOutputStream(replaceableOuputStream);
-                OutputStreamWriter outputStreamWriter =
+                OutputStreamWriter outputStreamWriter = //NOPMD
                         new OutputStreamWriter(base64OutputStream,
                                                Charset.forName(inputProcessorChain.getDocumentContext().getEncoding()));
 

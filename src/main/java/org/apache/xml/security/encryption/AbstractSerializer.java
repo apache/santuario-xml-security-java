@@ -21,7 +21,6 @@ package org.apache.xml.security.encryption;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -84,8 +83,8 @@ public abstract class AbstractSerializer implements Serializer {
 
     protected static byte[] createContext(byte[] source, Node ctx) throws XMLEncryptionException {
         // Create the context to parse the document against
-        try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(byteArrayOutputStream, StandardCharsets.UTF_8);
+        try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(byteArrayOutputStream, StandardCharsets.UTF_8)) {
             outputStreamWriter.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?><dummy");
 
             // Run through each node up to the document node and find any xmlns: nodes
@@ -94,7 +93,7 @@ public abstract class AbstractSerializer implements Serializer {
             while (wk != null) {
                 NamedNodeMap atts = wk.getAttributes();
                 if (atts != null) {
-                    for (int i = 0; i < atts.getLength(); ++i) {
+                    for (int i = 0; i < atts.getLength(); ++i) {    //NOPMD
                         Node att = atts.item(i);
                         String nodeName = att.getNodeName();
                         if (("xmlns".equals(nodeName) || nodeName.startsWith("xmlns:"))
@@ -118,8 +117,6 @@ public abstract class AbstractSerializer implements Serializer {
             outputStreamWriter.close();
 
             return byteArrayOutputStream.toByteArray();
-        } catch (UnsupportedEncodingException e) {
-            throw new XMLEncryptionException(e);
         } catch (IOException e) {
             throw new XMLEncryptionException(e);
         }

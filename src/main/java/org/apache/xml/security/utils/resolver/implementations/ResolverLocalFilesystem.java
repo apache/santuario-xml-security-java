@@ -51,7 +51,7 @@ public class ResolverLocalFilesystem extends ResourceResolverSpi {
 
             String fileName =
                 ResolverLocalFilesystem.translateUriToFilename(uriNew.toString());
-            InputStream inputStream = Files.newInputStream(Paths.get(fileName));
+            InputStream inputStream = Files.newInputStream(Paths.get(fileName));    //NOPMD
             XMLSignatureInput result = new XMLSignatureInput(inputStream);
             result.setSecureValidation(context.secureValidation);
 

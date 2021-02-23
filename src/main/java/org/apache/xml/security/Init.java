@@ -76,7 +76,7 @@ public class Init {
             return;
         }
 
-        InputStream is =
+        InputStream is =    //NOPMD
             AccessController.doPrivileged(
                 (PrivilegedAction<InputStream>)
                     () -> {
