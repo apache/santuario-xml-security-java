@@ -29,7 +29,6 @@ import org.apache.xml.security.stax.ext.DocumentContext;
 import org.apache.xml.security.stax.ext.OutboundSecurityContext;
 import org.apache.xml.security.stax.ext.OutputProcessor;
 import org.apache.xml.security.stax.ext.OutputProcessorChain;
-import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
 import org.slf4j.Logger;
@@ -86,79 +85,62 @@ public class OutputProcessorChainImpl implements OutputProcessorChain {
         return this.documentContext;
     }
 
+    private static int compare(OutputProcessor o1, OutputProcessor o2) {
+        int d = o1.getPhase().compareTo(o2.getPhase());
+        if (d != 0) {
+            // If the phases differ, then we don't need to look further.
+            return d;
+        }
+        if (o1.getActionOrder() >= 0 && o2.getActionOrder() >= 0) {
+            d = o1.getActionOrder() - o2.getActionOrder();
+            if (d != 0) {
+                // If both action indexes are defined and they differ, we don't need to look further.
+                return d;
+            }
+        }
+        if (o1.getBeforeProcessors().contains(o2.getClass()) || o2.getAfterProcessors().contains(o1.getClass())) {
+            if (o1.getAfterProcessors().contains(o2.getClass()) || o2.getBeforeProcessors().contains(o1.getClass())) {
+                throw new IllegalArgumentException(String.format("Conflicting order of processors %s and %s", o1, o2));
+            }
+            return -1;
+        }
+        if (o1.getAfterProcessors().contains(o2.getClass()) || o2.getBeforeProcessors().contains(o1.getClass())) {
+            if (o2.getAfterProcessors().contains(o1.getClass())) {
+                throw new IllegalArgumentException(String.format("Conflicting order of processors %s and %s", o1, o2));
+            }
+            return 1;
+        }
+        return 0;
+    }
+
     @Override
     public void addProcessor(OutputProcessor newOutputProcessor) {
-        int startPhaseIdx = 0;
-        int endPhaseIdx = outputProcessors.size();
-        int idxToInsert = endPhaseIdx;
-        XMLSecurityConstants.Phase targetPhase = newOutputProcessor.getPhase();
-
-        for (int i = outputProcessors.size() - 1; i >= 0; i--) {
-            OutputProcessor outputProcessor = outputProcessors.get(i);
-            if (outputProcessor.getPhase().ordinal() < targetPhase.ordinal()) {
-                startPhaseIdx = i + 1;
-                break;
+        int idxToInsert = outputProcessors.size();
+        // In case of no particular order, we want to preserve list order: the current new output processor is added last.
+        // For that reason, we start at the tail of the list.
+        boolean pointOfNoReturn = false;
+        for (int idx = outputProcessors.size(); --idx >= 0;) {
+            OutputProcessor outputProcessor = outputProcessors.get(idx);
+            int d = compare(newOutputProcessor, outputProcessor);
+            if (d < 0) {
+                if (pointOfNoReturn) {
+                    throw new IllegalArgumentException(String.format("Conflicting order of processors %s and %s",
+                            newOutputProcessor, outputProcessor));
+                }
+                // Remember we're starting from the tail of the list.
+                // As long as we find an output processor in the list which comes definitely AFTER the new processor,
+                // we can keep on backing up the idxToInsert as well.
+                idxToInsert = idx;
+            } else if (d > 0) {
+                // The order defined on output processors is a partial order - it means the comparison is not defined
+                // for ALL output processors against ALL OTHERS, but only for SOME against SOME others.
+                // For that reason, we can only stop looking if we find one that comes most definitely BEFORE the new
+                // one.
+                // As long as we haven't found that one, we need to keep backing up in the list.
+                pointOfNoReturn = true;
             }
         }
-        for (int i = startPhaseIdx; i < outputProcessors.size(); i++) {
-            OutputProcessor outputProcessor = outputProcessors.get(i);
-            if (outputProcessor.getPhase().ordinal() > targetPhase.ordinal()) {
-                endPhaseIdx = i;
-                break;
-            }
-        }
-
-        //just look for the correct phase and append as last
-        if (newOutputProcessor.getBeforeProcessors().isEmpty()
-                && newOutputProcessor.getAfterProcessors().isEmpty()) {
-            outputProcessors.add(endPhaseIdx, newOutputProcessor);
-        } else if (newOutputProcessor.getBeforeProcessors().isEmpty()) {
-            idxToInsert = endPhaseIdx;
-
-            for (int i = endPhaseIdx - 1; i >= startPhaseIdx; i--) {
-                OutputProcessor outputProcessor = outputProcessors.get(i);
-                if (newOutputProcessor.getAfterProcessors().contains(outputProcessor.getClass())) {
-                    idxToInsert = i + 1;
-                    break;
-                }
-            }
-            outputProcessors.add(idxToInsert, newOutputProcessor);
-        } else if (newOutputProcessor.getAfterProcessors().isEmpty()) {
-            idxToInsert = startPhaseIdx;
-
-            for (int i = startPhaseIdx; i < endPhaseIdx; i++) {
-                OutputProcessor outputProcessor = outputProcessors.get(i);
-                if (newOutputProcessor.getBeforeProcessors().contains(outputProcessor.getClass())) {
-                    idxToInsert = i;
-                    break;
-                }
-            }
-            outputProcessors.add(idxToInsert, newOutputProcessor);
-        } else {
-            boolean found = false;
-            idxToInsert = endPhaseIdx;
-
-            for (int i = startPhaseIdx; i < endPhaseIdx; i++) {
-                OutputProcessor outputProcessor = outputProcessors.get(i);
-                if (newOutputProcessor.getBeforeProcessors().contains(outputProcessor.getClass())) {
-                    idxToInsert = i;
-                    found = true;
-                    break;
-                }
-            }
-            if (found) {
-                outputProcessors.add(idxToInsert, newOutputProcessor);
-            } else {
-                for (int i = endPhaseIdx - 1; i >= startPhaseIdx; i--) {
-                    OutputProcessor outputProcessor = outputProcessors.get(i);
-                    if (newOutputProcessor.getAfterProcessors().contains(outputProcessor.getClass())) {
-                        idxToInsert = i + 1;
-                        break;
-                    }
-                }
-                outputProcessors.add(idxToInsert, newOutputProcessor);
-            }
-        }
+        outputProcessors.add(idxToInsert, newOutputProcessor);
         if (idxToInsert < this.curPos) {
             this.curPos++;
         }

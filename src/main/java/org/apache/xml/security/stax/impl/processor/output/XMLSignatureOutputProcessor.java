@@ -53,7 +53,7 @@ public class XMLSignatureOutputProcessor extends AbstractSignatureOutputProcesso
         super.init(outputProcessorChain);
         XMLSignatureEndingOutputProcessor signatureEndingOutputProcessor = new XMLSignatureEndingOutputProcessor(this);
         signatureEndingOutputProcessor.setXMLSecurityProperties(getSecurityProperties());
-        signatureEndingOutputProcessor.setAction(getAction());
+        signatureEndingOutputProcessor.setAction(getAction(), getActionOrder());
         signatureEndingOutputProcessor.init(outputProcessorChain);
     }
 
@@ -103,7 +103,7 @@ public class XMLSignatureOutputProcessor extends AbstractSignatureOutputProcesso
                     getSignaturePartDefList().add(signaturePartDef);
                     internalSignatureOutputProcessor = new InternalSignatureOutputProcessor(signaturePartDef, xmlSecStartElement);
                     internalSignatureOutputProcessor.setXMLSecurityProperties(getSecurityProperties());
-                    internalSignatureOutputProcessor.setAction(getAction());
+                    internalSignatureOutputProcessor.setAction(getAction(), getActionOrder());
                     internalSignatureOutputProcessor.addAfterProcessor(XMLSignatureOutputProcessor.class);
                     internalSignatureOutputProcessor.addBeforeProcessor(XMLSignatureEndingOutputProcessor.class);
                     internalSignatureOutputProcessor.init(outputProcessorChain);

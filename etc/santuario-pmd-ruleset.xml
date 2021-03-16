@@ -29,9 +29,12 @@
      <exclude name="AccessorMethodGeneration" />
      <exclude name="ArrayIsStoredDirectly" />
      <exclude name="AvoidReassigningParameters" />
+     <exclude name="AvoidReassigningLoopVariables" />
      <exclude name="AvoidUsingHardCodedIP" />
+     <exclude name="AvoidMessageDigestField" />
      <exclude name="ConstantsInInterface" />
      <exclude name="ForLoopCanBeForeach" />
+     <exclude name="ForLoopVariableCount" />
      <exclude name="GuardLogStatement" />
      <exclude name="JUnitAssertionsShouldIncludeMessage"/>
      <exclude name="JUnitTestContainsTooManyAsserts" />
@@ -43,6 +46,7 @@
      <exclude name="PreserveStackTrace" />
      <exclude name="SwitchStmtsShouldHaveDefault" />
      <exclude name="SystemPrintln" />
+     <exclude name="UnusedAssignment" />
      <exclude name="UnusedPrivateMethod" />
      <exclude name="UseAssertSameInsteadOfAssertTrue" />
      <exclude name="UseVarargs" />
@@ -54,6 +58,7 @@
      <exclude name="AvoidRethrowingException" />
      <exclude name="AvoidThrowingNullPointerException" />
      <exclude name="AvoidThrowingRawExceptionTypes" />
+     <exclude name="AvoidUncheckedExceptionsInSignatures" />
      <exclude name="CouplingBetweenObjects" />
      <exclude name="CyclomaticComplexity" />
      <exclude name="DataClass" />
@@ -90,7 +95,7 @@
      <exclude name="DataflowAnomalyAnalysis" />
      <exclude name="DoNotCallGarbageCollectionExplicitly" />
      <exclude name="EmptyCatchBlock" />
-     <exclude name="InvalidSlf4jMessageFormat" />
+     <exclude name="InvalidLogMessageFormat" />
      <exclude name="JUnitSpelling" />
      <exclude name="MissingSerialVersionUID" />
      <exclude name="NullAssignment" />

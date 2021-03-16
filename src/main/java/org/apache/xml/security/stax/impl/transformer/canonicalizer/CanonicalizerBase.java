@@ -254,7 +254,7 @@ public abstract class CanonicalizerBase extends TransformIdentity {
     @Override
     public void transform(final XMLSecEvent xmlSecEvent) throws XMLStreamException {
         try {
-            OutputStream outputStream = getOutputStream();
+            OutputStream outputStream = getOutputStream();  //NOPMD
 
             switch (xmlSecEvent.getEventType()) {
                 case XMLStreamConstants.START_ELEMENT:
@@ -405,7 +405,7 @@ public abstract class CanonicalizerBase extends TransformIdentity {
     @Override
     public void doFinal() throws XMLStreamException {
         if (getTransformer() != null) {
-            UnsyncByteArrayOutputStream baos = (UnsyncByteArrayOutputStream)getOutputStream();
+            UnsyncByteArrayOutputStream baos = (UnsyncByteArrayOutputStream)getOutputStream();  //NOPMD
             try (InputStream is = new UnsyncByteArrayInputStream(baos.toByteArray())) {
                 getTransformer().transform(is);
                 getTransformer().doFinal();

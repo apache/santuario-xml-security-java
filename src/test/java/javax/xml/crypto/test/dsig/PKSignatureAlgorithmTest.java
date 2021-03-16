@@ -26,6 +26,7 @@ import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
 import java.security.Security;
+import java.util.Arrays;
 import java.util.Collections;
 
 import javax.xml.crypto.KeySelector;
@@ -156,12 +157,12 @@ public class PKSignatureAlgorithmTest {
 
         KeyInfoFactory kifac = fac.getKeyInfoFactory();
         rsaki = kifac.newKeyInfo(Collections.singletonList
-                                 (kifac.newKeyValue(rsaKeyPair.getPublic())));
+                                 (kifac.newKeyValue(rsaKeyPair.getPublic())), "DSig.KeyInfo_1");
 
         boolean isIBM = "IBM Corporation".equals(System.getProperty("java.vendor"));
         if (!isIBM) {
             ecki = kifac.newKeyInfo(Collections.singletonList
-                                (kifac.newKeyValue(ecKeyPair.getPublic())));
+                                (kifac.newKeyValue(ecKeyPair.getPublic())), "DSig.KeyInfo_1");
         }
     }
 
@@ -307,9 +308,12 @@ public class PKSignatureAlgorithmTest {
         Reference ref = fac.newReference("#DSig.Object_1", dm, null,
                                          XMLObject.TYPE, null);
 
+        Reference ref2 = fac.newReference("#DSig.KeyInfo_1", dm, null,
+                null, null);
+
         // create SignedInfo
         SignedInfo si = fac.newSignedInfo(withoutComments, sm,
-                                          Collections.singletonList(ref));
+                Arrays.asList(ref, ref2));
 
         Document doc = TestUtils.newDocument();
         // create Objects

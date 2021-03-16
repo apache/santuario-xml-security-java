@@ -112,8 +112,8 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
             digestAlgo = getSecurityProperties().getSignatureDigestAlgorithm();
         }
 
-        DigestOutputStream digestOutputStream = createMessageDigestOutputStream(digestAlgo);
-        InputStream inputStream = resourceResolver.getInputStreamFromExternalReference();
+        DigestOutputStream digestOutputStream = createMessageDigestOutputStream(digestAlgo);    //NOPMD
+        InputStream inputStream = resourceResolver.getInputStreamFromExternalReference();   //NOPMD
 
         SignaturePartDef signaturePartDef = new SignaturePartDef();
         signaturePartDef.setSecurePart(securePart);

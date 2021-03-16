@@ -39,6 +39,7 @@ import org.w3c.dom.Text;
  * @see org.apache.xml.security.transforms.implementations.TransformBase64Decode
  */
 @Deprecated
+@SuppressWarnings("PMD")
 public final class Base64 {
 
     /** Field BASE64DEFAULTLENGTH */

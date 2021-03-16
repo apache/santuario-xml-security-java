@@ -524,7 +524,7 @@ public class XMLSignatureInput {
         if (inputOctetStreamProxy == null) {
             return null;
         }
-        try {
+        try {   //NOPMD
             bytes = JavaUtils.getBytesFromStream(inputOctetStreamProxy);
         } finally {
             inputOctetStreamProxy.close();
