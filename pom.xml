@@ -604,24 +604,13 @@
                     </plugins>
                 </pluginManagement>
              </build>
-             <dependencies>
-                 <dependency>
-                     <groupId>jakarta.xml.bind</groupId>
-                     <artifactId>jakarta.xml.bind-api</artifactId>
-                     <version>3.0.0</version>
-                 </dependency>
-                 <dependency>
-                     <groupId>org.glassfish.jaxb</groupId>
-                     <artifactId>jaxb-runtime</artifactId>
-                     <version>3.0.0</version>
-                     <scope>test</scope>
-                 </dependency>
-             </dependencies>
          </profile>
 
     </profiles>
 
     <properties>
+        <xml.bind.api.version>3.0.0</xml.bind.api.version>
+        <xml.bind.impl.version>3.0.0</xml.bind.impl.version>
         <slf4j.version>1.7.30</slf4j.version>
         <xalan.version>2.7.2</xalan.version>
         <junit.version>5.7.1</junit.version>
