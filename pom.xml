@@ -301,7 +301,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>3.3.0</version>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
@@ -329,7 +329,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>3.2.0</version>
+                    <version>3.3.0</version>
                     <executions>
                         <execution>
                             <goals>
@@ -528,7 +528,7 @@
         <xalan.version>2.7.2</xalan.version>
         <junit.version>5.7.2</junit.version>
         <log4j.version>1.2.17</log4j.version>
-        <bcprov.version>1.68</bcprov.version>
+        <bcprov.version>1.69</bcprov.version>
         <hamcrest.version>2.2</hamcrest.version>
         <xmlunit.version>2.8.2</xmlunit.version>
         <commons.codec.version>1.15</commons.codec.version>
@@ -538,7 +538,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <targetJdk>1.8</targetJdk>
         <clirr.version>2.8</clirr.version>
-        <maven-owasp-plugin-version>6.1.6</maven-owasp-plugin-version>
+        <maven-owasp-plugin-version>6.2.1</maven-owasp-plugin-version>
 
         <!-- Allow Clirr severity to be overriden by the command-line option -DminSeverity=level -->
         <minSeverity>info</minSeverity>
