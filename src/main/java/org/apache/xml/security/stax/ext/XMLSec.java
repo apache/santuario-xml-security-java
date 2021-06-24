@@ -25,8 +25,8 @@ import java.security.interfaces.RSAPrivateKey;
 import java.util.HashSet;
 
 import javax.crypto.SecretKey;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
 import javax.xml.validation.Schema;
 
 import org.apache.xml.security.exceptions.XMLSecurityException;
