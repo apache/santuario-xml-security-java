@@ -35,9 +35,16 @@ import org.apache.xml.security.stax.impl.DocumentContextImpl;
 import org.apache.xml.security.stax.impl.OutboundSecurityContextImpl;
 import org.apache.xml.security.stax.impl.OutputProcessorChainImpl;
 import org.apache.xml.security.stax.impl.XMLSecurityStreamWriter;
+import org.apache.xml.security.stax.impl.processor.output.AbstractEncryptOutputProcessor;
+import org.apache.xml.security.stax.impl.processor.output.AbstractSignatureEndingOutputProcessor;
 import org.apache.xml.security.stax.impl.processor.output.FinalOutputProcessor;
+import org.apache.xml.security.stax.impl.processor.output.IndentationDetectingOutputProcessor;
+import org.apache.xml.security.stax.impl.processor.output.IndentingOutputProcessor;
+import org.apache.xml.security.stax.impl.processor.output.SignatureIndentingOutputProcessor;
 import org.apache.xml.security.stax.impl.processor.output.XMLEncryptOutputProcessor;
+import org.apache.xml.security.stax.impl.processor.output.XMLSignatureEndingOutputProcessor;
 import org.apache.xml.security.stax.impl.processor.output.XMLSignatureOutputProcessor;
+import org.apache.xml.security.stax.impl.processor.output.XMLSignaturePositionOutputProcessor;
 import org.apache.xml.security.stax.impl.securityToken.GenericOutboundSecurityToken;
 import org.apache.xml.security.stax.impl.util.IDGenerator;
 import org.apache.xml.security.stax.securityEvent.SecurityEventListener;
@@ -111,8 +118,34 @@ public class OutboundXMLSec {
         int actionOrder = 0;
         for (XMLSecurityConstants.Action action : securityProperties.getActions()) {
             if (XMLSecurityConstants.SIGNATURE.equals(action)) {
+                // Order of signature processors, the optional ones between [] only apply when indentation is active:
+                // [1. IndentationDetectingOutputProcessor: detect input indentation]
+                //  2. XMLSignaturePositionOutputProcessor: detect position of signature based on configured parameters
+                // [3. SignatureIndentingOutputProcessor: generate indentation event for the signature ahead of the signature]
+                //  4. XMLSignatureOutputProcessor: compute the digest (including the generated signature indentation)
+                //  5. XMLSignatureEndingOutputProcessor: generate security events
+                //  6. SignedInfoProcessor: compute the signature
+                // [7. IndentingOutputProcessor: generate indentation events for all security events]
+                XMLSignaturePositionOutputProcessor signaturePositionOutputProcessor = new XMLSignaturePositionOutputProcessor();
+                initializeOutputProcessor(outputProcessorChain, signaturePositionOutputProcessor, action, actionOrder);
                 XMLSignatureOutputProcessor signatureOutputProcessor = new XMLSignatureOutputProcessor();
-                initializeOutputProcessor(outputProcessorChain, signatureOutputProcessor, action, actionOrder++);
+                signatureOutputProcessor.addAfterProcessor(XMLSignaturePositionOutputProcessor.class);
+                initializeOutputProcessor(outputProcessorChain, signatureOutputProcessor, action, actionOrder);
+                if (securityProperties.isAutoIndent()) {
+                    IndentationDetectingOutputProcessor indentationDetectingOutputProcessor = new IndentationDetectingOutputProcessor();
+                    indentationDetectingOutputProcessor.addBeforeProcessor(XMLSignaturePositionOutputProcessor.class);
+                    initializeOutputProcessor(outputProcessorChain, indentationDetectingOutputProcessor, action, actionOrder);
+                    SignatureIndentingOutputProcessor signatureIndentingOutputProcessor = new SignatureIndentingOutputProcessor();
+                    signatureIndentingOutputProcessor.addAfterProcessor(XMLSignaturePositionOutputProcessor.class);
+                    signatureIndentingOutputProcessor.addBeforeProcessor(XMLSignatureOutputProcessor.class);
+                    initializeOutputProcessor(outputProcessorChain, signatureIndentingOutputProcessor, action, actionOrder);
+                    IndentingOutputProcessor indentingOutputProcessor = new IndentingOutputProcessor();
+                    indentingOutputProcessor.addAfterProcessor(XMLSignatureOutputProcessor.class);
+                    indentingOutputProcessor.addAfterProcessor(XMLSignatureEndingOutputProcessor.class);
+                    indentingOutputProcessor.addBeforeProcessor(AbstractSignatureEndingOutputProcessor.SignedInfoProcessor.class);
+                    initializeOutputProcessor(outputProcessorChain, indentingOutputProcessor, action, actionOrder);
+                }
+                actionOrder++;
 
                 configureSignatureKeys(outboundSecurityContext);
                 List<SecurePart> signatureParts = securityProperties.getSignatureSecureParts();
@@ -141,8 +174,23 @@ public class OutboundXMLSec {
                     }
                 }
             } else if (XMLSecurityConstants.ENCRYPTION.equals(action)) {
+                // Order of encryption processors, the optional ones between [] only apply when indentation is active:
+                // [1. IndentationDetectingOutputProcessor: detect input indentation]
+                //  2. XMLEncryptOutputProcessor: encrypt
+                //  3. AbstractInternalEncryptionOutputProcessor: generate security events
+                // [4. IndentingOutputProcessor: generate indentation events for all security events]
                 XMLEncryptOutputProcessor encryptOutputProcessor = new XMLEncryptOutputProcessor();
-                initializeOutputProcessor(outputProcessorChain, encryptOutputProcessor, action, actionOrder++);
+                initializeOutputProcessor(outputProcessorChain, encryptOutputProcessor, action, actionOrder);
+                if (securityProperties.isAutoIndent()) {
+                    IndentationDetectingOutputProcessor indentationDetectingOutputProcessor = new IndentationDetectingOutputProcessor();
+                    indentationDetectingOutputProcessor.addBeforeProcessor(XMLEncryptOutputProcessor.class);
+                    initializeOutputProcessor(outputProcessorChain, indentationDetectingOutputProcessor, action, actionOrder);
+                    IndentingOutputProcessor indentingOutputProcessor = new IndentingOutputProcessor();
+                    indentingOutputProcessor.addAfterProcessor(XMLEncryptOutputProcessor.class);
+                    indentingOutputProcessor.addAfterProcessor(AbstractEncryptOutputProcessor.AbstractInternalEncryptionOutputProcessor.class);
+                    initializeOutputProcessor(outputProcessorChain, indentingOutputProcessor, action, actionOrder);
+                }
+                actionOrder++;
 
                 configureEncryptionKeys(outboundSecurityContext);
                 List<SecurePart> encryptionParts = securityProperties.getEncryptionSecureParts();

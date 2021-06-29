@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 
-import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
 import org.apache.xml.security.exceptions.XMLSecurityException;
@@ -80,72 +79,17 @@ public class XMLSignatureEndingOutputProcessor extends AbstractSignatureEndingOu
             OutputProcessorChain outputProcessorChain, Deque<XMLSecEvent> xmlSecEventDeque)
             throws XMLStreamException, XMLSecurityException {
 
-        // forward to the root element and output it
-        XMLSecEvent xmlSecEvent = xmlSecEventDeque.pop();
-        while (!xmlSecEvent.isStartElement()) {
+        // Fast-forward to the SIGNATURE_POSITION event and inhibit it...
+        while (!xmlSecEventDeque.isEmpty()) {
+            XMLSecEvent xmlSecEvent = xmlSecEventDeque.pop();
+            if (xmlSecEvent.getEventType() == XMLSecurityConstants.SIGNATURE_POSITION) {
+                break;
+            }
             outputProcessorChain.reset();
             outputProcessorChain.processEvent(xmlSecEvent);
-            xmlSecEvent = xmlSecEventDeque.pop();
-        }
-        outputProcessorChain.reset();
-        outputProcessorChain.processEvent(xmlSecEvent);
-
-        // search the specified position
-        int depth = 0;
-        QName signaturePositionQName = getSecurityProperties().getSignaturePositionQName();
-        boolean start = getSecurityProperties().isSignaturePositionStart();
-        if (signaturePositionQName != null) {
-            while (!xmlSecEventDeque.isEmpty()
-                && !(start && xmlSecEvent.isStartElement() && xmlSecEvent.asStartElement().getName().equals(signaturePositionQName)
-                    || !start && xmlSecEvent.isEndElement() && xmlSecEvent.asEndElement().getName().equals(signaturePositionQName))) {
-                xmlSecEvent = xmlSecEventDeque.pop();
-
-                if (xmlSecEvent.isStartElement()) {
-                    depth++;
-                } else if (xmlSecEvent.isEndElement()) {
-                    depth--;
-                    if (depth < 0) {
-                        // root-end-element reached
-                        xmlSecEventDeque.push(xmlSecEvent);
-                        break;
-                    }
-                }
-
-                outputProcessorChain.reset();
-                outputProcessorChain.processEvent(xmlSecEvent);
-            }
-        } else {
-            // @see SANTUARIO-405
-            // Enhances SANTUARIO-324
-            // Output the signature at a specific position.
-            // By default, this is just after the root element
-            int signaturePosition = getSecurityProperties().getSignaturePosition();
-            if (signaturePosition < 0) {
-                signaturePosition = 0;
-            }
-            int position = 0;
-            while (position != signaturePosition) {
-                xmlSecEvent = xmlSecEventDeque.pop();
-
-                if (xmlSecEvent.isStartElement()) {
-                    depth++;
-                } else if (xmlSecEvent.isEndElement()) {
-                    depth--;
-                    if (depth == 0) {
-                        position++;
-                    } else if (depth < 0) {
-                        // root-end-element reached
-                        xmlSecEventDeque.push(xmlSecEvent);
-                        break;
-                    }
-                }
-
-                outputProcessorChain.reset();
-                outputProcessorChain.processEvent(xmlSecEvent);
-            }
         }
 
-        //...then call super to append the signature and flush the rest
+        //...then call super to append the signature and flush the rest.
         super.flushBufferAndCallbackAfterHeader(outputProcessorChain, xmlSecEventDeque);
     }
 

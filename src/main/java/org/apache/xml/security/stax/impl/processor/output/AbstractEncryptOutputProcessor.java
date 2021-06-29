@@ -56,8 +56,15 @@ import org.apache.xml.security.stax.ext.stax.XMLSecEventFactory;
 import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
 import org.apache.xml.security.stax.impl.EncryptionPartDef;
 import org.apache.xml.security.stax.impl.XMLSecurityEventWriter;
+import org.apache.xml.security.stax.impl.processor.output.IndentationContext.When;
 import org.apache.xml.security.stax.impl.util.TrimmerOutputStream;
 import org.apache.xml.security.utils.XMLUtils;
+
+import static org.apache.xml.security.stax.impl.processor.output.IndentationContext.Instruction.START;
+import static org.apache.xml.security.stax.impl.processor.output.IndentationContext.Instruction.STOP;
+import static org.apache.xml.security.stax.impl.processor.output.IndentationContext.When.AFTER_NEXT;
+import static org.apache.xml.security.stax.impl.processor.output.IndentationContext.When.AFTER_CURRENT;
+import static org.apache.xml.security.stax.impl.processor.output.IndentationContext.When.BEFORE_CURRENT;
 
 /**
  * Processor to encrypt XML structures
@@ -226,14 +233,13 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
                         //if the user selected element encryption we have to encrypt the current element-event...
                         if (SecurePart.Modifier.Element == getEncryptionPartDef().getModifier()) {
                             OutputProcessorChain subOutputProcessorChain = outputProcessorChain.createSubChain(this);
-                            processEventInternal(xmlSecStartElement, subOutputProcessorChain);
+                            processEventInternal(xmlSecStartElement, subOutputProcessorChain, AFTER_CURRENT);
                             //encrypt the current element event
                             encryptEvent(xmlSecEvent);
                         } else if (SecurePart.Modifier.Content == getEncryptionPartDef().getModifier()) {
-                            OutputProcessorChain subOutputProcessorChain = outputProcessorChain.createSubChain(this);
                             outputProcessorChain.processEvent(xmlSecEvent);
-                            subOutputProcessorChain = outputProcessorChain.createSubChain(this);
-                            processEventInternal(xmlSecStartElement, subOutputProcessorChain);
+                            OutputProcessorChain subOutputProcessorChain = outputProcessorChain.createSubChain(this);
+                            processEventInternal(xmlSecStartElement, subOutputProcessorChain, BEFORE_CURRENT);
                         }
                     } else {
                         encryptEvent(xmlSecEvent);
@@ -248,15 +254,14 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
                         OutputProcessorChain subOutputProcessorChain = outputProcessorChain.createSubChain(this);
                         if (SecurePart.Modifier.Element == getEncryptionPartDef().getModifier()) {
                             encryptEvent(xmlSecEvent);
-                            doFinalInternal(subOutputProcessorChain);
+                            doFinalInternal(subOutputProcessorChain, AFTER_CURRENT);
                         } else if (SecurePart.Modifier.Content == getEncryptionPartDef().getModifier()) {
-                            doFinalInternal(subOutputProcessorChain);
+                            doFinalInternal(subOutputProcessorChain, AFTER_NEXT);
                             outputAsEvent(subOutputProcessorChain, xmlSecEvent);
                         }
-                        subOutputProcessorChain.removeProcessor(this);
+                        outputProcessorChain.removeProcessor(this);
                         //from now on encryption is possible again
                         setActiveInternalEncryptionOutputProcessor(null);
-
                     } else {
                         encryptEvent(xmlSecEvent);
                     }
@@ -288,12 +293,14 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
         /**
          * Creates the Data structure around the cipher data
          */
-        protected void processEventInternal(XMLSecStartElement xmlSecStartElement, OutputProcessorChain outputProcessorChain)
+        protected void processEventInternal(XMLSecStartElement xmlSecStartElement, OutputProcessorChain outputProcessorChain, When when)
                 throws XMLStreamException, XMLSecurityException {
             List<XMLSecAttribute> attributes = new ArrayList<>(2);
             attributes.add(createAttribute(XMLSecurityConstants.ATT_NULL_Id, getEncryptionPartDef().getEncRefId()));
             attributes.add(createAttribute(XMLSecurityConstants.ATT_NULL_Type, getEncryptionPartDef().getModifier().getModifier()));
-            createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_xenc_EncryptedData, true, attributes);
+            createStartElementAndOutputAsEvent(
+                    IndentationContext.giveIndentingInstruction(outputProcessorChain, getActionOrder(), START, when),
+                    XMLSecurityConstants.TAG_xenc_EncryptedData, true, attributes);
 
             attributes = new ArrayList<>(1);
             attributes.add(createAttribute(XMLSecurityConstants.ATT_NULL_Algorithm, securityProperties.getEncryptionSymAlgorithm()));
@@ -327,7 +334,7 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
         protected abstract void createKeyInfoStructure(OutputProcessorChain outputProcessorChain)
                 throws XMLStreamException, XMLSecurityException;
 
-        protected void doFinalInternal(OutputProcessorChain outputProcessorChain)
+        protected void doFinalInternal(OutputProcessorChain outputProcessorChain, When when)
                 throws XMLStreamException, XMLSecurityException {
 
             try {
@@ -353,7 +360,9 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
 
             createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_xenc_CipherValue);
             createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_xenc_CipherData);
-            createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_xenc_EncryptedData);
+            createEndElementAndOutputAsEvent(
+                    IndentationContext.giveIndentingInstruction(outputProcessorChain, getActionOrder(), STOP, when),
+                    XMLSecurityConstants.TAG_xenc_EncryptedData);
         }
 
         protected EncryptionPartDef getEncryptionPartDef() {

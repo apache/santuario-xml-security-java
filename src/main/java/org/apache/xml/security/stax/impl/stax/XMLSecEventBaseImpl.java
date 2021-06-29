@@ -37,7 +37,7 @@ import java.util.NoSuchElementException;
 public abstract class XMLSecEventBaseImpl implements XMLSecEvent {
 
     private static final EmptyIterator EMPTY_ITERATOR = new EmptyIterator();
-    protected XMLSecStartElement parentXMLSecStartELement;
+    protected XMLSecStartElement parentXMLSecStartElement;
 
     @SuppressWarnings("unchecked")
     protected static <T> EmptyIterator<T> getEmptyIterator() {
@@ -46,26 +46,26 @@ public abstract class XMLSecEventBaseImpl implements XMLSecEvent {
 
     @Override
     public void setParentXMLSecStartElement(XMLSecStartElement xmlSecStartElement) {
-        this.parentXMLSecStartELement = xmlSecStartElement;
+        this.parentXMLSecStartElement = xmlSecStartElement;
     }
 
     @Override
     public XMLSecStartElement getParentXMLSecStartElement() {
-        return parentXMLSecStartELement;
+        return parentXMLSecStartElement;
     }
 
     @Override
     public int getDocumentLevel() {
-        if (parentXMLSecStartELement != null) {
-            return parentXMLSecStartELement.getDocumentLevel();
+        if (parentXMLSecStartElement != null) {
+            return parentXMLSecStartElement.getDocumentLevel();
         }
         return 0;
     }
 
     @Override
     public void getElementPath(List<QName> list) {
-        if (parentXMLSecStartELement != null) {
-            parentXMLSecStartELement.getElementPath(list);
+        if (parentXMLSecStartElement != null) {
+            parentXMLSecStartElement.getElementPath(list);
         }
     }
 
@@ -81,7 +81,7 @@ public abstract class XMLSecEventBaseImpl implements XMLSecEvent {
         if (getDocumentLevel() < level) {
             return null;
         }
-        return parentXMLSecStartELement.getStartElementAtLevel(level);
+        return parentXMLSecStartElement.getStartElementAtLevel(level);
     }
 
     @Override

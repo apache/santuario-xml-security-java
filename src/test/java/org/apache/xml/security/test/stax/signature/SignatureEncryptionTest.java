@@ -53,7 +53,8 @@ import org.apache.xml.security.test.stax.utils.StAX2DOM;
 import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
 import org.apache.xml.security.utils.XMLUtils;
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -63,10 +64,12 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
 
-    @Test
-    public void testSignatureEncryption() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testSignatureEncryption(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         actions.add(XMLSecurityConstants.ENCRYPTION);
@@ -126,16 +129,18 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
 
         TestSecurityEventListener testSecurityEventListener =
-                verifyUsingStAX(baos.toByteArray(), encryptionKey, cert.getPublicKey());
+                verifyUsingStAX(baos.toByteArray(), encryptionKey, cert.getPublicKey(), autoIndent);
 
         assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.SignedElement).size());
         assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.ContentEncrypted).size());
     }
 
-    @Test
-    public void testSignatureEncryptionSameElement() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testSignatureEncryptionSameElement(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         actions.add(XMLSecurityConstants.ENCRYPTION);
@@ -195,16 +200,18 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
 
         TestSecurityEventListener testSecurityEventListener =
-                verifyUsingStAX(baos.toByteArray(), encryptionKey, cert.getPublicKey());
+                verifyUsingStAX(baos.toByteArray(), encryptionKey, cert.getPublicKey(), autoIndent);
 
         assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.SignedElement).size());
         assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.EncryptedElement).size());
     }
 
-    @Test
-    public void testEnvelopedSignatureEncryptionElement() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testEnvelopedSignatureEncryptionElement(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         actions.add(XMLSecurityConstants.ENCRYPTION);
@@ -272,16 +279,18 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
 
         TestSecurityEventListener testSecurityEventListener =
-                verifyUsingStAX(baos.toByteArray(), encryptionKey, cert.getPublicKey());
+                verifyUsingStAX(baos.toByteArray(), encryptionKey, cert.getPublicKey(), autoIndent);
 
         assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.SignedElement).size());
         assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.EncryptedElement).size());
     }
 
-    @Test
-    public void testEnvelopedSignatureEncryptionContent() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testEnvelopedSignatureEncryptionContent(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         actions.add(XMLSecurityConstants.ENCRYPTION);
@@ -349,16 +358,18 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
 
         TestSecurityEventListener testSecurityEventListener =
-                verifyUsingStAX(baos.toByteArray(), encryptionKey, cert.getPublicKey());
+                verifyUsingStAX(baos.toByteArray(), encryptionKey, cert.getPublicKey(), autoIndent);
 
         assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.SignedElement).size());
         assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.ContentEncrypted).size());
     }
 
-    @Test
-    public void testEncryptionSignature() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testEncryptionSignature(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         actions.add(XMLSecurityConstants.SIGNATURE);
@@ -426,14 +437,15 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
         assertEquals(nodeList.getLength(), 1);
 
         TestSecurityEventListener testSecurityEventListener =
-                verifyUsingStAX(baos.toByteArray(), encryptionKey, cert.getPublicKey());
+                verifyUsingStAX(baos.toByteArray(), encryptionKey, cert.getPublicKey(), autoIndent);
 
         assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.SignedElement).size());
         assertEquals(1, testSecurityEventListener.getSecurityEvents(SecurityEventConstants.ContentEncrypted).size());
     }
 
-    @Test
-    public void testUnsecuredDocument() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testUnsecuredDocument(boolean autoIndent) throws Exception {
         // Set the key up
         KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
@@ -450,7 +462,7 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
 
         try {
-            verifyUsingStAX(sourceDocument, encryptionKey, cert.getPublicKey());
+            verifyUsingStAX(sourceDocument, encryptionKey, cert.getPublicKey(), autoIndent);
             fail("Exception expected");
         } catch (XMLStreamException e) {
             assertEquals("Unsecured message. Neither a Signature nor a EncryptedData element found.",
@@ -492,19 +504,20 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
     }
 
     private TestSecurityEventListener verifyUsingStAX(
-            byte[] doc, Key decryptionKey, PublicKey signatureVerificationKey) throws Exception {
+            byte[] doc, Key decryptionKey, PublicKey signatureVerificationKey, boolean autoIndent) throws Exception {
         try (InputStream is = new ByteArrayInputStream(doc)) {
-            return verifyUsingStAX(is, decryptionKey, signatureVerificationKey);
+            return verifyUsingStAX(is, decryptionKey, signatureVerificationKey, autoIndent);
         }
     }
 
     private TestSecurityEventListener verifyUsingStAX(
-            InputStream doc, Key decryptionKey, PublicKey signatureVerificationKey) throws Exception {
+            InputStream doc, Key decryptionKey, PublicKey signatureVerificationKey, boolean autoIndent) throws Exception {
 
         XMLStreamReader xmlStreamReader =
                 xmlInputFactory.createXMLStreamReader(doc);
 
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         properties.setDecryptionKey(decryptionKey);
         properties.setSignatureVerificationKey(signatureVerificationKey);
         InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);

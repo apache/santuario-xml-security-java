@@ -36,6 +36,7 @@ import javax.xml.stream.events.ProcessingInstruction;
 import javax.xml.stream.events.StartDocument;
 import javax.xml.stream.events.XMLEvent;
 
+import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.stax.ext.stax.XMLSecAttribute;
 import org.apache.xml.security.stax.ext.stax.XMLSecCharacters;
 import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
@@ -135,6 +136,11 @@ public class XMLSecurityEventWriter implements XMLEventWriter {
             case XMLStreamConstants.NAMESPACE:
                 Namespace ns = (Namespace) xmlSecEvent;
                 this.xmlStreamWriter.writeNamespace(ns.getPrefix(), ns.getNamespaceURI());
+                break;
+
+            case XMLSecurityConstants.SIGNATURE_POSITION:
+                // Inhibit SIGNATURE_POSITION events - they are internal to the XML signature output processors and
+                // have no meaning beyond them.
                 break;
 
             case XMLStreamConstants.SPACE:

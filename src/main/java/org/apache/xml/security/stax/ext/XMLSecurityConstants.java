@@ -41,6 +41,12 @@ public class XMLSecurityConstants {
     public static final DatatypeFactory datatypeFactory;
     public static final XMLOutputFactory xmlOutputFactory;
     public static final XMLOutputFactory xmlOutputFactoryNonRepairingNs;
+    /**
+     * Custom event type to mark the insertion position of the signature in the XML document.
+     * According to {@link javax.xml.stream.XMLStreamConstants}, 0 to 256 are reserved for the specification.
+     * We pick a number out of that range, say 300.
+     */
+    public static final int SIGNATURE_POSITION = 300;
 
     private static final SecureRandom SECURE_RANDOM;
     private static JAXBContext jaxbContext;
@@ -256,6 +262,8 @@ public class XMLSecurityConstants {
     public static final String PROP_USE_THIS_TOKEN_ID_FOR_SIGNATURE = "PROP_USE_THIS_TOKEN_ID_FOR_SIGNATURE";
     public static final String PROP_USE_THIS_TOKEN_ID_FOR_ENCRYPTION = "PROP_USE_THIS_TOKEN_ID_FOR_ENCRYPTION";
     public static final String PROP_USE_THIS_TOKEN_ID_FOR_ENCRYPTED_KEY = "PROP_USE_THIS_TOKEN_ID_FOR_ENCRYPTED_KEY";
+
+    public static final String INDENTATION_CONTEXT = "indentationContext";
 
     public static final String SIGNATURE_PARTS = "signatureParts";
     public static final String ENCRYPTION_PARTS = "encryptionParts";

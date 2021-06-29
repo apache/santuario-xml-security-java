@@ -52,16 +52,24 @@ import org.apache.xml.security.stax.ext.XMLSec;
 import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.stax.ext.XMLSecurityProperties;
 import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
+import org.apache.xml.security.stax.securityToken.SecurityTokenConstants.KeyIdentifier;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import static java.util.Arrays.asList;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.endsWith;
+import static org.hamcrest.Matchers.startsWith;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -87,10 +95,12 @@ public class EncryptionCreationTest {
         xmlInputFactory.setEventAllocator(new XMLSecEventAllocator());
     }
 
-    @Test
-    public void testEncryptionContentCreation() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testEncryptionContentCreation(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
@@ -145,10 +155,12 @@ public class EncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @Test
-    public void testEncryptRootElementInRequest() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testEncryptRootElementInRequest(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
@@ -201,10 +213,12 @@ public class EncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @Test
-    public void testExceptionOnElementToEncryptNotFound() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testExceptionOnElementToEncryptNotFound(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
@@ -237,19 +251,22 @@ public class EncryptionCreationTest {
         }
     }
 
-    @Test
-    public void testEncryptionElementCreation() throws Exception {
-        testEncryptElementCreation(XMLSecurityConstants.ENCRYPTION);
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testEncryptionElementCreation(boolean autoIndent) throws Exception {
+        testEncryptElementCreation(autoIndent, XMLSecurityConstants.ENCRYPTION);
     }
 
-    @Test
-    public void testEncryptBackwardCompatibility() throws Exception {
-        testEncryptElementCreation(XMLSecurityConstants.ENCRYPT);
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testEncryptBackwardCompatibility(boolean autoIndent) throws Exception {
+        testEncryptElementCreation(autoIndent, XMLSecurityConstants.ENCRYPT);
     }
 
-    private void testEncryptElementCreation(XMLSecurityConstants.Action action) throws Exception {
+    private void testEncryptElementCreation(boolean autoIndent, XMLSecurityConstants.Action action) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(action);
         properties.setActions(actions);
@@ -304,10 +321,12 @@ public class EncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @Test
-    public void testStrongEncryption() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testStrongEncryption(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
@@ -363,10 +382,12 @@ public class EncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @Test
-    public void testEncryptionMultipleElements() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testEncryptionMultipleElements(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
@@ -417,10 +438,12 @@ public class EncryptionCreationTest {
     }
 
     // Test encryption using a generated AES 128 bit key that is encrypted using a AES 192 bit key.
-    @Test
-    public void testAES128ElementAES192KWCipherUsingKEKOutbound() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testAES128ElementAES192KWCipherUsingKEKOutbound(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
@@ -483,10 +506,12 @@ public class EncryptionCreationTest {
     }
 
     // Test encryption using a generated AES 256 bit key that is encrypted using an RSA key.
-    @Test
-    public void testAES256ElementRSAKWCipherUsingKEKOutbound() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testAES256ElementRSAKWCipherUsingKEKOutbound(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
@@ -551,10 +576,12 @@ public class EncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @Test
-    public void testEncryptedKeyKeyValueReference() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testEncryptedKeyKeyValueReference(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
@@ -620,10 +647,12 @@ public class EncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @Test
-    public void testEncryptedKeyKeyNameReference() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testEncryptedKeyKeyNameReference(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
@@ -690,10 +719,12 @@ public class EncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @Test
-    public void testEncryptedKeyMultipleElements() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testEncryptedKeyMultipleElements(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
@@ -754,10 +785,12 @@ public class EncryptionCreationTest {
         decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#tripledes-cbc", null, priv, document);
     }
 
-    @Test
-    public void testEncryptedKeyIssuerSerialReference() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testEncryptedKeyIssuerSerialReference(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
@@ -825,10 +858,12 @@ public class EncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @Test
-    public void testEncryptedKeyX509CertificateReference() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testEncryptedKeyX509CertificateReference(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
@@ -896,8 +931,9 @@ public class EncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @Test
-    public void testEncryptedKeySKI() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testEncryptedKeySKI(boolean autoIndent) throws Exception {
 
         //
         // This test fails with the IBM JDK
@@ -908,6 +944,7 @@ public class EncryptionCreationTest {
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
@@ -975,10 +1012,12 @@ public class EncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @Test
-    public void testEncryptedKeyX509SubjectName() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testEncryptedKeyX509SubjectName(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
@@ -1046,10 +1085,12 @@ public class EncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @Test
-    public void testEncryptedKeyNoKeyInfo() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testEncryptedKeyNoKeyInfo(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
@@ -1118,12 +1159,14 @@ public class EncryptionCreationTest {
     }
 
     // Test encryption using a generated AES 192 bit key that is encrypted using a 3DES key.
-    @Test
-    public void testAES192Element3DESKWCipher() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testAES192Element3DESKWCipher(boolean autoIndent) throws Exception {
         assumeFalse(isIBMJdK);
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
@@ -1184,10 +1227,12 @@ public class EncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @Test
-    public void testTripleDesElementCipher() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testTripleDesElementCipher(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
@@ -1245,10 +1290,12 @@ public class EncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @Test
-    public void testAes128ElementCipher() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testAes128ElementCipher(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
@@ -1308,10 +1355,12 @@ public class EncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @Test
-    public void testAes192ElementCipher() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testAes192ElementCipher(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
@@ -1373,10 +1422,12 @@ public class EncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @Test
-    public void testAes256ElementCipher() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testAes256ElementCipher(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
@@ -1440,10 +1491,12 @@ public class EncryptionCreationTest {
 
     // Test case for when the entire document is encrypted and decrypted
     // In this case the EncryptedData becomes the root element of the document
-    @Test
-    public void testTripleDesDocumentCipher() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testTripleDesDocumentCipher(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
@@ -1502,10 +1555,12 @@ public class EncryptionCreationTest {
     }
 
     // Test physical representation of decrypted element, see SANTUARIO-309
-    @Test
-    public void testPhysicalRepresentation1() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testPhysicalRepresentation1(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
@@ -1565,10 +1620,12 @@ public class EncryptionCreationTest {
     }
 
     // Test default namespace undeclaration is preserved
-    @Test
-    public void testPhysicalRepresentation2() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testPhysicalRepresentation2(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
@@ -1627,10 +1684,12 @@ public class EncryptionCreationTest {
         assertEquals("", attr.getValue());
     }
 
-    @Test
-    public void testTransportKey() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testTransportKey(boolean autoIndent) throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
@@ -1697,28 +1756,31 @@ public class EncryptionCreationTest {
         return keyFactory.generateSecret(keySpec);
     }
 
-    @Test
-    public void testEncryptionIdToEncrypt() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testEncryptionIdToEncrypt(boolean autoIndent) throws Exception {
         SecurePart securePart = new SecurePart(SecurePart.Modifier.Element);
         securePart.setIdToSecure("abc");
-        testEncryptionIdToEncrypt(securePart);
+        testEncryptionIdToEncrypt(autoIndent, securePart);
     }
 
-    @Test
-    public void testEncryptionIdToSign() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testEncryptionIdToSign(boolean autoIndent) throws Exception {
         SecurePart securePart = new SecurePart(SecurePart.Modifier.Element);
         securePart.setIdToSign("abc");
-        testEncryptionIdToEncrypt(securePart);
+        testEncryptionIdToEncrypt(autoIndent, securePart);
     }
 
-    private void testEncryptionIdToEncrypt(SecurePart securePart) throws Exception {
+    private void testEncryptionIdToEncrypt(boolean autoIndent, SecurePart securePart) throws Exception {
         String xml = "<?xml version='1.0'?>\n" +
                 "<Root>\n" +
                 "  <Branch attr1='abc'/>\n" +
                 "</Root>\n";
         XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(autoIndent);
         properties.setIdAttributeNS(new QName("attr1"));
-        properties.setActions(Collections.singletonList(XMLSecurityConstants.ENCRYPT));
+        properties.setActions(Collections.singletonList(XMLSecurityConstants.ENCRYPTION));
         properties.addEncryptionPart(securePart);
         byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes(StandardCharsets.US_ASCII);
         SecretKey transportKey = new SecretKeySpec(bits192, "AES");
@@ -1742,8 +1804,9 @@ public class EncryptionCreationTest {
         assertEquals(encryptedElements.getLength(), 1);
     }
 
-    @Test
-    public void testEncryptionIdToSecureSupersedesName() throws Exception {
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testEncryptionIdToSecureSupersedesName(boolean autoIndent) throws Exception {
         String xml = "<?xml version='1.0'?>\n" +
                 "<Root>\n" +
                 "  <Branch1 attr1='abc'/>\n" +
@@ -1751,7 +1814,7 @@ public class EncryptionCreationTest {
                 "</Root>\n";
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setIdAttributeNS(new QName("attr1"));
-        properties.setActions(Collections.singletonList(XMLSecurityConstants.ENCRYPT));
+        properties.setActions(Collections.singletonList(XMLSecurityConstants.ENCRYPTION));
         SecurePart securePart = new SecurePart(new QName("Branch1"), SecurePart.Modifier.Element);
         securePart.setIdToSecure("def");
         properties.addEncryptionPart(securePart);
@@ -1760,6 +1823,7 @@ public class EncryptionCreationTest {
         properties.setEncryptionKeyTransportAlgorithm("http://www.w3.org/2001/04/xmlenc#kw-aes192");
         properties.setEncryptionTransportKey(transportKey);
         properties.setEncryptionSymAlgorithm("http://www.w3.org/2001/04/xmlenc#aes128-cbc");
+        properties.setAutoIndent(autoIndent);
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream encryptedOut = new ByteArrayOutputStream();
         XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(encryptedOut, StandardCharsets.UTF_8.name());
@@ -1777,6 +1841,199 @@ public class EncryptionCreationTest {
         assertEquals(1, encryptedElements.getLength());
         assertEquals(1, document.getElementsByTagName("Branch1").getLength());
         assertEquals(0, document.getElementsByTagName("Branch2").getLength());
+    }
+
+    @Test
+    public void testEncryptionPreservesIndentationTwoLevelsContent() throws Exception {
+        String xml = "<?xml version='1.0'?>\n" +
+                "<Root>\n" +
+                "  <Branch>\n" +
+                "    <Leaf/>\n" +
+                "  </Branch>\n" +
+                "</Root>\n";
+        SecurePart securePart = new SecurePart(new QName("Leaf"), SecurePart.Modifier.Content);
+        String encryptedXml = encryptXml(xml, SecurityTokenConstants.KeyIdentifier_KeyValue, securePart);
+//        System.out.println(encryptedXml);
+        assertThat(encryptedXml, containsString(">\n<Root>"));
+        assertThat(encryptedXml, containsString(">\n      <xenc:EncryptedData"));
+        assertThat(encryptedXml, containsString(">\n        <xenc:EncryptionMethod"));
+        assertThat(encryptedXml, containsString(">\n        <dsig:KeyInfo"));
+        assertThat(encryptedXml, containsString(">\n        <xenc:CipherData>"));
+        assertThat(encryptedXml, containsString(">\n        </xenc:CipherData>"));
+        assertThat(encryptedXml, containsString(">\n<Root>\n"));
+    }
+
+    @Test
+    public void testEncryptionPreservesIndentationTwoLevelsElement() throws Exception {
+        String xml = "<?xml version='1.0'?>\n" +
+                "<Root>\n" +
+                "  <Branch>\n" +
+                "    <Leaf/>\n" +
+                "  </Branch>\n" +
+                "</Root>\n";
+        SecurePart securePart = new SecurePart(new QName("Leaf"), SecurePart.Modifier.Element);
+        String encryptedXml = encryptXml(xml, SecurityTokenConstants.KeyIdentifier_KeyValue, securePart);
+//        System.out.println(encryptedXml);
+        assertThat(encryptedXml, containsString(">\n<Root>"));
+        assertThat(encryptedXml, containsString(">\n    <xenc:EncryptedData"));
+        assertThat(encryptedXml, containsString(">\n      <xenc:EncryptionMethod"));
+        assertThat(encryptedXml, containsString(">\n      <dsig:KeyInfo"));
+        assertThat(encryptedXml, containsString(">\n      <xenc:CipherData>"));
+        assertThat(encryptedXml, containsString(">\n      </xenc:CipherData>"));
+        assertThat(encryptedXml, containsString(">\n<Root>\n"));
+    }
+
+    @Test
+    public void testEncryptionPreservesIndentationWhenItSwitchesToTabs() throws Exception {
+        String xml = "<?xml version='1.0'?>\n" +
+                "<Root>\n" +
+                "  <Branch>\n" +
+                "    <Twig1>\n" +
+                "      <Leaf1/>\n" +
+                "    </Twig1>\n" +
+                "\t\t<Twig2>\n" +
+                "\t\t\t<Leaf2/>\n" +
+                "\t\t</Twig2>\n" +
+                "\t\t<Twig3>\n" +
+                "\t\t\t<Leaf3/>\n" +
+                "\t\t</Twig3>\n" +
+                "  </Branch>\n" +
+                "</Root>\n";
+        SecurePart securePart1 = new SecurePart(new QName("Twig1"), SecurePart.Modifier.Element);
+        SecurePart securePart2 = new SecurePart(new QName("Twig2"), SecurePart.Modifier.Element);
+        String encryptedXml = encryptXml(xml, SecurityTokenConstants.KeyIdentifier_KeyValue, securePart1, securePart2);
+//        System.out.println(encryptedXml);
+        assertThat(encryptedXml, containsString(">\n<Root>"));
+        assertThat(encryptedXml, containsString(">\n    <xenc:EncryptedData"));
+        assertThat(encryptedXml, containsString(">\n      <xenc:EncryptionMethod"));
+        assertThat(encryptedXml, containsString(">\n      <dsig:KeyInfo"));
+        assertThat(encryptedXml, containsString(">\n\t\t<xenc:EncryptedData"));
+        assertThat(encryptedXml, containsString(">\n\t\t\t<xenc:EncryptionMethod"));
+        assertThat(encryptedXml, containsString(">\n\t\t\t<dsig:KeyInfo"));
+        assertThat(encryptedXml, containsString(">\n\t\t\t<xenc:CipherData"));
+        assertThat(encryptedXml, containsString(">\n\t\t\t</xenc:CipherData"));
+        assertThat(encryptedXml, containsString(">\n</Root>\n"));
+    }
+
+    @Test
+    public void testEncryptionPreservesIndentationWhenItSwitchesToNoIndentation() throws Exception {
+        String xml = "<Root>\n" +
+                "  <Branch>\n" +
+                "    <Twig1>\n" +
+                "      <Leaf1/>\n" +
+                "    </Twig1>" +
+                "<Twig2>" +
+                "<Leaf2/>" +
+                "</Twig2>\n" +
+                "  </Branch>\n" +
+                "</Root>";
+        SecurePart securePart1 = new SecurePart(new QName("Twig1"), SecurePart.Modifier.Element);
+        SecurePart securePart2 = new SecurePart(new QName("Twig2"), SecurePart.Modifier.Element);
+        String encryptedXml = encryptXml(xml, SecurityTokenConstants.KeyIdentifier_KeyValue, securePart1, securePart2);
+        System.out.println(encryptedXml);
+        assertThat(encryptedXml, startsWith("<Root>"));
+        assertThat(encryptedXml, containsString(">\n    <xenc:EncryptedData"));
+        assertThat(encryptedXml, containsString(">\n    </xenc:EncryptedData"));
+        assertThat(encryptedXml, containsString("><xenc:EncryptedData"));
+        assertThat(encryptedXml, containsString("></xenc:EncryptedData>"));
+        assertThat(encryptedXml, containsString(">\n  </Branch"));
+        assertThat(encryptedXml, endsWith(">\n</Root>"));
+    }
+
+    @Test
+    public void testEncryptionPreservesIndentationWithOffset() throws Exception {
+        String xml = "   <Root>\n" +
+                "    <Branch>\n" +
+                "     <Twig/>\n" +
+                "    </Branch>\n" +
+                "   </Root>";
+        SecurePart securePart = new SecurePart(new QName("Twig"), SecurePart.Modifier.Content);
+        String encryptedXml = encryptXml(xml, SecurityTokenConstants.KeyIdentifier_KeyValue, securePart);
+        System.out.println(encryptedXml);
+        assertThat(encryptedXml, startsWith("   <Root>"));
+        assertThat(encryptedXml, containsString(">\n      <xenc:EncryptedData"));
+        assertThat(encryptedXml, containsString(">\n      </xenc:EncryptedData"));
+        assertThat(encryptedXml, endsWith(">\n   </Root>"));
+    }
+
+    @Test
+    public void testEncryptionPreservesIndentationWithMultilineLineSeparators() throws Exception {
+        String xml = "   <Root>\n\n" +
+                "    <Branch>\n\n" +
+                "     <Twig/>\n\n" +
+                "    </Branch>\n\n" +
+                "   </Root>";
+        SecurePart securePart = new SecurePart(new QName("Twig"), SecurePart.Modifier.Content);
+        String encryptedXml = encryptXml(xml, SecurityTokenConstants.KeyIdentifier_KeyValue, securePart);
+//        System.out.println(encryptedXml);
+        assertThat(encryptedXml, startsWith("   <Root>"));
+        assertThat(encryptedXml, containsString(">\n\n      <xenc:EncryptedData"));
+        assertThat(encryptedXml, containsString(">\n\n      </xenc:EncryptedData"));
+        assertThat(encryptedXml, endsWith(">\n\n   </Root>"));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"KeyValue", "KeyName", "IssuerSerial", "SkiKeyIdentifier", "X509KeyIdentifier", "X509SubjectName", "NoKeyInfo", "EncryptedKey"})
+    public void testEncryptionPreservesIndentation(String name) throws Exception {
+        String xml = "<?xml version='1.0'?>\n" +
+                "<Root>\n" +
+                "  <Branch/>\n" +
+                "</Root>\n";
+        SecurePart securePart = new SecurePart(new QName("Branch"), SecurePart.Modifier.Element);
+        String encryptedXml = encryptXml(xml, keyIdentifierForName(name), securePart);
+//        System.out.println(encryptedXml);
+        assertThat(encryptedXml, containsString(">\n<Root>"));
+        assertThat(encryptedXml, containsString(">\n  <xenc:EncryptedData"));
+        assertThat(encryptedXml, containsString(">\n    <xenc:EncryptionMethod"));
+        assertThat(encryptedXml, containsString(">\n    <dsig:KeyInfo"));
+        assertThat(encryptedXml, containsString(">\n</Root>\n"));
+    }
+
+    private static final List<KeyIdentifier> KEY_IDENTIFIERS = asList(
+            SecurityTokenConstants.KeyIdentifier_KeyValue,
+            SecurityTokenConstants.KeyIdentifier_KeyName,
+            SecurityTokenConstants.KeyIdentifier_IssuerSerial,
+            SecurityTokenConstants.KeyIdentifier_SkiKeyIdentifier,
+            SecurityTokenConstants.KeyIdentifier_X509KeyIdentifier,
+            SecurityTokenConstants.KeyIdentifier_X509SubjectName,
+            SecurityTokenConstants.KeyIdentifier_NoKeyInfo,
+            SecurityTokenConstants.KeyIdentifier_EncryptedKey
+    );
+
+    private static KeyIdentifier keyIdentifierForName(String name) {
+        for (KeyIdentifier keyIdentifier : KEY_IDENTIFIERS) {
+            if (keyIdentifier.getName().equals(name)) {
+                return keyIdentifier;
+            }
+        }
+        throw new IllegalArgumentException("Illegal key identifier: " + name);
+    }
+
+    private String encryptXml(String xml, KeyIdentifier keyIdentifier, SecurePart... secureParts) throws XMLStreamException, XMLSecurityException {
+        XMLSecurityProperties properties = new XMLSecurityProperties();
+        properties.setAutoIndent(true);
+        properties.setActions(Collections.singletonList(XMLSecurityConstants.ENCRYPTION));
+        for (SecurePart securePart : secureParts) {
+            properties.addEncryptionPart(securePart);
+        }
+        byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes(StandardCharsets.US_ASCII);
+        SecretKey transportKey = new SecretKeySpec(bits192, "AES");
+        properties.setEncryptionKeyTransportAlgorithm("http://www.w3.org/2001/04/xmlenc#kw-aes192");
+        properties.setEncryptionTransportKey(transportKey);
+        properties.setEncryptionSymAlgorithm("http://www.w3.org/2001/04/xmlenc#aes128-cbc");
+        properties.setEncryptionKeyIdentifier(keyIdentifier);
+        properties.setAutoIndent(true);
+        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        ByteArrayOutputStream encryptedOut = new ByteArrayOutputStream();
+        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(encryptedOut, StandardCharsets.UTF_8.name());
+        InputStream sourceDocument = new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8));
+        // Make sure we get the whitespace characters right before the first START_ELEMENT and after the last
+        // END_ELEMENT.
+        xmlInputFactory.setProperty("org.codehaus.stax2.reportPrologWhitespace", true);
+        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
+        xmlStreamWriter.close();
+        return new String(encryptedOut.toByteArray(), StandardCharsets.UTF_8);
     }
 
     /**
