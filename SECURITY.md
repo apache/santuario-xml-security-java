@@ -19,7 +19,5 @@
 
 ## Reporting a Vulnerability
 
-Use this section to tell people how to report a vulnerability.
-
 For information on how to report a new security problem please see [here](https://www.apache.org/security/).
 Our existing security advisories are published [here](http://santuario.apache.org/secadv.html).
