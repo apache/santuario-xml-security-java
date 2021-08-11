@@ -27,12 +27,15 @@ import javax.xml.crypto.dsig.XMLSignatureException;
 import javax.xml.crypto.dsig.dom.DOMValidateContext;
 import javax.xml.crypto.test.KeySelectors;
 
+import org.apache.xml.security.utils.resolver.ResourceResolver;
+import org.apache.xml.security.utils.resolver.implementations.ResolverLocalFilesystem;
+
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
- * This is a test for a forbidden Reference algorithm when secure validation is enabled.
+ * This is a test for a forbidden Reference algorithm.
  */
 public class JSRForbiddenReferenceTest {
 
@@ -62,18 +65,16 @@ public class JSRForbiddenReferenceTest {
                 file, new KeySelectors.SecretKeySelector("secret".getBytes(StandardCharsets.US_ASCII))
             );
 
-        vc.setProperty("org.apache.jcp.xml.dsig.secureValidation", Boolean.FALSE);
-        boolean coreValidity = validator.validate(vc);
-        assertTrue(coreValidity, "Signature failed core validation");
-
-        vc.setProperty("org.apache.jcp.xml.dsig.secureValidation", Boolean.TRUE);
-
         try {
             validator.validate(vc);
-            fail("Failure expected when secure validation is enabled");
+            fail("Failure expected by default");
         } catch (XMLSignatureException ex) {
             assertTrue(ex.getMessage().contains("URIReferenceException"));
         }
+
+        // Now it should work as we have added the local file resolver
+        ResourceResolver.register(new ResolverLocalFilesystem(), false);
+        assertTrue(validator.validate(vc));
     }
 
 }

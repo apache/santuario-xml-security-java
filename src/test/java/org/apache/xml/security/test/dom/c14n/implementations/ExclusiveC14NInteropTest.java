@@ -27,6 +27,8 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.test.dom.interop.InteropTestBase;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
+import org.apache.xml.security.utils.resolver.ResourceResolver;
+import org.apache.xml.security.utils.resolver.implementations.ResolverLocalFilesystem;
 import org.w3c.dom.Element;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -43,6 +45,7 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
 
     static {
         org.apache.xml.security.Init.init();
+        ResourceResolver.register(new ResolverLocalFilesystem(), false);
     }
 
     /**

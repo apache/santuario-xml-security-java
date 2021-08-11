@@ -43,6 +43,8 @@ import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.JavaUtils;
 import org.apache.xml.security.utils.XMLUtils;
+import org.apache.xml.security.utils.resolver.ResourceResolver;
+import org.apache.xml.security.utils.resolver.implementations.ResolverLocalFilesystem;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -58,6 +60,7 @@ public class Canonicalizer20010315ExclusiveTest {
 
     static {
         org.apache.xml.security.Init.init();
+        ResourceResolver.register(new ResolverLocalFilesystem(), false);
     }
 
     static org.slf4j.Logger LOG =

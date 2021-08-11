@@ -44,8 +44,10 @@ import org.apache.xml.security.stax.impl.resourceResolvers.ResolverHttp;
 import org.apache.xml.security.test.stax.utils.HttpRequestRedirectorProxy;
 import org.apache.xml.security.test.stax.utils.StAX2DOM;
 import org.apache.xml.security.utils.XMLUtils;
+import org.apache.xml.security.utils.resolver.ResourceResolver;
 import org.apache.xml.security.utils.resolver.implementations.ResolverDirectHTTP;
 
+import org.apache.xml.security.utils.resolver.implementations.ResolverLocalFilesystem;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -70,6 +72,7 @@ public class SignatureVerificationReferenceURIResolverRemoteReferenceTest extend
                         .getResource("security-config-allow-same-doc.xml").toURI(),
                 SignatureVerificationReferenceURIResolverRemoteReferenceTest.class);
         org.apache.xml.security.Init.init();
+        ResourceResolver.register(new ResolverLocalFilesystem(), false);
     }
 
     @Test

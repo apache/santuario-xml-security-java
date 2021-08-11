@@ -27,6 +27,8 @@ import org.apache.xml.security.signature.MissingResourceFailureException;
 import org.apache.xml.security.test.dom.interop.InteropTestBase;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
+import org.apache.xml.security.utils.resolver.ResourceResolver;
+import org.apache.xml.security.utils.resolver.implementations.ResolverLocalFilesystem;
 import org.w3c.dom.Element;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -35,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
- * This is a test for a forbidden Reference algorithm when secure validation is enabled.
+ * This is a test for a forbidden Reference algorithm
  */
 public class ForbiddenReferenceTest extends InteropTestBase {
 
@@ -52,21 +54,22 @@ public class ForbiddenReferenceTest extends InteropTestBase {
 
     @org.junit.jupiter.api.Test
     public void testLocalFilesystem() throws Exception {
-        boolean success =
-            readAndVerifyManifest("src/test/resources/interop/c14n/Y3", "signature.xml", false);
-
-        assertTrue(success);
-
         try {
-            readAndVerifyManifest("src/test/resources/interop/c14n/Y3", "signature.xml", true);
+            readAndVerifyManifest("src/test/resources/interop/c14n/Y3", "signature.xml");
             fail("Failure expected when secure validation is enabled");
         } catch (MissingResourceFailureException ex) {
             assertTrue(ex.getMessage().contains("The Reference for URI"));
         }
+
+        // Now it should work as we have added the local file resolver
+        ResourceResolver.register(new ResolverLocalFilesystem(), false);
+        boolean success =
+                readAndVerifyManifest("src/test/resources/interop/c14n/Y3", "signature.xml");
+        assertTrue(success);
     }
 
     private boolean readAndVerifyManifest(
-        String directory, String file, boolean secValidation
+        String directory, String file
     ) throws Exception {
         String basedir = System.getProperty("basedir");
         if (basedir != null && basedir.length() != 0) {
@@ -80,7 +83,7 @@ public class ForbiddenReferenceTest extends InteropTestBase {
         Element manifestElement =
             (Element) doc.getElementsByTagNameNS(Constants.SignatureSpecNS,
                                                  Constants._TAG_SIGNEDINFO).item(0);
-        Manifest manifest = new Manifest(manifestElement, f.toURI().toURL().toString(), secValidation);
+        Manifest manifest = new Manifest(manifestElement, f.toURI().toURL().toString(), true);
         return manifest.verifyReferences();
     }
 

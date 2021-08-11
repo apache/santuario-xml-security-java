@@ -46,7 +46,10 @@ import org.apache.xml.security.stax.impl.resourceResolvers.ResolverHttp;
 import org.apache.xml.security.test.stax.utils.HttpRequestRedirectorProxy;
 import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
 import org.apache.xml.security.utils.XMLUtils;
+import org.apache.xml.security.utils.resolver.ResourceResolver;
 import org.apache.xml.security.utils.resolver.implementations.ResolverDirectHTTP;
+import org.apache.xml.security.utils.resolver.implementations.ResolverLocalFilesystem;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -59,6 +62,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  */
 public class SignatureCreationReferenceURIResolverTest extends AbstractSignatureCreationTest {
+
+    @BeforeAll
+    public static void setup() throws Exception {
+        AbstractSignatureCreationTest.setup();
+        ResourceResolver.register(new ResolverLocalFilesystem(), false);
+    }
 
     @Test
     public void testSignatureCreationWithExternalFilesystemXMLReference() throws Exception {

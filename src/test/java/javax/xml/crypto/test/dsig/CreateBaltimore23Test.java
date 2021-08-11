@@ -35,6 +35,8 @@ import java.security.cert.X509CRL;
 import java.util.*;
 
 import org.apache.xml.security.parser.XMLParserException;
+import org.apache.xml.security.utils.resolver.ResourceResolver;
+import org.apache.xml.security.utils.resolver.implementations.ResolverLocalFilesystem;
 import org.w3c.dom.*;
 
 import javax.xml.crypto.KeySelector;
@@ -84,6 +86,7 @@ public class CreateBaltimore23Test {
     static {
         Security.insertProviderAt
             (new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI(), 1);
+        ResourceResolver.register(new ResolverLocalFilesystem(), false);
     }
 
     public CreateBaltimore23Test() throws Exception {

@@ -24,6 +24,7 @@ import java.io.File;
 import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.utils.resolver.ResourceResolver;
 import org.apache.xml.security.utils.resolver.ResourceResolverContext;
+import org.apache.xml.security.utils.resolver.implementations.ResolverLocalFilesystem;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 
@@ -84,6 +85,7 @@ public class ResourceResolverTest {
         String file = new File(basedir, "pom.xml").toURI().toString();
         uriAttr.setValue(file);
 
+        ResourceResolver.register(new ResolverLocalFilesystem(), false);
         ResourceResolverContext resolverContext =
             new ResourceResolverContext(uriAttr, file, false);
         try {

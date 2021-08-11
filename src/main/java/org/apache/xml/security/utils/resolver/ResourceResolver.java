@@ -26,9 +26,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.utils.ClassLoaderUtils;
 import org.apache.xml.security.utils.JavaUtils;
-import org.apache.xml.security.utils.resolver.implementations.ResolverDirectHTTP;
 import org.apache.xml.security.utils.resolver.implementations.ResolverFragment;
-import org.apache.xml.security.utils.resolver.implementations.ResolverLocalFilesystem;
 import org.apache.xml.security.utils.resolver.implementations.ResolverXPointer;
 
 /**
@@ -133,9 +131,7 @@ public class ResourceResolver {
         if (defaultResolversAdded.compareAndSet(false, true)) {
             List<ResourceResolverSpi> resourceResolversToAdd = new ArrayList<>();
             resourceResolversToAdd.add(new ResolverFragment());
-            resourceResolversToAdd.add(new ResolverLocalFilesystem());
             resourceResolversToAdd.add(new ResolverXPointer());
-            resourceResolversToAdd.add(new ResolverDirectHTTP());
 
             resolverList.addAll(resourceResolversToAdd);
         }
@@ -155,15 +151,6 @@ public class ResourceResolver {
             LOG.debug("check resolvability by class {}", resolver.getClass().getName());
 
             if (resolver.engineCanResolveURI(context)) {
-                // Check to see whether the Resolver is allowed
-                if (context.secureValidation
-                    && (resolver instanceof ResolverLocalFilesystem
-                        || resolver instanceof ResolverDirectHTTP)) {
-                    Object[] exArgs = { resolver.getClass().getName() };
-                    throw new ResourceResolverException(
-                        "signature.Reference.ForbiddenResolver", exArgs, context.uriToResolve, context.baseUri
-                    );
-                }
                 return resolver.engineResolveURI(context);
             }
         }

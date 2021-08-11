@@ -27,6 +27,9 @@ import java.security.Security;
 
 import javax.xml.crypto.test.KeySelectors;
 
+import org.apache.xml.security.utils.resolver.ResourceResolver;
+import org.apache.xml.security.utils.resolver.implementations.ResolverLocalFilesystem;
+
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -41,6 +44,7 @@ public class IaikTransformsTest {
     static {
         Security.insertProviderAt
             (new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI(), 1);
+        ResourceResolver.register(new ResolverLocalFilesystem(), false);
     }
 
     public IaikTransformsTest() {

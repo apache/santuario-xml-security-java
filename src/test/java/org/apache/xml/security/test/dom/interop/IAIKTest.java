@@ -24,8 +24,10 @@ import org.apache.xml.security.test.dom.utils.resolver.OfflineResolver;
 import java.nio.charset.StandardCharsets;
 
 import org.apache.xml.security.signature.XMLSignatureException;
+import org.apache.xml.security.utils.resolver.ResourceResolver;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
 import org.apache.xml.security.utils.resolver.implementations.ResolverAnonymous;
+import org.apache.xml.security.utils.resolver.implementations.ResolverLocalFilesystem;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -52,6 +54,7 @@ public class IAIKTest extends InteropTestBase {
             gregorsDir = basedir + "/" + gregorsDir;
         }
         org.apache.xml.security.Init.init();
+        ResourceResolver.register(new ResolverLocalFilesystem(), false);
     }
 
     /**

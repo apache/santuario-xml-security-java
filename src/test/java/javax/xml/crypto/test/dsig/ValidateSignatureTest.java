@@ -22,6 +22,9 @@ package javax.xml.crypto.test.dsig;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.security.Security;
+
+import org.apache.xml.security.utils.resolver.ResourceResolver;
+import org.apache.xml.security.utils.resolver.implementations.ResolverLocalFilesystem;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -53,6 +56,7 @@ public class ValidateSignatureTest {
     static {
         Security.insertProviderAt
             (new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI(), 1);
+        ResourceResolver.register(new ResolverLocalFilesystem(), false);
     }
 
     public ValidateSignatureTest() {

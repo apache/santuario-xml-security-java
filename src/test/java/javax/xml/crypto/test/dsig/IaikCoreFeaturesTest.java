@@ -30,6 +30,9 @@ import javax.xml.crypto.*;
 import javax.xml.crypto.dsig.XMLSignatureFactory;
 import javax.xml.crypto.test.KeySelectors;
 
+import org.apache.xml.security.utils.resolver.ResourceResolver;
+import org.apache.xml.security.utils.resolver.implementations.ResolverLocalFilesystem;
+
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -45,6 +48,7 @@ public class IaikCoreFeaturesTest {
     static {
         Security.insertProviderAt
             (new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI(), 1);
+        ResourceResolver.register(new ResolverLocalFilesystem(), false);
     }
 
     public IaikCoreFeaturesTest() {
