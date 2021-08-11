@@ -125,6 +125,19 @@ public class KeyInfoReferenceResolverTest {
         assertNull(keyInfo.getPublicKey());
     }
 
+    @org.junit.jupiter.api.Test
+    public void testKeyInfoReferenceToRetrievalMethodNotAllowed() throws Exception {
+        Document doc = loadXML("KeyInfoReference-RSA-RetrievalMethod.xml");
+        markKeyInfoIdAttrs(doc);
+        markEncodedKeyValueIdAttrs(doc);
+
+        Element referenceElement = doc.getElementById("theReference");
+        assertNotNull(referenceElement);
+
+        KeyInfo keyInfo = new KeyInfo(referenceElement, "");
+        assertNull(keyInfo.getPublicKey());
+    }
+
     // Utility methods
 
     private String getControlFilePath(String fileName) {
@@ -154,6 +167,14 @@ public class KeyInfoReferenceResolverTest {
 
     private void markKeyInfoIdAttrs(Document doc) {
         NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpecNS, Constants._TAG_KEYINFO);
+        for (int i = 0; i < nl.getLength(); i++) {
+            Element keyInfoElement = (Element) nl.item(i);
+            keyInfoElement.setIdAttributeNS(null, Constants._ATT_ID, true);
+        }
+    }
+
+    private void markEncodedKeyValueIdAttrs(Document doc) {
+        NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpec11NS, Constants._TAG_DERENCODEDKEYVALUE);
         for (int i = 0; i < nl.getLength(); i++) {
             Element keyInfoElement = (Element) nl.item(i);
             keyInfoElement.setIdAttributeNS(null, Constants._ATT_ID, true);

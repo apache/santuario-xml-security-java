@@ -541,7 +541,7 @@ public class XMLSignatureInput {
                 convertToNodes();
             } catch (Exception e) {
                 throw new XMLSecurityRuntimeException(
-                    "signature.XMLSignatureInput.nodesetReference", e
+                    "signature.XMLSignatureInput.nodesetReference"
                 );
             }
         }
