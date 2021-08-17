@@ -524,7 +524,7 @@
     </profiles>
 
     <properties>
-        <slf4j.version>1.7.30</slf4j.version>
+        <slf4j.version>1.7.32</slf4j.version>
         <xalan.version>2.7.2</xalan.version>
         <junit.version>5.7.2</junit.version>
         <log4j.version>1.2.17</log4j.version>
@@ -533,12 +533,12 @@
         <xmlunit.version>2.8.2</xmlunit.version>
         <commons.codec.version>1.15</commons.codec.version>
         <woodstox.core.version>6.2.6</woodstox.core.version>
-        <jetty.version>9.4.42.v20210604</jetty.version>
+        <jetty.version>9.4.43.v20210629</jetty.version>
         <xmlsec.jaxb.context.class />
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <targetJdk>1.8</targetJdk>
         <clirr.version>2.8</clirr.version>
-        <maven-owasp-plugin-version>6.2.1</maven-owasp-plugin-version>
+        <maven-owasp-plugin-version>6.2.2</maven-owasp-plugin-version>
 
         <!-- Allow Clirr severity to be overriden by the command-line option -DminSeverity=level -->
         <minSeverity>info</minSeverity>
