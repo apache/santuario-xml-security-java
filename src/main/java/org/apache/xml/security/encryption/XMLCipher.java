@@ -284,7 +284,7 @@ public class XMLCipher {
     // (part of an UNWRAP operation)
     private EncryptedData ed;
 
-    private boolean secureValidation;
+    private boolean secureValidation = true;
 
     private String digestAlg;
 

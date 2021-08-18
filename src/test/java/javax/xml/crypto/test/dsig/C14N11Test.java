@@ -174,7 +174,7 @@ public class C14N11Test {
         for (int i = 0; i < vendors.length; i++) {
             String file = test + "-" + vendors[i] + ".xml";
             // System.out.println("Validating " + file);
-            boolean coreValidity = validator.validate(file, sks);
+            boolean coreValidity = validator.validate(file, sks, null, false);
             assertTrue(coreValidity, file + " failed core validation");
         }
     }

@@ -85,7 +85,7 @@ public class IaikCoreFeaturesTest {
 
         boolean coreValidity = validator.validate
             (file, new KeySelectors.KeyValueKeySelector(),
-                    new OfflineDereferencer());
+                    new OfflineDereferencer(), false);
         assertTrue(coreValidity, "Signature failed core validation");
     }
 

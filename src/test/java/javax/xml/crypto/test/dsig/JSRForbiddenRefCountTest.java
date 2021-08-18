@@ -48,9 +48,7 @@ public class JSRForbiddenRefCountTest {
             getSignedInfoElement("src/test/resources/interop/c14n/Y4", "signature-manifest.xml");
 
         InternalDOMCryptoContext context = new InternalDOMCryptoContext();
-        new DOMSignedInfo(signedInfoElement, context, null);
 
-        context.setProperty("org.apache.jcp.xml.dsig.secureValidation", Boolean.TRUE);
         try {
             new DOMSignedInfo(signedInfoElement, context, null);
         } catch (MarshalException ex) {
@@ -58,6 +56,9 @@ public class JSRForbiddenRefCountTest {
                 "A maxiumum of 30 references per Manifest are allowed with secure validation";
             assertTrue(ex.getMessage().contains(error));
         }
+
+        context.setProperty("org.apache.jcp.xml.dsig.secureValidation", Boolean.FALSE);
+        new DOMSignedInfo(signedInfoElement, context, null);
     }
 
     private static class InternalDOMCryptoContext extends DOMCryptoContext {

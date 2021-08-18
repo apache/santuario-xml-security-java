@@ -81,7 +81,7 @@ public class XMLSignatureInput {
      * A cached bytes
      */
     private byte[] bytes;
-    private boolean secureValidation;
+    private boolean secureValidation = true;
 
     /**
      * Some Transforms may require explicit MIME type, charset (IANA registered

@@ -50,7 +50,7 @@ public class XMLCipherInput {
     /** The data we are working with */
     private CipherData cipherData;
 
-    private boolean secureValidation;
+    private boolean secureValidation = true;
 
     /**
      * Constructor for processing encrypted octets
