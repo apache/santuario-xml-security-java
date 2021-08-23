@@ -18,11 +18,12 @@
  */
 package org.apache.xml.security.transforms.implementations;
 
+import java.io.IOException;
 import java.io.OutputStream;
 
 import javax.xml.transform.TransformerException;
 
-import org.apache.xml.security.exceptions.XMLSecurityRuntimeException;
+import org.apache.xml.security.parser.XMLParserException;
 import org.apache.xml.security.signature.NodeFilter;
 import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.transforms.TransformSpi;
@@ -46,6 +47,9 @@ import org.w3c.dom.Node;
  *
  */
 public class TransformXPath extends TransformSpi {
+
+    private static final org.slf4j.Logger LOG =
+            org.slf4j.LoggerFactory.getLogger(TransformXPath.class);
 
     /**
      * {@inheritDoc}
@@ -98,7 +102,7 @@ public class TransformXPath extends TransformSpi {
             input.addNodeFilter(new XPathNodeFilter(xpathElement, xpathnode, str, xpathAPIInstance));
             input.setNodeSet(true);
             return input;
-        } catch (DOMException ex) {
+        } catch (XMLParserException | IOException | DOMException ex) {
             throw new TransformationException(ex);
         }
     }
@@ -140,7 +144,8 @@ public class TransformXPath extends TransformSpi {
                 }
                 return 0;
             } catch (TransformerException e) {
-                throw new XMLSecurityRuntimeException("signature.Transform.XPathError");
+                LOG.debug("Error evaluating XPath expression", e);
+                return 0;
             }
         }
 

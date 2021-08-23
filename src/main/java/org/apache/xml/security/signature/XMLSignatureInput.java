@@ -32,7 +32,6 @@ import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.implementations.Canonicalizer11_OmitComments;
 import org.apache.xml.security.c14n.implementations.Canonicalizer20010315OmitComments;
 import org.apache.xml.security.c14n.implementations.CanonicalizerBase;
-import org.apache.xml.security.exceptions.XMLSecurityRuntimeException;
 import org.apache.xml.security.parser.XMLParserException;
 import org.apache.xml.security.utils.JavaUtils;
 import org.apache.xml.security.utils.XMLUtils;
@@ -535,15 +534,9 @@ public class XMLSignatureInput {
     /**
      * @param filter
      */
-    public void addNodeFilter(NodeFilter filter) {
+    public void addNodeFilter(NodeFilter filter) throws XMLParserException, IOException {
         if (isOctetStream()) {
-            try {
-                convertToNodes();
-            } catch (Exception e) {
-                throw new XMLSecurityRuntimeException(
-                    "signature.XMLSignatureInput.nodesetReference"
-                );
-            }
+            convertToNodes();
         }
         nodeFilters.add(filter);
     }

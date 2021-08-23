@@ -18,8 +18,10 @@
  */
 package org.apache.xml.security.transforms.implementations;
 
+import java.io.IOException;
 import java.io.OutputStream;
 
+import org.apache.xml.security.parser.XMLParserException;
 import org.apache.xml.security.signature.NodeFilter;
 import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.transforms.TransformSpi;
@@ -67,7 +69,11 @@ public class TransformEnvelopedSignature extends TransformSpi {
 
         Node signatureElement = searchSignatureElement(transformElement);
         input.setExcludeNode(signatureElement);
-        input.addNodeFilter(new EnvelopedNodeFilter(signatureElement));
+        try {
+            input.addNodeFilter(new EnvelopedNodeFilter(signatureElement));
+        } catch (XMLParserException | IOException ex) {
+            throw new TransformationException(ex);
+        }
         return input;
     }
 
