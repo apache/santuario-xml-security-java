@@ -635,7 +635,6 @@ public class XMLCipher {
      * @throws XMLEncryptionException
      */
     public void init(int opmode, Key key) throws XMLEncryptionException {
-        // sanity checks
         LOG.debug("Initializing XMLCipher...");
 
         ek = null;

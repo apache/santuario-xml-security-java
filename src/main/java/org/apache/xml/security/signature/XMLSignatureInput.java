@@ -136,7 +136,7 @@ public class XMLSignatureInput {
 
     /**
      * Construct a XMLSignatureInput from a subtree rooted by rootNode. This
-     * method included the node and <I>all</I> his descendants in the output.
+     * method included the node and <I>all</I> its descendants in the output.
      *
      * @param rootNode
      */
