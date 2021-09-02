@@ -28,7 +28,9 @@ import org.apache.xml.security.utils.resolver.implementations.ResolverLocalFiles
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
@@ -96,4 +98,62 @@ public class ResourceResolverTest {
         }
     }
 
+    @org.junit.jupiter.api.Test
+    public void testIsSafeURIToResolveFile() throws Exception {
+        Document doc = TestUtils.newDocument();
+        Attr uriAttr = doc.createAttribute("URI");
+        String basedir = System.getProperty("basedir");
+        String file = new File(basedir, "pom.xml").toURI().toString();
+        uriAttr.setValue(file);
+
+        ResourceResolverContext resolverContext =
+                new ResourceResolverContext(uriAttr, null, false);
+        assertFalse(resolverContext.isURISafeToResolve());
+    }
+
+    @org.junit.jupiter.api.Test
+    public void testIsSafeURIToResolveFileBaseURI() throws Exception {
+        Document doc = TestUtils.newDocument();
+        Attr uriAttr = doc.createAttribute("URI");
+        String basedir = System.getProperty("basedir");
+        String file = new File(basedir, "pom.xml").toURI().toString();
+        uriAttr.setValue("xyz");
+
+        ResourceResolverContext resolverContext =
+                new ResourceResolverContext(uriAttr, file, false);
+        assertFalse(resolverContext.isURISafeToResolve());
+    }
+
+    @org.junit.jupiter.api.Test
+    public void testIsSafeURIToResolveHTTP() throws Exception {
+        Document doc = TestUtils.newDocument();
+        Attr uriAttr = doc.createAttribute("URI");
+        uriAttr.setValue("http://www.apache.org");
+
+        ResourceResolverContext resolverContext =
+                new ResourceResolverContext(uriAttr, null, false);
+        assertFalse(resolverContext.isURISafeToResolve());
+    }
+
+    @org.junit.jupiter.api.Test
+    public void testIsSafeURIToResolveHTTPBaseURI() throws Exception {
+        Document doc = TestUtils.newDocument();
+        Attr uriAttr = doc.createAttribute("URI");
+        uriAttr.setValue("xyz");
+
+        ResourceResolverContext resolverContext =
+                new ResourceResolverContext(uriAttr, "http://www.apache.org", false);
+        assertFalse(resolverContext.isURISafeToResolve());
+    }
+
+    @org.junit.jupiter.api.Test
+    public void testIsSafeURIToResolveLocalReference() throws Exception {
+        Document doc = TestUtils.newDocument();
+        Attr uriAttr = doc.createAttribute("URI");
+        uriAttr.setValue("#1234");
+
+        ResourceResolverContext resolverContext =
+                new ResourceResolverContext(uriAttr, null, false);
+        assertTrue(resolverContext.isURISafeToResolve());
+    }
 }
