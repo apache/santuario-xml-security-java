@@ -52,6 +52,8 @@ public class BaltimoreTest extends InteropTestBase {
         "src/test/resources/ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/";
 
     static {
+        System.setProperty("org.apache.xml.security.allowUnsafeResourceResolving", "true");
+
         String basedir = System.getProperty("basedir");
         if(basedir != null && !"".equals(basedir)) {
             merlinsDir15 = basedir + "/" + merlinsDir15;

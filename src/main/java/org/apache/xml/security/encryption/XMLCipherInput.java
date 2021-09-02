@@ -115,7 +115,14 @@ public class XMLCipherInput {
             try {
                 ResourceResolverContext resolverContext =
                     new ResourceResolverContext(uriAttr, null, secureValidation);
-                input = ResourceResolver.resolve(resolverContext);
+                if (resolverContext.isURISafeToResolve()) {
+                    input = ResourceResolver.resolve(resolverContext);
+                } else {
+                    String uriToResolve = uriAttr != null ? uriAttr.getValue() : null;
+                    Object[] exArgs = {uriToResolve != null ? uriToResolve : "null", null};
+
+                    throw new ResourceResolverException("utils.resolver.noClass", exArgs, uriToResolve, null);
+                }
             } catch (ResourceResolverException ex) {
                 throw new XMLEncryptionException(ex);
             }
