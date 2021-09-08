@@ -1523,7 +1523,9 @@ public class XMLCipher {
 
             MGF1ParameterSpec mgfParameterSpec = new MGF1ParameterSpec("SHA-1");
             if (XMLCipher.RSA_OAEP_11.equals(encryptionAlgorithm)) {
-                if (EncryptionConstants.MGF1_SHA256.equals(mgfAlgorithm)) {
+                if (EncryptionConstants.MGF1_SHA224.equals(mgfAlgorithm)) {
+                    mgfParameterSpec = new MGF1ParameterSpec("SHA-224");
+                } else if (EncryptionConstants.MGF1_SHA256.equals(mgfAlgorithm)) {
                     mgfParameterSpec = new MGF1ParameterSpec("SHA-256");
                 } else if (EncryptionConstants.MGF1_SHA384.equals(mgfAlgorithm)) {
                     mgfParameterSpec = new MGF1ParameterSpec("SHA-384");
