@@ -1579,6 +1579,16 @@ public class XMLCipher {
             } catch (Exception ex) {
                 throw new XMLEncryptionException(ex);
             }
+        } else if (MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA224.equals(digestAlgorithm)) {
+            try {
+                if (requestedJCEProvider == null) {
+                    return Cipher.getInstance("RSA/ECB/OAEPWithSHA-224andMGF1Padding");
+                } else {
+                    return Cipher.getInstance("RSA/ECB/OAEPWithSHA-224andMGF1Padding", requestedJCEProvider);
+                }
+            } catch (Exception ex) {
+                throw new XMLEncryptionException(ex);
+            }
         } else if (MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256.equals(digestAlgorithm)) {
             try {
                 if (requestedJCEProvider == null) {
