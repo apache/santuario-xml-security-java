@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.utils.resolver;
 
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +40,10 @@ import org.w3c.dom.Attr;
  * file/entity in which the URI occurs (the baseURI is the same as the SystemId).
  */
 public class ResourceResolver {
+
+    private static boolean allowUnsafeResourceResolving =
+            AccessController.doPrivileged(
+                    (PrivilegedAction<Boolean>) () -> Boolean.getBoolean("org.apache.xml.security.allowUnsafeResourceResolving"));
 
     private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(ResourceResolver.class);
@@ -324,6 +330,23 @@ public class ResourceResolver {
      */
     public boolean understandsProperty(String propertyToTest) {
         return resolverSpi.understandsProperty(propertyToTest);
+    }
+
+    public static boolean isURISafeToResolve(Attr uriAttr, String baseUri) {
+        if (allowUnsafeResourceResolving) {
+            return true;
+        }
+        String uriToResolve = uriAttr != null ? uriAttr.getValue() : null;
+        if (uriToResolve != null) {
+            if (uriToResolve.startsWith("file:") || uriToResolve.startsWith("http:")) {
+                return false;
+            }
+            if (!uriToResolve.isEmpty() && uriToResolve.charAt(0) != '#' &&
+                    baseUri != null && (baseUri.startsWith("file:") || baseUri.startsWith("http:"))) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

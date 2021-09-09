@@ -123,9 +123,16 @@ public class XMLCipherInput {
             XMLSignatureInput input = null;
 
             try {
-                ResourceResolver resolver =
-                    ResourceResolver.getInstance(uriAttr, null, secureValidation);
-                input = resolver.resolve(uriAttr, null, secureValidation);
+                if (ResourceResolver.isURISafeToResolve(uriAttr, null)) {
+                    ResourceResolver resolver =
+                            ResourceResolver.getInstance(uriAttr, null, secureValidation);
+                    input = resolver.resolve(uriAttr, null, secureValidation);
+                } else {
+                    String uriToResolve = uriAttr != null ? uriAttr.getValue() : null;
+                    Object[] exArgs = {uriToResolve != null ? uriToResolve : "null", null};
+
+                    throw new ResourceResolverException("utils.resolver.noClass", exArgs, uriToResolve, null);
+                }
             } catch (ResourceResolverException ex) {
                 throw new XMLEncryptionException(ex);
             }

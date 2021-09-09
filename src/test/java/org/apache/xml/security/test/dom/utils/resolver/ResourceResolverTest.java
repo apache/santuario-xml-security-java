@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.test.dom.utils.resolver;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
@@ -86,4 +88,52 @@ public class ResourceResolverTest {
         }
     }
 
+    @org.junit.Test
+    public void testIsSafeURIToResolveFile() throws Exception {
+        Document doc = XMLUtils.newDocument();
+        Attr uriAttr = doc.createAttribute("URI");
+        String basedir = System.getProperty("basedir");
+        String file = new File(basedir, "pom.xml").toURI().toString();
+        uriAttr.setValue(file);
+
+        assertFalse(ResourceResolver.isURISafeToResolve(uriAttr, null));
+    }
+
+    @org.junit.Test
+    public void testIsSafeURIToResolveFileBaseURI() throws Exception {
+        Document doc = XMLUtils.newDocument();
+        Attr uriAttr = doc.createAttribute("URI");
+        String basedir = System.getProperty("basedir");
+        String file = new File(basedir, "pom.xml").toURI().toString();
+        uriAttr.setValue("xyz");
+
+        assertFalse(ResourceResolver.isURISafeToResolve(uriAttr, file));
+    }
+
+    @org.junit.Test
+    public void testIsSafeURIToResolveHTTP() throws Exception {
+        Document doc = XMLUtils.newDocument();
+        Attr uriAttr = doc.createAttribute("URI");
+        uriAttr.setValue("http://www.apache.org");
+
+        assertFalse(ResourceResolver.isURISafeToResolve(uriAttr, null));
+    }
+
+    @org.junit.Test
+    public void testIsSafeURIToResolveHTTPBaseURI() throws Exception {
+        Document doc = XMLUtils.newDocument();
+        Attr uriAttr = doc.createAttribute("URI");
+        uriAttr.setValue("xyz");
+
+        assertFalse(ResourceResolver.isURISafeToResolve(uriAttr, "http://www.apache.org"));
+    }
+
+    @org.junit.Test
+    public void testIsSafeURIToResolveLocalReference() throws Exception {
+        Document doc = XMLUtils.newDocument();
+        Attr uriAttr = doc.createAttribute("URI");
+        uriAttr.setValue("#1234");
+
+        assertTrue(ResourceResolver.isURISafeToResolve(uriAttr, null));
+    }
 }
