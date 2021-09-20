@@ -40,6 +40,7 @@
      <exclude name="JUnitTestContainsTooManyAsserts" />
      <exclude name="JUnitTestsShouldIncludeAssert" />
      <exclude name="JUnitUseExpected" />
+     <exclude name="LiteralsFirstInComparisons" />
      <exclude name="MethodReturnsInternalArray" />
      <exclude name="MissingOverride" />
      <exclude name="OneDeclarationPerLine" />
@@ -59,6 +60,7 @@
      <exclude name="AvoidThrowingNullPointerException" />
      <exclude name="AvoidThrowingRawExceptionTypes" />
      <exclude name="AvoidUncheckedExceptionsInSignatures" />
+     <exclude name="CognitiveComplexity" />
      <exclude name="CouplingBetweenObjects" />
      <exclude name="CyclomaticComplexity" />
      <exclude name="DataClass" />
