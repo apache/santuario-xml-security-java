@@ -542,6 +542,7 @@
 
         <!-- Allow Clirr severity to be overriden by the command-line option -DminSeverity=level -->
         <minSeverity>info</minSeverity>
+        <project.build.outputTimestamp>1</project.build.outputTimestamp>
     </properties>
     
     <dependencies>
