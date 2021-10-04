@@ -165,8 +165,8 @@ public class KeyResolver {
     public static void register(String className)
         throws ClassNotFoundException, IllegalAccessException, InstantiationException {
         JavaUtils.checkRegisterPermission();
-        KeyResolverSpi keyResolverSpi =
-            (KeyResolverSpi) ClassLoaderUtils.loadClass(className, KeyResolver.class).newInstance();
+        KeyResolverSpi keyResolverSpi = (KeyResolverSpi)
+            JavaUtils.newInstanceWithEmptyConstructor(ClassLoaderUtils.loadClass(className, KeyResolver.class));
         register(keyResolverSpi, false);
     }
 
@@ -188,7 +188,8 @@ public class KeyResolver {
         KeyResolverSpi keyResolverSpi = null;
         Exception ex = null;
         try {
-            keyResolverSpi = (KeyResolverSpi) ClassLoaderUtils.loadClass(className, KeyResolver.class).newInstance();
+            keyResolverSpi = (KeyResolverSpi)
+                JavaUtils.newInstanceWithEmptyConstructor(ClassLoaderUtils.loadClass(className, KeyResolver.class));
             register(keyResolverSpi, true);
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
             ex = e;
@@ -247,8 +248,8 @@ public class KeyResolver {
         JavaUtils.checkRegisterPermission();
         List<KeyResolverSpi> keyResolverList = new ArrayList<>(classNames.size());
         for (String className : classNames) {
-            KeyResolverSpi keyResolverSpi =
-                (KeyResolverSpi)ClassLoaderUtils.loadClass(className, KeyResolver.class).newInstance();
+            KeyResolverSpi keyResolverSpi = (KeyResolverSpi)
+                JavaUtils.newInstanceWithEmptyConstructor(ClassLoaderUtils.loadClass(className, KeyResolver.class));
             keyResolverList.add(keyResolverSpi);
         }
         resolverList.addAll(keyResolverList);

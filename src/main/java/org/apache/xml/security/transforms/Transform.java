@@ -195,7 +195,7 @@ public final class Transform extends SignatureElementProxy {
             (Class<? extends TransformSpi>)
                 ClassLoaderUtils.loadClass(implementingClass, Transform.class);
         try {
-            transformSpiHash.put(algorithmURI, transformSpiClass.newInstance());
+            transformSpiHash.put(algorithmURI, JavaUtils.newInstanceWithEmptyConstructor(transformSpiClass));
         } catch (InstantiationException | IllegalAccessException ex) {
             Object[] exArgs = { algorithmURI };
             throw new InvalidTransformException(
@@ -226,7 +226,7 @@ public final class Transform extends SignatureElementProxy {
             throw new AlgorithmAlreadyRegisteredException("algorithm.alreadyRegistered", exArgs);
         }
         try {
-            transformSpiHash.put(algorithmURI, implementingClass.newInstance());
+            transformSpiHash.put(algorithmURI, JavaUtils.newInstanceWithEmptyConstructor(implementingClass));
         } catch (InstantiationException | IllegalAccessException ex) {
             Object[] exArgs = { algorithmURI };
             throw new InvalidTransformException(
