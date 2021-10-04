@@ -28,6 +28,7 @@ import javax.xml.crypto.dsig.spec.SignatureMethodParameterSpec;
 import java.io.IOException;
 import java.security.*;
 import java.security.interfaces.DSAKey;
+import java.security.interfaces.ECPrivateKey;
 import java.security.spec.AlgorithmParameterSpec;
 import org.w3c.dom.Element;
 
@@ -444,7 +445,12 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
             // If signature is in ASN.1 (i.e., if the fallback algorithm
             // was used), convert the signature to the P1363 format
             if (asn1) {
-                return SignatureECDSA.convertASN1toXMLDSIG(sig);
+                int rawLen = -1;
+                if (key instanceof ECPrivateKey) {
+                    ECPrivateKey ecKey = (ECPrivateKey)key;
+                    rawLen = (ecKey.getParams().getCurve().getField().getFieldSize() + 7) / 8;
+                }
+                return SignatureECDSA.convertASN1toXMLDSIG(sig, rawLen);
             } else {
                 return sig;
             }
