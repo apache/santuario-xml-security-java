@@ -20,6 +20,7 @@ package org.apache.xml.security.algorithms.implementations;
 
 import java.io.IOException;
 import java.security.*;
+import java.security.interfaces.ECPrivateKey;
 import java.security.spec.AlgorithmParameterSpec;
 
 import org.apache.xml.security.algorithms.JCEMapper;
@@ -38,6 +39,9 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
 
     private final Signature signatureAlgorithm;
 
+    /** Length for each integer in signature */
+    private int signIntLen = -1;
+
     /**
      * Converts an ASN.1 ECDSA value to a XML Signature ECDSA Value.
      *
@@ -45,14 +49,15 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
      * pairs; the XML Signature requires the core BigInteger values.
      *
      * @param asn1Bytes
+     * @param rawLen
      * @return the decode bytes
      *
      * @throws IOException
      * @see <A HREF="http://www.w3.org/TR/xmldsig-core/#dsa-sha1">6.4.1 DSA</A>
      * @see <A HREF="ftp://ftp.rfc-editor.org/in-notes/rfc4050.txt">3.3. ECDSA Signatures</A>
      */
-    public static byte[] convertASN1toXMLDSIG(byte[] asn1Bytes) throws IOException {
-        return ECDSAUtils.convertASN1toXMLDSIG(asn1Bytes);
+    public static byte[] convertASN1toXMLDSIG(byte[] asn1Bytes, int rawLen) throws IOException {
+        return ECDSAUtils.convertASN1toXMLDSIG(asn1Bytes, rawLen);
     }
 
     /**
@@ -140,7 +145,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
         try {
             byte[] jcebytes = this.signatureAlgorithm.sign();
 
-            return SignatureECDSA.convertASN1toXMLDSIG(jcebytes);
+            return SignatureECDSA.convertASN1toXMLDSIG(jcebytes, signIntLen);
         } catch (SignatureException | IOException ex) {
             throw new XMLSignatureException(ex);
         }
@@ -149,6 +154,11 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
     /** {@inheritDoc} */
     protected void engineInitSign(Key privateKey, SecureRandom secureRandom)
         throws XMLSignatureException {
+        if (privateKey instanceof ECPrivateKey) {
+            ECPrivateKey ecKey = (ECPrivateKey) privateKey;
+            signIntLen = (ecKey.getParams().getCurve().getField().getFieldSize() + 7) / 8;
+           // If not ECPrivateKey, signIntLen remains -1
+        }
         engineInitSign(privateKey, secureRandom, this.signatureAlgorithm);
     }
 
