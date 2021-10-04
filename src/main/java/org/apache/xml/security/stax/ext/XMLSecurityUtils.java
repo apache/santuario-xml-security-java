@@ -69,6 +69,7 @@ import org.apache.xml.security.stax.securityEvent.X509TokenSecurityEvent;
 import org.apache.xml.security.stax.securityToken.InboundSecurityToken;
 import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 import org.apache.xml.security.utils.ClassLoaderUtils;
+import org.apache.xml.security.utils.JavaUtils;
 import org.apache.xml.security.utils.XMLUtils;
 
 /**
@@ -137,7 +138,7 @@ public class XMLSecurityUtils {
         Transformer childTransformer = null;
 
         try {
-            childTransformer = transformerClass.newInstance();
+            childTransformer = JavaUtils.newInstanceWithEmptyConstructor(transformerClass);
             if (properties != null) {
                 childTransformer.setProperties(properties);
             }

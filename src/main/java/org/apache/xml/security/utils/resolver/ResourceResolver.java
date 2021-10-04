@@ -61,7 +61,7 @@ public class ResourceResolver {
         Class<ResourceResolverSpi> resourceResolverClass =
             (Class<ResourceResolverSpi>)
             ClassLoaderUtils.loadClass(className, ResourceResolver.class);
-        register(resourceResolverClass.newInstance(), false);
+        register(JavaUtils.newInstanceWithEmptyConstructor(resourceResolverClass), false);
     }
 
     /**
@@ -80,7 +80,7 @@ public class ResourceResolver {
         Class<ResourceResolverSpi> resourceResolverClass =
             (Class<ResourceResolverSpi>)
             ClassLoaderUtils.loadClass(className, ResourceResolver.class);
-        register(resourceResolverClass.newInstance(), true);
+        register(JavaUtils.newInstanceWithEmptyConstructor(resourceResolverClass), true);
     }
 
     /**
@@ -116,8 +116,8 @@ public class ResourceResolver {
 
         List<ResourceResolverSpi> resourceResolversToAdd = new ArrayList<>(classNames.size());
         for (String className : classNames) {
-            ResourceResolverSpi resourceResolverSpi =
-                (ResourceResolverSpi)ClassLoaderUtils.loadClass(className, ResourceResolver.class).newInstance();
+            ResourceResolverSpi resourceResolverSpi = (ResourceResolverSpi)
+                JavaUtils.newInstanceWithEmptyConstructor(ClassLoaderUtils.loadClass(className, ResourceResolver.class));
             resourceResolversToAdd.add(resourceResolverSpi);
         }
         resolverList.addAll(resourceResolversToAdd);

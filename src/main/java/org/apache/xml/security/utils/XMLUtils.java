@@ -64,7 +64,8 @@ public final class XMLUtils {
                         String xmlParserClass = System.getProperty("org.apache.xml.security.XMLParser");
                         if (xmlParserClass != null) {
                             try {
-                                return (XMLParser) ClassLoaderUtils.loadClass(xmlParserClass, XMLUtils.class).newInstance();
+                                return (XMLParser) JavaUtils.newInstanceWithEmptyConstructor(
+                                        ClassLoaderUtils.loadClass(xmlParserClass, XMLUtils.class));
                             } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
                                 LOG.error("Error instantiating XMLParser. Falling back to XMLParserImpl");
                             }
