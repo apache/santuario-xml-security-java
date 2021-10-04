@@ -29,8 +29,6 @@ import java.io.IOException;
 import java.security.*;
 import java.security.interfaces.DSAKey;
 import java.security.spec.AlgorithmParameterSpec;
-import java.security.spec.MGF1ParameterSpec;
-import java.security.spec.PSSParameterSpec;
 import org.w3c.dom.Element;
 
 import org.apache.xml.security.algorithms.implementations.SignatureECDSA;
@@ -337,41 +335,6 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
         }
     }
 
-    abstract static class AbstractRSAPSSSignatureMethod
-            extends AbstractRSASignatureMethod {
-
-        AbstractRSAPSSSignatureMethod(AlgorithmParameterSpec params)
-                throws InvalidAlgorithmParameterException {
-            super(params);
-        }
-
-        AbstractRSAPSSSignatureMethod(Element dmElem) throws MarshalException {
-            super(dmElem);
-        }
-
-        abstract public PSSParameterSpec getPSSParameterSpec();
-
-        @Override
-        Signature getSignature(Provider p)
-                throws NoSuchAlgorithmException {
-            try {
-                Signature s = (p == null)
-                        ? Signature.getInstance("RSASSA-PSS")
-                        : Signature.getInstance("RSASSA-PSS", p);
-                try {
-                    s.setParameter(getPSSParameterSpec());
-                } catch (InvalidAlgorithmParameterException e) {
-                    throw new NoSuchAlgorithmException("Should not happen", e);
-                }
-                return s;
-            } catch (NoSuchAlgorithmException nsae) {
-                return (p == null)
-                        ? Signature.getInstance(getJCAAlgorithm())
-                        : Signature.getInstance(getJCAAlgorithm(), p);
-            }
-        }
-    }
-
     /**
      * Abstract class to support signature algorithms that sign and verify
      * signatures in the IEEE P1363 format. The P1363 format is the
@@ -620,12 +583,7 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
         }
     }
 
-    static final class SHA1withRSAandMGF1 extends AbstractRSAPSSSignatureMethod {
-
-        private static PSSParameterSpec spec
-                = new PSSParameterSpec("SHA-1", "MGF1", MGF1ParameterSpec.SHA1,
-                20, PSSParameterSpec.TRAILER_FIELD_BC);
-
+    static final class SHA1withRSAandMGF1 extends AbstractRSASignatureMethod {
         SHA1withRSAandMGF1(AlgorithmParameterSpec params)
             throws InvalidAlgorithmParameterException {
             super(params);
@@ -638,10 +596,6 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
             return RSA_SHA1_MGF1;
         }
         @Override
-        public PSSParameterSpec getPSSParameterSpec() {
-            return spec;
-        }
-        @Override
         String getJCAAlgorithm() {
             return "SHA1withRSAandMGF1";
         }
@@ -651,12 +605,7 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
         }
     }
 
-    static final class SHA224withRSAandMGF1 extends AbstractRSAPSSSignatureMethod {
-
-        private static PSSParameterSpec spec
-                = new PSSParameterSpec("SHA-224", "MGF1", MGF1ParameterSpec.SHA224,
-                28, PSSParameterSpec.TRAILER_FIELD_BC);
-
+    static final class SHA224withRSAandMGF1 extends AbstractRSASignatureMethod {
         SHA224withRSAandMGF1(AlgorithmParameterSpec params)
             throws InvalidAlgorithmParameterException {
             super(params);
@@ -669,10 +618,6 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
             return RSA_SHA224_MGF1;
         }
         @Override
-        public PSSParameterSpec getPSSParameterSpec() {
-            return spec;
-        }
-        @Override
         String getJCAAlgorithm() {
             return "SHA224withRSAandMGF1";
         }
@@ -682,12 +627,7 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
         }
     }
 
-    static final class SHA256withRSAandMGF1 extends AbstractRSAPSSSignatureMethod {
-
-        private static PSSParameterSpec spec
-                = new PSSParameterSpec("SHA-256", "MGF1", MGF1ParameterSpec.SHA256,
-                32, PSSParameterSpec.TRAILER_FIELD_BC);
-
+    static final class SHA256withRSAandMGF1 extends AbstractRSASignatureMethod {
         SHA256withRSAandMGF1(AlgorithmParameterSpec params)
             throws InvalidAlgorithmParameterException {
             super(params);
@@ -700,10 +640,6 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
             return RSA_SHA256_MGF1;
         }
         @Override
-        public PSSParameterSpec getPSSParameterSpec() {
-            return spec;
-        }
-        @Override
         String getJCAAlgorithm() {
             return "SHA256withRSAandMGF1";
         }
@@ -713,12 +649,7 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
         }
     }
 
-    static final class SHA384withRSAandMGF1 extends AbstractRSAPSSSignatureMethod {
-
-        private static PSSParameterSpec spec
-                = new PSSParameterSpec("SHA-384", "MGF1", MGF1ParameterSpec.SHA384,
-                48, PSSParameterSpec.TRAILER_FIELD_BC);
-
+    static final class SHA384withRSAandMGF1 extends AbstractRSASignatureMethod {
         SHA384withRSAandMGF1(AlgorithmParameterSpec params)
             throws InvalidAlgorithmParameterException {
             super(params);
@@ -731,10 +662,6 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
             return RSA_SHA384_MGF1;
         }
         @Override
-        public PSSParameterSpec getPSSParameterSpec() {
-            return spec;
-        }
-        @Override
         String getJCAAlgorithm() {
             return "SHA384withRSAandMGF1";
         }
@@ -744,12 +671,7 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
         }
     }
 
-    static final class SHA512withRSAandMGF1 extends AbstractRSAPSSSignatureMethod {
-
-        private static PSSParameterSpec spec
-                = new PSSParameterSpec("SHA-512", "MGF1", MGF1ParameterSpec.SHA512,
-                64, PSSParameterSpec.TRAILER_FIELD_BC);
-
+    static final class SHA512withRSAandMGF1 extends AbstractRSASignatureMethod {
         SHA512withRSAandMGF1(AlgorithmParameterSpec params)
             throws InvalidAlgorithmParameterException {
             super(params);
@@ -760,10 +682,6 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
         @Override
         public String getAlgorithm() {
             return RSA_SHA512_MGF1;
-        }
-        @Override
-        public PSSParameterSpec getPSSParameterSpec() {
-            return spec;
         }
         @Override
         String getJCAAlgorithm() {
