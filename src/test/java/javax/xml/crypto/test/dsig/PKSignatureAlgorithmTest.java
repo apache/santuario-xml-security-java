@@ -276,12 +276,8 @@ public class PKSignatureAlgorithmTest {
     @org.junit.jupiter.api.Test
     public void testECDSA_SHA256() throws Exception {
         Assumptions.assumeTrue(ecAlgParamsSupport && ecki != null && !isJDK11);
-        try {
         test_create_signature_enveloping(ecdsaSha256, sha1, ecki,
                                          ecKeyPair.getPrivate(), kvks);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     @org.junit.jupiter.api.Test
