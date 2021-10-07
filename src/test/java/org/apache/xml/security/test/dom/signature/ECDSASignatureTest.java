@@ -46,6 +46,7 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Element;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 
 /**
@@ -59,6 +60,7 @@ public class ECDSASignatureTest {
     private static final String ECDSA_JKS =
         "src/test/resources/org/apache/xml/security/samples/input/ecdsa.jks";
     private static final String ECDSA_JKS_PASSWORD = "security";
+    private boolean isJDK17up;
 
     public ECDSASignatureTest() throws Exception {
 
@@ -66,6 +68,12 @@ public class ECDSASignatureTest {
         //dbf.setAttribute(id, IndexedDocument.class.getName());
 
         org.apache.xml.security.Init.init();
+        try {
+            int javaVersion = Integer.parseInt(System.getProperty("java.version"));
+            isJDK17up = javaVersion >= 17;
+        } catch (NumberFormatException ex) {
+            // ignore
+        }
     }
 
     @org.junit.jupiter.api.Test
@@ -76,6 +84,7 @@ public class ECDSASignatureTest {
         if ("IBM Corporation".equals(System.getProperty("java.vendor"))) {
             return;
         }
+        assumeTrue(!isJDK17up);
 
         KeyStore keyStore = KeyStore.getInstance("JKS");
         keyStore.load(new FileInputStream(ECDSA_JKS), ECDSA_JKS_PASSWORD.toCharArray());
