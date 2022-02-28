@@ -222,16 +222,9 @@
             </plugin>
 
             <plugin>
-                <groupId>org.jvnet.jaxb2.maven2</groupId>
-                <artifactId>maven-jaxb2-plugin</artifactId>
-                <version>0.14.0</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.glassfish.jaxb</groupId>
-                        <artifactId>jaxb-runtime</artifactId>
-                        <version>2.3.5</version>
-                    </dependency>
-                </dependencies>
+                <groupId>com.evolvedbinary.maven.jvnet</groupId>
+                <artifactId>jaxb30-maven-plugin</artifactId>
+                <version>0.15.0</version>
                 <executions>
                     <execution>
                         <id>bindings</id>
@@ -266,7 +259,7 @@
                             <catalog>${basedir}/src/main/resources/bindings/bindings.cat</catalog>
                             <forceRegenerate>false</forceRegenerate>
                             <episode>true</episode>
-                            <specVersion>2.1</specVersion>
+                            <specVersion>3.0</specVersion>
                             <extension>true</extension>
                             <!-- disable schema validation since the validation code
                             doesn't respect the catalog and will do online lookups :-( -->
@@ -468,7 +461,8 @@
                                 </excludes>
                                 <systemPropertyVariables>
                                     <product.version>${project.version}</product.version>
-                                    <!--<javax.xml.bind.JAXBContext>${xmlsec.jaxb.context.class}</javax.xml.bind.JAXBContext>-->
+                                    <!--<jakarta.xml.bind.JAXBContext>${xmlsec.jaxb.context.class}</jakarta.xml.bind.JAXBContext>-->
+                                    <log4j.configuration>log4j-xmlsec.xml</log4j.configuration>
                                     <javax.xml.accessExternalDTD>file</javax.xml.accessExternalDTD>
                                 </systemPropertyVariables>
                             </configuration>
@@ -514,7 +508,7 @@
                                 <systemPropertyVariables>
                                     <product.version>${project.version}</product.version>
                                     <log4j.configuration>log4j-xmlsec.xml</log4j.configuration>
-                                    <!--<javax.xml.bind.JAXBContext>${xmlsec.jaxb.context.class}</javax.xml.bind.JAXBContext>-->
+                                    <!--<jakarta.xml.bind.JAXBContext>${xmlsec.jaxb.context.class}</jakarta.xml.bind.JAXBContext>-->
                                     <javax.xml.accessExternalDTD>file</javax.xml.accessExternalDTD>
                                 </systemPropertyVariables>
                             </configuration>
@@ -522,19 +516,6 @@
                     </plugins>
                 </pluginManagement>
              </build>
-             <dependencies>
-                 <dependency>
-                     <groupId>jakarta.xml.bind</groupId>
-                     <artifactId>jakarta.xml.bind-api</artifactId>
-                     <version>2.3.3</version>
-                 </dependency>
-                 <dependency>
-                     <groupId>org.glassfish.jaxb</groupId>
-                     <artifactId>jaxb-runtime</artifactId>
-                     <version>2.3.3</version>
-                     <scope>test</scope>
-                 </dependency>
-             </dependencies>
          </profile>
 
     </profiles>
@@ -550,6 +531,8 @@
         <commons.codec.version>1.15</commons.codec.version>
         <woodstox.core.version>6.2.6</woodstox.core.version>
         <jetty.version>9.4.45.v20220203</jetty.version>
+        <xml.bind.api.version>3.0.1</xml.bind.api.version>
+        <xml.bind.impl.version>3.0.2</xml.bind.impl.version>
         <xmlsec.jaxb.context.class />
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <targetJdk>1.8</targetJdk>
@@ -568,6 +551,11 @@
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>${xml.bind.api.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-codec</groupId>
@@ -646,6 +634,12 @@
             <groupId>com.carrotsearch</groupId>
             <artifactId>junit-benchmarks</artifactId>
             <version>0.7.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <version>${xml.bind.impl.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
