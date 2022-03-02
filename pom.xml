@@ -462,7 +462,7 @@
                                 <systemPropertyVariables>
                                     <product.version>${project.version}</product.version>
                                     <!--<jakarta.xml.bind.JAXBContext>${xmlsec.jaxb.context.class}</jakarta.xml.bind.JAXBContext>-->
-                                    <log4j.configuration>log4j-xmlsec.xml</log4j.configuration>
+                                    <log4j.configurationFile>src/test/resources/log4j2.xml</log4j.configurationFile>
                                     <javax.xml.accessExternalDTD>file</javax.xml.accessExternalDTD>
                                 </systemPropertyVariables>
                             </configuration>
@@ -507,7 +507,7 @@
                                 <argLine>-Xmx2000m --add-opens java.base/java.lang.reflect=ALL-UNNAMED</argLine>
                                 <systemPropertyVariables>
                                     <product.version>${project.version}</product.version>
-                                    <log4j.configuration>log4j-xmlsec.xml</log4j.configuration>
+                                    <log4j.configurationFile>src/test/resources/log4j2.xml</log4j.configurationFile>
                                     <!--<jakarta.xml.bind.JAXBContext>${xmlsec.jaxb.context.class}</jakarta.xml.bind.JAXBContext>-->
                                     <javax.xml.accessExternalDTD>file</javax.xml.accessExternalDTD>
                                 </systemPropertyVariables>
