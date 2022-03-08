@@ -73,7 +73,9 @@ public final class DOMURIDereferencer implements URIDereferencer {
             if (id.startsWith("xpointer(id(")) {
                 int i1 = id.indexOf('\'');
                 int i2 = id.indexOf('\'', i1+1);
-                id = id.substring(i1+1, i2);
+                if (i1 >= 0 && i2 >= 0) {
+                    id = id.substring(i1 + 1, i2);
+                }
             }
 
             Node referencedElem = dcc.getElementById(id);
