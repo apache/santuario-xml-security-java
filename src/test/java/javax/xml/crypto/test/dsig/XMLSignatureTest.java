@@ -27,10 +27,12 @@ import java.util.*;
 import java.security.*;
 
 import javax.xml.crypto.URIDereferencer;
+import javax.xml.crypto.URIReferenceException;
 import javax.xml.crypto.dom.DOMStructure;
 import javax.xml.crypto.dsig.*;
 import javax.xml.crypto.dsig.keyinfo.*;
 import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
+import javax.xml.crypto.dsig.spec.TransformParameterSpec;
 import javax.xml.crypto.dsig.dom.DOMSignContext;
 import javax.xml.crypto.dsig.dom.DOMValidateContext;
 import javax.crypto.spec.SecretKeySpec;
@@ -401,6 +403,37 @@ public class XMLSignatureTest {
             (TestUtils.getPublicKey("DSA", 2048), doc.getDocumentElement());
         validateContext.setURIDereferencer(ud);
         assertTrue(sig.validate(validateContext));
+    }
+
+    @org.junit.jupiter.api.Test
+    public void testBadXPointer() throws Exception {
+        Document doc = TestUtils.newDocument();
+        Element root = doc.createElementNS(null, "Root");
+        SignatureMethod sm = SIG_METHODS[1];
+        CanonicalizationMethod cm = fac.newCanonicalizationMethod(
+            CanonicalizationMethod.EXCLUSIVE, (C14NMethodParameterSpec)null);
+        DigestMethod dm = fac.newDigestMethod(DigestMethod.SHA256, null);
+        Transform tr = fac.newTransform(
+            Transform.ENVELOPED, (TransformParameterSpec)null);
+        KeyInfo ki = kifac.newKeyInfo(Collections.singletonList
+            (kifac.newKeyValue((PublicKey)VALIDATE_KEYS[1])));
+        XMLObject xo = fac.newXMLObject(
+            Collections.singletonList(new DOMStructure(root)), "a", null, null);
+        SignedInfo si = fac.newSignedInfo(cm, sm,
+            Collections.singletonList(fac.newReference("#xpointer(id('a))",
+                dm, Collections.singletonList(tr), null, null)));
+        XMLSignature sig = fac.newXMLSignature(si, ki,
+            Collections.singletonList(xo), id, sigValueId);
+        XMLSignContext signContext = new DOMSignContext(SIGN_KEYS[1], doc);
+        try {
+            sig.sign(signContext);
+            throw new Exception("Failed: expected XMLSignatureException");
+        } catch (XMLSignatureException xse) {
+            if (!(xse.getCause() instanceof URIReferenceException) &&
+                !(xse.getMessage().contains("Could not find a resolver"))) {
+                throw new Exception("Failed: wrong cause or reason", xse);
+            }
+        }
     }
 
     private SignedInfo createSignedInfo(SignatureMethod sm) throws Exception {
