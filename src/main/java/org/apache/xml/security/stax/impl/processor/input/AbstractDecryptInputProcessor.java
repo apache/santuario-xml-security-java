@@ -97,8 +97,9 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
         this.keyInfoType = keyInfoType;
 
         final List<JAXBElement<ReferenceType>> dataReferenceOrKeyReference = referenceList.getDataReferenceOrKeyReference();
-        references = new HashMap<>(dataReferenceOrKeyReference.size() + 1); //+1 because the HashMap will resize otherwise
-        processedReferences = new ArrayList<>(dataReferenceOrKeyReference.size());
+        final int dataReferenceOrKeyReferenceSize = dataReferenceOrKeyReference.size();
+        references = new HashMap<>((int) Math.ceil(dataReferenceOrKeyReferenceSize / 0.75));
+        processedReferences = new ArrayList<>(dataReferenceOrKeyReferenceSize);
 
         Iterator<JAXBElement<ReferenceType>> referenceTypeIterator = dataReferenceOrKeyReference.iterator();
         while (referenceTypeIterator.hasNext()) {
