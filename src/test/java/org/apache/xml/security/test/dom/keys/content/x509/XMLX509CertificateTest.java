@@ -20,10 +20,13 @@ package org.apache.xml.security.test.dom.keys.content.x509;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.security.Security;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 
 import org.apache.xml.security.test.dom.TestUtils;
+import org.bouncycastle.jcajce.interfaces.BCX509Certificate;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -32,6 +35,8 @@ import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Certificate parsing test.
@@ -57,6 +62,28 @@ public class XMLX509CertificateTest {
             new XMLX509Certificate((Element) nl.item(0), "");
         xmlCert.getX509Certificate();
         // System.out.println(cert);
+    }
+
+    @org.junit.jupiter.api.Test
+    public void testGetX509CertificateWithCustomProvider() throws Exception {
+        File f = new File(BASEDIR + SEP + "src/test/resources" + SEP + "org" + SEP + "apache" +
+                SEP + "xml" + SEP + "security" + SEP + "testcases" +
+                SEP + "x509-cert-need-provider.xml");
+        FileInputStream fis = new FileInputStream(f);
+        Document doc = XMLUtils.read(fis, false);
+        NodeList nl = doc.getElementsByTagNameNS
+                (Constants.SignatureSpecNS, "X509Certificate");
+        XMLX509Certificate xmlCert =
+                new XMLX509Certificate((Element) nl.item(0), "");
+
+        // SUNJCE provider is not available for this asym key oid
+        X509Certificate x509Certificate = xmlCert.getX509Certificate();
+        assertNull(x509Certificate);
+
+        // add the BouncyCastle provider for unmarshal
+        Security.addProvider(new BouncyCastleProvider());
+        x509Certificate = xmlCert.getX509Certificate();
+        assertTrue(x509Certificate instanceof BCX509Certificate);
     }
 
     @org.junit.jupiter.api.Test

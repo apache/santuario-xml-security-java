@@ -23,10 +23,13 @@ package org.apache.jcp.xml.dsig.internal.dom;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.security.Provider;
+import java.security.Security;
 import java.security.cert.CRLException;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
+import java.security.cert.CertificateParsingException;
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -56,7 +59,7 @@ import org.apache.xml.security.utils.XMLUtils;
 public final class DOMX509Data extends DOMStructure implements X509Data {
 
     private final List<Object> content;
-    private CertificateFactory cf;
+    private final List<CertificateFactory> cfs = new ArrayList<>(5);
 
     /**
      * Creates a DOMX509Data.
@@ -128,6 +131,7 @@ public final class DOMX509Data extends DOMStructure implements X509Data {
             firstChild = firstChild.getNextSibling();
         }
         this.content = Collections.unmodifiableList(newContent);
+        prepareCertificateFactory();
     }
 
     public List<Object> getContent() {
@@ -219,33 +223,46 @@ public final class DOMX509Data extends DOMStructure implements X509Data {
     private X509Certificate unmarshalX509Certificate(Element elem)
         throws MarshalException
     {
-        try (ByteArrayInputStream bs = unmarshalBase64Binary(elem)) {
-            return (X509Certificate)cf.generateCertificate(bs);
-        } catch (CertificateException e) {
-            throw new MarshalException("Cannot create X509Certificate", e);
-        } catch (IOException e) {
-            throw new MarshalException("Error closing stream", e);
+        for (CertificateFactory cf : cfs) {
+            try (ByteArrayInputStream bs = unmarshalBase64Binary(elem)) {
+                return (X509Certificate) cf.generateCertificate(bs);
+            } catch (CertificateParsingException cpe) {
+                // ignore
+            } catch (CertificateException e) {
+                throw new MarshalException("Cannot create X509Certificate", e);
+            } catch (IOException e) {
+                throw new MarshalException("Error closing stream", e);
+            }
         }
+        return null;
     }
 
     private X509CRL unmarshalX509CRL(Element elem) throws MarshalException {
-        try (ByteArrayInputStream bs = unmarshalBase64Binary(elem)) {
-            return (X509CRL)cf.generateCRL(bs);
-        } catch (CRLException e) {
-            throw new MarshalException("Cannot create X509CRL", e);
-        } catch (IOException e) {
-            throw new MarshalException("Error closing stream", e);
+        for (CertificateFactory cf : cfs) {
+            try (ByteArrayInputStream bs = unmarshalBase64Binary(elem)) {
+                return (X509CRL)cf.generateCRL(bs);
+            } catch (CRLException e) {
+                // ignore
+            } catch (IOException e) {
+                throw new MarshalException("Error closing stream", e);
+            }
         }
+        return null;
     }
 
-    private ByteArrayInputStream unmarshalBase64Binary(Element elem)
-        throws MarshalException {
+    private ByteArrayInputStream unmarshalBase64Binary(Element elem) {
+        String content = XMLUtils.getFullTextChildrenFromNode(elem);
+        return new ByteArrayInputStream(XMLUtils.decode(content));
+    }
+
+    private void prepareCertificateFactory() throws MarshalException {
+        Provider[] providers = Security.getProviders();
         try {
-            if (cf == null) {
-                cf = CertificateFactory.getInstance("X.509");
+            for (Provider provider : providers) {
+                if (provider.getService("CertificateFactory", "X.509") != null) {
+                    cfs.add(CertificateFactory.getInstance("X.509", provider));
+                }
             }
-            String content = XMLUtils.getFullTextChildrenFromNode(elem);
-            return new ByteArrayInputStream(XMLUtils.decode(content));
         } catch (CertificateException e) {
             throw new MarshalException("Cannot create CertificateFactory", e);
         }

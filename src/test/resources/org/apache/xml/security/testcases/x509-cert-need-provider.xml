@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><PurchaseOrder xmlns="urn:example:po" Id="test">
+    <Items id="test2">
+        <Item Code="001-001-001" Quantity="1">
+            spade
+        </Item>
+        <Item Code="001-001-002" Quantity="1">
+            shovel
+        </Item>
+    </Items>
+    <ShippingAddress id="test3">
+        Dig PLC, 1 First Ave, Dublin 1, Ireland
+    </ShippingAddress>
+    <PaymentInfo>
+        <BillingAddress>
+            Dig PLC, 1 First Ave, Dublin 1, Ireland
+        </BillingAddress>
+        <CreditCard Type="Amex">
+            <Name>Foo B Baz</Name>
+            <Number>1234 567890 12345</Number>
+            <Expires Month="1" Year="2005"/>
+        </CreditCard>
+    </PaymentInfo>
+    <Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="Sig1C5A65AEB929624F6648F946580C41A0"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments"/><SignatureMethod Algorithm="http://127.0.0.1/2001/04/xmldsig-more#sm2-sm3"/><Reference URI="#test2"><DigestMethod Algorithm="http://127.0.0.1/2001/04/xmldsig-more#sm3"/><DigestValue>klsE6udrIyWVTS5yizloSmruFN9jY3TSxKwSAVCHxmk=</DigestValue></Reference></SignedInfo><SignatureValue>MEYCIQDbsHWAO24G7pIkoKXacL49SZvGKAju3rKJejze62xDkAIhAKxfDlzZ9lfjj9XCFIRxNFrw&#13;
+        ADYw+KAozYcG3yY6kEvK</SignatureValue><KeyInfo><X509Data><X509SubjectName>CN=test-xml-security,C=CN</X509SubjectName><X509Certificate>MIIBvDCCAWCgAwIBAgIQAKlhOmMvNjGlODv/J85DbzAMBggqgRzPVQGDdQUAMBIxEDAOBgNVBAMM&#13;
+        B1RFU1RfQ0EwHhcNMjIwNDI1MDEyNjQ5WhcNMjMwNDI2MDEyNjQ5WjApMRowGAYDVQQDDBF0ZXN0&#13;
+        LXhtbC1zZWN1cml0eTELMAkGA1UEBhMCQ04wWTATBgcqhkjOPQIBBggqgRzPVQGCLQNCAATyiMNa&#13;
+        EFQ2Ouqv8U96l2L/M3gryRlMaPKwX0car4UORTSlSwspEZD4qxztZwO6dxlhuxfOoew+fSsoBYWH&#13;
+        e70jo38wfTAMBgNVHRMBAf8EAjAAMB0GA1UdDgQWBBTCpNmn2Q9xCFta837K55IHGmRkxDAOBgNV&#13;
+        HQ8BAf8EBAMCBLAwHQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMB8GA1UdIwQYMBaAFP/D&#13;
+        VbzgNvRAQHSK+Ed8Htav4mfkMAwGCCqBHM9VAYN1BQADSAAwRQIgUTDyJSaEDUpFXKir5zRvEIHP&#13;
+        ZE+5joDU6fMuUqn/MK4CIQCbi/bbAXPjY3BxD//Zgz/NYZziTdBcK4+3Jc/gKazeLA==</X509Certificate></X509Data></KeyInfo></Signature></PurchaseOrder>

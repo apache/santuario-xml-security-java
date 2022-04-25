@@ -21,9 +21,12 @@ package org.apache.xml.security.keys.content.x509;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.Provider;
 import java.security.PublicKey;
+import java.security.Security;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
+import java.security.cert.CertificateParsingException;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
 
@@ -97,13 +100,22 @@ public class XMLX509Certificate extends SignatureElementProxy implements XMLX509
      */
     public X509Certificate getX509Certificate() throws XMLSecurityException {
         byte[] certbytes = this.getCertificateBytes();
-        try (InputStream is = new ByteArrayInputStream(certbytes)) {
-            CertificateFactory certFact =
-                CertificateFactory.getInstance(XMLX509Certificate.JCA_CERT_ID);
-            return (X509Certificate) certFact.generateCertificate(is);
-        } catch (CertificateException | IOException ex) {
-            throw new XMLSecurityException(ex);
+        Provider[] providers = Security.getProviders();
+        for (Provider provider : providers) {
+            if (provider.getService("CertificateFactory", JCA_CERT_ID) != null) {
+                try (InputStream is = new ByteArrayInputStream(certbytes)) {
+                    try {
+                        CertificateFactory certFact = CertificateFactory.getInstance(JCA_CERT_ID, provider);
+                        return (X509Certificate) certFact.generateCertificate(is);
+                    } catch (CertificateParsingException cpe) {
+                        // ignore cpe
+                    }
+                } catch (CertificateException | IOException ex) {
+                    throw new XMLSecurityException(ex);
+                }
+            }
         }
+        return null;
     }
 
     /**
