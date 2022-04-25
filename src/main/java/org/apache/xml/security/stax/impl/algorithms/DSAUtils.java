@@ -34,7 +34,7 @@ public class DSAUtils {
      * @see <A HREF="http://www.w3.org/TR/xmldsig-core/#dsa-sha1">6.4.1 DSA</A>
      */
     public static byte[] convertASN1toXMLDSIG(byte asn1Bytes[]) throws IOException {
-        return org.apache.xml.security.algorithms.implementations.ECDSAUtils.convertASN1toXMLDSIG(asn1Bytes);
+        return org.apache.xml.security.algorithms.implementations.ECDSAUtils.convertASN1toXMLDSIG(asn1Bytes, -1);
     }
 
     /**

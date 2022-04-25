@@ -24,6 +24,7 @@ import org.apache.xml.security.utils.JavaUtils;
 
 import java.io.IOException;
 import java.security.*;
+import java.security.interfaces.ECPrivateKey;
 import java.security.spec.AlgorithmParameterSpec;
 
 /**
@@ -32,6 +33,9 @@ public class PKISignatureAlgorithm implements SignatureAlgorithm {
 
     private final String jceName;
     private final Signature signature;
+
+    /** Length for each integer in signature */
+    private int signIntLen = -1;
 
     public PKISignatureAlgorithm(String jceName, String jceProvider) throws NoSuchProviderException, NoSuchAlgorithmException {
         this.jceName = jceName;
@@ -71,6 +75,7 @@ public class PKISignatureAlgorithm implements SignatureAlgorithm {
 
     @Override
     public void engineInitSign(Key signingKey) throws XMLSecurityException {
+        initSignIntLen(signingKey);
         try {
             signature.initSign((PrivateKey) signingKey);
         } catch (InvalidKeyException e) {
@@ -80,6 +85,7 @@ public class PKISignatureAlgorithm implements SignatureAlgorithm {
 
     @Override
     public void engineInitSign(Key signingKey, SecureRandom secureRandom) throws XMLSecurityException {
+        initSignIntLen(signingKey);
         try {
             signature.initSign((PrivateKey) signingKey, secureRandom);
         } catch (InvalidKeyException e) {
@@ -89,10 +95,19 @@ public class PKISignatureAlgorithm implements SignatureAlgorithm {
 
     @Override
     public void engineInitSign(Key signingKey, AlgorithmParameterSpec algorithmParameterSpec) throws XMLSecurityException {
+        initSignIntLen(signingKey);
         try {
             signature.initSign((PrivateKey) signingKey);
         } catch (InvalidKeyException e) {
             throw new XMLSecurityException(e);
+        }
+    }
+
+    private void initSignIntLen(Key signingKey) {
+        if (signingKey instanceof ECPrivateKey) {
+            ECPrivateKey ecKey = (ECPrivateKey) signingKey;
+            signIntLen = (ecKey.getParams().getCurve().getField().getFieldSize() + 7) / 8;
+            // If not ECPrivateKey, signIntLen remains -1
         }
     }
 
@@ -101,7 +116,7 @@ public class PKISignatureAlgorithm implements SignatureAlgorithm {
         try {
             byte[] jcebytes = signature.sign();
             if (this.jceName.contains("ECDSA")) {
-                return ECDSAUtils.convertASN1toXMLDSIG(jcebytes);
+                return ECDSAUtils.convertASN1toXMLDSIG(jcebytes, signIntLen);
             } else if (this.jceName.contains("DSA")) {
                 return JavaUtils.convertDsaASN1toXMLDSIG(jcebytes, 20);
             }

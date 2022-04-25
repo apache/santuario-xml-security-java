@@ -42,7 +42,7 @@ public final class ECDSAUtils {
      * @see <A HREF="ftp://ftp.rfc-editor.org/in-notes/rfc4050.txt">3.3. ECDSA Signatures</A>
      */
     public static byte[] convertASN1toXMLDSIG(byte asn1Bytes[]) throws IOException {
-        return org.apache.xml.security.algorithms.implementations.ECDSAUtils.convertASN1toXMLDSIG(asn1Bytes);
+        return org.apache.xml.security.algorithms.implementations.ECDSAUtils.convertASN1toXMLDSIG(asn1Bytes, -1);
     }
 
     /**
