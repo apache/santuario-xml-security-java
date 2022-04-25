@@ -156,7 +156,7 @@ public final class Transform extends SignatureElementProxy {
             throw new InvalidTransformException("signature.Transform.UnknownTransform", exArgs);
         }
         try {
-            transformSpi = transformSpiClass.newInstance();
+            transformSpi = JavaUtils.newInstanceWithEmptyConstructor(transformSpiClass);
         } catch (InstantiationException ex) {
             Object exArgs[] = { algorithmURI };
             throw new InvalidTransformException(
@@ -342,7 +342,7 @@ public final class Transform extends SignatureElementProxy {
         }
         TransformSpi newTransformSpi = null;
         try {
-            newTransformSpi = transformSpiClass.newInstance();
+            newTransformSpi = JavaUtils.newInstanceWithEmptyConstructor(transformSpiClass);
         } catch (InstantiationException ex) {
             Object exArgs[] = { algorithmURI };
             throw new InvalidTransformException(

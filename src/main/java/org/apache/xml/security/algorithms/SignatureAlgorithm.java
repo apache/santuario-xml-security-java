@@ -148,7 +148,7 @@ public class SignatureAlgorithm extends Algorithm {
                 Object exArgs[] = { algorithmURI };
                 throw new XMLSignatureException("algorithms.NoSuchAlgorithmNoEx", exArgs);
             }
-            return implementingClass.newInstance();
+            return JavaUtils.newInstanceWithEmptyConstructor(implementingClass);
         }  catch (IllegalAccessException | InstantiationException | NullPointerException ex) {
             Object exArgs[] = { algorithmURI, ex.getMessage() };
             throw new XMLSignatureException(ex, "algorithms.NoSuchAlgorithm", exArgs);

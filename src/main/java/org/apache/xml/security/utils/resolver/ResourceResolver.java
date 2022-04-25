@@ -88,7 +88,7 @@ public class ResourceResolver {
                 if (!resolver.resolverSpi.engineIsThreadSafe()) {
                     try {
                         resolverTmp =
-                            new ResourceResolver(resolver.resolverSpi.getClass().newInstance());
+                            new ResourceResolver(JavaUtils.newInstanceWithEmptyConstructor(resolver.resolverSpi.getClass()));
                     } catch (InstantiationException e) {
                         throw new ResourceResolverException(e, context.uriToResolve, context.baseUri, "");
                     } catch (IllegalAccessException e) {
@@ -228,7 +228,7 @@ public class ResourceResolver {
     public static void register(Class<? extends ResourceResolverSpi> className, boolean start) {
         JavaUtils.checkRegisterPermission();
         try {
-            ResourceResolverSpi resourceResolverSpi = className.newInstance();
+            ResourceResolverSpi resourceResolverSpi = JavaUtils.newInstanceWithEmptyConstructor(className);
             register(resourceResolverSpi, start);
         } catch (IllegalAccessException e) {
             LOG.warn("Error loading resolver " + className + " disabling it");

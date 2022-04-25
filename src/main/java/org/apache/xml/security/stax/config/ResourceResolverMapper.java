@@ -22,6 +22,7 @@ import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.ext.ResourceResolver;
 import org.apache.xml.security.stax.ext.ResourceResolverLookup;
 import org.apache.xml.security.utils.ClassLoaderUtils;
+import org.apache.xml.security.utils.JavaUtils;
 import org.apache.xml.security.configuration.ResolverType;
 import org.apache.xml.security.configuration.ResourceResolversType;
 
@@ -44,7 +45,7 @@ public class ResourceResolverMapper {
         for (int i = 0; i < handlerList.size(); i++) {
             ResolverType uriResolverType = handlerList.get(i);
             resourceResolvers.add((ResourceResolverLookup)
-                    ClassLoaderUtils.loadClass(uriResolverType.getJAVACLASS(), callingClass).newInstance());
+                    JavaUtils.newInstanceWithEmptyConstructor(ClassLoaderUtils.loadClass(uriResolverType.getJAVACLASS(), callingClass)));
         }
     }
 

@@ -32,6 +32,7 @@ import org.apache.xml.security.stax.securityEvent.*;
 import org.apache.xml.security.stax.securityToken.InboundSecurityToken;
 import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 import org.apache.xml.security.utils.ClassLoaderUtils;
+import org.apache.xml.security.utils.JavaUtils;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.ls.LSInput;
 import org.w3c.dom.ls.LSResourceResolver;
@@ -126,7 +127,7 @@ public class XMLSecurityUtils {
         Transformer childTransformer = null;
 
         try {
-            childTransformer = transformerClass.newInstance();
+            childTransformer = JavaUtils.newInstanceWithEmptyConstructor(transformerClass);
             if (properties != null) {
                 childTransformer.setProperties(properties);
             }

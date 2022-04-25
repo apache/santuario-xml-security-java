@@ -110,7 +110,7 @@ public class Canonicalizer {
             Class<? extends CanonicalizerSpi> implementingClass =
                 canonicalizerHash.get(algorithmURI);
 
-            canonicalizerSpi = implementingClass.newInstance();
+            canonicalizerSpi = JavaUtils.newInstanceWithEmptyConstructor(implementingClass);
             canonicalizerSpi.reset = true;
         } catch (Exception e) {
             Object exArgs[] = { algorithmURI };

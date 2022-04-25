@@ -24,6 +24,7 @@ import org.apache.xml.security.stax.config.ConfigurationProperties;
 import org.apache.xml.security.stax.ext.InboundSecurityContext;
 import org.apache.xml.security.stax.ext.XMLSecurityProperties;
 import org.apache.xml.security.utils.ClassLoaderUtils;
+import org.apache.xml.security.utils.JavaUtils;
 
 /**
  * Factory to create SecurityToken Objects from keys in XML
@@ -49,7 +50,7 @@ public abstract class SecurityTokenFactory {
                 @SuppressWarnings("unchecked")
                 Class<SecurityTokenFactory> securityTokenFactoryClass =
                         (Class<SecurityTokenFactory>) ClassLoaderUtils.loadClass(stf, callingClass);
-                securityTokenFactory = securityTokenFactoryClass.newInstance();
+                securityTokenFactory = JavaUtils.newInstanceWithEmptyConstructor(securityTokenFactoryClass);
             } catch (ClassNotFoundException e) {
                 throw new XMLSecurityException(e, "algorithm.ClassDoesNotExist", new Object[]{stf});
             } catch (InstantiationException e) {
