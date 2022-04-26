@@ -39,6 +39,22 @@ public final class ECDSAUtils {
      * pairs; the XML Signature requires the core BigInteger values.
      *
      * @param asn1Bytes the ASN.1 encoded bytes
+     * @return the decoded bytes
+     * @throws IOException
+     * @see <A HREF="http://www.w3.org/TR/xmldsig-core/#dsa-sha1">6.4.1 DSA</A>
+     * @see <A HREF="ftp://ftp.rfc-editor.org/in-notes/rfc4050.txt">3.3. ECDSA Signatures</A>
+     */
+    public static byte[] convertASN1toXMLDSIG(byte asn1Bytes[]) throws IOException {
+        return convertASN1toXMLDSIG(asn1Bytes, -1);
+    }
+
+    /**
+     * Converts an ASN.1 ECDSA value to a XML Signature ECDSA Value.
+     * <p></p>
+     * The JAVA JCE ECDSA Signature algorithm creates ASN.1 encoded (r, s) value
+     * pairs; the XML Signature requires the core BigInteger values.
+     *
+     * @param asn1Bytes the ASN.1 encoded bytes
      * @param rawLen the intended length of decoded bytes for an integer.
      *               If -1, choose one automatically.
      * @return the decoded bytes
