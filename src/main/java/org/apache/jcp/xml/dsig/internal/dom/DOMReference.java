@@ -208,7 +208,7 @@ public final class DOMReference extends DOMStructure
                 newTransforms.add
                     (new DOMTransform(transformElem, context, provider));
                 if (secVal && newTransforms.size() > MAXIMUM_TRANSFORM_COUNT) {
-                    String error = "A maxiumum of " + MAXIMUM_TRANSFORM_COUNT + " "
+                    String error = "A maximum of " + MAXIMUM_TRANSFORM_COUNT + " "
                         + "transforms per Reference are allowed with secure validation";
                     throw new MarshalException(error);
                 }
