@@ -53,7 +53,7 @@ public class JSRForbiddenRefCountTest {
             new DOMSignedInfo(signedInfoElement, context, null);
         } catch (MarshalException ex) {
             String error =
-                "A maxiumum of 30 references per Manifest are allowed with secure validation";
+                "A maximum of 30 references per Manifest are allowed with secure validation";
             assertTrue(ex.getMessage().contains(error));
         }
 
