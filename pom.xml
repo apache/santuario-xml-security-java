@@ -539,7 +539,6 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <clirr.version>2.8</clirr.version>
         <maven-owasp-plugin-version>6.3.2</maven-owasp-plugin-version>
-
         <!-- Allow Clirr severity to be overriden by the command-line option -DminSeverity=level -->
         <minSeverity>info</minSeverity>
         <project.build.outputTimestamp>2022-04-28T06:42:37Z</project.build.outputTimestamp>
@@ -557,6 +556,12 @@
             <artifactId>jakarta.xml.bind-api</artifactId>
             <version>${xml.bind.api.version}</version>
             <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.sun.activation</groupId>
+                    <artifactId>jakarta.activation</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>commons-codec</groupId>
