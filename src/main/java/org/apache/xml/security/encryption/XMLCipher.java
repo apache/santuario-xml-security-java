@@ -3176,9 +3176,8 @@ public class XMLCipher {
                     );
                     result.appendChild(mgfElement);
                 }
-                Iterator<Element> itr = encryptionMethodInformation.iterator();
-                while (itr.hasNext()) {
-                    result.appendChild(itr.next());
+                for (Element element : encryptionMethodInformation) {
+                    result.appendChild(element);
                 }
 
                 return result;
@@ -3463,10 +3462,8 @@ public class XMLCipher {
                         EncryptionConstants.EncryptionSpecNS,
                         EncryptionConstants._TAG_REFERENCELIST
                     );
-                Iterator<Reference> eachReference = references.iterator();
-                while (eachReference.hasNext()) {
-                    Reference reference = eachReference.next();
-                    result.appendChild(((ReferenceImpl) reference).toElement());
+                for (Reference reference : references) {
+                    result.appendChild(((ReferenceImpl)reference).toElement());
                 }
                 return result;
             }

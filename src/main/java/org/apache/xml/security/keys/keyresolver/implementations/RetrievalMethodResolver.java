@@ -27,7 +27,6 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
@@ -286,10 +285,8 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
     }
 
     private static Element getDocumentElement(Set<Node> set) {
-        Iterator<Node> it = set.iterator();
         Element e = null;
-        while (it.hasNext()) {
-            Node currentNode = it.next();
+        for (Node currentNode : set) {
             if (currentNode != null && Node.ELEMENT_NODE == currentNode.getNodeType()) {
                 e = (Element) currentNode;
                 break;

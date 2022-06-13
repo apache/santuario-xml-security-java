@@ -226,8 +226,7 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
                         xmlSecStartElement, signaturePartDef.isExcludeVisibleC14Nprefixes()
                 );
                 StringBuilder prefixes = new StringBuilder();
-                for (Iterator<String> iterator = prefixSet.iterator(); iterator.hasNext(); ) {
-                    String prefix = iterator.next();
+                for (String prefix : prefixSet) {
                     if (prefixes.length() != 0) {
                         prefixes.append(' ');
                     }
