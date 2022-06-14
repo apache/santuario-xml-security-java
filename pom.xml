@@ -527,7 +527,7 @@
         <log4j.version>2.17.2</log4j.version>
         <bcprov.version>1.70</bcprov.version>
         <hamcrest.version>2.2</hamcrest.version>
-        <xmlunit.version>2.8.2</xmlunit.version>
+        <xmlunit.version>2.9.0</xmlunit.version>
         <commons.codec.version>1.15</commons.codec.version>
         <woodstox.core.version>6.2.8</woodstox.core.version>
         <jetty.version>9.4.45.v20220203</jetty.version>
