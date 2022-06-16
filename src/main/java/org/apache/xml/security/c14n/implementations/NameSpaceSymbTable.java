@@ -20,7 +20,6 @@ package org.apache.xml.security.c14n.implementations;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 
@@ -71,9 +70,7 @@ public class NameSpaceSymbTable {
      * @param result the list where to fill the unrendered xmlns definitions.
      **/
     public void getUnrenderedNodes(Collection<Attr> result) {
-        Iterator<NameSpaceSymbEntry> it = symb.entrySet().iterator();
-        while (it.hasNext()) {
-            NameSpaceSymbEntry n = it.next();
+        for (NameSpaceSymbEntry n : symb.entrySet()) {
             //put them rendered?
             if (!n.rendered && n.n != null) {
                 n = n.clone();

@@ -23,7 +23,6 @@ import java.math.BigInteger;
 import java.security.interfaces.ECPublicKey;
 import java.security.spec.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public final class ECDSAUtils {
@@ -780,9 +779,7 @@ public final class ECDSAUtils {
             field = ecFieldF2m.getReductionPolynomial();
         }
 
-        Iterator<ECCurveDefinition> ecCurveDefinitionIterator = ecCurveDefinitions.iterator();
-        while (ecCurveDefinitionIterator.hasNext()) {
-            ECCurveDefinition ecCurveDefinition = ecCurveDefinitionIterator.next();
+        for (ECCurveDefinition ecCurveDefinition : ecCurveDefinitions) {
             String oid = ecCurveDefinition.equals(field, a, b, affineX, affineY, order, h);
             if (oid != null) {
                 return oid;
@@ -792,9 +789,7 @@ public final class ECDSAUtils {
     }
 
     public static ECCurveDefinition getECCurveDefinition(String oid) {
-        Iterator<ECCurveDefinition> ecCurveDefinitionIterator = ecCurveDefinitions.iterator();
-        while (ecCurveDefinitionIterator.hasNext()) {
-            ECCurveDefinition ecCurveDefinition = ecCurveDefinitionIterator.next();
+        for (ECCurveDefinition ecCurveDefinition : ecCurveDefinitions) {
             if (ecCurveDefinition.getOid().equals(oid)) {
                 return ecCurveDefinition;
             }

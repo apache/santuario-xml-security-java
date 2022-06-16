@@ -30,7 +30,6 @@ import java.security.NoSuchProviderException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -108,9 +107,7 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
         externalReferences = new ArrayList<>(referencesTypeList.size());
         processedReferences = new ArrayList<>(referencesTypeList.size());
 
-        Iterator<ReferenceType> referenceTypeIterator = referencesTypeList.iterator();
-        while (referenceTypeIterator.hasNext()) {
-            ReferenceType referenceType = referenceTypeIterator.next();
+        for (ReferenceType referenceType : referencesTypeList) {
             if (!doNotThrowExceptionForManifests && XMLSecurityConstants.NS_XMLDSIG_MANIFEST.equals(referenceType.getType())) {
                 throw new XMLSecurityException(
                         "secureProcessing.DoNotThrowExceptionForManifests"
