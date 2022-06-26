@@ -530,7 +530,7 @@
         <xmlunit.version>2.9.0</xmlunit.version>
         <commons.codec.version>1.15</commons.codec.version>
         <woodstox.core.version>6.2.8</woodstox.core.version>
-        <jetty.version>9.4.46.v20220331</jetty.version>
+        <jetty.version>9.4.48.v20220622</jetty.version>
         <xml.bind.api.version>3.0.1</xml.bind.api.version>
         <xml.bind.impl.version>3.0.2</xml.bind.impl.version>
         <xmlsec.jaxb.context.class />
