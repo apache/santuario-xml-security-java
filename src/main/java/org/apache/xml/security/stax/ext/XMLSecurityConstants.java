@@ -43,12 +43,14 @@ public class XMLSecurityConstants {
     public static final XMLOutputFactory xmlOutputFactoryNonRepairingNs;
 
     private static final SecureRandom SECURE_RANDOM;
+	private static final String RANDOM_ALGORITHM_KEY = "xmlsec.securerandom.algorithm";
     private static JAXBContext jaxbContext;
     private static Schema schema;
 
     static {
         try {
-            SECURE_RANDOM = SecureRandom.getInstance("SHA1PRNG");
+			String PrngAlgorithm = System.getProperty(RANDOM_ALGORITHM_KEY,"SHA1PRNG");
+            SECURE_RANDOM = SecureRandom.getInstance(PrngAlgorithm);
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
