@@ -72,7 +72,8 @@ public class XMLSecurityConstants {
     }
 
     /**
-     * Generate bytes of the given length using the SHA1PRNG algorithm. The SecureRandom
+     * Generate bytes of the given length using the supplied algorithm in RANDOM_ALGORITHM_KEY or,
+     * if not specified, use SecureRandom.getInstanceStrong(). The SecureRandom
      * instance that backs this method is cached for efficiency.
      *
      * @return a byte array of the given length
