@@ -16,9 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.xml.security.transforms.implementations;
-
-import javax.xml.transform.TransformerException;
+package org.apache.xml.security.test.dom.xalan;
 
 import org.apache.xml.dtm.DTM;
 import org.apache.xml.security.utils.I18n;
@@ -31,6 +29,8 @@ import org.apache.xpath.objects.XObject;
 import org.apache.xpath.res.XPATHErrorResources;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+
+import javax.xml.transform.TransformerException;
 
 /**
  * The 'here()' function returns a node-set containing the attribute or
@@ -65,7 +65,7 @@ public class FuncHere extends Function {
      *
      * @param xctxt
      * @return the xobject
-     * @throws javax.xml.transform.TransformerException
+     * @throws TransformerException
      */
     public XObject execute(XPathContext xctxt) throws TransformerException {
 

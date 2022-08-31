@@ -23,9 +23,7 @@ package javax.xml.crypto.test.dsig;
 
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
-import java.security.KeyStore;
 import java.security.Security;
 import javax.xml.crypto.KeySelector;
 import javax.xml.crypto.URIDereferencer;
@@ -217,31 +215,6 @@ public class Baltimore23Test {
         boolean coreValidity = validator.validate
             (file, new KeySelectors.CollectionKeySelector(dir), ud);
         assertTrue(coreValidity, "Signature failed core validation");
-    }
-
-    @org.junit.jupiter.api.Test
-    public void test_signature() throws Exception {
-
-        //
-        // This test fails with the IBM JDK
-        //
-        if ("IBM Corporation".equals(System.getProperty("java.vendor"))) {
-            return;
-        }
-
-        String file = "signature.xml";
-        String fs = System.getProperty("file.separator");
-        String base = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
-
-        String keystore = base + fs + "src/test/resources" + fs +
-             "ie" + fs + "baltimore" + fs + "merlin-examples" + fs +
-             "merlin-xmldsig-twenty-three" + fs + "certs" + fs + "xmldsig.jks";
-        KeyStore ks = KeyStore.getInstance("JKS");
-        ks.load(new FileInputStream(keystore), "changeit".toCharArray());
-
-        SignatureValidator validator = new SignatureValidator(dir);
-        boolean cv = validator.validate(file, new X509KeySelector(ks, false), ud);
-        assertTrue(cv, "Signature failed core validation");
     }
 
 }
