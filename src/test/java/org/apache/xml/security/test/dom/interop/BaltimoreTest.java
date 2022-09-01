@@ -278,34 +278,6 @@ public class BaltimoreTest extends InteropTestBase {
     }
 
     /**
-     * Method test_sixteen_external_dsa
-     *
-     * @throws Exception
-     */
-    @org.junit.jupiter.api.Test
-    public void test_sixteen_external_dsa() throws Exception {
-
-        String filename =
-            merlinsDir16 + "/signature.xml";
-        ResourceResolverSpi resolver = new OfflineResolver();
-        boolean followManifests = false;
-        boolean verify = false;
-
-        try {
-            verify = this.verify(filename, resolver, followManifests);
-        } catch (RuntimeException ex) {
-            LOG.error("Verification crashed for " + filename);
-            throw ex;
-        }
-
-        if (!verify) {
-            LOG.error("Verification failed for " + filename);
-        }
-
-        assertTrue(verify, filename);
-    }
-
-    /**
      * Method test_sixteen_bad_signature. This tests make sure that an
      * invalid signature is not valid. This is validating merlin's 16
      * signature but some of the referenced content has been modified so
@@ -525,34 +497,6 @@ public class BaltimoreTest extends InteropTestBase {
     public void test_twenty_three_external_dsa() throws Exception {
 
         String filename = merlinsDir23 + "signature-external-dsa.xml";
-        ResourceResolverSpi resolver = new OfflineResolver();
-        boolean followManifests = false;
-        boolean verify = false;
-
-        try {
-            verify = this.verify(filename, resolver, followManifests);
-        } catch (RuntimeException ex) {
-            LOG.error("Verification crashed for " + filename);
-            throw ex;
-        }
-
-        if (!verify) {
-            LOG.error("Verification failed for " + filename);
-        }
-
-        assertTrue(verify, filename);
-    }
-
-    /**
-     * Method test_twenty_three_external_dsa_2
-     *
-     * @throws Exception
-     */
-    @org.junit.jupiter.api.Test
-    public void test_twenty_three_external_dsa_2() throws Exception {
-
-        String filename =
-            merlinsDir23 + "signature.xml";
         ResourceResolverSpi resolver = new OfflineResolver();
         boolean followManifests = false;
         boolean verify = false;
