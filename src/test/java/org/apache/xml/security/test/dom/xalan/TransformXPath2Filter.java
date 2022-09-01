@@ -16,18 +16,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.xml.security.utils;
+package org.apache.xml.security.test.dom.xalan;
 
+import org.apache.xml.security.utils.XPathFactory;
 
 /**
- * A Factory to return a XalanXPathAPI instance.
+ * Implements the <I>XML Signature XPath Filter v2.0</I>
+ *
+ * @see <A HREF="http://www.w3.org/TR/xmldsig-filter2/">XPath Filter v2.0 (TR)</A>
  */
-public class XalanXPathFactory extends XPathFactory {
+public class TransformXPath2Filter extends org.apache.xml.security.transforms.implementations.TransformXPath2Filter {
 
-    /**
-     * Get a new XPathAPI instance
-     */
-    public XPathAPI newXPathAPI() {
-        return new XalanXPathAPI();
+    protected XPathFactory getXPathFactory() {
+        return new XalanXPathFactory();
     }
+
 }

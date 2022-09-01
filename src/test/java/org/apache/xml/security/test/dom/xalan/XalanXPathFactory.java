@@ -16,17 +16,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.xml.security.utils;
+package org.apache.xml.security.test.dom.xalan;
 
+
+import org.apache.xml.security.utils.XPathAPI;
+import org.apache.xml.security.utils.XPathFactory;
 
 /**
- * A Factory to return an XPathAPI instance.
+ * A Factory to return a XalanXPathAPI instance.
  */
-public abstract class XPathFactory {
+public class XalanXPathFactory extends XPathFactory {
 
     /**
      * Get a new XPathAPI instance
      */
-    public abstract XPathAPI newXPathAPI();
-
+    public XPathAPI newXPathAPI() {
+        return new XalanXPathAPI();
+    }
 }
