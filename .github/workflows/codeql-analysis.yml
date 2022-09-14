@@ -37,7 +37,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@7884fcad6b5d53d10323aee724dc68d8b9096a2e
       with:
         # We must fetch at least the immediate parents so that if this is
         # a pull request then we can checkout the head.
@@ -49,7 +49,7 @@ jobs:
       if: ${{ github.event_name == 'pull_request' }}
 
     - name: Cache local Maven repository
-      uses: actions/cache@v2.1.1
+      uses: actions/cache@5ca27f25cb3a0babe750cad7e4fddd3e55f29e9a
       with:
         path: ~/.m2
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
@@ -57,7 +57,7 @@ jobs:
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v1
+      uses: github/codeql-action/init@7cce9bbfb550e880420fd42bdb2f6a2908df139e
       with:
         languages: ${{ matrix.language }}
         # If you wish to specify custom queries, you can do so here or in a config file.
@@ -86,4 +86,5 @@ jobs:
     #   make release
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v1
+      uses: github/codeql-action/analyze@7cce9bbfb550e880420fd42bdb2f6a2908df139e
+
