@@ -2,8 +2,8 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.apache.santuario/xmlsec/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.apache.santuario/xmlsec)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/apache/santuario-xml-security-java)](https://lgtm.com/projects/g/apache/santuario-xml-security-java/alerts/)
 [![OpenSSF Scorecard]
-(https://api.securityscorecards.dev/projects/github.com/{org}/{repo}/badge)]
-(https://api.securityscorecards.dev/projects/github.com/{org}/{repo})
+(https://api.securityscorecards.dev/projects/github.com/apache/santuario-xml-security-java/badge)]
+(https://api.securityscorecards.dev/projects/github.com/apache/santuario-xml-security-java})
 
 Apache Santuario - XML Security for Java
 ======================
