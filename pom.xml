@@ -209,7 +209,7 @@
                         <Import-Package>
                               !org.apache.xml.security.*,
                               !org.apache.jcp.xml.dsig.internal.*,
-                              org.slf4j.*;version="[1.7,2)",
+                              org.slf4j.*;version="[1.7,3)",
                               org.apache.commons.codec.*;version="[1.6,2)",
                               org.apache.xml.dtm*;resolution:=optional;version="[2.7,3)",
                               org.apache.xml.utils*;resolution:=optional;version="[2.7,3)",
@@ -521,7 +521,7 @@
     </profiles>
 
     <properties>
-        <slf4j.version>1.7.36</slf4j.version>
+        <slf4j.version>2.0.1</slf4j.version>
         <xalan.version>2.7.2</xalan.version>
         <junit.version>5.9.1</junit.version>
         <log4j.version>2.18.0</log4j.version>
