@@ -464,6 +464,7 @@
                                     <!--<jakarta.xml.bind.JAXBContext>${xmlsec.jaxb.context.class}</jakarta.xml.bind.JAXBContext>-->
                                     <log4j.configurationFile>src/test/resources/log4j2.xml</log4j.configurationFile>
                                     <javax.xml.accessExternalDTD>file</javax.xml.accessExternalDTD>
+                                    <org.apache.xml.security.securerandom.algorithm>SHA1PRNG</org.apache.xml.security.securerandom.algorithm>
                                 </systemPropertyVariables>
                             </configuration>
                         </plugin>
@@ -510,6 +511,7 @@
                                     <log4j.configurationFile>src/test/resources/log4j2.xml</log4j.configurationFile>
                                     <!--<jakarta.xml.bind.JAXBContext>${xmlsec.jaxb.context.class}</jakarta.xml.bind.JAXBContext>-->
                                     <javax.xml.accessExternalDTD>file</javax.xml.accessExternalDTD>
+                                    <org.apache.xml.security.securerandom.algorithm>SHA1PRNG</org.apache.xml.security.securerandom.algorithm>
                                 </systemPropertyVariables>
                             </configuration>
                         </plugin>
