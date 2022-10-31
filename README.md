@@ -1,3 +1,4 @@
+TEST
 [![Build Status](https://builds.apache.org/view/S-Z/view/Santuario/job/santuario-java-trunk//badge/icon?subject=Build)](https://builds.apache.org/view/S-Z/view/Santuario/job/santuario-java-trunk/)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.apache.santuario/xmlsec/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.apache.santuario/xmlsec)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/apache/santuario-xml-security-java/badge)](https://api.securityscorecards.dev/projects/github.com/apache/santuario-xml-security-java)
