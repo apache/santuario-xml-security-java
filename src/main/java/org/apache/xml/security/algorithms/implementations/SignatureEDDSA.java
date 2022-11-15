@@ -40,7 +40,7 @@ public abstract class SignatureEDDSA extends SignatureAlgorithmSpi {
 
 
     /**
-     * Constructor SignatureRSA
+     * Constructor SignatureEDDSA
      *
      * @throws XMLSignatureException
      */
@@ -87,7 +87,7 @@ public abstract class SignatureEDDSA extends SignatureAlgorithmSpi {
         try {
 
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Called EDDSA.verify() on " + XMLUtils.encodeToString(signature));
+                LOG.debug("Called SignatureEDDSA.verify() on " + XMLUtils.encodeToString(signature));
             }
 
             return this.signatureAlgorithm.verify(signature);
@@ -169,11 +169,11 @@ public abstract class SignatureEDDSA extends SignatureAlgorithmSpi {
     protected void engineInitSign(
         Key signingKey, AlgorithmParameterSpec algorithmParameterSpec
     ) throws XMLSignatureException {
-        throw new XMLSignatureException("algorithms.CannotUseAlgorithmParameterSpecOnRSA");
+        throw new XMLSignatureException("algorithms.CannotUseAlgorithmParameterSpecOnEdDSA");
     }
 
     /**
-     * Class SignatureECDSASHA1
+     * Class SignatureEd25519
      *
      */
     public static class SignatureEd25519 extends SignatureEDDSA {
@@ -198,12 +198,12 @@ public abstract class SignatureEDDSA extends SignatureAlgorithmSpi {
     }
 
     /**
-     * Class SignatureECDSASHA224
+     * Class SignatureEd448
      */
     public static class SignatureEd448 extends SignatureEDDSA {
 
         /**
-         * Constructor SignatureECDSASHA224
+         * Constructor SignatureEd448
          *
          * @throws XMLSignatureException
          */

@@ -946,7 +946,6 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
         }
     }
 
-
     static final class EDDSA_ED25519 extends AbstractEDDSASignatureMethod {
 
         EDDSA_ED25519(AlgorithmParameterSpec params)
@@ -965,11 +964,6 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
 
         @Override
         String getJCAAlgorithm() {
-            return "Ed25519";
-
-        }
-
-        String getJCAFallbackAlgorithm() {
             return "Ed25519";
         }
 
@@ -996,13 +990,6 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
 
         @Override
         String getJCAAlgorithm() {
-            // not yet exists but to get ready for the future???
-            //https://docs.oracle.com/en/java/javase/18/docs/specs/security/standard-names.html
-            return "Ed448";
-
-        }
-
-        String getJCAFallbackAlgorithm() {
             return "Ed448";
         }
 
@@ -1011,5 +998,4 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
             return Type.EDDSA;
         }
     }
-
 }
