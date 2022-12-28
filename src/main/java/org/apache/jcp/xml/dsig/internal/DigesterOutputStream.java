@@ -25,6 +25,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.MessageDigest;
 
 import org.apache.xml.security.utils.UnsyncByteArrayOutputStream;
@@ -37,8 +39,8 @@ import org.apache.xml.security.utils.UnsyncByteArrayOutputStream;
  *
  */
 public class DigesterOutputStream extends OutputStream {
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(DigesterOutputStream.class);
+    private static final Logger LOG = System.getLogger(DigesterOutputStream.class.getName());
+
 
     private final boolean buffer;
     private UnsyncByteArrayOutputStream bos;
@@ -80,13 +82,13 @@ public class DigesterOutputStream extends OutputStream {
         if (buffer) {
             bos.write(input, offset, len);
         }
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Pre-digested input:");
+        if (LOG.isLoggable(Level.DEBUG)) {
+            LOG.log(Level.DEBUG, "Pre-digested input:");
             StringBuilder sb = new StringBuilder(len);
             for (int i = offset; i < (offset + len); i++) {
                 sb.append((char)input[i]);
             }
-            LOG.debug(sb.toString());
+            LOG.log(Level.DEBUG, sb.toString());
         }
         md.update(input, offset, len);
     }

@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.keys.storage;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.KeyStore;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
@@ -34,8 +36,7 @@ import org.apache.xml.security.keys.storage.implementations.SingleCertificateRes
  */
 public class StorageResolver {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(StorageResolver.class);
+    private static final Logger LOG = System.getLogger(StorageResolver.class.getName());
 
     /** Field storageResolvers */
     private final List<StorageResolverSpi> storageResolvers = new ArrayList<>();
@@ -85,7 +86,7 @@ public class StorageResolver {
         try {
             this.add(new KeyStoreResolver(keyStore));
         } catch (StorageResolverException ex) {
-            LOG.error("Could not add KeyStore because of: ", ex);
+            LOG.log(Level.ERROR, "Could not add KeyStore because of: ", ex);
         }
     }
 

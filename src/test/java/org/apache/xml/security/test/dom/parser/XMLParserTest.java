@@ -20,6 +20,7 @@ package org.apache.xml.security.test.dom.parser;
 
 
 import java.io.InputStream;
+import java.lang.System.Logger;
 import java.security.Key;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -52,8 +53,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class XMLParserTest {
 
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(XMLParserTest.class);
+    private static final Logger LOG = System.getLogger(XMLParserTest.class.getName());
 
     private final KeyPair rsaKeyPair;
 

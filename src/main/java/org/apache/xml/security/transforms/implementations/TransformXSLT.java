@@ -23,6 +23,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 
 import javax.xml.XMLConstants;
 import javax.xml.transform.Source;
@@ -54,8 +56,7 @@ public class TransformXSLT extends TransformSpi {
     static final String defaultXSLTSpecNSprefix = "xslt";
     static final String XSLTSTYLESHEET = "stylesheet";
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(TransformXSLT.class);
+    private static final Logger LOG = System.getLogger(TransformXSLT.class.getName());
 
     /**
      * {@inheritDoc}
@@ -137,7 +138,7 @@ public class TransformXSLT extends TransformSpi {
             try {
                 transformer.setOutputProperty("{http://xml.apache.org/xalan}line-separator", "\n");
             } catch (Exception e) {
-                LOG.warn("Unable to set Xalan line-separator property: " + e.getMessage());
+                LOG.log(Level.WARNING, "Unable to set Xalan line-separator property: " + e.getMessage());
             }
 
             try (InputStream is = new ByteArrayInputStream(input.getBytes())) {

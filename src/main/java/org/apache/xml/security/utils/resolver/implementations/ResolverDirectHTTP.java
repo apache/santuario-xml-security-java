@@ -21,6 +21,8 @@ package org.apache.xml.security.utils.resolver.implementations;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URI;
@@ -59,8 +61,7 @@ import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
  */
 public class ResolverDirectHTTP extends ResourceResolverSpi {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(ResolverDirectHTTP.class);
+    private static final Logger LOG = System.getLogger(ResolverDirectHTTP.class.getName());
 
     /** Field properties[] */
     private static final String[] properties = {
@@ -145,7 +146,7 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
                     summarized += read;
                 }
 
-                LOG.debug("Fetched {} bytes from URI {}", summarized, uriNew.toString());
+                LOG.log(Level.DEBUG, "Fetched {0} bytes from URI {1}", summarized, uriNew.toString());
 
                 XMLSignatureInput result = new XMLSignatureInput(baos.toByteArray());
                 result.setSecureValidation(context.secureValidation);
@@ -204,24 +205,24 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
     @Override
     public boolean engineCanResolveURI(ResourceResolverContext context) {
         if (context.uriToResolve == null) {
-            LOG.debug("quick fail, uri == null");
+            LOG.log(Level.DEBUG, "quick fail, uri == null");
             return false;
         }
 
         if (context.uriToResolve.isEmpty() || context.uriToResolve.charAt(0) == '#') {
-            LOG.debug("quick fail for empty URIs and local ones");
+            LOG.log(Level.DEBUG, "quick fail for empty URIs and local ones");
             return false;
         }
 
-        LOG.debug("I was asked whether I can resolve {}", context.uriToResolve);
+        LOG.log(Level.DEBUG, "I was asked whether I can resolve {0}", context.uriToResolve);
 
         if (context.uriToResolve.startsWith("http:") ||
             context.baseUri != null && context.baseUri.startsWith("http:")) {
-            LOG.debug("I state that I can resolve {}", context.uriToResolve);
+            LOG.log(Level.DEBUG, "I state that I can resolve {0}", context.uriToResolve);
             return true;
         }
 
-        LOG.debug("I state that I can't resolve {}", context.uriToResolve);
+        LOG.log(Level.DEBUG, "I state that I can't resolve {0}", context.uriToResolve);
 
         return false;
     }

@@ -19,6 +19,7 @@
 package org.apache.xml.security.test.dom.encryption;
 
 
+import java.lang.System.Logger;
 import java.util.Iterator;
 
 import org.apache.xml.security.encryption.Reference;
@@ -37,9 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class ReferenceListTest {
 
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(ReferenceListTest.class);
-
+    private static final Logger LOG = System.getLogger(ReferenceListTest.class.getName());
 
     public ReferenceListTest() throws Exception {
         org.apache.xml.security.Init.init();

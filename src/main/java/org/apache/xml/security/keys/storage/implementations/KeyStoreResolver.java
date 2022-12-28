@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.keys.storage.implementations;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.cert.Certificate;
@@ -37,8 +39,7 @@ import org.apache.xml.security.keys.storage.StorageResolverSpi;
  */
 public class KeyStoreResolver extends StorageResolverSpi {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(KeyStoreResolver.class);
+    private static final Logger LOG = System.getLogger(KeyStoreResolver.class.getName());
 
     /** Field keyStore */
     private final KeyStore keyStore;
@@ -92,7 +93,7 @@ public class KeyStoreResolver extends StorageResolverSpi {
                     }
                 }
             } catch (KeyStoreException ex) {
-                LOG.debug("Error reading certificates: {}", ex.getMessage());
+                LOG.log(Level.DEBUG, "Error reading certificates: {0}", ex.getMessage());
             }
 
             certs = Collections.unmodifiableList(tmpCerts);

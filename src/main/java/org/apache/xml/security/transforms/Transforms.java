@@ -20,6 +20,8 @@ package org.apache.xml.security.transforms;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.Canonicalizer;
@@ -96,8 +98,7 @@ public class Transforms extends SignatureElementProxy {
     public static final String TRANSFORM_XPATH2FILTER
         = "http://www.w3.org/2002/06/xmldsig-filter2";
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(Transforms.class);
+    private static final Logger LOG = System.getLogger(Transforms.class.getName());
 
     private Element[] transformsElement;
 
@@ -160,7 +161,7 @@ public class Transforms extends SignatureElementProxy {
      */
     public void addTransform(String transformURI) throws TransformationException {
         try {
-            LOG.debug("Transforms.addTransform({})", transformURI);
+            LOG.log(Level.DEBUG, "Transforms.addTransform({0})", transformURI);
 
             Transform transform = new Transform(getDocument(), transformURI);
 
@@ -182,7 +183,7 @@ public class Transforms extends SignatureElementProxy {
     public void addTransform(String transformURI, Element contextElement)
        throws TransformationException {
         try {
-            LOG.debug("Transforms.addTransform({})", transformURI);
+            LOG.log(Level.DEBUG, "Transforms.addTransform({0})", transformURI);
 
             Transform transform = new Transform(getDocument(), transformURI, contextElement);
 
@@ -218,7 +219,7 @@ public class Transforms extends SignatureElementProxy {
      * @param transform {@link Transform} object
      */
     private void addTransform(Transform transform) {
-        LOG.debug("Transforms.addTransform({})", transform.getURI());
+        LOG.log(Level.DEBUG, "Transforms.addTransform({0})", transform.getURI());
 
         Element transformElement = transform.getElement();
 
@@ -256,13 +257,13 @@ public class Transforms extends SignatureElementProxy {
             int last = this.getLength() - 1;
             for (int i = 0; i < last; i++) {
                 Transform t = this.item(i);
-                LOG.debug("Perform the ({})th {} transform", i, t.getURI());
+                LOG.log(Level.DEBUG, "Perform the ({0})th {1} transform", i, t.getURI());
                 checkSecureValidation(t);
                 xmlSignatureInput = t.performTransform(xmlSignatureInput, secureValidation);
             }
             if (last >= 0) {
                 Transform t = this.item(last);
-                LOG.debug("Perform the ({})th {} transform", last, t.getURI());
+                LOG.log(Level.DEBUG, "Perform the ({0})th {1} transform", last, t.getURI());
                 checkSecureValidation(t);
                 xmlSignatureInput = t.performTransform(xmlSignatureInput, os, secureValidation);
             }

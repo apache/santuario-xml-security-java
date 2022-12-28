@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.keys.keyresolver.implementations;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
@@ -32,8 +34,7 @@ import org.w3c.dom.Element;
 
 public class DSAKeyValueResolver extends KeyResolverSpi {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(DSAKeyValueResolver.class);
+    private static final Logger LOG = System.getLogger(DSAKeyValueResolver.class.getName());
 
     /** {@inheritDoc} */
     @Override
@@ -72,7 +73,7 @@ public class DSAKeyValueResolver extends KeyResolverSpi {
 
             return pk;
         } catch (XMLSecurityException ex) {
-            LOG.debug(ex.getMessage(), ex);
+            LOG.log(Level.DEBUG, ex.getMessage(), ex);
             //do nothing
         }
 

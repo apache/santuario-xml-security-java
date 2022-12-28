@@ -20,6 +20,8 @@ package org.apache.xml.security.signature;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.Collections;
@@ -123,8 +125,7 @@ public class Reference extends SignatureElementProxy {
         AccessController.doPrivileged((PrivilegedAction<Boolean>)
             () -> Boolean.getBoolean("org.apache.xml.security.useC14N11"));
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(Reference.class);
+    private static final Logger LOG = System.getLogger(Reference.class.getName());
 
     private Manifest manifest;
     private XMLSignatureInput transformsOutput;
@@ -634,7 +635,7 @@ public class Reference extends SignatureElementProxy {
                 };
             } catch (Exception e) {
                 // LOG a warning
-                LOG.warn("cannot cache dereferenced data: " + e);
+                LOG.log(Level.WARNING, "cannot cache dereferenced data", e);
             }
         } else if (input.isElement()) {
             referenceData = new ReferenceSubTreeData
@@ -645,8 +646,7 @@ public class Reference extends SignatureElementProxy {
                     (input.getOctetStream(), input.getSourceURI(),
                         input.getMIMEType());
             } catch (IOException ioe) {
-                // LOG a warning
-                LOG.warn("cannot cache dereferenced data: " + ioe);
+                LOG.log(Level.WARNING, "cannot cache dereferenced data.", ioe);
             }
         }
     }
@@ -754,7 +754,7 @@ public class Reference extends SignatureElementProxy {
      */
     private byte[] getPreCalculatedDigest(XMLSignatureInput input)
             throws ReferenceNotInitializedException {
-        LOG.debug("Verifying element with pre-calculated digest");
+        LOG.log(Level.DEBUG, "Verifying element with pre-calculated digest");
         String preCalculatedDigest = input.getPreCalculatedDigest();
         return XMLUtils.decode(preCalculatedDigest);
     }
@@ -792,11 +792,11 @@ public class Reference extends SignatureElementProxy {
         boolean equal = MessageDigestAlgorithm.isEqual(elemDig, calcDig);
 
         if (!equal) {
-            LOG.warn("Verification failed for URI \"" + this.getURI() + "\"");
-            LOG.warn("Expected Digest: " + XMLUtils.encodeToString(elemDig));
-            LOG.warn("Actual Digest: " + XMLUtils.encodeToString(calcDig));
+            LOG.log(Level.WARNING, "Verification failed for URI \"" + this.getURI() + "\"");
+            LOG.log(Level.WARNING, "Expected Digest: " + XMLUtils.encodeToString(elemDig));
+            LOG.log(Level.WARNING, "Actual Digest: " + XMLUtils.encodeToString(calcDig));
         } else {
-            LOG.debug("Verification successful for URI \"{}\"", this.getURI());
+            LOG.log(Level.DEBUG, "Verification successful for URI \"{0}\"", this.getURI());
         }
 
         return equal;

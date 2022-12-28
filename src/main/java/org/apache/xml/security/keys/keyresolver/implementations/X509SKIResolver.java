@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.keys.keyresolver.implementations;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.Certificate;
@@ -35,9 +37,7 @@ import org.w3c.dom.Element;
 
 public class X509SKIResolver extends KeyResolverSpi {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(X509SKIResolver.class);
-
+    private static final Logger LOG = System.getLogger(X509SKIResolver.class.getName());
 
     /** {@inheritDoc} */
     @Override
@@ -84,7 +84,7 @@ public class X509SKIResolver extends KeyResolverSpi {
                 KeyResolverException ex =
                     new KeyResolverException("KeyResolver.needStorageResolver", exArgs);
 
-                LOG.debug("", ex);
+                LOG.log(Level.DEBUG, "", ex);
 
                 throw ex;
             }
@@ -101,7 +101,7 @@ public class X509SKIResolver extends KeyResolverSpi {
 
                 for (XMLX509SKI childNodeSKI : x509childObject) {
                     if (certSKI.equals(childNodeSKI)) {
-                        LOG.debug("Return PublicKey from {}", cert.getSubjectX500Principal().getName());
+                        LOG.log(Level.DEBUG, "Return PublicKey from {0}", cert.getSubjectX500Principal().getName());
                         return cert;
                     }
                 }

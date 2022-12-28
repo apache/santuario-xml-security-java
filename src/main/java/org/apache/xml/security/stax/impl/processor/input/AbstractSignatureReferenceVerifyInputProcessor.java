@@ -22,6 +22,8 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.MessageDigest;
@@ -37,6 +39,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 
+import org.apache.xml.security.algorithms.JCEMapper;
 import org.apache.xml.security.binding.excc14n.InclusiveNamespaces;
 import org.apache.xml.security.binding.xmldsig.ReferenceType;
 import org.apache.xml.security.binding.xmldsig.SignatureType;
@@ -65,14 +68,12 @@ import org.apache.xml.security.stax.securityEvent.AlgorithmSuiteSecurityEvent;
 import org.apache.xml.security.stax.securityToken.InboundSecurityToken;
 import org.apache.xml.security.utils.UnsyncBufferedOutputStream;
 import org.apache.xml.security.utils.XMLUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  */
 public abstract class AbstractSignatureReferenceVerifyInputProcessor extends AbstractInputProcessor {
 
-    private static final transient Logger LOG = LoggerFactory.getLogger(AbstractSignatureReferenceVerifyInputProcessor.class);
+    private static final Logger LOG = System.getLogger(AbstractSignatureReferenceVerifyInputProcessor.class.getName());
 
     protected static final Integer maximumAllowedReferencesPerManifest =
             Integer.valueOf(ConfigurationProperties.getProperty("MaximumAllowedReferencesPerManifest"));
@@ -294,8 +295,8 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
             throws XMLSecurityException {
 
         String digestMethodAlgorithm = referenceType.getDigestMethod().getAlgorithm();
-        String jceName = JCEAlgorithmMapper.translateURItoJCEID(digestMethodAlgorithm);
-        String jceProvider = JCEAlgorithmMapper.getJCEProviderFromURI(digestMethodAlgorithm);
+        String jceName = JCEMapper.translateURItoJCEID(digestMethodAlgorithm);
+        String jceProvider = JCEMapper.getJCEProviderFromURI(digestMethodAlgorithm);
         if (jceName == null) {
             throw new XMLSecurityException("algorithms.NoSuchMap",
                                            new Object[] {digestMethodAlgorithm});
@@ -394,9 +395,9 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
     }
 
     protected void compareDigest(byte[] calculatedDigest, ReferenceType referenceType) throws XMLSecurityException {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Calculated Digest: {}", XMLUtils.encodeToString(calculatedDigest));
-            LOG.debug("Stored Digest: {}", XMLUtils.encodeToString(referenceType.getDigestValue()));
+        if (LOG.isLoggable(Level.DEBUG)) {
+            LOG.log(Level.DEBUG, "Calculated Digest: {0}", XMLUtils.encodeToString(calculatedDigest));
+            LOG.log(Level.DEBUG, "Stored Digest: {0}", XMLUtils.encodeToString(referenceType.getDigestValue()));
         }
 
         if (!MessageDigest.isEqual(referenceType.getDigestValue(), calculatedDigest)) {

@@ -22,6 +22,8 @@
 package org.apache.jcp.xml.dsig.internal.dom;
 
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
@@ -60,8 +62,8 @@ public abstract class DOMRSAPSSSignatureMethod extends AbstractDOMSignatureMetho
 
     private static final String DOM_SIGNATURE_PROVIDER = "org.jcp.xml.dsig.internal.dom.SignatureProvider";
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(DOMRSAPSSSignatureMethod.class);
+    private static final Logger LOG = System.getLogger(DOMRSAPSSSignatureMethod.class.getName());
+
 
     private final SignatureMethodParameterSpec params;
     private Signature signature;
@@ -129,15 +131,15 @@ public abstract class DOMRSAPSSSignatureMethod extends AbstractDOMSignatureMetho
 
             if (((RSAPSSParameterSpec)params).getTrailerField() > 0) {
                 trailerField = ((RSAPSSParameterSpec)params).getTrailerField();
-                LOG.debug("Setting trailerField from RSAPSSParameterSpec to: {}", trailerField);
+                LOG.log(Level.DEBUG, "Setting trailerField from RSAPSSParameterSpec to: {0}", trailerField);
             }
             if (((RSAPSSParameterSpec)params).getSaltLength() > 0) {
                 saltLength = ((RSAPSSParameterSpec)params).getSaltLength();
-                LOG.debug("Setting saltLength from RSAPSSParameterSpec to: {}", saltLength);
+                LOG.log(Level.DEBUG, "Setting saltLength from RSAPSSParameterSpec to: {0}", saltLength);
             }
             if (((RSAPSSParameterSpec)params).getDigestName() != null) {
                 digestName = ((RSAPSSParameterSpec)params).getDigestName();
-                LOG.debug("Setting digestName from RSAPSSParameterSpec to: {}", digestName);
+                LOG.log(Level.DEBUG, "Setting digestName from RSAPSSParameterSpec to: {0}", digestName);
             }
         }
     }
@@ -246,10 +248,10 @@ public abstract class DOMRSAPSSSignatureMethod extends AbstractDOMSignatureMetho
         } catch (InvalidAlgorithmParameterException e) {
             throw new XMLSignatureException(e);
         }
-        LOG.debug("Signature provider: {}", signature.getProvider());
-        LOG.debug("Verifying with key: {}", key);
-        LOG.debug("JCA Algorithm: {}", getJCAAlgorithm());
-        LOG.debug("Signature Bytes length: {}", sig.length);
+        LOG.log(Level.DEBUG, "Signature provider: {0}", signature.getProvider());
+        LOG.log(Level.DEBUG, "Verifying with key: {0}", key);
+        LOG.log(Level.DEBUG, "JCA Algorithm: {0}", getJCAAlgorithm());
+        LOG.log(Level.DEBUG, "Signature Bytes length: {0}", sig.length);
 
         try (SignerOutputStream outputStream = new SignerOutputStream(signature)) {
             ((DOMSignedInfo)si).canonicalize(context, outputStream);
@@ -287,9 +289,9 @@ public abstract class DOMRSAPSSSignatureMethod extends AbstractDOMSignatureMetho
         } catch (InvalidAlgorithmParameterException e) {
             throw new XMLSignatureException(e);
         }
-        LOG.debug("Signature provider: {}", signature.getProvider());
-        LOG.debug("Signing with key: {}", key);
-        LOG.debug("JCA Algorithm: {}", getJCAAlgorithm());
+        LOG.log(Level.DEBUG, "Signature provider: {0}", signature.getProvider());
+        LOG.log(Level.DEBUG, "Signing with key: {0}", key);
+        LOG.log(Level.DEBUG, "JCA Algorithm: {0}", getJCAAlgorithm());
 
         try (SignerOutputStream outputStream = new SignerOutputStream(signature)) {
             ((DOMSignedInfo)si).canonicalize(context, outputStream);

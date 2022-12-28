@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.test.dom.algorithms;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.lang.reflect.Field;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -49,8 +51,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class SignatureAlgorithmTest {
 
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(SignatureAlgorithmTest.class);
+    private static final Logger LOG = System.getLogger(SignatureAlgorithmTest.class.getName());
 
     static {
         org.apache.xml.security.Init.init();
@@ -83,7 +84,7 @@ public class SignatureAlgorithmTest {
         try {
             otherSignatureAlgorithm.initSign(pk);
         } catch (XMLSecurityException ex) {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Test testSameKeySeveralAlgorithmSigning skipped as necessary algorithms "
                 + "not available"
             );

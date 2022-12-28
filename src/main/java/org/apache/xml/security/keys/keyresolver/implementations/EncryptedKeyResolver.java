@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.keys.keyresolver.implementations;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.Key;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -50,8 +52,7 @@ import org.w3c.dom.Element;
  */
 public class EncryptedKeyResolver extends KeyResolverSpi {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(RSAKeyValueResolver.class);
+    private static final Logger LOG = System.getLogger(EncryptedKeyResolver.class.getName());
 
     private final Key kek;
     private final String algorithm;
@@ -115,10 +116,10 @@ public class EncryptedKeyResolver extends KeyResolverSpi {
             return null;
         }
 
-        LOG.debug("EncryptedKeyResolver - Can I resolve {}", element.getTagName());
+        LOG.log(Level.DEBUG, "EncryptedKeyResolver - Can I resolve {0}", element.getTagName());
 
         SecretKey key = null;
-        LOG.debug("Passed an Encrypted Key");
+        LOG.log(Level.DEBUG, "Passed an Encrypted Key");
         try {
             XMLCipher cipher = XMLCipher.getInstance();
             cipher.init(XMLCipher.UNWRAP_MODE, kek);
@@ -129,7 +130,7 @@ public class EncryptedKeyResolver extends KeyResolverSpi {
             EncryptedKey ek = cipher.loadEncryptedKey(element);
             key = (SecretKey) cipher.decryptKey(ek, algorithm);
         } catch (XMLEncryptionException e) {
-            LOG.debug(e.getMessage(), e);
+            LOG.log(Level.DEBUG, e.getMessage(), e);
         }
 
         return key;

@@ -23,6 +23,8 @@ import jakarta.xml.bind.JAXBElement;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -71,8 +73,6 @@ import org.apache.xml.security.stax.securityToken.InboundSecurityToken;
 import org.apache.xml.security.utils.UnsyncBufferedOutputStream;
 import org.apache.xml.security.utils.UnsyncByteArrayInputStream;
 import org.apache.xml.security.utils.UnsyncByteArrayOutputStream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static org.apache.xml.security.algorithms.implementations.SignatureBaseRSA.SignatureRSASSAPSS.DigestAlgorithm.SHA256;
 import static org.apache.xml.security.algorithms.implementations.SignatureBaseRSA.SignatureRSASSAPSS.DigestAlgorithm.fromXmlDigestAlgorithm;
@@ -81,7 +81,8 @@ import static org.apache.xml.security.algorithms.implementations.SignatureBaseRS
  */
 public abstract class AbstractSignatureInputHandler extends AbstractInputSecurityHeaderHandler {
 
-    private static final transient Logger LOG = LoggerFactory.getLogger(AbstractSignatureInputHandler.class);
+    private static final transient Logger LOG = System.getLogger(AbstractSignatureInputHandler.class.getName());
+
     private static final Set<String> C14N_ALGORITHMS;
 
     static {
@@ -369,7 +370,7 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
                 try {
                     ((Destroyable)verifyKey).destroy();
                 } catch (DestroyFailedException e) {
-                    LOG.debug("Error destroying key: {}", e.getMessage());
+                    LOG.log(Level.DEBUG, "Error destroying key: {0}", e.getMessage());
                 }
             }
         }

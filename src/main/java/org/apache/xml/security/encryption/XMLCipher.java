@@ -22,6 +22,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
@@ -82,10 +84,9 @@ import org.w3c.dom.NodeList;
  * order to facilitate understanding of its functioning.
  *
  */
-public class XMLCipher {
+public final class XMLCipher {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(XMLCipher.class);
+    private static final Logger LOG = System.getLogger(XMLCipher.class.getName());
 
     /** Triple DES EDE (192 bit key) in CBC mode */
     public static final String TRIPLEDES =
@@ -286,7 +287,7 @@ public class XMLCipher {
 
     private boolean secureValidation = true;
 
-    private String digestAlg;
+    private final String digestAlg;
 
     /** List of internal KeyResolvers for DECRYPT and UNWRAP modes. */
     private List<KeyResolverSpi> internalKeyResolvers;
@@ -336,7 +337,7 @@ public class XMLCipher {
         String digestMethod,
         Serializer serializer
     ) throws XMLEncryptionException {
-        LOG.debug("Constructing XMLCipher...");
+        LOG.log(Level.DEBUG, "Constructing XMLCipher...");
 
         factory = new Factory();
 
@@ -391,7 +392,7 @@ public class XMLCipher {
             throw new NullPointerException("Transformation unexpectedly null...");
         }
         if (!isValidEncryptionAlgorithm(transformation)) {
-            LOG.warn("Algorithm non-standard, expected one of " + ENC_ALGORITHMS);
+            LOG.log(Level.WARNING, "Algorithm non-standard, expected one of " + ENC_ALGORITHMS);
         }
     }
 
@@ -424,7 +425,7 @@ public class XMLCipher {
      * @see javax.crypto.Cipher#getInstance(java.lang.String)
      */
     public static XMLCipher getInstance(String transformation) throws XMLEncryptionException {
-        LOG.debug("Getting XMLCipher with transformation");
+        LOG.log(Level.DEBUG, "Getting XMLCipher with transformation");
         validateTransformation(transformation);
         return new XMLCipher(transformation, null, null, createSerializer(true));
     }
@@ -442,7 +443,7 @@ public class XMLCipher {
      * @throws XMLEncryptionException
      */
     public static XMLCipher getInstance(Serializer serializer, String transformation) throws XMLEncryptionException {
-        LOG.debug("Getting XMLCipher with transformation");
+        LOG.log(Level.DEBUG, "Getting XMLCipher with transformation");
         validateTransformation(transformation);
         return new XMLCipher(transformation, null, null, serializer);
     }
@@ -462,7 +463,7 @@ public class XMLCipher {
      */
     public static XMLCipher getInstance(String transformation, String canon)
         throws XMLEncryptionException {
-        LOG.debug("Getting XMLCipher with transformation and c14n algorithm");
+        LOG.log(Level.DEBUG, "Getting XMLCipher with transformation and c14n algorithm");
         validateTransformation(transformation);
         return new XMLCipher(transformation, null, null, createSerializer(canon, true));
     }
@@ -483,7 +484,7 @@ public class XMLCipher {
      */
     public static XMLCipher getInstance(String transformation, String canon, String digestMethod)
         throws XMLEncryptionException {
-        LOG.debug("Getting XMLCipher with transformation and c14n algorithm");
+        LOG.log(Level.DEBUG, "Getting XMLCipher with transformation and c14n algorithm");
         validateTransformation(transformation);
         return new XMLCipher(transformation, null, digestMethod, createSerializer(canon, true));
     }
@@ -499,7 +500,7 @@ public class XMLCipher {
      */
     public static XMLCipher getProviderInstance(String transformation, String provider)
         throws XMLEncryptionException {
-        LOG.debug("Getting XMLCipher with transformation and provider");
+        LOG.log(Level.DEBUG, "Getting XMLCipher with transformation and provider");
         if (null == provider) {
             throw new NullPointerException("Provider unexpectedly null..");
         }
@@ -524,7 +525,7 @@ public class XMLCipher {
     public static XMLCipher getProviderInstance(
         String transformation, String provider, String canon
     ) throws XMLEncryptionException {
-        LOG.debug("Getting XMLCipher with transformation, provider and c14n algorithm");
+        LOG.log(Level.DEBUG, "Getting XMLCipher with transformation, provider and c14n algorithm");
         if (null == provider) {
             throw new NullPointerException("Provider unexpectedly null..");
         }
@@ -550,7 +551,7 @@ public class XMLCipher {
     public static XMLCipher getProviderInstance(
         String transformation, String provider, String canon, String digestMethod
     ) throws XMLEncryptionException {
-        LOG.debug("Getting XMLCipher with transformation, provider and c14n algorithm");
+        LOG.log(Level.DEBUG, "Getting XMLCipher with transformation, provider and c14n algorithm");
         if (null == provider) {
             throw new NullPointerException("Provider unexpectedly null..");
         }
@@ -574,7 +575,7 @@ public class XMLCipher {
     public static XMLCipher getProviderInstance(
         Serializer serializer, String transformation, String provider, String digestMethod
     ) throws XMLEncryptionException {
-        LOG.debug("Getting XMLCipher with transformation, provider and c14n algorithm");
+        LOG.log(Level.DEBUG, "Getting XMLCipher with transformation, provider and c14n algorithm");
         if (null == provider) {
             throw new NullPointerException("Provider unexpectedly null..");
         }
@@ -592,7 +593,7 @@ public class XMLCipher {
      * @throws XMLEncryptionException
      */
     public static XMLCipher getInstance() throws XMLEncryptionException {
-        LOG.debug("Getting XMLCipher with no arguments");
+        LOG.log(Level.DEBUG, "Getting XMLCipher with no arguments");
         return new XMLCipher(null, null, null, createSerializer(true));
     }
 
@@ -610,7 +611,7 @@ public class XMLCipher {
      * @throws XMLEncryptionException
      */
     public static XMLCipher getProviderInstance(String provider) throws XMLEncryptionException {
-        LOG.debug("Getting XMLCipher with provider");
+        LOG.log(Level.DEBUG, "Getting XMLCipher with provider");
         return new XMLCipher(null, provider, null, createSerializer(true));
     }
 
@@ -635,7 +636,7 @@ public class XMLCipher {
      * @throws XMLEncryptionException
      */
     public void init(int opmode, Key key) throws XMLEncryptionException {
-        LOG.debug("Initializing XMLCipher...");
+        LOG.log(Level.DEBUG, "Initializing XMLCipher...");
 
         ek = null;
         ed = null;
@@ -643,21 +644,21 @@ public class XMLCipher {
         switch (opmode) {
 
         case ENCRYPT_MODE :
-            LOG.debug("opmode = ENCRYPT_MODE");
+            LOG.log(Level.DEBUG, "opmode = ENCRYPT_MODE");
             ed = createEncryptedData(CipherData.VALUE_TYPE, "NO VALUE YET");
             break;
         case DECRYPT_MODE :
-            LOG.debug("opmode = DECRYPT_MODE");
+            LOG.log(Level.DEBUG, "opmode = DECRYPT_MODE");
             break;
         case WRAP_MODE :
-            LOG.debug("opmode = WRAP_MODE");
+            LOG.log(Level.DEBUG, "opmode = WRAP_MODE");
             ek = createEncryptedKey(CipherData.VALUE_TYPE, "NO VALUE YET");
             break;
         case UNWRAP_MODE :
-            LOG.debug("opmode = UNWRAP_MODE");
+            LOG.log(Level.DEBUG, "opmode = UNWRAP_MODE");
             break;
         default :
-            LOG.error("Mode unexpectedly invalid");
+            LOG.log(Level.ERROR, "Mode unexpectedly invalid");
             throw new XMLEncryptionException("Invalid mode in init");
         }
 
@@ -697,7 +698,7 @@ public class XMLCipher {
      */
     public EncryptedData getEncryptedData() {
         // Sanity checks
-        LOG.debug("Returning EncryptedData");
+        LOG.log(Level.DEBUG, "Returning EncryptedData");
         return ed;
     }
 
@@ -712,7 +713,7 @@ public class XMLCipher {
      */
     public EncryptedKey getEncryptedKey() {
         // Sanity checks
-        LOG.debug("Returning EncryptedKey");
+        LOG.log(Level.DEBUG, "Returning EncryptedKey");
         return ek;
     }
 
@@ -844,7 +845,7 @@ public class XMLCipher {
      *  @throws Exception
      */
     private Document encryptElement(Element element) throws Exception{
-        LOG.debug("Encrypting element...");
+        LOG.log(Level.DEBUG, "Encrypting element...");
         if (null == element) {
             throw new XMLEncryptionException("empty", "Element unexpectedly null...");
         }
@@ -880,7 +881,7 @@ public class XMLCipher {
      * @throws Exception
      */
     private Document encryptElementContent(Element element) throws /* XMLEncryption */Exception {
-        LOG.debug("Encrypting element content...");
+        LOG.log(Level.DEBUG, "Encrypting element content...");
         if (null == element) {
             throw new XMLEncryptionException("empty", "Element unexpectedly null...");
         }
@@ -911,7 +912,7 @@ public class XMLCipher {
      * @throws Exception to indicate any exceptional conditions.
      */
     public Document doFinal(Document context, Document source) throws /* XMLEncryption */Exception {
-        LOG.debug("Processing source document...");
+        LOG.log(Level.DEBUG, "Processing source document...");
         if (null == source) {
             throw new XMLEncryptionException("empty", "Source document unexpectedly null...");
         }
@@ -928,7 +929,7 @@ public class XMLCipher {
      * @throws Exception to indicate any exceptional conditions.
      */
     public Document doFinal(Document context, Element element) throws /* XMLEncryption */Exception {
-        LOG.debug("Processing source element...");
+        LOG.log(Level.DEBUG, "Processing source element...");
         if (null == context) {
             throw new XMLEncryptionException("empty", "Context document unexpectedly null...");
         }
@@ -971,7 +972,7 @@ public class XMLCipher {
      */
     public Document doFinal(Document context, Element element, boolean content)
         throws /* XMLEncryption*/ Exception {
-        LOG.debug("Processing source element...");
+        LOG.log(Level.DEBUG, "Processing source element...");
         if (null == context) {
             throw new XMLEncryptionException("empty", "Context document unexpectedly null...");
         }
@@ -1043,7 +1044,7 @@ public class XMLCipher {
     public EncryptedData encryptData(
         Document context, String type, InputStream serializedData
     ) throws Exception {
-        LOG.debug("Encrypting element...");
+        LOG.log(Level.DEBUG, "Encrypting element...");
         if (null == context) {
             throw new XMLEncryptionException("empty", "Context document unexpectedly null...");
         }
@@ -1074,7 +1075,7 @@ public class XMLCipher {
     public EncryptedData encryptData(
         Document context, Element element, boolean contentMode
     ) throws /* XMLEncryption */ Exception {
-        LOG.debug("Encrypting element...");
+        LOG.log(Level.DEBUG, "Encrypting element...");
         if (null == context) {
             throw new XMLEncryptionException("empty", "Context document unexpectedly null...");
         }
@@ -1116,8 +1117,8 @@ public class XMLCipher {
             } else {
                 serializedOctets = serializer.serializeToByteArray(element);
             }
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Serialized octets:\n" + new String(serializedOctets, StandardCharsets.UTF_8));
+            if (LOG.isLoggable(Level.DEBUG)) {
+                LOG.log(Level.DEBUG, "Serialized octets:\n" + new String(serializedOctets, StandardCharsets.UTF_8));
             }
         }
 
@@ -1155,13 +1156,13 @@ public class XMLCipher {
                 }
             } else {
                 encryptedBytes = c.doFinal(serializedOctets);
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Expected cipher.outputSize = " +
+                if (LOG.isLoggable(Level.DEBUG)) {
+                    LOG.log(Level.DEBUG, "Expected cipher.outputSize = " +
                         Integer.toString(c.getOutputSize(serializedOctets.length)));
                 }
             }
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Actual cipher.outputSize = "
+            if (LOG.isLoggable(Level.DEBUG)) {
+                LOG.log(Level.DEBUG, "Actual cipher.outputSize = "
                              + Integer.toString(encryptedBytes.length));
             }
         } catch (IllegalStateException | IllegalBlockSizeException
@@ -1180,8 +1181,8 @@ public class XMLCipher {
         System.arraycopy(encryptedBytes, 0, finalEncryptedBytes, iv.length, encryptedBytes.length);
         String base64EncodedEncryptedOctets = XMLUtils.encodeToString(finalEncryptedBytes);
 
-        LOG.debug("Encrypted octets:\n{}", base64EncodedEncryptedOctets);
-        LOG.debug("Encrypted octets length = {}", base64EncodedEncryptedOctets.length());
+        LOG.log(Level.DEBUG, "Encrypted octets:\n{0}", base64EncodedEncryptedOctets);
+        LOG.log(Level.DEBUG, "Encrypted octets length = {0}", base64EncodedEncryptedOctets.length());
 
         try {
             CipherData cd = ed.getCipherData();
@@ -1226,7 +1227,7 @@ public class XMLCipher {
      */
     public EncryptedData loadEncryptedData(Document context, Element element)
         throws XMLEncryptionException {
-        LOG.debug("Loading encrypted element...");
+        LOG.log(Level.DEBUG, "Loading encrypted element...");
         if (null == context) {
             throw new XMLEncryptionException("empty", "Context document unexpectedly null...");
         }
@@ -1255,7 +1256,7 @@ public class XMLCipher {
      */
     public EncryptedKey loadEncryptedKey(Document context, Element element)
         throws XMLEncryptionException {
-        LOG.debug("Loading encrypted key...");
+        LOG.log(Level.DEBUG, "Loading encrypted key...");
         if (null == context) {
             throw new XMLEncryptionException("empty", "Context document unexpectedly null...");
         }
@@ -1340,7 +1341,7 @@ public class XMLCipher {
         byte[] oaepParams,
         SecureRandom random
     ) throws XMLEncryptionException {
-        LOG.debug("Encrypting key ...");
+        LOG.log(Level.DEBUG, "Encrypting key ...");
 
         if (null == key) {
             throw new XMLEncryptionException("empty", "Key unexpectedly null...");
@@ -1391,8 +1392,8 @@ public class XMLCipher {
         }
 
         String base64EncodedEncryptedOctets = XMLUtils.encodeToString(encryptedBytes);
-        LOG.debug("Encrypted key octets:\n{}", base64EncodedEncryptedOctets);
-        LOG.debug("Encrypted key octets length = {}", base64EncodedEncryptedOctets.length());
+        LOG.log(Level.DEBUG, "Encrypted key octets:\n{0}", base64EncodedEncryptedOctets);
+        LOG.log(Level.DEBUG, "Encrypted key octets length = {0}", base64EncodedEncryptedOctets.length());
 
         CipherValue cv = ek.getCipherData().getCipherValue();
         cv.setValue(base64EncodedEncryptedOctets);
@@ -1420,7 +1421,7 @@ public class XMLCipher {
      */
     public Key decryptKey(EncryptedKey encryptedKey, String algorithm)
         throws XMLEncryptionException {
-        LOG.debug("Decrypting key from previously loaded EncryptedKey...");
+        LOG.log(Level.DEBUG, "Decrypting key from previously loaded EncryptedKey...");
 
         if (cipherMode != UNWRAP_MODE) {
             throw new XMLEncryptionException("empty", "XMLCipher unexpectedly not in UNWRAP_MODE...");
@@ -1431,7 +1432,7 @@ public class XMLCipher {
         }
 
         if (key == null) {
-            LOG.debug("Trying to find a KEK via key resolvers");
+            LOG.log(Level.DEBUG, "Trying to find a KEK via key resolvers");
 
             KeyInfo ki = encryptedKey.getKeyInfo();
             if (ki != null) {
@@ -1446,11 +1447,11 @@ public class XMLCipher {
                     }
                 }
                 catch (Exception e) {
-                    LOG.debug(e.getMessage(), e);
+                    LOG.log(Level.DEBUG, e.getMessage(), e);
                 }
             }
             if (key == null) {
-                LOG.error("XMLCipher::decryptKey unable to resolve a KEK");
+                LOG.log(Level.ERROR, "XMLCipher::decryptKey unable to resolve a KEK");
                 throw new XMLEncryptionException("empty", "Unable to decrypt without a KEK");
             }
         }
@@ -1461,7 +1462,7 @@ public class XMLCipher {
         byte[] encryptedBytes = cipherInput.getBytes();
 
         String jceKeyAlgorithm = JCEMapper.getJCEKeyAlgorithmFromURI(algorithm);
-        LOG.debug("JCE Key Algorithm: {}", jceKeyAlgorithm);
+        LOG.log(Level.DEBUG, "JCE Key Algorithm: {0}", jceKeyAlgorithm);
 
         Cipher c;
         if (contextCipher == null) {
@@ -1493,7 +1494,7 @@ public class XMLCipher {
         } catch (InvalidKeyException | NoSuchAlgorithmException | InvalidAlgorithmParameterException e) {
             throw new XMLEncryptionException(e);
         }
-        LOG.debug("Decryption of key type {} OK", algorithm);
+        LOG.log(Level.DEBUG, "Decryption of key type {0} OK", algorithm);
 
         return ret;
     }
@@ -1543,7 +1544,7 @@ public class XMLCipher {
      */
     private Cipher constructCipher(String algorithm, String digestAlgorithm) throws XMLEncryptionException {
         String jceAlgorithm = JCEMapper.translateURItoJCEID(algorithm);
-        LOG.debug("JCE Algorithm = {}", jceAlgorithm);
+        LOG.log(Level.DEBUG, "JCE Algorithm = {0}", jceAlgorithm);
 
         Cipher c;
         try {
@@ -1658,7 +1659,7 @@ public class XMLCipher {
      * @throws XMLEncryptionException
      */
     private Document decryptElement(Element element) throws XMLEncryptionException {
-        LOG.debug("Decrypting element...");
+        LOG.log(Level.DEBUG, "Decrypting element...");
 
         if (element == null) {
             throw new XMLEncryptionException("empty", "Cannot decrypt null element");
@@ -1672,8 +1673,8 @@ public class XMLCipher {
 
         byte[] octets = decryptToByteArray(element);
 
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Decrypted octets:\n" + new String(octets));
+        if (LOG.isLoggable(Level.DEBUG)) {
+            LOG.log(Level.DEBUG, "Decrypted octets:\n" + new String(octets));
         }
 
         Node sourceParent = element.getParentNode();
@@ -1727,7 +1728,7 @@ public class XMLCipher {
      * @throws XMLEncryptionException
      */
     public byte[] decryptToByteArray(Element element) throws XMLEncryptionException {
-        LOG.debug("Decrypting to ByteArray...");
+        LOG.log(Level.DEBUG, "Decrypting to ByteArray...");
 
         if (cipherMode != DECRYPT_MODE) {
             throw new XMLEncryptionException("empty", "XMLCipher unexpectedly not in DECRYPT_MODE...");
@@ -1746,12 +1747,12 @@ public class XMLCipher {
                     ki.setSecureValidation(secureValidation);
                     key = ki.getSecretKey();
                 } catch (KeyResolverException kre) {
-                    LOG.debug(kre.getMessage(), kre);
+                    LOG.log(Level.DEBUG, kre.getMessage(), kre);
                 }
             }
 
             if (key == null) {
-                LOG.error(
+                LOG.log(Level.ERROR,
                     "XMLCipher::decryptElement unable to resolve a decryption key"
                 );
                 throw new XMLEncryptionException("empty", "encryption.nokey");
@@ -1766,7 +1767,7 @@ public class XMLCipher {
         // Now create the working cipher
         String jceAlgorithm =
             JCEMapper.translateURItoJCEID(encMethodAlgorithm);
-        LOG.debug("JCE Algorithm = {}", jceAlgorithm);
+        LOG.log(Level.DEBUG, "JCE Algorithm = {0}", jceAlgorithm);
 
         Cipher c;
         try {
@@ -2182,7 +2183,7 @@ public class XMLCipher {
             Element transformsElement = (Element) transformsElements.item(0);
 
             if (transformsElement != null) {
-                LOG.debug("Creating a DSIG based Transforms element");
+                LOG.log(Level.DEBUG, "Creating a DSIG based Transforms element");
                 try {
                     result.setTransforms(new TransformsImpl(transformsElement));
                 } catch (XMLSecurityException e) {
@@ -2511,10 +2512,10 @@ public class XMLCipher {
 
         private class AgreementMethodImpl implements AgreementMethod {
             private byte[] kaNonce;
-            private List<Element> agreementMethodInformation;
+            private final List<Element> agreementMethodInformation;
             private KeyInfo originatorKeyInfo;
             private KeyInfo recipientKeyInfo;
-            private String algorithmURI;
+            private final String algorithmURI;
 
             /**
              * @param algorithm
@@ -2666,9 +2667,9 @@ public class XMLCipher {
         }
 
         private class CipherReferenceImpl implements CipherReference {
-            private String referenceURI;
+            private final String referenceURI;
             private Transforms referenceTransforms;
-            private Attr referenceNode;
+            private final Attr referenceNode;
 
             /**
              * @param uri
@@ -2921,7 +2922,7 @@ public class XMLCipher {
             private String encoding;
             private EncryptionMethod encryptionMethod;
             private KeyInfo keyInfo;
-            private CipherData cipherData;
+            private final CipherData cipherData;
             private EncryptionProperties encryptionProperties;
 
             /**
@@ -3075,10 +3076,10 @@ public class XMLCipher {
         }
 
         private class EncryptionMethodImpl implements EncryptionMethod {
-            private String algorithm;
+            private final String algorithm;
             private int keySize = Integer.MIN_VALUE;
             private byte[] oaepParams;
-            private List<Element> encryptionMethodInformation;
+            private final List<Element> encryptionMethodInformation;
             private String digestAlgorithm;
             private String mgfAlgorithm;
 
@@ -3225,7 +3226,7 @@ public class XMLCipher {
 
         private class EncryptionPropertiesImpl implements EncryptionProperties {
             private String id;
-            private List<EncryptionProperty> encryptionProperties;
+            private final List<EncryptionProperty> encryptionProperties;
 
             /**
              * Constructor.
@@ -3284,8 +3285,8 @@ public class XMLCipher {
         private class EncryptionPropertyImpl implements EncryptionProperty {
             private String target;
             private String id;
-            private Map<String, String> attributeMap = new HashMap<>();
-            private List<Element> encryptionInformation;
+            private final Map<String, String> attributeMap = new HashMap<>();
+            private final List<Element> encryptionInformation;
 
             /**
              * Constructor.
@@ -3462,7 +3463,7 @@ public class XMLCipher {
 
         private class ReferenceListImpl implements ReferenceList {
             private Class<?> sentry;
-            private List<Reference> references;
+            private final List<Reference> references;
 
             /**
              * Constructor.
@@ -3548,7 +3549,7 @@ public class XMLCipher {
              */
             private abstract class ReferenceImpl implements Reference {
                 private String uri;
-                private List<Element> referenceInformation;
+                private final List<Element> referenceInformation;
 
                 ReferenceImpl(String uri) {
                     this.uri = uri;
@@ -3658,11 +3659,11 @@ public class XMLCipher {
                 result = "http://www.w3.org/2000/xmlns/".equals(
                     domResult.getNode().getFirstChild().getFirstChild().getAttributes().item(1).getNamespaceURI());
             }
-            LOG.debug("Have functional IdentityTransformer: {}", result);
+            LOG.log(Level.DEBUG, "Have functional IdentityTransformer: {0}", result);
             return result;
 
         } catch (Exception e) {
-            LOG.debug(e.getMessage(), e);
+            LOG.log(Level.DEBUG, e.getMessage(), e);
             return false;
         }
     }
