@@ -416,7 +416,6 @@
                               org.apache.commons.codec.*;version="[1.6,2)",
                               *
                         </Import-Package>
-                        <Automatic-Module-Name>org.apache.santuario.xmlsec</Automatic-Module-Name>
                         <_noimportjava>true</_noimportjava>
                     </instructions>
                 </configuration>
