@@ -43,21 +43,20 @@ public final class JavaUtils {
         // we don't allow instantiation
     }
 
+
     /**
      * Method getBytesFromFile
      *
-     * @param fileName
+     * @param filePath
      * @return the bytes read from the file
-     *
      * @throws FileNotFoundException
      * @throws IOException
+     * @deprecated Use {@link Files#readAllBytes(java.nio.file.Path)}
      */
-    public static byte[] getBytesFromFile(String fileName)
+    @Deprecated(forRemoval = true, since = "4.0.0")
+    public static byte[] getBytesFromFile(String filePath)
         throws FileNotFoundException, IOException {
-
-        byte[] refBytes = null;
-
-        try (InputStream inputStream = Files.newInputStream(Paths.get(fileName));
+        try (InputStream inputStream = Files.newInputStream(Paths.get(filePath));
             UnsyncByteArrayOutputStream baos = new UnsyncByteArrayOutputStream()) {
             byte[] buf = new byte[1024];
             int len;
@@ -66,10 +65,8 @@ public final class JavaUtils {
                 baos.write(buf, 0, len);
             }
 
-            refBytes = baos.toByteArray();
+            return baos.toByteArray();
         }
-
-        return refBytes;
     }
 
     /**
