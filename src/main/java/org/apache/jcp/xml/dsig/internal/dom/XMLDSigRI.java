@@ -42,14 +42,8 @@ import javax.xml.crypto.dsig.CanonicalizationMethod;
 import javax.xml.crypto.dsig.Transform;
 
 /**
- * The XMLDSig RI Provider.
- *
- */
-
-/**
  * Defines the XMLDSigRI provider.
  */
-
 public final class XMLDSigRI extends Provider {
 
     static final long serialVersionUID = -5049765099299494554L;
@@ -129,7 +123,7 @@ public final class XMLDSigRI extends Provider {
 
     public XMLDSigRI() {
         /* We are the ApacheXMLDSig provider */
-        super("ApacheXMLDSig", 3.03, INFO);
+        super("ApacheXMLDSig", "4.0.0", INFO);
 
         final Provider p = this;
         AccessController.doPrivileged(new PrivilegedAction<Void>() {
