@@ -19,6 +19,8 @@
 package org.apache.xml.security.test.dom.c14n.helper;
 
 
+import java.lang.System.Logger;
+
 import org.apache.xml.security.c14n.helper.C14nHelper;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -30,8 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class C14nHelperTest {
 
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(C14nHelperTest.class);
+    private static final Logger LOG = System.getLogger(C14nHelperTest.class.getName());
 
     static {
         org.apache.xml.security.Init.init();

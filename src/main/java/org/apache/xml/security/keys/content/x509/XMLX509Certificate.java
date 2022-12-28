@@ -21,6 +21,7 @@ package org.apache.xml.security.keys.content.x509;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.System.Logger.Level;
 import java.security.PublicKey;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
@@ -145,7 +146,7 @@ public class XMLX509Certificate extends SignatureElementProxy implements XMLX509
                 result = 31 * result + element;
             }
         } catch (XMLSecurityException e) {
-            LOG.debug(e.getMessage(), e);
+            LOG.log(Level.DEBUG, e.getMessage(), e);
         }
         return result;
     }

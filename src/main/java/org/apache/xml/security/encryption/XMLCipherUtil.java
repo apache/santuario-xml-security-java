@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.encryption;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.security.spec.AlgorithmParameterSpec;
@@ -29,8 +31,7 @@ import org.apache.xml.security.utils.EncryptionConstants;
 
 public final class XMLCipherUtil {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(XMLCipherUtil.class);
+    private static final Logger LOG = System.getLogger(XMLCipherUtil.class.getName());
 
     private static final boolean gcmUseIvParameterSpec =
         AccessController.doPrivileged((PrivilegedAction<Boolean>)
@@ -51,7 +52,7 @@ public final class XMLCipherUtil {
                 || EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256_GCM.equals(algorithm)) {
             return constructBlockCipherParametersForGCMAlgorithm(algorithm, iv);
         } else {
-            LOG.debug("Saw non-AES-GCM mode block cipher, returning IvParameterSpec: {}", algorithm);
+            LOG.log(Level.DEBUG, "Saw non-AES-GCM mode block cipher, returning IvParameterSpec: {0}", algorithm);
             return new IvParameterSpec(iv);
         }
     }
@@ -60,7 +61,7 @@ public final class XMLCipherUtil {
         if (gcmAlgorithm) {
             return constructBlockCipherParametersForGCMAlgorithm("AES/GCM/NoPadding", iv);
         } else {
-            LOG.debug("Saw non-AES-GCM mode block cipher, returning IvParameterSpec");
+            LOG.log(Level.DEBUG, "Saw non-AES-GCM mode block cipher, returning IvParameterSpec");
             return new IvParameterSpec(iv);
         }
     }
@@ -70,14 +71,14 @@ public final class XMLCipherUtil {
             // This override allows to support Java 1.7+ with (usually older versions of) third-party security
             // providers which support or even require GCM via IvParameterSpec rather than GCMParameterSpec,
             // e.g. BouncyCastle <= 1.49 (really <= 1.50 due to a semi-related bug).
-            LOG.debug("Saw AES-GCM block cipher, using IvParameterSpec due to system property override: {}", algorithm);
+            LOG.log(Level.DEBUG, "Saw AES-GCM block cipher, using IvParameterSpec due to system property override: {0}", algorithm);
             return new IvParameterSpec(iv);
         }
 
-        LOG.debug("Saw AES-GCM block cipher, attempting to create GCMParameterSpec: {}", algorithm);
+        LOG.log(Level.DEBUG, "Saw AES-GCM block cipher, attempting to create GCMParameterSpec: {0}", algorithm);
 
         GCMParameterSpec gcmSpec = new GCMParameterSpec(128, iv);
-        LOG.debug("Successfully created GCMParameterSpec");
+        LOG.log(Level.DEBUG, "Successfully created GCMParameterSpec");
         return gcmSpec;
     }
 }

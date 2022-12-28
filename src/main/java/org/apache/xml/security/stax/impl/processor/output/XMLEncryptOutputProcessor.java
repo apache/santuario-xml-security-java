@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.stax.impl.processor.output;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
@@ -52,8 +54,6 @@ import org.apache.xml.security.stax.securityToken.OutboundSecurityToken;
 import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 import org.apache.xml.security.stax.securityToken.SecurityTokenProvider;
 import org.apache.xml.security.utils.XMLUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Processor to encrypt XML structures
@@ -61,7 +61,7 @@ import org.slf4j.LoggerFactory;
  */
 public class XMLEncryptOutputProcessor extends AbstractEncryptOutputProcessor {
 
-    private static final transient Logger LOG = LoggerFactory.getLogger(XMLEncryptOutputProcessor.class);
+    private static final transient Logger LOG = System.getLogger(XMLEncryptOutputProcessor.class.getName());
 
     public XMLEncryptOutputProcessor() throws XMLSecurityException {
         super();
@@ -76,7 +76,7 @@ public class XMLEncryptOutputProcessor extends AbstractEncryptOutputProcessor {
             if (getActiveInternalEncryptionOutputProcessor() == null) {
                 SecurePart securePart = securePartMatches(xmlSecStartElement, outputProcessorChain, XMLSecurityConstants.ENCRYPTION_PARTS);
                 if (securePart != null) {
-                    LOG.debug("Matched encryptionPart for encryption");
+                    LOG.log(Level.DEBUG, "Matched encryptionPart for encryption");
                     String tokenId = outputProcessorChain.getSecurityContext().get(
                             XMLSecurityConstants.PROP_USE_THIS_TOKEN_ID_FOR_ENCRYPTION);
                     SecurityTokenProvider<OutboundSecurityToken> securityTokenProvider =

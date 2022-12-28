@@ -22,6 +22,8 @@
 package org.apache.jcp.xml.dsig.internal.dom;
 
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
@@ -56,8 +58,7 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
 
     private static final String DOM_SIGNATURE_PROVIDER = "org.jcp.xml.dsig.internal.dom.SignatureProvider";
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(DOMSignatureMethod.class);
+    private static final Logger LOG = System.getLogger(DOMSignatureMethod.class.getName());
 
     private SignatureMethodParameterSpec params;
     private Signature signature;
@@ -283,10 +284,10 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
             }
         }
         signature.initVerify((PublicKey)key);
-        LOG.debug("Signature provider: {}", signature.getProvider());
-        LOG.debug("Verifying with key: {}", key);
-        LOG.debug("JCA Algorithm: {}", getJCAAlgorithm());
-        LOG.debug("Signature Bytes length: {}", sig.length);
+        LOG.log(Level.DEBUG, "Signature provider: {0}", signature.getProvider());
+        LOG.log(Level.DEBUG, "Verifying with key: {0}", key);
+        LOG.log(Level.DEBUG, "JCA Algorithm: {0}", getJCAAlgorithm());
+        LOG.log(Level.DEBUG, "Signature Bytes length: {0}", sig.length);
 
         byte[] s;
         try (SignerOutputStream outputStream = new SignerOutputStream(signature)) {
@@ -319,9 +320,9 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
             }
         }
         signature.initSign((PrivateKey)key);
-        LOG.debug("Signature provider: {}", signature.getProvider());
-        LOG.debug("Signing with key: {}", key);
-        LOG.debug("JCA Algorithm: {}", getJCAAlgorithm());
+        LOG.log(Level.DEBUG, "Signature provider: {0}", signature.getProvider());
+        LOG.log(Level.DEBUG, "Signing with key: {0}", key);
+        LOG.log(Level.DEBUG, "JCA Algorithm: {0}", getJCAAlgorithm());
 
         try (SignerOutputStream outputStream = new SignerOutputStream(signature)) {
             ((DOMSignedInfo)si).canonicalize(context, outputStream);

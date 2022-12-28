@@ -21,6 +21,8 @@
  */
 package org.apache.jcp.xml.dsig.internal.dom;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
@@ -54,8 +56,8 @@ public abstract class DOMHMACSignatureMethod extends AbstractDOMSignatureMethod 
 
     private static final String DOM_SIGNATURE_PROVIDER = "org.jcp.xml.dsig.internal.dom.MacProvider";
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(DOMHMACSignatureMethod.class);
+    private static final Logger LOG = System.getLogger(DOMHMACSignatureMethod.class.getName());
+
 
     // see RFC 4051 for these algorithm definitions
     static final String HMAC_SHA224 =
@@ -115,7 +117,7 @@ public abstract class DOMHMACSignatureMethod extends AbstractDOMSignatureMethod 
             }
             outputLength = ((HMACParameterSpec)params).getOutputLength();
             outputLengthSet = true;
-            LOG.debug("Setting outputLength from HMACParameterSpec to: {}", outputLength);
+            LOG.log(Level.DEBUG, "Setting outputLength from HMACParameterSpec to: {0}", outputLength);
         }
     }
 
@@ -134,7 +136,7 @@ public abstract class DOMHMACSignatureMethod extends AbstractDOMSignatureMethod 
             throw new MarshalException("Invalid output length supplied: " + paramsElem.getFirstChild().getNodeValue());
         }
         outputLengthSet = true;
-        LOG.debug("unmarshalled outputLength: {}", outputLength);
+        LOG.log(Level.DEBUG, "unmarshalled outputLength: {0}", outputLength);
         return new HMACParameterSpec(outputLength);
     }
 

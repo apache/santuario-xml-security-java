@@ -19,6 +19,8 @@
 package org.apache.xml.security.stax.impl.processor.input;
 
 import java.io.StringWriter;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -28,14 +30,12 @@ import org.apache.xml.security.stax.ext.InputProcessorChain;
 import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.stax.ext.XMLSecurityProperties;
 import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  */
 public class LogInputProcessor extends AbstractInputProcessor {
 
-    private static final transient Logger LOG = LoggerFactory.getLogger(LogInputProcessor.class);
+    private static final Logger LOG = System.getLogger(LogInputProcessor.class.getName());
 
     public LogInputProcessor(XMLSecurityProperties securityProperties) {
         super(securityProperties);
@@ -54,7 +54,7 @@ public class LogInputProcessor extends AbstractInputProcessor {
         XMLSecEvent xmlSecEvent = inputProcessorChain.processEvent();
         StringWriter stringWriter = new StringWriter();
         xmlSecEvent.writeAsEncodedUnicode(stringWriter);
-        LOG.trace(stringWriter.toString());
+        LOG.log(Level.TRACE, stringWriter.toString());
         return xmlSecEvent;
     }
 }

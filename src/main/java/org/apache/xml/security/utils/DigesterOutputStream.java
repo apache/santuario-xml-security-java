@@ -19,6 +19,8 @@
 package org.apache.xml.security.utils;
 
 import java.io.ByteArrayOutputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 
 import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
 
@@ -26,8 +28,7 @@ import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
  *
  */
 public class DigesterOutputStream extends ByteArrayOutputStream {
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(DigesterOutputStream.class);
+    private static final Logger LOG = System.getLogger(DigesterOutputStream.class.getName());
 
     final MessageDigestAlgorithm mda;
 
@@ -53,13 +54,13 @@ public class DigesterOutputStream extends ByteArrayOutputStream {
     /** {@inheritDoc} */
     @Override
     public void write(byte[] arg0, int arg1, int arg2) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Pre-digested input:");
+        if (LOG.isLoggable(Level.DEBUG)) {
+            LOG.log(Level.DEBUG, "Pre-digested input:");
             StringBuilder sb = new StringBuilder(arg2);
             for (int i = arg1; i < (arg1 + arg2); i++) {
                 sb.append((char)arg0[i]);
             }
-            LOG.debug(sb.toString());
+            LOG.log(Level.DEBUG, sb.toString());
         }
         mda.update(arg0, arg1, arg2);
     }

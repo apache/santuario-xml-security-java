@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.keys.keyresolver;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -49,8 +51,7 @@ import org.w3c.dom.Node;
  */
 public class KeyResolver {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(KeyResolver.class);
+    private static final Logger LOG = System.getLogger(KeyResolver.class.getName());
 
     private static List<KeyResolverSpi> resolverList = new CopyOnWriteArrayList<>();
 
@@ -89,7 +90,7 @@ public class KeyResolver {
 
                 throw new KeyResolverException("utils.resolver.noClass", exArgs);
             }
-            LOG.debug("check resolvability by class {}", resolver.getClass());
+            LOG.log(Level.DEBUG, "check resolvability by class {0}", resolver.getClass());
 
             X509Certificate cert = resolver.engineLookupResolveX509Certificate(element, baseURI, storage, secureValidation);
             if (cert != null) {
@@ -129,7 +130,7 @@ public class KeyResolver {
 
                 throw new KeyResolverException("utils.resolver.noClass", exArgs);
             }
-            LOG.debug("check resolvability by class {}", resolver.getClass());
+            LOG.log(Level.DEBUG, "check resolvability by class {0}", resolver.getClass());
 
             PublicKey cert = resolver.engineLookupAndResolvePublicKey(element, baseURI, storage, secureValidation);
             if (cert != null) {
@@ -281,8 +282,8 @@ public class KeyResolver {
      * Iterate over the KeyResolverSpi instances
      */
     static class ResolverIterator implements Iterator<KeyResolverSpi> {
-        private List<KeyResolverSpi> res;
-        private Iterator<KeyResolverSpi> it;
+        private final List<KeyResolverSpi> res;
+        private final Iterator<KeyResolverSpi> it;
 
         public ResolverIterator(List<KeyResolverSpi> list) {
             res = list;

@@ -19,18 +19,18 @@
 package org.apache.xml.security.stax.impl.util;
 
 import java.io.OutputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.impl.algorithms.SignatureAlgorithm;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  */
 public class SignerOutputStream extends OutputStream {
 
-    protected static final transient Logger LOG = LoggerFactory.getLogger(SignerOutputStream.class);
-    protected static final transient boolean isDebugEnabled = LOG.isDebugEnabled();
+    private static final Logger LOG = System.getLogger(SignerOutputStream.class.getName());
+    protected static final transient boolean isDebugEnabled = LOG.isLoggable(Level.DEBUG);
 
     private final SignatureAlgorithm signatureAlgorithm;
     private StringBuilder stringBuilder; //NOPMD
@@ -74,9 +74,9 @@ public class SignerOutputStream extends OutputStream {
 
     public boolean verify(byte[] signatureValue) throws XMLSecurityException {
         if (isDebugEnabled) {
-            LOG.debug("Pre Signed: ");
-            LOG.debug(stringBuilder.toString());
-            LOG.debug("End pre Signed ");
+            LOG.log(Level.DEBUG, "Pre Signed: ");
+            LOG.log(Level.DEBUG, stringBuilder.toString());
+            LOG.log(Level.DEBUG, "End pre Signed ");
             stringBuilder = new StringBuilder();
         }
         return signatureAlgorithm.engineVerify(signatureValue);
@@ -84,9 +84,9 @@ public class SignerOutputStream extends OutputStream {
 
     public byte[] sign() throws XMLSecurityException {
         if (isDebugEnabled) {
-            LOG.debug("Pre Signed: ");
-            LOG.debug(stringBuilder.toString());
-            LOG.debug("End pre Signed ");
+            LOG.log(Level.DEBUG, "Pre Signed: ");
+            LOG.log(Level.DEBUG, stringBuilder.toString());
+            LOG.log(Level.DEBUG, "End pre Signed ");
             stringBuilder = new StringBuilder();
         }
         return signatureAlgorithm.engineSign();

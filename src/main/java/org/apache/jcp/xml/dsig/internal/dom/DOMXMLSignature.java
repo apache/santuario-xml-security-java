@@ -28,6 +28,8 @@
  */
 package org.apache.jcp.xml.dsig.internal.dom;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.Provider;
@@ -71,8 +73,8 @@ import org.w3c.dom.Node;
 public final class DOMXMLSignature extends DOMStructure
     implements XMLSignature {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(DOMXMLSignature.class);
+    private static final Logger LOG = System.getLogger(DOMXMLSignature.class.getName());
+
     private final String id;
     private final SignatureValue sv;
     private KeyInfo ki;
@@ -291,11 +293,11 @@ public final class DOMXMLSignature extends DOMStructure
         for (int i = 0, size = refs.size(); validateRefs && i < size; i++) {
             Reference ref = refs.get(i);
             boolean refValid = ref.validate(vc);
-            LOG.debug("Reference [{}] is valid: {}", ref.getURI(), refValid);
+            LOG.log(Level.DEBUG, "Reference [{0}] is valid: {1}", ref.getURI(), refValid);
             validateRefs &= refValid;
         }
         if (!validateRefs) {
-            LOG.debug("Couldn't validate the References");
+            LOG.log(Level.DEBUG, "Couldn't validate the References");
             validationStatus = false;
             validated = true;
             return validationStatus;
@@ -314,7 +316,7 @@ public final class DOMXMLSignature extends DOMStructure
                 for (int j = 0; validateMans && j < csize; j++) {
                     XMLStructure xs = content.get(j);
                     if (xs instanceof Manifest) {
-                        LOG.debug("validating manifest");
+                        LOG.log(Level.DEBUG, "validating manifest");
                         Manifest man = (Manifest)xs;
                         @SuppressWarnings("unchecked")
                         List<Reference> manRefs = man.getReferences();
@@ -322,8 +324,8 @@ public final class DOMXMLSignature extends DOMStructure
                         for (int k = 0; validateMans && k < rsize; k++) {
                             Reference ref = manRefs.get(k);
                             boolean refValid = ref.validate(vc);
-                            LOG.debug(
-                                "Manifest ref [{}] is valid: {}", ref.getURI(),  refValid
+                            LOG.log(Level.DEBUG,
+                                "Manifest ref [{0}] is valid: {1}", ref.getURI(),  refValid
                             );
                             validateMans &= refValid;
                         }

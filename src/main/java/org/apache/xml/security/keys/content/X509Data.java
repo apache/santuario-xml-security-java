@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.keys.content;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.math.BigInteger;
 import java.security.cert.X509Certificate;
 
@@ -37,8 +39,7 @@ import org.w3c.dom.Node;
 
 public class X509Data extends SignatureElementProxy implements KeyInfoContent {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(X509Data.class);
+    private static final Logger LOG = System.getLogger(X509Data.class.getName());
 
     /**
      * Constructor X509Data
@@ -456,7 +457,7 @@ public class X509Data extends SignatureElementProxy implements KeyInfoContent {
      * TODO implement
      **/
     public Element itemUnknownElement(int i) {
-        LOG.debug("itemUnknownElement not implemented: {}", i);
+        LOG.log(Level.DEBUG, "itemUnknownElement not implemented: {0}", i);
         return null;
     }
 

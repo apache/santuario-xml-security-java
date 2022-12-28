@@ -20,6 +20,8 @@ package org.apache.xml.security.transforms;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -66,8 +68,7 @@ import org.xml.sax.SAXException;
  */
 public final class Transform extends SignatureElementProxy {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(Transform.class);
+    private static final Logger LOG = System.getLogger(Transform.class.getName());
 
     /** All available Transform classes are registered here */
     private static Map<String, TransformSpi> transformSpiHash = new ConcurrentHashMap<>();
@@ -117,7 +118,7 @@ public final class Transform extends SignatureElementProxy {
                 appendSelf(contextNodes.item(i).cloneNode(true));
             }
 
-            LOG.debug("The NodeList is {}", contextNodes);
+            LOG.log(Level.DEBUG, "The NodeList is {0}", contextNodes);
         }
     }
 
@@ -142,7 +143,7 @@ public final class Transform extends SignatureElementProxy {
                 appendSelf(contextNodes.item(i).cloneNode(true));
             }
 
-            LOG.debug("The NodeList is {}", contextNodes);
+            LOG.log(Level.DEBUG, "The NodeList is {0}", contextNodes);
         }
     }
 
@@ -356,7 +357,7 @@ public final class Transform extends SignatureElementProxy {
             throw new InvalidTransformException("signature.Transform.UnknownTransform", exArgs);
         }
 
-        LOG.debug("Create URI \"{}\" class \"{}\"", algorithmURI, newTransformSpi.getClass());
+        LOG.log(Level.DEBUG, "Create URI \"{0}\" class \"{1}\"", algorithmURI, newTransformSpi.getClass());
         return newTransformSpi;
     }
 

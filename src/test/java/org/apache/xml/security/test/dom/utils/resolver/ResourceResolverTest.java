@@ -39,10 +39,6 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class ResourceResolverTest {
 
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger
-            (ResourceResolverTest.class);
-
     static {
         org.apache.xml.security.Init.init();
     }

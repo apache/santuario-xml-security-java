@@ -19,6 +19,8 @@
 package org.apache.xml.security.stax.ext;
 
 import java.io.OutputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
@@ -51,6 +53,7 @@ import org.apache.xml.security.stax.securityToken.SecurityTokenProvider;
  *
  */
 public class OutboundXMLSec {
+    private static final Logger LOG = System.getLogger(OutboundXMLSec.class.getName());
 
     private final XMLSecurityProperties securityProperties;
 
@@ -94,8 +97,10 @@ public class OutboundXMLSec {
 
     private XMLStreamWriter processOutMessage(
         Object output, String encoding, SecurityEventListener eventListener) throws XMLSecurityException {
-        final OutboundSecurityContextImpl outboundSecurityContext = new OutboundSecurityContextImpl();
+        LOG.log(Level.DEBUG, "processOutMessage(output.class={0}, encoding={1}, eventListener={2})",
+            output.getClass(), encoding, eventListener);
 
+        final OutboundSecurityContextImpl outboundSecurityContext = new OutboundSecurityContextImpl();
         if (eventListener != null) {
             outboundSecurityContext.addSecurityEventListener(eventListener);
         }
@@ -208,7 +213,7 @@ public class OutboundXMLSec {
         }
 
         final SecurityTokenProvider<OutboundSecurityToken> securityTokenProvider =
-                new SecurityTokenProvider<OutboundSecurityToken>() {
+                new SecurityTokenProvider<>() {
 
             @Override
             public OutboundSecurityToken getSecurityToken() throws XMLSecurityException {
@@ -269,7 +274,7 @@ public class OutboundXMLSec {
         securityToken.setKeyWrappingToken(transportSecurityToken);
 
         final SecurityTokenProvider<OutboundSecurityToken> securityTokenProvider =
-                new SecurityTokenProvider<OutboundSecurityToken>() {
+                new SecurityTokenProvider<>() {
 
             @Override
             public OutboundSecurityToken getSecurityToken() throws XMLSecurityException {

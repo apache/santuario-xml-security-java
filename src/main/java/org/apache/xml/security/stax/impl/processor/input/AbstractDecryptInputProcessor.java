@@ -28,6 +28,8 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
@@ -87,16 +89,13 @@ import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 import org.apache.xml.security.stax.securityToken.SecurityTokenFactory;
 import org.apache.xml.security.stax.securityToken.SecurityTokenProvider;
 import org.apache.xml.security.utils.UnsyncByteArrayInputStream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Processor for decryption of EncryptedData XML structures
- *
  */
 public abstract class AbstractDecryptInputProcessor extends AbstractInputProcessor {
 
-    private static final transient Logger LOG = LoggerFactory.getLogger(AbstractDecryptInputProcessor.class);
+    private static final transient Logger LOG = System.getLogger(AbstractDecryptInputProcessor.class.getName());
 
     protected static final Integer maximumAllowedXMLStructureDepth =
             Integer.valueOf(ConfigurationProperties.getProperty("MaximumAllowedXMLStructureDepth"));
@@ -323,7 +322,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                     //we have to start the thread before we call decryptionThread.getPipedInputStream().
                     //Otherwise we will end in a deadlock, because the StAX reader expects already data.
                     //@See some lines below:
-                    LOG.debug("Starting decryption thread");
+                    LOG.log(Level.DEBUG, "Starting decryption thread");
                     thread.start();
 
                     decryptInputStream = decryptionThread.getPipedInputStream();
@@ -345,7 +344,8 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                 XMLStreamReader xmlStreamReader =
                         inputProcessorChain.getSecurityContext().<XMLInputFactory>get(
                                 XMLSecurityConstants.XMLINPUTFACTORY).createXMLStreamReader(
-                                new MultiInputStream(prologInputStream, decryptInputStream, epilogInputStream), StandardCharsets.UTF_8.name());
+                                new MultiInputStream(prologInputStream, decryptInputStream, epilogInputStream),
+                                StandardCharsets.UTF_8.name());
 
                 //forward to wrapper element
                 forwardToWrapperElement(xmlStreamReader);
@@ -620,7 +620,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
         private boolean encryptedHeader = false;
         private final InboundSecurityToken inboundSecurityToken;
         private boolean rootElementProcessed;
-        private EncryptedDataType encryptedDataType;
+        private final EncryptedDataType encryptedDataType;
         private Thread decryptionThread;
 
         public AbstractDecryptedEventReaderInputProcessor(
@@ -876,11 +876,11 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                     try {
                         ((Destroyable)secretKey).destroy();
                     } catch (DestroyFailedException e) {
-                        LOG.debug("Error destroying key: {}", e.getMessage());
+                        LOG.log(Level.DEBUG, "Error destroying key: {0}", e.getMessage());
                     }
                 }
 
-                LOG.debug("Decryption thread finished");
+                LOG.log(Level.DEBUG, "Decryption thread finished");
 
             } catch (Exception e) {
                 try {

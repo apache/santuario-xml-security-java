@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.algorithms.implementations;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
@@ -42,8 +44,7 @@ import org.w3c.dom.Text;
 
 public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(SignatureBaseRSA.class);
+    private static final Logger LOG = System.getLogger(SignatureBaseRSA.class.getName());
 
     /** Field algorithm */
     private final Signature signatureAlgorithm;
@@ -59,7 +60,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
 
     public SignatureBaseRSA(Provider provider) throws XMLSignatureException {
         String algorithmID = JCEMapper.translateURItoJCEID(this.engineGetURI());
-        LOG.debug("Created SignatureRSA using {}", algorithmID);
+        LOG.log(Level.DEBUG, "Created SignatureRSA using {0}", algorithmID);
 
         try {
             if (provider == null) {

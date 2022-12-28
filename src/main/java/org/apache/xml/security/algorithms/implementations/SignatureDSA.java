@@ -19,6 +19,8 @@
 package org.apache.xml.security.algorithms.implementations;
 
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
@@ -42,8 +44,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
 
     public static final String URI = Constants.SignatureSpecNS + "dsa-sha1";
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(SignatureDSA.class);
+    private static final Logger LOG = System.getLogger(SignatureDSA.class.getName());
 
     /** Field algorithm */
     private final Signature signatureAlgorithm;
@@ -72,7 +73,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
 
     public SignatureDSA(Provider provider) throws XMLSignatureException {
         String algorithmID = JCEMapper.translateURItoJCEID(engineGetURI());
-        LOG.debug("Created SignatureDSA using {}", algorithmID);
+        LOG.log(Level.DEBUG, "Created SignatureDSA using {0}", algorithmID);
 
         try {
             if (provider == null) {
@@ -114,8 +115,8 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
     protected boolean engineVerify(byte[] signature)
         throws XMLSignatureException {
         try {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Called DSA.verify() on " + XMLUtils.encodeToString(signature));
+            if (LOG.isLoggable(Level.DEBUG)) {
+                LOG.log(Level.DEBUG, "Called DSA.verify() on " + XMLUtils.encodeToString(signature));
             }
 
             byte[] jcebytes = JavaUtils.convertDsaXMLDSIGtoASN1(signature, size / 8);

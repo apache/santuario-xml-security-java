@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.test.dom.encryption;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.nio.charset.StandardCharsets;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -41,8 +43,7 @@ import org.w3c.dom.Element;
  */
 public class BobKeyResolver extends KeyResolverSpi {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(BobKeyResolver.class);
+    private static final Logger LOG = System.getLogger(BobKeyResolver.class.getName());
 
     private KeyName _kn;
 
@@ -51,7 +52,7 @@ public class BobKeyResolver extends KeyResolverSpi {
         if (element == null) {
             return false;
         }
-        LOG.debug("Can I resolve " + element.getTagName());
+        LOG.log(Level.DEBUG, "Can I resolve " + element.getTagName());
 
         boolean isKeyName = XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_KEYNAME);
         try {

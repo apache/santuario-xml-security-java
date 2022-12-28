@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.algorithms.implementations;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
@@ -39,8 +41,7 @@ import org.apache.xml.security.utils.XMLUtils;
  */
 public abstract class SignatureEDDSA extends SignatureAlgorithmSpi {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(SignatureEDDSA.class);
+    private static final Logger LOG = System.getLogger(SignatureEDDSA.class.getName());
 
     private final Signature signatureAlgorithm;
 
@@ -56,7 +57,7 @@ public abstract class SignatureEDDSA extends SignatureAlgorithmSpi {
 
     public SignatureEDDSA(Provider provider) throws XMLSignatureException {
         String algorithmID = JCEMapper.translateURItoJCEID(this.engineGetURI());
-        LOG.debug("Created SignatureEDDSA using {}", algorithmID);
+        LOG.log(Level.DEBUG, "Created SignatureEDDSA using {0}", algorithmID);
 
         try {
             if (provider == null) {
@@ -93,11 +94,7 @@ public abstract class SignatureEDDSA extends SignatureAlgorithmSpi {
     @Override
     protected boolean engineVerify(byte[] signature) throws XMLSignatureException {
         try {
-
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Called SignatureEDDSA.verify() on " + XMLUtils.encodeToString(signature));
-            }
-
+            LOG.log(Level.DEBUG, () -> "Called SignatureEDDSA.verify() on " + XMLUtils.encodeToString(signature));
             return this.signatureAlgorithm.verify(signature);
         } catch (SignatureException  ex) {
             throw new XMLSignatureException(ex);

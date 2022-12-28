@@ -19,10 +19,9 @@
 package org.apache.xml.security.stax.impl.util;
 
 import java.io.OutputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.MessageDigest;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * A Streaming based message-digest implementation
@@ -30,8 +29,8 @@ import org.slf4j.LoggerFactory;
  */
 public class DigestOutputStream extends OutputStream {
 
-    protected static final transient Logger LOG = LoggerFactory.getLogger(DigestOutputStream.class);
-    protected static final transient boolean isDebugEnabled = LOG.isDebugEnabled();
+    private static final Logger LOG = System.getLogger(DigestOutputStream.class.getName());
+    protected static final transient boolean isDebugEnabled = LOG.isLoggable(Level.DEBUG);
 
     private final MessageDigest messageDigest;
     private StringBuilder stringBuilder; //NOPMD
@@ -67,9 +66,9 @@ public class DigestOutputStream extends OutputStream {
 
     public byte[] getDigestValue() {
         if (isDebugEnabled) {
-            LOG.debug("Pre Digest: ");
-            LOG.debug(stringBuilder.toString());
-            LOG.debug("End pre Digest ");
+            LOG.log(Level.DEBUG, "Pre Digest: ");
+            LOG.log(Level.DEBUG, stringBuilder.toString());
+            LOG.log(Level.DEBUG, "End pre Digest ");
             stringBuilder = new StringBuilder();
         }
         return messageDigest.digest();

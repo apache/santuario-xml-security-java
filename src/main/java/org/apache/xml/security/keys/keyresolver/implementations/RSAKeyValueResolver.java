@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.keys.keyresolver.implementations;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
@@ -32,8 +34,7 @@ import org.w3c.dom.Element;
 
 public class RSAKeyValueResolver extends KeyResolverSpi {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(RSAKeyValueResolver.class);
+    private static final Logger LOG = System.getLogger(RSAKeyValueResolver.class.getName());
 
     /** {@inheritDoc} */
     @Override
@@ -51,7 +52,7 @@ public class RSAKeyValueResolver extends KeyResolverSpi {
             return null;
         }
 
-        LOG.debug("Can I resolve {}", element.getTagName());
+        LOG.log(Level.DEBUG, "Can I resolve {0}", element.getTagName());
 
         boolean isKeyValue = XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_KEYVALUE);
         Element rsaKeyElement = null;
@@ -73,7 +74,7 @@ public class RSAKeyValueResolver extends KeyResolverSpi {
 
             return rsaKeyValue.getPublicKey();
         } catch (XMLSecurityException ex) {
-            LOG.debug("XMLSecurityException", ex);
+            LOG.log(Level.DEBUG, "XMLSecurityException", ex);
         }
 
         return null;

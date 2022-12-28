@@ -25,6 +25,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.KeyPair;
@@ -75,8 +77,7 @@ import static org.junit.jupiter.api.Assumptions.assumeFalse;
  */
 public class XMLCipherTest {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(XMLCipherTest.class);
+    private static final Logger LOG = System.getLogger(XMLCipherTest.class.getName());
 
     static {
         org.apache.xml.security.Init.init();
@@ -187,7 +188,7 @@ public class XMLCipherTest {
             target = toString(dd);
             assertEquals(source, target);
         } else {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Test testAES128ElementAES192KWCipherUsingKEK skipped as "
                 + "necessary algorithms not available"
             );
@@ -244,8 +245,8 @@ public class XMLCipherTest {
             builderKeyInfo.add(encryptedKey);
 
             ed = cipher.doFinal(d, e);
-            LOG.debug("Encrypted document");
-            LOG.debug(toString(ed));
+            LOG.log(Level.DEBUG, "Encrypted document");
+            LOG.log(Level.DEBUG, toString(ed));
 
 
             //decrypt
@@ -260,7 +261,7 @@ public class XMLCipherTest {
             target = toString(dd);
             assertEquals(source, target);
         } else {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Test testAES256ElementRSAKWCipherUsingKEK skipped as "
                 + "necessary algorithms not available"
             );
@@ -349,7 +350,7 @@ public class XMLCipherTest {
             target = toString(dd);
             assertEquals(source, target);
         } else {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Test testAES192Element3DESKWCipher skipped as "
                 + "necessary algorithms not available"
             );
@@ -393,7 +394,7 @@ public class XMLCipherTest {
             target = toString(dd);
             assertEquals(source, target);
         } else {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Test testTripleDesElementCipher skipped as necessary algorithms not available"
             );
         }
@@ -437,7 +438,7 @@ public class XMLCipherTest {
             target = toString(dd);
             assertEquals(source, target);
         } else {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Test testAes128ElementCipher skipped as necessary algorithms not available"
             );
         }
@@ -483,7 +484,7 @@ public class XMLCipherTest {
             target = toString(dd);
             assertEquals(source, target);
         } else {
-            LOG.warn("Test testAes192ElementCipher skipped as necessary algorithms not available");
+            LOG.log(Level.WARNING, "Test testAes192ElementCipher skipped as necessary algorithms not available");
         }
     }
 
@@ -529,7 +530,7 @@ public class XMLCipherTest {
             target = toString(dd);
             assertEquals(source, target);
         } else {
-            LOG.warn("Test testAes265ElementCipher skipped as necessary algorithms not available");
+            LOG.log(Level.WARNING, "Test testAes265ElementCipher skipped as necessary algorithms not available");
         }
     }
 
@@ -571,7 +572,7 @@ public class XMLCipherTest {
             target = toString(dd);
             assertEquals(source, target);
         } else {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Test testTripleDesDocumentCipher skipped as "
                 + "necessary algorithms not available"
             );
@@ -629,7 +630,7 @@ public class XMLCipherTest {
             target = toString(dd);
             assertEquals(source, target);
         } else {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Test testTripleDesDocumentCipher skipped as "
                 + "necessary algorithms not available"
             );
@@ -700,7 +701,7 @@ public class XMLCipherTest {
             assertEquals("A test encrypted secret",
                         new String(decryptBytes, StandardCharsets.US_ASCII));
         } else {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Test testSameDocumentCipherReference skipped as "
                 + "necessary algorithms not available"
             );
@@ -806,7 +807,7 @@ public class XMLCipherTest {
             n = n.getNextSibling();
             assertNull(n);
         } else {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Test testPhysicalRepresentation skipped as "
                 + "necessary algorithms not available"
             );
@@ -816,7 +817,7 @@ public class XMLCipherTest {
     @Test
     public void testSerializedData() throws Exception {
         if (!haveISOPadding) {
-            LOG.warn("Test testSerializedData skipped as necessary algorithms not available");
+            LOG.log(Level.WARNING, "Test testSerializedData skipped as necessary algorithms not available");
             return;
         }
 
@@ -840,7 +841,7 @@ public class XMLCipherTest {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         canon.canonicalizeSubtree(e, baos);
         baos.close();
-        String before = baos.toString(StandardCharsets.UTF_8.name());
+        String before = baos.toString(StandardCharsets.UTF_8);
 
         byte[] serialized = baos.toByteArray();
         EncryptedData encryptedData = null;
@@ -973,7 +974,7 @@ public class XMLCipherTest {
             target = toString(dd);
             assertEquals(source, target);
         } else {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Test testAES128ElementAES192KWCipherUsingKEK skipped as "
                 + "necessary algorithms not available"
             );
@@ -987,7 +988,7 @@ public class XMLCipherTest {
         c14n.canonicalizeSubtree(n, baos);
         baos.flush();
 
-        return baos.toString(StandardCharsets.UTF_8.name());
+        return baos.toString(StandardCharsets.UTF_8);
     }
 
     private Document document() throws XMLParserException, IOException {

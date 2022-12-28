@@ -18,6 +18,9 @@
  */
 package org.apache.xml.security.stax.ext;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,8 +38,6 @@ import org.apache.xml.security.stax.impl.processor.input.XMLEventReaderInputProc
 import org.apache.xml.security.stax.impl.processor.input.XMLSecurityInputProcessor;
 import org.apache.xml.security.stax.securityEvent.SecurityEvent;
 import org.apache.xml.security.stax.securityEvent.SecurityEventListener;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Inbound Streaming-XML-Security
@@ -45,7 +46,7 @@ import org.slf4j.LoggerFactory;
  */
 public class InboundXMLSec {
 
-    protected static final transient Logger LOG = LoggerFactory.getLogger(InboundXMLSec.class);
+    private static final Logger LOG = System.getLogger(InboundXMLSec.class.getName());
 
     private static final XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
 
@@ -57,7 +58,7 @@ public class InboundXMLSec {
             xmlInputFactory.setProperty("org.codehaus.stax2.internNsUris", true);
             xmlInputFactory.setProperty("org.codehaus.stax2.preserveLocation", false);
         } catch (IllegalArgumentException e) {
-            LOG.debug(e.getMessage(), e);
+            LOG.log(Level.DEBUG, e.getMessage(), e);
             //ignore
         }
     }
@@ -121,7 +122,8 @@ public class InboundXMLSec {
         inboundSecurityContext.put(XMLSecurityConstants.XMLINPUTFACTORY, xmlInputFactory);
 
         DocumentContextImpl documentContext = new DocumentContextImpl();
-        documentContext.setEncoding(xmlStreamReader.getEncoding() != null ? xmlStreamReader.getEncoding() : java.nio.charset.StandardCharsets.UTF_8.name());
+        documentContext.setEncoding(
+            xmlStreamReader.getEncoding() == null ? StandardCharsets.UTF_8.name() : xmlStreamReader.getEncoding());
         //woodstox 3.2.9 returns null when used with a DOMSource
         Location location = xmlStreamReader.getLocation();
         if (location != null) {
@@ -140,7 +142,7 @@ public class InboundXMLSec {
 
         inputProcessorChain.addProcessor(new XMLSecurityInputProcessor(securityProperties));
 
-        if (LOG.isTraceEnabled()) {
+        if (LOG.isLoggable(Level.TRACE)) {
             LogInputProcessor logInputProcessor = new LogInputProcessor(securityProperties);
             logInputProcessor.addAfterProcessor(XMLSecurityInputProcessor.class.getName());
             inputProcessorChain.addProcessor(logInputProcessor);

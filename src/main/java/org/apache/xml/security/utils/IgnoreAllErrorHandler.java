@@ -18,6 +18,9 @@
  */
 package org.apache.xml.security.utils;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -29,8 +32,7 @@ import org.xml.sax.SAXParseException;
  */
 public class IgnoreAllErrorHandler implements ErrorHandler {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(IgnoreAllErrorHandler.class);
+    private static final Logger LOG = System.getLogger(IgnoreAllErrorHandler.class.getName());
 
     /** Field throwExceptions */
     private static final boolean warnOnExceptions =
@@ -49,7 +51,7 @@ public class IgnoreAllErrorHandler implements ErrorHandler {
     @Override
     public void warning(SAXParseException ex) throws SAXException {
         if (IgnoreAllErrorHandler.warnOnExceptions) {
-            LOG.warn("", ex);
+            LOG.log(Level.WARNING, "", ex);
         }
         if (IgnoreAllErrorHandler.throwExceptions) {
             throw ex;
@@ -61,7 +63,7 @@ public class IgnoreAllErrorHandler implements ErrorHandler {
     @Override
     public void error(SAXParseException ex) throws SAXException {
         if (IgnoreAllErrorHandler.warnOnExceptions) {
-            LOG.error("", ex);
+            LOG.log(Level.ERROR, "", ex);
         }
         if (IgnoreAllErrorHandler.throwExceptions) {
             throw ex;
@@ -73,7 +75,7 @@ public class IgnoreAllErrorHandler implements ErrorHandler {
     @Override
     public void fatalError(SAXParseException ex) throws SAXException {
         if (IgnoreAllErrorHandler.warnOnExceptions) {
-            LOG.warn("", ex);
+            LOG.log(Level.WARNING, "", ex);
         }
         if (IgnoreAllErrorHandler.throwExceptions) {
             throw ex;
