@@ -526,7 +526,7 @@
         <slf4j.version>2.0.6</slf4j.version>
         <xalan.version>2.7.2</xalan.version>
         <junit.version>5.9.1</junit.version>
-        <log4j.version>2.18.0</log4j.version>
+        <log4j.version>2.19.0</log4j.version>
         <bcprov.version>1.72</bcprov.version>
         <hamcrest.version>2.2</hamcrest.version>
         <xmlunit.version>2.9.0</xmlunit.version>
