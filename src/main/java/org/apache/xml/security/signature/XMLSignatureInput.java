@@ -73,9 +73,9 @@ public class XMLSignatureInput {
     /**
      *
      */
-    private boolean excludeComments = false;
+    private boolean excludeComments;
 
-    private boolean isNodeSet = false;
+    private boolean isNodeSet;
     /**
      * A cached bytes
      */
@@ -101,9 +101,9 @@ public class XMLSignatureInput {
     /**
      * Node Filter list.
      */
-    private List<NodeFilter> nodeFilters = new ArrayList<>();
+    private final List<NodeFilter> nodeFilters = new ArrayList<>();
 
-    private boolean needsToBeExpanded = false;
+    private boolean needsToBeExpanded;
     private OutputStream outputStream;
 
     /**
@@ -114,13 +114,14 @@ public class XMLSignatureInput {
     /**
      * Construct a XMLSignatureInput from an octet array.
      * <p>
-     * This is a comfort method, which internally converts the byte[] array into
-     * an InputStream
-     * <p>NOTE: no defensive copy</p>
+     * The {@link #getOctetStream()} method will provide {@link ByteArrayOutputStream} based
+     * on the input.
+     *
+     * <p>NOTE: no defensive copy - the input is directly set to the object</p>
+     *
      * @param inputOctets an octet array which including XML document or node
      */
     public XMLSignatureInput(byte[] inputOctets) {
-        // NO defensive copy
         this.bytes = inputOctets;
     }
 
@@ -497,12 +498,13 @@ public class XMLSignatureInput {
             }
             c14nizer.engineCanonicalize(this, diOs, secureValidation);
         } else {
-            byte[] buffer = new byte[4 * 1024];
+            byte[] buffer = new byte[4_096];
             int bytesread = 0;
             try {
                 while ((bytesread = inputOctetStreamProxy.read(buffer)) != -1) {
                     diOs.write(buffer, 0, bytesread);
                 }
+                diOs.flush();
             } catch (IOException ex) {
                 inputOctetStreamProxy.close();
                 throw ex;
@@ -524,7 +526,7 @@ public class XMLSignatureInput {
         if (inputOctetStreamProxy == null) {
             return null;
         }
-        try {   //NOPMD
+        try {
             bytes = JavaUtils.getBytesFromStream(inputOctetStreamProxy);
         } finally {
             inputOctetStreamProxy.close();

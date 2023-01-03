@@ -26,7 +26,6 @@ import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
@@ -76,6 +75,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * <code>XMLCipher</code> encrypts and decrypts the contents of
@@ -1118,7 +1119,7 @@ public final class XMLCipher {
                 serializedOctets = serializer.serializeToByteArray(element);
             }
             if (LOG.isLoggable(Level.DEBUG)) {
-                LOG.log(Level.DEBUG, "Serialized octets:\n" + new String(serializedOctets, StandardCharsets.UTF_8));
+                LOG.log(Level.DEBUG, "Serialized octets:\n" + new String(serializedOctets, UTF_8));
             }
         }
 
@@ -1674,7 +1675,7 @@ public final class XMLCipher {
         byte[] octets = decryptToByteArray(element);
 
         if (LOG.isLoggable(Level.DEBUG)) {
-            LOG.log(Level.DEBUG, "Decrypted octets:\n" + new String(octets));
+            LOG.log(Level.DEBUG, "Decrypted octets:\n" + new String(octets, UTF_8));
         }
 
         Node sourceParent = element.getParentNode();
@@ -2376,7 +2377,7 @@ public final class XMLCipher {
                     EncryptionConstants._TAG_OAEPPARAMS).item(0);
             if (null != oaepParamsElement) {
                 String oaepParams = oaepParamsElement.getFirstChild().getNodeValue();
-                result.setOAEPparams(XMLUtils.decode(oaepParams.getBytes(StandardCharsets.UTF_8)));
+                result.setOAEPparams(XMLUtils.decode(oaepParams.getBytes(UTF_8)));
             }
 
             Element digestElement =
@@ -3651,7 +3652,7 @@ public final class XMLCipher {
                     javax.xml.transform.TransformerFactory.newInstance();
             transformerFactory.newTransformer().transform(
                     new javax.xml.transform.stream.StreamSource(
-                            new java.io.ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8))), domResult);
+                            new java.io.ByteArrayInputStream(xml.getBytes(UTF_8))), domResult);
 
             boolean result = false;
             if (domResult.getNode().getFirstChild().getFirstChild().hasAttributes()

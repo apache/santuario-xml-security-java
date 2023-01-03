@@ -262,7 +262,7 @@ public abstract class CanonicalizerBase extends TransformIdentity {
                     final XMLSecStartElement xmlSecStartElement = xmlSecEvent.asStartElement();
 
                     currentDocumentLevel = DocumentLevel.NODE_NOT_BEFORE_OR_AFTER_DOCUMENT_ELEMENT;
-                    outputStack.push(Collections.<Comparable>emptyList());
+                    outputStack.push(Collections.emptyList());
 
                     final List<XMLSecNamespace> utilizedNamespaces;
                     final List<XMLSecAttribute> utilizedAttributes;
@@ -271,7 +271,7 @@ public abstract class CanonicalizerBase extends TransformIdentity {
                         utilizedNamespaces = new ArrayList<>();
                         utilizedAttributes = new ArrayList<>();
                         outputStack.peek().add(XMLSecEventFactory.createXMLSecNamespace(null, ""));
-                        outputStack.push(Collections.<Comparable>emptyList());
+                        outputStack.push(Collections.emptyList());
 
                         utilizedNamespaces.addAll(getInitialUtilizedNamespaces(xmlSecStartElement, outputStack));
                         utilizedAttributes.addAll(getInitialUtilizedAttributes(xmlSecStartElement, outputStack));
@@ -653,6 +653,8 @@ public abstract class CanonicalizerBase extends TransformIdentity {
 
 
     public static class C14NStack<E> extends ArrayDeque<List<Comparable>> {
+
+        private static final long serialVersionUID = -878000608176631979L;
 
         public Object containsOnStack(final Object o) {
             //Important: iteration order from head to tail!
