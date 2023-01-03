@@ -30,6 +30,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.xml.security.test.JmhUtils;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
@@ -57,7 +58,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @Threads(20)
 @Timeout(time = 1, timeUnit = TimeUnit.MINUTES)
 @Fork(1)
-public class XMLUtilsPerformanceTest {
+@Tag("benchmark")
+public class XMLUtilsPerformanceIT {
 
     @Test
     public void runBenchmarks() throws Exception {
