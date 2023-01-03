@@ -19,9 +19,9 @@
 package org.apache.xml.security.test.dom.signature;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
 import java.security.cert.X509Certificate;
 
 import javax.xml.xpath.XPath;
@@ -42,6 +42,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
+import static org.apache.xml.security.test.XmlSecTestEnvironment.resolvePath;
 
 /**
  * A test-case for Bugzilla bug 45744 - "XPath transform and xml-stylesheet".
@@ -114,12 +115,8 @@ public class ProcessingInstructionTest {
             throws ResourceResolverException {
             try {
                 URI uriNew = getNewURI(context.uriToResolve, context.baseUri);
-
-                FileInputStream inputStream = new FileInputStream(new File(dir, "out.xml"));
-                XMLSignatureInput result = new XMLSignatureInput(inputStream);
-
+                XMLSignatureInput result = new XMLSignatureInput(Files.readAllBytes(resolvePath(dir.toPath(), "out.xml")));
                 result.setSourceURI(uriNew.toString());
-
                 return result;
             } catch (Exception ex) {
                 throw new ResourceResolverException(
@@ -135,7 +132,7 @@ public class ProcessingInstructionTest {
 
         private static URI getNewURI(String uri, String baseURI) throws URISyntaxException {
             URI newUri = null;
-            if (baseURI == null || baseURI.length() == 0) {
+            if (baseURI == null || baseURI.isEmpty()) {
                 newUri = new URI(uri);
             } else {
                 newUri = new URI(baseURI).resolve(uri);

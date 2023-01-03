@@ -78,7 +78,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties, null);
         // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
         Document document;
         try (InputStream is = new ByteArrayInputStream(output)) {
@@ -110,7 +110,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties, null);
         // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
         Document document;
         try (InputStream is = new ByteArrayInputStream(output)) {
@@ -142,7 +142,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties, null);
         // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
         Document document;
         try (InputStream is = new ByteArrayInputStream(output)) {
@@ -174,7 +174,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties, null);
         // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
         Document document;
         try (InputStream is = new ByteArrayInputStream(output)) {
@@ -208,7 +208,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties, null);
         // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
         Document document;
         try (InputStream is = new ByteArrayInputStream(output)) {
@@ -242,7 +242,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties, null);
         // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
         Document document;
         try (InputStream is = new ByteArrayInputStream(output)) {
@@ -276,7 +276,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties, null);
         // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
         Document document;
         try (InputStream is = new ByteArrayInputStream(output)) {
@@ -310,7 +310,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties, null);
         // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
         Document document;
         try (InputStream is = new ByteArrayInputStream(output)) {
@@ -344,7 +344,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties, null);
         // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
         Document document;
         try (InputStream is = new ByteArrayInputStream(output)) {
@@ -378,7 +378,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties, null);
         // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
         Document document;
         try (InputStream is = new ByteArrayInputStream(output)) {
@@ -413,7 +413,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties, null);
         // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
         Document document;
         try (InputStream is = new ByteArrayInputStream(output)) {
@@ -445,7 +445,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties, null);
         // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
         Document document;
         try (InputStream is = new ByteArrayInputStream(output)) {
@@ -477,7 +477,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties, null);
         // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
         Document document;
         try (InputStream is = new ByteArrayInputStream(output)) {
@@ -509,7 +509,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties, null);
         // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
         Document document;
         try (InputStream is = new ByteArrayInputStream(output)) {
@@ -541,7 +541,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties, null);
         // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
         Document document;
         try (InputStream is = new ByteArrayInputStream(output)) {
@@ -573,7 +573,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties, null);
         // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
         Document document;
         try (InputStream is = new ByteArrayInputStream(output)) {
@@ -607,7 +607,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties, null);
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(output)) {

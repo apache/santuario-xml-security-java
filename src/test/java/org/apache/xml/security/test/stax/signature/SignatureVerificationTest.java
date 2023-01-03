@@ -68,7 +68,7 @@ import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import static org.apache.xml.security.test.XmlSecTestEnvironment.TEST_KS_PASSWORD;
+import static org.apache.xml.security.test.XmlSecTestEnvironment.TRANSMITTER_KS_PASSWORD;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -89,7 +89,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
 
         // Set up the Key
         KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
-        Key key = keyStore.getKey("transmitter", TEST_KS_PASSWORD.toCharArray());
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
@@ -161,7 +161,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
 
         // Set up the Key
         KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
-        Key key = keyStore.getKey("transmitter", TEST_KS_PASSWORD.toCharArray());
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
@@ -240,7 +240,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
 
         // Set up the Key
         KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
-        Key key = keyStore.getKey("transmitter", TEST_KS_PASSWORD.toCharArray());
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
@@ -296,7 +296,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
 
         // Set up the Key
         KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
-        Key key = keyStore.getKey("transmitter", TEST_KS_PASSWORD.toCharArray());
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         ReferenceInfo referenceInfo = new ReferenceInfo(
@@ -352,7 +352,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
 
         // Set up the Key
         KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
-        Key key = keyStore.getKey("transmitter", TEST_KS_PASSWORD.toCharArray());
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         ReferenceInfo referenceInfo = new ReferenceInfo(
@@ -628,7 +628,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
 
         // Set up the Key
         KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
-        Key key = keyStore.getKey("transmitter", TEST_KS_PASSWORD.toCharArray());
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
@@ -704,7 +704,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
 
         // Set up the Key
         KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
-        Key key = keyStore.getKey("transmitter", TEST_KS_PASSWORD.toCharArray());
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
@@ -780,7 +780,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
 
         // Set up the Key
         KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
-        Key key = keyStore.getKey("transmitter", TEST_KS_PASSWORD.toCharArray());
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
@@ -856,7 +856,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
 
         // Set up the Key
         KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
-        Key key = keyStore.getKey("transmitter", TEST_KS_PASSWORD.toCharArray());
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
@@ -934,7 +934,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
 
         // Set up the Key
         KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
-        Key key = keyStore.getKey("transmitter", TEST_KS_PASSWORD.toCharArray());
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
@@ -1098,7 +1098,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
 
         // Set up the Key
         KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
-        Key key = keyStore.getKey("transmitter", TEST_KS_PASSWORD.toCharArray());
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
@@ -1171,7 +1171,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
 
         // Set up the Key
         KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
-        Key key = keyStore.getKey("transmitter", TEST_KS_PASSWORD.toCharArray());
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
@@ -1238,7 +1238,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
 
         // Set up the Key
         KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
-        Key key = keyStore.getKey("transmitter", TEST_KS_PASSWORD.toCharArray());
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
@@ -1298,7 +1298,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
 
         // Set up the Key
         KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
-        Key key = keyStore.getKey("transmitter", TEST_KS_PASSWORD.toCharArray());
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
@@ -1342,7 +1342,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
 
         // Set up the Key
         KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
-        Key key = keyStore.getKey("transmitter", TEST_KS_PASSWORD.toCharArray());
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
@@ -1393,7 +1393,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
 
         // Set up the Key
         KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
-        Key key = keyStore.getKey("transmitter", TEST_KS_PASSWORD.toCharArray());
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
@@ -1451,7 +1451,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
 
         // Set up the Key
         KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
-        Key key = keyStore.getKey("transmitter", TEST_KS_PASSWORD.toCharArray());
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
@@ -1515,7 +1515,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
 
         // Set up the Key
         KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
-        Key key = keyStore.getKey("transmitter", TEST_KS_PASSWORD.toCharArray());
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
