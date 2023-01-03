@@ -53,7 +53,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 
-import static org.apache.xml.security.test.XmlSecTestEnvironment.TEST_KS_PASSWORD;
+import static org.apache.xml.security.test.XmlSecTestEnvironment.TRANSMITTER_KS_PASSWORD;
 import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 
 /**
@@ -80,7 +80,7 @@ public class SignatureVerificationReferenceURIResolverRemoteReferenceTest extend
 
         // Set up the Key
         KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
-        Key key = keyStore.getKey("transmitter", TEST_KS_PASSWORD.toCharArray());
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate) keyStore.getCertificate("transmitter");
 
         // Sign using DOM
@@ -136,7 +136,7 @@ public class SignatureVerificationReferenceURIResolverRemoteReferenceTest extend
 
         // Set up the Key
         KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
-        Key key = keyStore.getKey("transmitter", TEST_KS_PASSWORD.toCharArray());
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate) keyStore.getCertificate("transmitter");
 
         // Sign using DOM
@@ -205,7 +205,7 @@ public class SignatureVerificationReferenceURIResolverRemoteReferenceTest extend
 
             // Set up the Key
             KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
-            Key key = keyStore.getKey("transmitter", TEST_KS_PASSWORD.toCharArray());
+            Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
             X509Certificate cert = (X509Certificate) keyStore.getCertificate("transmitter");
 
             // Sign using DOM

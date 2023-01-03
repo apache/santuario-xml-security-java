@@ -38,6 +38,7 @@ import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -64,12 +65,9 @@ public class TransformBase64DecodeTest {
         doc.appendChild(t.getElement());
         t.addTransform(Transforms.TRANSFORM_BASE64_DECODE);
 
-        XMLSignatureInput in = null;
-        try (InputStream is = new ByteArrayInputStream(s1.getBytes())) {
-            in = new XMLSignatureInput(is);
-        }
+        XMLSignatureInput in = new XMLSignatureInput(s1.getBytes(UTF_8));
         XMLSignatureInput out = t.performTransforms(in);
-        String result = new String(out.getBytes());
+        String result = new String(out.getBytes(), UTF_8);
 
         assertEquals(result, "The URI of the transform is http://www.w3.org/2000/09/xmldsig#base64");
     }
@@ -86,12 +84,9 @@ public class TransformBase64DecodeTest {
 
         t.addTransform(Transforms.TRANSFORM_BASE64_DECODE);
 
-        XMLSignatureInput in = null;
-        try (InputStream is = new ByteArrayInputStream(s2.getBytes())) {
-            in = new XMLSignatureInput(is);
-        }
+        XMLSignatureInput in = new XMLSignatureInput(s2.getBytes(UTF_8));
         XMLSignatureInput out = t.performTransforms(t.performTransforms(in));
-        String result = new String(out.getBytes());
+        String result = new String(out.getBytes(), UTF_8);
 
         assertEquals(result, "The URI of the transform is http://www.w3.org/2000/09/xmldsig#base64");
     }
@@ -110,7 +105,7 @@ public class TransformBase64DecodeTest {
         //J+
 
         Document doc = null;
-        try (InputStream is = new ByteArrayInputStream(input.getBytes())) {
+        try (InputStream is = new ByteArrayInputStream(input.getBytes(UTF_8))) {
             doc = XMLUtils.read(is, false);
         }
         //XMLUtils.circumventBug2650(doc);
@@ -131,7 +126,7 @@ public class TransformBase64DecodeTest {
         t.addTransform(Transforms.TRANSFORM_BASE64_DECODE);
 
         XMLSignatureInput out = t.performTransforms(xmlinput);
-        String result = new String(out.getBytes());
+        String result = new String(out.getBytes(), UTF_8);
 
         assertEquals(
             result, "The URI of the transform is http://www.w3.org/2000/09/xmldsig#base64",
@@ -144,9 +139,8 @@ public class TransformBase64DecodeTest {
 
         if (doc == null) {
             throw new RuntimeException("Could not create a Document");
-        } else {
-            LOG.log(Level.DEBUG, "I could create the Document");
         }
+        LOG.log(Level.DEBUG, "I could create the Document");
         return doc;
     }
 

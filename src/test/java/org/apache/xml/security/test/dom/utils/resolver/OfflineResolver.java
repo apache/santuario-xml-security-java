@@ -25,6 +25,8 @@ import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -103,18 +105,12 @@ public class OfflineResolver extends ResourceResolverSpi {
         try {
             String URI = context.uriToResolve;
             if (OfflineResolver._uriMap.containsKey(URI)) {
-                String newURI = OfflineResolver._uriMap.get(URI);
-                LOG.log(Level.DEBUG, "Mapped {0} to {1}", URI, newURI);
+                String absolutePath = OfflineResolver._uriMap.get(URI);
+                LOG.log(Level.DEBUG, "Mapped {0} to {1}", URI, absolutePath);
 
-                InputStream is = new FileInputStream(newURI);
-                if (LOG.isLoggable(Level.DEBUG)) {
-                    LOG.log(Level.DEBUG, "Available bytes = " + is.available());
-                }
-                XMLSignatureInput result = new XMLSignatureInput(is);
-
+                XMLSignatureInput result = new XMLSignatureInput(Files.readAllBytes(Path.of(absolutePath)));
                 result.setSourceURI(URI);
                 result.setMIMEType(OfflineResolver._mimeMap.get(URI));
-
                 return result;
             }
             Object[] exArgs = {"The URI " + URI + " is not configured for offline work" };
