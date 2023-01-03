@@ -101,6 +101,7 @@
      <exclude name="JUnitSpelling" />
      <exclude name="MissingSerialVersionUID" />
      <exclude name="NullAssignment" />
+     <exclude name="ReturnEmptyCollectionRatherThanNull" />
      <exclude name="SingletonClassReturningNewInstance" />
      <exclude name="SingleMethodSingleton" />
      <exclude name="SuspiciousEqualsMethodName" />
@@ -129,5 +130,5 @@
   <rule ref="category/java/security.xml" >
      <exclude name="HardCodedCryptoKey" />
   </rule>
-      
+
 </ruleset>
