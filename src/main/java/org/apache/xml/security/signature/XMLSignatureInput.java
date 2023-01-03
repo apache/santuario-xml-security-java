@@ -562,11 +562,12 @@ public class XMLSignatureInput {
             Document doc = XMLUtils.read(this.getOctetStream(), secureValidation);
             this.subNode = doc;
         } finally {
-            if (this.inputOctetStreamProxy != null) {
-                this.inputOctetStreamProxy.close();
-            }
+            final InputStream toClose = this.inputOctetStreamProxy;
             this.inputOctetStreamProxy = null;
             this.bytes = null;
+            if (toClose != null) {
+                toClose.close();
+            }
         }
     }
 
