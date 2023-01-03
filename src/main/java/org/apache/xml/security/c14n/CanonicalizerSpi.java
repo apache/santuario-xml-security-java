@@ -19,6 +19,7 @@
 package org.apache.xml.security.c14n;
 
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Set;
 
@@ -42,13 +43,13 @@ public abstract class CanonicalizerSpi {
      *
      * @throws XMLParserException
      * @throws java.io.IOException
-     * @throws javax.xml.parsers.ParserConfigurationException
+     * @throws CanonicalizationException
      */
     public void engineCanonicalize(byte[] inputBytes, OutputStream writer, boolean secureValidation)
         throws XMLParserException, java.io.IOException, CanonicalizationException {
 
         Document document = null;
-        try (java.io.InputStream bais = new ByteArrayInputStream(inputBytes)) {
+        try (InputStream bais = new ByteArrayInputStream(inputBytes)) {
             document = XMLUtils.read(bais, secureValidation);
         }
         this.engineCanonicalizeSubTree(document, writer);
