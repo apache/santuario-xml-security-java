@@ -23,6 +23,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.System.Logger;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -38,20 +39,22 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
+import static java.lang.System.Logger.Level.WARNING;
+
 /**
- * Class XMLSignatureInput
- *
- * $todo$ check whether an XMLSignatureInput can be _both_, octet stream _and_ node set?
+ * The XMLSignature Input can be either:
+ * <ul>
+ * <li>A byteArray like with/or without InputStream.
+ * <li>A nodeSet like defined either:
+ * <ul>
+ * <li>as a collection of nodes
+ * <li>as a subnode excluding or not comments and excluding or not other nodes.
+ * </ul>
  */
 public class XMLSignatureInput {
-    /*
-     * The XMLSignature Input can be either:
-     *   A byteArray like with/or without InputStream.
-     *   Or a nodeSet like defined either:
-     *       * as a collection of nodes
-     *       * or as subnode excluding or not comments and excluding or
-     *         not other nodes.
-     */
+// This class is final because it's implementation nearly asks for resource leaks.
+
+    private static final Logger LOG = System.getLogger(XMLSignatureInput.class.getName());
 
     /**
      * Some InputStreams do not support the {@link java.io.InputStream#reset}
@@ -126,8 +129,8 @@ public class XMLSignatureInput {
     }
 
     /**
-     * Constructs a <code>XMLSignatureInput</code> from an octet stream. The
-     * stream is directly read.
+     * Constructs a <code>XMLSignatureInput</code> from an octet stream.
+     * The stream is directly read.
      *
      * @param inputOctetStream
      */
@@ -391,19 +394,15 @@ public class XMLSignatureInput {
     @Override
     public String toString() {
         if (isNodeSet()) {
-            return "XMLSignatureInput/NodeSet/" + inputNodeSet.size()
-                   + " nodes/" + getSourceURI();
+            return "XMLSignatureInput/NodeSet/" + inputNodeSet.size() + " nodes/" + getSourceURI();
         }
         if (isElement()) {
-            return "XMLSignatureInput/Element/" + subNode
-                + " exclude "+ excludeNode + " comments:"
-                + excludeComments +"/" + getSourceURI();
+            return "XMLSignatureInput/Element/" + subNode + " exclude " + excludeNode + " comments:" + excludeComments
+                + "/" + getSourceURI();
         }
         try {
-            byte[] bytes = getBytes();
-            return "XMLSignatureInput/OctetStream/"
-                   + (bytes != null ? bytes.length : 0)
-                   + " octets/" + getSourceURI();
+            byte[] octets = getBytes();
+            return "XMLSignatureInput/OctetStream/" + (octets != null ? octets.length : 0) + " octets/" + getSourceURI();
         } catch (IOException | CanonicalizationException ex) {
             return "XMLSignatureInput/OctetStream//" + getSourceURI();
         }
@@ -507,6 +506,7 @@ public class XMLSignatureInput {
                 diOs.flush();
             } catch (IOException ex) {
                 inputOctetStreamProxy.close();
+                inputOctetStreamProxy = null;
                 throw ex;
             }
         }
@@ -526,10 +526,11 @@ public class XMLSignatureInput {
         if (inputOctetStreamProxy == null) {
             return null;
         }
-        try {
+        try { // NOPMD
             bytes = JavaUtils.getBytesFromStream(inputOctetStreamProxy);
         } finally {
             inputOctetStreamProxy.close();
+            inputOctetStreamProxy = null;
         }
         return bytes;
     }
@@ -560,11 +561,11 @@ public class XMLSignatureInput {
 
     private void convertToNodes() throws XMLParserException, IOException {
         // select all nodes, also the comments.
-        try {
+        try { // NOMPMD
             Document doc = XMLUtils.read(this.getOctetStream(), secureValidation);
             this.subNode = doc;
         } finally {
-            final InputStream toClose = this.inputOctetStreamProxy;
+            final InputStream toClose = this.inputOctetStreamProxy; // NOMPMD
             this.inputOctetStreamProxy = null;
             this.bytes = null;
             if (toClose != null) {
@@ -583,5 +584,15 @@ public class XMLSignatureInput {
 
     public String getPreCalculatedDigest() {
         return preCalculatedDigest;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    @Deprecated
+    protected void finalize() throws Throwable {
+        if (this.inputOctetStreamProxy != null) {
+            LOG.log(WARNING, "The input stream was not processed. Was it closed?");
+        }
+        super.finalize();
     }
 }
