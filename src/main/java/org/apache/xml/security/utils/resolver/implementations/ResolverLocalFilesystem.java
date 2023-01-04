@@ -91,8 +91,8 @@ public class ResolverLocalFilesystem extends ResourceResolverSpi {
     }
 
     private static URI getNewURI(String uri, String baseURI) throws URISyntaxException {
-        URI newUri = null;
-        if (baseURI == null || baseURI.length() == 0) {
+        final URI newUri;
+        if (baseURI == null || baseURI.isEmpty()) {
             newUri = new URI(uri);
         } else {
             newUri = new URI(baseURI).resolve(uri);
