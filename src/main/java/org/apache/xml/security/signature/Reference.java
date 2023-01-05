@@ -18,6 +18,7 @@
  */
 package org.apache.xml.security.signature;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.System.Logger;
@@ -731,13 +732,9 @@ public class Reference extends SignatureElementProxy {
             return diOs.getDigestValue();
         } catch (XMLSecurityException | IOException ex) {
             throw new ReferenceNotInitializedException(ex);
-        } finally { //NOPMD
-            try {
-                if (output != null && output.hasUnprocessedInput()) {
-                    output.getUnprocessedInput().close();
-                }
-            } catch (IOException ex) {
-                throw new ReferenceNotInitializedException(ex);
+        } finally {
+            if (output instanceof Closeable) {
+                close((Closeable) output);
             }
         }
     }
@@ -807,5 +804,14 @@ public class Reference extends SignatureElementProxy {
     @Override
     public String getBaseLocalName() {
         return Constants._TAG_REFERENCE;
+    }
+
+
+    private static void close(Closeable closeable) throws ReferenceNotInitializedException {
+        try {
+            closeable.close();
+        } catch (IOException e) {
+            throw new ReferenceNotInitializedException(e, "Close failed!");
+        }
     }
 }

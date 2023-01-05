@@ -28,6 +28,7 @@
  */
 package org.apache.jcp.xml.dsig.internal.dom;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -572,19 +573,10 @@ public final class DOMReference extends DOMStructure
                 | IOException | org.apache.xml.security.c14n.CanonicalizationException e) {
             throw new XMLSignatureException(e);
         } finally {
-            if (xi != null && xi.hasUnprocessedInput()) {
-                try {
-                    xi.getUnprocessedInput().close();
-                } catch (IOException e) {
-                    throw new XMLSignatureException(e);
-                }
-            }
-            if (dos != null) {
-                try {
-                    dos.close();
-                } catch (IOException e) {
-                    throw new XMLSignatureException(e);
-                }
+            if (xi instanceof Closeable) {
+                close((Closeable) xi, dos);
+            } else {
+                close(dos);
             }
         }
     }
@@ -669,5 +661,22 @@ public final class DOMReference extends DOMStructure
             }
         }
         return dereferencedData;
+    }
+
+    private static void close(Closeable... closeables) throws XMLSignatureException {
+        XMLSignatureException collector = new XMLSignatureException("Close failed!");
+        for (Closeable closeable : closeables) {
+            if (closeable == null) {
+                continue;
+            }
+            try {
+                closeable.close();
+            } catch (IOException e) {
+                collector.addSuppressed(e);
+            }
+        }
+        if (collector.getSuppressed().length > 0) {
+            throw collector;
+        }
     }
 }
