@@ -18,18 +18,14 @@
  */
 package org.apache.xml.security.signature;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.System.Logger;
 
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.parser.XMLParserException;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Node;
-
-import static java.lang.System.Logger.Level.WARNING;
 
 /**
  * The XMLSignature Input as an input stream containing a collection of nodes
@@ -38,8 +34,7 @@ import static java.lang.System.Logger.Level.WARNING;
  * <p>
  * NOTE: The stream may be closed in the process, but it is not guaranteed.
  */
-public class XMLSignatureStreamInput extends XMLSignatureInput {
-    private static final Logger LOG = System.getLogger(XMLSignatureStreamInput.class.getName());
+public class XMLSignatureStreamInput extends XMLSignatureInput implements AutoCloseable {
 
     private InputStream inputStream;
 
@@ -83,8 +78,7 @@ public class XMLSignatureStreamInput extends XMLSignatureInput {
                 output.flush();
                 return;
             } finally {
-                inputStream.close();
-                inputStream = null;
+                close();
             }
         }
         canonize(output, c14n11);
@@ -95,25 +89,15 @@ public class XMLSignatureStreamInput extends XMLSignatureInput {
         try (InputStream is = this.getUnprocessedInput()) {
             return XMLUtils.read(is, isSecureValidation());
         } finally {
-            this.inputStream = null;
+            close();
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    @Deprecated
-    protected void finalize() throws Throwable {
+    public void close() throws IOException {
         if (this.inputStream != null) {
-            try {
-                if (!ByteArrayInputStream.class.isInstance(inputStream) && this.inputStream.available() > 0) {
-                    LOG.log(WARNING, "The input stream {0} was not processed and it even closed. I am closing it now.",
-                        this.inputStream);
-                }
-            } catch (IOException e) {
-                // No action required.
-            }
             this.inputStream.close();
+            this.inputStream = null;
         }
-        super.finalize();
     }
 }
