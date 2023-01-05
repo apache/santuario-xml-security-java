@@ -19,11 +19,6 @@
 package org.apache.xml.security.test.stax.performance;
 
 import java.io.File;
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.xml.security.test.JmhUtils;
 import org.junit.jupiter.api.BeforeAll;
@@ -33,18 +28,6 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-import org.openjdk.jmh.annotations.Benchmark;
-import org.openjdk.jmh.annotations.BenchmarkMode;
-import org.openjdk.jmh.annotations.Fork;
-import org.openjdk.jmh.annotations.Measurement;
-import org.openjdk.jmh.annotations.Mode;
-import org.openjdk.jmh.annotations.OutputTimeUnit;
-import org.openjdk.jmh.annotations.Param;
-import org.openjdk.jmh.annotations.Scope;
-import org.openjdk.jmh.annotations.State;
-import org.openjdk.jmh.annotations.Threads;
-import org.openjdk.jmh.annotations.Timeout;
-import org.openjdk.jmh.annotations.Warmup;
 import org.openjdk.jmh.profile.GCProfiler;
 import org.openjdk.jmh.profile.StackProfiler;
 import org.openjdk.jmh.runner.options.ChainedOptionsBuilder;
@@ -52,21 +35,14 @@ import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 import static org.apache.xml.security.test.JmhUtils.getSystemOptArg;
-import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.lessThan;
+import static org.apache.xml.security.test.stax.performance.BenchmarkXmlFileFactory.DIR_TMP;
+import static org.apache.xml.security.test.stax.performance.BenchmarkXmlFileFactory.FILE_INPUT_XML;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
 
 @Tag("benchmark")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class PerformanceIT {
+class PerformanceIT {
 
-    private static final Logger LOG = System.getLogger(PerformanceIT.class.getName());
-
-    private static final File DIR_TMP = resolveFile("target/performanceIT");
-    private static final File FILE_SYMMETRIC_KEY = new File(DIR_TMP, "symkey.pcks12");
-
-    private static final File FILE_INPUT_XML = new File(DIR_TMP, "input.xml");
     private static final File signedDomFile = new File(DIR_TMP, "signature-dom.xml");
     private static final File signedStreamFile = new File(DIR_TMP, "signature-stax.xml");
     private static final File encryptedDOMFile = new File(DIR_TMP, "encryption-dom.xml");
@@ -76,13 +52,13 @@ public class PerformanceIT {
 
 
     @BeforeAll
-    public static void initClass() throws Exception {
-        BenchmarkXmlFileFactory.initFiles(DIR_TMP, FILE_INPUT_XML, FILE_SYMMETRIC_KEY);
+    static void initClass() throws Exception {
+        BenchmarkXmlFileFactory.initFiles();
     }
 
 
     @BeforeEach
-    public void initTest() throws Exception {
+    void initTest() throws Exception {
         optionsBuilder = new OptionsBuilder().shouldFailOnError(true).shouldDoGC(true)
             .addProfiler(StackProfiler.class).addProfiler(GCProfiler.class).addProfiler(MemoryProfiler.class)
             .param("tmpDir", DIR_TMP.getAbsolutePath())
@@ -97,7 +73,7 @@ public class PerformanceIT {
 
     @Order(10)
     @Test
-    public void testSignAsStreams() throws Exception {
+    void testSignAsStreams() throws Exception {
         Options options = optionsBuilder
             .include(Benchmarks.class.getCanonicalName() + ".signAsStreams.*")
             .param("processedFileName", signedStreamFile.getName())
@@ -108,7 +84,7 @@ public class PerformanceIT {
 
     @Order(11)
     @Test
-    public void testReadSignedAsStream() throws Exception {
+    void testReadSignedAsStream() throws Exception {
         Options options = optionsBuilder
             .include(Benchmarks.class.getCanonicalName() + ".readSignedAsStream.*")
             .param("processedFileName", signedStreamFile.getName())
@@ -119,7 +95,7 @@ public class PerformanceIT {
 
     @Order(20)
     @Test
-    public void testSignAsDOM() throws Exception {
+    void testSignAsDOM() throws Exception {
         Options options = optionsBuilder
             .include(Benchmarks.class.getCanonicalName() + ".signAsDOM.*")
             .param("processedFileName", signedDomFile.getName())
@@ -130,7 +106,7 @@ public class PerformanceIT {
 
     @Order(21)
     @Test
-    public void testReadSignedAsDOM() throws Exception {
+    void testReadSignedAsDOM() throws Exception {
         Options options = optionsBuilder
             .include(Benchmarks.class.getCanonicalName() + ".readSignedAsDOM.*")
             .param("processedFileName", signedDomFile.getName())
@@ -140,7 +116,7 @@ public class PerformanceIT {
 
     @Order(30)
     @Test
-    public void testEncryptStream() throws Exception {
+    void testEncryptStream() throws Exception {
         Options options = optionsBuilder
             .include(Benchmarks.class.getCanonicalName() + ".encryptStream.*")
             .param("processedFileName", encryptedStreamFile.getName())
@@ -151,7 +127,7 @@ public class PerformanceIT {
 
     @Order(31)
     @Test
-    public void testDecryptStream() throws Exception {
+    void testDecryptStream() throws Exception {
         Options options = optionsBuilder
             .include(Benchmarks.class.getCanonicalName() + ".decryptStream.*")
             .param("processedFileName", encryptedStreamFile.getName())
@@ -162,7 +138,7 @@ public class PerformanceIT {
 
     @Order(40)
     @Test
-    public void testEncryptDOM() throws Exception {
+    void testEncryptDOM() throws Exception {
         Options options = optionsBuilder
             .include(Benchmarks.class.getCanonicalName() + ".encryptDOM.*")
             .param("processedFileName", encryptedDOMFile.getName())
@@ -173,7 +149,7 @@ public class PerformanceIT {
 
     @Order(41)
     @Test
-    public void testDecryptDOM() throws Exception {
+    void testDecryptDOM() throws Exception {
         Options options = optionsBuilder
             .include(Benchmarks.class.getCanonicalName() + ".decryptDOM.*")
             .param("processedFileName", encryptedDOMFile.getName())
@@ -181,135 +157,8 @@ public class PerformanceIT {
         JmhUtils.runAndVerify(options, lessThanOrEqualTo(15_000d), lessThanOrEqualTo(1000d));
     }
 
-    /**
-     * This class is used as a base to generate JMH benchmark classes.
-     * They will be used in own JVM.
-     */
-    @BenchmarkMode(Mode.SampleTime)
-    @Warmup(batchSize = 1, iterations = 1)
-    @OutputTimeUnit(TimeUnit.MILLISECONDS)
-    @Fork(1)
-    @Timeout(time = 5, timeUnit = TimeUnit.MINUTES)
-    // We work with files, don't add more threads
-    @Threads(1)
-    public static class Benchmarks {
-
-        private static final BenchmarkXmlFileFactory XML_FACTORY = new BenchmarkXmlFileFactory(FILE_SYMMETRIC_KEY);
-
-        @Measurement(batchSize = 4, iterations = 3)
-        @Benchmark
-        public void signAsStreams(final BenchmarkFiles files) throws Exception {
-            Action action = () -> XML_FACTORY.signAsStream(files.getOriginalFile(), files.getProcessedFile());
-            runAndCheckStability(action, files);
-        }
-
-
-        @Measurement(batchSize = 4, iterations = 3)
-        @Benchmark
-        public void readSignedAsStream(final BenchmarkFiles files) throws Exception {
-            Action action = () -> XML_FACTORY.readSignedAsStream(files.getProcessedFile());
-            runAndCheckStability(action, files);
-        }
-
-
-        @Measurement(batchSize = 4, iterations = 3)
-        @Benchmark
-        public void signAsDOM(final BenchmarkFiles files) throws Exception {
-            Action action = () -> XML_FACTORY.signAsDOM(files.getOriginalFile(), files.getProcessedFile());
-            runAndCheckStability(action, files);
-        }
-
-
-        @Measurement(batchSize = 4, iterations = 3)
-        @Benchmark
-        public void readSignedAsDOM(final BenchmarkFiles files) throws Exception {
-            Action action = () -> XML_FACTORY.readSignedAsDOM(files.getProcessedFile());
-            runAndCheckStability(action, files);
-        }
-
-
-        @Measurement(batchSize = 4, iterations = 3)
-        @Benchmark
-        public void encryptStream(final BenchmarkFiles files) throws Exception {
-            Action action = () -> XML_FACTORY.encryptAsStream(files.getOriginalFile(), files.getProcessedFile());
-            runAndCheckStability(action, files);
-        }
-
-
-        @Measurement(batchSize = 4, iterations = 3)
-        @Benchmark
-        public void decryptStream(final BenchmarkFiles files) throws Exception {
-            Action action = () -> XML_FACTORY.decryptAsStream(files.getProcessedFile());
-            runAndCheckStability(action, files);
-        }
-
-
-        @Measurement(batchSize = 4, iterations = 3)
-        @Benchmark
-        public void encryptDOM(final BenchmarkFiles files) throws Exception {
-            Action action = () -> XML_FACTORY.encryptAsDOM(files.getOriginalFile(), files.getProcessedFile());
-            runAndCheckStability(action, files);
-        }
-
-
-        @Measurement(batchSize = 4, iterations = 3)
-        @Benchmark
-        public void decryptDOM(final BenchmarkFiles files) throws Exception {
-            Action action = () -> XML_FACTORY.decryptAsDOM(files.getProcessedFile());
-            runAndCheckStability(action, files);
-        }
-
-        private void runAndCheckStability(Action action, BenchmarkFiles files) throws Exception {
-            Instant start = Instant.now();
-            action.run();
-            Duration duration = Duration.between(start, Instant.now());
-            if (files.maxAcceptableDuration == null) {
-                files.maxAcceptableDuration = duration.plusMillis(duration.toMillis() / 5);
-                LOG.log(Level.INFO, "Max tolerated duration of the action based on the warmup + 20%: {0} ms",
-                    files.maxAcceptableDuration.toMillis());
-                return;
-            }
-            assertThat("Duration of the action", duration, lessThan(files.maxAcceptableDuration));
-        }
-    }
-
     @FunctionalInterface
     interface Action {
         void run() throws Exception;
-    }
-
-
-    @State(Scope.Benchmark)
-    public static class BenchmarkFiles {
-
-        public Duration maxAcceptableDuration;
-
-        // Values must be simple strings.
-        // Affects also JMH output which is more simple.
-        @Param("")
-        private String tmpDir;
-        @Param("")
-        private String originalFileName;
-        @Param("")
-        private String processedFileName;
-
-        /**
-         * @return input unsigned and unencrypted xml file
-         */
-        public File getOriginalFile() {
-            return originalFileName.isEmpty() ? null : new File(tmpDir, originalFileName);
-        }
-
-        /**
-         * @return signed or encrypted file
-         */
-        public File getProcessedFile() {
-            return processedFileName.isEmpty() ? null : new File(tmpDir, processedFileName);
-        }
-
-        @Override
-        public String toString() {
-            return "[originalFile=" + originalFileName + "|signedFile=" + processedFileName + "]";
-        }
     }
 }
