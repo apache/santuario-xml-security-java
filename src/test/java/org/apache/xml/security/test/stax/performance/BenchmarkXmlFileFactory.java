@@ -61,10 +61,15 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 
 public class BenchmarkXmlFileFactory {
 
     private static final Logger LOG = System.getLogger(BenchmarkXmlFileFactory.class.getName());
+
+    public static final File DIR_TMP = resolveFile("target/performanceIT");
+    public static final File FILE_SYMMETRIC_KEY = new File(DIR_TMP, "symkey.pcks12");
+    public static final File FILE_INPUT_XML = new File(DIR_TMP, "input.xml");
 
     private static final String KS_PASSWORD = "default";
     private static final String ALIAS_ENCRYPTION_SYM_KEY = "encryptionSymKey";
@@ -221,11 +226,11 @@ public class BenchmarkXmlFileFactory {
     // Important: this method is invoked by different JVM than the constructor.
     // That is why results are not shared via fields - it is not possible.
     // However we still use the same file system.
-    public static void initFiles(final File dir, final File inputFile, final File symKeyStoreFile) throws Exception {
-        dir.mkdirs();
+    public static void initFiles() throws Exception {
+        DIR_TMP.mkdirs();
 
         // huge xml, nearly 29 MB
-        generateLargeXMLFile(inputFile, 50_000);
+        generateLargeXMLFile(FILE_INPUT_XML, 50_000);
 
         final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(256);
@@ -234,7 +239,7 @@ public class BenchmarkXmlFileFactory {
         final KeyStore symKeyStore = KeyStore.getInstance("PKCS12");
         symKeyStore.load(null);
         symKeyStore.setEntry(ALIAS_ENCRYPTION_SYM_KEY, entry, new PasswordProtection(KS_PASSWORD.toCharArray()));
-        try (OutputStream stream = Files.newOutputStream(symKeyStoreFile.toPath())) {
+        try (OutputStream stream = Files.newOutputStream(FILE_SYMMETRIC_KEY.toPath())) {
             symKeyStore.store(stream, KS_PASSWORD.toCharArray());
         }
     }
