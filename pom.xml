@@ -529,7 +529,7 @@
         <log4j.version>2.19.0</log4j.version>
         <bcprov.version>1.72</bcprov.version>
         <hamcrest.version>2.2</hamcrest.version>
-        <xmlunit.version>2.9.0</xmlunit.version>
+        <xmlunit.version>2.9.1</xmlunit.version>
         <commons.codec.version>1.15</commons.codec.version>
         <woodstox.core.version>6.4.0</woodstox.core.version>
         <jetty.version>9.4.50.v20221201</jetty.version>
