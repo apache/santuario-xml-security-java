@@ -540,7 +540,7 @@
         <targetJdk>1.8</targetJdk>
         <maven.compiler.target>1.8</maven.compiler.target>
         <clirr.version>2.8</clirr.version>
-        <maven-owasp-plugin-version>7.4.4</maven-owasp-plugin-version>
+        <maven-owasp-plugin-version>8.0.0</maven-owasp-plugin-version>
         <!-- Allow Clirr severity to be overriden by the command-line option -DminSeverity=level -->
         <minSeverity>info</minSeverity>
         <project.build.outputTimestamp>2022-09-12T09:20:48Z</project.build.outputTimestamp>
