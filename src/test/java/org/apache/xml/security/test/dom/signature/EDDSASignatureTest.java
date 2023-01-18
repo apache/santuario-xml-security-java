@@ -33,8 +33,14 @@ import org.w3c.dom.Element;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
-import java.io.*;
-import java.security.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.security.KeyStore;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.Security;
 import java.security.cert.X509Certificate;
 
 
@@ -57,7 +63,16 @@ public class EDDSASignatureTest {
 
     @org.junit.jupiter.api.BeforeAll
     public static void beforeTest(){
-        if (Security.getProvider(org.bouncycastle.jce.provider.BouncyCastleProvider.PROVIDER_NAME) == null) {
+        // Since JDK 15, the EdDSA algorithms are supported in the default java JCA provider.
+        // Add BouncyCastleProvider only for java versions before JDK 15.
+        boolean isNotJDK15up;
+        try {
+            int javaVersion = Integer.parseInt(System.getProperty("java.specification.version"));
+            isNotJDK15up = javaVersion < 15;
+        } catch (NumberFormatException ex) {
+            isNotJDK15up = true;
+        }
+        if (isNotJDK15up && Security.getProvider(org.bouncycastle.jce.provider.BouncyCastleProvider.PROVIDER_NAME) == null) {
             Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
             bcAddedForTheTest = true;
         }
@@ -80,6 +95,24 @@ public class EDDSASignatureTest {
             (PrivateKey)keyStore.getKey("Ed25519", EDDSA_KS_PASSWORD.toCharArray());
 
         doVerify(doSign(privateKey, (X509Certificate)keyStore.getCertificate("Ed25519"), null, XMLSignature.ALGO_ID_SIGNATURE_EDDSA_ED25519));
+    }
+
+    @org.junit.jupiter.api.Test
+    public void testEd22519VerifyXML() throws Exception {
+
+        try (InputStream xmlSignatureExample
+                     = EDDSASignatureTest.class.getResourceAsStream("/org/apache/xml/security/samples/input/eddsaEd25519Signature.xml")) {
+            doVerify(xmlSignatureExample);
+        }
+    }
+
+    @org.junit.jupiter.api.Test
+    public void testEd448VerifyXML() throws Exception {
+
+        try (InputStream xmlSignatureExample
+                     = EDDSASignatureTest.class.getResourceAsStream("/org/apache/xml/security/samples/input/eddsaEd448Signature.xml")) {
+            doVerify(xmlSignatureExample);
+        }
     }
 
     @org.junit.jupiter.api.Test
