@@ -21,14 +21,10 @@ package javax.xml.crypto.test.dsig;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 import javax.xml.crypto.dsig.dom.DOMValidateContext;
 import javax.xml.crypto.test.KeySelectors;
 import java.nio.file.Paths;
-import java.security.Security;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -36,37 +32,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * This is a testcase validates various EdDSA XML signatures
  */
-public class SignatureValidatorEdDSATest {
+public class SignatureValidatorEdDSATest extends EdDSATestAbstract {
 
     private SignatureValidator testInstance;
-
-    private static boolean bcAddedForTheTest = false;
-
-    @org.junit.jupiter.api.BeforeAll
-    public static void beforeTest() {
-        Security.insertProviderAt
-                (new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI(), 1);
-        // Since JDK 15, the EdDSA algorithms are supported in the default java JCA provider.
-        // Add BouncyCastleProvider only for java versions before JDK 15.
-        boolean isNotJDK15up;
-        try {
-            int javaVersion = Integer.parseInt(System.getProperty("java.specification.version"));
-            isNotJDK15up = javaVersion < 15;
-        } catch (NumberFormatException ex) {
-            isNotJDK15up = true;
-        }
-        if (isNotJDK15up && Security.getProvider(org.bouncycastle.jce.provider.BouncyCastleProvider.PROVIDER_NAME) == null) {
-            Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
-            bcAddedForTheTest = true;
-        }
-    }
-
-    @org.junit.jupiter.api.AfterAll
-    public static void afterAll() {
-        if (bcAddedForTheTest) {
-            Security.removeProvider(org.bouncycastle.jce.provider.BouncyCastleProvider.PROVIDER_NAME);
-        }
-    }
 
     @org.junit.jupiter.api.BeforeEach
     public void before() {
@@ -93,9 +61,8 @@ public class SignatureValidatorEdDSATest {
         assertEquals(Boolean.valueOf(result), coreValidity, message);
     }
 
-    protected void updateIdReferences(DOMValidateContext vc) {
-        Document doc = vc.getNode().getOwnerDocument();
-        NodeList nl = doc.getElementsByTagName("Assertion");
-        vc.setIdAttributeNS((Element) nl.item(0), null, "AssertionID");
+    private void updateIdReferences(DOMValidateContext vc) {
+        updateIdReferences(vc, "Assertion", "AssertionID");
     }
+
 }
