@@ -1,0 +1,31 @@
+<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+<ds:SignedInfo>
+<ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"></ds:CanonicalizationMethod>
+<ds:SignatureMethod Algorithm="http://www.w3.org/2021/04/xmldsig-more#eddsa-ed25519"></ds:SignatureMethod>
+<ds:Reference URI="#foo">
+<ds:Transforms>
+<ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"></ds:Transform>
+<ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments"></ds:Transform>
+</ds:Transforms>
+<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></ds:DigestMethod>
+<ds:DigestValue>SaRMZuEOPHiUpJrjWfnciQAmhN8=</ds:DigestValue>
+</ds:Reference>
+</ds:SignedInfo>
+<ds:SignatureValue>
+TMaM9f+TpFf2oIyEpM5piLK2l9eNs7t4YqhwUPavbkfL51Ms7ff2efDpxQ5QBaV9M6RX5qFZg/1y&#xD;
+etXA+dOlDw==
+</ds:SignatureValue>
+<ds:KeyInfo>
+<ds:X509Data>
+<ds:X509Certificate>
+MIIBezCCAS2gAwIBAgIGAYR2SB6KMAUGAytlcDBSMSMwIQYDVQQDDBpYTUwgRWQyNTUxOSBTaWdu&#xD;
+YXR1cmUgVGVzdDEWMBQGCgmSJomT8ixkARkWBmFwYWNoZTETMBEGCgmSJomT8ixkARkWA29yZzAe&#xD;
+Fw0yMjExMTQxMzE1NDhaFw0yNjExMTQxMzE1NDhaMFIxIzAhBgNVBAMMGlhNTCBFZDI1NTE5IFNp&#xD;
+Z25hdHVyZSBUZXN0MRYwFAYKCZImiZPyLGQBGRYGYXBhY2hlMRMwEQYKCZImiZPyLGQBGRYDb3Jn&#xD;
+MCowBQYDK2VwAyEAhxvsjkHukjJDs7Z8NvUNUChup4RKpkfTMPRnseY+SwyjIzAhMA8GA1UdEwEB&#xD;
+/wQFMAMBAf8wDgYDVR0PAQH/BAQDAgGmMAUGAytlcANBALRvL/aEAn9WWtPpseszszSWR3Gyn5IS&#xD;
+qgXKtWbiZIMUTvF7QU8MgkXK8s329fPLCb8+6kvE6K24bxVWpabEEgs=
+</ds:X509Certificate>
+</ds:X509Data>
+</ds:KeyInfo>
+<ds:Object Id="object"><Assertion AssertionID="foo">Some simple text changed after the signature</Assertion></ds:Object></ds:Signature>

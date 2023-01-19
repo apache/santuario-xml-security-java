@@ -79,7 +79,7 @@ public class EDDSASignatureTest {
     }
 
     @org.junit.jupiter.api.AfterAll
-    public static void AfterAll(){
+    public static void afterAll(){
         if (bcAddedForTheTest) {
             Security.removeProvider(org.bouncycastle.jce.provider.BouncyCastleProvider.PROVIDER_NAME);
         }
