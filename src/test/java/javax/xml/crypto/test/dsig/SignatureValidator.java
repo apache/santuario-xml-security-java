@@ -54,15 +54,23 @@ public class SignatureValidator {
         return getValidateContext(fn, ks, true);
     }
 
-    public DOMValidateContext getValidateContext(String fn, KeySelector ks, boolean secureValidation)
-        throws Exception {
-        Document doc = XMLUtils.read(new FileInputStream(new File(dir, fn)), false);
+    public DOMValidateContext getValidateContext(String fn, KeySelector ks, boolean secureValidation) throws Exception {
+        DOMValidateContext domValidateContext;
+        try (FileInputStream inputStream = new FileInputStream(new File(dir, fn))){
+            domValidateContext =  getValidateContext(inputStream, ks, secureValidation);
+            domValidateContext.setBaseURI(dir.toURI().toString());
+        }
+        return domValidateContext;
+    }
+
+    public DOMValidateContext getValidateContext(InputStream inputStream, KeySelector ks, boolean secureValidation)
+            throws Exception {
+        Document doc = XMLUtils.read(inputStream, false);
         Element sigElement = getSignatureElement(doc);
         if (sigElement == null) {
             throw new Exception("Couldn't find signature Element");
         }
         DOMValidateContext vc = new DOMValidateContext(ks, sigElement);
-        vc.setBaseURI(dir.toURI().toString());
         vc.setProperty("org.apache.jcp.xml.dsig.secureValidation", secureValidation);
         return vc;
     }
