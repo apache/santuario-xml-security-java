@@ -45,7 +45,7 @@ abstract class AbstractDOMSignatureMethod extends DOMStructure
     implements SignatureMethod {
 
     // denotes the type of signature algorithm
-    enum Type { DSA, RSA, ECDSA, HMAC }
+    enum Type { DSA, RSA, ECDSA, EDDSA, HMAC }
 
     /**
      * Verifies the passed-in signature with the specified key, using the
