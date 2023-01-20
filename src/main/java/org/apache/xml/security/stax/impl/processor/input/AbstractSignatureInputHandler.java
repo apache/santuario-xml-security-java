@@ -50,7 +50,7 @@ import org.apache.xml.security.stax.impl.algorithms.SignatureAlgorithmFactory;
 
 import javax.security.auth.DestroyFailedException;
 import javax.security.auth.Destroyable;
-import javax.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBElement;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;

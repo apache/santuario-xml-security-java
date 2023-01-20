@@ -20,7 +20,6 @@ package org.apache.xml.security.c14n.implementations;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 
@@ -46,7 +45,7 @@ public class NameSpaceSymbTable {
         initialMap.put(XMLNS, ne);
     }
 
-    /**The map betwen prefix-> entry table. */
+    /**The map between prefix-> entry table. */
     private SymbMap symb;
 
     /**The stacks for removing the definitions when doing pop.*/
@@ -54,7 +53,7 @@ public class NameSpaceSymbTable {
     private boolean cloned = true;
 
     /**
-     * Default constractor
+     * Default constructor
      **/
     public NameSpaceSymbTable() {
         //Insert the default binding for xmlns.
@@ -71,9 +70,7 @@ public class NameSpaceSymbTable {
      * @param result the list where to fill the unrendered xmlns definitions.
      **/
     public void getUnrenderedNodes(Collection<Attr> result) {
-        Iterator<NameSpaceSymbEntry> it = symb.entrySet().iterator();
-        while (it.hasNext()) {
-            NameSpaceSymbEntry n = it.next();
+        for (NameSpaceSymbEntry n : symb.entrySet()) {
             //put them rendered?
             if (!n.rendered && n.n != null) {
                 n = n.clone();
@@ -166,14 +163,14 @@ public class NameSpaceSymbTable {
         symb.put(prefix, entry);
         entry.rendered = true;
         entry.lastrendered = entry.uri;
-        // Return the node for outputing.
+        // Return the node for outputting.
         return entry.n;
     }
 
     /**
      * Gets a definition without mark it as render.
      * For render in exclusive c14n the namespaces in the include prefixes.
-     * @param prefix The prefix whose definition is neaded.
+     * @param prefix The prefix whose definition is needed.
      * @return the attr to render, null if there is no need to render
      **/
     public Attr getMappingWithoutRendered(String prefix) {

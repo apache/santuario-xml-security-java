@@ -123,7 +123,7 @@ public class XMLSignatureInputDebugger {
     /**
      * Constructor XMLSignatureInputDebugger
      *
-     * @param xmlSignatureInput the signatur to pretty print
+     * @param xmlSignatureInput the signature to pretty print
      * @param inclusiveNamespace
      */
     public XMLSignatureInputDebugger(

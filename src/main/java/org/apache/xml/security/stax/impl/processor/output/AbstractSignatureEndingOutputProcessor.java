@@ -200,9 +200,7 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
 
         createEndElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsig_SignatureMethod);
 
-        Iterator<SignaturePartDef> signaturePartDefIterator = signaturePartDefList.iterator();
-        while (signaturePartDefIterator.hasNext()) {
-            SignaturePartDef signaturePartDef = signaturePartDefIterator.next();
+        for (SignaturePartDef signaturePartDef : signaturePartDefList) {
             String uriString;
             if (signaturePartDef.isExternalResource()) {
                 uriString = signaturePartDef.getSigRefId();
@@ -310,8 +308,7 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
 
                 Set<String> prefixSet = XMLSecurityUtils.getExcC14NInclusiveNamespacePrefixes(xmlSecStartElement, false);
                 StringBuilder prefixes = new StringBuilder();
-                for (Iterator<String> iterator = prefixSet.iterator(); iterator.hasNext(); ) {
-                    String prefix = iterator.next();
+                for (String prefix : prefixSet) {
                     if (prefixes.length() != 0) {
                         prefixes.append(' ');
                     }

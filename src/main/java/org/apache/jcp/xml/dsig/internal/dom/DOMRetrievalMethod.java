@@ -157,7 +157,7 @@ public final class DOMRetrievalMethod extends DOMStructure
                 newTransforms.add
                     (new DOMTransform(transformElem, context, provider));
                 if (secVal && newTransforms.size() > DOMReference.MAXIMUM_TRANSFORM_COUNT) {
-                    String error = "A maxiumum of " + DOMReference.MAXIMUM_TRANSFORM_COUNT + " "
+                    String error = "A maximum of " + DOMReference.MAXIMUM_TRANSFORM_COUNT + " "
                         + "transforms per Reference are allowed with secure validation";
                     throw new MarshalException(error);
                 }

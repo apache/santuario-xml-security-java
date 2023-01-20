@@ -33,7 +33,6 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -44,9 +43,9 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.security.auth.DestroyFailedException;
 import javax.security.auth.Destroyable;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
+import jakarta.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
@@ -129,9 +128,8 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
         references = new HashMap<>((int) Math.ceil(dataReferenceOrKeyReferenceSize / 0.75));
         processedReferences = new ArrayList<>(dataReferenceOrKeyReferenceSize);
 
-        Iterator<JAXBElement<ReferenceType>> referenceTypeIterator = dataReferenceOrKeyReference.iterator();
-        while (referenceTypeIterator.hasNext()) {
-            ReferenceType referenceType = referenceTypeIterator.next().getValue();
+        for (JAXBElement<ReferenceType> referenceTypeJAXBElement : dataReferenceOrKeyReference) {
+            ReferenceType referenceType = referenceTypeJAXBElement.getValue();
             if (referenceType.getURI() == null) {
                 throw new XMLSecurityException("stax.emptyReferenceURI");
             }
@@ -600,9 +598,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
 
         //here we check if all references where processed.
         if (references != null) {
-            Iterator<Map.Entry<String, ReferenceType>> refEntryIterator = this.references.entrySet().iterator();
-            while (refEntryIterator.hasNext()) {
-                Map.Entry<String, ReferenceType> referenceTypeEntry = refEntryIterator.next();
+            for (Map.Entry<String, ReferenceType> referenceTypeEntry : this.references.entrySet()) {
                 if (!processedReferences.contains(referenceTypeEntry.getValue())) {
                     throw new XMLSecurityException("stax.encryption.unprocessedReferences");
                 }

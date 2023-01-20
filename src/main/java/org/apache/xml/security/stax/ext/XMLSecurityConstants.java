@@ -21,9 +21,9 @@ package org.apache.xml.security.stax.ext;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.namespace.QName;
@@ -43,12 +43,14 @@ public class XMLSecurityConstants {
     public static final XMLOutputFactory xmlOutputFactoryNonRepairingNs;
 
     private static final SecureRandom SECURE_RANDOM;
+    private static final String RANDOM_ALGORITHM_KEY = "org.apache.xml.security.securerandom.algorithm";
     private static JAXBContext jaxbContext;
     private static Schema schema;
 
     static {
         try {
-            SECURE_RANDOM = SecureRandom.getInstance("SHA1PRNG");
+            String PrngAlgorithm = System.getProperty(RANDOM_ALGORITHM_KEY, SecureRandom.getInstanceStrong().getAlgorithm());
+            SECURE_RANDOM = SecureRandom.getInstance(PrngAlgorithm);
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
@@ -70,7 +72,8 @@ public class XMLSecurityConstants {
     }
 
     /**
-     * Generate bytes of the given length using the SHA1PRNG algorithm. The SecureRandom
+     * Generate bytes of the given length using the supplied algorithm in RANDOM_ALGORITHM_KEY or,
+     * if not specified, use SecureRandom.getInstanceStrong(). The SecureRandom
      * instance that backs this method is cached for efficiency.
      *
      * @return a byte array of the given length

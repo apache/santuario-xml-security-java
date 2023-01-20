@@ -36,7 +36,6 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -134,9 +133,7 @@ public class InboundXMLSec {
 
         List<InputProcessor> additionalInputProcessors = securityProperties.getInputProcessorList();
         if (!additionalInputProcessors.isEmpty()) {
-            Iterator<InputProcessor> inputProcessorIterator = additionalInputProcessors.iterator();
-            while (inputProcessorIterator.hasNext()) {
-                InputProcessor inputProcessor = inputProcessorIterator.next();
+            for (InputProcessor inputProcessor : additionalInputProcessors) {
                 inputProcessorChain.addProcessor(inputProcessor);
             }
         }
