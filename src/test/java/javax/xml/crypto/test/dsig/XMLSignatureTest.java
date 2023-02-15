@@ -87,12 +87,12 @@ public class XMLSignatureTest {
         // set up the signingKeys
         SIGN_KEYS = new Key[3];
         SIGN_KEYS[0] = TestUtils.getPrivateKey("DSA", 1024);
-        SIGN_KEYS[1] = TestUtils.getPrivateKey("RSA", 512);
+        SIGN_KEYS[1] = TestUtils.getPrivateKey("RSA", 2048);
         SIGN_KEYS[2] = new SecretKeySpec(new byte[16], "HmacSHA1");
         // set up the validatingKeys
         VALIDATE_KEYS = new Key[3];
         VALIDATE_KEYS[0] = TestUtils.getPublicKey("DSA", 1024);
-        VALIDATE_KEYS[1] = TestUtils.getPublicKey("RSA", 512);
+        VALIDATE_KEYS[1] = TestUtils.getPublicKey("RSA", 2048);
         VALIDATE_KEYS[2] = new SecretKeySpec(new byte[16], "HmacSHA1");
         defSi = createSignedInfo(SIG_METHODS[0]);
         defKi = kifac.newKeyInfo

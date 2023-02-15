@@ -48,7 +48,7 @@ public class KeyValueTest {
         keys = new PublicKey[ALGOS.length];
 
         for (int i = 0; i < ALGOS.length; i++) {
-            keys[i] = genPublicKey(ALGOS[i], 512);
+            keys[i] = genPublicKey(ALGOS[i], 2048);
         }
     }
 
