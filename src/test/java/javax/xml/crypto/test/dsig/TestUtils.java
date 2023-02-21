@@ -107,10 +107,10 @@ public class TestUtils {
     private static final String DSA_2048_X =
         "14562787764977288900757387442281559936279834964901963465277698843172";
     private static final String RSA_MOD =
-        "010800185049102889923150759252557522305032794699952150943573164381936603255999071981574575044810461362008102247767482738822150129277490998033971789476107463";
+        "25623882427526707322866322256240741413699766555508113361975182446922418415089438936415989175296088974016615587740736574241342957393002320762010474925830839106425586207448011995748812345401230782267753189386103568502885279593734636842405461656752755702912746172339027034096681889413854955725588164346940842786630738833311668086338812048993406627875818948914819316678433784472883107947150827418112730771165726422295838065290136656204305183681062358941954544617538033203389194497917362344779507907933457930952778285948136508570166989856730778407368193764241294623598058775696847518736534397297112966951721385759730339389";
     private static final String RSA_PUB = "065537";
     private static final String RSA_PRIV =
-        "0161169735844219697954459962296126719476357984292128166117072108359155865913405986839960884870654387514883422519600695753920562880636800379454345804879553";
+        "3528234661733082180776442193574872980411472807679710926323512617315835387304379159287393172068784150960921907682262032835709276401337457353195637971385591224749141552649814002008594879303305103669441762378811947482643953233346985105602436577666613782490572065538358178672939825900951021872647627982159607020517494035808696000711764612928507262119202126863967982149512266656979649854828368946729091888471713686050609236660803230783779358341620231090291260341354329267023477206244292304622212026424326791744469389564408227691436807395676615403132438757121377972296526283759417146522152664932814217676090967196165750785";
 
     private static final DocumentBuilderFactory DBF = DocumentBuilderFactory.newInstance();
 
@@ -131,7 +131,7 @@ public class TestUtils {
         if ("DSA".equalsIgnoreCase(algo)) {
             return getPublicKey("DSA", 1024);
         } else if ("RSA".equalsIgnoreCase(algo)) {
-            return getPublicKey("RSA", 512);
+            return getPublicKey("RSA", 2048);
         } else {
             throw new RuntimeException("Unsupported key algorithm " + algo);
         }
@@ -156,7 +156,7 @@ public class TestUtils {
                 throw new RuntimeException("Unsupported keysize:" + keysize);
             }
         } else if ("RSA".equalsIgnoreCase(algo)) {
-            if (keysize == 512) {
+            if (keysize == 2048) {
                 kspec = new RSAPublicKeySpec(new BigInteger(RSA_MOD),
                                              new BigInteger(RSA_PUB));
             } else {
@@ -181,7 +181,7 @@ public class TestUtils {
         if ("DSA".equalsIgnoreCase(algo)) {
             return getPrivateKey("DSA", 1024);
         } else if ("RSA".equalsIgnoreCase(algo)) {
-            return getPrivateKey("RSA", 512);
+            return getPrivateKey("RSA", 2048);
         } else {
             throw new RuntimeException("Unsupported key algorithm " + algo);
         }
@@ -204,7 +204,7 @@ public class TestUtils {
                 throw new RuntimeException("Unsupported keysize:" + keysize);
             }
         } else if ("RSA".equalsIgnoreCase(algo)) {
-            if (keysize == 512) {
+            if (keysize == 2048) {
                 kspec = new RSAPrivateKeySpec
                     (new BigInteger(RSA_MOD), new BigInteger(RSA_PRIV));
             } else {
@@ -250,12 +250,12 @@ public class TestUtils {
             Document doc = XMLUtils.read(new FileInputStream(input), false);
             if (tag == null) {
                 return new DOMValidateContext
-                    (TestUtils.getPublicKey("RSA", 512),
+                    (TestUtils.getPublicKey("RSA", 2048),
                      doc.getDocumentElement());
             } else {
                 NodeList list = doc.getElementsByTagName(tag);
                 return new DOMValidateContext
-                    (TestUtils.getPublicKey("RSA", 512), list.item(0));
+                    (TestUtils.getPublicKey("RSA", 2048), list.item(0));
             }
         } else {
             throw new Exception("Unsupported XMLValidateContext type: " + type);
