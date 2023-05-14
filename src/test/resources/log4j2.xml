@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Configuration status="info" name="Apache Santuario" packages="">
+<Configuration status="info" name="Apache Santuario">
     <Appenders>
-        <File name="LOG" fileName="target/logging.log">
+        <File name="LOG" fileName="${project.build.directory}/logging.log">
             <PatternLayout>
                 <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
             </PatternLayout>
@@ -11,7 +11,7 @@
         </Async>
     </Appenders>
     <Loggers>
-        <Root level="info">
+        <Root level="${test.logging.level}">
             <AppenderRef ref="Async"/>
         </Root>
     </Loggers>
