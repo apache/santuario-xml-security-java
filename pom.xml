@@ -95,46 +95,49 @@
         <clirr.version>2.8</clirr.version>
         <commons.codec.version>1.15</commons.codec.version>
         <hamcrest.version>2.2</hamcrest.version>
-        <jetty.version>9.4.51.v20230217</jetty.version>
+        <jetty.version>11.0.15</jetty.version>
+        <jmh.version>1.36</jmh.version>
         <junit.version>5.9.3</junit.version>
-        <log4j.version>2.20.0</log4j.version>
-        <slf4j.version>1.7.36</slf4j.version>
         <xalan.version>2.7.3</xalan.version>
         <xmlunit.version>2.9.1</xmlunit.version>
         <xml.bind.api.version>3.0.1</xml.bind.api.version>
         <xml.bind.impl.version>3.0.2</xml.bind.impl.version>
         <woodstox.core.version>6.5.1</woodstox.core.version>
 
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.target>11</maven.compiler.target>
+        <project.build.outputTimestamp>2023-05-15T21:55:37Z</project.build.outputTimestamp>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.build.outputTimestamp>2023-03-27T06:33:07Z</project.build.outputTimestamp>
-        <targetJdk>1.8</targetJdk>
-        <test.logging.level>info</test.logging.level>
+        <targetJdk>11</targetJdk>
 
         <!-- Allow Clirr severity to be overriden by the command-line option -DminSeverity=level -->
         <minSeverity>info</minSeverity>
         <xmlsec.jaxb.context.class />
+
+        <!-- Important for FuncHere.java aka here() -->
+        <maven.test.argLine>
+          --add-exports org.apache.santuario.xmlsec/org.apache.xml.security.test.dom.utils.jmh_generated=ALL-UNNAMED
+          --add-exports org.apache.santuario.xmlsec/org.apache.xml.security.test.dom.xalan=ALL-UNNAMED
+          --add-exports org.apache.santuario.xmlsec/org.apache.xml.security.test.stax.performance.jmh_generated=ALL-UNNAMED
+        </maven.test.argLine>
+        <skipUT>false</skipUT>
+        <skipIT>true</skipIT>
+        <test.logging.level>info</test.logging.level>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
-            <scope>compile</scope>
+            <groupId>jakarta.activation</groupId>
+            <artifactId>jakarta.activation-api</artifactId>
+            <version>2.1.0</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>jakarta.xml.bind</groupId>
             <artifactId>jakarta.xml.bind-api</artifactId>
             <version>${xml.bind.api.version}</version>
-            <scope>compile</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.sun.activation</groupId>
-                    <artifactId>jakarta.activation</artifactId>
-                </exclusion>
-            </exclusions>
+            <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
@@ -148,12 +151,6 @@
             <scope>runtime</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-slf4j-impl</artifactId>
-            <version>${log4j.version}</version>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
@@ -182,6 +179,13 @@
             <groupId>org.xmlunit</groupId>
             <artifactId>xmlunit-matchers</artifactId>
             <version>${xmlunit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <version>${xml.bind.impl.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -218,12 +222,6 @@
             <groupId>xalan</groupId>
             <artifactId>serializer</artifactId>
             <version>${xalan.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.jaxb</groupId>
-            <artifactId>jaxb-runtime</artifactId>
-            <version>${xml.bind.impl.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -373,11 +371,17 @@
                 <configuration>
                     <source>${targetJdk}</source>
                     <target>${targetJdk}</target>
+                    <release>11</release>
                     <compilerArgs>
                         <arg>-XDcompilePolicy=simple</arg>
                         <!-- TODO Disabled until JDK 14 is supported <arg>-Xplugin:ErrorProne</arg>-->
                     </compilerArgs>
                     <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.openjdk.jmh</groupId>
+                            <artifactId>jmh-generator-annprocess</artifactId>
+                            <version>${jmh.version}</version>
+                        </path>
                         <path>
                             <groupId>com.google.errorprone</groupId>
                             <artifactId>error_prone_core</artifactId>
@@ -392,6 +396,7 @@
                 <version>5.1.8</version>
                 <extensions>true</extensions>
                 <configuration>
+                    <niceManifest>true</niceManifest>
                     <instructions>
                         <Implementation-Title>Apache XML Security</Implementation-Title>
                         <Implementation-Vendor>The Apache Software Foundation</Implementation-Vendor>
@@ -401,13 +406,11 @@
                         <Specification-Vendor>The Apache Software Foundation</Specification-Vendor>
                         <Specification-Version>${project.version}</Specification-Version>
                         <Export-Package>
-                              org.apache.xml.security.*;version="${project.version}",
-                              org.apache.jcp.xml.dsig.internal.*;version="${project.version}",
+                              org.apache.xml.security.*;version="${project.version}",-split-package:=first,
                         </Export-Package>
                         <Import-Package>
                               !org.apache.xml.security.*,
                               !org.apache.jcp.xml.dsig.internal.*,
-                              org.slf4j.*;version="[1.7,3)",
                               org.apache.commons.codec.*;version="[1.6,2)",
                               *
                         </Import-Package>
@@ -447,20 +450,27 @@
                     <includes>
                         <include>**/*Test.java</include>
                     </includes>
-                    <excludes>
-                        <exclude>**/PerformanceMemoryTest.java</exclude>
-                        <exclude>**/PerformanceTimingTest.java</exclude>
-                    </excludes>
+                    <excludedGroups>benchmark</excludedGroups>
+                    <forkNode implementation="org.apache.maven.plugin.surefire.extensions.SurefireForkNodeFactory" />
                     <!-- @{argLine} is generated by jacoco-prepare -->
-                    <argLine>@{argLine}</argLine>
+                    <argLine>${maven.test.argLine} @{argLine}</argLine>
+                    <skipExec>${skipUT}</skipExec>
                     <systemPropertyVariables>
                         <product.version>${project.version}</product.version>
                         <log4j.configurationFile>${project.build.testOutputDirectory}/log4j2.xml</log4j.configurationFile>
                         <!--<jakarta.xml.bind.JAXBContext>${xmlsec.jaxb.context.class}</jakarta.xml.bind.JAXBContext>-->
                         <javax.xml.accessExternalDTD>file</javax.xml.accessExternalDTD>
                         <org.apache.xml.security.securerandom.algorithm>SHA1PRNG</org.apache.xml.security.securerandom.algorithm>
+                        <file.encoding>UTF-8</file.encoding>
                     </systemPropertyVariables>
+                    <environmentVariables>
+                        <LANG>en_US.UTF-8</LANG>
+                        <LANGUAGE>en_US:us</LANGUAGE>
+                    </environmentVariables>
                 </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-failsafe-plugin</artifactId>
             </plugin>
             <plugin>
                  <groupId>org.gaul</groupId>
@@ -575,45 +585,5 @@
                 <pmd.skip>true</pmd.skip>
             </properties>
         </profile>
-        <profile>
-            <id>jdk8</id>
-            <activation>
-                <jdk>1.8</jdk>
-            </activation>
-            <build>
-                <pluginManagement>
-                    <plugins>
-                        <plugin>
-                            <artifactId>maven-compiler-plugin</artifactId>
-                            <configuration>
-                                <fork>true</fork>
-                                <compilerArgs combine.children="append">
-                                    <arg>-J-Xbootclasspath/p:${settings.localRepository}/com/google/errorprone/javac/9+181-r4173-1/javac-9+181-r4173-1.jar</arg>
-                                </compilerArgs>
-                            </configuration>
-                        </plugin>
-                    </plugins>
-                </pluginManagement>
-            </build>
-         </profile>
-         <profile>
-            <id>jdk9-plus</id>
-            <activation>
-                <jdk>[9,)</jdk>
-            </activation>
-            <build>
-                <pluginManagement>
-                    <plugins>
-                        <plugin>
-                            <artifactId>maven-surefire-plugin</artifactId>
-                            <configuration>
-                                <argLine>--add-opens java.base/java.lang.reflect=ALL-UNNAMED @{argLine}</argLine>
-                            </configuration>
-                        </plugin>
-                    </plugins>
-                </pluginManagement>
-             </build>
-         </profile>
-
     </profiles>
 </project>
