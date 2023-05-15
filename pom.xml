@@ -226,6 +226,19 @@
             <version>${xalan.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.openjdk.jmh</groupId>
+            <artifactId>jmh-core</artifactId>
+            <version>${jmh.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.openjdk.jmh</groupId>
+            <artifactId>jmh-generator-annprocess</artifactId>
+            <version>${jmh.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -472,6 +485,37 @@
             </plugin>
             <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <argLine>${maven.test.argLine}</argLine>
+                    <skipExec>${skipIT}</skipExec>
+                    <groups>benchmark</groups>
+                    <forkNode implementation="org.apache.maven.plugin.surefire.extensions.SurefireForkNodeFactory" />
+                    <systemPropertyVariables>
+                        <product.version>${project.version}</product.version>
+                        <javax.xml.accessExternalDTD>file</javax.xml.accessExternalDTD>
+                        <org.apache.xml.security.securerandom.algorithm>SHA1PRNG</org.apache.xml.security.securerandom.algorithm>
+                        <file.encoding>UTF-8</file.encoding>
+                    </systemPropertyVariables>
+                    <environmentVariables>
+                        <LANG>en_US.UTF-8</LANG>
+                        <LANGUAGE>en_US:us</LANGUAGE>
+                    </environmentVariables>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>integration-test</id>
+                        <goals>
+                            <goal>integration-test</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>verify</id>
+                        <goals>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                  <groupId>org.gaul</groupId>
