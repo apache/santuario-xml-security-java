@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -46,12 +47,12 @@ import org.apache.xml.security.test.stax.utils.StAX2DOM;
 import org.apache.xml.security.utils.XMLUtils;
 import org.apache.xml.security.utils.resolver.ResourceResolver;
 import org.apache.xml.security.utils.resolver.implementations.ResolverDirectHTTP;
-
 import org.apache.xml.security.utils.resolver.implementations.ResolverLocalFilesystem;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
 import org.w3c.dom.Document;
+
+import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 
 /**
  * These are separated out from SignatureVerificationReferenceURIResolverTest as we have to change the default configuration to set
@@ -61,12 +62,6 @@ public class SignatureVerificationReferenceURIResolverRemoteReferenceTest extend
 
     @BeforeAll
     public static void setup() throws Exception {
-        String baseDir = System.getProperty("basedir");
-        if (baseDir == null) {
-            baseDir = new File(".").getCanonicalPath();
-        }
-        BASEDIR = baseDir;
-
         XMLSec.init();
         Init.init(SignatureVerificationReferenceURIResolverRemoteReferenceTest.class.getClassLoader()
                         .getResource("security-config-allow-same-doc.xml").toURI(),
@@ -95,8 +90,7 @@ public class SignatureVerificationReferenceURIResolverRemoteReferenceTest extend
         // Sign using DOM
         List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
-        File file = new File(BASEDIR +
-                "/src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml").getCanonicalFile();
+        File file = resolveFile("src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
 
         ReferenceInfo referenceInfo = new ReferenceInfo(
                 file.toURI().toString(),
@@ -159,8 +153,8 @@ public class SignatureVerificationReferenceURIResolverRemoteReferenceTest extend
         List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
-        File file = new File(BASEDIR +
-                "/target/test-classes/org/apache/xml/security/test/stax/signature/SignatureVerificationReferenceURIResolverTest.class").getCanonicalFile();
+        File file = resolveFile(
+            "target/test-classes/org/apache/xml/security/test/stax/signature/SignatureVerificationReferenceURIResolverTest.class");
 
         ReferenceInfo referenceInfo = new ReferenceInfo(
                 file.toURI().toString(),

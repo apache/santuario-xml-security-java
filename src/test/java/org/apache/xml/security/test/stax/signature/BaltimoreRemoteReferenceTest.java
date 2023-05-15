@@ -100,19 +100,19 @@ public class BaltimoreRemoteReferenceTest {
 
     private static final String RSA_MOD_15 =
             "119329599520775465924022606372296074200605535144668022371076132699687141255709737174045123732723708369916816841003864525367987020386846259527839447764154836329045089822539554380766373753731213041983461774133690352071525882671690061465545291631004133563847076169228588340351767773527127920590711638729665138889";
-    public static final String RSA_MOD_23 =
+    private static final String RSA_MOD_23 =
             "120296660343377233375194603471583429595399323282961590789247283561085360125953681886041302745068082823944886660427610854189129731366720128135385763222506487464694459023332289451444021068559820208783293910859489936002104550722931306546063549539810916052250046814103434685758992623250037867084412382118349636279";
     private static final String RSA_PUB =
             "65537";
 
-    private XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
-    private TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    private final XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+    private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
     @BeforeAll
     public static void setUp() throws Exception {
         XMLSec.init();
-        Init.init(BaltimoreRemoteReferenceTest.class.getClassLoader().getResource("security-config-allow-same-doc.xml").toURI(),
-                BaltimoreRemoteReferenceTest.class);
+        Init.init(BaltimoreRemoteReferenceTest.class.getClassLoader().getResource("security-config-allow-same-doc.xml")
+            .toURI(), BaltimoreRemoteReferenceTest.class);
         org.apache.xml.security.Init.init();
 
     }

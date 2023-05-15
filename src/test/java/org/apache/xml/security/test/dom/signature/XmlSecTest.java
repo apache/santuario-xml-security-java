@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.test.dom.signature;
 
-import java.io.FileInputStream;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.KeyStore;
@@ -34,6 +33,7 @@ import org.apache.xml.security.Init;
 import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.signature.XMLSignature;
+import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.transforms.Transforms;
@@ -51,13 +51,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *
  */
 public class XmlSecTest {
-
-    private static final String BASEDIR =
-        System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
-
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger
-            (XmlSecTest.class.getName());
 
     @org.junit.jupiter.api.Test
     public void testCheckXmlSignatureSoftwareStack() throws Exception {
@@ -89,12 +82,7 @@ public class XmlSecTest {
         PublicKey publicKey = null;
         X509Certificate signingCert = null;
         if (cert) {
-            // get key & self-signed certificate from keystore
-            String fs = System.getProperty("file.separator");
-            FileInputStream fis =
-                new FileInputStream(BASEDIR + fs + "src/test/resources" + fs + "test.jks");
-            KeyStore ks = KeyStore.getInstance("JKS");
-            ks.load(fis, "changeit".toCharArray());
+            KeyStore ks = XmlSecTestEnvironment.getTestKeyStore();
             signingCert = (X509Certificate) ks.getCertificate("mullan");
             publicKey = signingCert.getPublicKey();
             privateKey = (PrivateKey) ks.getKey("mullan", "changeit".toCharArray());

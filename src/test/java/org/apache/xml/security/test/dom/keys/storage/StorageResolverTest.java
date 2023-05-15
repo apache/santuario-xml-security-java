@@ -19,6 +19,7 @@
 package org.apache.xml.security.test.dom.keys.storage;
 
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.security.KeyStore;
 import java.security.cert.X509Certificate;
@@ -27,6 +28,7 @@ import java.util.NoSuchElementException;
 
 import org.apache.xml.security.keys.storage.StorageResolver;
 
+import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -36,10 +38,6 @@ import static org.junit.jupiter.api.Assertions.fail;
  * KeyStore StorageResolver test.
  */
 public class StorageResolverTest {
-
-    private static final String BASEDIR =
-        System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
-    private static final String SEP = System.getProperty("file.separator");
 
     @org.junit.jupiter.api.Test
     public void testStorageResolver() throws Exception {
@@ -51,17 +49,16 @@ public class StorageResolverTest {
             return;
         }
 
-        String inputDir = BASEDIR + SEP + "src/test/resources" + SEP
-            + "org" + SEP + "apache" + SEP + "xml" + SEP + "security" + SEP
-            + "samples" + SEP + "input";
-
-        FileInputStream inStream = new FileInputStream(inputDir + SEP + "keystore.jks");
+        File inputDir = resolveFile("src", "test", "resources", "org", "apache", "xml", "security", "samples", "input");
         KeyStore ks = KeyStore.getInstance("JKS");
-        ks.load(inStream, "xmlsecurity".toCharArray());
+        try (FileInputStream inStream = new FileInputStream(new File(inputDir, "keystore.jks"))) {
+            ks.load(inStream, "xmlsecurity".toCharArray());
+        }
 
-        FileInputStream inStream2 = new FileInputStream(inputDir + SEP + "keystore2.jks");
         KeyStore ks2 = KeyStore.getInstance("JCEKS");
-        ks2.load(inStream2, "xmlsecurity".toCharArray());
+        try (FileInputStream inStream2 = new FileInputStream(new File(inputDir, "keystore2.jks"))) {
+            ks2.load(inStream2, "xmlsecurity".toCharArray());
+        }
 
         StorageResolver storage = new StorageResolver(ks);
         storage.add(ks2);

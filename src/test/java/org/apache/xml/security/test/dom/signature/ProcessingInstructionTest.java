@@ -31,14 +31,16 @@ import javax.xml.xpath.XPathFactory;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.apache.xml.security.utils.XMLUtils;
 import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.apache.xml.security.utils.resolver.ResourceResolverException;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+
+import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 
 /**
  * A test-case for Bugzilla bug 45744 - "XPath transform and xml-stylesheet".
@@ -49,21 +51,16 @@ public class ProcessingInstructionTest {
         org.apache.xml.security.Init.init();
     }
 
-    private static String dir;
+    private static File dir;
 
     public ProcessingInstructionTest() {
-        String base = System.getProperty("basedir") == null
-            ? "./" : System.getProperty("basedir");
-        String fs = System.getProperty("file.separator");
-        dir = base + fs + "src/test/resources" + fs + "org" + fs + "apache" + fs + "xml" +
-            fs + "security" + fs + "testcases" + fs;
+        dir = resolveFile("src", "test", "resources", "org", "apache", "xml", "security", "testcases");
     }
 
     @org.junit.jupiter.api.Test
     public void testProcessingInstruction() throws Exception {
-        String signatureFileName = dir + "upp_sign.xml";
-        File f = new File(signatureFileName);
-        Document doc = XMLUtils.read(new FileInputStream(f), false);
+        File f = new File(dir, "upp_sign.xml");
+        Document doc = XMLUtils.read(f, false);
 
         Node obj =
             doc.getElementsByTagNameNS("http://uri.etsi.org/01903/v1.3.2#", "QualifyingProperties").item(0);
@@ -117,8 +114,7 @@ public class ProcessingInstructionTest {
             try {
                 URI uriNew = getNewURI(context.uriToResolve, context.baseUri);
 
-                FileInputStream inputStream =
-                    new FileInputStream(dir + "out.xml");
+                FileInputStream inputStream = new FileInputStream(new File(dir, "out.xml"));
                 XMLSignatureInput result = new XMLSignatureInput(inputStream);
 
                 result.setSourceURI(uriNew.toString());
@@ -133,7 +129,7 @@ public class ProcessingInstructionTest {
 
         @Override
         public boolean engineCanResolveURI(ResourceResolverContext context) {
-            return !(context.uriToResolve == null || !"out.xml".equals(context.uriToResolve));
+            return "out.xml".equals(context.uriToResolve);
         }
 
         private static URI getNewURI(String uri, String baseURI) throws URISyntaxException {

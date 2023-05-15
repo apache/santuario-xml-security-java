@@ -18,22 +18,6 @@
  */
 package org.apache.xml.security.test.dom.signature;
 
-import org.apache.xml.security.algorithms.SignatureAlgorithm;
-import org.apache.xml.security.c14n.Canonicalizer;
-import org.apache.xml.security.keys.KeyInfo;
-import org.apache.xml.security.signature.XMLSignature;
-import org.apache.xml.security.test.dom.DSNamespaceContext;
-import org.apache.xml.security.test.dom.TestUtils;
-import org.apache.xml.security.transforms.Transforms;
-import org.apache.xml.security.utils.Constants;
-import org.apache.xml.security.utils.XMLUtils;
-import org.junit.jupiter.api.Assertions;
-import org.w3c.dom.Element;
-
-import javax.xml.crypto.test.dsig.EdDSATestAbstract;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathFactory;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -43,6 +27,23 @@ import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
+
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+
+import org.apache.xml.security.algorithms.SignatureAlgorithm;
+import org.apache.xml.security.c14n.Canonicalizer;
+import org.apache.xml.security.keys.KeyInfo;
+import org.apache.xml.security.signature.XMLSignature;
+import org.apache.xml.security.test.dom.DSNamespaceContext;
+import org.apache.xml.security.test.dom.TestUtils;
+import org.apache.xml.security.test.javax.xml.crypto.dsig.EdDSATestAbstract;
+import org.apache.xml.security.transforms.Transforms;
+import org.apache.xml.security.utils.Constants;
+import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Assertions;
+import org.w3c.dom.Element;
 
 
 /**

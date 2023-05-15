@@ -47,10 +47,8 @@ import org.apache.xml.security.stax.impl.DocumentContextImpl;
 import org.apache.xml.security.stax.impl.InboundSecurityContextImpl;
 import org.apache.xml.security.stax.impl.InputProcessorChainImpl;
 import org.apache.xml.security.stax.impl.XMLSecurityStreamReader;
-import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.xmlunit.matchers.CompareMatcher;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -59,6 +57,7 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.xmlunit.matchers.CompareMatcher.isSimilarTo;
 
 
 /**
@@ -107,7 +106,7 @@ public class XMLSecurityStreamReaderTest {
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new StAXSource(xmlSecurityStreamReader), new StreamResult(baos));
-        MatcherAssert.assertThat(readTestFile(), CompareMatcher.isSimilarTo(baos.toString(StandardCharsets.UTF_8.name())));
+        assertThat(readTestFile(), isSimilarTo(baos.toString(StandardCharsets.UTF_8.name())));
     }
 
     @Test
@@ -372,7 +371,7 @@ public class XMLSecurityStreamReaderTest {
 
     class EventReaderProcessor implements InputProcessor {
 
-        private XMLStreamReader xmlStreamReader;
+        private final XMLStreamReader xmlStreamReader;
 
         EventReaderProcessor(XMLStreamReader xmlStreamReader) {
             this.xmlStreamReader = xmlStreamReader;

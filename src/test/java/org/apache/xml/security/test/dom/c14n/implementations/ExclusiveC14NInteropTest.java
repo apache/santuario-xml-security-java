@@ -20,10 +20,10 @@ package org.apache.xml.security.test.dom.c14n.implementations;
 
 
 import java.io.File;
-import java.io.FileInputStream;
 
 import org.apache.xml.security.signature.Reference;
 import org.apache.xml.security.signature.XMLSignature;
+import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.test.dom.interop.InteropTestBase;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
@@ -116,21 +116,13 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
     }
 
     private String t(String directory, String file, boolean secureValidation) throws Exception {
-        String basedir = System.getProperty("basedir");
-        if (basedir != null && basedir.length() != 0) {
-            directory = basedir + "/" + directory;
-        }
+        File f = XmlSecTestEnvironment.resolveFile(directory, file);
+        org.w3c.dom.Document doc = XMLUtils.read(f, false);
 
-        File f = new File(directory + "/" + file);
-
-        org.w3c.dom.Document doc = XMLUtils.read(new FileInputStream(f), false);
-
-        Element sigElement =
-            (Element) doc.getElementsByTagNameNS(Constants.SignatureSpecNS,
-                                                 Constants._TAG_SIGNATURE).item(0);
+        Element sigElement = (Element) doc.getElementsByTagNameNS(Constants.SignatureSpecNS, Constants._TAG_SIGNATURE)
+            .item(0);
         XMLSignature signature = new XMLSignature(sigElement, f.toURI().toURL().toString(), secureValidation);
-        boolean verify =
-            signature.checkSignatureValue(signature.getKeyInfo().getPublicKey());
+        boolean verify = signature.checkSignatureValue(signature.getKeyInfo().getPublicKey());
 
         LOG.debug("   signature.checkSignatureValue finished: " + verify);
 
@@ -160,12 +152,7 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
         }
 
         String r = sb.toString().trim();
-
-        if (r.length() == 0) {
-            return null;
-        } else {
-            return r;
-        }
+        return r.isEmpty() ? null : r;
     }
 
 }

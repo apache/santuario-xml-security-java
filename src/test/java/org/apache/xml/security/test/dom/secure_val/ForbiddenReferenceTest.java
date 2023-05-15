@@ -20,7 +20,6 @@ package org.apache.xml.security.test.dom.secure_val;
 
 
 import java.io.File;
-import java.io.FileInputStream;
 
 import org.apache.xml.security.signature.Manifest;
 import org.apache.xml.security.signature.MissingResourceFailureException;
@@ -31,9 +30,9 @@ import org.apache.xml.security.utils.resolver.ResourceResolver;
 import org.apache.xml.security.utils.resolver.implementations.ResolverLocalFilesystem;
 import org.w3c.dom.Element;
 
+import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
-
 
 
 /**
@@ -41,21 +40,14 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class ForbiddenReferenceTest extends InteropTestBase {
 
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(ForbiddenReferenceTest.class);
-
     static {
         org.apache.xml.security.Init.init();
-    }
-
-    public ForbiddenReferenceTest() {
-        super();
     }
 
     @org.junit.jupiter.api.Test
     public void testLocalFilesystem() throws Exception {
         try {
-            readAndVerifyManifest("src/test/resources/interop/c14n/Y3", "signature.xml");
+            readAndVerifyManifest("signature.xml");
             fail("Failure expected when secure validation is enabled");
         } catch (MissingResourceFailureException ex) {
             assertTrue(ex.getMessage().contains("The Reference for URI"));
@@ -63,26 +55,17 @@ public class ForbiddenReferenceTest extends InteropTestBase {
 
         // Now it should work as we have added the local file resolver
         ResourceResolver.register(new ResolverLocalFilesystem(), false);
-        boolean success =
-                readAndVerifyManifest("src/test/resources/interop/c14n/Y3", "signature.xml");
+        boolean success = readAndVerifyManifest("signature.xml");
         assertTrue(success);
     }
 
-    private boolean readAndVerifyManifest(
-        String directory, String file
-    ) throws Exception {
-        String basedir = System.getProperty("basedir");
-        if (basedir != null && basedir.length() != 0) {
-            directory = basedir + "/" + directory;
-        }
 
-        File f = new File(directory + "/" + file);
+    private boolean readAndVerifyManifest(String file) throws Exception {
+        File f = resolveFile("src", "test", "resources", "interop", "c14n", "Y3", file);
+        org.w3c.dom.Document doc = XMLUtils.read(f, false);
 
-        org.w3c.dom.Document doc = XMLUtils.read(new FileInputStream(f), false);
-
-        Element manifestElement =
-            (Element) doc.getElementsByTagNameNS(Constants.SignatureSpecNS,
-                                                 Constants._TAG_SIGNEDINFO).item(0);
+        Element manifestElement = (Element) doc
+            .getElementsByTagNameNS(Constants.SignatureSpecNS, Constants._TAG_SIGNEDINFO).item(0);
         Manifest manifest = new Manifest(manifestElement, f.toURI().toURL().toString(), true);
         return manifest.verifyReferences();
     }

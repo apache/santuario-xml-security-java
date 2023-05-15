@@ -58,10 +58,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class JDKXPathFactoryTest {
 
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(JDKXPathFactoryTest.class);
-
-    private KeyPair kp;
+    private final KeyPair kp;
 
     public JDKXPathFactoryTest() throws Exception {
         // org.apache.xml.security.Init.init();

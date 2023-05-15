@@ -20,11 +20,12 @@ package org.apache.xml.security.test.dom.interop;
 
 
 import java.io.File;
+import java.nio.file.Files;
 
 import org.apache.xml.security.test.dom.utils.resolver.OfflineResolver;
-import org.apache.xml.security.utils.JavaUtils;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
 
+import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -54,7 +55,7 @@ public class IBMTest extends InteropTestBase {
         org.slf4j.LoggerFactory.getLogger(IBMTest.class);
 
     /** Field kentsDir           */
-    static final String kentsDir = "data/com/ibm/xss4j-20030127/";
+    static final File kentsDir = resolveFile("data", "com", "ibm", "xss4j-20030127");
 
     static {
         org.apache.xml.security.Init.init();
@@ -64,13 +65,10 @@ public class IBMTest extends InteropTestBase {
 
     /**
      * Constructor IBMTest
-     *
-     * @param Name_
      */
     public IBMTest() {
         super();
-        String filename = "src/test/resources/com/ibm/xss4j-20011029/enveloped-rsa.sig";
-        File f = new File(filename);
+        File f = resolveFile("src", "test", "resources", "com", "ibm", "xss4j-20011029", "enveloped-rsa.sig");
         if (f.exists()) {
             runTests = true;
         }
@@ -86,10 +84,10 @@ public class IBMTest extends InteropTestBase {
         if (!runTests) {
             return;
         }
-        String filename = kentsDir + "enveloping-hmac.sig";
+        File filename = new File(kentsDir, "enveloping-hmac.sig");
         ResourceResolverSpi resolver = new OfflineResolver();
         boolean followManifests = false;
-        byte[] hmacKey = JavaUtils.getBytesFromFile(kentsDir + "enveloping-hmac.key");
+        byte[] hmacKey = Files.readAllBytes(new File(kentsDir, "enveloping-hmac.key").toPath());
         boolean verify = false;
 
         try {
@@ -103,7 +101,7 @@ public class IBMTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(verify, filename);
+        assertTrue(verify, filename.toString());
     }
 
     /**
@@ -116,7 +114,7 @@ public class IBMTest extends InteropTestBase {
         if (!runTests) {
             return;
         }
-        String filename = kentsDir + "detached-dsa.sig";
+        File filename = new File(kentsDir, "detached-dsa.sig");
         ResourceResolverSpi resolver = new OfflineResolver();
         boolean followManifests = false;
         boolean verify = false;
@@ -132,7 +130,7 @@ public class IBMTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(verify, filename);
+        assertTrue(verify, filename.toString());
     }
 
     /**
@@ -145,7 +143,7 @@ public class IBMTest extends InteropTestBase {
         if (!runTests) {
             return;
         }
-        String filename = kentsDir + "detached-rsa.sig";
+        File filename = new File(kentsDir, "detached-rsa.sig");
         ResourceResolverSpi resolver = new OfflineResolver();
         boolean followManifests = false;
         boolean verify = false;
@@ -161,7 +159,7 @@ public class IBMTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(verify, filename);
+        assertTrue(verify, filename.toString());
     }
 
     /**
@@ -174,7 +172,7 @@ public class IBMTest extends InteropTestBase {
         if (!runTests) {
             return;
         }
-        String filename = kentsDir + "enveloped-dsa.sig";
+        File filename = new File(kentsDir, "enveloped-dsa.sig");
         ResourceResolverSpi resolver = null;
         boolean followManifests = false;
         boolean verify = false;
@@ -190,7 +188,7 @@ public class IBMTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(verify, filename);
+        assertTrue(verify, filename.toString());
     }
 
     /**
@@ -203,7 +201,7 @@ public class IBMTest extends InteropTestBase {
         if (!runTests) {
             return;
         }
-        String filename = kentsDir + "enveloped-rsa.sig";
+        File filename = new File(kentsDir, "enveloped-rsa.sig");
         ResourceResolverSpi resolver = null;
         boolean followManifests = false;
         boolean verify = false;
@@ -219,7 +217,7 @@ public class IBMTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(verify, filename);
+        assertTrue(verify, filename.toString());
     }
 
     /**
@@ -232,7 +230,7 @@ public class IBMTest extends InteropTestBase {
         if (!runTests) {
             return;
         }
-        String filename = kentsDir + "enveloping-dsa.sig";
+        File filename = new File(kentsDir, "enveloping-dsa.sig");
         ResourceResolverSpi resolver = null;
         boolean followManifests = false;
         boolean verify = false;
@@ -248,7 +246,7 @@ public class IBMTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(verify, filename);
+        assertTrue(verify, filename.toString());
     }
 
     /**
@@ -261,7 +259,7 @@ public class IBMTest extends InteropTestBase {
         if (!runTests) {
             return;
         }
-        String filename = kentsDir + "enveloping-rsa.sig";
+        File filename = new File(kentsDir, "enveloping-rsa.sig");
         ResourceResolverSpi resolver = null;
         boolean followManifests = false;
         boolean verify = false;
@@ -277,7 +275,7 @@ public class IBMTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(verify, filename);
+        assertTrue(verify, filename.toString());
     }
 
     /**
@@ -290,8 +288,8 @@ public class IBMTest extends InteropTestBase {
         if (!runTests) {
             return;
         }
-        String filename = kentsDir + "enveloping-dsa-soaped-broken.sig";
-        if (!new File(filename).exists() ) {
+        File filename = new File(kentsDir, "enveloping-dsa-soaped-broken.sig");
+        if (!filename.exists() ) {
             System.err.println("Couldn't find: " + filename + " and couldn't do the test");
             return;
         }
@@ -310,7 +308,7 @@ public class IBMTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename + ", had to be broken but was successful");
         }
 
-        assertFalse(verify, filename);
+        assertFalse(verify, filename.toString());
     }
 
     /**
