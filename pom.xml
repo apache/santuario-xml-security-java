@@ -104,10 +104,8 @@
         <xml.bind.impl.version>4.0.1</xml.bind.impl.version>
         <woodstox.core.version>6.5.1</woodstox.core.version>
 
-        <maven.compiler.target>11</maven.compiler.target>
         <project.build.outputTimestamp>2023-05-15T21:55:37Z</project.build.outputTimestamp>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <targetJdk>11</targetJdk>
 
         <!-- Allow Clirr severity to be overriden by the command-line option -DminSeverity=level -->
         <minSeverity>info</minSeverity>
@@ -382,9 +380,9 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
                 <configuration>
-                    <source>${targetJdk}</source>
-                    <target>${targetJdk}</target>
                     <release>11</release>
+                    <showDeprecation>true</showDeprecation>
+                    <showWarnings>true</showWarnings>
                     <compilerArgs>
                         <arg>-XDcompilePolicy=simple</arg>
                         <!-- TODO Disabled until JDK 14 is supported <arg>-Xplugin:ErrorProne</arg>-->
@@ -521,7 +519,7 @@
                  <artifactId>modernizer-maven-plugin</artifactId>
                  <version>2.6.0</version>
                  <configuration>
-                     <javaVersion>${targetJdk}</javaVersion>
+                     <javaVersion>11</javaVersion>
                  </configuration>
                  <executions>
                      <execution>
@@ -544,8 +542,7 @@
                     <sourceEncoding>UTF-8</sourceEncoding>
                     <failOnViolation>true</failOnViolation>
                     <verbose>true</verbose>
-                    <includeTests>false</includeTests>
-                    <targetJdk>${targetJdk}</targetJdk>
+                    <includeTests>true</includeTests>
                 </configuration>
                 <executions>
                     <execution>
