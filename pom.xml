@@ -421,12 +421,13 @@
                         <Specification-Vendor>The Apache Software Foundation</Specification-Vendor>
                         <Specification-Version>${project.version}</Specification-Version>
                         <Export-Package>
-                              org.apache.xml.security.*;version="${project.version}",-split-package:=first,
+                              org.apache.xml.security.*;version="${project.version}";-split-package:=first,
+                              org.apache.jcp.xml.dsig.internal.*;version="${project.version}",
                         </Export-Package>
                         <Import-Package>
                               !org.apache.xml.security.*,
                               !org.apache.jcp.xml.dsig.internal.*,
-                              org.apache.commons.codec.*;version="[1.6,2)",
+                              org.apache.commons.codec.*;version="[1.15,2)",
                               *
                         </Import-Package>
                         <_noimportjava>true</_noimportjava>
