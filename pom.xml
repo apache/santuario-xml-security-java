@@ -555,7 +555,6 @@
                         <ruleset>${basedir}/etc/santuario-pmd-ruleset.xml</ruleset>
                     </rulesets>
                     <linkXRef>false</linkXRef>
-                    <sourceEncoding>UTF-8</sourceEncoding>
                     <failOnViolation>true</failOnViolation>
                     <verbose>true</verbose>
                     <includeTests>true</includeTests>
