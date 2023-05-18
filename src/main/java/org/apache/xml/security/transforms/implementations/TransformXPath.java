@@ -45,9 +45,6 @@ import org.w3c.dom.Node;
  */
 public class TransformXPath extends TransformSpi {
 
-    private static final org.slf4j.Logger LOG =
-            org.slf4j.LoggerFactory.getLogger(TransformXPath.class);
-
     /**
      * {@inheritDoc}
      */
@@ -133,20 +130,19 @@ public class TransformXPath extends TransformSpi {
         /**
          * @see org.apache.xml.security.signature.NodeFilter#isNodeInclude(org.w3c.dom.Node)
          */
-        public int isNodeInclude(Node currentNode) {
+        public int isNodeInclude(Node currentNode) throws TransformationException {
             try {
                 boolean include = xPathAPI.evaluate(currentNode, xpathnode, str, xpathElement);
                 if (include) {
                     return 1;
                 }
                 return 0;
-            } catch (TransformerException e) {
-                LOG.debug("Error evaluating XPath expression", e);
-                return 0;
+            } catch (TransformerException ex) {
+                throw new TransformationException(ex);
             }
         }
 
-        public int isNodeIncludeDO(Node n, int level) {
+        public int isNodeIncludeDO(Node n, int level) throws TransformationException {
             return isNodeInclude(n);
         }
 
