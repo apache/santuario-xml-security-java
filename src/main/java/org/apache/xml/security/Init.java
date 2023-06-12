@@ -75,28 +75,21 @@ public class Init {
         if (alreadyInitialized) {
             return;
         }
-
-        InputStream is =    //NOPMD
-            AccessController.doPrivileged(
-                (PrivilegedAction<InputStream>)
-                    () -> {
-                        String cfile =
-                            System.getProperty("org.apache.xml.security.resource.config");
-                        if (cfile == null) {
-                            return null;
-                        }
-                        return ClassLoaderUtils.getResourceAsStream(cfile, Init.class);
-                    }
-                );
-        if (is == null) {
-            dynamicInit();
-        } else {
-            fileInit(is);
-            try {
-                is.close();
-            } catch (IOException ex) {
-                LOG.warn(ex.getMessage());
+        PrivilegedAction<InputStream> action = () -> {
+            String cfile = System.getProperty("org.apache.xml.security.resource.config");
+            if (cfile == null) {
+                return null;
             }
+            return ClassLoaderUtils.getResourceAsStream(cfile, Init.class);
+        };
+        try (InputStream is = AccessController.doPrivileged(action)) {
+            if (is == null) {
+                dynamicInit();
+            } else {
+                fileInit(is);
+            }
+        } catch (IOException ex) {
+            LOG.warn(ex.getMessage(), ex);
         }
 
         alreadyInitialized = true;
