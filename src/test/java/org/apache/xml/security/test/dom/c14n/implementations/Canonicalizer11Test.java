@@ -22,6 +22,8 @@ package org.apache.xml.security.test.dom.c14n.implementations;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -50,8 +52,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class Canonicalizer11Test {
 
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(Canonicalizer11Test.class);
+    private static final Logger LOG = System.getLogger(Canonicalizer11Test.class.getName());
 
     static {
         org.apache.xml.security.Init.init();
@@ -281,7 +282,7 @@ public class Canonicalizer11Test {
             }
             try (FileOutputStream fos = new FileOutputStream(fileOut)) {
                 fos.write(c14nBytes);
-                LOG.debug("Wrote erroneous result to file " + fileOut.toURI().toURL().toString());
+                LOG.log(Level.DEBUG, "Wrote erroneous result to file " + fileOut.toURI().toURL().toString());
                 assertEquals(new String(refBytes), new String(c14nBytes));
             }
         }

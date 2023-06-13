@@ -23,7 +23,6 @@ package org.apache.xml.security.test.javax.xml.crypto.dsig;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.Objects;
 
 import javax.xml.crypto.KeySelector;
 import javax.xml.crypto.URIDereferencer;
@@ -50,13 +49,6 @@ public class SignatureValidator {
 
     public SignatureValidator() {
         this.dir = null;
-    }
-
-    /**
-     * @param base can be null. Base directory
-     */
-    public SignatureValidator(File base) {
-        dir = Objects.requireNonNull(base, "basic directory");
     }
 
 
@@ -123,8 +115,8 @@ public class SignatureValidator {
 
         // Check core validation status
         if (!coreValidity) {
-            for (Object reference : signature.getSignedInfo().getReferences()) {
-                ((Reference) reference).validate(vc);
+            for (Reference reference : signature.getSignedInfo().getReferences()) {
+                reference.validate(vc);
             }
         }
         return coreValidity;

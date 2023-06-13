@@ -19,11 +19,11 @@
 package org.apache.xml.security.test.stax.utils;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
 
-import org.apache.xml.security.utils.JavaUtils;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 
@@ -34,7 +34,7 @@ public class KeyLoader {
     private static final File DIR = resolveFile("src", "test", "resources", "org", "apache", "xml", "security", "keys", "content");
 
     public static PublicKey loadPublicKey(String fileName, String algorithm) throws Exception {
-        String fileData = new String(JavaUtils.getBytesFromFile(new File(DIR, fileName).getAbsolutePath()));
+        String fileData = Files.readString(new File(DIR, fileName).toPath());
         byte[] keyBytes = XMLUtils.decode(fileData);
         KeyFactory kf = KeyFactory.getInstance(algorithm);
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);

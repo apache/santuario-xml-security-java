@@ -20,6 +20,8 @@ package org.apache.xml.security.test.dom.c14n.implementations;
 
 
 import java.io.File;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 
 import org.apache.xml.security.signature.Reference;
 import org.apache.xml.security.signature.XMLSignature;
@@ -41,8 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
  */
 public class ExclusiveC14NInteropTest extends InteropTestBase {
 
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(ExclusiveC14NInteropTest.class);
+    private static final Logger LOG = System.getLogger(ExclusiveC14NInteropTest.class.getName());
 
     static {
         org.apache.xml.security.Init.init();
@@ -125,7 +126,7 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
         XMLSignature signature = new XMLSignature(sigElement, f.toURI().toURL().toString(), secureValidation);
         boolean verify = signature.checkSignatureValue(signature.getKeyInfo().getPublicKey());
 
-        LOG.debug("   signature.checkSignatureValue finished: " + verify);
+        LOG.log(Level.DEBUG, "   signature.checkSignatureValue finished: {0}", verify);
 
         // if (!verify) {
         StringBuilder sb = new StringBuilder();
@@ -136,7 +137,7 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
             //JavaUtils.writeBytesToFilename(directory + "/c14n-" + i + ".apache.html", signature.getSignedInfo().item(i).getHTMLRepresentation().getBytes());
 
             if (refVerify) {
-                LOG.debug("Reference " + i + " was OK");
+                LOG.log(Level.DEBUG, "Reference " + i + " was OK");
             } else {
                 sb.append(i);
                 sb.append(' ');
@@ -148,7 +149,7 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
                 int length = reference.getTransforms().getLength();
                 String algo = reference.getTransforms().item(length - 1).getURI();
 
-                LOG.debug("Reference " + i + " failed: " + algo);
+                LOG.log(Level.DEBUG, "Reference " + i + " failed: " + algo);
             }
         }
 

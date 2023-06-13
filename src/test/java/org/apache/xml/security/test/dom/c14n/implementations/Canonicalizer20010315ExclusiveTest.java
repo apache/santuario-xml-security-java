@@ -65,10 +65,7 @@ public class Canonicalizer20010315ExclusiveTest {
         ResourceResolver.register(new ResolverLocalFilesystem(), false);
     }
 
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(
-            Canonicalizer20010315ExclusiveTest.class
-        );
+    private static final Logger LOG = System.getLogger(Canonicalizer20010315ExclusiveTest.class.getName());
 
     /**
      * Method testA

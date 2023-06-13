@@ -19,6 +19,8 @@
 package org.apache.xml.security.test.dom.interop;
 
 import java.io.File;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 
 import org.apache.xml.security.test.dom.utils.resolver.OfflineResolver;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
@@ -42,8 +44,7 @@ public class BaltimoreXalanTest extends InteropTestBase {
 
     private static final String CONFIG_FILE = "/config-xalan.xml";
 
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(BaltimoreXalanTest.class);
+    private static final Logger LOG = System.getLogger(BaltimoreXalanTest.class.getName());
 
     private static final File merlinsDir16 = resolveFile("src", "test", "resources", "ie", "baltimore",
         "merlin-examples", "merlin-xmldsig-sixteen");
@@ -79,12 +80,12 @@ public class BaltimoreXalanTest extends InteropTestBase {
         try {
             verify = this.verify(file, resolver, followManifests);
         } catch (RuntimeException ex) {
-            LOG.error("Verification crashed for " + file);
+            LOG.log(Level.ERROR, "Verification crashed for " + file);
             throw ex;
         }
 
         if (!verify) {
-            LOG.error("Verification failed for " + file);
+            LOG.log(Level.ERROR, "Verification failed for " + file);
         }
 
         assertTrue(verify, file.toString());
@@ -109,12 +110,12 @@ public class BaltimoreXalanTest extends InteropTestBase {
         try {
             verify = this.verify(filename, resolver, followManifests);
         } catch (RuntimeException ex) {
-            LOG.error("Verification crashed for " + filename);
+            LOG.log(Level.ERROR, "Verification crashed for " + filename);
             throw ex;
         }
 
         if (verify) {
-            LOG.error("Verification passed (should have failed) for " + filename);
+            LOG.log(Level.ERROR, "Verification passed (should have failed) for " + filename);
         }
 
         assertFalse(verify, filename.toString());
@@ -137,12 +138,12 @@ public class BaltimoreXalanTest extends InteropTestBase {
         try {
             verify = this.verify(filename, resolver, followManifests);
         } catch (RuntimeException ex) {
-            LOG.error("Verification crashed for " + filename);
+            LOG.log(Level.ERROR, "Verification crashed for " + filename);
             throw ex;
         }
 
         if (!verify) {
-            LOG.error("Verification failed for " + filename);
+            LOG.log(Level.ERROR, "Verification failed for " + filename);
         }
 
         assertTrue(verify, filename.toString());

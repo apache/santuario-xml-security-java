@@ -18,9 +18,9 @@
  */
 package org.apache.xml.security.test.dom.keys;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
@@ -29,7 +29,6 @@ import org.apache.xml.security.keys.content.DEREncodedKeyValue;
 import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.utils.Constants;
-import org.apache.xml.security.utils.JavaUtils;
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
@@ -141,17 +140,17 @@ public class DEREncodedKeyValueTest {
 
     // Utility methods
 
-    private File getControlFilePath(String fileName) {
-        return XmlSecTestEnvironment.resolveFile("src", "test", "resources", "org", "apache", "xml", "security", "keys",
+    private Path getControlFilePath(String fileName) {
+        return XmlSecTestEnvironment.resolvePath("src", "test", "resources", "org", "apache", "xml", "security", "keys",
             "content", fileName);
     }
 
     private Document loadXML(String fileName) throws Exception {
-        return XMLUtils.read(new FileInputStream(getControlFilePath(fileName)), false);
+        return XMLUtils.read(getControlFilePath(fileName).toFile(), false);
     }
 
-    private PublicKey loadPublicKey(String filePath, String algorithm) throws Exception {
-        String fileData = new String(JavaUtils.getBytesFromFile(getControlFilePath(filePath).getAbsolutePath()));
+    private PublicKey loadPublicKey(String fileName, String algorithm) throws Exception {
+        String fileData = Files.readString(getControlFilePath(fileName));
         byte[] keyBytes = XMLUtils.decode(fileData);
         KeyFactory kf = KeyFactory.getInstance(algorithm);
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);

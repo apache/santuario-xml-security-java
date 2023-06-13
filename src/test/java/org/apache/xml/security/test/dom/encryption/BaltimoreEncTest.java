@@ -19,6 +19,8 @@
 package org.apache.xml.security.test.dom.encryption;
 
 import java.io.File;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -82,8 +84,7 @@ public class BaltimoreEncTest {
     private final boolean haveKeyWraps;
     private final boolean isIBMJdK = System.getProperty("java.vendor").contains("IBM");
 
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(BaltimoreEncTest.class);
+    private static final Logger LOG = System.getLogger(BaltimoreEncTest.class.getName());
 
     /**
      *  Constructor BaltimoreEncTest
@@ -164,7 +165,7 @@ public class BaltimoreEncTest {
             Document dd = decryptElement(file);
             checkDecryptedDoc(dd, true);
         } else {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Skipping test test_five_content_3des_cbs as necessary "
                 + "crypto algorithms are not available"
             );
@@ -186,7 +187,7 @@ public class BaltimoreEncTest {
             Document dd = decryptElement(file);
             checkDecryptedDoc(dd, true);
         } else {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Skipping test test_five_content_aes256_cbc as necessary "
                 + "crypto algorithms are not available"
             );
@@ -208,7 +209,7 @@ public class BaltimoreEncTest {
             Document dd = decryptElement(file);
             checkDecryptedDoc(dd, true);
         } else {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Skipping test test_five_content_aes128_cbc_kw_aes192 as necessary "
                 + "crypto algorithms are not available"
             );
@@ -231,7 +232,7 @@ public class BaltimoreEncTest {
             Document dd = decryptElement(file);
             checkDecryptedDoc(dd, true);
         } else {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Skipping test test_five_content_3des_cbc_kw_aes128 as necessary "
                 + "crypto algorithms are not available"
             );
@@ -253,7 +254,7 @@ public class BaltimoreEncTest {
             Document dd = decryptElement(file);
             checkDecryptedDoc(dd, true);
         } else {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Skipping test test_five_content_aes128_cbc_rsa_15 as necessary "
                 + "crypto algorithms are not available"
             );
@@ -277,7 +278,7 @@ public class BaltimoreEncTest {
             // due to the encrypted text remainin in the reference nodes
             checkDecryptedDoc(dd, false);
         } else {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Skipping test test_five_element_aes192_cbc_ref as necessary "
                 + "crypto algorithms are not available"
             );
@@ -297,7 +298,7 @@ public class BaltimoreEncTest {
             byte[] decrypt = decryptData(file);
             checkDecryptedData(decrypt);
         } else {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Skipping test test_five_data_aes128_cbc as necessary "
                 + "crypto algorithms are not available"
             );
@@ -320,7 +321,7 @@ public class BaltimoreEncTest {
             byte[] decrypt = decryptData(file);
             checkDecryptedData(decrypt);
         } else {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Skipping test test_five_data_aes256_cbc_3des as necessary "
                 + "crypto algorithms are not available"
             );
@@ -341,7 +342,7 @@ public class BaltimoreEncTest {
             byte[] decrypt = decryptData(file);
             checkDecryptedData(decrypt);
         } else {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Skipping test test_five_data_aes192_cbc_aes256 as necessary "
                 + "crypto algorithms are not available"
             );
@@ -362,7 +363,7 @@ public class BaltimoreEncTest {
             byte[] decrypt = decryptData(file);
             checkDecryptedData(decrypt);
         } else {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Skipping test test_five_data_3des_cbc_rsa_oaep as necessary "
                 + "crypto algorithms are not available"
             );
@@ -580,7 +581,7 @@ public class BaltimoreEncTest {
     private void checkDecryptedDoc(Document d, boolean doNodeCheck) throws Exception {
 
         String cc = retrieveCCNumber(d);
-        LOG.debug("Retrieved Credit Card : " + cc);
+        LOG.log(Level.DEBUG, "Retrieved Credit Card : " + cc);
         assertEquals(cardNumber, cc);
 
         // Test cc numbers

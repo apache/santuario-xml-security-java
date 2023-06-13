@@ -22,7 +22,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
 
@@ -35,7 +34,7 @@ public final class XmlSecTestEnvironment {
     /** Password to the {@link KeyStore} returned by {@link #getTestKeyStore()} */
     public static final String TEST_KS_PASSWORD = "changeit";
 
-    private static final Path BASEDIR = Paths.get(System.getProperty("basedir", ".")).toAbsolutePath();
+    private static final Path BASEDIR = Path.of(System.getProperty("basedir", ".")).toAbsolutePath();
 
      private XmlSecTestEnvironment() {
          // hidden
@@ -118,6 +117,6 @@ public final class XmlSecTestEnvironment {
       * @return absolute {@link Path}
       */
      public static Path resolvePath(Path base, String first, String... more) {
-         return base.resolve(Paths.get(first, more)).toAbsolutePath();
+         return base.resolve(Path.of(first, more)).toAbsolutePath();
      }
  }

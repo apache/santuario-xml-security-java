@@ -19,6 +19,8 @@
 package org.apache.xml.security.test.javax.xml.crypto.dsig;
 
 import java.io.File;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -40,8 +42,7 @@ import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
  */
 public class ClassLoaderTest {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(ClassLoaderTest.class);
+    private static final Logger LOG = System.getLogger(ClassLoaderTest.class.getName());
 
     @Test
     public void testMultipleLoaders() throws Exception {
@@ -92,7 +93,7 @@ public class ClassLoaderTest {
             }
             long end = System.currentTimeMillis();
             long elapsed = end-start;
-            LOG.debug("Elapsed: {}", elapsed);
+            LOG.log(Level.DEBUG, "Elapsed: {0}", elapsed);
         }
     }
 

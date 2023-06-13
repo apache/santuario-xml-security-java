@@ -106,7 +106,7 @@ public class XMLSecurityStreamReaderTest {
         javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new StAXSource(xmlSecurityStreamReader), new StreamResult(baos));
-        assertThat(readTestFile(), isSimilarTo(baos.toString(StandardCharsets.UTF_8.name())));
+        assertThat(readTestFile(), isSimilarTo(baos.toString(StandardCharsets.UTF_8)));
     }
 
     @Test

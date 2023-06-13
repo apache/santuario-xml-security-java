@@ -18,10 +18,9 @@
  */
 package org.apache.xml.security.test.dom.keys.keyresolver;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.cert.CertificateFactory;
@@ -32,7 +31,6 @@ import org.apache.xml.security.Init;
 import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.utils.Constants;
-import org.apache.xml.security.utils.JavaUtils;
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
@@ -142,17 +140,17 @@ public class KeyInfoReferenceResolverTest {
 
     // Utility methods
 
-    private File getControlFilePath(String fileName) {
-        return XmlSecTestEnvironment.resolveFile("src", "test", "resources", "org", "apache", "xml", "security",
+    private Path getControlFilePath(String fileName) {
+        return XmlSecTestEnvironment.resolvePath("src", "test", "resources", "org", "apache", "xml", "security",
             "keyresolver", fileName);
     }
 
     private Document loadXML(String fileName) throws Exception {
-        return XMLUtils.read(new FileInputStream(getControlFilePath(fileName)), false);
+        return XMLUtils.read(getControlFilePath(fileName).toFile(), false);
     }
 
     private PublicKey loadPublicKey(String filePath, String algorithm) throws Exception {
-        String fileData = new String(JavaUtils.getBytesFromFile(getControlFilePath(filePath).getAbsolutePath()));
+        String fileData = Files.readString(getControlFilePath(filePath));
         byte[] keyBytes = XMLUtils.decode(fileData);
         KeyFactory kf = KeyFactory.getInstance(algorithm);
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
@@ -160,7 +158,7 @@ public class KeyInfoReferenceResolverTest {
     }
 
     private X509Certificate loadCertificate(String fileName) throws Exception {
-        try (InputStream fis = Files.newInputStream(getControlFilePath(fileName).toPath())) {
+        try (InputStream fis = Files.newInputStream(getControlFilePath(fileName))) {
             CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
             return (X509Certificate) certFactory.generateCertificate(fis);
         }

@@ -80,7 +80,7 @@ public class Santuario191Test {
             //
             // Test against expected result
             //
-            assertEquals(EXPECTED_RESULT, output.toString(StandardCharsets.UTF_8.name()));
+            assertEquals(EXPECTED_RESULT, output.toString(StandardCharsets.UTF_8));
         }
     }
 

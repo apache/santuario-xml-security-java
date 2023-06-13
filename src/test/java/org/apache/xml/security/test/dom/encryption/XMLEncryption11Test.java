@@ -19,6 +19,8 @@
 package org.apache.xml.security.test.dom.encryption;
 
 import java.io.File;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.Key;
 import java.security.KeyStore;
 import java.security.NoSuchAlgorithmException;
@@ -75,8 +77,8 @@ public class XMLEncryption11Test {
     private boolean haveISOPadding;
     private final boolean isIBMJdK = System.getProperty("java.vendor").contains("IBM");
 
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(XMLEncryption11Test.class);
+    private static final Logger LOG = System.getLogger(XMLEncryption11Test.class.getName());
+
 
     /**
      *  Constructor XMLEncryption11Test
@@ -136,10 +138,7 @@ public class XMLEncryption11Test {
             // XMLUtils.outputDOM(dd.getFirstChild(), System.out);
             checkDecryptedDoc(dd, true);
         } else {
-            LOG.warn(
-                "Skipping testRSA2048 as necessary "
-                + "crypto algorithms are not available"
-            );
+            LOG.log(Level.WARNING, "Skipping testRSA2048 as necessary crypto algorithms are not available");
         }
     }
 
@@ -193,10 +192,7 @@ public class XMLEncryption11Test {
             // XMLUtils.outputDOM(dd.getFirstChild(), System.out);
             checkDecryptedDoc(dd, true);
         } else {
-            LOG.warn(
-                "Skipping testRSA2048 as necessary "
-                + "crypto algorithms are not available"
-            );
+            LOG.log(Level.WARNING, "Skipping testRSA2048 as necessary crypto algorithms are not available");
         }
     }
 
@@ -247,10 +243,7 @@ public class XMLEncryption11Test {
             // XMLUtils.outputDOM(dd.getFirstChild(), System.out);
             checkDecryptedDoc(dd, true);
         } else {
-            LOG.warn(
-                "Skipping testRSA2048 as necessary "
-                + "crypto algorithms are not available"
-            );
+            LOG.log(Level.WARNING, "Skipping testRSA2048 as necessary crypto algorithms are not available");
         }
     }
 
@@ -276,10 +269,7 @@ public class XMLEncryption11Test {
             // XMLUtils.outputDOM(dd.getFirstChild(), System.out);
             checkDecryptedDoc(dd, true);
         } else {
-            LOG.warn(
-                "Skipping testRSA3072 as necessary "
-                + "crypto algorithms are not available"
-            );
+            LOG.log(Level.WARNING, "Skipping testRSA3072 as necessary crypto algorithms are not available");
         }
     }
 
@@ -332,10 +322,7 @@ public class XMLEncryption11Test {
             // XMLUtils.outputDOM(dd.getFirstChild(), System.out);
             checkDecryptedDoc(dd, true);
         } else {
-            LOG.warn(
-                "Skipping testRSA3072 as necessary "
-                + "crypto algorithms are not available"
-            );
+            LOG.log(Level.WARNING, "Skipping testRSA3072 as necessary crypto algorithms are not available");
         }
     }
 
@@ -362,10 +349,7 @@ public class XMLEncryption11Test {
             // XMLUtils.outputDOM(dd.getFirstChild(), System.out);
             checkDecryptedDoc(dd, true);
         } else {
-            LOG.warn(
-                "Skipping testRSA307OAEP as necessary "
-                + "crypto algorithms are not available"
-            );
+            LOG.log(Level.WARNING, "Skipping testRSA307OAEP as necessary crypto algorithms are not available");
         }
     }
 
@@ -415,10 +399,7 @@ public class XMLEncryption11Test {
             // XMLUtils.outputDOM(dd.getFirstChild(), System.out);
             checkDecryptedDoc(dd, true);
         } else {
-            LOG.warn(
-                "Skipping testRSA2048 as necessary "
-                + "crypto algorithms are not available"
-            );
+            LOG.log(Level.WARNING, "Skipping testRSA2048 as necessary crypto algorithms are not available");
         }
     }
 
@@ -445,10 +426,7 @@ public class XMLEncryption11Test {
             // XMLUtils.outputDOM(dd.getFirstChild(), System.out);
             checkDecryptedDoc(dd, true);
         } else {
-            LOG.warn(
-                "Skipping testRSA4096 as necessary "
-                + "crypto algorithms are not available"
-            );
+            LOG.log(Level.WARNING, "Skipping testRSA4096 as necessary crypto algorithms are not available");
         }
     }
 
@@ -498,10 +476,7 @@ public class XMLEncryption11Test {
             // XMLUtils.outputDOM(dd.getFirstChild(), System.out);
             checkDecryptedDoc(dd, true);
         } else {
-            LOG.warn(
-                "Skipping testRSA2048 as necessary "
-                + "crypto algorithms are not available"
-            );
+            LOG.log(Level.WARNING, "Skipping testRSA2048 as necessary crypto algorithms are not available");
         }
     }
 
@@ -548,10 +523,7 @@ public class XMLEncryption11Test {
             // XMLUtils.outputDOM(dd.getFirstChild(), System.out);
             checkDecryptedDoc(dd, true);
         } else {
-            LOG.warn(
-                    "Skipping testRSA2048 as necessary "
-                            + "crypto algorithms are not available"
-            );
+            LOG.log(Level.WARNING, "Skipping testRSA2048 as necessary crypto algorithms are not available");
         }
     }
 
@@ -757,7 +729,7 @@ public class XMLEncryption11Test {
     private void checkDecryptedDoc(Document d, boolean doNodeCheck) throws Exception {
 
         String cc = retrieveCCNumber(d);
-        LOG.debug("Retrieved Credit Card : " + cc);
+        LOG.log(Level.DEBUG, "Retrieved Credit Card : " + cc);
         assertEquals(cardNumber, cc);
 
         // Test cc numbers

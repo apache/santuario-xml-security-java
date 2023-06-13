@@ -18,7 +18,8 @@
  */
 package org.apache.xml.security.test.dom.signature;
 
-import java.io.UnsupportedEncodingException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -38,13 +39,15 @@ import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 /**
  * An implementation of a resource resolver, which evaluates xpointer expressions.
  *
  */
 public class XPointerResourceResolver extends ResourceResolverSpi {
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(XPointerResourceResolver.class);
+
+    private static final Logger LOG = System.getLogger(XPointerResourceResolver.class.getName());
 
     private static final String XP_OPEN = "xpointer(";
     private static final String XNS_OPEN = "xmlns(";
@@ -67,14 +70,7 @@ public class XPointerResourceResolver extends ResourceResolverSpi {
             return false;
         }
 
-        String xpURI;
-        try {
-            xpURI = URLDecoder.decode(v, "utf-8");
-        } catch (UnsupportedEncodingException e) {
-            LOG.warn("utf-8 not a valid encoding",e);
-            return false;
-        }
-
+        String xpURI = URLDecoder.decode(v, UTF_8);
         String[] parts = xpURI.substring(1).split("\\s");
 
         // plain ID reference.
@@ -93,9 +89,7 @@ public class XPointerResourceResolver extends ResourceResolverSpi {
             return false;
         }
 
-        LOG.debug("xpURI = " + xpURI);
-        LOG.debug("BaseURI = " + context.baseUri);
-
+        LOG.log(Level.DEBUG, "xpURI={0}, BaseURI={1}", xpURI, context.baseUri);
         return true;
     }
 
@@ -108,14 +102,7 @@ public class XPointerResourceResolver extends ResourceResolverSpi {
             return null;
         }
 
-        String xpURI;
-        try {
-            xpURI = URLDecoder.decode(v, "utf-8");
-        } catch (UnsupportedEncodingException e) {
-            LOG.warn("utf-8 not a valid encoding ", e);
-            return null;
-        }
-
+        String xpURI = URLDecoder.decode(v, UTF_8);
         String[] parts = xpURI.substring(1).split("\\s");
 
         int i = 0;

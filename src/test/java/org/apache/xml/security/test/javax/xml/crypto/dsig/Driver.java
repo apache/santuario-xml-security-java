@@ -18,6 +18,9 @@
  */
 package org.apache.xml.security.test.javax.xml.crypto.dsig;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+
 import javax.xml.crypto.dsig.CanonicalizationMethod;
 import javax.xml.crypto.dsig.XMLSignatureFactory;
 import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
@@ -27,8 +30,7 @@ import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
  */
 public class Driver {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(Driver.class);
+    private static final Logger LOG = System.getLogger(Driver.class.getName());
 
     public void dsig() throws Exception {
 
@@ -41,7 +43,7 @@ public class Driver {
         }
         long end = System.currentTimeMillis();
         long elapsed = end - start;
-        LOG.debug("Elapsed: {}", elapsed);
-        LOG.debug("dsig succeeded");
+        LOG.log(Level.DEBUG, "Elapsed: {0}", elapsed);
+        LOG.log(Level.DEBUG, "dsig succeeded");
     }
 }
