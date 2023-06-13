@@ -46,9 +46,9 @@ class BaltimoreTest extends InteropTestBase {
     private static final Logger LOG = System.getLogger(BaltimoreTest.class.getName());
 
     /** Field merlinsDir15           */
-    static File merlinsDir15;
-    static File merlinsDir16;
-    static File merlinsDir23;
+    private static final File merlinsDir15;
+    private static final File merlinsDir16;
+    private static final File merlinsDir23;
 
     static {
         System.setProperty("org.apache.xml.security.allowUnsafeResourceResolving", "true");

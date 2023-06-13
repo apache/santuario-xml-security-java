@@ -48,47 +48,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 class XMLSignatureInputTest {
 
-    static final String _octetStreamTextInput = "Kleiner Test";
-    static final String _nodeSetInput1 =
-        "<?xml version=\"1.0\"?>\n"
-        + "<!DOCTYPE doc [\n"
-        + "<!ELEMENT doc (n+)>\n"
-        + "<!ELEMENT n (#PCDATA)>\n"
-        + "]>\n"
-        + "<!-- full document with decl -->"
-        + "<doc>"
-        + "<n>1</n>"
-        + "<n>2</n>"
-        + "<n>3</n>"
-        + "<n>4</n>"
-        + "</doc>";
-    // added one for xmlns:xml since Xalan 2.2.D11
-    static final int _nodeSetInput1Nodes = 11; // was 10
-    static final int _nodeSetInput1NodesWithComments = _nodeSetInput1Nodes + 1;
-    static final String _nodeSetInput2 =
-        "<?xml version=\"1.0\"?>\n"
-        + "<!-- full document -->"
-        + "<doc>"
-        + "<n>1</n>"
-        + "<n>2</n>"
-        + "<n>3</n>"
-        + "<n>4</n>"
-        + "</doc>";
-    // added one for xmlns:xml since Xalan 2.2.D11
-    static final int _nodeSetInput2Nodes = 11; // was 10
-    static final int _nodeSetInput2NodesWithComments = _nodeSetInput2Nodes + 1;
-    static final String _nodeSetInput3 =
-        "<!-- document -->"
-        + "<doc>"
-        + "<n>1</n>"
-        + "<n>2</n>"
-        + "<n>3</n>"
-        + "<n>4</n>"
-        + "</doc>";
-    // added one for xmlns:xml since Xalan 2.2.D11
-    static final int _nodeSetInput3Nodes = 11; // was 10
-    static final int _nodeSetInput3NodesWithComments = _nodeSetInput3Nodes + 1;
-
+    private static final String _octetStreamTextInput = "Kleiner Test";
     static {
         org.apache.xml.security.Init.init();
     }
@@ -96,15 +56,14 @@ class XMLSignatureInputTest {
     @Test
     void testSetOctetStreamGetOctetStream()
         throws IOException, CanonicalizationException, InvalidCanonicalizerException {
-        XMLSignatureInput input = new XMLSignatureByteInput( _octetStreamTextInput.getBytes(UTF_8));
+        XMLSignatureByteInput input = new XMLSignatureByteInput(_octetStreamTextInput.getBytes(UTF_8));
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        InputStream res = input.getUnprocessedInput();
+        // NOPMD: Test checks that input has same content as getter
+        InputStream res = input.getUnprocessedInput(); // NOPMD
         int off = 0;
-
         while (res.available() > 0) {
             byte[] array = new byte[1024];
             int len = res.read(array);
-
             baos.write(array, off, len);
             off += len;
         }

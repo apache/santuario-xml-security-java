@@ -68,7 +68,7 @@ class ReferenceTest {
     private final XMLSignatureFactory fac;
     private final KeyInfoFactory kifac;
     private final DigestMethod dmSHA1;
-    private final String uri = "http://www.ietf.org/rfc/rfc3275.txt";
+    private static final String uri = "http://www.ietf.org/rfc/rfc3275.txt";
 
     private static final String[] CRYPTO_ALGS = { "RSA", "DSA" };
     private static final String[] SIG_ALGS = {

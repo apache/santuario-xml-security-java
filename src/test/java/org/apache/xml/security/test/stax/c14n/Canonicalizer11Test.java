@@ -22,7 +22,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
@@ -38,6 +37,7 @@ import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -253,9 +253,9 @@ class Canonicalizer11Test {
         boolean equals = java.security.MessageDigest.isEqual(reference, baos.toByteArray());
 
         if (!equals) {
-            System.out.println("Expected:\n" + new String(reference, StandardCharsets.UTF_8));
+            System.out.println("Expected:\n" + new String(reference, UTF_8));
             System.out.println("");
-            System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
+            System.out.println("Got:\n" + new String(baos.toByteArray(), UTF_8));
         }
 
         assertTrue(equals);
@@ -607,7 +607,7 @@ class Canonicalizer11Test {
         // if everything is OK, result is true; we do a binary compare, byte by byte
         boolean result = java.security.MessageDigest.isEqual(refBytes, baos.toByteArray());
         if (!result) {
-            assertEquals(new String(baos.toByteArray(), StandardCharsets.UTF_8), new String(refBytes, StandardCharsets.UTF_8));
+            assertEquals(new String(baos.toByteArray(), UTF_8), new String(refBytes, UTF_8));
         }
         assertTrue(result);
     }
@@ -616,17 +616,13 @@ class Canonicalizer11Test {
     public static byte[] getBytesFromResource(URL resource) throws IOException {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        InputStream inputStream = resource.openStream();
-        try {
+        try (InputStream inputStream = resource.openStream()) {
             byte[] buf = new byte[1024];
             int len;
             while ((len = inputStream.read(buf)) > 0) {
                 baos.write(buf, 0, len);
             }
-
             return baos.toByteArray();
-        } finally {
-            inputStream.close();
         }
     }
 

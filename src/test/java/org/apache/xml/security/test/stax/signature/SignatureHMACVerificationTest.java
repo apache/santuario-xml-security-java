@@ -265,7 +265,7 @@ class SignatureHMACVerificationTest extends AbstractSignatureVerificationTest {
 
     @Test
     void testRIPEMD160() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(isBcInstalled());
 
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",

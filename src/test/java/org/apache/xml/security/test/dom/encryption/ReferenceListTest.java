@@ -38,8 +38,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 class ReferenceListTest {
 
-    private static final Logger LOG = System.getLogger(ReferenceListTest.class.getName());
-
     public ReferenceListTest() throws Exception {
         org.apache.xml.security.Init.init();
     }

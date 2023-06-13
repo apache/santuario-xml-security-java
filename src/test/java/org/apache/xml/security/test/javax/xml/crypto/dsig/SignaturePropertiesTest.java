@@ -45,8 +45,8 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 class SignaturePropertiesTest {
 
+    private static final String id = "id";
     private final XMLSignatureFactory factory;
-    private final String id = "id";
     private final SignatureProperty prop;
 
     public SignaturePropertiesTest() throws Exception {

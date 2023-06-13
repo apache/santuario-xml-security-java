@@ -215,7 +215,7 @@ class PKSignatureVerificationTest extends AbstractSignatureVerificationTest {
 
     @Test
     void testRSA_RIPEMD160() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(isBcInstalled());
 
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
@@ -255,7 +255,7 @@ class PKSignatureVerificationTest extends AbstractSignatureVerificationTest {
 
     @Test
     void testRSA_SHA1_MGF1() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(isBcInstalled());
 
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
@@ -295,7 +295,7 @@ class PKSignatureVerificationTest extends AbstractSignatureVerificationTest {
 
     @Test
     void testRSA_SHA224_MGF1() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(isBcInstalled());
 
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
@@ -335,7 +335,7 @@ class PKSignatureVerificationTest extends AbstractSignatureVerificationTest {
 
     @Test
     void testRSA_SHA256_MGF1() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(isBcInstalled());
 
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
@@ -375,7 +375,7 @@ class PKSignatureVerificationTest extends AbstractSignatureVerificationTest {
 
     @Test
     void testRSA_SHA384_MGF1() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(isBcInstalled());
 
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
@@ -415,7 +415,7 @@ class PKSignatureVerificationTest extends AbstractSignatureVerificationTest {
 
     @Test
     void testRSA_SHA512_MGF1() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(isBcInstalled());
 
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
@@ -456,7 +456,7 @@ class PKSignatureVerificationTest extends AbstractSignatureVerificationTest {
     @Test
     @Disabled   // Disabled as I didn't want to have to change the XML Signature core schema
     void testRSA_SSA_PSS() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(isBcInstalled());
 
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
@@ -690,7 +690,7 @@ class PKSignatureVerificationTest extends AbstractSignatureVerificationTest {
 
     @Test
     void testECDSA_RIPEMD160() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(isBcInstalled());
 
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",

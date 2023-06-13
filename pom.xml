@@ -559,6 +559,12 @@
                     <failOnViolation>true</failOnViolation>
                     <verbose>true</verbose>
                     <includeTests>true</includeTests>
+                    <excludes>
+                        <exclude>**/XMLUtilsPerformanceIT.java</exclude>
+                    </excludes>
+                    <excludeRoots>
+                        <excludeRoot>${project.build.directory}/generated-test-sources</excludeRoot>
+                    </excludeRoots>
                 </configuration>
                 <executions>
                     <execution>

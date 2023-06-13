@@ -782,19 +782,14 @@ class Canonicalizer20010315ExclusiveTest {
     }
 
     public static byte[] getBytesFromResource(URL resource) throws IOException {
-
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        InputStream inputStream = resource.openStream();
-        try {
+        try (InputStream inputStream = resource.openStream()) {
             byte[] buf = new byte[1024];
             int len;
             while ((len = inputStream.read(buf)) > 0) {
                 baos.write(buf, 0, len);
             }
-
             return baos.toByteArray();
-        } finally {
-            inputStream.close();
         }
     }
 }

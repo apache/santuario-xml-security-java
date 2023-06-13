@@ -180,22 +180,19 @@ class XMLSecEventTest {
         while (xmlStreamReader.hasNext());
         xmlSecEventDeque.push(XMLSecEventFactory.allocate(xmlStreamReader, null));//EndDocumentEvent
 
-        XMLSecurityEventReader xmlSecurityEventReader = new XMLSecurityEventReader(xmlSecEventDeque, 0);
-
-        XMLEventReader xmlEventReader =
-                xmlInputFactory.createXMLEventReader(this.getClass().getClassLoader().getResourceAsStream(
-                        "org/apache/xml/security/c14n/inExcl/plain-soap-1.1.xml"));
-
         final StringWriter stdWriter = new StringWriter();
         final StringWriter secWriter = new StringWriter();
-        while (xmlEventReader.hasNext()) {
-            XMLEvent stdXmlEvent = xmlEventReader.nextEvent();
-            XMLEvent secXmlEvent = xmlSecurityEventReader.nextEvent();
+        try (XMLSecurityEventReader xmlSecurityEventReader = new XMLSecurityEventReader(xmlSecEventDeque, 0)) {
+            XMLEventReader xmlEventReader = xmlInputFactory.createXMLEventReader(this.getClass().getClassLoader()
+                .getResourceAsStream("org/apache/xml/security/c14n/inExcl/plain-soap-1.1.xml"));
 
-            stdXmlEvent.writeAsEncodedUnicode(stdWriter);
-            secXmlEvent.writeAsEncodedUnicode(secWriter);
+            while (xmlEventReader.hasNext()) {
+                XMLEvent stdXmlEvent = xmlEventReader.nextEvent();
+                XMLEvent secXmlEvent = xmlSecurityEventReader.nextEvent();
+                stdXmlEvent.writeAsEncodedUnicode(stdWriter);
+                secXmlEvent.writeAsEncodedUnicode(secWriter);
+            }
         }
-
         assertEquals(secWriter.toString(), stdWriter.toString());
     }
 }

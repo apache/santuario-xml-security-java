@@ -65,9 +65,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 class AbstractSignatureCreationTest {
 
-    protected static boolean bcInstalled;
+    private static boolean bcInstalled;
 
     protected XMLInputFactory xmlInputFactory;
+
+    public static boolean isBcInstalled() {
+        return bcInstalled;
+    }
 
     @BeforeAll
     public static void setup() throws Exception {

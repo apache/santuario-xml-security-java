@@ -70,7 +70,6 @@ import static org.junit.jupiter.api.Assertions.fail;
  * validated.
  */
 class SignatureReferenceTest {
-    public static final String DS_NS = "http://www.w3.org/2000/09/xmldsig#";
 
     public SignatureReferenceTest() throws Exception {
         Init.init();
@@ -87,7 +86,7 @@ class SignatureReferenceTest {
 
         // Check the reference(s)
         SignedInfo signedInfo = signature.getSignedInfo();
-        assertTrue(signedInfo.getLength() == 1);
+        assertEquals(1, signedInfo.getLength());
         Reference reference = signedInfo.item(0);
         ReferenceData referenceData = reference.getReferenceData();
         assertNotNull(referenceData);

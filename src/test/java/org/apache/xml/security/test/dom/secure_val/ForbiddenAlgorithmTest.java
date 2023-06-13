@@ -20,7 +20,6 @@ package org.apache.xml.security.test.dom.secure_val;
 
 
 import java.io.File;
-import java.lang.System.Logger;
 
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
@@ -40,8 +39,6 @@ import static org.junit.jupiter.api.Assertions.fail;
  * This is a test for a forbidden algorithm (MD5) when secure validation is enabled.
  */
 class ForbiddenAlgorithmTest extends InteropTestBase {
-
-    private static final Logger LOG = System.getLogger(ForbiddenAlgorithmTest.class.getName());
 
     static {
         org.apache.xml.security.Init.init();

@@ -219,7 +219,7 @@ class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
 
     @Test
     void testRIPEMD160() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(isBcInstalled());
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
