@@ -19,7 +19,6 @@
 package org.apache.xml.security.test.dom.interop;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
 import java.util.Iterator;
@@ -53,26 +52,23 @@ public class InteropTestBase {
     /**
      * Method verifyHMAC
      *
-     * @param filename
+     * @param file
      * @param resolver
      * @param hmacKey
      *
      * @throws Exception
      */
-    public boolean verifyHMAC(
-        String filename, ResourceResolverSpi resolver, boolean followManifests, byte[] hmacKey
-    ) throws Exception {
-        File f = new File(filename);
-        org.w3c.dom.Document doc = XMLUtils.read(new FileInputStream(f), false);
+    public boolean verifyHMAC(File file, ResourceResolverSpi resolver, boolean followManifests, byte[] hmacKey)
+        throws Exception {
+        org.w3c.dom.Document doc = XMLUtils.read(file, false);
 
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();
         xpath.setNamespaceContext(new DSNamespaceContext());
 
         String expression = "//ds:Signature[1]";
-        Element sigElement =
-            (Element) xpath.evaluate(expression, doc, XPathConstants.NODE);
-        XMLSignature signature = new XMLSignature(sigElement, f.toURI().toURL().toString());
+        Element sigElement = (Element) xpath.evaluate(expression, doc, XPathConstants.NODE);
+        XMLSignature signature = new XMLSignature(sigElement, file.toURI().toURL().toString());
 
         if (resolver != null) {
             signature.addResourceResolver(resolver);
@@ -85,16 +81,15 @@ public class InteropTestBase {
         return signature.checkSignatureValue(sk);
     }
 
-    public boolean verify(String filename, ResourceResolverSpi resolver, boolean followManifests)
+    public boolean verify(File file, ResourceResolverSpi resolver, boolean followManifests)
         throws Exception {
-        return verify(filename, resolver, followManifests, true);
+        return verify(file, resolver, followManifests, true);
     }
 
-    public boolean verify(String filename, ResourceResolverSpi resolver,
-                          boolean followManifests, boolean secureValidation)
+
+    public boolean verify(File file, ResourceResolverSpi resolver, boolean followManifests, boolean secureValidation)
         throws Exception {
-        File f = new File(filename);
-        org.w3c.dom.Document doc = XMLUtils.read(new FileInputStream(f), false);
+        org.w3c.dom.Document doc = XMLUtils.read(file, false);
 
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();
@@ -103,7 +98,7 @@ public class InteropTestBase {
         String expression = "//ds:Signature[1]";
         Element sigElement =
             (Element) xpath.evaluate(expression, doc, XPathConstants.NODE);
-        XMLSignature signature = new XMLSignature(sigElement, f.toURI().toURL().toString(), secureValidation);
+        XMLSignature signature = new XMLSignature(sigElement, file.toURI().toURL().toString(), secureValidation);
 
         if (resolver != null) {
             signature.addResourceResolver(resolver);
@@ -112,31 +107,25 @@ public class InteropTestBase {
 
 
         KeyInfo ki = signature.getKeyInfo();
-        boolean result = false;
-        if (ki != null) {
-            X509Certificate cert = ki.getX509Certificate();
-
-            if (cert != null) {
-                result = signature.checkSignatureValue(cert);
-            } else {
-                PublicKey pk = ki.getPublicKey();
-
-                if (pk != null) {
-                    result = signature.checkSignatureValue(pk);
-                } else {
-                    throw new RuntimeException(
-                    "Did not find a public key, so I can't check the signature");
-                }
-            }
-            checkReferences(signature);
-        } else {
+        if (ki == null) {
             throw new RuntimeException("Did not find a KeyInfo");
         }
+        X509Certificate cert = ki.getX509Certificate();
+
+        final boolean result;
+        if (cert == null) {
+            PublicKey pk = ki.getPublicKey();
+            if (pk == null) {
+                throw new RuntimeException("Did not find a public key, so I can't check the signature");
+            }
+            result = signature.checkSignatureValue(pk);
+        } else {
+            result = signature.checkSignatureValue(cert);
+        }
+        checkReferences(signature);
         if (!result) {
             for (int i = 0; i < signature.getSignedInfo().getLength(); i++) {
-                boolean refVerify =
-                    signature.getSignedInfo().getVerificationResult(i);
-
+                boolean refVerify = signature.getSignedInfo().getVerificationResult(i);
                 if (refVerify) {
                     LOG.debug("Reference " + i + " was OK");
                 } else {

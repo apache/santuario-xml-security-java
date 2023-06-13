@@ -30,6 +30,7 @@ import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.signature.ObjectContainer;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
+import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.Constants;
@@ -46,7 +47,7 @@ public class Bug45961Test {
     private static final String OBJECT_ID = "Object";
     private static final String MOCK_CANONICALIZATION_METHOD =
         MockCanonicalizationMethod.MOCK_CANONICALIZATION_METHOD;
-    private static final char[] PASSWORD = "changeit".toCharArray();
+    private static final char[] PASSWORD = XmlSecTestEnvironment.TEST_KS_PASSWORD.toCharArray();
     private static final String ALIAS = "mullan";
     private ObjectContainer object;
 
@@ -74,11 +75,7 @@ public class Bug45961Test {
     }
 
     private Document getSignedDocument() throws Exception {
-        KeyStore ks = KeyStore.getInstance("JKS");
-        FileInputStream fis =
-            new FileInputStream(getAbsolutePath("src/test/resources/test.jks"));
-        ks.load(fis, PASSWORD);
-        fis.close();
+        KeyStore ks = XmlSecTestEnvironment.getTestKeyStore();
         PrivateKey privateKey = (PrivateKey) ks.getKey(ALIAS, PASSWORD);
         X509Certificate signingCert = (X509Certificate) ks
         .getCertificate(ALIAS);
@@ -116,13 +113,4 @@ public class Bug45961Test {
         transforms.addTransform(Transforms.TRANSFORM_ENVELOPED_SIGNATURE);
         return transforms;
     }
-
-    private String getAbsolutePath(String path) {
-        String basedir = System.getProperty("basedir");
-        if (basedir != null && basedir.length() != 0) {
-            path = basedir + "/" + path;
-        }
-        return path;
-    }
-
 }

@@ -21,12 +21,16 @@ package org.apache.xml.security.test.stax.signature;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.nio.charset.StandardCharsets;
+import java.security.GeneralSecurityException;
 import java.security.Key;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,6 +59,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -78,11 +83,7 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
         properties.setActions(actions);
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-                this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-                "default".toCharArray()
-        );
+        KeyStore keyStore = getKeyStore();
         Key key = keyStore.getKey("transmitter", "default".toCharArray());
         properties.setSignatureKey(key);
         X509Certificate cert = (X509Certificate) keyStore.getCertificate("transmitter");
@@ -92,8 +93,7 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
                 new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addSignaturePart(securePart);
 
-        File file = new File(BASEDIR +
-                             "/src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml").getCanonicalFile();
+        File file = resolveFile("src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         securePart = new SecurePart(file.toURI().toString(),
                 new String[]{"http://www.w3.org/TR/2001/REC-xml-c14n-20010315"},
                 XMLSecurityConstants.NS_XMLDSIG_SHA1);
@@ -129,11 +129,7 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
         properties.setActions(actions);
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-                this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-                "default".toCharArray()
-        );
+        KeyStore keyStore = getKeyStore();
         Key key = keyStore.getKey("transmitter", "default".toCharArray());
         properties.setSignatureKey(key);
         X509Certificate cert = (X509Certificate) keyStore.getCertificate("transmitter");
@@ -143,8 +139,8 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
                 new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addSignaturePart(securePart);
 
-        File file = new File(BASEDIR +
-                             "/target/test-classes/org/apache/xml/security/test/stax/signature/SignatureVerificationReferenceURIResolverTest.class").getCanonicalFile();
+        File file = resolveFile(
+            "target/test-classes/org/apache/xml/security/test/stax/signature/SignatureVerificationReferenceURIResolverTest.class");
         securePart = new SecurePart(file.toURI().toString(),
                 null,
                 XMLSecurityConstants.NS_XMLDSIG_SHA1);
@@ -191,11 +187,7 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
             properties.setActions(actions);
 
             // Set the key up
-            KeyStore keyStore = KeyStore.getInstance("jks");
-            keyStore.load(
-                    this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-                    "default".toCharArray()
-            );
+            KeyStore keyStore = getKeyStore();
             Key key = keyStore.getKey("transmitter", "default".toCharArray());
             properties.setSignatureKey(key);
             X509Certificate cert = (X509Certificate) keyStore.getCertificate("transmitter");
@@ -241,11 +233,7 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
         properties.setActions(actions);
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-                this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-                "default".toCharArray()
-        );
+        KeyStore keyStore = getKeyStore();
         Key key = keyStore.getKey("transmitter", "default".toCharArray());
         properties.setSignatureKey(key);
         X509Certificate cert = (X509Certificate) keyStore.getCertificate("transmitter");
@@ -281,5 +269,14 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
 
         // Verify using DOM
         verifyUsingDOM(document, cert, properties.getSignatureSecureParts());
+    }
+
+
+    private KeyStore getKeyStore() throws GeneralSecurityException, IOException {
+        KeyStore keyStore = KeyStore.getInstance("jks");
+        try (InputStream inputStream = getClass().getClassLoader().getResource("transmitter.jks").openStream()) {
+            keyStore.load(inputStream, "default".toCharArray());
+        }
+        return keyStore;
     }
 }

@@ -208,7 +208,7 @@ public class XMLSecurityStreamWriterTest {
 
     class EventWriterProcessor implements OutputProcessor {
 
-        private XMLEventWriter xmlEventWriter;
+        private final XMLEventWriter xmlEventWriter;
 
         EventWriterProcessor(Writer writer) throws Exception {
             XMLOutputFactory xmlOutputFactory = XMLOutputFactory.newInstance();

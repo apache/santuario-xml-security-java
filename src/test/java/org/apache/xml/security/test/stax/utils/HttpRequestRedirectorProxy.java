@@ -81,9 +81,6 @@ public class HttpRequestRedirectorProxy {
 
     static class TestingHttpProxyServlet extends HttpServlet {
 
-        /**
-         *
-         */
         private static final long serialVersionUID = -6720321975901047227L;
         private static MimeTypes mimeTypes = new MimeTypes();
         private static List<String> paths = new ArrayList<>();
@@ -91,24 +88,24 @@ public class HttpRequestRedirectorProxy {
         static {
             paths.add("ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three");
             paths.add("com/pothole/xmldsig");
-            paths.add("javax/xml/crypto/dsig");
+            paths.add("org/apache/xml/security/test/javax/xml/crypto/dsig");
         }
 
         @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             String requestLine = req.getRequestURL().toString();
             String file = requestLine.substring(requestLine.lastIndexOf('/'));
-            for (int i = 0; i < paths.size(); i++) {
-                String s = paths.get(i);
-                InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(s + "/" + file);
-                if (inputStream != null) {
-
+            for (String path : paths) {
+                String filePath = path + file;
+                try (InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(filePath)) {
+                    if (inputStream == null) {
+                        continue;
+                    }
                     String mime = mimeTypes.getMimeByExtension(req.getPathInfo());
                     if (mime != null) {
                         resp.setContentType(mime);
                     }
                     XMLSecurityUtils.copy(inputStream, resp.getOutputStream());
-                    inputStream.close();
                     return;
                 }
             }

@@ -45,9 +45,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class XMLSignatureInputTest {
 
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(XMLSignatureInputTest.class);
-
     static final String _octetStreamTextInput = "Kleiner Test";
     static final String _nodeSetInput1 =
         "<?xml version=\"1.0\"?>\n"

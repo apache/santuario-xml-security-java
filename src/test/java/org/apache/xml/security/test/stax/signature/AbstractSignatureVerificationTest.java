@@ -73,7 +73,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class AbstractSignatureVerificationTest {
 
-    protected static String BASEDIR;
     protected static boolean bcInstalled;
 
     protected XMLInputFactory xmlInputFactory;
@@ -81,12 +80,6 @@ public class AbstractSignatureVerificationTest {
 
     @BeforeAll
     public static void setup() throws Exception {
-        String baseDir = System.getProperty("basedir");
-        if (baseDir == null) {
-            baseDir = new File(".").getCanonicalPath();
-        }
-        BASEDIR = baseDir;
-
         Init.init(AbstractSignatureVerificationTest.class.getClassLoader().getResource("security-config.xml").toURI(),
                 AbstractSignatureVerificationTest.class);
         org.apache.xml.security.Init.init();
@@ -284,8 +277,7 @@ public class AbstractSignatureVerificationTest {
         }
 
         if (additionalReferences != null) {
-            for (int i = 0; i < additionalReferences.size(); i++) {
-                ReferenceInfo referenceInfo = additionalReferences.get(i);
+            for (ReferenceInfo referenceInfo : additionalReferences) {
                 if (referenceInfo.isBinary()) {
                     sig.addDocument(referenceInfo.getResource(), null, referenceInfo.getDigestMethod());
                 } else {

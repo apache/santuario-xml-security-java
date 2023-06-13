@@ -18,7 +18,10 @@
  */
 package org.apache.xml.security.test.dom.keys.keyresolver;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.cert.CertificateFactory;
@@ -27,6 +30,7 @@ import java.security.spec.X509EncodedKeySpec;
 
 import org.apache.xml.security.Init;
 import org.apache.xml.security.keys.KeyInfo;
+import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.JavaUtils;
 import org.apache.xml.security.utils.XMLUtils;
@@ -40,9 +44,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 public class KeyInfoReferenceResolverTest {
-
-    private static final String BASEDIR = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
-    private static final String SEP = System.getProperty("file.separator");
 
     public KeyInfoReferenceResolverTest() throws Exception {
         if (!Init.isInitialized()) {
@@ -140,11 +141,9 @@ public class KeyInfoReferenceResolverTest {
 
     // Utility methods
 
-    private String getControlFilePath(String fileName) {
-        return BASEDIR + SEP + "src" + SEP + "test" + SEP + "resources" +
-            SEP + "org" + SEP + "apache" + SEP + "xml" + SEP + "security" +
-            SEP + "keyresolver" +
-            SEP + fileName;
+    private File getControlFilePath(String fileName) {
+        return XmlSecTestEnvironment.resolveFile("src", "test", "resources", "org", "apache", "xml", "security",
+            "keyresolver", fileName);
     }
 
     private Document loadXML(String fileName) throws Exception {
@@ -152,7 +151,7 @@ public class KeyInfoReferenceResolverTest {
     }
 
     private PublicKey loadPublicKey(String filePath, String algorithm) throws Exception {
-        String fileData = new String(JavaUtils.getBytesFromFile(getControlFilePath(filePath)));
+        String fileData = new String(JavaUtils.getBytesFromFile(getControlFilePath(filePath).getAbsolutePath()));
         byte[] keyBytes = XMLUtils.decode(fileData);
         KeyFactory kf = KeyFactory.getInstance(algorithm);
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
@@ -160,9 +159,10 @@ public class KeyInfoReferenceResolverTest {
     }
 
     private X509Certificate loadCertificate(String fileName) throws Exception {
-        FileInputStream fis = new FileInputStream(getControlFilePath(fileName));
-        CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
-        return (X509Certificate) certFactory.generateCertificate(fis);
+        try (InputStream fis = Files.newInputStream(getControlFilePath(fileName).toPath())) {
+            CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
+            return (X509Certificate) certFactory.generateCertificate(fis);
+        }
     }
 
     private void markKeyInfoIdAttrs(Document doc) {

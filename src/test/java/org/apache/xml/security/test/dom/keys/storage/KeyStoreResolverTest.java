@@ -27,6 +27,7 @@ import java.util.NoSuchElementException;
 
 import org.apache.xml.security.keys.storage.implementations.KeyStoreResolver;
 
+import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -36,10 +37,6 @@ import static org.junit.jupiter.api.Assertions.fail;
  * KeyStore StorageResolver test.
  */
 public class KeyStoreResolverTest {
-
-    private static final String BASEDIR =
-        System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
-    private static final String SEP = System.getProperty("file.separator");
 
     @org.junit.jupiter.api.Test
     public void testKeyStoreResolver() throws Exception {
@@ -51,13 +48,11 @@ public class KeyStoreResolverTest {
             return;
         }
 
-        FileInputStream f =
-            new FileInputStream(BASEDIR + SEP + "src/test/resources" + SEP + "org" + SEP + "apache"
-                                + SEP + "xml" + SEP + "security" + SEP + "samples"
-                                + SEP + "input" + SEP + "keystore2.jks");
-
         KeyStore ks = KeyStore.getInstance("JCEKS");
-        ks.load(f, "xmlsecurity".toCharArray());
+        try (FileInputStream f = new FileInputStream(resolveFile("src", "test", "resources", "org", "apache", "xml",
+            "security", "samples", "input", "keystore2.jks"))) {
+            ks.load(f, "xmlsecurity".toCharArray());
+        }
 
         KeyStoreResolver ksResolver = new KeyStoreResolver(ks);
         Iterator<?> iter = ksResolver.getIterator();

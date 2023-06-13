@@ -18,10 +18,14 @@
  */
 package org.apache.xml.security.utils;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigInteger;
+import java.nio.file.Files;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
@@ -37,6 +41,8 @@ import org.apache.xml.security.c14n.InvalidCanonicalizerException;
 import org.apache.xml.security.parser.XMLParser;
 import org.apache.xml.security.parser.XMLParserException;
 import org.apache.xml.security.parser.XMLParserImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -44,6 +50,8 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * DOM and XML accessibility and comfort functions.
@@ -55,8 +63,7 @@ public final class XMLUtils {
             AccessController.doPrivileged(
                     (PrivilegedAction<Boolean>) () -> Boolean.getBoolean("org.apache.xml.security.ignoreLineBreaks"));
 
-    private static final org.slf4j.Logger LOG =
-            org.slf4j.LoggerFactory.getLogger(XMLUtils.class);
+    private static final Logger LOG = LoggerFactory.getLogger(XMLUtils.class);
 
     private static XMLParser xmlParserImpl =
             AccessController.doPrivileged(
@@ -67,7 +74,7 @@ public final class XMLUtils {
                                 return (XMLParser) JavaUtils.newInstanceWithEmptyConstructor(
                                         ClassLoaderUtils.loadClass(xmlParserClass, XMLUtils.class));
                             } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
-                                LOG.error("Error instantiating XMLParser. Falling back to XMLParserImpl");
+                                LOG.error("Error instantiating XMLParser. Falling back to XMLParserImpl", e);
                             }
                         }
                         return new XMLParserImpl();
@@ -142,18 +149,17 @@ public final class XMLUtils {
      * @param rootNode
      * @param result
      * @param exclude
-     * @param com whether comments or not
+     * @param comments whether comments or not
      */
-    public static void getSet(Node rootNode, Set<Node> result, Node exclude, boolean com) {
+    public static void getSet(Node rootNode, Set<Node> result, Node exclude, boolean comments) {
         if (exclude != null && isDescendantOrSelf(exclude, rootNode)) {
             return;
         }
-        getSetRec(rootNode, result, exclude, com);
+        getSetRec(rootNode, result, exclude, comments);
     }
 
-    @SuppressWarnings("fallthrough")
     private static void getSetRec(final Node rootNode, final Set<Node> result,
-                                final Node exclude, final boolean com) {
+                                final Node exclude, final boolean comments) {
         if (rootNode == exclude) {
             return;
         }
@@ -180,11 +186,11 @@ public final class XMLUtils {
                         return;
                     }
                 }
-                getSetRec(r, result, exclude, com);
+                getSetRec(r, result, exclude, comments);
             }
             break;
         case Node.COMMENT_NODE:
-            if (com) {
+            if (comments) {
                 result.add(rootNode);
             }
             break;
@@ -195,6 +201,18 @@ public final class XMLUtils {
         }
     }
 
+    /**
+     * Outputs a DOM tree to a {@link File}.
+     *
+     * @param contextNode root node of the DOM tree
+     * @param outputFile the file to write to
+     * @throws IOException
+     */
+    public static void outputDOM(Node contextNode, File outputFile) throws IOException {
+        try (OutputStream os = new BufferedOutputStream(Files.newOutputStream(outputFile.toPath()), 8192)) {
+            outputDOM(contextNode, os, false);
+        }
+    }
 
     /**
      * Outputs a DOM tree to an {@link OutputStream}.
@@ -203,7 +221,7 @@ public final class XMLUtils {
      * @param os the {@link OutputStream}
      */
     public static void outputDOM(Node contextNode, OutputStream os) {
-        XMLUtils.outputDOM(contextNode, os, false);
+        outputDOM(contextNode, os, false);
     }
 
     /**
@@ -218,13 +236,12 @@ public final class XMLUtils {
     public static void outputDOM(Node contextNode, OutputStream os, boolean addPreamble) {
         try {
             if (addPreamble) {
-                os.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".getBytes(java.nio.charset.StandardCharsets.UTF_8));
+                os.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".getBytes(UTF_8));
             }
-
             Canonicalizer.getInstance(
                 Canonicalizer.ALGO_ID_C14N_PHYSICAL).canonicalizeSubtree(contextNode, os);
         } catch (IOException | InvalidCanonicalizerException | CanonicalizationException ex) {
-            LOG.debug(ex.getMessage(), ex);
+            LOG.error(ex.getMessage(), ex);
         }
     }
 
@@ -246,7 +263,7 @@ public final class XMLUtils {
             Canonicalizer.getInstance(
                 Canonicalizer.ALGO_ID_C14N_WITH_COMMENTS).canonicalizeSubtree(contextNode, os);
         } catch (InvalidCanonicalizerException | CanonicalizationException ex) {
-            LOG.debug(ex.getMessage(), ex);
+            LOG.error(ex.getMessage(), ex);
             // throw new RuntimeException(ex.getMessage());
         }
     }
@@ -855,7 +872,7 @@ public final class XMLUtils {
                                 // Continue searching to find duplicates
                                 foundElement = attr.getOwnerElement();
                             } else {
-                                LOG.debug("Multiple elements with the same 'Id' attribute value!");
+                                LOG.warn("Multiple elements with the same 'Id' attribute value!");
                                 return false;
                             }
                         }
@@ -915,7 +932,7 @@ public final class XMLUtils {
                     for (int i = 0; i < length; i++) {
                         Attr attr = (Attr)attributes.item(i);
                         if (attr.isId() && id.equals(attr.getValue()) && se != knownElement) {
-                            LOG.debug("Multiple elements with the same 'Id' attribute value!");
+                            LOG.warn("Multiple elements with the same 'Id' attribute value!");
                             return false;
                         }
                     }
@@ -945,6 +962,49 @@ public final class XMLUtils {
         return true;
     }
 
+    /**
+     * Reads a document from the input stream.
+     *
+     * @param file
+     * @param disallowDocTypeDeclarations
+     * @return {@link Document}
+     * @throws XMLParserException
+     * @throws IOException
+     */
+    public static Document read(File file, boolean disallowDocTypeDeclarations) throws XMLParserException, IOException {
+        try (InputStream inputStream = new BufferedInputStream(Files.newInputStream(file.toPath()), 8192)) {
+            return read(inputStream, disallowDocTypeDeclarations);
+        }
+    }
+
+    /**
+     * Reads a document from the input stream and closes it.
+     *
+     * @param name - resource name to be opened by the class loader
+     * @param loader
+     * @param disallowDocTypeDeclarations
+     * @return {@link Document}
+     * @throws XMLParserException
+     * @throws IOException inputStream.close() failed.
+     */
+    public static Document readResource(String name, ClassLoader loader, boolean disallowDocTypeDeclarations)
+        throws XMLParserException, IOException {
+        // Delegate to XMLParser implementation
+        try (InputStream inputStream = loader.getResourceAsStream(name)) {
+            return read(inputStream, disallowDocTypeDeclarations);
+        }
+
+    }
+
+    /**
+     * Reads a document from the input stream.
+     * Caller is responsible for closing the stream.
+     *
+     * @param inputStream
+     * @param disallowDocTypeDeclarations
+     * @return {@link Document}
+     * @throws XMLParserException
+     */
     public static Document read(InputStream inputStream, boolean disallowDocTypeDeclarations) throws XMLParserException {
         // Delegate to XMLParser implementation
         return xmlParserImpl.parse(inputStream, disallowDocTypeDeclarations);

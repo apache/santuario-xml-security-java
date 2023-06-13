@@ -18,12 +18,15 @@
  */
 package org.apache.xml.security.test.dom.keys;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.nio.file.FileSystems;
 import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
 
 import org.apache.xml.security.keys.content.DEREncodedKeyValue;
+import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.JavaUtils;
@@ -40,14 +43,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DEREncodedKeyValueTest {
 
-    private static final String BASEDIR = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
-    private static final String SEP = System.getProperty("file.separator");
+    private static final String SEP = FileSystems.getDefault().getSeparator();
 
     private static final String ID_CONTROL = "abc123";
 
-    private PublicKey rsaKeyControl;
-    private PublicKey dsaKeyControl;
-    private PublicKey ecKeyControl;
+    private final PublicKey rsaKeyControl;
+    private final PublicKey dsaKeyControl;
+    private final PublicKey ecKeyControl;
 
     public DEREncodedKeyValueTest() throws Exception {
         rsaKeyControl = loadPublicKey("rsa.key", "RSA");
@@ -138,11 +140,9 @@ public class DEREncodedKeyValueTest {
 
     // Utility methods
 
-    private String getControlFilePath(String fileName) {
-        return BASEDIR + SEP + "src" + SEP + "test" + SEP + "resources" +
-            SEP + "org" + SEP + "apache" + SEP + "xml" + SEP + "security" +
-            SEP + "keys" + SEP + "content" +
-            SEP + fileName;
+    private File getControlFilePath(String fileName) {
+        return XmlSecTestEnvironment.resolveFile("src", "test", "resources", "org", "apache", "xml", "security", "keys",
+            "content", fileName);
     }
 
     private Document loadXML(String fileName) throws Exception {
@@ -150,7 +150,7 @@ public class DEREncodedKeyValueTest {
     }
 
     private PublicKey loadPublicKey(String filePath, String algorithm) throws Exception {
-        String fileData = new String(JavaUtils.getBytesFromFile(getControlFilePath(filePath)));
+        String fileData = new String(JavaUtils.getBytesFromFile(getControlFilePath(filePath).getAbsolutePath()));
         byte[] keyBytes = XMLUtils.decode(fileData);
         KeyFactory kf = KeyFactory.getInstance(algorithm);
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);

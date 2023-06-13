@@ -85,8 +85,8 @@ public class XMLEncryption11Test {
     private int nodeCount;
 
     private XMLInputFactory xmlInputFactory;
-    private TransformerFactory transformerFactory = TransformerFactory.newInstance();
-    private boolean isIBMJdK = System.getProperty("java.vendor").contains("IBM");
+    private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    private final boolean isIBMJdK = System.getProperty("java.vendor").contains("IBM");
 
     @BeforeEach
     public void setUp() throws Exception {

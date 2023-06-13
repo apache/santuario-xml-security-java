@@ -23,6 +23,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.spec.PKCS8EncodedKeySpec;
@@ -55,6 +57,8 @@ import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
+import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
+import static org.apache.xml.security.test.XmlSecTestEnvironment.resolvePath;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
@@ -71,8 +75,8 @@ public class BaltimoreEncTest {
     private static PrivateKey rsaKey;
 
     private XMLInputFactory xmlInputFactory;
-    private TransformerFactory transformerFactory = TransformerFactory.newInstance();
-    private boolean isIBMJdK = System.getProperty("java.vendor").contains("IBM");
+    private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    private final boolean isIBMJdK = System.getProperty("java.vendor").contains("IBM");
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -81,15 +85,8 @@ public class BaltimoreEncTest {
         xmlInputFactory = XMLInputFactory.newInstance();
         xmlInputFactory.setEventAllocator(new XMLSecEventAllocator());
 
-        String filename =
-                "src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml";
-        String basedir = System.getProperty("basedir");
-        if (basedir != null && basedir.length() != 0) {
-            filename = basedir + "/" + filename;
-        }
-        File f = new File(filename);
-
-        Document doc = XMLUtils.read(new java.io.FileInputStream(f), false);
+        File f = resolveFile("src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
+        Document doc = XMLUtils.read(f, false);
 
         cardNumber = retrieveCCNumber(doc);
 
@@ -97,12 +94,8 @@ public class BaltimoreEncTest {
         nodeCount = countNodes(doc);
 
         // rsaKey
-        filename = "src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/rsa.p8";
-        if (basedir != null && basedir.length() != 0) {
-            filename = basedir + "/" + filename;
-        }
-
-        byte[] pkcs8Bytes = JavaUtils.getBytesFromFile(filename);
+        Path rsaKeyPath = resolvePath("src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/rsa.p8");
+        byte[] pkcs8Bytes = Files.readAllBytes(rsaKeyPath);
         PKCS8EncodedKeySpec pkcs8Spec = new PKCS8EncodedKeySpec(pkcs8Bytes);
 
         // Create a key factory
@@ -130,7 +123,7 @@ public class BaltimoreEncTest {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
-        XMLStreamReader xmlStreamReader = null;
+        XMLStreamReader xmlStreamReader;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
            xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
         }
@@ -168,7 +161,7 @@ public class BaltimoreEncTest {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
-        XMLStreamReader xmlStreamReader = null;
+        XMLStreamReader xmlStreamReader;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
            xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
         }
@@ -205,7 +198,7 @@ public class BaltimoreEncTest {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
-        XMLStreamReader xmlStreamReader = null;
+        XMLStreamReader xmlStreamReader;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
            xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
         }
@@ -242,7 +235,7 @@ public class BaltimoreEncTest {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
-        XMLStreamReader xmlStreamReader = null;
+        XMLStreamReader xmlStreamReader;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
            xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
         }
@@ -275,7 +268,7 @@ public class BaltimoreEncTest {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
-        XMLStreamReader xmlStreamReader = null;
+        XMLStreamReader xmlStreamReader;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
            xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
         }
@@ -312,7 +305,7 @@ public class BaltimoreEncTest {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
-        XMLStreamReader xmlStreamReader = null;
+        XMLStreamReader xmlStreamReader;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
            xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
         }
@@ -349,7 +342,7 @@ public class BaltimoreEncTest {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
-        XMLStreamReader xmlStreamReader = null;
+        XMLStreamReader xmlStreamReader;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
            xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
         }
@@ -384,7 +377,7 @@ public class BaltimoreEncTest {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
-        XMLStreamReader xmlStreamReader = null;
+        XMLStreamReader xmlStreamReader;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
            xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
         }
@@ -415,7 +408,7 @@ public class BaltimoreEncTest {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
-        XMLStreamReader xmlStreamReader = null;
+        XMLStreamReader xmlStreamReader;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
            xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
         }
