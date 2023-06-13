@@ -43,7 +43,7 @@ class RSASecurityTest extends InteropTestBase {
     private static final Logger LOG = System.getLogger(RSASecurityTest.class.getName());
 
     /** Field blakesDir           */
-    static File blakesDir;
+    private static File blakesDir;
 
     static {
         blakesDir = XmlSecTestEnvironment.resolveFile("src", "test", "resources", "com", "rsasecurity", "bdournaee");

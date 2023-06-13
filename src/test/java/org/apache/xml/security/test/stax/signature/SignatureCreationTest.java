@@ -541,7 +541,7 @@ class SignatureCreationTest extends AbstractSignatureCreationTest {
         String expression = "//dsig:Signature";
         NodeList sigElements =
                 (NodeList) xpath.evaluate(expression, document, XPathConstants.NODESET);
-        assertTrue(sigElements.getLength() == 2);
+        assertEquals(2, sigElements.getLength());
 
         for (SecurePart secPart : properties.getSignatureSecureParts()) {
             if (secPart.getName() == null) {
@@ -667,7 +667,7 @@ class SignatureCreationTest extends AbstractSignatureCreationTest {
     @Test
     void testECDSASignatureCreation() throws Exception {
 
-        Assumptions.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(isBcInstalled());
 
         //
         // This test fails with the IBM JDK
@@ -709,7 +709,7 @@ class SignatureCreationTest extends AbstractSignatureCreationTest {
     @Test
     void testStrongECDSASignatureCreation() throws Exception {
 
-        Assumptions.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(isBcInstalled());
 
         //
         // This test fails with the IBM JDK
@@ -991,7 +991,7 @@ class SignatureCreationTest extends AbstractSignatureCreationTest {
     @Test
     void testSignatureCreationECDSAKeyValue() throws Exception {
 
-        Assumptions.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(isBcInstalled());
 
         //
         // This test fails with the IBM JDK

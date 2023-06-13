@@ -36,7 +36,7 @@ public class MemoryProfiler implements InternalProfiler {
 
     private final MemoryMXBean mxBean;
 
-    public MemoryProfiler(String initLine) {
+    public MemoryProfiler(String initLine) { // NOPMD Implicit arg, despite unused.
         mxBean = ManagementFactory.getMemoryMXBean();
     }
 

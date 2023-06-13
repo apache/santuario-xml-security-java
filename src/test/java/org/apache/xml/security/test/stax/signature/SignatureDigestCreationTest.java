@@ -249,7 +249,7 @@ class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
 
     @Test
     void testRIPEMD160() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(isBcInstalled());
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
@@ -291,7 +291,7 @@ class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
 
     @Test
     void testWhirlpool() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(isBcInstalled());
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
@@ -333,7 +333,7 @@ class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
 
     @Test
     void testSHA3_224() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(isBcInstalled());
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
@@ -375,7 +375,7 @@ class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
 
     @Test
     void testSHA3_256() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(isBcInstalled());
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
@@ -417,7 +417,7 @@ class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
 
     @Test
     void testSHA3_384() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(isBcInstalled());
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
@@ -459,7 +459,7 @@ class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
 
     @Test
     void testSHA3_512() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(isBcInstalled());
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();

@@ -49,10 +49,10 @@ public class OfflineResolver extends ResourceResolverSpi {
     private static final Logger LOG = System.getLogger(OfflineResolver.class.getName());
 
     /** Field _uriMap */
-    static Map<String, String> _uriMap;
+    private static Map<String, String> _uriMap;
 
     /** Field _mimeMap */
-    static Map<String, String> _mimeMap;
+    private static Map<String, String> _mimeMap;
 
     static {
         org.apache.xml.security.Init.init();

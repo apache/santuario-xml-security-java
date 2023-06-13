@@ -50,7 +50,7 @@ class IAIKTest extends InteropTestBase {
     private static final Logger LOG = System.getLogger(IAIKTest.class.getName());
 
     /** Field gregorsDir */
-    static Path gregorsDir;
+    private static final Path gregorsDir;
 
     static {
         gregorsDir = resolvePath("src", "test", "resources", "at", "iaik", "ixsil");

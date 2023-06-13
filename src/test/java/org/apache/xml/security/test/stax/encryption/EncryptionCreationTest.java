@@ -1450,7 +1450,7 @@ class EncryptionCreationTest {
                 "</Root>\n";
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setIdAttributeNS(new QName("attr1"));
-        properties.setActions(Collections.singletonList(XMLSecurityConstants.ENCRYPT));
+        properties.setActions(Collections.singletonList(XMLSecurityConstants.ENCRYPTION));
         properties.addEncryptionPart(securePart);
         byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes(StandardCharsets.US_ASCII);
         SecretKey transportKey = new SecretKeySpec(bits192, "AES");
@@ -1482,7 +1482,7 @@ class EncryptionCreationTest {
                 "</Root>\n";
         XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setIdAttributeNS(new QName("attr1"));
-        properties.setActions(Collections.singletonList(XMLSecurityConstants.ENCRYPT));
+        properties.setActions(Collections.singletonList(XMLSecurityConstants.ENCRYPTION));
         SecurePart securePart = new SecurePart(new QName("Branch1"), SecurePart.Modifier.Element);
         securePart.setIdToSecure("def");
         properties.addEncryptionPart(securePart);

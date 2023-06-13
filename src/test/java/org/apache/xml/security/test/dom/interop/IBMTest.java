@@ -58,7 +58,7 @@ class IBMTest extends InteropTestBase {
     private static final Logger LOG = System.getLogger(IBMTest.class.getName());
 
     /** Field kentsDir           */
-    static final File kentsDir = resolveFile("data", "com", "ibm", "xss4j-20030127");
+    private static final File kentsDir = resolveFile("data", "com", "ibm", "xss4j-20030127");
 
     static {
         org.apache.xml.security.Init.init();

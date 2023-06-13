@@ -82,7 +82,7 @@ class SignedEncryptedTest {
         try {
             Class<?> tf = getClass().getClassLoader().loadClass(
                     "org.apache.xalan.processor.TransformerFactoryImpl");
-            secureAndVerify((TransformerFactory) tf.newInstance(), false);
+            secureAndVerify((TransformerFactory) tf.getDeclaredConstructor().newInstance(), false);
         } catch (ClassNotFoundException e) {
             System.out.println(
                     "org.apache.xalan.processor.TransformerFactoryImpl not found, skipping test");
@@ -144,13 +144,13 @@ class SignedEncryptedTest {
 
         document = cipher.doFinal(document, element, true);
 
-        XMLCipher deCipher = null;
+        XMLCipher deCipher;
         if (useDocumentSerializer) {
             deCipher = XMLCipher.getInstance(new DocumentSerializer(true), XMLCipher.AES_128);
         } else {
             TransformSerializer serializer = new TransformSerializer(true);
             Field f = serializer.getClass().getDeclaredField("transformerFactory");
-            f.setAccessible(true);
+            f.setAccessible(true); // NOPMD
             f.set(serializer, transformerFactory);
             deCipher = XMLCipher.getInstance(serializer, XMLCipher.AES_128);
         }

@@ -19,7 +19,6 @@
 package org.apache.xml.security.test.dom.parser;
 
 
-import java.lang.System.Logger;
 import java.security.Key;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -51,8 +50,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Test that we can plug in a custom XMLParser implementation via a system property
  */
 class XMLParserTest {
-
-    private static final Logger LOG = System.getLogger(XMLParserTest.class.getName());
 
     private final KeyPair rsaKeyPair;
 

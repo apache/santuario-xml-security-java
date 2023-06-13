@@ -279,7 +279,7 @@ class SignatureDigestVerificationTest extends AbstractSignatureVerificationTest 
 
     @Test
     void testRIPEMD160() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(isBcInstalled());
 
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
@@ -326,7 +326,7 @@ class SignatureDigestVerificationTest extends AbstractSignatureVerificationTest 
 
     @Test
     void testWhirlpool() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(isBcInstalled());
 
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
@@ -373,7 +373,7 @@ class SignatureDigestVerificationTest extends AbstractSignatureVerificationTest 
 
     @Test
     void testSHA3_224() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(isBcInstalled());
 
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
@@ -420,7 +420,7 @@ class SignatureDigestVerificationTest extends AbstractSignatureVerificationTest 
 
     @Test
     void testSHA3_256() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(isBcInstalled());
 
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
@@ -467,7 +467,7 @@ class SignatureDigestVerificationTest extends AbstractSignatureVerificationTest 
 
     @Test
     void testSHA3_384() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(isBcInstalled());
 
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
@@ -514,7 +514,7 @@ class SignatureDigestVerificationTest extends AbstractSignatureVerificationTest 
 
     @Test
     void testSHA3_512() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(isBcInstalled());
 
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",

@@ -19,7 +19,6 @@
 package org.apache.xml.security.test.dom.keys;
 
 import java.io.File;
-import java.nio.file.FileSystems;
 
 import org.apache.xml.security.keys.content.KeyInfoReference;
 import org.apache.xml.security.test.XmlSecTestEnvironment;
@@ -37,8 +36,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 class KeyInfoReferenceTest {
-
-    private static final String SEP = FileSystems.getDefault().getSeparator();
 
     private static final String ID_CONTROL = "abc123";
     private static final String URI_CONTROL = "http://www.example.org/keyinfo.xml";

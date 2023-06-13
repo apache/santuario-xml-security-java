@@ -36,14 +36,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 class NameSpaceSymbTableTest {
-    static Attr node1, node2;
+    private static final Attr node1, node2;
     static {
         try {
             Document doc = TestUtils.newDocument();
             node1 = doc.createAttributeNS("a","b");
             node2 = doc.createAttributeNS("b","c");
         } catch (Exception e) {
-            // e.printStackTrace();
+            throw new IllegalStateException(e);
         }
     }
 

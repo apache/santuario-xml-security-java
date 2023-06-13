@@ -187,7 +187,7 @@ class PKSignatureCreationTest extends AbstractSignatureCreationTest {
 
     @Test
     void testRSA_RIPEMD160() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(isBcInstalled());
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
@@ -221,7 +221,7 @@ class PKSignatureCreationTest extends AbstractSignatureCreationTest {
 
     @Test
     void testRSA_SHA1_MGF1() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(isBcInstalled());
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
@@ -255,7 +255,7 @@ class PKSignatureCreationTest extends AbstractSignatureCreationTest {
 
     @Test
     void testRSA_SHA224_MGF1() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(isBcInstalled());
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
@@ -289,7 +289,7 @@ class PKSignatureCreationTest extends AbstractSignatureCreationTest {
 
     @Test
     void testRSA_SHA256_MGF1() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(isBcInstalled());
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
@@ -323,7 +323,7 @@ class PKSignatureCreationTest extends AbstractSignatureCreationTest {
 
     @Test
     void testRSA_SHA384_MGF1() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(isBcInstalled());
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
@@ -357,7 +357,7 @@ class PKSignatureCreationTest extends AbstractSignatureCreationTest {
 
     @Test
     void testRSA_SHA512_MGF1() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(isBcInstalled());
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
@@ -391,7 +391,7 @@ class PKSignatureCreationTest extends AbstractSignatureCreationTest {
 
     @Test
     void testRSA_SSA_PSS() throws Exception {
-        Assumptions.assumeTrue(bcInstalled || TestUtils.isJava11Compatible());
+        Assumptions.assumeTrue(isBcInstalled() || TestUtils.isJava11Compatible());
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
@@ -586,7 +586,7 @@ class PKSignatureCreationTest extends AbstractSignatureCreationTest {
 
     @Test
     void testECDSA_RIPEMD160() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(isBcInstalled());
 
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();

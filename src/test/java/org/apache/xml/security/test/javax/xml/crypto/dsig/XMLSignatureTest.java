@@ -21,7 +21,6 @@
  */
 package org.apache.xml.security.test.javax.xml.crypto.dsig;
 
-
 import java.io.File;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
@@ -67,6 +66,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -80,19 +81,19 @@ import static org.junit.jupiter.api.Assertions.fail;
  *
  */
 class XMLSignatureTest {
+    private static final String id = "id";
+    private static final String sigValueId = "signatureValueId";
+    private static final String DSA_SHA256 = "http://www.w3.org/2009/xmldsig11#dsa-sha256";
+
     private final XMLSignatureFactory fac;
     private final KeyInfoFactory kifac;
     private final SignedInfo defSi;
     private final KeyInfo defKi;
     private final List<XMLObject> objs;
-    private final String id = "id";
-    private final String sigValueId = "signatureValueId";
     private final Key[] SIGN_KEYS;
     private final Key[] VALIDATE_KEYS;
     private final SignatureMethod[] SIG_METHODS;
     private final URIDereferencer ud;
-    private static final String DSA_SHA256 =
-        "http://www.w3.org/2009/xmldsig11#dsa-sha256";
 
     static {
         Security.insertProviderAt
@@ -172,7 +173,7 @@ class XMLSignatureTest {
         sig = fac.newXMLSignature(defSi, defKi);
         assertNull(sig.getId());
         assertEquals(sig.getKeyInfo(), defKi);
-        assertTrue(sig.getObjects().size()==0);
+        assertThat(sig.getObjects(), hasSize(0));
         assertNull(sig.getSignatureValue().getValue());
         assertNull(sig.getSignatureValue().getId());
         assertEquals(sig.getSignedInfo(), defSi);
@@ -480,7 +481,7 @@ class XMLSignatureTest {
         private static final long serialVersionUID = 1L;
 
         TestProvider() {
-            super("TestProvider", 0, "TestProvider");
+            super("TestProvider", "0", "TestProvider");
         }
     }
 }

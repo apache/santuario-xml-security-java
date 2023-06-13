@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.test.dom.keys;
 
-import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.KeyFactory;
@@ -42,8 +41,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 class DEREncodedKeyValueTest {
-
-    private static final String SEP = FileSystems.getDefault().getSeparator();
 
     private static final String ID_CONTROL = "abc123";
 

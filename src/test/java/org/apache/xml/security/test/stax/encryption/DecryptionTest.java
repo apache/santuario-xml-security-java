@@ -79,6 +79,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import static org.apache.xml.security.test.XmlSecTestEnvironment.TRANSMITTER_KS_PASSWORD;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -1162,7 +1164,7 @@ class DecryptionTest {
     protected void checkMultipleEncryptedElementSecurityEvents(TestSecurityEventListener securityEventListener) {
         List<SecurityEvent> encryptedElements =
                 securityEventListener.getSecurityEvents(SecurityEventConstants.EncryptedElement);
-        assertTrue(encryptedElements.size() == 2);
+        assertThat(encryptedElements, hasSize(2));
 
         EncryptedElementSecurityEvent encryptedElementEvent =
                 (EncryptedElementSecurityEvent)encryptedElements.get(0);

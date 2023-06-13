@@ -40,7 +40,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 class X509DigestResolverTest {
 
     private final X509Certificate certControl;
-
     private final StorageResolver storageResolver;
 
     public X509DigestResolverTest() throws Exception {

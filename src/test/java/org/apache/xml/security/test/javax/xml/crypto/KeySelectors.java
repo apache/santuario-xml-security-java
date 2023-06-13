@@ -24,7 +24,6 @@ package org.apache.xml.security.test.javax.xml.crypto;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.security.Key;
 import java.security.KeyException;
 import java.security.Principal;
@@ -35,7 +34,6 @@ import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.crypto.SecretKey;
@@ -64,7 +62,7 @@ public class KeySelectors {
      * constructor.
      */
     public static class SecretKeySelector extends KeySelector {
-        private SecretKey key;
+        private final SecretKey key;
         public SecretKeySelector(byte[] bytes) {
             key = wrapBytes(bytes);
         }
@@ -120,11 +118,7 @@ public class KeySelectors {
             if (keyInfo == null) {
                 throw new KeySelectorException("Null KeyInfo object!");
             }
-            // search for X509Data in keyinfo
-            @SuppressWarnings("unchecked")
-            Iterator<XMLStructure> iter = keyInfo.getContent().iterator();
-            while (iter.hasNext()) {
-                XMLStructure kiType = iter.next();
+            for (XMLStructure kiType : keyInfo.getContent()) {
                 if (kiType instanceof X509Data) {
                     X509Data xd = (X509Data) kiType;
                     Object[] entries = xd.getContent().toArray();
@@ -135,9 +129,7 @@ public class KeySelectors {
                             crl = (X509CRL) entries[i];
                         }
                     }
-                    Iterator<?> xi = xd.getContent().iterator();
-                    while (xi.hasNext()) {
-                        Object o = xi.next();
+                    for (Object o : xd.getContent()) {
                         // skip non-X509Certificate entries
                         if (o instanceof X509Certificate) {
                             if (purpose != KeySelector.Purpose.VERIFY &&
@@ -145,8 +137,7 @@ public class KeySelectors {
                                 crl.isRevoked((X509Certificate)o)) {
                                 continue;
                             } else {
-                                return new SimpleKSResult
-                                    (((X509Certificate)o).getPublicKey());
+                                return new SimpleKSResult(((X509Certificate) o).getPublicKey());
                             }
                         }
                     }
@@ -172,9 +163,7 @@ public class KeySelectors {
             if (keyInfo == null) {
                 throw new KeySelectorException("Null KeyInfo object!");
             }
-            @SuppressWarnings("unchecked")
             List<XMLStructure> list = keyInfo.getContent();
-
             for (XMLStructure xmlStructure : list) {
                 if (xmlStructure instanceof KeyValue) {
                     PublicKey pk = null;
@@ -211,23 +200,13 @@ public class KeySelectors {
             File[] files = new File(certDir, "certs").listFiles();
             if (files != null) {
                 for (File file : files) {
-                    FileInputStream fis = null;
-                    try {
-                        fis = new FileInputStream(file);
-                        X509Certificate cert = (X509Certificate)certFac.generateCertificate(fis);
+                    try (FileInputStream fis = new FileInputStream(file)) {
+                        X509Certificate cert = (X509Certificate) certFac.generateCertificate(fis);
                         if (cert != null) {
                             certs.add(cert);
                         }
                     } catch (Exception ex) {
                         // ignore non-cert files
-                    } finally {
-                        if (fis != null) {
-                            try {
-                                fis.close();
-                            } catch (IOException e) {
-                                // ignore
-                            }
-                        }
                     }
                 }
             }
@@ -289,10 +268,7 @@ public class KeySelectors {
             if (keyInfo == null) {
                 throw new KeySelectorException("Null KeyInfo object!");
             }
-            @SuppressWarnings("unchecked")
-            Iterator<XMLStructure> iter = keyInfo.getContent().iterator();
-            while (iter.hasNext()) {
-                XMLStructure xmlStructure = iter.next();
+            for (XMLStructure xmlStructure : keyInfo.getContent()) {
                 try {
                     if (xmlStructure instanceof KeyName) {
                         String name = ((KeyName)xmlStructure).getName();

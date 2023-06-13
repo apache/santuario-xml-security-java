@@ -48,7 +48,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 class CanonicalizationMethodTest {
 
-    XMLSignatureFactory factory;
+    private final XMLSignatureFactory factory;
 
     static {
         Security.insertProviderAt
