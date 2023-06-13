@@ -52,7 +52,9 @@ import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.test.javax.xml.crypto.KeySelectors;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.w3c.dom.Element;
@@ -63,25 +65,33 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Unit test for EdDSA javax.xml.crypto.dsig.XMLSignature creation
  */
-public class XMLSignatureEdDSATest extends EdDSATestAbstract {
+class XMLSignatureEdDSATest extends EdDSATestAbstract {
+
     private final SignatureValidator testInstance = new SignatureValidator();
 
-    static {
-        Security.insertProviderAt
-                (new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI(), 1);
+    @BeforeAll
+    static void initProvider() {
+        Security.insertProviderAt(new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI(), 1);
     }
+
+
+    @AfterAll
+    static void removeProvider() {
+        Security.removeProvider(org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI.class.getName());
+    }
+
 
     @ParameterizedTest
     @CsvSource({"http://www.w3.org/2021/04/xmldsig-more#eddsa-ed25519,ed25519",
             "http://www.w3.org/2021/04/xmldsig-more#eddsa-ed448,ed448",
     })
-    public void createEdDSASignatureTest(String signatureAlgorithm, String alias) throws Exception {
+    void createEdDSASignatureTest(String signatureAlgorithm, String alias) throws Exception {
         byte[] buff = doSign(signatureAlgorithm, alias);
         Assertions.assertNotNull(buff);
         assertValidSignature(buff);
     }
 
-    public byte[] doSign(String signatureMethod, String alias) throws Exception {
+    private byte[] doSign(String signatureMethod, String alias) throws Exception {
 
         // create test xml document to sign
         String signedElementId = "element-id-01";
@@ -98,29 +108,29 @@ public class XMLSignatureEdDSATest extends EdDSATestAbstract {
         KeyStore keyStore = KeyStore.getInstance(EDDSA_KS_TYPE);
         keyStore.load(Files.newInputStream(Paths.get(EDDSA_KS)), EDDSA_KS_PASSWORD.toCharArray());
         X509Certificate certificate = (X509Certificate) keyStore.getCertificate(alias);
-        PrivateKey privateKey =
-                (PrivateKey) keyStore.getKey(alias, EDDSA_KS_PASSWORD.toCharArray());
+        PrivateKey privateKey = (PrivateKey) keyStore.getKey(alias, EDDSA_KS_PASSWORD.toCharArray());
 
         // prepare xml signature data
-        Element canonElem =
-                XMLUtils.createElementInSignatureSpace(doc, Constants._TAG_CANONICALIZATIONMETHOD);
-        canonElem.setAttributeNS(
-                null, Constants._ATT_ALGORITHM, Canonicalizer.ALGO_ID_C14N_EXCL_OMIT_COMMENTS
-        );
+        Element canonElem = XMLUtils.createElementInSignatureSpace(doc, Constants._TAG_CANONICALIZATIONMETHOD);
+        canonElem.setAttributeNS(null, Constants._ATT_ALGORITHM, Canonicalizer.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
 
         //Create XML Signature Factory
         XMLSignatureFactory xmlSigFactory = XMLSignatureFactory.getInstance("DOM");
         DOMSignContext domSignCtx = new DOMSignContext(privateKey, doc.getDocumentElement());
         domSignCtx.setIdAttributeNS(signedElement, null, "id");
         // reference(s), SignedInfo and KeyInfo
-        Reference ref = xmlSigFactory.newReference("#" + signedElementId, xmlSigFactory.newDigestMethod(DigestMethod.SHA256, null),
-                Collections.singletonList(xmlSigFactory.newTransform(Transform.ENVELOPED,
-                        (TransformParameterSpec) null)), null, null);
+        Reference ref = xmlSigFactory.newReference(
+            "#" + signedElementId,
+            xmlSigFactory.newDigestMethod(DigestMethod.SHA256, null),
+            Collections.singletonList(xmlSigFactory.newTransform(Transform.ENVELOPED, (TransformParameterSpec) null)),
+            null,
+            null
+        );
         SignedInfo signedInfo = xmlSigFactory.newSignedInfo(
-                xmlSigFactory.newCanonicalizationMethod(CanonicalizationMethod.INCLUSIVE,
-                        (C14NMethodParameterSpec) null),
-                xmlSigFactory.newSignatureMethod(signatureMethod, null),
-                Collections.singletonList(ref));
+            xmlSigFactory.newCanonicalizationMethod(CanonicalizationMethod.INCLUSIVE, (C14NMethodParameterSpec) null),
+            xmlSigFactory.newSignatureMethod(signatureMethod, null),
+            Collections.singletonList(ref)
+        );
         KeyInfo keyInfo = createKeyInfo(xmlSigFactory, certificate);
         //Create the XML Signature
         XMLSignature xmlSignature = xmlSigFactory.newXMLSignature(signedInfo, keyInfo);
@@ -135,7 +145,7 @@ public class XMLSignatureEdDSATest extends EdDSATestAbstract {
     private KeyInfo createKeyInfo(XMLSignatureFactory fac, X509Certificate cert) {
         // Create the KeyInfo containing the X509Data.
         KeyInfoFactory kif = fac.getKeyInfoFactory();
-        List<Object> x509Content = new ArrayList();
+        List<Object> x509Content = new ArrayList<>();
         x509Content.add(cert.getSubjectX500Principal().getName());
         x509Content.add(cert);
         X509Data xd = kif.newX509Data(x509Content);
