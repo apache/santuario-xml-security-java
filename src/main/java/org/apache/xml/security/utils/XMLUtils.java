@@ -18,8 +18,6 @@
  */
 package org.apache.xml.security.utils;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -209,7 +207,7 @@ public final class XMLUtils {
      * @throws IOException
      */
     public static void outputDOM(Node contextNode, File outputFile) throws IOException {
-        try (OutputStream os = new BufferedOutputStream(Files.newOutputStream(outputFile.toPath()), 8192)) {
+        try (OutputStream os = Files.newOutputStream(outputFile.toPath())) {
             outputDOM(contextNode, os, false);
         }
     }
@@ -972,8 +970,8 @@ public final class XMLUtils {
      * @throws IOException
      */
     public static Document read(File file, boolean disallowDocTypeDeclarations) throws XMLParserException, IOException {
-        try (InputStream inputStream = new BufferedInputStream(Files.newInputStream(file.toPath()), 8192)) {
-            return read(inputStream, disallowDocTypeDeclarations);
+        try (InputStream inputStream = Files.newInputStream(file.toPath())) {
+            return xmlParserImpl.parse(inputStream, disallowDocTypeDeclarations);
         }
     }
 
@@ -1054,7 +1052,4 @@ public final class XMLUtils {
 
         return resizedBytes;
     }
-
-
-
 }
