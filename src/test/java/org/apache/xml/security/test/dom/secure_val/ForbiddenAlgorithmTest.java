@@ -20,6 +20,7 @@ package org.apache.xml.security.test.dom.secure_val;
 
 
 import java.io.File;
+import java.lang.System.Logger;
 
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
@@ -40,8 +41,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class ForbiddenAlgorithmTest extends InteropTestBase {
 
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(ForbiddenAlgorithmTest.class);
+    private static final Logger LOG = System.getLogger(ForbiddenAlgorithmTest.class.getName());
 
     static {
         org.apache.xml.security.Init.init();

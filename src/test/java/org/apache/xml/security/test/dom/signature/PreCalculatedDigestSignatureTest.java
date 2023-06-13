@@ -22,6 +22,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.KeyStore;
@@ -46,8 +48,6 @@ import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -59,7 +59,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PreCalculatedDigestSignatureTest {
 
-    private static final Logger LOG = LoggerFactory.getLogger(PreCalculatedDigestSignatureTest.class);
+    private static final Logger LOG = System.getLogger(PreCalculatedDigestSignatureTest.class.getName());
 
     /**
      * External resource name to be signed
@@ -137,7 +137,7 @@ public class PreCalculatedDigestSignatureTest {
     private boolean validateSignature(XMLSignature signature) throws XMLSecurityException {
         PublicKey publicKey = signature.getKeyInfo().getPublicKey();
         boolean validSignature = signature.checkSignatureValue(publicKey);
-        LOG.debug("Is signature valid: " + validSignature);
+        LOG.log(Level.DEBUG, "Is signature valid: " + validSignature);
         return validSignature;
     }
 
@@ -174,7 +174,7 @@ public class PreCalculatedDigestSignatureTest {
         try {
             fileOutputStream = new FileOutputStream(signatureFilePath);
             XMLUtils.outputDOMc14nWithComments(doc, fileOutputStream);
-            LOG.debug("Wrote signature to " + signatureFilePath);
+            LOG.log(Level.DEBUG, "Wrote signature to " + signatureFilePath);
         } finally {
             fileOutputStream.close();
         }

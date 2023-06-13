@@ -25,6 +25,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -62,8 +64,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class Canonicalizer20010315Test {
 
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(Canonicalizer20010315Test.class);
+    private static final Logger LOG = System.getLogger(Canonicalizer20010315Test.class.getName());
 
     static {
         org.apache.xml.security.Init.init();
@@ -452,7 +453,7 @@ public class Canonicalizer20010315Test {
 
         } catch (CanonicalizationException cex) {
             // if we reach this point - good.
-            LOG.debug("We catched the C14nEx, that's good: " + cex.getMessage());
+            LOG.log(Level.DEBUG, "We catched the C14nEx, that's good: " + cex.getMessage());
             weCatchedTheRelativeNS = true;
         }
 
@@ -746,7 +747,7 @@ public class Canonicalizer20010315Test {
             FileOutputStream fos = new FileOutputStream(f);
 
             fos.write(c14nBytes);
-            LOG.debug("Wrote erroneous result to file " + f.toURI().toURL().toString());
+            LOG.log(Level.DEBUG, "Wrote erroneous result to file " + f.toURI().toURL().toString());
             assertEquals(new String(refBytes),new String(c14nBytes));
             fos.close();
         }
