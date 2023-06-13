@@ -19,7 +19,6 @@
 package org.apache.xml.security.test.dom.signature;
 
 
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.PrivateKey;
@@ -33,8 +32,6 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.keys.KeyInfo;
@@ -46,6 +43,7 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.signature.reference.ReferenceData;
 import org.apache.xml.security.signature.reference.ReferenceNodeSetData;
+import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.transforms.Transforms;
@@ -56,6 +54,8 @@ import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.apache.xml.security.utils.resolver.ResourceResolverException;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
 import org.apache.xml.security.utils.resolver.implementations.ResolverXPointer;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -71,12 +71,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class SignatureReferenceTest {
     public static final String DS_NS = "http://www.w3.org/2000/09/xmldsig#";
 
-    private static final String BASEDIR =
-        System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
-    public static final String KEYSTORE_DIRECTORY = BASEDIR + "/src/test/resources/";
-    public static final String KEYSTORE_PASSWORD_STRING = "changeit";
-    public static final char[] KEYSTORE_PASSWORD = KEYSTORE_PASSWORD_STRING.toCharArray();
-
     public SignatureReferenceTest() throws Exception {
         Init.init();
         ElementProxy.setDefaultPrefix(Constants.SignatureSpecNS, "ds");
@@ -87,7 +81,7 @@ public class SignatureReferenceTest {
         Document doc = getOriginalDocument();
         XMLSignature signature = signDocument(doc);
 
-        PublicKey pubKey = getPublicKey();
+        PublicKey pubKey = getPublicKey(XmlSecTestEnvironment.getTestKeyStore());
         assertTrue(signature.checkSignatureValue(pubKey));
 
         // Check the reference(s)
@@ -192,22 +186,8 @@ public class SignatureReferenceTest {
         assertFalse(verifiedReferences.get(0).getManifestReferences().get(0).isValid());
     }
 
-    /**
-     * Loads the 'localhost' keystore from the test keystore.
-     *
-     * @return test keystore.
-     * @throws Exception
-     */
-    private KeyStore getKeyStore() throws Exception {
-        KeyStore ks = KeyStore.getInstance("JKS");
-        InputStream ksis = new FileInputStream(KEYSTORE_DIRECTORY + "test.jks");
-        ks.load(ksis, KEYSTORE_PASSWORD);
-        ksis.close();
-        return ks;
-    }
 
-    private PublicKey getPublicKey() throws Exception {
-        KeyStore keyStore = getKeyStore();
+    private PublicKey getPublicKey(KeyStore keyStore) throws Exception {
         Enumeration<String> aliases = keyStore.aliases();
         while (aliases.hasMoreElements()) {
             String alias = aliases.nextElement();
@@ -218,13 +198,12 @@ public class SignatureReferenceTest {
         return null;
     }
 
-    private PrivateKey getPrivateKey() throws Exception {
-        KeyStore keyStore = getKeyStore();
+    private PrivateKey getPrivateKey(KeyStore keyStore) throws Exception {
         Enumeration<String> aliases = keyStore.aliases();
         while (aliases.hasMoreElements()) {
             String alias = aliases.nextElement();
             if (keyStore.isKeyEntry(alias)) {
-                return (PrivateKey) keyStore.getKey(alias, KEYSTORE_PASSWORD);
+                return (PrivateKey) keyStore.getKey(alias, XmlSecTestEnvironment.TEST_KS_PASSWORD.toCharArray());
             }
         }
         return null;
@@ -251,9 +230,9 @@ public class SignatureReferenceTest {
         transforms.addTransform(Transforms.TRANSFORM_ENVELOPED_SIGNATURE);
         transforms.addTransform(Transforms.TRANSFORM_C14N_WITH_COMMENTS);
         sig.addDocument("", transforms, Constants.ALGO_ID_DIGEST_SHA1);
-
-        sig.addKeyInfo(getPublicKey());
-        sig.sign(getPrivateKey());
+        KeyStore keyStore = XmlSecTestEnvironment.getTestKeyStore();
+        sig.addKeyInfo(getPublicKey(keyStore));
+        sig.sign(getPrivateKey(keyStore));
 
         return sig;
     }

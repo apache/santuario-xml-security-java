@@ -45,6 +45,7 @@ import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Element;
 
+import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
@@ -55,7 +56,6 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
  */
 public class ECDSASignatureTest {
 
-    private static final String BASEDIR = System.getProperty("basedir");
     private static final String SEP = System.getProperty("file.separator");
     private static final String ECDSA_JKS =
         "src/test/resources/org/apache/xml/security/samples/input/ecdsa.jks";
@@ -101,8 +101,7 @@ public class ECDSASignatureTest {
     @org.junit.jupiter.api.Test
     @org.junit.jupiter.api.Disabled
     public void testTwo() throws Exception {
-        File file =
-            makeDataFile("src/test/resources/org/apache/xml/security/samples/input/ecdsaSignature.xml");
+        File file = resolveFile("src/test/resources/org/apache/xml/security/samples/input/ecdsaSignature.xml");
         try (InputStream is = new FileInputStream(file)) {
             doVerify(is);
         }
@@ -111,7 +110,7 @@ public class ECDSASignatureTest {
     @org.junit.jupiter.api.Test
     @org.junit.jupiter.api.Disabled
     public void testThree()  throws Exception {
-        File file = makeDataFile("src/test/resources/at/buergerkarte/testresp.xml");
+        File file = resolveFile("src/test/resources/at/buergerkarte/testresp.xml");
         try (InputStream is = new FileInputStream(file)) {
             doVerify(is);
         }
@@ -204,13 +203,6 @@ public class ECDSASignatureTest {
         }
     }
 
-    private File makeDataFile(String relPath) {
-        if (BASEDIR != null && BASEDIR.length() != 0) {
-            return new File(BASEDIR + SEP + relPath);
-        } else {
-            return new File(relPath);
-        }
-    }
 
     /**
      * DO NOT DELETE THIS COMMENTED OUT METHOD!

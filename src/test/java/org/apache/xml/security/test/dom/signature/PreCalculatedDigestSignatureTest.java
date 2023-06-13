@@ -18,9 +18,23 @@
  */
 package org.apache.xml.security.test.dom.signature;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.security.KeyStore;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.cert.X509Certificate;
+
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureInput;
+import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.transforms.TransformationException;
 import org.apache.xml.security.transforms.Transforms;
@@ -38,17 +52,7 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.security.*;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
-
+import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -69,7 +73,7 @@ public class PreCalculatedDigestSignatureTest {
 
     private static final char[] PASSWORD = "changeit".toCharArray();
     private static final String ALIAS = "mullan";
-    private String signatureFilePath;
+    private File signatureFile;
 
     @TempDir
     public Path testFolder;
@@ -79,15 +83,15 @@ public class PreCalculatedDigestSignatureTest {
     @BeforeEach
     public void setUp() throws Exception {
         org.apache.xml.security.Init.init();
-        signatureFilePath = getAbsolutePath("src/test/resources/org/apache/xml/security/samples/input/signatureWithExternalReference.xml");
-        KeyStore keyStore = openKeyStore();
+        signatureFile = resolveFile("src/test/resources/org/apache/xml/security/samples/input/signatureWithExternalReference.xml");
+        KeyStore keyStore = XmlSecTestEnvironment.getTestKeyStore();
         privateKey = (PrivateKey) keyStore.getKey(ALIAS, PASSWORD);
         signingCert = (X509Certificate) keyStore.getCertificate(ALIAS);
     }
 
     @Test
     public void validateSignatureWithCorrectDigestShouldBeValid() throws Exception {
-        XMLSignature signature = openSignature(signatureFilePath);
+        XMLSignature signature = openSignature(signatureFile);
         //Add resource resolver for the external document (test.txt) with the pre-calculated digest (valid for this test)
         ExternalResourceResolver resolver = new ExternalResourceResolver(EXTERNAL_DOCUMENT_URI, PRE_CALCULATED_DIGEST);
         signature.addResourceResolver(resolver);
@@ -97,7 +101,7 @@ public class PreCalculatedDigestSignatureTest {
 
     @Test
     public void validateSignatureWithWrongDigestShouldBeInvalid() throws Exception {
-        XMLSignature signature = openSignature(signatureFilePath);
+        XMLSignature signature = openSignature(signatureFile);
         //Add resource resolver for the external document (test.txt) with the pre-calculated digest (invalid for this test)
         ExternalResourceResolver resolver = new ExternalResourceResolver(EXTERNAL_DOCUMENT_URI, "BjVs1oFu54LZwQuUA+kHgZApH0pIc8PGOoo0YrLrNUI=");
         signature.addResourceResolver(resolver);
@@ -121,8 +125,8 @@ public class PreCalculatedDigestSignatureTest {
         assertTrue(signature.checkSignatureValue(signingCert));
     }
 
-    private XMLSignature openSignature(String signatureFile) throws Exception {
-        Document document = XMLUtils.read(new FileInputStream(new File(signatureFile)), false);
+    private XMLSignature openSignature(File signatureFile) throws Exception {
+        Document document = XMLUtils.read(new FileInputStream(signatureFile), false);
         Element root = document.getDocumentElement();
         Element signatureDocument = (Element) root.getFirstChild();
         String baseURI = "";
@@ -176,33 +180,13 @@ public class PreCalculatedDigestSignatureTest {
         }
     }
 
-    private KeyStore openKeyStore() throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException {
-        FileInputStream fileInputStream = null;
-        try {
-            KeyStore keyStore = KeyStore.getInstance("JKS");
-            fileInputStream = new FileInputStream(getAbsolutePath("src/test/resources/test.jks"));
-            keyStore.load(fileInputStream, PASSWORD);
-            return keyStore;
-        } finally {
-            fileInputStream.close();
-        }
-    }
-
-    private String getAbsolutePath(String path) {
-        String basedir = System.getProperty("basedir");
-        if (basedir != null && basedir.length() != 0) {
-            path = basedir + "/" + path;
-        }
-        return path;
-    }
-
     /**
      * Resolves external resources with pre-calculated digest.
      */
     public static class ExternalResourceResolver extends ResourceResolverSpi {
 
         private final String externalDocumentUri;
-        private String preCalculatedDigest;
+        private final String preCalculatedDigest;
 
         /**
          * Constructor for resolving external resources with pre-calculated digest.

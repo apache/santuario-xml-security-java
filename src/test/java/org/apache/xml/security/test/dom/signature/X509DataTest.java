@@ -29,6 +29,7 @@ import java.security.cert.X509Certificate;
 
 import org.apache.xml.security.Init;
 import org.apache.xml.security.signature.XMLSignature;
+import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
@@ -40,9 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class X509DataTest {
 
-    private static final String BASEDIR = System.getProperty("basedir");
-
-    KeyStore ks = null;
+    KeyStore ks;
 
     @org.junit.jupiter.api.Test
     public void testAddX509SubjectName() throws Exception {
@@ -90,18 +89,11 @@ public class X509DataTest {
         if (ks != null) {
             return ks;
         }
-        String keystoreType = "JKS";
         String keystoreFile = "src/test/resources/org/apache/xml/security/samples/input/keystore.jks";
-        String keystorePass = "xmlsecurity";
-        ks = KeyStore.getInstance(keystoreType);
-        FileInputStream fis = null;
-        if (BASEDIR != null && BASEDIR.length() != 0) {
-            fis = new FileInputStream(BASEDIR + "/" + keystoreFile);
-        } else {
-            fis = new FileInputStream(keystoreFile);
+        ks = KeyStore.getInstance("JKS");
+        try (FileInputStream fis = new FileInputStream(XmlSecTestEnvironment.resolveFile(keystoreFile))) {
+            ks.load(fis, "xmlsecurity".toCharArray());
         }
-        //load the keystore
-        ks.load(fis, keystorePass.toCharArray());
         return ks;
     }
 

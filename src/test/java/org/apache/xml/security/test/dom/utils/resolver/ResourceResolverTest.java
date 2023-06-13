@@ -28,6 +28,7 @@ import org.apache.xml.security.utils.resolver.implementations.ResolverLocalFiles
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 
+import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -83,8 +84,7 @@ public class ResourceResolverTest {
     public void testLocalFileWithEmptyBaseURI() throws Exception {
         Document doc = TestUtils.newDocument();
         Attr uriAttr = doc.createAttribute("URI");
-        String basedir = System.getProperty("basedir");
-        String file = new File(basedir, "pom.xml").toURI().toString();
+        String file = resolveFile("pom.xml").toURI().toString();
         uriAttr.setValue(file);
 
         ResourceResolver.register(new ResolverLocalFilesystem(), false);
@@ -102,8 +102,7 @@ public class ResourceResolverTest {
     public void testIsSafeURIToResolveFile() throws Exception {
         Document doc = TestUtils.newDocument();
         Attr uriAttr = doc.createAttribute("URI");
-        String basedir = System.getProperty("basedir");
-        String file = new File(basedir, "pom.xml").toURI().toString();
+        String file = resolveFile("pom.xml").toURI().toString();
         uriAttr.setValue(file);
 
         ResourceResolverContext resolverContext =
@@ -115,8 +114,7 @@ public class ResourceResolverTest {
     public void testIsSafeURIToResolveFileBaseURI() throws Exception {
         Document doc = TestUtils.newDocument();
         Attr uriAttr = doc.createAttribute("URI");
-        String basedir = System.getProperty("basedir");
-        String file = new File(basedir, "pom.xml").toURI().toString();
+        String file = resolveFile("pom.xml").toURI().toString();
         uriAttr.setValue("xyz");
 
         ResourceResolverContext resolverContext =

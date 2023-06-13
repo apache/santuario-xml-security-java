@@ -18,17 +18,19 @@
  */
 package org.apache.xml.security.test.dom.interop;
 
-import org.apache.xml.security.test.dom.utils.resolver.OfflineResolver;
-
-
+import java.io.File;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 
 import org.apache.xml.security.signature.XMLSignatureException;
+import org.apache.xml.security.test.dom.utils.resolver.OfflineResolver;
 import org.apache.xml.security.utils.resolver.ResourceResolver;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
 import org.apache.xml.security.utils.resolver.implementations.ResolverAnonymous;
 import org.apache.xml.security.utils.resolver.implementations.ResolverLocalFilesystem;
 
+import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
+import static org.apache.xml.security.test.XmlSecTestEnvironment.resolvePath;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -46,22 +48,12 @@ public class IAIKTest extends InteropTestBase {
         org.slf4j.LoggerFactory.getLogger(IAIKTest.class);
 
     /** Field gregorsDir */
-    static String gregorsDir = "src/test/resources/at/iaik/ixsil/";
+    static Path gregorsDir;
 
     static {
-        String basedir = System.getProperty("basedir");
-        if (basedir != null && basedir.length() != 0) {
-            gregorsDir = basedir + "/" + gregorsDir;
-        }
+        gregorsDir = resolvePath("src", "test", "resources", "at", "iaik", "ixsil");
         org.apache.xml.security.Init.init();
         ResourceResolver.register(new ResolverLocalFilesystem(), false);
-    }
-
-    /**
-     * Constructor IAIKTest
-     */
-    public IAIKTest() {
-        super();
     }
 
     /**
@@ -73,8 +65,7 @@ public class IAIKTest extends InteropTestBase {
     public void test_signatureAlgorithms_signatures_hMACShortSignature()
         throws Exception {
 
-        String filename =
-            gregorsDir + "signatureAlgorithms/signatures/hMACShortSignature.xml";
+        File filename = resolveFile(gregorsDir, "signatureAlgorithms", "signatures", "hMACShortSignature.xml");
         ResourceResolverSpi resolver = new OfflineResolver();
         boolean followManifests = false;
         byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
@@ -101,7 +92,7 @@ public class IAIKTest extends InteropTestBase {
     public void test_signatureAlgorithms_signatures_hMACSignature()
         throws Exception {
 
-        String filename = gregorsDir + "signatureAlgorithms/signatures/hMACSignature.xml";
+        File filename = resolveFile(gregorsDir, "signatureAlgorithms", "signatures", "hMACSignature.xml");
         ResourceResolverSpi resolver = new OfflineResolver();
         boolean followManifests = false;
         byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
@@ -119,7 +110,7 @@ public class IAIKTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(verify, filename);
+        assertTrue(verify, filename.toString());
     }
 
     /**
@@ -131,7 +122,7 @@ public class IAIKTest extends InteropTestBase {
     public void test_coreFeatures_signatures_manifestSignature_core()
         throws Exception {
 
-        String filename = gregorsDir + "coreFeatures/signatures/manifestSignature.xml";
+        File filename = resolveFile(gregorsDir, "coreFeatures", "signatures", "manifestSignature.xml");
         ResourceResolverSpi resolver = null;
         boolean followManifests = false;
         boolean verify = false;
@@ -160,7 +151,7 @@ public class IAIKTest extends InteropTestBase {
     public void test_coreFeatures_signatures_manifestSignature_manifest()
         throws Exception {
 
-        String filename = gregorsDir + "coreFeatures/signatures/manifestSignature.xml";
+        File filename = resolveFile(gregorsDir, "coreFeatures", "signatures", "manifestSignature.xml");
         ResourceResolverSpi resolver = null;
         boolean followManifests = true;
         boolean verify = false;
@@ -189,7 +180,7 @@ public class IAIKTest extends InteropTestBase {
     public void test_coreFeatures_signatures_signatureTypesSignature()
         throws Exception {
 
-        String filename = gregorsDir + "coreFeatures/signatures/signatureTypesSignature.xml";
+        File filename = resolveFile(gregorsDir, "coreFeatures", "signatures", "signatureTypesSignature.xml");
         ResourceResolverSpi resolver = new OfflineResolver();
         boolean followManifests = false;
         boolean verify = false;
@@ -218,10 +209,9 @@ public class IAIKTest extends InteropTestBase {
     public void test_coreFeatures_signatures_anonymousReferenceSignature()
         throws Exception {
 
-        String filename =
-            gregorsDir + "coreFeatures/signatures/anonymousReferenceSignature.xml";
-        String anonymousRef =
-            gregorsDir + "coreFeatures/samples/anonymousReferenceContent.xml";
+        File filename = resolveFile(gregorsDir, "coreFeatures", "signatures", "anonymousReferenceSignature.xml");
+        String anonymousRef = resolveFile(gregorsDir, "coreFeatures", "samples", "anonymousReferenceContent.xml")
+            .getAbsolutePath();
         ResourceResolverSpi resolver = new ResolverAnonymous(anonymousRef);
         boolean followManifests = false;
         boolean verify = false;
@@ -238,7 +228,7 @@ public class IAIKTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(verify, filename);
+        assertTrue(verify, filename.toString());
     }
 
     /**
@@ -250,7 +240,7 @@ public class IAIKTest extends InteropTestBase {
     public void test_signatureAlgorithms_signatures_dSASignature()
         throws Exception {
 
-        String filename = gregorsDir + "signatureAlgorithms/signatures/dSASignature.xml";
+        File filename = resolveFile(gregorsDir, "signatureAlgorithms", "signatures", "dSASignature.xml");
         ResourceResolverSpi resolver = null;
         boolean followManifests = false;
         boolean verify = false;
@@ -267,7 +257,7 @@ public class IAIKTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(verify, filename);
+        assertTrue(verify, filename.toString());
     }
 
     /**
@@ -279,7 +269,7 @@ public class IAIKTest extends InteropTestBase {
     public void test_signatureAlgorithms_signatures_rSASignature()
         throws Exception {
 
-        String filename = gregorsDir + "signatureAlgorithms/signatures/rSASignature.xml";
+        File filename = resolveFile(gregorsDir, "signatureAlgorithms", "signatures", "rSASignature.xml");
         ResourceResolverSpi resolver = null;
         boolean followManifests = false;
         boolean verify = false;
@@ -296,7 +286,7 @@ public class IAIKTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(verify, filename);
+        assertTrue(verify, filename.toString());
     }
 
     /**
@@ -308,7 +298,7 @@ public class IAIKTest extends InteropTestBase {
     public void test_transforms_signatures_base64DecodeSignature()
         throws Exception {
 
-        String filename = gregorsDir + "transforms/signatures/base64DecodeSignature.xml";
+        File filename = resolveFile(gregorsDir, "transforms", "signatures", "base64DecodeSignature.xml");
         ResourceResolverSpi resolver = null;
         boolean followManifests = false;
         boolean verify = false;
@@ -325,7 +315,7 @@ public class IAIKTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(verify, filename);
+        assertTrue(verify, filename.toString());
     }
 
     /**
@@ -336,7 +326,7 @@ public class IAIKTest extends InteropTestBase {
     @org.junit.jupiter.api.Test
     public void test_transforms_signatures_c14nSignature() throws Exception {
 
-        String filename = gregorsDir + "transforms/signatures/c14nSignature.xml";
+        File filename = resolveFile(gregorsDir, "transforms", "signatures", "c14nSignature.xml");
         ResourceResolverSpi resolver = null;
         boolean followManifests = false;
         boolean verify = false;
@@ -353,7 +343,7 @@ public class IAIKTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(verify, filename);
+        assertTrue(verify, filename.toString());
     }
 
     /**
@@ -365,8 +355,7 @@ public class IAIKTest extends InteropTestBase {
     public void test_transforms_signatures_envelopedSignatureSignature()
         throws Exception {
 
-        String filename =
-            gregorsDir + "transforms/signatures/envelopedSignatureSignature.xml";
+        File filename = resolveFile(gregorsDir, "transforms", "signatures", "envelopedSignatureSignature.xml");
         ResourceResolverSpi resolver = null;
         boolean followManifests = false;
         boolean verify = false;
@@ -383,7 +372,7 @@ public class IAIKTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(verify, filename);
+        assertTrue(verify, filename.toString());
     }
 
     /**
@@ -394,7 +383,7 @@ public class IAIKTest extends InteropTestBase {
     @org.junit.jupiter.api.Test
     public void test_transforms_signatures_xPathSignature() throws Exception {
 
-        String filename = gregorsDir + "transforms/signatures/xPathSignature.xml";
+        File filename = resolveFile(gregorsDir, "transforms", "signatures", "xPathSignature.xml");
         ResourceResolverSpi resolver = null;
         boolean followManifests = false;
         boolean verify = false;
@@ -411,7 +400,7 @@ public class IAIKTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(verify, filename);
+        assertTrue(verify, filename.toString());
     }
 
 }

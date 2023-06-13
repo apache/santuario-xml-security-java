@@ -20,6 +20,9 @@ package org.apache.xml.security.test.dom.interop;
 
 
 
+import java.io.File;
+
+import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -38,28 +41,17 @@ public class RSASecurityTest extends InteropTestBase {
         org.slf4j.LoggerFactory.getLogger(RSASecurityTest.class);
 
     /** Field blakesDir           */
-    static String blakesDir =
-        "src/test/resources/com/rsasecurity/bdournaee/";
+    static File blakesDir;
 
     static {
-        String basedir = System.getProperty("basedir");
-        if(basedir != null && basedir.length() != 0) {
-            blakesDir = basedir + "/" + blakesDir;
-        }
+        blakesDir = XmlSecTestEnvironment.resolveFile("src", "test", "resources", "com", "rsasecurity", "bdournaee");
         org.apache.xml.security.Init.init();
-    }
-
-    /**
-     * Constructor RSASecurityTest
-     */
-    public RSASecurityTest() {
-        super();
     }
 
     @org.junit.jupiter.api.Test
     public void test_enveloping() throws Exception {
 
-        String filename = blakesDir + "certj201_enveloping.xml";
+        File filename = new File(blakesDir, "certj201_enveloping.xml");
         boolean followManifests = false;
         ResourceResolverSpi resolver = null;
         boolean verify = this.verify(filename, resolver, followManifests);
@@ -68,13 +60,13 @@ public class RSASecurityTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(verify, filename);
+        assertTrue(verify, filename.toString());
     }
 
     @org.junit.jupiter.api.Test
     public void test_enveloped() throws Exception {
 
-        String filename = blakesDir + "certj201_enveloped.xml";
+        File filename = new File(blakesDir, "certj201_enveloped.xml");
         boolean followManifests = false;
         ResourceResolverSpi resolver = null;
         boolean verify = this.verify(filename, resolver, followManifests);
@@ -83,7 +75,7 @@ public class RSASecurityTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(verify, filename);
+        assertTrue(verify, filename.toString());
     }
 
 }

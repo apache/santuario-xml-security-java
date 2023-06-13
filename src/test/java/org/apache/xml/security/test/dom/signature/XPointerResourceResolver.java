@@ -49,7 +49,7 @@ public class XPointerResourceResolver extends ResourceResolverSpi {
     private static final String XP_OPEN = "xpointer(";
     private static final String XNS_OPEN = "xmlns(";
 
-    private Node baseNode;
+    private final Node baseNode;
 
     public XPointerResourceResolver(Node baseNode) {
         this.baseNode = baseNode;
@@ -59,7 +59,7 @@ public class XPointerResourceResolver extends ResourceResolverSpi {
     public boolean engineCanResolveURI(ResourceResolverContext context) {
         String v = context.uriToResolve;
 
-        if (v == null || v.length() <= 0) {
+        if (v == null || v.isEmpty()) {
             return false;
         }
 

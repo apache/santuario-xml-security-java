@@ -22,7 +22,9 @@ import org.apache.xml.security.signature.MissingResourceFailureException;
 import org.apache.xml.security.test.dom.utils.resolver.OfflineResolver;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
 
+import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 
+import java.io.File;
 import java.nio.charset.StandardCharsets;
 
 import org.apache.xml.security.signature.XMLSignatureException;
@@ -44,22 +46,15 @@ public class BaltimoreTest extends InteropTestBase {
         org.slf4j.LoggerFactory.getLogger(BaltimoreTest.class);
 
     /** Field merlinsDir15           */
-    static String merlinsDir15 =
-        "src/test/resources/ie/baltimore/merlin-examples/merlin-xmldsig-fifteen/";
-    static String merlinsDir16 =
-        "src/test/resources/ie/baltimore/merlin-examples/merlin-xmldsig-sixteen";
-    static String merlinsDir23 =
-        "src/test/resources/ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/";
+    static File merlinsDir15;
+    static File merlinsDir16;
+    static File merlinsDir23;
 
     static {
         System.setProperty("org.apache.xml.security.allowUnsafeResourceResolving", "true");
-
-        String basedir = System.getProperty("basedir");
-        if(basedir != null && basedir.length() != 0) {
-            merlinsDir15 = basedir + "/" + merlinsDir15;
-            merlinsDir16 = basedir + "/" + merlinsDir16;
-            merlinsDir23 = basedir + "/" + merlinsDir23;
-        }
+        merlinsDir15 = resolveFile("src", "test", "resources", "ie", "baltimore", "merlin-examples", "merlin-xmldsig-fifteen");
+        merlinsDir16 = resolveFile("src", "test", "resources", "ie", "baltimore", "merlin-examples", "merlin-xmldsig-sixteen");
+        merlinsDir23 = resolveFile("src", "test", "resources", "ie", "baltimore", "merlin-examples", "merlin-xmldsig-twenty-three");
         org.apache.xml.security.Init.init();
     }
 
@@ -78,7 +73,7 @@ public class BaltimoreTest extends InteropTestBase {
     @org.junit.jupiter.api.Test
     public void test_fifteen_enveloping_hmac_sha1() throws Exception {
 
-        String filename = merlinsDir15 + "signature-enveloping-hmac-sha1.xml";
+        File filename = new File(merlinsDir15, "signature-enveloping-hmac-sha1.xml");
         boolean verify = this.verifyHMAC(filename, new OfflineResolver(), false,
                                          "secret".getBytes(StandardCharsets.US_ASCII));
 
@@ -86,7 +81,7 @@ public class BaltimoreTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(verify, filename);
+        assertTrue(verify, filename.toString());
     }
 
     /**
@@ -97,7 +92,7 @@ public class BaltimoreTest extends InteropTestBase {
     @org.junit.jupiter.api.Test
     public void test_fifteen_enveloping_hmac_sha1_40() throws Exception {
 
-        String filename = merlinsDir15 + "signature-enveloping-hmac-sha1-40.xml";
+        File filename = new File(merlinsDir15, "signature-enveloping-hmac-sha1-40.xml");
         ResourceResolverSpi resolver = new OfflineResolver();
         boolean followManifests = false;
         byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
@@ -123,7 +118,7 @@ public class BaltimoreTest extends InteropTestBase {
     @org.junit.jupiter.api.Test
     public void test_fifteen_enveloped_dsa() throws Exception {
 
-        String filename = merlinsDir15 + "signature-enveloped-dsa.xml";
+        File filename = new File(merlinsDir15, "signature-enveloped-dsa.xml");
         ResourceResolverSpi resolver = new OfflineResolver();
         boolean followManifests = false;
         boolean verify = false;
@@ -139,7 +134,7 @@ public class BaltimoreTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(verify, filename);
+        assertTrue(verify, filename.toString());
     }
 
     /**
@@ -150,7 +145,7 @@ public class BaltimoreTest extends InteropTestBase {
     @org.junit.jupiter.api.Test
     public void test_fifteen_enveloping_b64_dsa() throws Exception {
 
-        String filename = merlinsDir15 + "signature-enveloping-b64-dsa.xml";
+        File filename = new File(merlinsDir15, "signature-enveloping-b64-dsa.xml");
         ResourceResolverSpi resolver = null;
         boolean followManifests = false;
         boolean verify = false;
@@ -166,7 +161,7 @@ public class BaltimoreTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(verify, filename);
+        assertTrue(verify, filename.toString());
     }
 
     /**
@@ -177,7 +172,7 @@ public class BaltimoreTest extends InteropTestBase {
     @org.junit.jupiter.api.Test
     public void test_fifteen_enveloping_dsa() throws Exception {
 
-        String filename = merlinsDir15 + "signature-enveloping-dsa.xml";
+        File filename = new File(merlinsDir15, "signature-enveloping-dsa.xml");
         ResourceResolverSpi resolver = new OfflineResolver();
         boolean followManifests = false;
         boolean verify = false;
@@ -193,7 +188,7 @@ public class BaltimoreTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(verify, filename);
+        assertTrue(verify, filename.toString());
     }
 
     /**
@@ -204,7 +199,7 @@ public class BaltimoreTest extends InteropTestBase {
     @org.junit.jupiter.api.Test
     public void test_fifteen_enveloping_rsa() throws Exception {
 
-        String filename = merlinsDir15 + "signature-enveloping-rsa.xml";
+        File filename = new File(merlinsDir15, "signature-enveloping-rsa.xml");
         ResourceResolverSpi resolver = new OfflineResolver();
         boolean followManifests = false;
         boolean verify = false;
@@ -220,7 +215,7 @@ public class BaltimoreTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(verify, filename);
+        assertTrue(verify, filename.toString());
     }
 
     /**
@@ -231,7 +226,7 @@ public class BaltimoreTest extends InteropTestBase {
     @org.junit.jupiter.api.Test
     public void test_fifteen_external_b64_dsa() throws Exception {
 
-        String filename = merlinsDir15 + "signature-external-b64-dsa.xml";
+        File filename = new File(merlinsDir15, "signature-external-b64-dsa.xml");
         ResourceResolverSpi resolver = new OfflineResolver();
         boolean followManifests = false;
         boolean verify = false;
@@ -247,7 +242,7 @@ public class BaltimoreTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(verify, filename);
+        assertTrue(verify, filename.toString());
     }
 
     /**
@@ -258,7 +253,7 @@ public class BaltimoreTest extends InteropTestBase {
     @org.junit.jupiter.api.Test
     public void test_fifteen_external_dsa() throws Exception {
 
-        String filename = merlinsDir15 + "signature-external-dsa.xml";
+        File filename = new File(merlinsDir15, "signature-external-dsa.xml");
         ResourceResolverSpi resolver = new OfflineResolver();
         boolean followManifests = false;
         boolean verify = false;
@@ -274,7 +269,7 @@ public class BaltimoreTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(verify, filename);
+        assertTrue(verify, filename.toString());
     }
 
     /**
@@ -284,8 +279,7 @@ public class BaltimoreTest extends InteropTestBase {
     @org.junit.jupiter.api.Test
     public void test_sixteen_bad_signature() throws Exception {
 
-        String filename =
-            merlinsDir16 + "/bad-signature.xml";
+        File filename = new File(merlinsDir16, "bad-signature.xml");
         ResourceResolverSpi resolver = new OfflineResolver();
         boolean followManifests = false;
 
@@ -305,7 +299,7 @@ public class BaltimoreTest extends InteropTestBase {
     @org.junit.jupiter.api.Test
     public void test_twenty_three_enveloping_hmac_sha1() throws Exception {
 
-        String filename = merlinsDir23 + "signature-enveloping-hmac-sha1.xml";
+        File filename = new File(merlinsDir23, "signature-enveloping-hmac-sha1.xml");
         boolean verify = this.verifyHMAC(filename, new OfflineResolver(), false,
                                          "secret".getBytes(StandardCharsets.US_ASCII));
 
@@ -313,7 +307,7 @@ public class BaltimoreTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(verify, filename);
+        assertTrue(verify, filename.toString());
     }
 
     /**
@@ -324,7 +318,7 @@ public class BaltimoreTest extends InteropTestBase {
     @org.junit.jupiter.api.Test
     public void test_twenty_three_enveloping_hmac_sha1_40() throws Exception {
 
-        String filename = merlinsDir23 + "signature-enveloping-hmac-sha1-40.xml";
+        File filename = new File(merlinsDir23, "signature-enveloping-hmac-sha1-40.xml");
         ResourceResolverSpi resolver = new OfflineResolver();
         boolean followManifests = false;
         byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
@@ -350,7 +344,7 @@ public class BaltimoreTest extends InteropTestBase {
     @org.junit.jupiter.api.Test
     public void test_twenty_three_enveloped_dsa() throws Exception {
 
-        String filename = merlinsDir23 + "signature-enveloped-dsa.xml";
+        File filename = new File(merlinsDir23, "signature-enveloped-dsa.xml");
         ResourceResolverSpi resolver = new OfflineResolver();
         boolean followManifests = false;
         boolean verify = false;
@@ -366,7 +360,7 @@ public class BaltimoreTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(verify, filename);
+        assertTrue(verify, filename.toString());
     }
 
     /**
@@ -377,7 +371,7 @@ public class BaltimoreTest extends InteropTestBase {
     @org.junit.jupiter.api.Test
     public void test_twenty_three_enveloping_b64_dsa() throws Exception {
 
-        String filename = merlinsDir23 + "signature-enveloping-b64-dsa.xml";
+        File filename = new File(merlinsDir23, "signature-enveloping-b64-dsa.xml");
         ResourceResolverSpi resolver = null;
         boolean followManifests = false;
         boolean verify = false;
@@ -393,7 +387,7 @@ public class BaltimoreTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(verify, filename);
+        assertTrue(verify, filename.toString());
     }
 
     /**
@@ -404,7 +398,7 @@ public class BaltimoreTest extends InteropTestBase {
     @org.junit.jupiter.api.Test
     public void test_twenty_three_enveloping_dsa() throws Exception {
 
-        String filename = merlinsDir23 + "signature-enveloping-dsa.xml";
+        File filename = new File(merlinsDir23, "signature-enveloping-dsa.xml");
         ResourceResolverSpi resolver = new OfflineResolver();
         boolean followManifests = false;
         boolean verify = false;
@@ -420,7 +414,7 @@ public class BaltimoreTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(verify, filename);
+        assertTrue(verify, filename.toString());
     }
 
     /**
@@ -431,7 +425,7 @@ public class BaltimoreTest extends InteropTestBase {
     @org.junit.jupiter.api.Test
     public void test_twenty_three_enveloping_rsa() throws Exception {
 
-        String filename = merlinsDir23 + "signature-enveloping-rsa.xml";
+        File filename = new File(merlinsDir23, "signature-enveloping-rsa.xml");
         ResourceResolverSpi resolver = new OfflineResolver();
         boolean followManifests = false;
         boolean verify = false;
@@ -447,7 +441,7 @@ public class BaltimoreTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(verify, filename);
+        assertTrue(verify, filename.toString());
     }
 
     /**
@@ -458,7 +452,7 @@ public class BaltimoreTest extends InteropTestBase {
     @org.junit.jupiter.api.Test
     public void test_twenty_three_external_b64_dsa() throws Exception {
 
-        String filename = merlinsDir23 + "signature-external-b64-dsa.xml";
+        File filename = new File(merlinsDir23, "signature-external-b64-dsa.xml");
         ResourceResolverSpi resolver = new OfflineResolver();
         boolean followManifests = false;
         boolean verify = false;
@@ -474,7 +468,7 @@ public class BaltimoreTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(verify, filename);
+        assertTrue(verify, filename.toString());
     }
 
     /**
@@ -485,7 +479,7 @@ public class BaltimoreTest extends InteropTestBase {
     @org.junit.jupiter.api.Test
     public void test_twenty_three_external_dsa() throws Exception {
 
-        String filename = merlinsDir23 + "signature-external-dsa.xml";
+        File filename = new File(merlinsDir23, "signature-external-dsa.xml");
         ResourceResolverSpi resolver = new OfflineResolver();
         boolean followManifests = false;
         boolean verify = false;
@@ -501,7 +495,7 @@ public class BaltimoreTest extends InteropTestBase {
             LOG.error("Verification failed for " + filename);
         }
 
-        assertTrue(verify, filename);
+        assertTrue(verify, filename.toString());
     }
 
 }

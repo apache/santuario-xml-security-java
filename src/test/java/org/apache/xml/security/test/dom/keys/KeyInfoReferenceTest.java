@@ -18,9 +18,11 @@
  */
 package org.apache.xml.security.test.dom.keys;
 
+import java.io.File;
 import java.io.FileInputStream;
 
 import org.apache.xml.security.keys.content.KeyInfoReference;
+import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
@@ -35,7 +37,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class KeyInfoReferenceTest {
 
-    private static final String BASEDIR = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
     private static final String SEP = System.getProperty("file.separator");
 
     private static final String ID_CONTROL = "abc123";
@@ -84,15 +85,13 @@ public class KeyInfoReferenceTest {
 
     // Utility methods
 
-    private String getControlFilePath(String fileName) {
-        return BASEDIR + SEP + "src" + SEP + "test" + SEP + "resources" +
-            SEP + "org" + SEP + "apache" + SEP + "xml" + SEP + "security" +
-            SEP + "keys" + SEP + "content" +
-            SEP + fileName;
+    private File getControlFilePath(String fileName) {
+        return XmlSecTestEnvironment.resolveFile("src", "test", "resources", "org", "apache", "xml", "security", "keys",
+            "content", fileName);
     }
 
     private Document loadXML(String fileName) throws Exception {
-        return XMLUtils.read(new FileInputStream(getControlFilePath(fileName)), false);
+        return XMLUtils.read(getControlFilePath(fileName), false);
     }
 
 }

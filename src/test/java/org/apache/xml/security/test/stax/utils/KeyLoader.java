@@ -18,37 +18,31 @@
  */
 package org.apache.xml.security.test.stax.utils;
 
-import java.io.FileInputStream;
+import java.io.File;
 import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
 
-import org.w3c.dom.Document;
-
 import org.apache.xml.security.utils.JavaUtils;
 import org.apache.xml.security.utils.XMLUtils;
+import org.w3c.dom.Document;
+
+import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 
 public class KeyLoader {
-    private static final String BASEDIR = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
-    private static final String SEP = System.getProperty("file.separator");
 
-    private static String getControlFilePath(String fileName) {
-        return BASEDIR + SEP + "src" + SEP + "test" + SEP + "resources" +
-                SEP + "org" + SEP + "apache" + SEP + "xml" + SEP + "security" +
-                SEP + "keys" + SEP + "content" +
-                SEP + fileName;
-    }
+    private static final File DIR = resolveFile("src", "test", "resources", "org", "apache", "xml", "security", "keys", "content");
 
-    public static PublicKey loadPublicKey(String filePath, String algorithm) throws Exception {
-        String fileData = new String(JavaUtils.getBytesFromFile(getControlFilePath(filePath)));
+    public static PublicKey loadPublicKey(String fileName, String algorithm) throws Exception {
+        String fileData = new String(JavaUtils.getBytesFromFile(new File(DIR, fileName).getAbsolutePath()));
         byte[] keyBytes = XMLUtils.decode(fileData);
         KeyFactory kf = KeyFactory.getInstance(algorithm);
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
         return kf.generatePublic(keySpec);
     }
 
-    public static Document loadXML(String fileName) throws Exception {
-        return XMLUtils.read(new FileInputStream(getControlFilePath(fileName)), false);
-    }
 
+    public static Document loadXML(String fileName) throws Exception {
+        return XMLUtils.read(new File(DIR, fileName), false);
+    }
 }

@@ -35,6 +35,7 @@ import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.stax.ext.SecurePart;
+import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.utils.resolver.ResourceResolverContext;
@@ -55,18 +56,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class AbstractSignatureCreationTest {
 
-    protected static String BASEDIR;
     protected static boolean bcInstalled;
 
     protected XMLInputFactory xmlInputFactory;
 
     @BeforeAll
     public static void setup() throws Exception {
-        String baseDir = System.getProperty("basedir");
-        if (baseDir == null) {
-            baseDir = new File(".").getCanonicalPath();
-        }
-        BASEDIR = baseDir;
 
         org.apache.xml.security.Init.init();
 

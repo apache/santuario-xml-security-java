@@ -21,14 +21,10 @@ package org.apache.xml.security.test.dom.signature;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
 
 import javax.crypto.SecretKey;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
 import org.apache.xml.security.c14n.Canonicalizer;
@@ -38,19 +34,15 @@ import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
+import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class HMACOutputLengthTest {
-
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger
-            (HMACOutputLengthTest.class);
-
-    private static final String BASEDIR =
-        System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
-    private static final String SEP = System.getProperty("file.separator");
 
     public HMACOutputLengthTest() throws Exception {
         Init.init();
@@ -146,13 +138,10 @@ public class HMACOutputLengthTest {
     }
 
     private boolean validate(String data) throws Exception {
-        File file =
-            new File(BASEDIR + SEP + "src/test/resources" + SEP + "javax" + SEP + "xml"
-                     + SEP + "crypto" + SEP + "dsig" + SEP, data);
-
-        Document doc = XMLUtils.read(new FileInputStream(file), false);
-        NodeList nl =
-            doc.getElementsByTagNameNS(Constants.SignatureSpecNS, "Signature");
+        File file = resolveFile("src", "test", "resources", "org", "apache", "xml", "security", "test", "javax", "xml",
+            "crypto", "dsig", data);
+        Document doc = XMLUtils.read(file, false);
+        NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpecNS, "Signature");
         if (nl.getLength() == 0) {
             throw new Exception("Couldn't find signature Element");
         }
