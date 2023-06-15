@@ -27,6 +27,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import org.apache.xml.security.keys.storage.StorageResolver;
+import org.junit.jupiter.api.Test;
 
 import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class StorageResolverTest {
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testStorageResolver() throws Exception {
 
         //

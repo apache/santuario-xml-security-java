@@ -29,6 +29,7 @@ import org.apache.xml.security.keys.storage.StorageResolver;
 import org.apache.xml.security.keys.storage.implementations.SingleCertificateResolver;
 import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -37,8 +38,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 public class X509DigestResolverTest {
-
-    private static final String SEP = System.getProperty("file.separator");
 
     private final X509Certificate certControl;
 
@@ -54,7 +53,7 @@ public class X509DigestResolverTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testDigest() throws Exception {
         Document doc = loadXML("X509Digest.xml");
         Element element = doc.getDocumentElement();

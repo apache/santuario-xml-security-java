@@ -20,6 +20,7 @@ package org.apache.xml.security.test.dom.algorithms;
 
 import org.apache.xml.security.algorithms.JCEMapper;
 import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -29,7 +30,7 @@ public class JCEMapperTest {
         org.apache.xml.security.Init.init();
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSHA1() throws Exception {
         assertEquals("MessageDigest", JCEMapper.getAlgorithmClassFromURI(MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA1));
         assertEquals("SHA-1", JCEMapper.translateURItoJCEID(MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA1));

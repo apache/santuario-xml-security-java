@@ -19,19 +19,35 @@
 package org.apache.xml.security.test.javax.xml.crypto.dsig;
 
 import java.nio.charset.StandardCharsets;
-import java.security.*;
+import java.security.Key;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.Security;
 import java.security.spec.ECGenParameterSpec;
 import java.util.Collections;
 
 import javax.xml.crypto.KeySelector;
-import javax.xml.crypto.dom.*;
-import javax.xml.crypto.dsig.*;
-import javax.xml.crypto.dsig.dom.*;
-import javax.xml.crypto.dsig.keyinfo.*;
-import javax.xml.crypto.dsig.spec.*;
+import javax.xml.crypto.dom.DOMStructure;
+import javax.xml.crypto.dsig.CanonicalizationMethod;
+import javax.xml.crypto.dsig.DigestMethod;
+import javax.xml.crypto.dsig.Reference;
+import javax.xml.crypto.dsig.SignatureMethod;
+import javax.xml.crypto.dsig.SignedInfo;
+import javax.xml.crypto.dsig.XMLObject;
+import javax.xml.crypto.dsig.XMLSignature;
+import javax.xml.crypto.dsig.XMLSignatureFactory;
+import javax.xml.crypto.dsig.dom.DOMSignContext;
+import javax.xml.crypto.dsig.dom.DOMValidateContext;
+import javax.xml.crypto.dsig.keyinfo.KeyInfo;
+import javax.xml.crypto.dsig.keyinfo.KeyInfoFactory;
+import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 
 import org.apache.xml.security.test.javax.xml.crypto.KeySelectors;
-import org.w3c.dom.*;
+import org.junit.jupiter.api.Test;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Text;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -43,15 +59,33 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class CreateInteropXMLDSig11Test {
 
-    private KeySelector kvks, sks;
-    private CanonicalizationMethod withoutComments;
-    private DigestMethod sha1, sha256, sha384, sha512;
-    private SignatureMethod ecdsaSha1, ecdsaSha256, ecdsaSha384, ecdsaSha512,
-                            rsaSha256, rsaSha384, rsaSha512, hmacSha256,
-                            hmacSha384, hmacSha512;
-    private KeyInfo p256ki, p384ki, p521ki, rsaki, rsa2048ki;
-    private XMLSignatureFactory fac;
-    private KeyPair p256, p384, p521, rsa2048;
+    private final KeySelector kvks;
+    private final KeySelector sks;
+    private final CanonicalizationMethod withoutComments;
+    private final DigestMethod sha1;
+    private final DigestMethod sha256;
+    private final DigestMethod sha384;
+    private final DigestMethod sha512;
+    private SignatureMethod ecdsaSha1;
+    private SignatureMethod ecdsaSha256;
+    private SignatureMethod ecdsaSha384;
+    private SignatureMethod ecdsaSha512;
+    private final SignatureMethod rsaSha256;
+    private final SignatureMethod rsaSha384;
+    private final SignatureMethod rsaSha512;
+    private final SignatureMethod hmacSha256;
+    private final SignatureMethod hmacSha384;
+    private final SignatureMethod hmacSha512;
+    private KeyInfo p256ki;
+    private KeyInfo p384ki;
+    private KeyInfo p521ki;
+    private final KeyInfo rsaki;
+    private final KeyInfo rsa2048ki;
+    private final XMLSignatureFactory fac;
+    private KeyPair p256;
+    private KeyPair p384;
+    private KeyPair p521;
+    private final KeyPair rsa2048;
     private boolean ecSupport = true;
 
     static {
@@ -127,7 +161,7 @@ public class CreateInteropXMLDSig11Test {
         sks = new KeySelectors.SecretKeySelector("testkey".getBytes(StandardCharsets.US_ASCII));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_enveloping_p256_sha1() throws Exception {
         if (ecSupport) {
             test_create_signature_enveloping(ecdsaSha1, sha1, p256ki,
@@ -135,7 +169,7 @@ public class CreateInteropXMLDSig11Test {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_enveloping_p256_sha256() throws Exception {
         if (ecSupport) {
             test_create_signature_enveloping(ecdsaSha256, sha256, p256ki,
@@ -143,7 +177,7 @@ public class CreateInteropXMLDSig11Test {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_enveloping_p256_sha384() throws Exception {
         if (ecSupport) {
             test_create_signature_enveloping(ecdsaSha384, sha384, p256ki,
@@ -151,7 +185,7 @@ public class CreateInteropXMLDSig11Test {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_enveloping_p256_sha512() throws Exception {
         if (ecSupport) {
             test_create_signature_enveloping(ecdsaSha512, sha512, p256ki,
@@ -159,7 +193,7 @@ public class CreateInteropXMLDSig11Test {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_enveloping_p384_sha1() throws Exception {
         if (ecSupport) {
             test_create_signature_enveloping(ecdsaSha1, sha1, p384ki,
@@ -167,7 +201,7 @@ public class CreateInteropXMLDSig11Test {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_enveloping_p384_sha256() throws Exception {
         if (ecSupport) {
             test_create_signature_enveloping(ecdsaSha256, sha256, p384ki,
@@ -175,7 +209,7 @@ public class CreateInteropXMLDSig11Test {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_enveloping_p384_sha384() throws Exception {
         if (ecSupport) {
             test_create_signature_enveloping(ecdsaSha384, sha384, p384ki,
@@ -183,7 +217,7 @@ public class CreateInteropXMLDSig11Test {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_enveloping_p384_sha512() throws Exception {
         if (ecSupport) {
             test_create_signature_enveloping(ecdsaSha512, sha512, p384ki,
@@ -191,7 +225,7 @@ public class CreateInteropXMLDSig11Test {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_enveloping_p521_sha1() throws Exception {
         if (ecSupport) {
             test_create_signature_enveloping(ecdsaSha1, sha1, p521ki,
@@ -199,7 +233,7 @@ public class CreateInteropXMLDSig11Test {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_enveloping_p521_sha256() throws Exception {
         if (ecSupport) {
             test_create_signature_enveloping(ecdsaSha256, sha256, p521ki,
@@ -207,7 +241,7 @@ public class CreateInteropXMLDSig11Test {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_enveloping_p521_sha384() throws Exception {
         if (ecSupport) {
             test_create_signature_enveloping(ecdsaSha384, sha384, p521ki,
@@ -215,7 +249,7 @@ public class CreateInteropXMLDSig11Test {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_enveloping_p521_sha512() throws Exception {
         if (ecSupport) {
             test_create_signature_enveloping(ecdsaSha512, sha512, p521ki,
@@ -223,57 +257,57 @@ public class CreateInteropXMLDSig11Test {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_enveloping_rsa_sha256() throws Exception {
         test_create_signature_enveloping(rsaSha256, sha1, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_enveloping_rsa_sha384() throws Exception {
         test_create_signature_enveloping(rsaSha384, sha1, rsa2048ki,
                                          rsa2048.getPrivate(), kvks);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_enveloping_rsa_sha512() throws Exception {
         test_create_signature_enveloping(rsaSha512, sha1, rsa2048ki,
                                          rsa2048.getPrivate(), kvks);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_enveloping_sha256_rsa_sha256() throws Exception {
         test_create_signature_enveloping(rsaSha256, sha256, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_enveloping_sha384_rsa_sha256() throws Exception {
         test_create_signature_enveloping(rsaSha256, sha384, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_enveloping_sha512_rsa_sha256() throws Exception {
         test_create_signature_enveloping(rsaSha256, sha512, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_enveloping_hmac_sha256() throws Exception {
         test_create_signature_enveloping(hmacSha256, sha1, rsaki,
                                          TestUtils.getSecretKey
                                          ("testkey".getBytes(StandardCharsets.US_ASCII)), sks);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_enveloping_hmac_sha384() throws Exception {
         test_create_signature_enveloping(hmacSha384, sha1, rsaki,
                                          TestUtils.getSecretKey
                                          ("testkey".getBytes(StandardCharsets.US_ASCII)), sks);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_enveloping_hmac_sha512() throws Exception {
         test_create_signature_enveloping(hmacSha512, sha1, rsaki,
                                          TestUtils.getSecretKey

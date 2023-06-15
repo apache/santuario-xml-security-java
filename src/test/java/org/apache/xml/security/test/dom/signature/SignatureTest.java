@@ -33,6 +33,7 @@ import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.ElementProxy;
 import org.apache.xml.security.utils.resolver.implementations.ResolverXPointer;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -49,12 +50,12 @@ public class SignatureTest {
         keyStore = XmlSecTestEnvironment.getTestKeyStore();
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSigning() throws Throwable {
         signDocument(getOriginalDocument());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSigningVerifyingFromRebuildSignature() throws Throwable {
         Document doc = getOriginalDocument();
         signDocument(doc);
@@ -66,7 +67,7 @@ public class SignatureTest {
         assertTrue(signature.checkSignatureValue(pubKey));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSigningVerifyingFromRebuildSignatureWithProvider() throws Throwable {
         Provider provider = new org.bouncycastle.jce.provider.BouncyCastleProvider();
         Document doc = getOriginalDocument();
@@ -81,7 +82,7 @@ public class SignatureTest {
         assertTrue(signature.checkSignatureValue(pubKey));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSigningVerifyingFromExistingSignature() throws Throwable {
         Document doc = getOriginalDocument();
         XMLSignature signature = signDocument(doc);
@@ -90,7 +91,7 @@ public class SignatureTest {
         assertTrue(signature.checkSignatureValue(pubKey));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSigningVerifyingFromExistingSignatureWithProvider() throws Throwable {
         Provider provider = new org.bouncycastle.jce.provider.BouncyCastleProvider();
         Document doc = getOriginalDocument();
@@ -101,7 +102,7 @@ public class SignatureTest {
         assertTrue(signature.checkSignatureValue(pubKey));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSigningVerifyingFromExistingSignatureSameThread()
         throws Throwable {
         Document doc = getOriginalDocument();
@@ -117,7 +118,7 @@ public class SignatureTest {
         assertTrue(r.result);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSigningVerifyingFromExistingSignatureSeparateThread()
         throws Throwable {
         Document doc = getOriginalDocument();

@@ -35,6 +35,7 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.apache.xml.security.utils.resolver.ResourceResolverException;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -57,7 +58,7 @@ public class ProcessingInstructionTest {
         dir = resolveFile("src", "test", "resources", "org", "apache", "xml", "security", "testcases");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testProcessingInstruction() throws Exception {
         File f = new File(dir, "upp_sign.xml");
         Document doc = XMLUtils.read(f, false);

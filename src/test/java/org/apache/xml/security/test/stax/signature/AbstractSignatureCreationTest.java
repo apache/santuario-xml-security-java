@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.test.stax.signature;
 
-import java.io.File;
 import java.lang.reflect.Constructor;
 import java.security.Key;
 import java.security.Provider;
@@ -35,13 +34,12 @@ import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.stax.ext.SecurePart;
-import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.apache.xml.security.utils.resolver.ResourceResolverException;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
-
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.w3c.dom.Document;
@@ -85,7 +83,7 @@ public class AbstractSignatureCreationTest {
         }
     }
 
-    @org.junit.jupiter.api.AfterAll
+    @AfterAll
     public static void cleanup() throws Exception {
         Security.removeProvider("BC");
     }

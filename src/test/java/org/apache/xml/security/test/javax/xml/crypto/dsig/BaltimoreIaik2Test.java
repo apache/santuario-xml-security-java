@@ -29,6 +29,7 @@ import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.test.javax.xml.crypto.KeySelectors;
 import org.apache.xml.security.utils.resolver.ResourceResolver;
 import org.apache.xml.security.utils.resolver.implementations.ResolverLocalFilesystem;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -53,7 +54,7 @@ public class BaltimoreIaik2Test {
         validator = new SignatureValidator(dir);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSignature() throws Exception {
         String file = "signature.xml";
         boolean coreValidity = validator.validate(file, new KeySelectors.KeyValueKeySelector());

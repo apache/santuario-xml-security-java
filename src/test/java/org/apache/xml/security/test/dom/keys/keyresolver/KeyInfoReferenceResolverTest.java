@@ -34,6 +34,7 @@ import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.JavaUtils;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -51,7 +52,7 @@ public class KeyInfoReferenceResolverTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testRSAPublicKey() throws Exception {
         PublicKey rsaKeyControl = loadPublicKey("rsa-KeyInfoReference.key", "RSA");
 
@@ -65,7 +66,7 @@ public class KeyInfoReferenceResolverTest {
         assertEquals(rsaKeyControl, keyInfo.getPublicKey());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testX509Certificate() throws Exception {
         X509Certificate certControl = loadCertificate("cert-KeyInfoReference.crt");
 
@@ -80,7 +81,7 @@ public class KeyInfoReferenceResolverTest {
         assertEquals(certControl.getPublicKey(), keyInfo.getPublicKey());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testWrongReferentType() throws Exception {
         Document doc = loadXML("KeyInfoReference-WrongReferentType.xml");
         markKeyInfoIdAttrs(doc);
@@ -99,7 +100,7 @@ public class KeyInfoReferenceResolverTest {
         assertNull(keyInfo.getPublicKey());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSameDocumentReferenceChain() throws Exception {
         Document doc = loadXML("KeyInfoReference-ReferenceChain.xml");
         markKeyInfoIdAttrs(doc);
@@ -112,7 +113,7 @@ public class KeyInfoReferenceResolverTest {
         assertNull(keyInfo.getPublicKey());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSameDocumentReferenceChainWithSecureValidation() throws Exception {
         Document doc = loadXML("KeyInfoReference-ReferenceChain.xml");
         markKeyInfoIdAttrs(doc);
@@ -126,7 +127,7 @@ public class KeyInfoReferenceResolverTest {
         assertNull(keyInfo.getPublicKey());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testKeyInfoReferenceToRetrievalMethodNotAllowed() throws Exception {
         Document doc = loadXML("KeyInfoReference-RSA-RetrievalMethod.xml");
         markKeyInfoIdAttrs(doc);

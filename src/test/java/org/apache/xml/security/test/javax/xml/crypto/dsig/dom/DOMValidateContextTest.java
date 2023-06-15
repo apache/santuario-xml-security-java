@@ -28,6 +28,7 @@ import javax.xml.crypto.dsig.dom.DOMValidateContext;
 
 import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.test.javax.xml.crypto.dsig.TestUtils;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -49,7 +50,7 @@ public class DOMValidateContextTest {
         domVC = (DOMValidateContext) TestUtils.getXMLValidateContext("DOM", input, "Reference");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testConstructor() throws Exception {
         assertNotNull(domVC);
         try {
@@ -61,7 +62,7 @@ public class DOMValidateContextTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSetGetProperty() throws Exception {
         try {
             domVC.setProperty(null, "value");
@@ -84,7 +85,7 @@ public class DOMValidateContextTest {
         assertEquals(domVC.getProperty(pname), pvalue2);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSetGetNode() throws Exception {
         try {
             domVC.setNode(null);

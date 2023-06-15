@@ -24,8 +24,12 @@ package org.apache.xml.security.test.javax.xml.crypto.dsig.keyinfo;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.crypto.*;
-import javax.xml.crypto.dsig.keyinfo.*;
+
+import javax.xml.crypto.XMLStructure;
+import javax.xml.crypto.dsig.keyinfo.KeyInfoFactory;
+import javax.xml.crypto.dsig.keyinfo.PGPData;
+
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -39,8 +43,8 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class PGPDataTest {
 
-    private KeyInfoFactory fac;
-    private byte[][] values = {
+    private final KeyInfoFactory fac;
+    private final byte[][] values = {
         {
             0x01, 0x02, 0x03, 0x04,
             0x05, 0x06, 0x07, 0x08
@@ -56,21 +60,21 @@ public class PGPDataTest {
     }
 
     @SuppressWarnings("rawtypes")
-    @org.junit.jupiter.api.Test
+    @Test
     public void testgetExternalElements() {
         PGPData[] pds = {
             fac.newPGPData(values[0]),
             fac.newPGPData(values[0], values[1], null),
             fac.newPGPData(values[1], null)
         };
-        for (int i = 0; i<pds.length; i++) {
+        for (PGPData pd : pds) {
             @SuppressWarnings("unchecked")
-            List<XMLStructure> li = pds[i].getExternalElements();
+            List<XMLStructure> li = pd.getExternalElements();
             assertNotNull(li);
             if (!li.isEmpty()) {
                 Object[] types = li.toArray();
-                for (int j = 0; j < types.length; j++) {
-                    if (!(types[j] instanceof XMLStructure)) {
+                for (Object type : types) {
+                    if (!(type instanceof XMLStructure)) {
                         fail("PGP element has the wrong type");
                     }
                 }
@@ -87,7 +91,7 @@ public class PGPDataTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testgetKeyId() {
         PGPData pd = fac.newPGPData(values[0]);
         assertNotNull(pd.getKeyId());
@@ -96,7 +100,7 @@ public class PGPDataTest {
         pd = fac.newPGPData(values[1], null);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testgetKeyPacket() {
         PGPData pd = fac.newPGPData(values[0]);
         pd = fac.newPGPData(values[0], values[1], null);
@@ -105,7 +109,7 @@ public class PGPDataTest {
         assertNotNull(pd.getKeyPacket());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testConstructor() {
         // test newPGPKeyData(byte[])
         PGPData pd = fac.newPGPData(values[0]);
@@ -121,7 +125,7 @@ public class PGPDataTest {
         assertArrayEquals(values[1], pd.getKeyPacket());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testisFeatureSupported() {
         PGPData pd = null;
         for (int i = 0; i < 3; i++) {

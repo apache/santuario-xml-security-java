@@ -38,6 +38,7 @@ import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -62,7 +63,7 @@ public class CreateSignatureXalanTest {
         System.clearProperty("org.apache.xml.security.resource.config");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testXFilter2Signature() throws Exception {
         Document doc = TestUtils.newDocument();
         doc.appendChild(doc.createComment(" Comment before "));

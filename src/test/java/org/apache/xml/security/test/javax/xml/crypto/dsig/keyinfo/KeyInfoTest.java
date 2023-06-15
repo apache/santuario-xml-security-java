@@ -34,6 +34,7 @@ import javax.xml.crypto.dsig.keyinfo.KeyInfoFactory;
 
 import org.apache.jcp.xml.dsig.internal.dom.DOMUtils;
 import org.apache.xml.security.test.dom.TestUtils;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -49,21 +50,21 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class KeyInfoTest {
 
-    private KeyInfoFactory fac;
+    private final KeyInfoFactory fac;
 
     public KeyInfoTest() throws Exception {
         fac = KeyInfoFactory.getInstance
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testgetId() {
         KeyInfo ki = fac.newKeyInfo
             (Collections.singletonList(fac.newKeyName("foo")), "skeleton");
         assertNotNull(ki.getId());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     @SuppressWarnings("unchecked")
     public void testgetContent() {
         KeyInfo[] infos = new KeyInfo[2];
@@ -71,20 +72,19 @@ public class KeyInfoTest {
             (Collections.singletonList(fac.newKeyName("foo")), "skeleton");
         infos[1] = fac.newKeyInfo
             (Collections.singletonList(fac.newKeyName("foo")));
-        for (int j = 0; j < infos.length; j++) {
-            KeyInfo ki = infos[j];
+        for (KeyInfo ki : infos) {
             List<XMLStructure> li = ki.getContent();
             assertNotNull(ki.getContent());
             Object[] content = li.toArray();
-            for (int i = 0; i < content.length; i++) {
-                if (!(content[i] instanceof XMLStructure)) {
+            for (Object element : content) {
+                if (!(element instanceof XMLStructure)) {
                     fail("KeyInfo element has the wrong type");
                 }
             }
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testConstructor() {
         final String id = "keyId";
         // test newKeyInfo(List, String id)
@@ -99,7 +99,7 @@ public class KeyInfoTest {
         ki = fac.newKeyInfo(Collections.singletonList(fac.newKeyName("foo")));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testisFeatureSupported() {
         KeyInfo ki = fac.newKeyInfo
             (Collections.singletonList(fac.newKeyName("foo")), "keyid");
@@ -111,7 +111,7 @@ public class KeyInfoTest {
         assertFalse(ki.isFeatureSupported("not supported"));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testMarshal() throws Exception {
         KeyInfo ki = fac.newKeyInfo
             (Collections.singletonList(fac.newKeyName("foo")), "keyid");

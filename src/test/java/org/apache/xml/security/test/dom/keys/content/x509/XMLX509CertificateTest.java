@@ -27,6 +27,7 @@ import org.apache.xml.security.keys.content.x509.XMLX509Certificate;
 import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -39,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 public class XMLX509CertificateTest {
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testGetX509Certificate() throws Exception {
         File f = resolveFile("src", "test", "resources", "ie", "baltimore", "merlin-examples",
             "merlin-xmldsig-twenty-three", "signature-x509-crt.xml");
@@ -50,7 +51,7 @@ public class XMLX509CertificateTest {
         // System.out.println(cert);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testEqualsAndHashCode() throws Exception {
         File f = resolveFile("src/test/resources/ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/certs/lugh.crt");
         X509Certificate cert;

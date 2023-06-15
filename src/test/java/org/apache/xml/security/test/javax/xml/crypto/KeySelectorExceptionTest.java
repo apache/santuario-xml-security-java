@@ -25,7 +25,10 @@ package org.apache.xml.security.test.javax.xml.crypto;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.Arrays;
+
 import javax.xml.crypto.KeySelectorException;
+
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -38,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class KeySelectorExceptionTest {
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testConstructor() {
         // test KeySelectorException()
         KeySelectorException kse = new KeySelectorException();

@@ -25,6 +25,7 @@ package org.apache.xml.security.test.javax.xml.crypto.dsig;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.security.Security;
+
 import javax.xml.crypto.KeySelector;
 import javax.xml.crypto.URIDereferencer;
 import javax.xml.crypto.dsig.XMLSignatureException;
@@ -32,6 +33,7 @@ import javax.xml.crypto.dsig.dom.DOMValidateContext;
 
 import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.test.javax.xml.crypto.KeySelectors;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -60,7 +62,7 @@ public class PhaosXMLDSig3Test {
         ud = new LocalHttpCacheURIDereferencer();
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_dsa_detached() throws Exception {
         String file = "signature-dsa-detached.xml";
 
@@ -73,7 +75,7 @@ public class PhaosXMLDSig3Test {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_dsa_enveloped() throws Exception {
         String file = "signature-dsa-enveloped.xml";
 
@@ -82,7 +84,7 @@ public class PhaosXMLDSig3Test {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_dsa_enveloping() throws Exception {
         String file = "signature-dsa-enveloping.xml";
 
@@ -91,7 +93,7 @@ public class PhaosXMLDSig3Test {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_dsa_manifest() throws Exception {
         String file = "signature-dsa-manifest.xml";
 
@@ -100,7 +102,7 @@ public class PhaosXMLDSig3Test {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_hmac_sha1_40_c14n_comments_detached()
     throws Exception {
         String file = "signature-hmac-sha1-40-c14n-comments-detached.xml";
@@ -116,7 +118,7 @@ public class PhaosXMLDSig3Test {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_hmac_sha1_40_exclusive_c14n_comments_detached()
     throws Exception {
         String file = "signature-hmac-sha1-40-exclusive-c14n-comments-detached.xml";
@@ -132,7 +134,7 @@ public class PhaosXMLDSig3Test {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_hmac_sha1_exclusive_c14n_comments_detached()
     throws Exception {
         String file = "signature-hmac-sha1-exclusive-c14n-comments-detached.xml";
@@ -143,7 +145,7 @@ public class PhaosXMLDSig3Test {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_hmac_sha1_exclusive_c14n_enveloped()
     throws Exception {
         String file = "signature-hmac-sha1-exclusive-c14n-enveloped.xml";
@@ -154,7 +156,7 @@ public class PhaosXMLDSig3Test {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_rsa_detached_b64_transform() throws Exception {
         String file = "signature-rsa-detached-b64-transform.xml";
 
@@ -163,7 +165,7 @@ public class PhaosXMLDSig3Test {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_rsa_detached_xpath_transform() throws Exception {
         String file = "signature-rsa-detached-xpath-transform.xml";
 
@@ -172,7 +174,7 @@ public class PhaosXMLDSig3Test {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_rsa_detached_xslt_transform_bad_rm() throws Exception {
         String file = "signature-rsa-detached-xslt-transform-bad-retrieval-method.xml";
 
@@ -184,7 +186,7 @@ public class PhaosXMLDSig3Test {
         } catch (XMLSignatureException xse) {}
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_rsa_detached_xslt_transform_rm() throws Exception {
         String file = "signature-rsa-detached-xslt-transform-retrieval-method.xml";
 
@@ -194,7 +196,7 @@ public class PhaosXMLDSig3Test {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_rsa_detached_xslt_transform() throws Exception {
         String file = "signature-rsa-detached-xslt-transform.xml";
 
@@ -203,7 +205,7 @@ public class PhaosXMLDSig3Test {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_rsa_detached() throws Exception {
         String file = "signature-rsa-detached.xml";
 
@@ -215,7 +217,7 @@ public class PhaosXMLDSig3Test {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_rsa_enveloped_bad_digest_val() throws Exception {
         String file = "signature-rsa-enveloped-bad-digest-val.xml";
 
@@ -224,7 +226,7 @@ public class PhaosXMLDSig3Test {
         assertFalse(coreValidity, "Signature should fail core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_rsa_enveloped() throws Exception {
         String file = "signature-rsa-enveloped.xml";
 
@@ -233,7 +235,7 @@ public class PhaosXMLDSig3Test {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_rsa_enveloping() throws Exception {
         String file = "signature-rsa-enveloping.xml";
 
@@ -242,7 +244,7 @@ public class PhaosXMLDSig3Test {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_rsa_manifest_x509_data_cert_chain() throws Exception {
         String file = "signature-rsa-manifest-x509-data-cert-chain.xml";
 
@@ -251,7 +253,7 @@ public class PhaosXMLDSig3Test {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_rsa_manifest_x509_data_cert() throws Exception {
         String file = "signature-rsa-manifest-x509-data-cert.xml";
 
@@ -260,7 +262,7 @@ public class PhaosXMLDSig3Test {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_rsa_manifest_x509_data_issuer_serial() throws Exception {
         String file = "signature-rsa-manifest-x509-data-issuer-serial.xml";
 
@@ -269,7 +271,7 @@ public class PhaosXMLDSig3Test {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_rsa_manifest_x509_data_ski() throws Exception {
         String file = "signature-rsa-manifest-x509-data-ski.xml";
 
@@ -278,7 +280,7 @@ public class PhaosXMLDSig3Test {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_rsa_manifest_x509_data_subject_name() throws Exception {
         String file = "signature-rsa-manifest-x509-data-subject-name.xml";
 
@@ -287,7 +289,7 @@ public class PhaosXMLDSig3Test {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_rsa_manifest_x509_data() throws Exception {
         String file = "signature-rsa-manifest-x509-data.xml";
 
@@ -296,7 +298,7 @@ public class PhaosXMLDSig3Test {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_rsa_manifest() throws Exception {
         String file = "signature-rsa-manifest.xml";
 

@@ -57,6 +57,7 @@ import org.apache.xml.security.keys.storage.StorageResolver;
 import org.apache.xml.security.keys.storage.implementations.KeyStoreResolver;
 import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.utils.Constants;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
@@ -71,8 +72,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
  */
 public class KeyResolverTest {
 
-    private static final String SEP = System.getProperty("file.separator");
-
     public KeyResolverTest() {
         org.apache.xml.security.Init.init();
     }
@@ -80,7 +79,7 @@ public class KeyResolverTest {
     /**
      * Test key resolvers through a KeyInfo.
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void testKeyResolvers() throws Exception {
 
         //
@@ -190,7 +189,7 @@ public class KeyResolverTest {
      * Decrypt the data by resolving the Key Encryption Key.
      * This test verifies if a KeyResolver can return a PrivateKey.
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void testResolvePrivateKey() throws Exception {
         // See if AES-128 is available...
         String algorithmId =

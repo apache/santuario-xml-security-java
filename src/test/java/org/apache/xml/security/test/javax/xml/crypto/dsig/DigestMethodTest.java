@@ -21,10 +21,13 @@
  */
 package org.apache.xml.security.test.javax.xml.crypto.dsig;
 
-import javax.xml.crypto.dsig.*;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.NoSuchAlgorithmException;
 
+import javax.xml.crypto.dsig.DigestMethod;
+import javax.xml.crypto.dsig.XMLSignatureFactory;
 
-import java.security.*;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -38,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class DigestMethodTest {
 
-    private XMLSignatureFactory factory;
+    private final XMLSignatureFactory factory;
 
     private static final String[] MD_ALGOS = {
         DigestMethod.SHA1
@@ -49,11 +52,10 @@ public class DigestMethodTest {
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testisFeatureSupported() throws Exception {
         DigestMethod dm;
-        for (int i = 0; i < MD_ALGOS.length; i++) {
-            String algo = MD_ALGOS[i];
+        for (String algo : MD_ALGOS) {
             dm = factory.newDigestMethod(algo, null);
             try {
                 dm.isFeatureSupported(null);
@@ -63,14 +65,13 @@ public class DigestMethodTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testConstructor() throws Exception {
         // test DSigStructureFactory.newDigestMethod
         // (String algorithm, AlgorithmParameterSpec params)
         // for generating DigestMethod objects
         DigestMethod dm;
-        for (int i = 0; i < MD_ALGOS.length; i++) {
-            String algo = MD_ALGOS[i];
+        for (String algo : MD_ALGOS) {
             dm = factory.newDigestMethod(algo, null);
             assertEquals(dm.getAlgorithm(), algo);
 

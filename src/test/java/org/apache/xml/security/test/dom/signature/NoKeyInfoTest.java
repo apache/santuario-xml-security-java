@@ -27,6 +27,7 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -39,7 +40,7 @@ public class NoKeyInfoTest {
         Init.init();
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testNullKeyInfo() throws Exception {
         String filename = "src/test/resources/ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-enveloping-hmac-sha1.xml";
         File f = XmlSecTestEnvironment.resolveFile(filename);

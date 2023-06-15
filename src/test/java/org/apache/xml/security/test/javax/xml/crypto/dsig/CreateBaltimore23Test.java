@@ -30,6 +30,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.FileSystems;
 import java.security.Key;
 import java.security.KeyStore;
 import java.security.PublicKey;
@@ -80,6 +81,7 @@ import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 import org.apache.xml.security.utils.resolver.ResourceResolver;
 import org.apache.xml.security.utils.resolver.implementations.ResolverLocalFilesystem;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -140,7 +142,7 @@ public class CreateBaltimore23Test {
         ud = new LocalHttpCacheURIDereferencer();
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_signature_enveloped_dsa() throws Exception {
         // create SignedInfo
         SignedInfo si = fac.newSignedInfo
@@ -174,17 +176,17 @@ public class CreateBaltimore23Test {
         assertTrue(sig2.validate(dvc));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_signature_enveloping_b64_dsa() throws Exception {
         test_create_signature_enveloping(dsaSha1, dsa, signingKey, kvks, true);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_signature_enveloping_dsa() throws Exception {
         test_create_signature_enveloping(dsaSha1, dsa, signingKey, kvks, false);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_signature_enveloping_hmac_sha1_40()
         throws Exception {
         SignatureMethod hmacSha1 = fac.newSignatureMethod
@@ -199,7 +201,7 @@ public class CreateBaltimore23Test {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_signature_enveloping_hmac_sha1()
         throws Exception {
         SignatureMethod hmacSha1 = fac.newSignatureMethod
@@ -208,23 +210,23 @@ public class CreateBaltimore23Test {
             TestUtils.getSecretKey("secret".getBytes(StandardCharsets.US_ASCII)), sks, false);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_signature_enveloping_rsa() throws Exception {
         test_create_signature_enveloping(rsaSha1, rsa,
             TestUtils.getPrivateKey("RSA"), kvks, false);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_signature_external_b64_dsa() throws Exception {
         test_create_signature_external(dsaSha1, dsa, signingKey, kvks, true);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_signature_external_dsa() throws Exception {
         test_create_signature_external(dsaSha1, dsa, signingKey, kvks, false);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_signature_keyname() throws Exception {
         KeyInfo kn = kifac.newKeyInfo(Collections.singletonList
             (kifac.newKeyName("mullan")));
@@ -232,7 +234,7 @@ public class CreateBaltimore23Test {
             new X509KeySelector(ks), false);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_signature_retrievalmethod_rawx509crt()
         throws Exception {
         KeyInfo rm = kifac.newKeyInfo(Collections.singletonList
@@ -242,7 +244,7 @@ public class CreateBaltimore23Test {
             new X509KeySelector(ks), false);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_signature_x509_crt_crl() throws Exception {
 
         //
@@ -266,7 +268,7 @@ public class CreateBaltimore23Test {
         test_create_signature_external(dsaSha1, crt_crl, signingKey, new X509KeySelector(ks), false);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_signature_x509_crt() throws Exception {
         //
         // This test fails with the IBM JDK
@@ -282,7 +284,7 @@ public class CreateBaltimore23Test {
             new X509KeySelector(ks), false);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_signature_x509_is() throws Exception {
         //
         // This test fails with the IBM JDK
@@ -300,7 +302,7 @@ public class CreateBaltimore23Test {
             new X509KeySelector(ks), false);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_signature_x509_ski() throws Exception {
         KeyInfo ski = kifac.newKeyInfo(Collections.singletonList
             (kifac.newX509Data(Collections.singletonList
@@ -310,7 +312,7 @@ public class CreateBaltimore23Test {
             KeySelector.singletonKeySelector(validatingKey), false);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_signature_x509_sn() throws Exception {
         //
         // This test fails with the IBM JDK
@@ -327,7 +329,7 @@ public class CreateBaltimore23Test {
             new X509KeySelector(ks), false);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_signature() throws Exception {
 
         //
@@ -623,10 +625,10 @@ public class CreateBaltimore23Test {
         DOMValidateContext dvc = new DOMValidateContext
             (new X509KeySelector(ks), sigElement);
         File f = new File(
-            System.getProperty("dir.test.vector.baltimore") +
-            System.getProperty("file.separator") +
-            "merlin-xmldsig-twenty-three" +
-            System.getProperty("file.separator"));
+        System.getProperty("dir.test.vector.baltimore") +
+        FileSystems.getDefault().getSeparator() +
+        "merlin-xmldsig-twenty-three" +
+        FileSystems.getDefault().getSeparator());
         dvc.setBaseURI(f.toURI().toString());
         dvc.setURIDereferencer(ud);
 

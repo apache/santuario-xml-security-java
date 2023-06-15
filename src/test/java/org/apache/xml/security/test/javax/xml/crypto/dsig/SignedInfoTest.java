@@ -23,9 +23,18 @@ package org.apache.xml.security.test.javax.xml.crypto.dsig;
 
 
 import java.security.Security;
-import java.util.*;
-import javax.xml.crypto.dsig.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.crypto.dsig.CanonicalizationMethod;
+import javax.xml.crypto.dsig.DigestMethod;
+import javax.xml.crypto.dsig.Reference;
+import javax.xml.crypto.dsig.SignatureMethod;
+import javax.xml.crypto.dsig.SignedInfo;
+import javax.xml.crypto.dsig.XMLSignatureFactory;
 import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
+
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,10 +48,10 @@ import static org.junit.jupiter.api.Assertions.fail;
  *
  */
 public class SignedInfoTest {
-    private XMLSignatureFactory fac;
-    private CanonicalizationMethod cm;
-    private SignatureMethod sm;
-    private List<Reference> references;
+    private final XMLSignatureFactory fac;
+    private final CanonicalizationMethod cm;
+    private final SignatureMethod sm;
+    private final List<Reference> references;
 
     static {
         Security.insertProviderAt
@@ -63,7 +72,7 @@ public class SignedInfoTest {
     }
 
     @SuppressWarnings("rawtypes")
-    @org.junit.jupiter.api.Test
+    @Test
     public void testConstructor() {
         // test XMLSignatureFactory.newSignedInfo(
         //	CanonicalizationMethod cm,

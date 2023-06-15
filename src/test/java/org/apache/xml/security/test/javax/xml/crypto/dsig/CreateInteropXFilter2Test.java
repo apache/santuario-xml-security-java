@@ -22,8 +22,6 @@
 package org.apache.xml.security.test.javax.xml.crypto.dsig;
 
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.security.Key;
 import java.security.KeyStore;
 import java.security.PublicKey;
@@ -53,6 +51,7 @@ import javax.xml.crypto.dsig.spec.XPathType;
 
 import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.test.javax.xml.crypto.KeySelectors;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -93,7 +92,7 @@ public class CreateInteropXFilter2Test {
     @SuppressWarnings({
      "rawtypes", "unchecked"
     })
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_sign_spec() throws Exception {
         List<Reference> refs = new ArrayList<>(2);
 

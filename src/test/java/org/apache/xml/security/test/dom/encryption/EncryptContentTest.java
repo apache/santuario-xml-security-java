@@ -37,6 +37,7 @@ import org.apache.xml.security.encryption.XMLCipher;
 import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -71,7 +72,7 @@ public class EncryptContentTest {
         "  </user>\n" +
         "</users>\n";
 
-    private SecretKey secretKey;
+    private final SecretKey secretKey;
     private boolean haveISOPadding;
 
     public EncryptContentTest() throws Exception {
@@ -107,7 +108,7 @@ public class EncryptContentTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testContentRemoved() throws Exception {
         if (!haveISOPadding) {
             LOG.warn("Test testContentRemoved skipped as necessary algorithms not available");
@@ -159,7 +160,7 @@ public class EncryptContentTest {
      * See SANTUARIO-301:
      * https://issues.apache.org/jira/browse/SANTUARIO-301
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void testMultipleKeyInfoElements() throws Exception {
         if (!haveISOPadding) {
             LOG.warn("Test testMultipleKeyInfoElements skipped as necessary algorithms not available");

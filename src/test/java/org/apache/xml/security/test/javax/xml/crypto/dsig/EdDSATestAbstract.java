@@ -18,12 +18,15 @@
  */
 package org.apache.xml.security.test.javax.xml.crypto.dsig;
 
+import java.security.Security;
+
+import javax.xml.crypto.dsig.dom.DOMValidateContext;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-
-import javax.xml.crypto.dsig.dom.DOMValidateContext;
-import java.security.Security;
 
 /**
  * Abstract/super class for EdDSA signature tests
@@ -36,7 +39,7 @@ public abstract class EdDSATestAbstract {
     public static final String EDDSA_KS_TYPE = "PKCS12";
     private static boolean bcAddedForTheTest = false;
 
-    @org.junit.jupiter.api.BeforeAll
+    @BeforeAll
     public static void beforeAll() {
         Security.insertProviderAt
                 (new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI(), 1);
@@ -55,7 +58,7 @@ public abstract class EdDSATestAbstract {
         }
     }
 
-    @org.junit.jupiter.api.AfterAll
+    @AfterAll
     public static void afterAll() {
         if (bcAddedForTheTest) {
             Security.removeProvider(org.bouncycastle.jce.provider.BouncyCastleProvider.PROVIDER_NAME);

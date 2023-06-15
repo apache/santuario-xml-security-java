@@ -29,6 +29,7 @@ import javax.xml.crypto.dsig.dom.DOMValidateContext;
 import org.apache.xml.security.test.javax.xml.crypto.KeySelectors;
 import org.apache.xml.security.utils.resolver.ResourceResolver;
 import org.apache.xml.security.utils.resolver.implementations.ResolverLocalFilesystem;
+import org.junit.jupiter.api.Test;
 
 import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -53,7 +54,7 @@ public class JSRForbiddenReferenceTest {
     }
 
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testLocalFilesystem() throws Exception {
         String file = "signature-external-c14n-xmlatrs.xml";
 

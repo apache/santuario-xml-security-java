@@ -41,8 +41,10 @@ import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -90,12 +92,12 @@ public class PKSignatureAlgorithmTest {
         ecKeyPair = KeyPairGenerator.getInstance("EC").genKeyPair();
     }
 
-    @org.junit.jupiter.api.AfterAll
+    @AfterAll
     public static void cleanup() throws Exception {
         Security.removeProvider("BC");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testRSA_MD5() throws Exception {
         // Read in plaintext document
         InputStream sourceDocument =
@@ -111,7 +113,7 @@ public class PKSignatureAlgorithmTest {
         verify(document, rsaKeyPair.getPublic(), localNames, false);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testRSA_SHA1() throws Exception {
         // Read in plaintext document
         InputStream sourceDocument =
@@ -127,7 +129,7 @@ public class PKSignatureAlgorithmTest {
         verify(document, rsaKeyPair.getPublic(), localNames);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testRSA_SHA_224() throws Exception {
         // Read in plaintext document
         InputStream sourceDocument =
@@ -143,7 +145,7 @@ public class PKSignatureAlgorithmTest {
         verify(document, rsaKeyPair.getPublic(), localNames);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testRSA_SHA_256() throws Exception {
         // Read in plaintext document
         InputStream sourceDocument =
@@ -159,7 +161,7 @@ public class PKSignatureAlgorithmTest {
         verify(document, rsaKeyPair.getPublic(), localNames);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testRSA_SHA_384() throws Exception {
         // Read in plaintext document
         InputStream sourceDocument =
@@ -175,7 +177,7 @@ public class PKSignatureAlgorithmTest {
         verify(document, rsaKeyPair.getPublic(), localNames);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testRSA_SHA_512() throws Exception {
         // Read in plaintext document
         InputStream sourceDocument =
@@ -191,7 +193,7 @@ public class PKSignatureAlgorithmTest {
         verify(document, rsaKeyPair.getPublic(), localNames);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testRSA_RIPEMD160() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
@@ -209,7 +211,7 @@ public class PKSignatureAlgorithmTest {
         verify(document, rsaKeyPair.getPublic(), localNames);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testRSA_SHA1_MGF1() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
@@ -227,7 +229,7 @@ public class PKSignatureAlgorithmTest {
         verify(document, rsaKeyPair.getPublic(), localNames);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testRSA_SHA224_MGF1() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
@@ -245,7 +247,7 @@ public class PKSignatureAlgorithmTest {
         verify(document, rsaKeyPair.getPublic(), localNames);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testRSA_SHA256_MGF1() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
@@ -263,7 +265,7 @@ public class PKSignatureAlgorithmTest {
         verify(document, rsaKeyPair.getPublic(), localNames);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testRSA_SHA384_MGF1() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
@@ -281,7 +283,7 @@ public class PKSignatureAlgorithmTest {
         verify(document, rsaKeyPair.getPublic(), localNames);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testRSA_SHA512_MGF1() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
@@ -299,7 +301,7 @@ public class PKSignatureAlgorithmTest {
         verify(document, rsaKeyPair.getPublic(), localNames);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testRSA_SHA3_224_MGF1() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
@@ -317,7 +319,7 @@ public class PKSignatureAlgorithmTest {
         verify(document, rsaKeyPair.getPublic(), localNames);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testRSA_SHA3_256_MGF1() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
@@ -335,7 +337,7 @@ public class PKSignatureAlgorithmTest {
         verify(document, rsaKeyPair.getPublic(), localNames);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testRSA_SHA3_384_MGF1() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
@@ -353,7 +355,7 @@ public class PKSignatureAlgorithmTest {
         verify(document, rsaKeyPair.getPublic(), localNames);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testRSA_SHA3_512_MGF1() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
@@ -371,7 +373,7 @@ public class PKSignatureAlgorithmTest {
         verify(document, rsaKeyPair.getPublic(), localNames);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testRSA_PSS() throws Exception {
         Assumptions.assumeTrue(bcInstalled || TestUtils.isJava11Compatible());
         // Read in plaintext document
@@ -389,7 +391,7 @@ public class PKSignatureAlgorithmTest {
         verify(document, rsaKeyPair.getPublic(), localNames);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testECDSA_SHA1() throws Exception {
         // Read in plaintext document
         InputStream sourceDocument =
@@ -405,7 +407,7 @@ public class PKSignatureAlgorithmTest {
         verify(document, ecKeyPair.getPublic(), localNames);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testECDSA_SHA_224() throws Exception {
         // Read in plaintext document
         InputStream sourceDocument =
@@ -421,7 +423,7 @@ public class PKSignatureAlgorithmTest {
         verify(document, ecKeyPair.getPublic(), localNames);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testECDSA_SHA_256() throws Exception {
         // Read in plaintext document
         InputStream sourceDocument =
@@ -437,7 +439,7 @@ public class PKSignatureAlgorithmTest {
         verify(document, ecKeyPair.getPublic(), localNames);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testECDSA_SHA_384() throws Exception {
         // Read in plaintext document
         InputStream sourceDocument =
@@ -453,7 +455,7 @@ public class PKSignatureAlgorithmTest {
         verify(document, ecKeyPair.getPublic(), localNames);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testECDSA_SHA_512() throws Exception {
         // Read in plaintext document
         InputStream sourceDocument =
@@ -469,7 +471,7 @@ public class PKSignatureAlgorithmTest {
         verify(document, ecKeyPair.getPublic(), localNames);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testECDSA_RIPEMD160() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 

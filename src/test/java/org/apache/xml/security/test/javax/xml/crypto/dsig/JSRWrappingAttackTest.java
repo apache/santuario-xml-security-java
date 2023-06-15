@@ -20,7 +20,6 @@ package org.apache.xml.security.test.javax.xml.crypto.dsig;
 
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.security.Security;
 
 import javax.xml.crypto.dsig.XMLSignatureException;
@@ -28,6 +27,7 @@ import javax.xml.crypto.dsig.dom.DOMValidateContext;
 
 import org.apache.xml.security.test.javax.xml.crypto.KeySelectors;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -54,7 +54,7 @@ public class JSRWrappingAttackTest {
     }
 
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testWrappingAttack() throws Exception {
         String file = "manifestSignatureWrapping.xml";
         Document doc = XMLUtils.read(new File(dir, file), false);

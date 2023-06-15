@@ -18,20 +18,18 @@
  */
 package org.apache.xml.security.test.stax.c14n;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
-import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer11_OmitCommentsTransformer;
-import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
+import java.io.ByteArrayOutputStream;
+import java.io.StringReader;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 
-
-import java.io.ByteArrayOutputStream;
-import java.io.StringReader;
+import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
+import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer11_OmitCommentsTransformer;
+import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

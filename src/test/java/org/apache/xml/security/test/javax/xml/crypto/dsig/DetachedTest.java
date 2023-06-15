@@ -21,17 +21,30 @@
  */
 package org.apache.xml.security.test.javax.xml.crypto.dsig;
 
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.SecureRandom;
+import java.security.Security;
+import java.util.Collections;
+import java.util.Iterator;
+
 import javax.xml.crypto.URIDereferencer;
-import javax.xml.crypto.dsig.*;
+import javax.xml.crypto.dsig.CanonicalizationMethod;
+import javax.xml.crypto.dsig.DigestMethod;
+import javax.xml.crypto.dsig.Reference;
+import javax.xml.crypto.dsig.SignatureMethod;
+import javax.xml.crypto.dsig.SignedInfo;
+import javax.xml.crypto.dsig.XMLSignature;
+import javax.xml.crypto.dsig.XMLSignatureFactory;
+import javax.xml.crypto.dsig.XMLValidateContext;
 import javax.xml.crypto.dsig.dom.DOMSignContext;
 import javax.xml.crypto.dsig.dom.DOMValidateContext;
-import javax.xml.crypto.dsig.keyinfo.*;
+import javax.xml.crypto.dsig.keyinfo.KeyInfo;
+import javax.xml.crypto.dsig.keyinfo.KeyInfoFactory;
+import javax.xml.crypto.dsig.keyinfo.KeyValue;
 import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 
-
-import java.security.*;
-import java.util.*;
-
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -94,7 +107,7 @@ public class DetachedTest {
         //
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test() {
         try {
             //

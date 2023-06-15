@@ -24,6 +24,7 @@ import org.apache.xml.security.test.dom.utils.resolver.OfflineResolver;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -67,7 +68,7 @@ public class BaltimoreXalanTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_sixteen_external_dsa() throws Exception {
 
         File file = new File(merlinsDir16, "signature.xml");
@@ -97,7 +98,7 @@ public class BaltimoreXalanTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_sixteen_bad_signature() throws Exception {
 
         File filename = new File(merlinsDir16 + "/bad-signature.xml");
@@ -125,7 +126,7 @@ public class BaltimoreXalanTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_twenty_three_external_dsa_2() throws Exception {
 
         File filename = new File(merlinsDir23, "signature.xml");

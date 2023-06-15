@@ -42,6 +42,7 @@ import javax.xml.crypto.dsig.spec.HMACParameterSpec;
 import javax.xml.crypto.dsig.spec.TransformParameterSpec;
 
 import org.apache.xml.security.test.javax.xml.crypto.KeySelectors;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -57,7 +58,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class CreatePhaosXMLDSig3Test {
 
-    private XMLSignatureFactory fac;
+    private final XMLSignatureFactory fac;
 
     static {
         Security.insertProviderAt
@@ -69,12 +70,12 @@ public class CreatePhaosXMLDSig3Test {
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_hmac_sha1_exclusive_c14n_comments_detached() throws Exception {
         test_create_hmac_sha1_exclusive_c14n_comments_detached(false);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_hmac_sha1_40_exclusive_c14n_comments_detached()
         throws Exception {
         try {
@@ -132,7 +133,7 @@ public class CreatePhaosXMLDSig3Test {
         assertTrue(sig2.validate(dvc));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_create_hmac_sha1_exclusive_c14n_enveloped() throws Exception {
 
         // create reference

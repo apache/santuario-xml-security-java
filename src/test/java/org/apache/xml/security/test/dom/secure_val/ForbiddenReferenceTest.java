@@ -28,6 +28,7 @@ import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 import org.apache.xml.security.utils.resolver.ResourceResolver;
 import org.apache.xml.security.utils.resolver.implementations.ResolverLocalFilesystem;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Element;
 
 import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
@@ -44,7 +45,7 @@ public class ForbiddenReferenceTest extends InteropTestBase {
         org.apache.xml.security.Init.init();
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testLocalFilesystem() throws Exception {
         try {
             readAndVerifyManifest("signature.xml");

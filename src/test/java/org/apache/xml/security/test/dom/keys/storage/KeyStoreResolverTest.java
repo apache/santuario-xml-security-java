@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import org.apache.xml.security.keys.storage.implementations.KeyStoreResolver;
+import org.junit.jupiter.api.Test;
 
 import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -38,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class KeyStoreResolverTest {
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testKeyStoreResolver() throws Exception {
 
         //

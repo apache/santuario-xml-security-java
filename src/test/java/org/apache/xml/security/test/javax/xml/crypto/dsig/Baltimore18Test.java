@@ -31,6 +31,7 @@ import javax.xml.crypto.URIDereferencer;
 
 import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.test.javax.xml.crypto.KeySelectors;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -57,7 +58,7 @@ public class Baltimore18Test {
         ud = new LocalHttpCacheURIDereferencer();
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSignatureKeyname() throws Exception {
         String file = "signature-keyname.xml";
 
@@ -66,7 +67,7 @@ public class Baltimore18Test {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSignatureRetrievalmethodRawx509crt() throws Exception {
         String file = "signature-retrievalmethod-rawx509crt.xml";
 
@@ -75,7 +76,7 @@ public class Baltimore18Test {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSignatureX509CrtCrl() throws Exception {
         String file = "signature-x509-crt-crl.xml";
 
@@ -84,7 +85,7 @@ public class Baltimore18Test {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSignatureX509Crt() throws Exception {
         String file = "signature-x509-crt.xml";
 
@@ -93,7 +94,7 @@ public class Baltimore18Test {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSignatureX509Is() throws Exception {
         String file = "signature-x509-is.xml";
 
@@ -102,7 +103,7 @@ public class Baltimore18Test {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSignatureX509Ski() throws Exception {
         String file = "signature-x509-ski.xml";
 
@@ -111,7 +112,7 @@ public class Baltimore18Test {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSignatureX509Sn() throws Exception {
         String file = "signature-x509-sn.xml";
 

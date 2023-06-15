@@ -29,6 +29,7 @@ import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.transforms.Transform;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -48,7 +49,7 @@ public class TransformXSLTTest {
      * Make sure Transform.performTransform does not throw NullPointerException.
      * See bug 41927 for more info.
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test1() throws Exception {
         Document doc1 = getDocument(SIGNATURE_FILE);
         Document doc2 = getDocument(STYLESHEET_FILE);

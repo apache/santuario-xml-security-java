@@ -40,6 +40,7 @@ import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 
 import org.apache.xml.security.test.javax.xml.crypto.KeySelectors;
 import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
@@ -53,13 +54,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class SignatureDigestMethodTest {
 
-    private KeySelector kvks;
-    private CanonicalizationMethod withoutComments;
-    private DigestMethod sha1, sha224, sha256, sha384, sha512, ripemd160,
+    private final KeySelector kvks;
+    private final CanonicalizationMethod withoutComments;
+    private final DigestMethod sha1, sha224, sha256, sha384, sha512, ripemd160,
                 whirlpool, sha3_224, sha3_256, sha3_384, sha3_512;
-    private SignatureMethod rsaSha1;
-    private KeyInfo rsaki;
-    private XMLSignatureFactory fac;
+    private final SignatureMethod rsaSha1;
+    private final KeyInfo rsaki;
+    private final XMLSignatureFactory fac;
     private boolean bcInstalled;
 
     static {
@@ -98,72 +99,72 @@ public class SignatureDigestMethodTest {
         kvks = new KeySelectors.KeyValueKeySelector();
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSHA1() throws Exception {
         test_create_signature_enveloping(rsaSha1, sha1, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSHA224() throws Exception {
         test_create_signature_enveloping(rsaSha1, sha224, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSHA256() throws Exception {
         test_create_signature_enveloping(rsaSha1, sha256, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSHA384() throws Exception {
         test_create_signature_enveloping(rsaSha1, sha384, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSHA512() throws Exception {
         test_create_signature_enveloping(rsaSha1, sha512, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testRIPEMD160() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha1, ripemd160, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testWHIRLPOOL() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha1, whirlpool, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSHA3_224() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha1, sha3_224, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSHA3_256() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha1, sha3_256, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSHA3_384() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha1, sha3_384, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSHA3_512() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha1, sha3_512, rsaki,
