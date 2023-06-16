@@ -45,7 +45,7 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.w3c.dom.traversal.NodeFilter.SHOW_ELEMENT;
 
-public class DOMNamespaceContextTest {
+class DOMNamespaceContextTest {
 
     private static final DocumentBuilderFactory DEFAULT_DOCUMENT_BUILDER_FACTORY;
 
@@ -59,7 +59,7 @@ public class DOMNamespaceContextTest {
     }
 
     @Test
-    public void testUnboundDefaultNamespace() throws Exception {
+    void testUnboundDefaultNamespace() throws Exception {
         Document document = createDocument("<root/>");
         DOMNamespaceContext namespaceContext = new DOMNamespaceContext(document);
         assertThrows(IllegalArgumentException.class, () -> namespaceContext.getNamespaceURI(null));
@@ -75,7 +75,7 @@ public class DOMNamespaceContextTest {
     }
 
     @Test
-    public void testBoundDefaultNamespace() throws Exception {
+    void testBoundDefaultNamespace() throws Exception {
         Document document = createDocument("<root xmlns='urn:ns'/>");
         TreeWalker walker = ((DocumentTraversal) document).createTreeWalker(document, SHOW_ELEMENT, null, true);
         Node root = walker.nextNode();
@@ -94,7 +94,7 @@ public class DOMNamespaceContextTest {
     }
 
     @Test
-    public void testNamespaceInheritance() throws Exception {
+    void testNamespaceInheritance() throws Exception {
         Document document = createDocument("<root xmlns='urn:ns'><branch xmlns:ns1='urn:ns1'/></root>");
         TreeWalker walker = ((DocumentTraversal) document).createTreeWalker(document, SHOW_ELEMENT, null, true);
         Node root = walker.nextNode();
@@ -112,7 +112,7 @@ public class DOMNamespaceContextTest {
     }
 
     @Test
-    public void testOverriddenDefaultNamespace() throws Exception {
+    void testOverriddenDefaultNamespace() throws Exception {
         Document document = createDocument("<root xmlns='urn:ns1'><branch xmlns='urn:ns2'/></root>");
         TreeWalker walker = ((DocumentTraversal) document).createTreeWalker(document, SHOW_ELEMENT, null, true);
         Node root = walker.nextNode();
@@ -128,7 +128,7 @@ public class DOMNamespaceContextTest {
     }
 
     @Test
-    public void testGetPrefixesIsUnsupported() throws Exception {
+    void testGetPrefixesIsUnsupported() throws Exception {
         Document document = createDocument("<root/>");
         TreeWalker walker = ((DocumentTraversal) document).createTreeWalker(document, SHOW_ELEMENT, null, true);
         Node root = walker.nextNode();

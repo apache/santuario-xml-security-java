@@ -37,10 +37,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  */
-public class XMLSecurityEventReaderTest {
+class XMLSecurityEventReaderTest {
 
     @Test
-    public void testConformness() throws Exception {
+    void testConformness() throws Exception {
         XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
         XMLStreamReader xmlStreamReader =
             xmlInputFactory.createXMLStreamReader(this.getClass().getClassLoader().getResourceAsStream(
@@ -79,7 +79,7 @@ public class XMLSecurityEventReaderTest {
     }
 
     @Test
-    public void testIndex() throws Exception {
+    void testIndex() throws Exception {
         XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
         XMLStreamReader xmlStreamReader =
             xmlInputFactory.createXMLStreamReader(this.getClass().getClassLoader().getResourceAsStream(

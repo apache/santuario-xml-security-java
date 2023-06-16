@@ -26,7 +26,6 @@ import java.security.KeyPairGenerator;
 import java.security.SecureRandom;
 import java.security.Security;
 import java.util.Collections;
-import java.util.Iterator;
 
 import javax.xml.crypto.URIDereferencer;
 import javax.xml.crypto.dsig.CanonicalizationMethod;
@@ -96,7 +95,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * </Signature>
  *
  */
-public class DetachedTest {
+class DetachedTest {
 
     static {
         Security.insertProviderAt
@@ -108,7 +107,7 @@ public class DetachedTest {
     }
 
     @Test
-    public void test() {
+    void test() {
         try {
             //
             // PART 1 : Creating the detached signature
@@ -173,11 +172,7 @@ public class DetachedTest {
 
             // Check core validation status
             if (!coreValidity) {
-                // check the validation status of each Reference
-                @SuppressWarnings("unchecked")
-                Iterator<Reference> i = signature.getSignedInfo().getReferences().iterator();
-                while (i.hasNext()) {
-                    Reference reference = i.next();
+                for (Reference reference : signature.getSignedInfo().getReferences()) {
                     reference.validate(vc);
                 }
                 fail("Signature failed core validation");

@@ -43,7 +43,7 @@ import static org.apache.xml.security.test.stax.utils.KeyLoader.loadPublicKey;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class SecurityTokenFactoryImplTest {
+class SecurityTokenFactoryImplTest {
     private KeyInfoType keyInfoType;
     private XMLSecurityProperties xmlSecurityProperties;
     private InboundSecurityContext inboundSecurityContext;
@@ -66,7 +66,7 @@ public class SecurityTokenFactoryImplTest {
     }
 
     @Test
-    public void testKeyNameToken() throws Exception {
+    void testKeyNameToken() throws Exception {
         SecurityTokenFactory factory = new SecurityTokenFactoryImpl();
 
         SecurityTokenConstants.KeyUsage keyUsage = SecurityTokenConstants.KeyUsage_Signature_Verification;
@@ -82,7 +82,7 @@ public class SecurityTokenFactoryImplTest {
     }
 
     @Test
-    public void testKeyNameTokenWithSignatureVerificationKeySet() throws Exception {
+    void testKeyNameTokenWithSignatureVerificationKeySet() throws Exception {
         SecurityTokenFactory factory = new SecurityTokenFactoryImpl();
 
         SecurityTokenConstants.KeyUsage keyUsage = SecurityTokenConstants.KeyUsage_Signature_Verification;
@@ -101,7 +101,7 @@ public class SecurityTokenFactoryImplTest {
     }
 
     @Test
-    public void testKeyNameTokenWithoutKeyInMap() throws Exception {
+    void testKeyNameTokenWithoutKeyInMap() throws Exception {
         SecurityTokenFactory factory = new SecurityTokenFactoryImpl();
 
         SecurityTokenConstants.KeyUsage keyUsage = SecurityTokenConstants.KeyUsage_Signature_Verification;
@@ -115,7 +115,7 @@ public class SecurityTokenFactoryImplTest {
     }
 
     @Test
-    public void testKeyNameTokenWithWrongKeyInMap() throws Exception {
+    void testKeyNameTokenWithWrongKeyInMap() throws Exception {
         SecurityTokenFactory factory = new SecurityTokenFactoryImpl();
 
         SecurityTokenConstants.KeyUsage keyUsage = SecurityTokenConstants.KeyUsage_Signature_Verification;

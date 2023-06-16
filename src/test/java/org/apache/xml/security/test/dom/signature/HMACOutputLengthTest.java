@@ -43,14 +43,14 @@ import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class HMACOutputLengthTest {
+class HMACOutputLengthTest {
 
     public HMACOutputLengthTest() throws Exception {
         Init.init();
     }
 
     @Test
-    public void test_signature_enveloping_hmac_sha1_trunclen_0() throws Exception {
+    void test_signature_enveloping_hmac_sha1_trunclen_0() throws Exception {
         try {
             validate("signature-enveloping-hmac-sha1-trunclen-0-attack.xml");
             fail("Expected HMACOutputLength exception");
@@ -63,7 +63,7 @@ public class HMACOutputLengthTest {
     }
 
     @Test
-    public void test_signature_enveloping_hmac_sha1_trunclen_8() throws Exception {
+    void test_signature_enveloping_hmac_sha1_trunclen_8() throws Exception {
         try {
             validate("signature-enveloping-hmac-sha1-trunclen-8-attack.xml");
         } catch (XMLSignatureException xse) {
@@ -75,7 +75,7 @@ public class HMACOutputLengthTest {
     }
 
     @Test
-    public void test_generate_hmac_sha1_40() throws Exception {
+    void test_generate_hmac_sha1_40() throws Exception {
         Document doc = TestUtils.newDocument();
         try {
             new XMLSignature(
@@ -92,7 +92,7 @@ public class HMACOutputLengthTest {
     }
 
     @Test
-    public void testValidHMACOutputLength() throws Exception {
+    void testValidHMACOutputLength() throws Exception {
         Document doc = TestUtils.newDocument();
 
         doc.appendChild(doc.createComment(" Comment before "));

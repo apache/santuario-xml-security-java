@@ -39,14 +39,14 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * This is a test for a forbidden Reference algorithm
  */
-public class ForbiddenReferenceTest extends InteropTestBase {
+class ForbiddenReferenceTest extends InteropTestBase {
 
     static {
         org.apache.xml.security.Init.init();
     }
 
     @Test
-    public void testLocalFilesystem() throws Exception {
+    void testLocalFilesystem() throws Exception {
         try {
             readAndVerifyManifest("signature.xml");
             fail("Failure expected when secure validation is enabled");

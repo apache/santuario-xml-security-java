@@ -44,12 +44,12 @@ import org.w3c.dom.Document;
 /**
  * A set of test-cases for Signature verification with various HMAC algorithms
  */
-public class SignatureHMACVerificationTest extends AbstractSignatureVerificationTest {
+class SignatureHMACVerificationTest extends AbstractSignatureVerificationTest {
 
     private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
     @Test
-    public void testHMACSHA1() throws Exception {
+    void testHMACSHA1() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -92,7 +92,7 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
     }
 
     @Test
-    public void testHMACSHA_224() throws Exception {
+    void testHMACSHA_224() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -135,7 +135,7 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
     }
 
     @Test
-    public void testHMACSHA_256() throws Exception {
+    void testHMACSHA_256() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -178,7 +178,7 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
     }
 
     @Test
-    public void testHMACSHA_384() throws Exception {
+    void testHMACSHA_384() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -221,7 +221,7 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
     }
 
     @Test
-    public void testHMACSHA_512() throws Exception {
+    void testHMACSHA_512() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -264,7 +264,7 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
     }
 
     @Test
-    public void testRIPEMD160() throws Exception {
+    void testRIPEMD160() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document

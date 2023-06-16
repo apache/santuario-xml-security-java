@@ -70,7 +70,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 /**
  * KeyResolver test.
  */
-public class KeyResolverTest {
+class KeyResolverTest {
 
     public KeyResolverTest() {
         org.apache.xml.security.Init.init();
@@ -80,7 +80,7 @@ public class KeyResolverTest {
      * Test key resolvers through a KeyInfo.
      */
     @Test
-    public void testKeyResolvers() throws Exception {
+    void testKeyResolvers() throws Exception {
 
         //
         // This test fails with the IBM JDK
@@ -190,7 +190,7 @@ public class KeyResolverTest {
      * This test verifies if a KeyResolver can return a PrivateKey.
      */
     @Test
-    public void testResolvePrivateKey() throws Exception {
+    void testResolvePrivateKey() throws Exception {
         // See if AES-128 is available...
         String algorithmId =
             JCEMapper.translateURItoJCEID(

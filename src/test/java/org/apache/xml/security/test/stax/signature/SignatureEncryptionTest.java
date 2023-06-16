@@ -56,10 +56,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * A set of test-cases for Signature + Encryption.
  */
-public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
+class SignatureEncryptionTest extends AbstractSignatureCreationTest {
 
     @Test
-    public void testSignatureEncryption() throws Exception {
+    void testSignatureEncryption() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -113,7 +113,7 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testSignatureEncryptionSameElement() throws Exception {
+    void testSignatureEncryptionSameElement() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -167,7 +167,7 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testEnvelopedSignatureEncryptionElement() throws Exception {
+    void testEnvelopedSignatureEncryptionElement() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -229,7 +229,7 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testEnvelopedSignatureEncryptionContent() throws Exception {
+    void testEnvelopedSignatureEncryptionContent() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -291,7 +291,7 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testEncryptionSignature() throws Exception {
+    void testEncryptionSignature() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -353,7 +353,7 @@ public class SignatureEncryptionTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testUnsecuredDocument() throws Exception {
+    void testUnsecuredDocument() throws Exception {
         // Set the key up
         KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
         X509Certificate cert = (X509Certificate) keyStore.getCertificate("transmitter");

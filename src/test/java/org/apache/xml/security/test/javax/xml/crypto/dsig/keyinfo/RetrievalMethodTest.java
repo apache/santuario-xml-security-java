@@ -38,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Unit test for javax.xml.crypto.dsig.keyinfo.RetrievalMethod
  *
  */
-public class RetrievalMethodTest {
+class RetrievalMethodTest {
 
     private final KeyInfoFactory fac;
 
@@ -48,25 +48,25 @@ public class RetrievalMethodTest {
     }
 
     @Test
-    public void testgetURI() {
+    void testgetURI() {
         RetrievalMethod rm = fac.newRetrievalMethod("#X509Data");
         assertNotNull(rm.getURI());
     }
 
     @Test
-    public void testgetTransforms() {
+    void testgetTransforms() {
         RetrievalMethod rm = fac.newRetrievalMethod("#X509Data");
         assertNotNull(rm.getTransforms());
     }
 
     @Test
-    public void testgetType() {
+    void testgetType() {
         RetrievalMethod rm = fac.newRetrievalMethod("#X509Data");
         assertNull(rm.getType());
     }
 
     @Test
-    public void testConstructors() {
+    void testConstructors() {
         final String uri = "#X509CertChain";
         // test RetrievalMethod(String)
         RetrievalMethod rm = fac.newRetrievalMethod(uri);
@@ -90,7 +90,7 @@ public class RetrievalMethodTest {
     }
 
     @Test
-    public void testisFeatureSupported() throws Exception {
+    void testisFeatureSupported() throws Exception {
         String uri = "#X509CertChain";
         String type = "http://www.w3.org/2000/09/xmldsig#X509Data";
         RetrievalMethod rm = null;

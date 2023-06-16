@@ -38,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  */
-public class InputProcessorChainTest {
+class InputProcessorChainTest {
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -96,7 +96,7 @@ public class InputProcessorChainTest {
     }
 
     @Test
-    public void testAddProcessorPhase1() {
+    void testAddProcessorPhase1() {
         InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(new InboundSecurityContextImpl());
 
         AbstractInputProcessor inputProcessor1 = new AbstractInputProcessor() {
@@ -117,7 +117,7 @@ public class InputProcessorChainTest {
     }
 
     @Test
-    public void testAddProcessorPhase2() {
+    void testAddProcessorPhase2() {
         InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(new InboundSecurityContextImpl());
 
         AbstractInputProcessor inputProcessor1 = new AbstractInputProcessor() {
@@ -157,7 +157,7 @@ public class InputProcessorChainTest {
     }
 
     @Test
-    public void testAddProcessorBefore1() {
+    void testAddProcessorBefore1() {
         InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(new InboundSecurityContextImpl());
 
         AbstractInputProcessor inputProcessor1 = new AbstractInputProcessor() {
@@ -200,7 +200,7 @@ public class InputProcessorChainTest {
     }
 
     @Test
-    public void testAddProcessorAfter1() {
+    void testAddProcessorAfter1() {
         InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(new InboundSecurityContextImpl());
 
         AbstractInputProcessor inputProcessor1 = new AbstractInputProcessor() {
@@ -243,7 +243,7 @@ public class InputProcessorChainTest {
     }
 
     @Test
-    public void testAddProcessorBeforeAndAfter1() {
+    void testAddProcessorBeforeAndAfter1() {
         InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(new InboundSecurityContextImpl());
 
         AbstractInputProcessor inputProcessor1 = new AbstractInputProcessor() {

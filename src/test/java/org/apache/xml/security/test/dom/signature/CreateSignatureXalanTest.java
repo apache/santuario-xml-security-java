@@ -48,7 +48,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Tests that create signatures that require Xalan for the here() function
  */
-public class CreateSignatureXalanTest {
+class CreateSignatureXalanTest {
 
     private static final String CONFIG_FILE = "/config-xalan.xml";
 
@@ -64,7 +64,7 @@ public class CreateSignatureXalanTest {
     }
 
     @Test
-    public void testXFilter2Signature() throws Exception {
+    void testXFilter2Signature() throws Exception {
         Document doc = TestUtils.newDocument();
         doc.appendChild(doc.createComment(" Comment before "));
         Element root = doc.createElementNS("", "RootElement");

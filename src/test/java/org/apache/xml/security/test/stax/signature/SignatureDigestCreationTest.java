@@ -45,10 +45,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * A set of test-cases for Signature creation with various digest algorithms
  */
-public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
+class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
 
     @Test
-    public void testSHA1() throws Exception {
+    void testSHA1() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -88,7 +88,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testSHA224() throws Exception {
+    void testSHA224() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -128,7 +128,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testSHA256() throws Exception {
+    void testSHA256() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -168,7 +168,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testSHA384() throws Exception {
+    void testSHA384() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -208,7 +208,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testSHA512() throws Exception {
+    void testSHA512() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -248,7 +248,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testRIPEMD160() throws Exception {
+    void testRIPEMD160() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
@@ -290,7 +290,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testWhirlpool() throws Exception {
+    void testWhirlpool() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
@@ -332,7 +332,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testSHA3_224() throws Exception {
+    void testSHA3_224() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
@@ -374,7 +374,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testSHA3_256() throws Exception {
+    void testSHA3_256() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
@@ -416,7 +416,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testSHA3_384() throws Exception {
+    void testSHA3_384() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
@@ -458,7 +458,7 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testSHA3_512() throws Exception {
+    void testSHA3_512() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration

@@ -46,7 +46,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *
  * @see <A HREF="http://nagoya.apache.org/bugzilla/show_bug.cgi?id=4336">Bug 4336</A>
  */
-public class XMLSignatureInputTest {
+class XMLSignatureInputTest {
 
     static final String _octetStreamTextInput = "Kleiner Test";
     static final String _nodeSetInput1 =
@@ -94,7 +94,7 @@ public class XMLSignatureInputTest {
     }
 
     @Test
-    public void testSetOctetStreamGetOctetStream()
+    void testSetOctetStreamGetOctetStream()
         throws IOException, CanonicalizationException, InvalidCanonicalizerException {
         XMLSignatureInput input = new XMLSignatureByteInput( _octetStreamTextInput.getBytes(UTF_8));
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -116,28 +116,28 @@ public class XMLSignatureInputTest {
     }
 
     @Test
-    public void testIsInitializedWithOctetStream() throws IOException {
+    void testIsInitializedWithOctetStream() throws IOException {
         XMLSignatureInput input = new XMLSignatureByteInput(_octetStreamTextInput.getBytes(UTF_8));
         assertTrue(input.hasUnprocessedInput(), "hasUnprocessedInput");
         assertFalse(input.isNodeSet(), "isNodeSet");
     }
 
     @Test
-    public void testOctetStreamIsOctetStream() throws IOException {
+    void testOctetStreamIsOctetStream() throws IOException {
         XMLSignatureInput input = new XMLSignatureByteInput( _octetStreamTextInput.getBytes(UTF_8));
         assertTrue(input.hasUnprocessedInput(), "hasUnprocessedInput");
         assertFalse(input.isNodeSet(), "isNodeSet");
     }
 
     @Test
-    public void testOctetStreamIsNotNodeSet() throws IOException {
+    void testOctetStreamIsNotNodeSet() throws IOException {
         XMLSignatureInput input = new XMLSignatureByteInput( _octetStreamTextInput.getBytes(UTF_8));
         assertTrue(input.hasUnprocessedInput(), "hasUnprocessedInput");
         assertFalse(input.isNodeSet(), "isNodeSet");
     }
 
     @Test
-    public void testToString() throws IOException {
+    void testToString() throws IOException {
         XMLSignatureInput input = new XMLSignatureByteInput( _octetStreamTextInput.getBytes(UTF_8));
         assertTrue(input.hasUnprocessedInput(), "hasUnprocessedInput");
         assertFalse(input.isNodeSet(), "isNodeSet");
@@ -145,7 +145,7 @@ public class XMLSignatureInputTest {
     }
 
     @Test
-    public void testHTMLRepresentation() throws IOException, XMLSignatureException {
+    void testHTMLRepresentation() throws IOException, XMLSignatureException {
         XMLSignatureInput input = new XMLSignatureByteInput( _octetStreamTextInput.getBytes(UTF_8));
         assertTrue(input.hasUnprocessedInput(), "hasUnprocessedInput");
         assertFalse(input.isNodeSet(), "isNodeSet");
@@ -153,7 +153,7 @@ public class XMLSignatureInputTest {
     }
 
     @Test
-    public void test() throws Exception {
+    void test() throws Exception {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         byte[] digest = md.digest("Hello world!".getBytes());
         XMLSignatureInput input = new XMLSignatureDigestInput(Base64.getEncoder().encodeToString(digest));

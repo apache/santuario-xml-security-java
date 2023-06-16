@@ -48,7 +48,7 @@ import static java.security.spec.MGF1ParameterSpec.SHA256;
 /**
  * A set of test-cases for Signature verification with various PublicKey algorithms
  */
-public class PKSignatureVerificationTest extends AbstractSignatureVerificationTest {
+class PKSignatureVerificationTest extends AbstractSignatureVerificationTest {
     private static KeyPair rsaKeyPair, ecKeyPair;
     private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
@@ -62,7 +62,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
     }
 
     @Test
-    public void testRSA_SHA1() throws Exception {
+    void testRSA_SHA1() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -100,7 +100,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
     }
 
     @Test
-    public void testRSA_SHA256() throws Exception {
+    void testRSA_SHA256() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -138,7 +138,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
     }
 
     @Test
-    public void testRSA_SHA384() throws Exception {
+    void testRSA_SHA384() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -176,7 +176,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
     }
 
     @Test
-    public void testRSA_SHA512() throws Exception {
+    void testRSA_SHA512() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -214,7 +214,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
     }
 
     @Test
-    public void testRSA_RIPEMD160() throws Exception {
+    void testRSA_RIPEMD160() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
@@ -254,7 +254,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
     }
 
     @Test
-    public void testRSA_SHA1_MGF1() throws Exception {
+    void testRSA_SHA1_MGF1() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
@@ -294,7 +294,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
     }
 
     @Test
-    public void testRSA_SHA224_MGF1() throws Exception {
+    void testRSA_SHA224_MGF1() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
@@ -334,7 +334,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
     }
 
     @Test
-    public void testRSA_SHA256_MGF1() throws Exception {
+    void testRSA_SHA256_MGF1() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
@@ -374,7 +374,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
     }
 
     @Test
-    public void testRSA_SHA384_MGF1() throws Exception {
+    void testRSA_SHA384_MGF1() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
@@ -414,7 +414,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
     }
 
     @Test
-    public void testRSA_SHA512_MGF1() throws Exception {
+    void testRSA_SHA512_MGF1() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
@@ -455,7 +455,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
 
     @Test
     @Disabled   // Disabled as I didn't want to have to change the XML Signature core schema
-    public void testRSA_SSA_PSS() throws Exception {
+    void testRSA_SSA_PSS() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
@@ -499,7 +499,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
     }
 
     @Test
-    public void testECDSA_SHA1() throws Exception {
+    void testECDSA_SHA1() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -537,7 +537,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
     }
 
     @Test
-    public void testECDSA_SHA224() throws Exception {
+    void testECDSA_SHA224() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -575,7 +575,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
     }
 
     @Test
-    public void testECDSA_SHA256() throws Exception {
+    void testECDSA_SHA256() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -613,7 +613,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
     }
 
     @Test
-    public void testECDSA_SHA384() throws Exception {
+    void testECDSA_SHA384() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -651,7 +651,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
     }
 
     @Test
-    public void testECDSA_SHA512() throws Exception {
+    void testECDSA_SHA512() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -689,7 +689,7 @@ public class PKSignatureVerificationTest extends AbstractSignatureVerificationTe
     }
 
     @Test
-    public void testECDSA_RIPEMD160() throws Exception {
+    void testECDSA_RIPEMD160() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document

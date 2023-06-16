@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.test.dom.c14n.implementations;
 
-
 import java.io.File;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
@@ -39,9 +38,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Interop test for exclusive canonical XML.
- *
  */
-public class ExclusiveC14NInteropTest extends InteropTestBase {
+class ExclusiveC14NInteropTest extends InteropTestBase {
 
     private static final Logger LOG = System.getLogger(ExclusiveC14NInteropTest.class.getName());
 
@@ -63,7 +61,7 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_Y1() throws Exception {
+    void test_Y1() throws Exception {
 
         String success = t("src/test/resources/interop/c14n/Y1", "exc-signature.xml", true);
 
@@ -76,7 +74,7 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_Y2() throws Exception {
+    void test_Y2() throws Exception {
 
         String success = t("src/test/resources/interop/c14n/Y2", "signature-joseph-exc.xml", false);
 
@@ -89,7 +87,7 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_Y3() throws Exception {
+    void test_Y3() throws Exception {
 
         String success = t("src/test/resources/interop/c14n/Y3", "signature.xml", false);
 
@@ -102,7 +100,7 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_Y4() throws Exception {
+    void test_Y4() throws Exception {
 
         String success = t("src/test/resources/interop/c14n/Y4", "signature.xml", true);
 
@@ -110,7 +108,7 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
     }
 
     @Test
-    public void test_xfilter2() throws Exception {
+    void test_xfilter2() throws Exception {
 
         String success = t("src/test/resources/interop/xfilter2/merlin-xpath-filter2-three", "sign-spec.xml", true);
 

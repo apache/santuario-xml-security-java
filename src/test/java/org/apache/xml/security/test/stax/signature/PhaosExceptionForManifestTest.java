@@ -50,7 +50,7 @@ import org.w3c.dom.Document;
  * These are separated out from PhaosTest as we have to change the default configuration to set
  *  "doNotThrowExceptionForManifests" to "true".
  */
-public class PhaosExceptionForManifestTest {
+class PhaosExceptionForManifestTest {
 
     private final XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
     private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -68,7 +68,7 @@ public class PhaosExceptionForManifestTest {
     }
 
     @Test
-    public void test_signature_rsa_detached_b64_transform() throws Exception {
+    void test_signature_rsa_detached_b64_transform() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("com/phaos/phaos-xmldsig-three/signature-rsa-detached-b64-transform.xml",
             getClass().getClassLoader(), false);

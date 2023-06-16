@@ -56,7 +56,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 /**
  * A test for Enveloping XML Signature
  */
-public class EnvelopingSignatureTest {
+class EnvelopingSignatureTest {
 
     private final KeyPair rsaKeyPair;
     private final XMLSignatureFactory fac;
@@ -79,7 +79,7 @@ public class EnvelopingSignatureTest {
     }
 
     @Test
-    public void enveloping() throws Exception {
+    void enveloping() throws Exception {
         // Read in plaintext document
         Document document;
         try (InputStream sourceDocument = this.getClass().getClassLoader()
@@ -139,7 +139,7 @@ public class EnvelopingSignatureTest {
     }
 
     @Test
-    public void enveloping_dom_level1() throws Exception {
+    void enveloping_dom_level1() throws Exception {
         // create reference
         DigestMethod sha256 = fac.newDigestMethod(DigestMethod.SHA256, null);
         Reference ref = fac.newReference("#object", sha256);

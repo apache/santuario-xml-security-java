@@ -64,7 +64,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * but with different keys and X.509 data.
  *
  */
-public class CreateInteropXFilter2Test {
+class CreateInteropXFilter2Test {
 
     private final XMLSignatureFactory fac;
     private final KeyInfoFactory kifac;
@@ -93,7 +93,7 @@ public class CreateInteropXFilter2Test {
      "rawtypes", "unchecked"
     })
     @Test
-    public void test_create_sign_spec() throws Exception {
+    void test_create_sign_spec() throws Exception {
         List<Reference> refs = new ArrayList<>(2);
 
         // create reference 1

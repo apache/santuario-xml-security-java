@@ -55,7 +55,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * org.apache.xml.security.samples.signature.CreateEnvelopingSignature</code>
  * </p>
  */
-public class UnknownAlgoSignatureTest {
+class UnknownAlgoSignatureTest {
 
     private XMLInputFactory xmlInputFactory;
     private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -72,7 +72,7 @@ public class UnknownAlgoSignatureTest {
 
 
     @Test
-    public void testGood() throws Exception {
+    void testGood() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("org/apache/xml/security/temp/signature/signature-good.xml",
             getClass().getClassLoader(), false);
@@ -102,7 +102,7 @@ public class UnknownAlgoSignatureTest {
     }
 
     @Test
-    public void testBadC14nAlgo() throws Exception {
+    void testBadC14nAlgo() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("org/apache/xml/security/temp/signature/signature-bad-c14n-algo.xml",
             getClass().getClassLoader(), false);
@@ -141,7 +141,7 @@ public class UnknownAlgoSignatureTest {
     }
 
     @Test
-    public void testBadSigAlgo() throws Exception {
+    void testBadSigAlgo() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("org/apache/xml/security/temp/signature/signature-bad-sig-algo.xml",
             getClass().getClassLoader(), false);
@@ -181,7 +181,7 @@ public class UnknownAlgoSignatureTest {
     }
 
     @Test
-    public void testBadTransformAlgo() throws Exception {
+    void testBadTransformAlgo() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("org/apache/xml/security/temp/signature/signature-bad-transform-algo.xml",
             getClass().getClassLoader(), false);

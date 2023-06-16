@@ -47,7 +47,7 @@ import org.w3c.dom.NodeList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class EncryptContentTest {
+class EncryptContentTest {
 
     private static final Logger LOG = System.getLogger(EncryptContentTest.class.getName());
 
@@ -110,7 +110,7 @@ public class EncryptContentTest {
     }
 
     @Test
-    public void testContentRemoved() throws Exception {
+    void testContentRemoved() throws Exception {
         if (!haveISOPadding) {
             LOG.log(Level.WARNING, "Test testContentRemoved skipped as necessary algorithms not available");
             return;
@@ -162,7 +162,7 @@ public class EncryptContentTest {
      * https://issues.apache.org/jira/browse/SANTUARIO-301
      */
     @Test
-    public void testMultipleKeyInfoElements() throws Exception {
+    void testMultipleKeyInfoElements() throws Exception {
         if (!haveISOPadding) {
             LOG.log(Level.WARNING, "Test testMultipleKeyInfoElements skipped as necessary algorithms not available");
             return;

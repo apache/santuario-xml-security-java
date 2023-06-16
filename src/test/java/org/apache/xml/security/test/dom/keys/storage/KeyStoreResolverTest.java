@@ -37,10 +37,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * KeyStore StorageResolver test.
  */
-public class KeyStoreResolverTest {
+class KeyStoreResolverTest {
 
     @Test
-    public void testKeyStoreResolver() throws Exception {
+    void testKeyStoreResolver() throws Exception {
 
         //
         // This test fails with the IBM JDK

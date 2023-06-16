@@ -40,14 +40,14 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * A test for SANTUARIO-499 - https://issues.apache.org/jira/browse/SANTUARIO-499
  * TransformXSLT doesn't support xslt:transform synonym
  */
-public class Santuario499Test {
+class Santuario499Test {
 
     static {
         Init.init();
     }
 
     @Test
-    public void testXSLTTransform() throws Exception {
+    void testXSLTTransform() throws Exception {
 
         URL signatureFile = this.getClass().getResource("Arbeidstijd_anonymous.xml");
         assertNotNull(signatureFile);

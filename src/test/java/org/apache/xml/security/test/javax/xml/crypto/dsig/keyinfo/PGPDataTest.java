@@ -41,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Unit test for javax.xml.crypto.dsig.keyinfo.PGPData
  *
  */
-public class PGPDataTest {
+class PGPDataTest {
 
     private final KeyInfoFactory fac;
     private final byte[][] values = {
@@ -61,7 +61,7 @@ public class PGPDataTest {
 
     @SuppressWarnings("rawtypes")
     @Test
-    public void testgetExternalElements() {
+    void testgetExternalElements() {
         PGPData[] pds = {
             fac.newPGPData(values[0]),
             fac.newPGPData(values[0], values[1], null),
@@ -92,7 +92,7 @@ public class PGPDataTest {
     }
 
     @Test
-    public void testgetKeyId() {
+    void testgetKeyId() {
         PGPData pd = fac.newPGPData(values[0]);
         assertNotNull(pd.getKeyId());
         pd = fac.newPGPData(values[0], values[1], null);
@@ -101,7 +101,7 @@ public class PGPDataTest {
     }
 
     @Test
-    public void testgetKeyPacket() {
+    void testgetKeyPacket() {
         PGPData pd = fac.newPGPData(values[0]);
         pd = fac.newPGPData(values[0], values[1], null);
         assertNotNull(pd.getKeyPacket());
@@ -110,7 +110,7 @@ public class PGPDataTest {
     }
 
     @Test
-    public void testConstructor() {
+    void testConstructor() {
         // test newPGPKeyData(byte[])
         PGPData pd = fac.newPGPData(values[0]);
         assertArrayEquals(values[0], pd.getKeyId());
@@ -126,7 +126,7 @@ public class PGPDataTest {
     }
 
     @Test
-    public void testisFeatureSupported() {
+    void testisFeatureSupported() {
         PGPData pd = null;
         for (int i = 0; i < 3; i++) {
             if (i == 0) {

@@ -46,7 +46,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  */
-public class Canonicalizer11Test {
+class Canonicalizer11Test {
 
     private XMLInputFactory xmlInputFactory;
 
@@ -67,7 +67,7 @@ public class Canonicalizer11Test {
      * 3.1 PIs, Comments, and Outside of Document Element
      */
     @Test
-    public void test31withCommentsSubtree() throws Exception {
+    void test31withCommentsSubtree() throws Exception {
 
         URL fileIn =
             this.getClass().getClassLoader().getResource(
@@ -85,7 +85,7 @@ public class Canonicalizer11Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-OutsideDoc">the example from the spec</A>
      */
     @Test
-    public void test31subtree() throws Exception {
+    void test31subtree() throws Exception {
 
         URL fileIn =
             this.getClass().getClassLoader().getResource(
@@ -103,7 +103,7 @@ public class Canonicalizer11Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-WhitespaceInContent">the example from the spec</A>
      */
     @Test
-    public void test32subtree() throws Exception {
+    void test32subtree() throws Exception {
 
         URL fileIn =
             this.getClass().getClassLoader().getResource(
@@ -121,7 +121,7 @@ public class Canonicalizer11Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-SETags">the example from the spec</A>
      */
     @Test
-    public void test33subtree() throws Exception {
+    void test33subtree() throws Exception {
 
         URL fileIn =
             this.getClass().getClassLoader().getResource(
@@ -139,7 +139,7 @@ public class Canonicalizer11Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-Chars">the example from the spec</A>
      */
     @Test
-    public void test34() throws Exception {
+    void test34() throws Exception {
 
         URL fileIn =
             this.getClass().getClassLoader().getResource(
@@ -165,7 +165,7 @@ public class Canonicalizer11Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-Chars">the example from the spec</A>
      */
     @Test
-    public void test34subtree() throws Exception {
+    void test34subtree() throws Exception {
 
         URL fileIn =
             this.getClass().getClassLoader().getResource(
@@ -183,7 +183,7 @@ public class Canonicalizer11Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-Entities">the example from the spec</A>
      */
     @Test
-    public void test35subtree() throws Exception {
+    void test35subtree() throws Exception {
 
         URL fileIn =
             this.getClass().getClassLoader().getResource(
@@ -201,7 +201,7 @@ public class Canonicalizer11Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-UTF8">the example from the spec</A>
      */
     @Test
-    public void test36subtree() throws Exception {
+    void test36subtree() throws Exception {
 
         URL fileIn =
             this.getClass().getClassLoader().getResource(
@@ -220,7 +220,7 @@ public class Canonicalizer11Test {
      */
     @Test
     @Disabled
-    public void test38() throws Exception {
+    void test38() throws Exception {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Canonicalizer11_OmitCommentsTransformer c = new Canonicalizer11_OmitCommentsTransformer();
@@ -321,7 +321,7 @@ public class Canonicalizer11Test {
      * relative namespace URIs.
      */
     @Test
-    public void testRelativeNSbehaviour() throws Exception {
+    void testRelativeNSbehaviour() throws Exception {
 
         URL fileIn =
             this.getClass().getClassLoader().getResource(

@@ -73,7 +73,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * XML Signature implementation. Thanks to Gregor Karlinger who provided these
  * test vectors. They are located in the directory <CODE>data/at/iaik/ixsil/</CODE>.
  */
-public class IAIKTest {
+class IAIKTest {
 
     // Define the Keys
     private static final String DSA_Y =
@@ -105,7 +105,7 @@ public class IAIKTest {
 
 
     @Test
-    public void test_signatureAlgorithms_signatures_hMACSignature() throws Exception {
+    void test_signatureAlgorithms_signatures_hMACSignature() throws Exception {
         // Read in plaintext document
         String name = "at/iaik/ixsil/signatureAlgorithms/signatures/hMACSignature.xml";
         Document document = XMLUtils.readResource(name, getClass().getClassLoader(), false);
@@ -141,7 +141,7 @@ public class IAIKTest {
     }
 
     @Test
-    public void test_signatureAlgorithms_signatures_hMACShortSignature() throws Exception {
+    void test_signatureAlgorithms_signatures_hMACShortSignature() throws Exception {
         // Read in plaintext document
         String name = "at/iaik/ixsil/signatureAlgorithms/signatures/hMACShortSignature.xml";
         Document document = XMLUtils.readResource(name, getClass().getClassLoader(), false);
@@ -175,7 +175,7 @@ public class IAIKTest {
     }
 
     @Test
-    public void test_signatureAlgorithms_signatures_dSASignature() throws Exception {
+    void test_signatureAlgorithms_signatures_dSASignature() throws Exception {
         // Read in plaintext document
         String name = "at/iaik/ixsil/signatureAlgorithms/signatures/dSASignature.xml";
         Document document = XMLUtils.readResource(name, getClass().getClassLoader(), false);
@@ -207,7 +207,7 @@ public class IAIKTest {
     }
 
     @Test
-    public void test_signatureAlgorithms_signatures_rSASignature() throws Exception {
+    void test_signatureAlgorithms_signatures_rSASignature() throws Exception {
         // Read in plaintext document
         String name = "at/iaik/ixsil/signatureAlgorithms/signatures/rSASignature.xml";
         Document document = XMLUtils.readResource(name, getClass().getClassLoader(), false);
@@ -239,7 +239,7 @@ public class IAIKTest {
     }
 
     @Test
-    public void test_transforms_signatures_envelopedSignatureSignature() throws Exception {
+    void test_transforms_signatures_envelopedSignatureSignature() throws Exception {
         // Read in plaintext document
         String name = "at/iaik/ixsil/transforms/signatures/envelopedSignatureSignature.xml";
         Document document = XMLUtils.readResource(name, getClass().getClassLoader(), false);

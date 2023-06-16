@@ -41,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  *
  * @see <A HREF="http://www.baltimore.com/keytools/xml/index.html">The KeyTools XML Website</A>
  */
-public class BaltimoreTest extends InteropTestBase {
+class BaltimoreTest extends InteropTestBase {
 
     private static final Logger LOG = System.getLogger(BaltimoreTest.class.getName());
 
@@ -71,7 +71,7 @@ public class BaltimoreTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_fifteen_enveloping_hmac_sha1() throws Exception {
+    void test_fifteen_enveloping_hmac_sha1() throws Exception {
 
         File filename = new File(merlinsDir15, "signature-enveloping-hmac-sha1.xml");
         boolean verify = this.verifyHMAC(filename, new OfflineResolver(), false,
@@ -90,7 +90,7 @@ public class BaltimoreTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_fifteen_enveloping_hmac_sha1_40() throws Exception {
+    void test_fifteen_enveloping_hmac_sha1_40() throws Exception {
 
         File filename = new File(merlinsDir15, "signature-enveloping-hmac-sha1-40.xml");
         ResourceResolverSpi resolver = new OfflineResolver();
@@ -116,7 +116,7 @@ public class BaltimoreTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_fifteen_enveloped_dsa() throws Exception {
+    void test_fifteen_enveloped_dsa() throws Exception {
 
         File filename = new File(merlinsDir15, "signature-enveloped-dsa.xml");
         ResourceResolverSpi resolver = new OfflineResolver();
@@ -143,7 +143,7 @@ public class BaltimoreTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_fifteen_enveloping_b64_dsa() throws Exception {
+    void test_fifteen_enveloping_b64_dsa() throws Exception {
 
         File filename = new File(merlinsDir15, "signature-enveloping-b64-dsa.xml");
         ResourceResolverSpi resolver = null;
@@ -170,7 +170,7 @@ public class BaltimoreTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_fifteen_enveloping_dsa() throws Exception {
+    void test_fifteen_enveloping_dsa() throws Exception {
 
         File filename = new File(merlinsDir15, "signature-enveloping-dsa.xml");
         ResourceResolverSpi resolver = new OfflineResolver();
@@ -197,7 +197,7 @@ public class BaltimoreTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_fifteen_enveloping_rsa() throws Exception {
+    void test_fifteen_enveloping_rsa() throws Exception {
 
         File filename = new File(merlinsDir15, "signature-enveloping-rsa.xml");
         ResourceResolverSpi resolver = new OfflineResolver();
@@ -224,7 +224,7 @@ public class BaltimoreTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_fifteen_external_b64_dsa() throws Exception {
+    void test_fifteen_external_b64_dsa() throws Exception {
 
         File filename = new File(merlinsDir15, "signature-external-b64-dsa.xml");
         ResourceResolverSpi resolver = new OfflineResolver();
@@ -251,7 +251,7 @@ public class BaltimoreTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_fifteen_external_dsa() throws Exception {
+    void test_fifteen_external_dsa() throws Exception {
 
         File filename = new File(merlinsDir15, "signature-external-dsa.xml");
         ResourceResolverSpi resolver = new OfflineResolver();
@@ -277,7 +277,7 @@ public class BaltimoreTest extends InteropTestBase {
      * as we don't have Xalan installed.
      */
     @Test
-    public void test_sixteen_bad_signature() throws Exception {
+    void test_sixteen_bad_signature() throws Exception {
 
         File filename = new File(merlinsDir16, "bad-signature.xml");
         ResourceResolverSpi resolver = new OfflineResolver();
@@ -297,7 +297,7 @@ public class BaltimoreTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_twenty_three_enveloping_hmac_sha1() throws Exception {
+    void test_twenty_three_enveloping_hmac_sha1() throws Exception {
 
         File filename = new File(merlinsDir23, "signature-enveloping-hmac-sha1.xml");
         boolean verify = this.verifyHMAC(filename, new OfflineResolver(), false,
@@ -316,7 +316,7 @@ public class BaltimoreTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_twenty_three_enveloping_hmac_sha1_40() throws Exception {
+    void test_twenty_three_enveloping_hmac_sha1_40() throws Exception {
 
         File filename = new File(merlinsDir23, "signature-enveloping-hmac-sha1-40.xml");
         ResourceResolverSpi resolver = new OfflineResolver();
@@ -342,7 +342,7 @@ public class BaltimoreTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_twenty_three_enveloped_dsa() throws Exception {
+    void test_twenty_three_enveloped_dsa() throws Exception {
 
         File filename = new File(merlinsDir23, "signature-enveloped-dsa.xml");
         ResourceResolverSpi resolver = new OfflineResolver();
@@ -369,7 +369,7 @@ public class BaltimoreTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_twenty_three_enveloping_b64_dsa() throws Exception {
+    void test_twenty_three_enveloping_b64_dsa() throws Exception {
 
         File filename = new File(merlinsDir23, "signature-enveloping-b64-dsa.xml");
         ResourceResolverSpi resolver = null;
@@ -396,7 +396,7 @@ public class BaltimoreTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_twenty_three_enveloping_dsa() throws Exception {
+    void test_twenty_three_enveloping_dsa() throws Exception {
 
         File filename = new File(merlinsDir23, "signature-enveloping-dsa.xml");
         ResourceResolverSpi resolver = new OfflineResolver();
@@ -423,7 +423,7 @@ public class BaltimoreTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_twenty_three_enveloping_rsa() throws Exception {
+    void test_twenty_three_enveloping_rsa() throws Exception {
 
         File filename = new File(merlinsDir23, "signature-enveloping-rsa.xml");
         ResourceResolverSpi resolver = new OfflineResolver();
@@ -450,7 +450,7 @@ public class BaltimoreTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_twenty_three_external_b64_dsa() throws Exception {
+    void test_twenty_three_external_b64_dsa() throws Exception {
 
         File filename = new File(merlinsDir23, "signature-external-b64-dsa.xml");
         ResourceResolverSpi resolver = new OfflineResolver();
@@ -477,7 +477,7 @@ public class BaltimoreTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_twenty_three_external_dsa() throws Exception {
+    void test_twenty_three_external_dsa() throws Exception {
 
         File filename = new File(merlinsDir23, "signature-external-dsa.xml");
         ResourceResolverSpi resolver = new OfflineResolver();

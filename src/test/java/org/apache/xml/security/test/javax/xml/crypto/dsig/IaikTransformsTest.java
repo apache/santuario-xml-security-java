@@ -39,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * testcases from IAIK
  *
  */
-public class IaikTransformsTest {
+class IaikTransformsTest {
 
     private final SignatureValidator validator;
 
@@ -54,7 +54,7 @@ public class IaikTransformsTest {
     }
 
     @Test
-    public void test_base64DecodeSignature() throws Exception {
+    void test_base64DecodeSignature() throws Exception {
         String file = "base64DecodeSignature.xml";
 
         boolean coreValidity = validator.validate
@@ -64,7 +64,7 @@ public class IaikTransformsTest {
     }
 
     @Test
-    public void test_envelopedSignatureSignature() throws Exception {
+    void test_envelopedSignatureSignature() throws Exception {
         String file = "envelopedSignatureSignature.xml";
 
         boolean coreValidity = validator.validate
@@ -73,7 +73,7 @@ public class IaikTransformsTest {
     }
 
     @Test
-    public void test_c14nSignature() throws Exception {
+    void test_c14nSignature() throws Exception {
         String file = "c14nSignature.xml";
 
         boolean coreValidity = validator.validate
@@ -82,7 +82,7 @@ public class IaikTransformsTest {
     }
 
     @Test
-    public void test_xPathSignature() throws Exception {
+    void test_xPathSignature() throws Exception {
         String file = "xPathSignature.xml";
 
         boolean coreValidity = validator.validate

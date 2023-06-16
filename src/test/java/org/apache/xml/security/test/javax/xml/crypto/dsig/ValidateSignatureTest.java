@@ -50,7 +50,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * This is a testcase that validates various signatures
  *
  */
-public class ValidateSignatureTest {
+class ValidateSignatureTest {
 
     private final SignatureValidator validator;
     private final File dir;
@@ -70,7 +70,7 @@ public class ValidateSignatureTest {
      * The element's ID needs to be registered so that it can be found.
      */
     @Test
-    public void test_signature_with_ID() throws Exception {
+    void test_signature_with_ID() throws Exception {
         String file = "envelopingSignature.xml";
 
         DOMValidateContext vc = validator.getValidateContext
@@ -83,7 +83,7 @@ public class ValidateSignatureTest {
     }
 
     @Test
-    public void test_signature_external_c14n_xmlattrs() throws Exception {
+    void test_signature_external_c14n_xmlattrs() throws Exception {
         String file = "signature-external-c14n-xmlatrs.xml";
 
         boolean coreValidity = validator.validate(file,
@@ -95,7 +95,7 @@ public class ValidateSignatureTest {
      * This test checks that the signature is verified before the references.
      */
     @Test
-    public void test_invalid_signature() throws Exception {
+    void test_invalid_signature() throws Exception {
         InvalidURIDereferencer ud = new InvalidURIDereferencer();
 
         boolean coreValidity = validator.validate("invalid-signature.xml",
@@ -105,7 +105,7 @@ public class ValidateSignatureTest {
     }
 
     @Test
-    public void test_signature_enveloping_hmac_sha1_trunclen_0() throws Exception {
+    void test_signature_enveloping_hmac_sha1_trunclen_0() throws Exception {
         try {
             validator.validate
                 ("signature-enveloping-hmac-sha1-trunclen-0-attack.xml",
@@ -118,7 +118,7 @@ public class ValidateSignatureTest {
     }
 
     @Test
-    public void test_signature_enveloping_hmac_sha1_trunclen_8() throws Exception {
+    void test_signature_enveloping_hmac_sha1_trunclen_8() throws Exception {
 
         try {
             validator.validate
@@ -134,7 +134,7 @@ public class ValidateSignatureTest {
     // Bug 47761: validates an xml signature containing a reference with
     // xmlns:xml attributes. C14n should not emit these attributes.
     @Test
-    public void test_signature_exclc14n_xmlnamespace() throws Exception {
+    void test_signature_exclc14n_xmlnamespace() throws Exception {
         String file = "demo.signed.xml";
         boolean coreValidity = validator.validate(file,
             new KeySelectors.RawX509KeySelector());
@@ -145,7 +145,7 @@ public class ValidateSignatureTest {
     // Validates a signature with an XPathFilter2 Transform with an intersect
     // filter that produces an empty node-set.
     @Test
-    public void test_signature_xpathfilter2() throws Exception {
+    void test_signature_xpathfilter2() throws Exception {
         String file = "xmldsig-xfilter2.xml";
         boolean coreValidity = validator.validate
             (file, new KeySelectors.KeyValueKeySelector());

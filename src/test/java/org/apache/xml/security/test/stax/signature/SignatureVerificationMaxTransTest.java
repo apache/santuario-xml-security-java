@@ -56,7 +56,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * These are separated out from SignatureVerificationTest as we have to change the default configuration to set
  * "MaximumAllowedTransformsPerReference" to "0".
  */
-public class SignatureVerificationMaxTransTest extends AbstractSignatureVerificationTest {
+class SignatureVerificationMaxTransTest extends AbstractSignatureVerificationTest {
 
     private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
@@ -69,7 +69,7 @@ public class SignatureVerificationMaxTransTest extends AbstractSignatureVerifica
     }
 
     @Test
-    public void testMaximumAllowedTransformsPerReference() throws Exception {
+    void testMaximumAllowedTransformsPerReference() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);

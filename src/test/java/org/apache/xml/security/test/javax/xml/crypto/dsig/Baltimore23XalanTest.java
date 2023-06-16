@@ -42,7 +42,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * testcases from Baltimore. These tests require Xalan for the here() function.
  *
  */
-public class Baltimore23XalanTest {
+class Baltimore23XalanTest {
 
     private static final String CONFIG_FILE = "config-xalan.xml";
 
@@ -70,7 +70,7 @@ public class Baltimore23XalanTest {
     }
 
     @Test
-    public void test_signature() throws Exception {
+    void test_signature() throws Exception {
 
         //
         // This test fails with the IBM JDK

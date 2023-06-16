@@ -35,7 +35,7 @@ import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 
-public class SecureXSLTTest {
+class SecureXSLTTest {
 
     private static final File BASEDIR = resolveFile("src", "test", "resources", "org", "apache", "xml", "security",
         "test", "javax", "xml", "crypto", "dsig");
@@ -45,17 +45,17 @@ public class SecureXSLTTest {
     }
 
     @Test
-    public void testSignature1() throws Exception {
+    void testSignature1() throws Exception {
         testSignature(new File(BASEDIR, "signature1.xml"));
     }
 
     @Test
-    public void testSignature2() throws Exception {
+    void testSignature2() throws Exception {
         testSignature(new File(BASEDIR, "signature2.xml"));
     }
 
     @Test
-    public void testSignature3() throws Exception {
+    void testSignature3() throws Exception {
         testSignature(new File(BASEDIR, "signature3.xml"));
     }
 

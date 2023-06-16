@@ -38,10 +38,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * Certificate parsing test.
  */
-public class XMLX509CertificateTest {
+class XMLX509CertificateTest {
 
     @Test
-    public void testGetX509Certificate() throws Exception {
+    void testGetX509Certificate() throws Exception {
         File f = resolveFile("src", "test", "resources", "ie", "baltimore", "merlin-examples",
             "merlin-xmldsig-twenty-three", "signature-x509-crt.xml");
         Document doc = XMLUtils.read(f, false);
@@ -52,7 +52,7 @@ public class XMLX509CertificateTest {
     }
 
     @Test
-    public void testEqualsAndHashCode() throws Exception {
+    void testEqualsAndHashCode() throws Exception {
         File f = resolveFile("src/test/resources/ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/certs/lugh.crt");
         X509Certificate cert;
         try (FileInputStream fis = new FileInputStream(f)) {

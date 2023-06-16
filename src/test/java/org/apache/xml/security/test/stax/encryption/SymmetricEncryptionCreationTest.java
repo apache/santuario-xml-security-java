@@ -58,7 +58,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * A test to make sure that the various Symmetric Encryption algorithms are working
  */
-public class SymmetricEncryptionCreationTest {
+class SymmetricEncryptionCreationTest {
 
     private static boolean bcInstalled;
     private final XMLInputFactory xmlInputFactory;
@@ -98,7 +98,7 @@ public class SymmetricEncryptionCreationTest {
     }
 
     @Test
-    public void testAES128() throws Exception {
+    void testAES128() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -147,7 +147,7 @@ public class SymmetricEncryptionCreationTest {
     }
 
     @Test
-    public void testAES128_GCM() throws Exception {
+    void testAES128_GCM() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -196,7 +196,7 @@ public class SymmetricEncryptionCreationTest {
     }
 
     @Test
-    public void testAES192() throws Exception {
+    void testAES192() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -245,7 +245,7 @@ public class SymmetricEncryptionCreationTest {
     }
 
     @Test
-    public void testAES192_GCM() throws Exception {
+    void testAES192_GCM() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -294,7 +294,7 @@ public class SymmetricEncryptionCreationTest {
     }
 
     @Test
-    public void testAES256() throws Exception {
+    void testAES256() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -343,7 +343,7 @@ public class SymmetricEncryptionCreationTest {
     }
 
     @Test
-    public void testAES256_GCM() throws Exception {
+    void testAES256_GCM() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -392,7 +392,7 @@ public class SymmetricEncryptionCreationTest {
     }
 
     @Test
-    public void testTRIPLE_DES() throws Exception {
+    void testTRIPLE_DES() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -440,7 +440,7 @@ public class SymmetricEncryptionCreationTest {
     }
 
     @Test
-    public void testSEED_128() throws Exception {
+    void testSEED_128() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
@@ -490,7 +490,7 @@ public class SymmetricEncryptionCreationTest {
     }
 
     @Test
-    public void testCAMELLIA_128() throws Exception {
+    void testCAMELLIA_128() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
@@ -540,7 +540,7 @@ public class SymmetricEncryptionCreationTest {
     }
 
     @Test
-    public void testCAMELLIA_192() throws Exception {
+    void testCAMELLIA_192() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
@@ -590,7 +590,7 @@ public class SymmetricEncryptionCreationTest {
     }
 
     @Test
-    public void testCAMELLIA_256() throws Exception {
+    void testCAMELLIA_256() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration

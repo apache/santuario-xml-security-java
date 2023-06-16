@@ -39,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * This is a test for a forbidden Reference algorithm.
  */
-public class JSRForbiddenReferenceTest {
+class JSRForbiddenReferenceTest {
 
     private final SignatureValidator validator;
     private final File dir;
@@ -55,7 +55,7 @@ public class JSRForbiddenReferenceTest {
 
 
     @Test
-    public void testLocalFilesystem() throws Exception {
+    void testLocalFilesystem() throws Exception {
         String file = "signature-external-c14n-xmlatrs.xml";
 
         DOMValidateContext vc =

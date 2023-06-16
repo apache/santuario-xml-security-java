@@ -35,7 +35,7 @@ import org.w3c.dom.Element;
 
 import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 
-public class TransformXSLTTest {
+class TransformXSLTTest {
 
     private static final String SOURCE_PATH = "src/test/resources/com/phaos/phaos-xmldsig-three";
     private static final String SIGNATURE_FILE = "signature-rsa-detached-xslt-transform.xml";
@@ -50,7 +50,7 @@ public class TransformXSLTTest {
      * See bug 41927 for more info.
      */
     @Test
-    public void test1() throws Exception {
+    void test1() throws Exception {
         Document doc1 = getDocument(SIGNATURE_FILE);
         Document doc2 = getDocument(STYLESHEET_FILE);
 

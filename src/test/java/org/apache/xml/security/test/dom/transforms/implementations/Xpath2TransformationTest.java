@@ -30,14 +30,14 @@ import org.w3c.dom.Element;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class Xpath2TransformationTest {
+class Xpath2TransformationTest {
 
     static {
         Init.init();
     }
 
     @Test
-    public void testXpath2Transform() throws Exception {
+    void testXpath2Transform() throws Exception {
         String sig="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" +
         "<edoc:EDOC xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:edoc=\"http://www.imtf.com/hypersuite/edoc/2.0/\" sysid=\"CC9CC230-C0A8024E01A3CA10-AC154F78\">\r\n" +
         "   <edoc:Version>2.0</edoc:Version>\r\n" +

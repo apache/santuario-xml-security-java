@@ -52,10 +52,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  */
-public class SignatureVerificationReferenceURIResolverTest extends AbstractSignatureVerificationTest {
+class SignatureVerificationReferenceURIResolverTest extends AbstractSignatureVerificationTest {
 
     @Test
-    public void testSignatureVerificationWithSameDocumentXPointerIdApostropheReference() throws Exception {
+    void testSignatureVerificationWithSameDocumentXPointerIdApostropheReference() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -122,7 +122,7 @@ public class SignatureVerificationReferenceURIResolverTest extends AbstractSigna
     }
 
     @Test
-    public void testSignatureVerificationWithSameDocumentXPointerIdDoubleQuoteReference() throws Exception {
+    void testSignatureVerificationWithSameDocumentXPointerIdDoubleQuoteReference() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -189,7 +189,7 @@ public class SignatureVerificationReferenceURIResolverTest extends AbstractSigna
     }
 
     @Test
-    public void testSignatureVerificationWithSameDocumentXPointerSlashReference() throws Exception {
+    void testSignatureVerificationWithSameDocumentXPointerSlashReference() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);

@@ -57,7 +57,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  */
-public class SignatureCreationReferenceURIResolverTest extends AbstractSignatureCreationTest {
+class SignatureCreationReferenceURIResolverTest extends AbstractSignatureCreationTest {
 
     @BeforeAll
     public static void setup() throws Exception {
@@ -66,7 +66,7 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
     }
 
     @Test
-    public void testSignatureCreationWithExternalFilesystemXMLReference() throws Exception {
+    void testSignatureCreationWithExternalFilesystemXMLReference() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -102,7 +102,7 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
     }
 
     @Test
-    public void testSignatureCreationWithExternalFilesystemBinaryReference() throws Exception {
+    void testSignatureCreationWithExternalFilesystemBinaryReference() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -139,7 +139,7 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
     }
 
     @Test
-    public void testSignatureCreationWithExternalHttpReference() throws Exception {
+    void testSignatureCreationWithExternalHttpReference() throws Exception {
 
         Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
@@ -186,7 +186,7 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
     }
 
     @Test
-    public void testSignatureCreationWithSameDocumentXPointerIdApostropheReference() throws Exception {
+    void testSignatureCreationWithSameDocumentXPointerIdApostropheReference() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();

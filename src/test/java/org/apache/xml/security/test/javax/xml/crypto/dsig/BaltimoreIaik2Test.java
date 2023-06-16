@@ -38,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * testcases from Baltimore
  *
  */
-public class BaltimoreIaik2Test {
+class BaltimoreIaik2Test {
 
     private final SignatureValidator validator;
     private final File dir;
@@ -55,7 +55,7 @@ public class BaltimoreIaik2Test {
     }
 
     @Test
-    public void testSignature() throws Exception {
+    void testSignature() throws Exception {
         String file = "signature.xml";
         boolean coreValidity = validator.validate(file, new KeySelectors.KeyValueKeySelector());
         assertTrue(coreValidity, "Signature failed core validation");

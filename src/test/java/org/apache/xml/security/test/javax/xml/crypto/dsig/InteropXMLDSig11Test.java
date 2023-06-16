@@ -37,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * This is a testcase to validate all the W3C xmldsig XMLDSig11 testcases.
  *
  */
-public class InteropXMLDSig11Test {
+class InteropXMLDSig11Test {
 
     private final SignatureValidator validator;
     private final File dir;
@@ -66,131 +66,131 @@ public class InteropXMLDSig11Test {
     }
 
     @Test
-    public void test_enveloping_p256_sha1() throws Exception {
+    void test_enveloping_p256_sha1() throws Exception {
         if (ecSupport) {
             test_xmldsig11("signature-enveloping-p256_sha1", "oracle");
         }
     }
 
     @Test
-    public void test_enveloping_p256_sha256() throws Exception {
+    void test_enveloping_p256_sha256() throws Exception {
         if (ecSupport) {
             test_xmldsig11("signature-enveloping-p256_sha256", "oracle");
         }
     }
 
     @Test
-    public void test_enveloping_p256_sha384() throws Exception {
+    void test_enveloping_p256_sha384() throws Exception {
         if (ecSupport) {
             test_xmldsig11("signature-enveloping-p256_sha384", "oracle");
         }
     }
 
     @Test
-    public void test_enveloping_p256_sha512() throws Exception {
+    void test_enveloping_p256_sha512() throws Exception {
         if (ecSupport) {
             test_xmldsig11("signature-enveloping-p256_sha512", "oracle");
         }
     }
 
     @Test
-    public void test_enveloping_p384_sha1() throws Exception {
+    void test_enveloping_p384_sha1() throws Exception {
         if (ecSupport) {
             test_xmldsig11("signature-enveloping-p384_sha1", "oracle");
         }
     }
 
     @Test
-    public void test_enveloping_p384_sha256() throws Exception {
+    void test_enveloping_p384_sha256() throws Exception {
         if (ecSupport) {
             test_xmldsig11("signature-enveloping-p384_sha256", "oracle");
         }
     }
 
     @Test
-    public void test_enveloping_p384_sha384() throws Exception {
+    void test_enveloping_p384_sha384() throws Exception {
         if (ecSupport) {
             test_xmldsig11("signature-enveloping-p384_sha384", "oracle");
         }
     }
 
     @Test
-    public void test_enveloping_p384_sha512() throws Exception {
+    void test_enveloping_p384_sha512() throws Exception {
         if (ecSupport) {
             test_xmldsig11("signature-enveloping-p384_sha512", "oracle");
         }
     }
 
     @Test
-    public void test_enveloping_p521_sha1() throws Exception {
+    void test_enveloping_p521_sha1() throws Exception {
         if (ecSupport) {
             test_xmldsig11("signature-enveloping-p521_sha1", "oracle");
         }
     }
 
     @Test
-    public void test_enveloping_p521_sha256() throws Exception {
+    void test_enveloping_p521_sha256() throws Exception {
         if (ecSupport) {
             test_xmldsig11("signature-enveloping-p521_sha256", "oracle");
         }
     }
 
     @Test
-    public void test_enveloping_p521_sha384() throws Exception {
+    void test_enveloping_p521_sha384() throws Exception {
         if (ecSupport) {
             test_xmldsig11("signature-enveloping-p521_sha384", "oracle");
         }
     }
 
     @Test
-    public void test_enveloping_p521_sha512() throws Exception {
+    void test_enveloping_p521_sha512() throws Exception {
         if (ecSupport) {
             test_xmldsig11("signature-enveloping-p521_sha512", "oracle");
         }
     }
 
     @Test
-    public void test_enveloping_rsa_sha256() throws Exception {
+    void test_enveloping_rsa_sha256() throws Exception {
         test_xmldsig11("signature-enveloping-rsa-sha256", "oracle");
     }
 
     @Test
-    public void test_enveloping_rsa_sha384() throws Exception {
+    void test_enveloping_rsa_sha384() throws Exception {
         test_xmldsig11("signature-enveloping-rsa_sha384", "oracle");
     }
 
     @Test
-    public void test_enveloping_rsa_sha512() throws Exception {
+    void test_enveloping_rsa_sha512() throws Exception {
         test_xmldsig11("signature-enveloping-rsa_sha512", "oracle");
     }
 
     @Test
-    public void test_enveloping_sha256_rsa_sha256() throws Exception {
+    void test_enveloping_sha256_rsa_sha256() throws Exception {
         test_xmldsig11("signature-enveloping-sha256-rsa-sha256", "oracle");
     }
 
     @Test
-    public void test_enveloping_sha384_rsa_sha256() throws Exception {
+    void test_enveloping_sha384_rsa_sha256() throws Exception {
         test_xmldsig11("signature-enveloping-sha384-rsa_sha256", "oracle");
     }
 
     @Test
-    public void test_enveloping_sha512_rsa_sha256() throws Exception {
+    void test_enveloping_sha512_rsa_sha256() throws Exception {
         test_xmldsig11("signature-enveloping-sha512-rsa_sha256", "oracle");
     }
 
     @Test
-    public void test_enveloping_hmac_sha256() throws Exception {
+    void test_enveloping_hmac_sha256() throws Exception {
         test_xmldsig11("signature-enveloping-hmac-sha256", sks, "oracle");
     }
 
     @Test
-    public void test_enveloping_hmac_sha384() throws Exception {
+    void test_enveloping_hmac_sha384() throws Exception {
         test_xmldsig11("signature-enveloping-hmac-sha384", sks, "oracle");
     }
 
     @Test
-    public void test_enveloping_hmac_sha512() throws Exception {
+    void test_enveloping_hmac_sha512() throws Exception {
         test_xmldsig11("signature-enveloping-hmac-sha512", sks, "oracle");
     }
 

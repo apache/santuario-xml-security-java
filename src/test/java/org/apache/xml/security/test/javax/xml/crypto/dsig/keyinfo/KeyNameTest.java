@@ -37,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Unit test for javax.xml.crypto.dsig.keyinfo.KeyName
  *
  */
-public class KeyNameTest {
+class KeyNameTest {
 
     private final KeyInfoFactory fac;
 
@@ -47,13 +47,13 @@ public class KeyNameTest {
     }
 
     @Test
-    public void testgetName() {
+    void testgetName() {
         KeyName kn = fac.newKeyName("skeleton");
         assertNotNull(kn.getName());
     }
 
     @Test
-    public void testConstructor() {
+    void testConstructor() {
         final String name = "keyName";
         KeyName kn = fac.newKeyName(name);
         assertEquals(name, kn.getName());
@@ -64,7 +64,7 @@ public class KeyNameTest {
     }
 
     @Test
-    public void testisFeatureSupported() {
+    void testisFeatureSupported() {
         KeyName kn = fac.newKeyName("keyName");
         try {
             kn.isFeatureSupported(null);

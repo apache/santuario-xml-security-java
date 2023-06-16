@@ -40,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * <p></p>
  * An xml:Id attribute is appearing in a child element, contrary to the C14n11 spec.
  */
-public class Santuario191Test {
+class Santuario191Test {
 
     private static final String INPUT_DATA =
             "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
@@ -65,7 +65,7 @@ public class Santuario191Test {
     }
 
     @Test
-    public void testSantuario191() throws Exception {
+    void testSantuario191() throws Exception {
         //
         // Parse the Data
         //

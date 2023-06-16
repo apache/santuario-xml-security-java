@@ -79,7 +79,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Unit test for javax.xml.crypto.dsig.XMLSignature
  *
  */
-public class XMLSignatureTest {
+class XMLSignatureTest {
     private final XMLSignatureFactory fac;
     private final KeyInfoFactory kifac;
     private final SignedInfo defSi;
@@ -130,7 +130,7 @@ public class XMLSignatureTest {
 
     @SuppressWarnings("rawtypes")
     @Test
-    public void testConstructor() throws Exception {
+    void testConstructor() throws Exception {
         XMLSignature sig = null;
         // test XMLSignatureFactory.newXMLSignature(SignedInfo, KeyInfo)
         // and XMLSignatureFactory.newXMLSignature(SignedInfo,
@@ -179,7 +179,7 @@ public class XMLSignatureTest {
     }
 
     @Test
-    public void testisFeatureSupported() throws Exception {
+    void testisFeatureSupported() throws Exception {
 
         XMLSignature sig = fac.newXMLSignature(defSi, null);
 
@@ -192,7 +192,7 @@ public class XMLSignatureTest {
     }
 
     @Test
-    public void testsignANDvalidate() throws Exception {
+    void testsignANDvalidate() throws Exception {
         XMLSignature sig;
         SignedInfo si;
         KeyInfo ki = null;
@@ -225,7 +225,7 @@ public class XMLSignatureTest {
     }
 
     @Test
-    public void testSignWithProvider() throws Exception {
+    void testSignWithProvider() throws Exception {
         XMLSignature sig;
         SignedInfo si;
         KeyInfo ki = null;
@@ -261,7 +261,7 @@ public class XMLSignatureTest {
     }
 
     @Test
-    public void testSignWithEmptyNSPrefix() throws Exception {
+    void testSignWithEmptyNSPrefix() throws Exception {
         SignedInfo si = createSignedInfo(SIG_METHODS[1]);
         KeyInfo ki = kifac.newKeyInfo(Collections.singletonList
                     (kifac.newKeyValue((PublicKey) VALIDATE_KEYS[1])));
@@ -279,7 +279,7 @@ public class XMLSignatureTest {
     }
 
     @Test
-    public void testSignWithReferenceManifestDependencies() throws Exception {
+    void testSignWithReferenceManifestDependencies() throws Exception {
         // create references
         DigestMethod dm = fac.newDigestMethod(DigestMethod.SHA1, null);
         List<Reference> refs = Collections.singletonList(fac.newReference("#object-1", dm));
@@ -336,7 +336,7 @@ public class XMLSignatureTest {
     }
 
     @Test
-    public void testSignTemplateWithObjectNSDefs() throws Exception {
+    void testSignTemplateWithObjectNSDefs() throws Exception {
         File f = resolveFile(
             "src/test/resources/org/apache/xml/security/test/javax/xml/crypto/dsig/signature-enveloping-rsa-template.xml");
         Document doc = XMLUtils.read(f, false);
@@ -372,7 +372,7 @@ public class XMLSignatureTest {
     }
 
     @Test
-    public void testCreateSignatureWithEmptyId() throws Exception {
+    void testCreateSignatureWithEmptyId() throws Exception {
         // create references
         DigestMethod dm = fac.newDigestMethod(DigestMethod.SHA1, null);
         List<Reference> refs = Collections.singletonList
@@ -401,7 +401,7 @@ public class XMLSignatureTest {
     }
 
     @Test
-    public void testCreateDSA2048Signature() throws Exception {
+    void testCreateDSA2048Signature() throws Exception {
 
         // check if SHA256withDSA is supported
         boolean gotSHA256withDSA = false;
@@ -428,7 +428,7 @@ public class XMLSignatureTest {
     }
 
     @Test
-    public void testBadXPointer() throws Exception {
+    void testBadXPointer() throws Exception {
         Document doc = TestUtils.newDocument();
         Element root = doc.createElementNS(null, "Root");
         SignatureMethod sm = SIG_METHODS[1];

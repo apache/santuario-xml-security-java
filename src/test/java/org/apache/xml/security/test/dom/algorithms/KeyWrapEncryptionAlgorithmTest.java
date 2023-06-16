@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.test.dom.algorithms;
 
-import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.security.Key;
 import java.security.KeyPair;
@@ -56,7 +55,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * A test to make sure that the various KeyWrap Encryption algorithms are working
  */
-public class KeyWrapEncryptionAlgorithmTest {
+class KeyWrapEncryptionAlgorithmTest {
 
     private static KeyPair rsaKeyPair;
     private static boolean bcInstalled;
@@ -95,7 +94,7 @@ public class KeyWrapEncryptionAlgorithmTest {
     }
 
     @Test
-    public void testAES128KW() throws Exception {
+    void testAES128KW() throws Exception {
         // Read in plaintext document
         String name = "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml";
         Document document = XMLUtils.readResource(name, getClass().getClassLoader(), false);
@@ -133,7 +132,7 @@ public class KeyWrapEncryptionAlgorithmTest {
     }
 
     @Test
-    public void testAES192KW() throws Exception {
+    void testAES192KW() throws Exception {
         // Read in plaintext document
         String name = "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml";
         Document document = XMLUtils.readResource(name, getClass().getClassLoader(), false);
@@ -171,7 +170,7 @@ public class KeyWrapEncryptionAlgorithmTest {
     }
 
     @Test
-    public void testAES256KW() throws Exception {
+    void testAES256KW() throws Exception {
         // Read in plaintext document
         String name = "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml";
         Document document = XMLUtils.readResource(name, getClass().getClassLoader(), false);
@@ -209,7 +208,7 @@ public class KeyWrapEncryptionAlgorithmTest {
     }
 
     @Test
-    public void testTripleDESKW() throws Exception {
+    void testTripleDESKW() throws Exception {
         // Read in plaintext document
         String name = "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml";
         Document document = XMLUtils.readResource(name, getClass().getClassLoader(), false);
@@ -245,7 +244,7 @@ public class KeyWrapEncryptionAlgorithmTest {
     }
 
     @Test
-    public void testRSAv15KW() throws Exception {
+    void testRSAv15KW() throws Exception {
         // Read in plaintext document
         String name = "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml";
         Document document = XMLUtils.readResource(name, getClass().getClassLoader(), false);
@@ -279,7 +278,7 @@ public class KeyWrapEncryptionAlgorithmTest {
     }
 
     @Test
-    public void testRSAOAEPKW() throws Exception {
+    void testRSAOAEPKW() throws Exception {
         // Read in plaintext document
         String name = "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml";
         Document document = XMLUtils.readResource(name, getClass().getClassLoader(), false);
@@ -313,7 +312,7 @@ public class KeyWrapEncryptionAlgorithmTest {
     }
 
     @Test
-    public void testRSAOAEP11KW() throws Exception {
+    void testRSAOAEP11KW() throws Exception {
         // Read in plaintext document
         String name = "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml";
         Document document = XMLUtils.readResource(name, getClass().getClassLoader(), false);
@@ -347,7 +346,7 @@ public class KeyWrapEncryptionAlgorithmTest {
     }
 
     @Test
-    public void testCamellia128KW() throws Exception {
+    void testCamellia128KW() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
@@ -387,7 +386,7 @@ public class KeyWrapEncryptionAlgorithmTest {
     }
 
     @Test
-    public void testCamellia192KW() throws Exception {
+    void testCamellia192KW() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
@@ -427,7 +426,7 @@ public class KeyWrapEncryptionAlgorithmTest {
     }
 
     @Test
-    public void testCamellia256KW() throws Exception {
+    void testCamellia256KW() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
@@ -467,7 +466,7 @@ public class KeyWrapEncryptionAlgorithmTest {
     }
 
     @Test
-    public void testSEED128KW() throws Exception {
+    void testSEED128KW() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document

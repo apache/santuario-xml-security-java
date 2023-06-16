@@ -44,7 +44,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  */
-public class TransformCanonicalizerTest {
+class TransformCanonicalizerTest {
 
     private XMLInputFactory xmlInputFactory;
 
@@ -57,7 +57,7 @@ public class TransformCanonicalizerTest {
     }
 
     @Test
-    public void testXMLSecEventToXMLSecEventAPI() throws Exception {
+    void testXMLSecEventToXMLSecEventAPI() throws Exception {
         Canonicalizer20010315_OmitCommentsTransformer canonicalizerTransformer = new Canonicalizer20010315_OmitCommentsTransformer();
 
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -116,7 +116,7 @@ public class TransformCanonicalizerTest {
     }
 
     @Test
-    public void testXMLSecEventToInputStreamAPI() throws Exception {
+    void testXMLSecEventToInputStreamAPI() throws Exception {
         Canonicalizer20010315_OmitCommentsTransformer canonicalizerTransformer = new Canonicalizer20010315_OmitCommentsTransformer();
 
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -175,7 +175,7 @@ public class TransformCanonicalizerTest {
     }
 
     @Test
-    public void testXMLSecEventToOutputStreamStreamAPI() throws Exception {
+    void testXMLSecEventToOutputStreamStreamAPI() throws Exception {
         Canonicalizer20010315_OmitCommentsTransformer canonicalizerTransformer = new Canonicalizer20010315_OmitCommentsTransformer();
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         canonicalizerTransformer.setOutputStream(byteArrayOutputStream);
@@ -195,7 +195,7 @@ public class TransformCanonicalizerTest {
     }
 
     @Test
-    public void testInputStreamToOutputStreamStreamAPI() throws Exception {
+    void testInputStreamToOutputStreamStreamAPI() throws Exception {
         Canonicalizer20010315_OmitCommentsTransformer canonicalizerTransformer = new Canonicalizer20010315_OmitCommentsTransformer();
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         canonicalizerTransformer.setOutputStream(byteArrayOutputStream);
@@ -207,7 +207,7 @@ public class TransformCanonicalizerTest {
     }
 
     @Test
-    public void testInputStreamToXMLSecEventAPI() throws Exception {
+    void testInputStreamToXMLSecEventAPI() throws Exception {
         Canonicalizer20010315_OmitCommentsTransformer canonicalizerTransformer = new Canonicalizer20010315_OmitCommentsTransformer();
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
@@ -259,7 +259,7 @@ public class TransformCanonicalizerTest {
     }
 
     @Test
-    public void testInputStreamToInputStreamAPI() throws Exception {
+    void testInputStreamToInputStreamAPI() throws Exception {
         Canonicalizer20010315_OmitCommentsTransformer canonicalizerTransformer = new Canonicalizer20010315_OmitCommentsTransformer();
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 

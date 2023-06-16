@@ -77,12 +77,12 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * A set of test-cases for Signature verification.
  */
-public class SignatureVerificationTest extends AbstractSignatureVerificationTest {
+class SignatureVerificationTest extends AbstractSignatureVerificationTest {
 
     private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
     @Test
-    public void testSignatureVerification() throws Exception {
+    void testSignatureVerification() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -154,7 +154,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
     }
 
     @Test
-    public void testMultipleElements() throws Exception {
+    void testMultipleElements() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -233,7 +233,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
     }
 
     @Test
-    public void testMultipleSignatures() throws Exception {
+    void testMultipleSignatures() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -289,7 +289,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
     }
 
     @Test
-    public void testEnvelopedSignatureVerification() throws Exception {
+    void testEnvelopedSignatureVerification() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -345,7 +345,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
     }
 
     @Test
-    public void testEnvelopedSignatureVerificationC14n11() throws Exception {
+    void testEnvelopedSignatureVerificationC14n11() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -401,7 +401,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
     }
 
     @Test
-    public void testHMACSignatureVerification() throws Exception {
+    void testHMACSignatureVerification() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -478,7 +478,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
     }
 
     @Test
-    public void testHMACSignatureVerificationWrongKey() throws Exception {
+    void testHMACSignatureVerificationWrongKey() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -530,7 +530,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
     }
 
     @Test
-    public void testECDSASignatureVerification() throws Exception {
+    void testECDSASignatureVerification() throws Exception {
 
         if (Security.getProvider("BC") == null) {
             return;
@@ -621,7 +621,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
     }
 
     @Test
-    public void testDifferentC14nMethod() throws Exception {
+    void testDifferentC14nMethod() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -697,7 +697,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
     }
 
     @Test
-    public void testC14n11Method() throws Exception {
+    void testC14n11Method() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -773,7 +773,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
     }
 
     @Test
-    public void testStrongSignatureVerification() throws Exception {
+    void testStrongSignatureVerification() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -849,7 +849,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
     }
 
     @Test
-    public void testIssuerSerial() throws Exception {
+    void testIssuerSerial() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -927,7 +927,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
     }
 
     @Test
-    public void testSubjectName() throws Exception {
+    void testSubjectName() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -1003,7 +1003,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
     }
 
     @Test
-    public void testSubjectSKI() throws Exception {
+    void testSubjectSKI() throws Exception {
 
         //
         // This test fails with the IBM JDK
@@ -1091,7 +1091,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
     }
 
     @Test
-    public void testKeyValue() throws Exception {
+    void testKeyValue() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -1164,7 +1164,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
     }
 
     @Test
-    public void testSignatureVerificationTransformBase64() throws Exception {
+    void testSignatureVerificationTransformBase64() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext-base64.xml",
             getClass().getClassLoader(), false);
@@ -1231,7 +1231,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
     }
 
     @Test
-    public void testDisallowMD5Algorithm() throws Exception {
+    void testDisallowMD5Algorithm() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -1280,7 +1280,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
     }
 
     @Test
-    public void testCustomC14nAlgo() throws Exception {
+    void testCustomC14nAlgo() throws Exception {
 
         final String customC14N = "customC14N";
         Transform.register(customC14N, TransformC14N.class);
@@ -1335,7 +1335,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
     }
 
     @Test
-    public void testPartialSignedDocumentTampered_ContentFirst() throws Exception {
+    void testPartialSignedDocumentTampered_ContentFirst() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -1386,7 +1386,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
     }
 
     @Test
-    public void testPartialSignedDocumentTampered_SignatureFirst() throws Exception {
+    void testPartialSignedDocumentTampered_SignatureFirst() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -1444,7 +1444,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
     }
 
     @Test
-    public void testEnvelopedSignatureTampered_ContentFirst() throws Exception {
+    void testEnvelopedSignatureTampered_ContentFirst() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -1508,7 +1508,7 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
     }
 
     @Test
-    public void testEnvelopedSignatureTampered_SignatureFirst() throws Exception {
+    void testEnvelopedSignatureTampered_SignatureFirst() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);

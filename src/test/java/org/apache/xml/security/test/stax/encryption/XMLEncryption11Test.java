@@ -81,7 +81,7 @@ import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 /**
  */
-public class XMLEncryption11Test {
+class XMLEncryption11Test {
 
     private String cardNumber;
     private int nodeCount;
@@ -109,7 +109,7 @@ public class XMLEncryption11Test {
      * rsa-oaep-mgf1p, Digest:SHA256, MGF:SHA1, PSource: None
      */
     @Test
-    public void testKeyWrappingRSA2048Outbound() throws Exception {
+    void testKeyWrappingRSA2048Outbound() throws Exception {
         assumeFalse(isIBMJdK);
 
         KeyStore keyStore = loadKeyStore("org/w3c/www/interop/xmlenc-core-11/RSA-2048_SHA256WithRSA.jks");
@@ -127,7 +127,7 @@ public class XMLEncryption11Test {
      * rsa-oaep-mgf1p, Digest:SHA256, MGF:SHA1, PSource: None
      */
     @Test
-    public void testKeyWrappingRSA2048EncryptDecrypt() throws Exception {
+    void testKeyWrappingRSA2048EncryptDecrypt() throws Exception {
 
         assumeFalse(isIBMJdK);
 
@@ -163,7 +163,7 @@ public class XMLEncryption11Test {
      * rsa-oaep-mgf1p, Digest:SHA256, MGF:SHA1, PSource: None
      */
     @Test
-    public void testKeyWrappingRSA3072() throws Exception {
+    void testKeyWrappingRSA3072() throws Exception {
 
         assumeFalse(isIBMJdK);
 
@@ -183,7 +183,7 @@ public class XMLEncryption11Test {
      * rsa-oaep-mgf1p, Digest:SHA256, MGF:SHA1, PSource: None
      */
     @Test
-    public void testKeyWrappingRSA3072EncryptDecrypt() throws Exception {
+    void testKeyWrappingRSA3072EncryptDecrypt() throws Exception {
 
         assumeFalse(isIBMJdK);
 
@@ -221,7 +221,7 @@ public class XMLEncryption11Test {
      * rsa-oaep, Digest:SHA384, MGF:SHA1, PSource: None
      */
     @Test
-    public void testKeyWrappingRSA3072OAEP() throws Exception {
+    void testKeyWrappingRSA3072OAEP() throws Exception {
 
         assumeFalse(isIBMJdK);
 
@@ -241,7 +241,7 @@ public class XMLEncryption11Test {
      * rsa-oaep, Digest:SHA384, MGF:SHA1, PSource: None
      */
     @Test
-    public void testKeyWrappingRSA3072OAEPEncryptDecrypt() throws Exception {
+    void testKeyWrappingRSA3072OAEPEncryptDecrypt() throws Exception {
 
         assumeFalse(isIBMJdK);
 
@@ -279,7 +279,7 @@ public class XMLEncryption11Test {
      * rsa-oaep, Digest:SHA512, MGF:SHA1, PSource: Specified 8 bytes
      */
     @Test
-    public void testKeyWrappingRSA4096() throws Exception {
+    void testKeyWrappingRSA4096() throws Exception {
 
         assumeFalse(isIBMJdK);
 
@@ -299,7 +299,7 @@ public class XMLEncryption11Test {
      * rsa-oaep, Digest:SHA512, MGF:SHA1, PSource: Specified 8 bytes
      */
     @Test
-    public void testKeyWrappingRSA4096EncryptDecrypt() throws Exception {
+    void testKeyWrappingRSA4096EncryptDecrypt() throws Exception {
 
         assumeFalse(isIBMJdK);
 
@@ -337,7 +337,7 @@ public class XMLEncryption11Test {
      * rsa-oaep, Digest:SHA512, MGF:SHA512, PSource: Specified 8 bytes
      */
     @Test
-    public void testKeyWrappingRSA4096MGFSHA512EncryptDecrypt() throws Exception {
+    void testKeyWrappingRSA4096MGFSHA512EncryptDecrypt() throws Exception {
 
         assumeFalse(isIBMJdK);
 
@@ -375,7 +375,7 @@ public class XMLEncryption11Test {
      * rsa-oaep, Digest:SHA512, MGF:SHA512, PSource: Specified 8 bytes
      */
     @Test
-    public void testAESGCMAuthentication() throws Exception {
+    void testAESGCMAuthentication() throws Exception {
 
         assumeFalse(isIBMJdK);
 

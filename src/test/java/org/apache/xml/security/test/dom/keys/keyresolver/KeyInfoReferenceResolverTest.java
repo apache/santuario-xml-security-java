@@ -42,7 +42,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 
-public class KeyInfoReferenceResolverTest {
+class KeyInfoReferenceResolverTest {
 
     public KeyInfoReferenceResolverTest() throws Exception {
         if (!Init.isInitialized()) {
@@ -51,7 +51,7 @@ public class KeyInfoReferenceResolverTest {
     }
 
     @Test
-    public void testRSAPublicKey() throws Exception {
+    void testRSAPublicKey() throws Exception {
         PublicKey rsaKeyControl = loadPublicKey("rsa-KeyInfoReference.key", "RSA");
 
         Document doc = loadXML("KeyInfoReference-RSA.xml");
@@ -65,7 +65,7 @@ public class KeyInfoReferenceResolverTest {
     }
 
     @Test
-    public void testX509Certificate() throws Exception {
+    void testX509Certificate() throws Exception {
         X509Certificate certControl = loadCertificate("cert-KeyInfoReference.crt");
 
         Document doc = loadXML("KeyInfoReference-X509Certificate.xml");
@@ -80,7 +80,7 @@ public class KeyInfoReferenceResolverTest {
     }
 
     @Test
-    public void testWrongReferentType() throws Exception {
+    void testWrongReferentType() throws Exception {
         Document doc = loadXML("KeyInfoReference-WrongReferentType.xml");
         markKeyInfoIdAttrs(doc);
 
@@ -99,7 +99,7 @@ public class KeyInfoReferenceResolverTest {
     }
 
     @Test
-    public void testSameDocumentReferenceChain() throws Exception {
+    void testSameDocumentReferenceChain() throws Exception {
         Document doc = loadXML("KeyInfoReference-ReferenceChain.xml");
         markKeyInfoIdAttrs(doc);
 
@@ -112,7 +112,7 @@ public class KeyInfoReferenceResolverTest {
     }
 
     @Test
-    public void testSameDocumentReferenceChainWithSecureValidation() throws Exception {
+    void testSameDocumentReferenceChainWithSecureValidation() throws Exception {
         Document doc = loadXML("KeyInfoReference-ReferenceChain.xml");
         markKeyInfoIdAttrs(doc);
 
@@ -126,7 +126,7 @@ public class KeyInfoReferenceResolverTest {
     }
 
     @Test
-    public void testKeyInfoReferenceToRetrievalMethodNotAllowed() throws Exception {
+    void testKeyInfoReferenceToRetrievalMethodNotAllowed() throws Exception {
         Document doc = loadXML("KeyInfoReference-RSA-RetrievalMethod.xml");
         markKeyInfoIdAttrs(doc);
         markEncodedKeyValueIdAttrs(doc);

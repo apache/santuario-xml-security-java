@@ -25,86 +25,86 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  */
-public class RFC2253ParserTest {
+class RFC2253ParserTest {
 
     @Test
-    public void testToXML1() throws Exception {
+    void testToXML1() throws Exception {
         assertEquals(RFC2253Parser.rfc2253toXMLdsig("CN=\"Steve, Kille\",  O=Isode Limited, C=GB"), "CN=Steve\\, Kille,O=Isode Limited,C=GB");
     }
 
     @Test
-    public void testToXML2() throws Exception {
+    void testToXML2() throws Exception {
         assertEquals(RFC2253Parser.rfc2253toXMLdsig("CN=Steve Kille    ,   O=Isode Limited,C=GB"), "CN=Steve Kille,O=Isode Limited,C=GB");
     }
 
     @Test
-    public void testToXML3() throws Exception {
+    void testToXML3() throws Exception {
         assertEquals(RFC2253Parser.rfc2253toXMLdsig("\\ OU=Sales+CN=J. Smith,O=Widget Inc.,C=US\\ \\ "), "\\20OU=Sales+CN=J. Smith,O=Widget Inc.,C=US\\20\\20");
     }
 
     @Test
-    public void testToXML4() throws Exception {
+    void testToXML4() throws Exception {
         assertEquals(RFC2253Parser.rfc2253toXMLdsig("CN=L. Eagle,O=Sue\\, Grabbit and Runn,C=GB"), "CN=L. Eagle,O=Sue\\, Grabbit and Runn,C=GB");
     }
 
     @Test
-    public void testToXML5() throws Exception {
+    void testToXML5() throws Exception {
         assertEquals(RFC2253Parser.rfc2253toXMLdsig("CN=Before\\0DAfter,O=Test,C=GB"), "CN=Before\\0DAfter,O=Test,C=GB");
     }
 
     @Test
-    public void testToXML6() throws Exception {
+    void testToXML6() throws Exception {
         assertEquals(RFC2253Parser.rfc2253toXMLdsig("CN=\"L. Eagle,O=Sue, = + < > # ;Grabbit and Runn\",C=GB"), "CN=L. Eagle\\,O\\=Sue\\, \\= \\+ \\< \\> \\# \\;Grabbit and Runn,C=GB");
     }
 
     @Test
-    public void testToXML7() throws Exception {
+    void testToXML7() throws Exception {
         assertEquals(RFC2253Parser.rfc2253toXMLdsig("1.3.6.1.4.1.1466.0=#04024869,O=Test,C=GB"), "1.3.6.1.4.1.1466.0=#04024869,O=Test,C=GB");
     }
 
     @Test
-    public void testToXML8() throws Exception {
+    void testToXML8() throws Exception {
         StringBuilder sb = new StringBuilder("Lu\uc48di\uc487");
         assertEquals(RFC2253Parser.rfc2253toXMLdsig("SN=" + sb.toString()), "SN=Lu\uc48di\uc487");
     }
 
     @Test
-    public void testToRFC1() throws Exception {
+    void testToRFC1() throws Exception {
         assertEquals(RFC2253Parser.xmldsigtoRFC2253("CN=\"Steve, Kille\",  O=Isode Limited, C=GB"), "CN=Steve\\, Kille,O=Isode Limited,C=GB");
     }
 
     @Test
-    public void testToRFC2() throws Exception {
+    void testToRFC2() throws Exception {
         assertEquals(RFC2253Parser.xmldsigtoRFC2253("CN=Steve Kille    ,   O=Isode Limited,C=GB"), "CN=Steve Kille,O=Isode Limited,C=GB");
     }
 
     @Test
-    public void testToRFC3() throws Exception {
+    void testToRFC3() throws Exception {
         assertEquals(RFC2253Parser.xmldsigtoRFC2253("\\20OU=Sales+CN=J. Smith,O=Widget Inc.,C=US\\20\\20 "), "\\ OU=Sales+CN=J. Smith,O=Widget Inc.,C=US\\ \\ ");
     }
 
     @Test
-    public void testToRFC4() throws Exception {
+    void testToRFC4() throws Exception {
         assertEquals(RFC2253Parser.xmldsigtoRFC2253("CN=L. Eagle,O=Sue\\, Grabbit and Runn,C=GB"), "CN=L. Eagle,O=Sue\\, Grabbit and Runn,C=GB");
     }
 
     @Test
-    public void testToRFC5() throws Exception {
+    void testToRFC5() throws Exception {
         assertEquals(RFC2253Parser.xmldsigtoRFC2253("CN=Before\\12After,O=Test,C=GB"), "CN=Before\\\u0012After,O=Test,C=GB");
     }
 
     @Test
-    public void testToRFC6() throws Exception {
+    void testToRFC6() throws Exception {
         assertEquals(RFC2253Parser.xmldsigtoRFC2253("CN=\"L. Eagle,O=Sue, = + < > # ;Grabbit and Runn\",C=GB"), "CN=L. Eagle\\,O\\=Sue\\, \\= \\+ \\< \\> \\# \\;Grabbit and Runn,C=GB");
     }
 
     @Test
-    public void testToRFC7() throws Exception {
+    void testToRFC7() throws Exception {
         assertEquals(RFC2253Parser.xmldsigtoRFC2253("1.3.6.1.4.1.1466.0=\\#04024869,O=Test,C=GB"), "1.3.6.1.4.1.1466.0=\\#04024869,O=Test,C=GB");
     }
 
     @Test
-    public void testToRFC8() throws Exception {
+    void testToRFC8() throws Exception {
         StringBuilder sb = new StringBuilder("Lu\uc48di\uc487");
         assertEquals(RFC2253Parser.xmldsigtoRFC2253("SN=" + sb.toString()), "SN=Lu\uc48di\uc487");
     }

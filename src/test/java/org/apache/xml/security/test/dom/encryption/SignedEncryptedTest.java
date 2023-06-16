@@ -52,7 +52,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  */
-public class SignedEncryptedTest {
+class SignedEncryptedTest {
 
     private static final String SAMPLE_MSG = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
             + "<SOAP-ENV:Envelope "
@@ -78,7 +78,7 @@ public class SignedEncryptedTest {
      * @throws Exception
      */
     @Test
-    public void decryptUsingXalanTransformer() throws Exception {
+    void decryptUsingXalanTransformer() throws Exception {
         try {
             Class<?> tf = getClass().getClassLoader().loadClass(
                     "org.apache.xalan.processor.TransformerFactoryImpl");
@@ -96,7 +96,7 @@ public class SignedEncryptedTest {
      * @throws Exception
      */
     @Test
-    public void decryptUsingSunDOMSerializer() throws Exception {
+    void decryptUsingSunDOMSerializer() throws Exception {
         secureAndVerify(null, true);
     }
 

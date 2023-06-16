@@ -53,7 +53,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Unit test for javax.xml.crypto.dsig.XMLSignatureFactory
  *
  */
-public class XMLSignatureFactoryTest {
+class XMLSignatureFactoryTest {
 
     XMLSignatureFactory factory;
 
@@ -68,7 +68,7 @@ public class XMLSignatureFactoryTest {
     }
 
     @Test
-    public void testgetInstance() {
+    void testgetInstance() {
         try {
             XMLSignatureFactory.getInstance("non-existent");
             fail("Should throw NoSuchMechanismException if no impl found");
@@ -101,13 +101,13 @@ public class XMLSignatureFactoryTest {
     }
 
     @Test
-    public void testgetMechanismType() {
+    void testgetMechanismType() {
         assertNotNull(factory);
         assertEquals("DOM", factory.getMechanismType());
     }
 
     @Test
-    public void testisFeatureSupported() {
+    void testisFeatureSupported() {
         try {
             factory.isFeatureSupported(null);
             fail("Should raise a NPE for null feature");
@@ -117,14 +117,14 @@ public class XMLSignatureFactoryTest {
     }
 
     @Test
-    public void testgetKeyInfoFactory() throws Exception {
+    void testgetKeyInfoFactory() throws Exception {
         KeyInfoFactory kifac = factory.getKeyInfoFactory();
         assertEquals(kifac.getMechanismType(), factory.getMechanismType());
         assertEquals(kifac.getProvider(), factory.getProvider());
     }
 
     @Test
-    public void testunmarshalXMLSignature() throws Exception {
+    void testunmarshalXMLSignature() throws Exception {
         XMLSignature stuff;
         try {
             stuff = factory.unmarshalXMLSignature((XMLValidateContext) null);

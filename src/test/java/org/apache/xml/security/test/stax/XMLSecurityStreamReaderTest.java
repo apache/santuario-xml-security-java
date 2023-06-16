@@ -62,7 +62,7 @@ import static org.xmlunit.matchers.CompareMatcher.isSimilarTo;
 
 /**
  */
-public class XMLSecurityStreamReaderTest {
+class XMLSecurityStreamReaderTest {
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -71,7 +71,7 @@ public class XMLSecurityStreamReaderTest {
     }
 
     @Test
-    public void testPassThroughDocumentEvents() throws Exception {
+    void testPassThroughDocumentEvents() throws Exception {
         XMLSecurityProperties securityProperties = new XMLSecurityProperties();
         securityProperties.setSkipDocumentEvents(false);
         InboundSecurityContextImpl securityContext = new InboundSecurityContextImpl();
@@ -83,7 +83,7 @@ public class XMLSecurityStreamReaderTest {
     }
 
     @Test
-    public void testSkipThroughDocumentEvents() throws Exception {
+    void testSkipThroughDocumentEvents() throws Exception {
         XMLSecurityProperties securityProperties = new XMLSecurityProperties();
         securityProperties.setSkipDocumentEvents(true);
         InboundSecurityContextImpl securityContext = new InboundSecurityContextImpl();
@@ -95,7 +95,7 @@ public class XMLSecurityStreamReaderTest {
     }
 
     @Test
-    public void testIdentityTransformSource() throws Exception {
+    void testIdentityTransformSource() throws Exception {
         XMLSecurityProperties securityProperties = new XMLSecurityProperties();
         InboundSecurityContextImpl securityContext = new InboundSecurityContextImpl();
         InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(securityContext);
@@ -110,7 +110,7 @@ public class XMLSecurityStreamReaderTest {
     }
 
     @Test
-    public void testDocumentDeclaration() throws Exception {
+    void testDocumentDeclaration() throws Exception {
         String xml = "<?xml version='1.1' encoding='ISO-8859-1' standalone='yes'?>\n"
                 + "<Document/>";
         ByteArrayInputStream xmlInput = new ByteArrayInputStream(xml.getBytes(StandardCharsets.ISO_8859_1));
@@ -141,7 +141,7 @@ public class XMLSecurityStreamReaderTest {
     }
 
     @Test
-    public void testDocumentDeclarationWithoutOptionalAttributes() throws Exception {
+    void testDocumentDeclarationWithoutOptionalAttributes() throws Exception {
         String xml = "<?xml version='1.1'?>\n"
                 + "<Document/>";
         ByteArrayInputStream xmlInput = new ByteArrayInputStream(xml.getBytes(StandardCharsets.ISO_8859_1));
@@ -162,7 +162,7 @@ public class XMLSecurityStreamReaderTest {
     }
 
     @Test
-    public void testDocumentDeclarationWhenSkipDocumentEvents() throws Exception {
+    void testDocumentDeclarationWhenSkipDocumentEvents() throws Exception {
         String xml = "<?xml version='1.1' encoding='ISO-8859-1' standalone='yes'?>\n"
                 + "<Document/>";
         ByteArrayInputStream xmlInput = new ByteArrayInputStream(xml.getBytes(StandardCharsets.ISO_8859_1));
@@ -195,7 +195,7 @@ public class XMLSecurityStreamReaderTest {
     }
 
     @Test
-    public void testCorrectness() throws Exception {
+    void testCorrectness() throws Exception {
         XMLSecurityProperties securityProperties = new XMLSecurityProperties();
         InboundSecurityContextImpl securityContext = new InboundSecurityContextImpl();
         DocumentContextImpl documentContext = new DocumentContextImpl();

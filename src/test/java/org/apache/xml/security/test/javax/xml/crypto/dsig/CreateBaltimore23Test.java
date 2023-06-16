@@ -97,7 +97,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * different keys and X.509 data.
  *
  */
-public class CreateBaltimore23Test {
+class CreateBaltimore23Test {
 
     private final XMLSignatureFactory fac;
     private final KeyInfoFactory kifac;
@@ -143,7 +143,7 @@ public class CreateBaltimore23Test {
     }
 
     @Test
-    public void test_create_signature_enveloped_dsa() throws Exception {
+    void test_create_signature_enveloped_dsa() throws Exception {
         // create SignedInfo
         SignedInfo si = fac.newSignedInfo
             (withoutComments, dsaSha1, Collections.singletonList
@@ -177,17 +177,17 @@ public class CreateBaltimore23Test {
     }
 
     @Test
-    public void test_create_signature_enveloping_b64_dsa() throws Exception {
+    void test_create_signature_enveloping_b64_dsa() throws Exception {
         test_create_signature_enveloping(dsaSha1, dsa, signingKey, kvks, true);
     }
 
     @Test
-    public void test_create_signature_enveloping_dsa() throws Exception {
+    void test_create_signature_enveloping_dsa() throws Exception {
         test_create_signature_enveloping(dsaSha1, dsa, signingKey, kvks, false);
     }
 
     @Test
-    public void test_create_signature_enveloping_hmac_sha1_40()
+    void test_create_signature_enveloping_hmac_sha1_40()
         throws Exception {
         SignatureMethod hmacSha1 = fac.newSignatureMethod
             (SignatureMethod.HMAC_SHA1, new HMACParameterSpec(40));
@@ -202,7 +202,7 @@ public class CreateBaltimore23Test {
     }
 
     @Test
-    public void test_create_signature_enveloping_hmac_sha1()
+    void test_create_signature_enveloping_hmac_sha1()
         throws Exception {
         SignatureMethod hmacSha1 = fac.newSignatureMethod
             (SignatureMethod.HMAC_SHA1, null);
@@ -211,23 +211,23 @@ public class CreateBaltimore23Test {
     }
 
     @Test
-    public void test_create_signature_enveloping_rsa() throws Exception {
+    void test_create_signature_enveloping_rsa() throws Exception {
         test_create_signature_enveloping(rsaSha1, rsa,
             TestUtils.getPrivateKey("RSA"), kvks, false);
     }
 
     @Test
-    public void test_create_signature_external_b64_dsa() throws Exception {
+    void test_create_signature_external_b64_dsa() throws Exception {
         test_create_signature_external(dsaSha1, dsa, signingKey, kvks, true);
     }
 
     @Test
-    public void test_create_signature_external_dsa() throws Exception {
+    void test_create_signature_external_dsa() throws Exception {
         test_create_signature_external(dsaSha1, dsa, signingKey, kvks, false);
     }
 
     @Test
-    public void test_create_signature_keyname() throws Exception {
+    void test_create_signature_keyname() throws Exception {
         KeyInfo kn = kifac.newKeyInfo(Collections.singletonList
             (kifac.newKeyName("mullan")));
         test_create_signature_external(dsaSha1, kn, signingKey,
@@ -235,7 +235,7 @@ public class CreateBaltimore23Test {
     }
 
     @Test
-    public void test_create_signature_retrievalmethod_rawx509crt()
+    void test_create_signature_retrievalmethod_rawx509crt()
         throws Exception {
         KeyInfo rm = kifac.newKeyInfo(Collections.singletonList
             (kifac.newRetrievalMethod
@@ -245,7 +245,7 @@ public class CreateBaltimore23Test {
     }
 
     @Test
-    public void test_create_signature_x509_crt_crl() throws Exception {
+    void test_create_signature_x509_crt_crl() throws Exception {
 
         //
         // This test fails with the IBM JDK
@@ -269,7 +269,7 @@ public class CreateBaltimore23Test {
     }
 
     @Test
-    public void test_create_signature_x509_crt() throws Exception {
+    void test_create_signature_x509_crt() throws Exception {
         //
         // This test fails with the IBM JDK
         //
@@ -285,7 +285,7 @@ public class CreateBaltimore23Test {
     }
 
     @Test
-    public void test_create_signature_x509_is() throws Exception {
+    void test_create_signature_x509_is() throws Exception {
         //
         // This test fails with the IBM JDK
         //
@@ -303,7 +303,7 @@ public class CreateBaltimore23Test {
     }
 
     @Test
-    public void test_create_signature_x509_ski() throws Exception {
+    void test_create_signature_x509_ski() throws Exception {
         KeyInfo ski = kifac.newKeyInfo(Collections.singletonList
             (kifac.newX509Data(Collections.singletonList
             ("keyid".getBytes(StandardCharsets.US_ASCII)))));
@@ -313,7 +313,7 @@ public class CreateBaltimore23Test {
     }
 
     @Test
-    public void test_create_signature_x509_sn() throws Exception {
+    void test_create_signature_x509_sn() throws Exception {
         //
         // This test fails with the IBM JDK
         //
@@ -330,7 +330,7 @@ public class CreateBaltimore23Test {
     }
 
     @Test
-    public void test_create_signature() throws Exception {
+    void test_create_signature() throws Exception {
 
         //
         // This test fails with the IBM JDK

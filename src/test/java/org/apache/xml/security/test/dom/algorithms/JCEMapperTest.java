@@ -24,14 +24,14 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class JCEMapperTest {
+class JCEMapperTest {
 
     static {
         org.apache.xml.security.Init.init();
     }
 
     @Test
-    public void testSHA1() throws Exception {
+    void testSHA1() throws Exception {
         assertEquals("MessageDigest", JCEMapper.getAlgorithmClassFromURI(MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA1));
         assertEquals("SHA-1", JCEMapper.translateURItoJCEID(MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA1));
     }

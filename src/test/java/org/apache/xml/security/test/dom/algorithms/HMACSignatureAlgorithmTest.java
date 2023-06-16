@@ -51,7 +51,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * A test to make sure that the various Signature HMAC algorithms are working
  */
-public class HMACSignatureAlgorithmTest {
+class HMACSignatureAlgorithmTest {
 
     static {
         org.apache.xml.security.Init.init();
@@ -87,7 +87,7 @@ public class HMACSignatureAlgorithmTest {
     }
 
     @Test
-    public void testHMACSHA1() throws Exception {
+    void testHMACSHA1() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -105,7 +105,7 @@ public class HMACSignatureAlgorithmTest {
     }
 
     @Test
-    public void testHMACMD5() throws Exception {
+    void testHMACMD5() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -123,7 +123,7 @@ public class HMACSignatureAlgorithmTest {
     }
 
     @Test
-    public void testHMACSHA_224() throws Exception {
+    void testHMACSHA_224() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -141,7 +141,7 @@ public class HMACSignatureAlgorithmTest {
     }
 
     @Test
-    public void testHMACSHA_256() throws Exception {
+    void testHMACSHA_256() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -159,7 +159,7 @@ public class HMACSignatureAlgorithmTest {
     }
 
     @Test
-    public void testHMACSHA_384() throws Exception {
+    void testHMACSHA_384() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -177,7 +177,7 @@ public class HMACSignatureAlgorithmTest {
     }
 
     @Test
-    public void testHMACSHA_512() throws Exception {
+    void testHMACSHA_512() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -195,7 +195,7 @@ public class HMACSignatureAlgorithmTest {
     }
 
     @Test
-    public void testHMACRIPEMD160() throws Exception {
+    void testHMACRIPEMD160() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document

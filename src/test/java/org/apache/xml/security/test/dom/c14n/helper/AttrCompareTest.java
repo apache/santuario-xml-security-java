@@ -40,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Unit test for {@link org.apache.xml.security.c14n.AttrCompare#compare}
  *
  */
-public class AttrCompareTest {
+class AttrCompareTest {
 
     static {
         org.apache.xml.security.Init.init();
@@ -52,7 +52,7 @@ public class AttrCompareTest {
      * @throws ParserConfigurationException
      */
     @Test
-    public void testA1() throws ParserConfigurationException {
+    void testA1() throws ParserConfigurationException {
 
         Document doc = createDoc("documentElement");
         Element root = doc.getDocumentElement();
@@ -79,7 +79,7 @@ public class AttrCompareTest {
     }
 
     @Test
-    public void testA2() throws ParserConfigurationException {
+    void testA2() throws ParserConfigurationException {
 
         Document doc = createDoc("documentElement");
         Attr attr0 = doc.createAttributeNS(null, "foo");
@@ -100,7 +100,7 @@ public class AttrCompareTest {
      * @throws ParserConfigurationException
      */
     @Test
-    public void __testA2() throws ParserConfigurationException {
+    void __testA2() throws ParserConfigurationException {
 
         Document doc = createDoc("documentElement");
         Element root = doc.getDocumentElement();
@@ -136,7 +136,7 @@ public class AttrCompareTest {
      * @throws ParserConfigurationException
      */
     @Test
-    public void testComplete() throws ParserConfigurationException {
+    void testComplete() throws ParserConfigurationException {
 
         /* <e5 xmlns="http://example.org"
          *     xmlns:a="http://www.w3.org"

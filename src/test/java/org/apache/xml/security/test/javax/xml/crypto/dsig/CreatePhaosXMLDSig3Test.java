@@ -56,7 +56,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * the exc-c14n vectors.
  *
  */
-public class CreatePhaosXMLDSig3Test {
+class CreatePhaosXMLDSig3Test {
 
     private final XMLSignatureFactory fac;
 
@@ -71,12 +71,12 @@ public class CreatePhaosXMLDSig3Test {
     }
 
     @Test
-    public void test_create_hmac_sha1_exclusive_c14n_comments_detached() throws Exception {
+    void test_create_hmac_sha1_exclusive_c14n_comments_detached() throws Exception {
         test_create_hmac_sha1_exclusive_c14n_comments_detached(false);
     }
 
     @Test
-    public void test_create_hmac_sha1_40_exclusive_c14n_comments_detached()
+    void test_create_hmac_sha1_40_exclusive_c14n_comments_detached()
         throws Exception {
         try {
             test_create_hmac_sha1_exclusive_c14n_comments_detached(true);
@@ -134,7 +134,7 @@ public class CreatePhaosXMLDSig3Test {
     }
 
     @Test
-    public void test_create_hmac_sha1_exclusive_c14n_enveloped() throws Exception {
+    void test_create_hmac_sha1_exclusive_c14n_enveloped() throws Exception {
 
         // create reference
         Reference ref = fac.newReference("",

@@ -39,14 +39,14 @@ import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
  * fixed: "No installed provider supports this key" when checking a RSA
  * signature against a DSA key before RSA key.
  */
-public class InvalidKeyTest {
+class InvalidKeyTest {
 
     static {
         Init.init();
     }
 
     @Test
-    public void test() throws Exception {
+    void test() throws Exception {
         KeyStore trustStore = KeyStore.getInstance("JKS");
         try (FileInputStream input = new FileInputStream(
             resolveFile("src/test/resources/org/apache/xml/security/samples/input/truststore.jks"))) {

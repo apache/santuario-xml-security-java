@@ -62,7 +62,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Test signing using all available PublicKey signing algorithms
  */
-public class PKSignatureAlgorithmTest {
+class PKSignatureAlgorithmTest {
 
     private final KeySelector kvks;
     private final CanonicalizationMethod withoutComments;
@@ -177,128 +177,128 @@ public class PKSignatureAlgorithmTest {
     }
 
     @Test
-    public void testRSA_SHA1() throws Exception {
+    void testRSA_SHA1() throws Exception {
         test_create_signature_enveloping(rsaSha1, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
 
     @Test
-    public void testRSA_SHA_224() throws Exception {
+    void testRSA_SHA_224() throws Exception {
         test_create_signature_enveloping(rsaSha224, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
 
     @Test
-    public void testRSA_SHA_256() throws Exception {
+    void testRSA_SHA_256() throws Exception {
         test_create_signature_enveloping(rsaSha256, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
 
     @Test
-    public void testRSA_SHA_384() throws Exception {
+    void testRSA_SHA_384() throws Exception {
         test_create_signature_enveloping(rsaSha384, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
 
     @Test
-    public void testRSA_SHA_512() throws Exception {
+    void testRSA_SHA_512() throws Exception {
         test_create_signature_enveloping(rsaSha512, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
 
     @Test
-    public void testRSA_RIPEMD160() throws Exception {
+    void testRSA_RIPEMD160() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaRipemd160, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
 
     @Test
-    public void testRSA_SHA1_MGF1() throws Exception {
+    void testRSA_SHA1_MGF1() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha1Mgf1, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
 
     @Test
-    public void testRSA_SHA224_MGF1() throws Exception {
+    void testRSA_SHA224_MGF1() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha224Mgf1, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
 
     @Test
-    public void testRSA_SHA256_MGF1() throws Exception {
+    void testRSA_SHA256_MGF1() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha256Mgf1, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
 
     @Test
-    public void testRSA_SHA384_MGF1() throws Exception {
+    void testRSA_SHA384_MGF1() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha384Mgf1, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
 
     @Test
-    public void testRSA_SHA512_MGF1() throws Exception {
+    void testRSA_SHA512_MGF1() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha512Mgf1, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
 
     @Test
-    public void testRSA_PSS() throws Exception {
+    void testRSA_PSS() throws Exception {
         Assumptions.assumeTrue(bcInstalled || org.apache.xml.security.test.dom.TestUtils.isJava11Compatible());
         test_create_signature_enveloping(rsaPss, sha1, rsaki,
                 rsaKeyPair.getPrivate(), kvks);
     }
 
     @Test
-    public void testRSA_PSS_SHA512() throws Exception {
+    void testRSA_PSS_SHA512() throws Exception {
         Assumptions.assumeTrue(bcInstalled || org.apache.xml.security.test.dom.TestUtils.isJava11Compatible());
         test_create_signature_enveloping(rsaPssSha512, sha1, rsaki,
                 rsaKeyPair.getPrivate(), kvks);
     }
 
     @Test
-    public void testECDSA_SHA1() throws Exception {
+    void testECDSA_SHA1() throws Exception {
         Assumptions.assumeTrue(ecAlgParamsSupport && ecki != null && !isJDK11);
         test_create_signature_enveloping(ecdsaSha1, sha1, ecki,
                                          ecKeyPair.getPrivate(), kvks);
     }
 
     @Test
-    public void testECDSA_SHA224() throws Exception {
+    void testECDSA_SHA224() throws Exception {
         Assumptions.assumeTrue(ecAlgParamsSupport && ecki != null && !isJDK11);
         test_create_signature_enveloping(ecdsaSha224, sha1, ecki,
                                          ecKeyPair.getPrivate(), kvks);
     }
 
     @Test
-    public void testECDSA_SHA256() throws Exception {
+    void testECDSA_SHA256() throws Exception {
         Assumptions.assumeTrue(ecAlgParamsSupport && ecki != null && !isJDK11);
         test_create_signature_enveloping(ecdsaSha256, sha1, ecki,
                                          ecKeyPair.getPrivate(), kvks);
     }
 
     @Test
-    public void testECDSA_SHA384() throws Exception {
+    void testECDSA_SHA384() throws Exception {
         Assumptions.assumeTrue(ecAlgParamsSupport && ecki != null && !isJDK11);
         test_create_signature_enveloping(ecdsaSha384, sha1, ecki,
                                          ecKeyPair.getPrivate(), kvks);
     }
 
     @Test
-    public void testECDSA_SHA512() throws Exception {
+    void testECDSA_SHA512() throws Exception {
         Assumptions.assumeTrue(ecAlgParamsSupport && ecki != null && !isJDK11);
         test_create_signature_enveloping(ecdsaSha512, sha1, ecki,
                                          ecKeyPair.getPrivate(), kvks);
     }
 
     @Test
-    public void testECDSA_RIPEMD160() throws Exception {
+    void testECDSA_RIPEMD160() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
         Assumptions.assumeTrue(ecAlgParamsSupport && ecki != null);
         test_create_signature_enveloping(ecdsaRipemd160, sha1, ecki,

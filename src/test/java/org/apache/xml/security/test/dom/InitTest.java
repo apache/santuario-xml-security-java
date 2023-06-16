@@ -49,7 +49,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class InitTest {
+class InitTest {
 
     private static final String CONFIG_FILE = "org/apache/xml/security/resource/config.xml";
 
@@ -64,7 +64,7 @@ public class InitTest {
     }
 
     @Test
-    public void testFileInit() throws Exception {
+    void testFileInit() throws Exception {
         assertFalse(Init.isInitialized());
         Init.init();
         assertTrue(Init.isInitialized());
@@ -75,7 +75,7 @@ public class InitTest {
     }
 
     @Test
-    public void checkConfigFileImplementationsExist() throws Exception {
+    void checkConfigFileImplementationsExist() throws Exception {
         Document doc;
         try (InputStream is = ClassLoaderUtils.getResourceAsStream(CONFIG_FILE, InitTest.class)) {
             /* read library configuration file */

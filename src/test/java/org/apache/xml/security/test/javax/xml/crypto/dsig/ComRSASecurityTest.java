@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * testcases from RSA
  *
  */
-public class ComRSASecurityTest {
+class ComRSASecurityTest {
 
     private final SignatureValidator validator;
 
@@ -51,7 +51,7 @@ public class ComRSASecurityTest {
 
 
     @Test
-    public void test_certj201_enveloping() throws Exception {
+    void test_certj201_enveloping() throws Exception {
         String file = "certj201_enveloping.xml";
 
         boolean coreValidity = validator.validate(file, new KeySelectors.KeyValueKeySelector());
@@ -60,7 +60,7 @@ public class ComRSASecurityTest {
 
 
     @Test
-    public void test_certj201_enveloped() throws Exception {
+    void test_certj201_enveloped() throws Exception {
         String file = "certj201_enveloped.xml";
 
         boolean coreValidity = validator.validate(file, new KeySelectors.KeyValueKeySelector());

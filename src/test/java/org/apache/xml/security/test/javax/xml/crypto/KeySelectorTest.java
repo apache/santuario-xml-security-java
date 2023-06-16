@@ -40,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Unit test for javax.xml.crypto.KeySelector
  *
  */
-public class KeySelectorTest {
+class KeySelectorTest {
     private final Key key;
     private final KeySelector selector1;
 
@@ -75,7 +75,7 @@ public class KeySelectorTest {
     }
 
     @Test
-    public void testselect() throws Exception {
+    void testselect() throws Exception {
         KeyInfoFactory factory = KeyInfoFactory.getInstance
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
         X509Data obj = factory.newX509Data(Collections.singletonList("CN=foo"));

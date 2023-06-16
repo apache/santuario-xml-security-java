@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 
-public class ReferenceListTest {
+class ReferenceListTest {
 
     private static final Logger LOG = System.getLogger(ReferenceListTest.class.getName());
 
@@ -45,7 +45,7 @@ public class ReferenceListTest {
     }
 
     @Test
-    public void testReferenceList() throws Exception {
+    void testReferenceList() throws Exception {
         Document doc = TestUtils.newDocument();
 
         XMLCipher dataCipher = XMLCipher.getInstance();

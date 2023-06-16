@@ -60,7 +60,7 @@ import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
  * These are separated out from SignatureVerificationReferenceURIResolverTest as we have to change the default configuration to set
  *  * "AllowNotSameDocumentReferences" to "true".
  */
-public class SignatureVerificationReferenceURIResolverRemoteReferenceTest extends AbstractSignatureVerificationTest {
+class SignatureVerificationReferenceURIResolverRemoteReferenceTest extends AbstractSignatureVerificationTest {
 
     @BeforeAll
     public static void setup() throws Exception {
@@ -73,7 +73,7 @@ public class SignatureVerificationReferenceURIResolverRemoteReferenceTest extend
     }
 
     @Test
-    public void testSignatureVerificationWithExternalFilesystemXMLReference() throws Exception {
+    void testSignatureVerificationWithExternalFilesystemXMLReference() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -129,7 +129,7 @@ public class SignatureVerificationReferenceURIResolverRemoteReferenceTest extend
     }
 
     @Test
-    public void testSignatureVerificationWithExternalFilesystemBinaryReference() throws Exception {
+    void testSignatureVerificationWithExternalFilesystemBinaryReference() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -187,7 +187,7 @@ public class SignatureVerificationReferenceURIResolverRemoteReferenceTest extend
     }
 
     @Test
-    public void testSignatureVerificationWithExternalHttpReference() throws Exception {
+    void testSignatureVerificationWithExternalHttpReference() throws Exception {
 
         Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 

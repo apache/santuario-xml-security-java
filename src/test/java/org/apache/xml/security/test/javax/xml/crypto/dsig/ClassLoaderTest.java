@@ -40,12 +40,12 @@ import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
  * invokes the XMLSignature API. It tests that there are not provider class
  * loading issues with more than one classloader (see 6380953).
  */
-public class ClassLoaderTest {
+class ClassLoaderTest {
 
     private static final Logger LOG = System.getLogger(ClassLoaderTest.class.getName());
 
     @Test
-    public void testMultipleLoaders() throws Exception {
+    void testMultipleLoaders() throws Exception {
         File file0 = resolveFile("build", "classes");
         File file1 = resolveFile("build", "test");
         URL[] urls = new URL[2];
@@ -65,7 +65,7 @@ public class ClassLoaderTest {
     }
 
     @Test
-    public void testProviderMultipleLoaders() throws Exception {
+    void testProviderMultipleLoaders() throws Exception {
         File file0 = resolveFile("build", "classes");
         File file1 = resolveFile("build", "test");
         URL[] urls = new URL[2];
@@ -98,7 +98,7 @@ public class ClassLoaderTest {
     }
 
     @Test
-    public void testProviderMultipleLoadersTwo() throws Exception {
+    void testProviderMultipleLoadersTwo() throws Exception {
         File file0 = resolveFile("build", "classes");
         File file1 = resolveFile("build", "test");
         URL[] urls = new URL[2];

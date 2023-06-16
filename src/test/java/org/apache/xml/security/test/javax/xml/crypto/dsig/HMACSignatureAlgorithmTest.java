@@ -57,7 +57,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Test signing using all available HMAC signing algorithms
  */
-public class HMACSignatureAlgorithmTest {
+class HMACSignatureAlgorithmTest {
 
     private static boolean bcInstalled;
     private final KeySelector sks;
@@ -121,43 +121,43 @@ public class HMACSignatureAlgorithmTest {
     }
 
     @Test
-    public void testHMACSHA1() throws Exception {
+    void testHMACSHA1() throws Exception {
         test_create_signature_enveloping(hmacSha1, sha1, null,
                                          TestUtils.getSecretKey("testkey".getBytes(StandardCharsets.US_ASCII)), sks);
     }
 
     @Test
-    public void testHMACSHA_224() throws Exception {
+    void testHMACSHA_224() throws Exception {
         test_create_signature_enveloping(hmacSha224, sha1, null,
                                          TestUtils.getSecretKey("testkey".getBytes(StandardCharsets.US_ASCII)), sks);
     }
 
     @Test
-    public void testHMACSHA_256() throws Exception {
+    void testHMACSHA_256() throws Exception {
         test_create_signature_enveloping(hmacSha256, sha1, null,
                                          TestUtils.getSecretKey("testkey".getBytes(StandardCharsets.US_ASCII)), sks);
     }
 
     @Test
-    public void testHMACSHA_256_ParamSpec() throws Exception {
+    void testHMACSHA_256_ParamSpec() throws Exception {
         test_create_signature_enveloping(hmacSha256ParamSpec, sha1, null,
                                          TestUtils.getSecretKey("testkey".getBytes(StandardCharsets.US_ASCII)), sks);
     }
 
     @Test
-    public void testHMACSHA_384() throws Exception {
+    void testHMACSHA_384() throws Exception {
         test_create_signature_enveloping(hmacSha384, sha1, null,
                                          TestUtils.getSecretKey("testkey".getBytes(StandardCharsets.US_ASCII)), sks);
     }
 
     @Test
-    public void testHMACSHA_512() throws Exception {
+    void testHMACSHA_512() throws Exception {
         test_create_signature_enveloping(hmacSha512, sha1, null,
                                          TestUtils.getSecretKey("testkey".getBytes(StandardCharsets.US_ASCII)), sks);
     }
 
     @Test
-    public void testHMACRIPEMD160() throws Exception {
+    void testHMACRIPEMD160() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
         test_create_signature_enveloping(ripemd160, sha1, null,
                                          TestUtils.getSecretKey("testkey".getBytes(StandardCharsets.US_ASCII)), sks);

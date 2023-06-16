@@ -39,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * testcases from Phaos, that require Xalan for the here() function
  *
  */
-public class PhaosXMLDSig3XalanTest {
+class PhaosXMLDSig3XalanTest {
 
     private static final String CONFIG_FILE = "/config-xalan.xml";
 
@@ -66,7 +66,7 @@ public class PhaosXMLDSig3XalanTest {
     }
 
     @Test
-    public void test_signature_rsa_xpath_transform_enveloped() throws Exception {
+    void test_signature_rsa_xpath_transform_enveloped() throws Exception {
         String file = "signature-rsa-xpath-transform-enveloped.xml";
         boolean coreValidity = validator.validate(file, new KeySelectors.RawX509KeySelector());
         assertTrue(coreValidity, "Signature failed core validation");

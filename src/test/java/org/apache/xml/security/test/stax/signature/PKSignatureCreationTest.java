@@ -44,7 +44,7 @@ import static java.security.spec.MGF1ParameterSpec.SHA256;
 /**
  * A set of test-cases for Signature creation with various PublicKey algorithms
  */
-public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
+class PKSignatureCreationTest extends AbstractSignatureCreationTest {
 
     private static KeyPair rsaKeyPair, ecKeyPair;
 
@@ -58,7 +58,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testRSA_SHA1() throws Exception {
+    void testRSA_SHA1() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -90,7 +90,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testRSA_SHA256() throws Exception {
+    void testRSA_SHA256() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -122,7 +122,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testRSA_SHA384() throws Exception {
+    void testRSA_SHA384() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -154,7 +154,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testRSA_SHA512() throws Exception {
+    void testRSA_SHA512() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -186,7 +186,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testRSA_RIPEMD160() throws Exception {
+    void testRSA_RIPEMD160() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
@@ -220,7 +220,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testRSA_SHA1_MGF1() throws Exception {
+    void testRSA_SHA1_MGF1() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
@@ -254,7 +254,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testRSA_SHA224_MGF1() throws Exception {
+    void testRSA_SHA224_MGF1() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
@@ -288,7 +288,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testRSA_SHA256_MGF1() throws Exception {
+    void testRSA_SHA256_MGF1() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
@@ -322,7 +322,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testRSA_SHA384_MGF1() throws Exception {
+    void testRSA_SHA384_MGF1() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
@@ -356,7 +356,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testRSA_SHA512_MGF1() throws Exception {
+    void testRSA_SHA512_MGF1() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
@@ -390,7 +390,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testRSA_SSA_PSS() throws Exception {
+    void testRSA_SSA_PSS() throws Exception {
         Assumptions.assumeTrue(bcInstalled || TestUtils.isJava11Compatible());
 
         // Set up the Configuration
@@ -425,7 +425,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testECDSA_SHA1() throws Exception {
+    void testECDSA_SHA1() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -457,7 +457,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testECDSA_SHA224() throws Exception {
+    void testECDSA_SHA224() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -489,7 +489,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testECDSA_SHA256() throws Exception {
+    void testECDSA_SHA256() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -521,7 +521,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testECDSA_SHA384() throws Exception {
+    void testECDSA_SHA384() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -553,7 +553,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testECDSA_SHA512() throws Exception {
+    void testECDSA_SHA512() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -585,7 +585,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testECDSA_RIPEMD160() throws Exception {
+    void testECDSA_RIPEMD160() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration

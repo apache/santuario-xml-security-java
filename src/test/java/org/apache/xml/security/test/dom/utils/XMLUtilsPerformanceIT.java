@@ -62,7 +62,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class XMLUtilsPerformanceIT {
 
     @Test
-    public void runBenchmarks() throws Exception {
+    void runBenchmarks() throws Exception {
         Options options = new OptionsBuilder()
                 .include(this.getClass().getName())
                 .shouldFailOnError(true)

@@ -27,21 +27,21 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class TransformTest {
+class TransformTest {
 
     static {
         Init.init();
     }
 
     @Test
-    public void testAlreadyRegisteredException() throws Exception {
+    void testAlreadyRegisteredException() throws Exception {
         assertThrows(AlgorithmAlreadyRegisteredException.class, () ->
                 Transform.register(Transforms.TRANSFORM_C14N11_OMIT_COMMENTS, TransformC14N11.class)
         );
     }
 
     @Test
-    public void testAlreadyRegisteredExceptionFromString() throws Exception {
+    void testAlreadyRegisteredExceptionFromString() throws Exception {
         assertThrows(AlgorithmAlreadyRegisteredException.class, () ->
                 Transform.register(Transforms.TRANSFORM_C14N11_OMIT_COMMENTS,
                         TransformC14N11.class.getName())

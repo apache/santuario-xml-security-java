@@ -27,10 +27,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
-public class UtfHelperTest {
+class UtfHelperTest {
 
     @Test
-    public void testBug40156() {
+    void testBug40156() {
         String s = "\u00e4\u00f6\u00fc";
         byte[] a = UtfHelpper.getStringInUtf8(s);
         byte[] correct = s.getBytes(StandardCharsets.UTF_8);
@@ -38,7 +38,7 @@ public class UtfHelperTest {
     }
 
     @Test
-    public void testUtf() throws Exception {
+    void testUtf() throws Exception {
 
         //
         // This test fails with the IBM JDK

@@ -50,7 +50,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Test that we can plug in a custom XMLParser implementation via a system property
  */
-public class XMLParserTest {
+class XMLParserTest {
 
     private static final Logger LOG = System.getLogger(XMLParserTest.class.getName());
 
@@ -72,7 +72,7 @@ public class XMLParserTest {
     }
 
     @Test
-    public void testRSA_SHA1() throws Exception {
+    void testRSA_SHA1() throws Exception {
         assertFalse(CustomXMLParserImpl.isCalled());
 
         // Read in plaintext document

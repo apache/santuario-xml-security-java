@@ -41,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Unit test for javax.xml.crypto.dsig.keyinfo.X509Data
  *
  */
-public class X509DataTest {
+class X509DataTest {
 
     private final KeyInfoFactory fac;
 
@@ -51,7 +51,7 @@ public class X509DataTest {
     }
 
     @Test
-    public void testgetTypes() {
+    void testgetTypes() {
         X509Data x509 = fac.newX509Data(Collections.singletonList("cn=foo"));
         List<?> li = x509.getContent();
         assertNotNull(li);
@@ -70,14 +70,14 @@ public class X509DataTest {
     }
 
     @Test
-    public void testConstructor() {
+    void testConstructor() {
         // test newX509Data()
         X509Data x509 = fac.newX509Data(Collections.singletonList("cn=foo"));
         assertNotNull(x509);
     }
 
     @Test
-    public void testisFeatureSupported() {
+    void testisFeatureSupported() {
 
         X509Data x509 = fac.newX509Data(Collections.singletonList("cn=foo"));
         try {

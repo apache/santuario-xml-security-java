@@ -63,7 +63,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * A test to make sure that the various KeyWrap Encryption algorithms are working
  */
-public class KeyWrapEncryptionCreationTest {
+class KeyWrapEncryptionCreationTest {
 
     private static KeyPair rsaKeyPair;
     private static boolean bcInstalled;
@@ -106,7 +106,7 @@ public class KeyWrapEncryptionCreationTest {
     }
 
     @Test
-    public void testAES128KW() throws Exception {
+    void testAES128KW() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -163,7 +163,7 @@ public class KeyWrapEncryptionCreationTest {
     }
 
     @Test
-    public void testAES192KW() throws Exception {
+    void testAES192KW() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -220,7 +220,7 @@ public class KeyWrapEncryptionCreationTest {
     }
 
     @Test
-    public void testAES256KW() throws Exception {
+    void testAES256KW() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -277,7 +277,7 @@ public class KeyWrapEncryptionCreationTest {
     }
 
     @Test
-    public void testTripleDESKW() throws Exception {
+    void testTripleDESKW() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -332,7 +332,7 @@ public class KeyWrapEncryptionCreationTest {
     }
 
     @Test
-    public void testRSAv15KW() throws Exception {
+    void testRSAv15KW() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -386,7 +386,7 @@ public class KeyWrapEncryptionCreationTest {
     }
 
     @Test
-    public void testRSAOAEPKW() throws Exception {
+    void testRSAOAEPKW() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -440,7 +440,7 @@ public class KeyWrapEncryptionCreationTest {
     }
 
     @Test
-    public void testRSAOAEP11KW() throws Exception {
+    void testRSAOAEP11KW() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -494,7 +494,7 @@ public class KeyWrapEncryptionCreationTest {
     }
 
     @Test
-    public void testCamellia128KW() throws Exception {
+    void testCamellia128KW() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
@@ -553,7 +553,7 @@ public class KeyWrapEncryptionCreationTest {
     }
 
     @Test
-    public void testCamellia192KW() throws Exception {
+    void testCamellia192KW() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
@@ -612,7 +612,7 @@ public class KeyWrapEncryptionCreationTest {
     }
 
     @Test
-    public void testCamellia256KW() throws Exception {
+    void testCamellia256KW() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
@@ -671,7 +671,7 @@ public class KeyWrapEncryptionCreationTest {
     }
 
     @Test
-    public void testSEED128KW() throws Exception {
+    void testSEED128KW() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration

@@ -57,7 +57,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * This is a testcase to generate all the W3C xmldsig XMLDSig11 testcases.
  *
  */
-public class CreateInteropXMLDSig11Test {
+class CreateInteropXMLDSig11Test {
 
     private final KeySelector kvks;
     private final KeySelector sks;
@@ -162,7 +162,7 @@ public class CreateInteropXMLDSig11Test {
     }
 
     @Test
-    public void test_create_enveloping_p256_sha1() throws Exception {
+    void test_create_enveloping_p256_sha1() throws Exception {
         if (ecSupport) {
             test_create_signature_enveloping(ecdsaSha1, sha1, p256ki,
                                              p256.getPrivate(), kvks);
@@ -170,7 +170,7 @@ public class CreateInteropXMLDSig11Test {
     }
 
     @Test
-    public void test_create_enveloping_p256_sha256() throws Exception {
+    void test_create_enveloping_p256_sha256() throws Exception {
         if (ecSupport) {
             test_create_signature_enveloping(ecdsaSha256, sha256, p256ki,
                                              p256.getPrivate(), kvks);
@@ -178,7 +178,7 @@ public class CreateInteropXMLDSig11Test {
     }
 
     @Test
-    public void test_create_enveloping_p256_sha384() throws Exception {
+    void test_create_enveloping_p256_sha384() throws Exception {
         if (ecSupport) {
             test_create_signature_enveloping(ecdsaSha384, sha384, p256ki,
                                              p256.getPrivate(), kvks);
@@ -186,7 +186,7 @@ public class CreateInteropXMLDSig11Test {
     }
 
     @Test
-    public void test_create_enveloping_p256_sha512() throws Exception {
+    void test_create_enveloping_p256_sha512() throws Exception {
         if (ecSupport) {
             test_create_signature_enveloping(ecdsaSha512, sha512, p256ki,
                                              p256.getPrivate(), kvks);
@@ -194,7 +194,7 @@ public class CreateInteropXMLDSig11Test {
     }
 
     @Test
-    public void test_create_enveloping_p384_sha1() throws Exception {
+    void test_create_enveloping_p384_sha1() throws Exception {
         if (ecSupport) {
             test_create_signature_enveloping(ecdsaSha1, sha1, p384ki,
                                              p384.getPrivate(), kvks);
@@ -202,7 +202,7 @@ public class CreateInteropXMLDSig11Test {
     }
 
     @Test
-    public void test_create_enveloping_p384_sha256() throws Exception {
+    void test_create_enveloping_p384_sha256() throws Exception {
         if (ecSupport) {
             test_create_signature_enveloping(ecdsaSha256, sha256, p384ki,
                                              p384.getPrivate(), kvks);
@@ -210,7 +210,7 @@ public class CreateInteropXMLDSig11Test {
     }
 
     @Test
-    public void test_create_enveloping_p384_sha384() throws Exception {
+    void test_create_enveloping_p384_sha384() throws Exception {
         if (ecSupport) {
             test_create_signature_enveloping(ecdsaSha384, sha384, p384ki,
                                              p384.getPrivate(), kvks);
@@ -218,7 +218,7 @@ public class CreateInteropXMLDSig11Test {
     }
 
     @Test
-    public void test_create_enveloping_p384_sha512() throws Exception {
+    void test_create_enveloping_p384_sha512() throws Exception {
         if (ecSupport) {
             test_create_signature_enveloping(ecdsaSha512, sha512, p384ki,
                                              p384.getPrivate(), kvks);
@@ -226,7 +226,7 @@ public class CreateInteropXMLDSig11Test {
     }
 
     @Test
-    public void test_create_enveloping_p521_sha1() throws Exception {
+    void test_create_enveloping_p521_sha1() throws Exception {
         if (ecSupport) {
             test_create_signature_enveloping(ecdsaSha1, sha1, p521ki,
                                              p521.getPrivate(), kvks);
@@ -234,7 +234,7 @@ public class CreateInteropXMLDSig11Test {
     }
 
     @Test
-    public void test_create_enveloping_p521_sha256() throws Exception {
+    void test_create_enveloping_p521_sha256() throws Exception {
         if (ecSupport) {
             test_create_signature_enveloping(ecdsaSha256, sha256, p521ki,
                                              p521.getPrivate(), kvks);
@@ -242,7 +242,7 @@ public class CreateInteropXMLDSig11Test {
     }
 
     @Test
-    public void test_create_enveloping_p521_sha384() throws Exception {
+    void test_create_enveloping_p521_sha384() throws Exception {
         if (ecSupport) {
             test_create_signature_enveloping(ecdsaSha384, sha384, p521ki,
                                              p521.getPrivate(), kvks);
@@ -250,7 +250,7 @@ public class CreateInteropXMLDSig11Test {
     }
 
     @Test
-    public void test_create_enveloping_p521_sha512() throws Exception {
+    void test_create_enveloping_p521_sha512() throws Exception {
         if (ecSupport) {
             test_create_signature_enveloping(ecdsaSha512, sha512, p521ki,
                                              p521.getPrivate(), kvks);
@@ -258,57 +258,57 @@ public class CreateInteropXMLDSig11Test {
     }
 
     @Test
-    public void test_create_enveloping_rsa_sha256() throws Exception {
+    void test_create_enveloping_rsa_sha256() throws Exception {
         test_create_signature_enveloping(rsaSha256, sha1, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
     @Test
-    public void test_create_enveloping_rsa_sha384() throws Exception {
+    void test_create_enveloping_rsa_sha384() throws Exception {
         test_create_signature_enveloping(rsaSha384, sha1, rsa2048ki,
                                          rsa2048.getPrivate(), kvks);
     }
 
     @Test
-    public void test_create_enveloping_rsa_sha512() throws Exception {
+    void test_create_enveloping_rsa_sha512() throws Exception {
         test_create_signature_enveloping(rsaSha512, sha1, rsa2048ki,
                                          rsa2048.getPrivate(), kvks);
     }
 
     @Test
-    public void test_create_enveloping_sha256_rsa_sha256() throws Exception {
+    void test_create_enveloping_sha256_rsa_sha256() throws Exception {
         test_create_signature_enveloping(rsaSha256, sha256, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
     @Test
-    public void test_create_enveloping_sha384_rsa_sha256() throws Exception {
+    void test_create_enveloping_sha384_rsa_sha256() throws Exception {
         test_create_signature_enveloping(rsaSha256, sha384, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
     @Test
-    public void test_create_enveloping_sha512_rsa_sha256() throws Exception {
+    void test_create_enveloping_sha512_rsa_sha256() throws Exception {
         test_create_signature_enveloping(rsaSha256, sha512, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
     @Test
-    public void test_create_enveloping_hmac_sha256() throws Exception {
+    void test_create_enveloping_hmac_sha256() throws Exception {
         test_create_signature_enveloping(hmacSha256, sha1, rsaki,
                                          TestUtils.getSecretKey
                                          ("testkey".getBytes(StandardCharsets.US_ASCII)), sks);
     }
 
     @Test
-    public void test_create_enveloping_hmac_sha384() throws Exception {
+    void test_create_enveloping_hmac_sha384() throws Exception {
         test_create_signature_enveloping(hmacSha384, sha1, rsaki,
                                          TestUtils.getSecretKey
                                          ("testkey".getBytes(StandardCharsets.US_ASCII)), sks);
     }
 
     @Test
-    public void test_create_enveloping_hmac_sha512() throws Exception {
+    void test_create_enveloping_hmac_sha512() throws Exception {
         test_create_signature_enveloping(hmacSha512, sha1, rsaki,
                                          TestUtils.getSecretKey
                                          ("testkey".getBytes(StandardCharsets.US_ASCII)), sks);

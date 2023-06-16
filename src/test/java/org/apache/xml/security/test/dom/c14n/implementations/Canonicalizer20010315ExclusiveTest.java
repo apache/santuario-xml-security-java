@@ -60,7 +60,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  */
-public class Canonicalizer20010315ExclusiveTest {
+class Canonicalizer20010315ExclusiveTest {
 
     static {
         org.apache.xml.security.Init.init();
@@ -71,7 +71,7 @@ public class Canonicalizer20010315ExclusiveTest {
      * Method testA
      */
     @Test
-    public void testA() throws Exception {
+    void testA() throws Exception {
 
         File fileIn = resolveFile(
             "src/test/resources/ie/baltimore/merlin-examples/ec-merlin-iaikTests-two/signature.xml");
@@ -101,7 +101,7 @@ public class Canonicalizer20010315ExclusiveTest {
      * Method test221
      */
     @Test
-    public void test221() throws Exception {
+    void test221() throws Exception {
         Document doc = XMLUtils
             .read(resolveFile("src/test/resources/org/apache/xml/security/c14n/inExcl/example2_2_1.xml"), false);
         Node root = doc.getElementsByTagNameNS("http://example.net", "elem2").item(0);
@@ -120,7 +120,7 @@ public class Canonicalizer20010315ExclusiveTest {
      * Method test222
      */
     @Test
-    public void test222() throws Exception {
+    void test222() throws Exception {
         Document doc = XMLUtils
             .read(resolveFile("src/test/resources/org/apache/xml/security/c14n/inExcl/example2_2_2.xml"), false);
         Node root = doc.getElementsByTagNameNS("http://example.net", "elem2").item(0);
@@ -139,7 +139,7 @@ public class Canonicalizer20010315ExclusiveTest {
      * Method test221excl
      */
     @Test
-    public void test221excl() throws Exception {
+    void test221excl() throws Exception {
         Document doc = XMLUtils
             .read(resolveFile("src/test/resources/org/apache/xml/security/c14n/inExcl/example2_2_1.xml"), false);
         Node root = doc.getElementsByTagNameNS("http://example.net", "elem2").item(0);
@@ -158,7 +158,7 @@ public class Canonicalizer20010315ExclusiveTest {
      * Method test222excl
      */
     @Test
-    public void test222excl() throws Exception {
+    void test222excl() throws Exception {
         Document doc = XMLUtils
             .read(resolveFile("src/test/resources/org/apache/xml/security/c14n/inExcl/example2_2_2.xml"), false);
         Node root = doc.getElementsByTagNameNS("http://example.net", "elem2").item(0);
@@ -179,7 +179,7 @@ public class Canonicalizer20010315ExclusiveTest {
      * Provided by Gabriel McGoldrick - see e-mail of 21/11/03
      */
     @Test
-    public void test223excl() throws Exception {
+    void test223excl() throws Exception {
         Document doc = XMLUtils
             .read(resolveFile("src/test/resources/org/apache/xml/security/c14n/inExcl/example2_2_3.xml"), false);
 
@@ -205,7 +205,7 @@ public class Canonicalizer20010315ExclusiveTest {
      * Provided by Pete Hendry.
      */
     @Test
-    public void testNodeSet() throws Exception {
+    void testNodeSet() throws Exception {
         final String XML =
             "<env:Envelope"
             + " xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\""
@@ -250,7 +250,7 @@ public class Canonicalizer20010315ExclusiveTest {
      * https://issues.apache.org/jira/browse/SANTUARIO-263
      */
     @Test
-    public void test24excl() throws Exception {
+    void test24excl() throws Exception {
         Document doc = XMLUtils
             .read(resolveFile("src/test/resources/org/apache/xml/security/c14n/inExcl/example2_4.xml"), false);
         Node root =
@@ -272,7 +272,7 @@ public class Canonicalizer20010315ExclusiveTest {
      * https://issues.apache.org/jira/browse/SANTUARIO-263
      */
     @Test
-    public void test24Aexcl() throws Exception {
+    void test24Aexcl() throws Exception {
         Document doc = TestUtils.newDocument();
         Element local = doc.createElementNS("foo:bar", "dsig:local");
         Element test = doc.createElementNS("http://example.net", "etsi:test");
@@ -301,7 +301,7 @@ public class Canonicalizer20010315ExclusiveTest {
      * @throws Exception
      */
     @Test
-    public void testDefaultNSInInclusiveNamespacePrefixList1() throws Exception {
+    void testDefaultNSInInclusiveNamespacePrefixList1() throws Exception {
         final String xml =
                 "<env:Envelope"
                         + " xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\""
@@ -355,7 +355,7 @@ public class Canonicalizer20010315ExclusiveTest {
      * @throws Exception
      */
     @Test
-    public void testDefaultNSInInclusiveNamespacePrefixList2() throws Exception {
+    void testDefaultNSInInclusiveNamespacePrefixList2() throws Exception {
         final String xml =
                 "<env:Envelope"
                         + " xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\""
@@ -421,7 +421,7 @@ public class Canonicalizer20010315ExclusiveTest {
      * @throws Exception
      */
     @Test
-    public void testDefaultNSInInclusiveNamespacePrefixList3() throws Exception {
+    void testDefaultNSInInclusiveNamespacePrefixList3() throws Exception {
         final String xml =
                 "<env:Envelope"
                         + " xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\""
@@ -476,7 +476,7 @@ public class Canonicalizer20010315ExclusiveTest {
      * @throws Exception
      */
     @Test
-    public void testDefaultNSInInclusiveNamespacePrefixList4() throws Exception {
+    void testDefaultNSInInclusiveNamespacePrefixList4() throws Exception {
         final String xml =
                 "<env:Envelope"
                         + " xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\""
@@ -530,7 +530,7 @@ public class Canonicalizer20010315ExclusiveTest {
      * @throws Exception
      */
     @Test
-    public void testPropagateDefaultNs1() throws Exception {
+    void testPropagateDefaultNs1() throws Exception {
         final String xml =
                 "<env:Envelope"
                         + " xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\""
@@ -566,7 +566,7 @@ public class Canonicalizer20010315ExclusiveTest {
     }
 
     @Test
-    public void testPropagateDefaultNs2() throws Exception {
+    void testPropagateDefaultNs2() throws Exception {
         final String xml =
                 "<env:Envelope"
                         + " xmlns=\"http://example.com\""
@@ -603,7 +603,7 @@ public class Canonicalizer20010315ExclusiveTest {
     }
 
     @Test
-    public void testPropagateDefaultNs3() throws Exception {
+    void testPropagateDefaultNs3() throws Exception {
         final String xml =
                 "<Envelope"
                         + " xmlns=\"http://example.com\""
@@ -640,7 +640,7 @@ public class Canonicalizer20010315ExclusiveTest {
     }
 
     @Test
-    public void testPropagateDefaultNs4() throws Exception {
+    void testPropagateDefaultNs4() throws Exception {
         final String xml =
                 "<Envelope"
                         + " xmlns=\"\""
@@ -677,7 +677,7 @@ public class Canonicalizer20010315ExclusiveTest {
     }
 
     @Test
-    public void testPropagateDefaultNs5() throws Exception {
+    void testPropagateDefaultNs5() throws Exception {
         final String xml =
                 "<env:Envelope"
                         + " xmlns=\"http://example.com\""

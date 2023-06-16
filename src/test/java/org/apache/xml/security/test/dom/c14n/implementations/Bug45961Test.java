@@ -42,7 +42,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 
-public class Bug45961Test {
+class Bug45961Test {
 
     private static final String OBJECT_ID = "Object";
     private static final String MOCK_CANONICALIZATION_METHOD =
@@ -58,7 +58,7 @@ public class Bug45961Test {
     }
 
     @Test
-    public void testBug() throws Exception {
+    void testBug() throws Exception {
         Document document = getSignedDocument();
         NodeList list =
             document.getElementsByTagNameNS(Constants.SignatureSpecNS, Constants._TAG_SIGNATURE);

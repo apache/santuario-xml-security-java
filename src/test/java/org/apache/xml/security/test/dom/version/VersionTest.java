@@ -31,15 +31,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Version test.
  */
-public class VersionTest {
+class VersionTest {
 
     /**
      * A unit test for the algorithm below to convert a version number
      * to a double.
      */
     @Test
-    public void testRemoveClassifier() throws Exception {
+    void testRemoveClassifier() throws Exception {
         String version = removeClassifier("1.4.4");
+        assertEquals("1.4.4", version);
+
         version = removeClassifier("1.4.4-SNAPSHOT");
         assertEquals("1.4.4", version);
 
@@ -48,7 +50,7 @@ public class VersionTest {
     }
 
     @Test
-    public void testVersion() throws Exception {
+    void testVersion() throws Exception {
         Provider provider = Security.getProvider("ApacheXMLDSig");
         if (provider != null) {
             Security.removeProvider(provider.getName());
