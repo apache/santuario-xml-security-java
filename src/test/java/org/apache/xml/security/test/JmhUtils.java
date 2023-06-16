@@ -50,7 +50,7 @@ public final class JmhUtils {
             Result<?> primaryResult = result.getAggregatedResult().getPrimaryResult();
             assertAll(
                 () -> assertThat("Sample Time", primaryResult.getScore(), scoreMatcher),
-                () -> assertThat("Error", primaryResult.getScoreError(), errorMatcher)
+                () -> assertThat("Sample Time Error", primaryResult.getScoreError(), errorMatcher)
             );
         }
     }
