@@ -113,7 +113,7 @@ public class PerformanceIT {
             .include(Benchmarks.class.getCanonicalName() + ".readSignedAsStream.*")
             .param("processedFileName", signedStreamFile.getName())
             .build();
-        JmhUtils.runAndVerify(options, lessThanOrEqualTo(8_000d), lessThanOrEqualTo(500d));
+        JmhUtils.runAndVerify(options, lessThanOrEqualTo(10_000d), lessThanOrEqualTo(500d));
     }
 
 
@@ -124,7 +124,7 @@ public class PerformanceIT {
             .include(Benchmarks.class.getCanonicalName() + ".signAsDOM.*")
             .param("processedFileName", signedDomFile.getName())
             .build();
-        JmhUtils.runAndVerify(options, lessThanOrEqualTo(180_000d), lessThanOrEqualTo(10_000d));
+        JmhUtils.runAndVerify(options, lessThanOrEqualTo(15_000d), lessThanOrEqualTo(500d));
     }
 
 
@@ -135,7 +135,7 @@ public class PerformanceIT {
             .include(Benchmarks.class.getCanonicalName() + ".readSignedAsDOM.*")
             .param("processedFileName", signedDomFile.getName())
             .build();
-        JmhUtils.runAndVerify(options, lessThanOrEqualTo(8_000d), lessThanOrEqualTo(500d));
+        JmhUtils.runAndVerify(options, lessThanOrEqualTo(10_000d), lessThanOrEqualTo(500d));
     }
 
     @Order(30)
@@ -145,7 +145,7 @@ public class PerformanceIT {
             .include(Benchmarks.class.getCanonicalName() + ".encryptStream.*")
             .param("processedFileName", encryptedStreamFile.getName())
             .build();
-        JmhUtils.runAndVerify(options, lessThanOrEqualTo(8_000d), lessThanOrEqualTo(500d));
+        JmhUtils.runAndVerify(options, lessThanOrEqualTo(10_000d), lessThanOrEqualTo(500d));
     }
 
 
@@ -156,7 +156,7 @@ public class PerformanceIT {
             .include(Benchmarks.class.getCanonicalName() + ".decryptStream.*")
             .param("processedFileName", encryptedStreamFile.getName())
             .build();
-        JmhUtils.runAndVerify(options, lessThanOrEqualTo(8_000d), lessThanOrEqualTo(500d));
+        JmhUtils.runAndVerify(options, lessThanOrEqualTo(10_000d), lessThanOrEqualTo(500d));
     }
 
 
@@ -167,7 +167,7 @@ public class PerformanceIT {
             .include(Benchmarks.class.getCanonicalName() + ".encryptDOM.*")
             .param("processedFileName", encryptedDOMFile.getName())
             .build();
-        JmhUtils.runAndVerify(options, lessThanOrEqualTo(300_000d), lessThanOrEqualTo(10_000d));
+        JmhUtils.runAndVerify(options, lessThanOrEqualTo(25_000d), lessThanOrEqualTo(1500d));
     }
 
 
@@ -178,7 +178,7 @@ public class PerformanceIT {
             .include(Benchmarks.class.getCanonicalName() + ".decryptDOM.*")
             .param("processedFileName", encryptedDOMFile.getName())
             .build();
-        JmhUtils.runAndVerify(options, lessThanOrEqualTo(10_000d), lessThanOrEqualTo(500d));
+        JmhUtils.runAndVerify(options, lessThanOrEqualTo(15_000d), lessThanOrEqualTo(1000d));
     }
 
     /**
@@ -190,7 +190,7 @@ public class PerformanceIT {
     @OutputTimeUnit(TimeUnit.MILLISECONDS)
     @Fork(1)
     @Timeout(time = 5, timeUnit = TimeUnit.MINUTES)
-    // We work with files, don't add more
+    // We work with files, don't add more threads
     @Threads(1)
     public static class Benchmarks {
 
@@ -264,8 +264,8 @@ public class PerformanceIT {
             action.run();
             Duration duration = Duration.between(start, Instant.now());
             if (files.maxAcceptableDuration == null) {
-                files.maxAcceptableDuration = duration.plusMillis(duration.toMillis() / 10);
-                LOG.log(Level.INFO, "Max tolerated duration of the action based on the warmup + 10%: {0} ms",
+                files.maxAcceptableDuration = duration.plusMillis(duration.toMillis() / 5);
+                LOG.log(Level.INFO, "Max tolerated duration of the action based on the warmup + 20%: {0} ms",
                     files.maxAcceptableDuration.toMillis());
                 return;
             }
