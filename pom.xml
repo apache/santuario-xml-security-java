@@ -105,7 +105,7 @@
         <xml.bind.api.version>4.0.0</xml.bind.api.version>
         <woodstox.core.version>6.5.1</woodstox.core.version>
 
-        <project.build.outputTimestamp>2023-05-15T21:55:37Z</project.build.outputTimestamp>
+        <project.build.outputTimestamp>2023-06-16T19:00:00Z</project.build.outputTimestamp>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- Allow Clirr severity to be overriden by the command-line option -DminSeverity=level -->
@@ -554,7 +554,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-pmd-plugin</artifactId>
-                <version>3.20.0</version>
+                <version>3.21.0</version>
                 <configuration>
                     <rulesets>
                         <ruleset>${basedir}/etc/santuario-pmd-ruleset.xml</ruleset>
