@@ -102,6 +102,7 @@ class SignatureTest {
         assertTrue(signature.checkSignatureValue(pubKey));
     }
 
+    @Test
     void testSigningVerifyingFromExistingSignatureSameThread()
         throws Throwable {
         Document doc = getOriginalDocument();
