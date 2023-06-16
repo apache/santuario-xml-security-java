@@ -100,9 +100,9 @@ class BaltimoreXalanTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_sixteen_bad_signature() throws Exception {
+    void test_sixteen_bad_signature() throws Exception {
 
-        File filename = new File(merlinsDir16 + "/bad-signature.xml");
+        File filename = new File(merlinsDir16, "bad-signature.xml");
         ResourceResolverSpi resolver = new OfflineResolver();
         boolean followManifests = false;
         boolean verify = false;
