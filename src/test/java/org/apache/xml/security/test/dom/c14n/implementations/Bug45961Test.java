@@ -19,7 +19,6 @@
 package org.apache.xml.security.test.dom.c14n.implementations;
 
 
-import java.io.FileInputStream;
 import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
@@ -34,6 +33,7 @@ import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.Constants;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -57,7 +57,7 @@ public class Bug45961Test {
                                MockCanonicalizationMethod.class.getName());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testBug() throws Exception {
         Document document = getSignedDocument();
         NodeList list =

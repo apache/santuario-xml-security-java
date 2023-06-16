@@ -39,6 +39,7 @@ import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.transforms.params.XPathContainer;
 import org.apache.xml.security.utils.Constants;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -52,12 +53,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class XmlSecTest {
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testCheckXmlSignatureSoftwareStack() throws Exception {
         checkXmlSignatureSoftwareStack(false);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testCheckXmlSignatureSoftwareStackWithCert() throws Exception {
         checkXmlSignatureSoftwareStack(true);
     }

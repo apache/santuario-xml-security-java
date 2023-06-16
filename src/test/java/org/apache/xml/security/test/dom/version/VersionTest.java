@@ -22,6 +22,8 @@ package org.apache.xml.security.test.dom.version;
 import java.security.Provider;
 import java.security.Security;
 
+import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -35,7 +37,7 @@ public class VersionTest {
      * A unit test for the algorithm below to convert a version number
      * to a double.
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void testConvertVersion() throws Exception {
         String version = convertVersion("1.4.4");
         assertEquals("1.44", version);
@@ -47,7 +49,7 @@ public class VersionTest {
         assertEquals("1.4", version);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testVersion() throws Exception {
         Provider provider = Security.getProvider("ApacheXMLDSig");
         if (provider != null) {

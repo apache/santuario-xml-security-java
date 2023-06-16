@@ -43,6 +43,8 @@ import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Element;
 
 import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
@@ -56,7 +58,6 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
  */
 public class ECDSASignatureTest {
 
-    private static final String SEP = System.getProperty("file.separator");
     private static final String ECDSA_JKS =
         "src/test/resources/org/apache/xml/security/samples/input/ecdsa.jks";
     private static final String ECDSA_JKS_PASSWORD = "security";
@@ -69,14 +70,14 @@ public class ECDSASignatureTest {
 
         org.apache.xml.security.Init.init();
         try {
-            int javaVersion = Integer.parseInt(System.getProperty("java.specification.version"));
+            int javaVersion = Integer.getInteger("java.specification.version", 0);
             isJDK16up = javaVersion >= 16;
         } catch (NumberFormatException ex) {
             // ignore
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testOne() throws Exception {
         //
         // This test fails with the IBM JDK
@@ -98,8 +99,8 @@ public class ECDSASignatureTest {
     }
 
     // Failing with more recent BouncyCastle libraries
-    @org.junit.jupiter.api.Test
-    @org.junit.jupiter.api.Disabled
+    @Test
+    @Disabled
     public void testTwo() throws Exception {
         File file = resolveFile("src/test/resources/org/apache/xml/security/samples/input/ecdsaSignature.xml");
         try (InputStream is = new FileInputStream(file)) {
@@ -107,8 +108,8 @@ public class ECDSASignatureTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
-    @org.junit.jupiter.api.Disabled
+    @Test
+    @Disabled
     public void testThree()  throws Exception {
         File file = resolveFile("src/test/resources/at/buergerkarte/testresp.xml");
         try (InputStream is = new FileInputStream(file)) {
@@ -116,7 +117,7 @@ public class ECDSASignatureTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testKeyValue() throws Exception {
         //
         // This test fails with the IBM JDK

@@ -25,12 +25,14 @@ package org.apache.xml.security.test.javax.xml.crypto.dsig;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.security.Security;
+
 import javax.xml.crypto.KeySelector;
 import javax.xml.crypto.URIDereferencer;
 import javax.xml.crypto.dsig.XMLSignatureException;
 
 import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.test.javax.xml.crypto.KeySelectors;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -57,7 +59,7 @@ public class Baltimore23Test {
         ud = new LocalHttpCacheURIDereferencer();
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_enveloped_dsa() throws Exception {
         String file = "signature-enveloped-dsa.xml";
 
@@ -67,7 +69,7 @@ public class Baltimore23Test {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_enveloping_b64_dsa() throws Exception {
         String file = "signature-enveloping-b64-dsa.xml";
 
@@ -77,7 +79,7 @@ public class Baltimore23Test {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_enveloping_dsa() throws Exception {
         String file = "signature-enveloping-dsa.xml";
 
@@ -87,7 +89,7 @@ public class Baltimore23Test {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_external_b64_dsa() throws Exception {
         String file = "signature-external-b64-dsa.xml";
 
@@ -97,7 +99,7 @@ public class Baltimore23Test {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_external_dsa() throws Exception {
         String file = "signature-external-dsa.xml";
 
@@ -107,7 +109,7 @@ public class Baltimore23Test {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_enveloping_rsa() throws Exception {
         String file = "signature-enveloping-rsa.xml";
 
@@ -117,7 +119,7 @@ public class Baltimore23Test {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_enveloping_hmac_sha1() throws Exception {
         String file = "signature-enveloping-hmac-sha1.xml";
 
@@ -128,7 +130,7 @@ public class Baltimore23Test {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_enveloping_hmac_sha1_40() throws Exception {
         String file = "signature-enveloping-hmac-sha1-40.xml";
 
@@ -144,7 +146,7 @@ public class Baltimore23Test {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_keyname() throws Exception {
         String file = "signature-keyname.xml";
 
@@ -154,7 +156,7 @@ public class Baltimore23Test {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_retrievalmethod_rawx509crt() throws Exception {
         String file = "signature-retrievalmethod-rawx509crt.xml";
 
@@ -164,7 +166,7 @@ public class Baltimore23Test {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_x509_crt_crl() throws Exception {
         String file = "signature-x509-crt-crl.xml";
 
@@ -174,7 +176,7 @@ public class Baltimore23Test {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_x509_crt() throws Exception {
         String file = "signature-x509-crt.xml";
 
@@ -184,7 +186,7 @@ public class Baltimore23Test {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_x509_is() throws Exception {
         String file = "signature-x509-is.xml";
 
@@ -194,7 +196,7 @@ public class Baltimore23Test {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_x509_ski() throws Exception {
         String file = "signature-x509-ski.xml";
 
@@ -204,7 +206,7 @@ public class Baltimore23Test {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_x509_sn() throws Exception {
         String file = "signature-x509-sn.xml";
 

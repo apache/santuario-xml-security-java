@@ -24,6 +24,7 @@ import java.io.File;
 
 import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -48,7 +49,7 @@ public class RSASecurityTest extends InteropTestBase {
         org.apache.xml.security.Init.init();
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_enveloping() throws Exception {
 
         File filename = new File(blakesDir, "certj201_enveloping.xml");
@@ -63,7 +64,7 @@ public class RSASecurityTest extends InteropTestBase {
         assertTrue(verify, filename.toString());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_enveloped() throws Exception {
 
         File filename = new File(blakesDir, "certj201_enveloped.xml");

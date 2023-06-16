@@ -38,6 +38,7 @@ import javax.xml.crypto.dsig.dom.DOMValidateContext;
 import javax.xml.crypto.dsig.keyinfo.KeyInfoFactory;
 
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
@@ -66,7 +67,7 @@ public class XMLSignatureFactoryTest {
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testgetInstance() {
         try {
             XMLSignatureFactory.getInstance("non-existent");
@@ -99,13 +100,13 @@ public class XMLSignatureFactoryTest {
         } catch (NullPointerException npe) {}
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testgetMechanismType() {
         assertNotNull(factory);
         assertEquals("DOM", factory.getMechanismType());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testisFeatureSupported() {
         try {
             factory.isFeatureSupported(null);
@@ -115,14 +116,14 @@ public class XMLSignatureFactoryTest {
         assertFalse(factory.isFeatureSupported("not supported"));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testgetKeyInfoFactory() throws Exception {
         KeyInfoFactory kifac = factory.getKeyInfoFactory();
         assertEquals(kifac.getMechanismType(), factory.getMechanismType());
         assertEquals(kifac.getProvider(), factory.getProvider());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testunmarshalXMLSignature() throws Exception {
         XMLSignature stuff;
         try {

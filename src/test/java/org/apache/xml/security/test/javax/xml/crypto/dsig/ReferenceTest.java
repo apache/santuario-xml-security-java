@@ -22,17 +22,34 @@
 package org.apache.xml.security.test.javax.xml.crypto.dsig;
 
 
-import java.io.*;
+import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.Security;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
+
 import javax.xml.crypto.URIDereferencer;
-import javax.xml.crypto.dsig.*;
-import javax.xml.crypto.dsig.keyinfo.*;
+import javax.xml.crypto.dsig.CanonicalizationMethod;
+import javax.xml.crypto.dsig.DigestMethod;
+import javax.xml.crypto.dsig.Reference;
+import javax.xml.crypto.dsig.SignatureMethod;
+import javax.xml.crypto.dsig.Transform;
+import javax.xml.crypto.dsig.XMLSignContext;
+import javax.xml.crypto.dsig.XMLSignature;
+import javax.xml.crypto.dsig.XMLSignatureException;
+import javax.xml.crypto.dsig.XMLSignatureFactory;
+import javax.xml.crypto.dsig.XMLValidateContext;
 import javax.xml.crypto.dsig.dom.DOMSignContext;
 import javax.xml.crypto.dsig.dom.DOMValidateContext;
+import javax.xml.crypto.dsig.keyinfo.KeyInfoFactory;
 import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 import javax.xml.crypto.dsig.spec.TransformParameterSpec;
+
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -49,10 +66,10 @@ import static org.junit.jupiter.api.Assertions.fail;
  *
  */
 public class ReferenceTest {
-    private XMLSignatureFactory fac;
-    private KeyInfoFactory kifac;
-    private DigestMethod dmSHA1;
-    private String uri = "http://www.ietf.org/rfc/rfc3275.txt";
+    private final XMLSignatureFactory fac;
+    private final KeyInfoFactory kifac;
+    private final DigestMethod dmSHA1;
+    private final String uri = "http://www.ietf.org/rfc/rfc3275.txt";
 
     private static final String[] CRYPTO_ALGS = { "RSA", "DSA" };
     private static final String[] SIG_ALGS = {
@@ -74,7 +91,7 @@ public class ReferenceTest {
     }
 
     @SuppressWarnings("rawtypes")
-    @org.junit.jupiter.api.Test
+    @Test
     public void testConstructor() throws Exception {
         Reference ref;
         // test XMLSignatureFactory.newReference(String uri,
@@ -185,7 +202,7 @@ public class ReferenceTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testisFeatureSupported() throws Exception {
         Reference ref = fac.newReference(null, dmSHA1, null, null, null);
         try {
@@ -196,12 +213,12 @@ public class ReferenceTest {
         assertFalse(ref.isFeatureSupported("not supported"));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testvalidate() throws Exception {
         testvalidate(false);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testvalidateWithCaching() throws Exception {
         testvalidate(true);
     }

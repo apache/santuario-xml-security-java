@@ -35,6 +35,7 @@ import javax.xml.xpath.XPathFactory;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
@@ -66,7 +67,7 @@ public class Canonicalizer11Test {
     /**
      * 3.1 PIs, Comments, and Outside of Document Element
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test31withCommentsSubtree() throws Exception {
         String descri =
             "3.1: PIs, Comments, and Outside of Document Element. (commented)";
@@ -85,7 +86,7 @@ public class Canonicalizer11Test {
 
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-WhitespaceInContent">the example from the spec</A>
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test32subtree() throws Exception {
         String descri = "3.2 Whitespace in Document Content. (uncommented)";
         String fileIn = resolvePath(prefix, "in", "32_input.xml").toString();
@@ -102,7 +103,7 @@ public class Canonicalizer11Test {
      *
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-SETags">the example from the spec</A>
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test33subtree() throws Exception  {
         String descri = "3.3 Start and End Tags. (uncommented)";
         String fileIn = resolvePath(prefix, "in", "33_input.xml").toString();
@@ -120,7 +121,7 @@ public class Canonicalizer11Test {
      * @see #test34validatingParser
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-Chars">the example from the spec</A>
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test34() throws Exception {
         String descri =
             "3.4 Character Modifications and Character References. (uncommented)";
@@ -138,7 +139,7 @@ public class Canonicalizer11Test {
      *
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-Entities">the example from the spec</A>
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test35subtree() throws Exception {
         String descri = "3.5 Entity References. (uncommented)";
         String fileIn = resolvePath(prefix, "in", "35_input.xml").toString();
@@ -155,7 +156,7 @@ public class Canonicalizer11Test {
      *
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-UTF8">the example from the spec</A>
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test36subtree() throws Exception {
         String descri = "3.6 UTF-8 Encoding. (uncommented)";
         String fileIn = resolvePath(prefix, "in", "36_input.xml").toString();
@@ -172,7 +173,7 @@ public class Canonicalizer11Test {
      *
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-DocSubsets">the example from the spec</A>
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test37() throws Exception {
         String descri = "3.7 Document Subsets. (uncommented)";
         String fileIn = resolvePath(prefix, "in", "37_input.xml").toString();
@@ -196,7 +197,7 @@ public class Canonicalizer11Test {
     /**
      * 3.8 Document Subsets and XML Attributes
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test38() throws Exception {
         String descri = "3.8 Document Subsets and XML Attributes (uncommented)";
         String fileIn = resolvePath(prefix, "in", "38_input.xml").toString();

@@ -28,6 +28,8 @@ import java.security.Security;
 import org.apache.xml.security.test.javax.xml.crypto.KeySelectors;
 import org.apache.xml.security.utils.resolver.ResourceResolver;
 import org.apache.xml.security.utils.resolver.implementations.ResolverLocalFilesystem;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -51,7 +53,7 @@ public class InteropC14nTest {
         base = resolveFile("src", "test", "resources", "interop", "c14n");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_y1_exc_signature() throws Exception {
         validator = new SignatureValidator(new File(base, "Y1"));
         String file = "exc-signature.xml";
@@ -73,7 +75,7 @@ public class InteropC14nTest {
     }
     */
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_y3_signature() throws Exception {
         validator = new SignatureValidator(new File(base, "Y3"));
         String file = "signature.xml";
@@ -87,7 +89,7 @@ public class InteropC14nTest {
         assertTrue(coreValidity, "Signature failed core validation#2");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_y4_signature() throws Exception {
         validator = new SignatureValidator(new File(base, "Y4"));
         String file = "signature.xml";
@@ -101,8 +103,8 @@ public class InteropC14nTest {
         assertTrue(coreValidity, "Signature failed core validation#2");
     }
 
-    @org.junit.jupiter.api.Test
-    @org.junit.jupiter.api.Disabled
+    @Test
+    @Disabled
     public void test_y5_signature() throws Exception {
         validator = new SignatureValidator(new File(base, "Y5"));
         String file = "signature.xml";
@@ -116,8 +118,8 @@ public class InteropC14nTest {
         assertTrue(coreValidity, "Signature failed core validation#2");
     }
 
-    @org.junit.jupiter.api.Test
-    @org.junit.jupiter.api.Disabled
+    @Test
+    @Disabled
     public void test_y5_signatureCommented() throws Exception {
         validator = new SignatureValidator(new File(base, "Y5"));
         String file = "signatureCommented.xml";

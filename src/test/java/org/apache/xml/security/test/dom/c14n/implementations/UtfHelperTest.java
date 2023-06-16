@@ -23,12 +23,13 @@ import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 
 import org.apache.xml.security.c14n.implementations.UtfHelpper;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class UtfHelperTest {
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testBug40156() {
         String s = "\u00e4\u00f6\u00fc";
         byte[] a = UtfHelpper.getStringInUtf8(s);
@@ -36,7 +37,7 @@ public class UtfHelperTest {
         assertArrayEquals(correct, a);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testUtf() throws Exception {
 
         //

@@ -22,8 +22,16 @@
 package org.apache.xml.security.test.javax.xml.crypto.dsig.keyinfo;
 
 
-import java.security.*;
-import javax.xml.crypto.dsig.keyinfo.*;
+import java.security.KeyException;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.PublicKey;
+import java.security.SecureRandom;
+
+import javax.xml.crypto.dsig.keyinfo.KeyInfoFactory;
+import javax.xml.crypto.dsig.keyinfo.KeyValue;
+
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -38,8 +46,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class KeyValueTest {
 
     private static final String[] ALGOS = { "DSA", "RSA" };
-    private KeyInfoFactory fac;
-    private PublicKey keys[];
+    private final KeyInfoFactory fac;
+    private final PublicKey keys[];
 
     public KeyValueTest() throws Exception {
         fac = KeyInfoFactory.getInstance
@@ -52,7 +60,7 @@ public class KeyValueTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testgetPublicKey() {
         try {
             KeyValue kv = fac.newKeyValue(keys[0]);
@@ -62,20 +70,20 @@ public class KeyValueTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testConstructor() {
         // test newKeyValue(PublicKey pk)
-        for (int i = 0; i < keys.length; i++) {
+        for (PublicKey key : keys) {
             try {
-                KeyValue kv = fac.newKeyValue(keys[i]);
-                assertEquals(keys[i], kv.getPublicKey());
+                KeyValue kv = fac.newKeyValue(key);
+                assertEquals(key, kv.getPublicKey());
             } catch (KeyException ke) {
                 fail("Should pass instead of throwing KeyException");
             }
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testisFeatureSupported() {
         KeyValue kv = null;
         try {

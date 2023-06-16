@@ -26,16 +26,30 @@ import java.security.Key;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.PublicKey;
+import java.security.cert.CertSelector;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
-import java.security.cert.CertSelector;
-import java.security.cert.X509Certificate;
 import java.security.cert.X509CertSelector;
-import java.util.*;
+import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.Iterator;
+
 import javax.security.auth.x500.X500Principal;
-import javax.xml.crypto.*;
-import javax.xml.crypto.dsig.*;
-import javax.xml.crypto.dsig.keyinfo.*;
+import javax.xml.crypto.AlgorithmMethod;
+import javax.xml.crypto.KeySelector;
+import javax.xml.crypto.KeySelectorException;
+import javax.xml.crypto.KeySelectorResult;
+import javax.xml.crypto.OctetStreamData;
+import javax.xml.crypto.XMLCryptoContext;
+import javax.xml.crypto.XMLStructure;
+import javax.xml.crypto.dsig.SignatureMethod;
+import javax.xml.crypto.dsig.keyinfo.KeyInfo;
+import javax.xml.crypto.dsig.keyinfo.KeyName;
+import javax.xml.crypto.dsig.keyinfo.RetrievalMethod;
+import javax.xml.crypto.dsig.keyinfo.X509Data;
+import javax.xml.crypto.dsig.keyinfo.X509IssuerSerial;
 
 import org.apache.jcp.xml.dsig.internal.dom.DOMRetrievalMethod;
 
@@ -60,7 +74,7 @@ import org.apache.jcp.xml.dsig.internal.dom.DOMRetrievalMethod;
  */
 public class X509KeySelector extends KeySelector {
 
-    private KeyStore ks;
+    private final KeyStore ks;
     private boolean trusted = true;
 
     /**
@@ -127,6 +141,7 @@ public class X509KeySelector extends KeySelector {
      * @throws ClassCastException if the data type of <code>method</code>
      *    is not supported by this key selector
      */
+    @Override
     public KeySelectorResult select(KeyInfo keyInfo,
         KeySelector.Purpose purpose, AlgorithmMethod method,
         XMLCryptoContext context) throws KeySelectorException {
@@ -264,6 +279,7 @@ public class X509KeySelector extends KeySelector {
     private static class SimpleKeySelectorResult implements KeySelectorResult {
         private final Key key;
         SimpleKeySelectorResult(Key key) { this.key = key; }
+        @Override
         public Key getKey() { return key; }
     }
 
@@ -353,10 +369,7 @@ public class X509KeySelector extends KeySelector {
             return ksr;
         }
         if (!certs.isEmpty() && !trusted) {
-            // try to find public key in certs in X509Data
-            Iterator<X509Certificate> i = certs.iterator();
-            while (i.hasNext()) {
-                X509Certificate cert = i.next();
+            for (X509Certificate cert : certs) {
                 if (subjectcs.match(cert)) {
                     return new SimpleKeySelectorResult(cert.getPublicKey());
                 }

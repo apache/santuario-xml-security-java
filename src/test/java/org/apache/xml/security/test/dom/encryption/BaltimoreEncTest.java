@@ -51,8 +51,8 @@ import org.apache.xml.security.keys.content.x509.XMLX509Certificate;
 import org.apache.xml.security.keys.keyresolver.KeyResolver;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.utils.EncryptionConstants;
-import org.apache.xml.security.utils.JavaUtils;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -154,7 +154,7 @@ public class BaltimoreEncTest {
      *
      * Check the merlin-enc-five element content test for 3DES
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_five_content_3des_cbc() throws Exception {
 
         if (haveISOPadding) {
@@ -176,7 +176,7 @@ public class BaltimoreEncTest {
      *
      * Check the merlin-enc-five element content test for AES256
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_five_content_aes256_cbc() throws Exception {
 
         if (haveISOPadding) {
@@ -199,7 +199,7 @@ public class BaltimoreEncTest {
      * Check the merlin-enc-five element content test for AES128 with
      * AES 192 key wrap
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_five_content_aes128_cbc_kw_aes192() throws Exception {
         if (haveISOPadding && haveKeyWraps) {
             File file = resolveFile(
@@ -221,7 +221,7 @@ public class BaltimoreEncTest {
      * Check the merlin-enc-five element content test for 3DES with
      * AES 128 key wrap
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_five_content_3des_cbc_kw_aes128() throws Exception {
 
         if (haveISOPadding && haveKeyWraps) {
@@ -244,7 +244,7 @@ public class BaltimoreEncTest {
      * Check the merlin-enc-five element content test for AES128 with
      * RSA key wrap (PKCS 1.5 padding)
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_five_content_aes128_cbc_rsa_15() throws Exception {
         if (haveISOPadding) {
             File file = resolveFile(
@@ -266,7 +266,7 @@ public class BaltimoreEncTest {
      * Check the merlin-enc-five element data test for AES192 with
      * a CipherReference element
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_five_element_aes192_cbc_ref() throws Exception {
         if (haveISOPadding) {
             File file = resolveFile(
@@ -290,7 +290,7 @@ public class BaltimoreEncTest {
      * Check the merlin-enc-five element data test for AES128 with no
      * key wrap
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_five_data_aes128_cbc() throws Exception {
         if (haveISOPadding) {
             File file = resolveFile("src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-data-aes128-cbc.xml");
@@ -310,7 +310,7 @@ public class BaltimoreEncTest {
      * Check the merlin-enc-five element data test for AES256 with 3DES
      * key wrap
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_five_data_aes256_cbc_3des() throws Exception {
         assumeFalse(isIBMJdK);
 
@@ -333,7 +333,7 @@ public class BaltimoreEncTest {
      * Check the merlin-enc-five element data test for AES192 with AES256
      * key wrap
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_five_data_aes192_cbc_aes256() throws Exception {
         if (haveISOPadding && haveKeyWraps) {
             File file = resolveFile(
@@ -354,7 +354,7 @@ public class BaltimoreEncTest {
      * Check the merlin-enc-five element data test for 3DES with
      * RSA key wrap (OAEP and no parameters)
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_five_data_3des_cbc_rsa_oaep() throws Exception {
         if (haveISOPadding) {
             File file = resolveFile(

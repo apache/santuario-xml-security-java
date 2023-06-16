@@ -32,6 +32,7 @@ import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -50,7 +51,7 @@ public class TransformBase64DecodeTest {
         org.apache.xml.security.Init.init();
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test1() throws Exception {
         // base64 encoded
         String s1 =
@@ -72,7 +73,7 @@ public class TransformBase64DecodeTest {
         assertEquals(result, "The URI of the transform is http://www.w3.org/2000/09/xmldsig#base64");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test2() throws Exception {
         // base64 encoded twice
         String s2 =
@@ -94,7 +95,7 @@ public class TransformBase64DecodeTest {
         assertEquals(result, "The URI of the transform is http://www.w3.org/2000/09/xmldsig#base64");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test3() throws Exception {
         //J-
         String input = ""

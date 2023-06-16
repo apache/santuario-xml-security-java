@@ -42,7 +42,10 @@ import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 import javax.xml.crypto.dsig.spec.HMACParameterSpec;
 
 import org.apache.xml.security.test.javax.xml.crypto.KeySelectors;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
@@ -57,18 +60,18 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class HMACSignatureAlgorithmTest {
 
     private static boolean bcInstalled;
-    private KeySelector sks;
-    private CanonicalizationMethod withoutComments;
-    private DigestMethod sha1;
-    private SignatureMethod hmacSha1, hmacSha224, hmacSha256, hmacSha384, hmacSha512, ripemd160, hmacSha256ParamSpec;
-    private XMLSignatureFactory fac;
+    private final KeySelector sks;
+    private final CanonicalizationMethod withoutComments;
+    private final DigestMethod sha1;
+    private final SignatureMethod hmacSha1, hmacSha224, hmacSha256, hmacSha384, hmacSha512, ripemd160, hmacSha256ParamSpec;
+    private final XMLSignatureFactory fac;
 
     static {
         Security.insertProviderAt
             (new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI(), 1);
     }
 
-    @org.junit.jupiter.api.BeforeAll
+    @BeforeAll
     public static void setup() throws Exception {
         //
         // If the BouncyCastle provider is not installed, then try to load it
@@ -112,48 +115,48 @@ public class HMACSignatureAlgorithmTest {
         sks = new KeySelectors.SecretKeySelector("testkey".getBytes(StandardCharsets.US_ASCII));
     }
 
-    @org.junit.jupiter.api.AfterAll
+    @AfterAll
     public static void cleanup() throws Exception {
         Security.removeProvider("BC");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testHMACSHA1() throws Exception {
         test_create_signature_enveloping(hmacSha1, sha1, null,
                                          TestUtils.getSecretKey("testkey".getBytes(StandardCharsets.US_ASCII)), sks);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testHMACSHA_224() throws Exception {
         test_create_signature_enveloping(hmacSha224, sha1, null,
                                          TestUtils.getSecretKey("testkey".getBytes(StandardCharsets.US_ASCII)), sks);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testHMACSHA_256() throws Exception {
         test_create_signature_enveloping(hmacSha256, sha1, null,
                                          TestUtils.getSecretKey("testkey".getBytes(StandardCharsets.US_ASCII)), sks);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testHMACSHA_256_ParamSpec() throws Exception {
         test_create_signature_enveloping(hmacSha256ParamSpec, sha1, null,
                                          TestUtils.getSecretKey("testkey".getBytes(StandardCharsets.US_ASCII)), sks);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testHMACSHA_384() throws Exception {
         test_create_signature_enveloping(hmacSha384, sha1, null,
                                          TestUtils.getSecretKey("testkey".getBytes(StandardCharsets.US_ASCII)), sks);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testHMACSHA_512() throws Exception {
         test_create_signature_enveloping(hmacSha512, sha1, null,
                                          TestUtils.getSecretKey("testkey".getBytes(StandardCharsets.US_ASCII)), sks);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testHMACRIPEMD160() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
         test_create_signature_enveloping(ripemd160, sha1, null,

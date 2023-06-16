@@ -31,6 +31,7 @@ import java.util.Collections;
 
 import org.apache.xml.security.keys.content.x509.XMLX509SKI;
 import org.apache.xml.security.test.dom.TestUtils;
+import org.junit.jupiter.api.Test;
 
 import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -42,14 +43,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  */
 public class XMLX509SKITest {
 
-    private static final String SEP = System.getProperty("file.separator");
     private final CertificateFactory cf;
 
     public XMLX509SKITest() throws Exception {
         cf = CertificateFactory.getInstance("X.509");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testGetSKIBytesFromCert() throws Exception {
         File f = resolveFile("src/test/resources/ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/certs/lugh.crt");
         X509Certificate cert;

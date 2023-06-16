@@ -26,6 +26,7 @@ import org.apache.xml.security.signature.XMLSignatureException;
 import org.apache.xml.security.test.dom.interop.InteropTestBase;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Element;
 
 import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
@@ -46,7 +47,7 @@ public class ForbiddenAlgorithmTest extends InteropTestBase {
         org.apache.xml.security.Init.init();
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testMD5Digest() throws Exception {
         boolean success = readAndVerifySignature("signature-joseph-exc.xml", false);
 

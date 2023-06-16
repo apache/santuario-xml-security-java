@@ -29,6 +29,7 @@ import org.apache.jcp.xml.dsig.internal.dom.DOMSignedInfo;
 import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Element;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -42,7 +43,7 @@ public class JSRForbiddenRefCountTest {
         Security.insertProviderAt(new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI(), 1);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testReferenceCount() throws Exception {
         Element signedInfoElement =
             getSignedInfoElement("src/test/resources/interop/c14n/Y4", "signature-manifest.xml");

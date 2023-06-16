@@ -23,7 +23,11 @@ package org.apache.xml.security.test.javax.xml.crypto.dsig.keyinfo;
 
 
 import java.math.BigInteger;
-import javax.xml.crypto.dsig.keyinfo.*;
+
+import javax.xml.crypto.dsig.keyinfo.KeyInfoFactory;
+import javax.xml.crypto.dsig.keyinfo.X509IssuerSerial;
+
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -37,8 +41,8 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class X509IssuerSerialTest {
 
-    private KeyInfoFactory fac;
-    private String name;
+    private final KeyInfoFactory fac;
+    private final String name;
 
     public X509IssuerSerialTest() throws Exception {
         fac = KeyInfoFactory.getInstance
@@ -46,19 +50,19 @@ public class X509IssuerSerialTest {
         name = "CN = Wolfgang";
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testgetIssuerName() {
         X509IssuerSerial x509is = fac.newX509IssuerSerial(name, BigInteger.ZERO);
         assertNotNull(x509is.getIssuerName());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testgetSerialNumber() {
         X509IssuerSerial x509is = fac.newX509IssuerSerial(name, BigInteger.ZERO);
         assertNotNull(x509is.getSerialNumber());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testConstructor() {
         // test newX509IssuerSerial(String, BigInteger)
         X509IssuerSerial x509is = fac.newX509IssuerSerial(name, BigInteger.ONE);
@@ -70,7 +74,7 @@ public class X509IssuerSerialTest {
      * Confirm that an IllegalArgumentException is thrown when an issuer
      * distinguished name does not conform to RFC 2253.
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void testConstructorBadIssuerName() {
         // test newX509IssuerSerial(String, BigInteger)
         String badName = "cn=bad,=+bad,";
@@ -83,7 +87,7 @@ public class X509IssuerSerialTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testisFeatureSupported() {
 
         X509IssuerSerial x509is = fac.newX509IssuerSerial(name, BigInteger.ONE);

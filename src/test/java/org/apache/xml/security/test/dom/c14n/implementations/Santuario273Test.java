@@ -31,6 +31,7 @@ import org.apache.xml.security.Init;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -78,7 +79,7 @@ public class Santuario273Test {
         Init.init();
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testC14n11Base() throws Exception {
         Document doc = null;
         try (InputStream is = new ByteArrayInputStream(input.getBytes())) {

@@ -19,13 +19,14 @@
 package org.apache.xml.security.test.dom.keys;
 
 import java.io.File;
-import java.io.FileInputStream;
+import java.nio.file.FileSystems;
 
 import org.apache.xml.security.keys.content.KeyInfoReference;
 import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -37,12 +38,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class KeyInfoReferenceTest {
 
-    private static final String SEP = System.getProperty("file.separator");
+    private static final String SEP = FileSystems.getDefault().getSeparator();
 
     private static final String ID_CONTROL = "abc123";
     private static final String URI_CONTROL = "http://www.example.org/keyinfo.xml";
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSchema() throws Exception {
         KeyInfoReference keyInfoReference = new KeyInfoReference(TestUtils.newDocument(), URI_CONTROL);
         Element element = keyInfoReference.getElement();
@@ -51,7 +52,7 @@ public class KeyInfoReferenceTest {
         assertEquals("KeyInfoReference", element.getLocalName());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testURIFromElement() throws Exception {
         Document doc = loadXML("KeyInfoReference.xml");
         NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpec11NS, Constants._TAG_KEYINFOREFERENCE);
@@ -62,13 +63,13 @@ public class KeyInfoReferenceTest {
         assertEquals(ID_CONTROL, keyInfoReference.getId());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testURIOnConstruction() throws Exception {
         KeyInfoReference keyInfoReference = new KeyInfoReference(TestUtils.newDocument(), URI_CONTROL);
         assertEquals(URI_CONTROL, keyInfoReference.getURI());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testId() throws Exception {
         KeyInfoReference keyInfoReference = new KeyInfoReference(TestUtils.newDocument(), URI_CONTROL);
         assertEquals("", keyInfoReference.getId());

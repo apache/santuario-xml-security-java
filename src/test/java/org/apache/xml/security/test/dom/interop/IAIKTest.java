@@ -28,6 +28,7 @@ import org.apache.xml.security.utils.resolver.ResourceResolver;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
 import org.apache.xml.security.utils.resolver.implementations.ResolverAnonymous;
 import org.apache.xml.security.utils.resolver.implementations.ResolverLocalFilesystem;
+import org.junit.jupiter.api.Test;
 
 import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 import static org.apache.xml.security.test.XmlSecTestEnvironment.resolvePath;
@@ -61,7 +62,7 @@ public class IAIKTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signatureAlgorithms_signatures_hMACShortSignature()
         throws Exception {
 
@@ -88,7 +89,7 @@ public class IAIKTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signatureAlgorithms_signatures_hMACSignature()
         throws Exception {
 
@@ -118,7 +119,7 @@ public class IAIKTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_coreFeatures_signatures_manifestSignature_core()
         throws Exception {
 
@@ -147,7 +148,7 @@ public class IAIKTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_coreFeatures_signatures_manifestSignature_manifest()
         throws Exception {
 
@@ -176,7 +177,7 @@ public class IAIKTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_coreFeatures_signatures_signatureTypesSignature()
         throws Exception {
 
@@ -205,7 +206,7 @@ public class IAIKTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_coreFeatures_signatures_anonymousReferenceSignature()
         throws Exception {
 
@@ -236,7 +237,7 @@ public class IAIKTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signatureAlgorithms_signatures_dSASignature()
         throws Exception {
 
@@ -265,7 +266,7 @@ public class IAIKTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signatureAlgorithms_signatures_rSASignature()
         throws Exception {
 
@@ -294,7 +295,7 @@ public class IAIKTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_transforms_signatures_base64DecodeSignature()
         throws Exception {
 
@@ -323,7 +324,7 @@ public class IAIKTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_transforms_signatures_c14nSignature() throws Exception {
 
         File filename = resolveFile(gregorsDir, "transforms", "signatures", "c14nSignature.xml");
@@ -351,7 +352,7 @@ public class IAIKTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_transforms_signatures_envelopedSignatureSignature()
         throws Exception {
 
@@ -380,7 +381,7 @@ public class IAIKTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_transforms_signatures_xPathSignature() throws Exception {
 
         File filename = resolveFile(gregorsDir, "transforms", "signatures", "xPathSignature.xml");

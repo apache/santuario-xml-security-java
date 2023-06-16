@@ -27,6 +27,7 @@ import java.security.Security;
 
 import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.test.javax.xml.crypto.KeySelectors;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -49,7 +50,7 @@ public class BaltimoreExcC14n1Test {
         validator = new SignatureValidator(base);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testExcSignature() throws Exception {
         String file = "exc-signature.xml";
         boolean coreValidity = validator.validate(file, new KeySelectors.KeyValueKeySelector());

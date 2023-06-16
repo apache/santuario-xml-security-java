@@ -28,6 +28,7 @@ import javax.xml.crypto.dsig.dom.DOMValidateContext;
 
 import org.apache.xml.security.test.javax.xml.crypto.KeySelectors;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
@@ -45,17 +46,17 @@ public class SecureXSLTTest {
         Security.insertProviderAt(new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI(), 1);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSignature1() throws Exception {
         testSignature(new File(BASEDIR, "signature1.xml"));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSignature2() throws Exception {
         testSignature(new File(BASEDIR, "signature2.xml"));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSignature3() throws Exception {
         testSignature(new File(BASEDIR, "signature3.xml"));
     }

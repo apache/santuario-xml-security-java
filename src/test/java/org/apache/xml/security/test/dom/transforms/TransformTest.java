@@ -23,6 +23,7 @@ import org.apache.xml.security.exceptions.AlgorithmAlreadyRegisteredException;
 import org.apache.xml.security.transforms.Transform;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.transforms.implementations.TransformC14N11;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -32,14 +33,14 @@ public class TransformTest {
         Init.init();
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testAlreadyRegisteredException() throws Exception {
         assertThrows(AlgorithmAlreadyRegisteredException.class, () ->
                 Transform.register(Transforms.TRANSFORM_C14N11_OMIT_COMMENTS, TransformC14N11.class)
         );
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testAlreadyRegisteredExceptionFromString() throws Exception {
         assertThrows(AlgorithmAlreadyRegisteredException.class, () ->
                 Transform.register(Transforms.TRANSFORM_C14N11_OMIT_COMMENTS,

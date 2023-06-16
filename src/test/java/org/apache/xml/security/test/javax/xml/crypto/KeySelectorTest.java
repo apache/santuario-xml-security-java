@@ -21,14 +21,18 @@
  */
 package org.apache.xml.security.test.javax.xml.crypto;
 
-import java.util.*;
-
-
 import java.security.Key;
 import java.security.cert.X509Certificate;
-import javax.xml.crypto.*;
-import javax.xml.crypto.dsig.keyinfo.*;
-import javax.xml.crypto.dsig.*;
+import java.util.Collections;
+
+import javax.xml.crypto.KeySelector;
+import javax.xml.crypto.dsig.SignatureMethod;
+import javax.xml.crypto.dsig.XMLSignatureFactory;
+import javax.xml.crypto.dsig.keyinfo.KeyInfo;
+import javax.xml.crypto.dsig.keyinfo.KeyInfoFactory;
+import javax.xml.crypto.dsig.keyinfo.X509Data;
+
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -37,25 +41,28 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *
  */
 public class KeySelectorTest {
-    private Key key;
-    private KeySelector selector1;
+    private final Key key;
+    private final KeySelector selector1;
 
     private class MyOwnKey implements Key {
         private static final long serialVersionUID = -3288147894137347920L;
 
-        private String algo;
-        private byte[] val;
+        private final String algo;
+        private final byte[] val;
         MyOwnKey(String algorithm, byte[] value) {
             algo = algorithm;
             val = value.clone();
         }
 
+        @Override
         public String getAlgorithm() {
             return algo;
         }
+        @Override
         public byte[] getEncoded() {
             return val;
         }
+        @Override
         public String getFormat() {
             return "RAW";
         }
@@ -67,7 +74,7 @@ public class KeySelectorTest {
         selector1 = KeySelector.singletonKeySelector(key);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testselect() throws Exception {
         KeyInfoFactory factory = KeyInfoFactory.getInstance
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());

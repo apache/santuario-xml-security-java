@@ -26,6 +26,7 @@ import java.io.File;
 import java.security.Security;
 
 import org.apache.xml.security.test.javax.xml.crypto.KeySelectors;
+import org.junit.jupiter.api.Test;
 
 import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -48,7 +49,7 @@ public class BaltimoreXPathFilter2ThreeTest {
         validator = new SignatureValidator(file);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSignSpec() throws Exception {
         String file = "sign-spec.xml";
 
@@ -61,7 +62,7 @@ public class BaltimoreXPathFilter2ThreeTest {
         assertTrue(coreValidity, "Signature failed core validation#2");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSignXfdl() throws Exception {
         String file = "sign-xfdl.xml";
 
