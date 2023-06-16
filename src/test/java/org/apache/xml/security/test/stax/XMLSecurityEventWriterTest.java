@@ -42,10 +42,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  */
-public class XMLSecurityEventWriterTest {
+class XMLSecurityEventWriterTest {
 
     @Test
-    public void testConformness() throws Exception {
+    void testConformness() throws Exception {
         XMLOutputFactory xmlOutputFactory = XMLOutputFactory.newInstance();
         StringWriter secStringWriter = new StringWriter();
         XMLStreamWriter secXmlStreamWriter = xmlOutputFactory.createXMLStreamWriter(secStringWriter);
@@ -73,7 +73,7 @@ public class XMLSecurityEventWriterTest {
 
     //@see WSS-437
     @Test
-    public void testNamespaces() throws Exception {
+    void testNamespaces() throws Exception {
         StringWriter stringWriter = new StringWriter();
         XMLStreamWriter xmlStreamWriter = XMLSecurityConstants.xmlOutputFactory.createXMLStreamWriter(stringWriter);
         XMLEventWriter xmlEventWriter = new XMLSecurityEventWriter(xmlStreamWriter);

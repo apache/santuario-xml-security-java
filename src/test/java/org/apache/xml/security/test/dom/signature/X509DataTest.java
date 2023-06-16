@@ -40,12 +40,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
-public class X509DataTest {
+class X509DataTest {
 
     KeyStore ks;
 
     @Test
-    public void testAddX509SubjectName() throws Exception {
+    void testAddX509SubjectName() throws Exception {
         Init.init();
 
         Document doc = TestUtils.newDocument();

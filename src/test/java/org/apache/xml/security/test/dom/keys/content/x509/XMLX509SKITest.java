@@ -41,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 /**
  * Test bugfix 41892: XML Security 1.4.0 does not build with IBM's JDK
  */
-public class XMLX509SKITest {
+class XMLX509SKITest {
 
     private final CertificateFactory cf;
 
@@ -50,7 +50,7 @@ public class XMLX509SKITest {
     }
 
     @Test
-    public void testGetSKIBytesFromCert() throws Exception {
+    void testGetSKIBytesFromCert() throws Exception {
         File f = resolveFile("src/test/resources/ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/certs/lugh.crt");
         X509Certificate cert;
         try (FileInputStream fis = new FileInputStream(f)) {

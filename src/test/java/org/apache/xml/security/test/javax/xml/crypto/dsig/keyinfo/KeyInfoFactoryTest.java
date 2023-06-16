@@ -50,7 +50,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Unit test for javax.xml.crypto.dsig.keyinfo.KeyInfoFactory
  *
  */
-public class KeyInfoFactoryTest {
+class KeyInfoFactoryTest {
 
     KeyInfoFactory factory;
 
@@ -60,7 +60,7 @@ public class KeyInfoFactoryTest {
     }
 
     @Test
-    public void testgetInstance() {
+    void testgetInstance() {
         try {
             KeyInfoFactory.getInstance("non-existent");
             fail("Should throw NoSuchMechanismException if no impl found");
@@ -73,13 +73,13 @@ public class KeyInfoFactoryTest {
     }
 
     @Test
-    public void testgetMechanismType() {
+    void testgetMechanismType() {
         assertNotNull(factory);
         assertEquals("DOM", factory.getMechanismType());
     }
 
     @Test
-    public void testisFeatureSupported() {
+    void testisFeatureSupported() {
         try {
             factory.isFeatureSupported(null);
             fail("Should raise a NPE for null feature");
@@ -89,7 +89,7 @@ public class KeyInfoFactoryTest {
     }
 
     @Test
-    public void testnewKeyInfo() {
+    void testnewKeyInfo() {
         String id = "keyId";
         // test newKeyInfo(List, String)
         KeyInfo ki = factory.newKeyInfo
@@ -102,7 +102,7 @@ public class KeyInfoFactoryTest {
     }
 
     @Test
-    public void testnewKeyName() {
+    void testnewKeyName() {
         final String name = "keyName";
         KeyName kn = factory.newKeyName(name);
         assertEquals(name, kn.getName());
@@ -113,7 +113,7 @@ public class KeyInfoFactoryTest {
     }
 
     @Test
-    public void testnewKeyValue() {
+    void testnewKeyValue() {
         // test newKeyValue(PublicKey pk)
         PublicKey myPubKey = new PublicKey() {
             private static final long serialVersionUID = 2756606866185189114L;
@@ -146,7 +146,7 @@ public class KeyInfoFactoryTest {
     }
 
     @Test
-    public void testnewPGPKeyId() {
+    void testnewPGPKeyId() {
         byte[] valid_id = {
             0x01, 0x02, 0x03, 0x04,
             0x05, 0x06, 0x07, 0x08
@@ -194,7 +194,7 @@ public class KeyInfoFactoryTest {
     }
 
     @Test
-    public void testnewRetrievalMethod() throws Exception {
+    void testnewRetrievalMethod() throws Exception {
         final String uri = "#X509CertChain";
         // test RetrievalMethod(String)
         RetrievalMethod rm = factory.newRetrievalMethod(uri);
@@ -223,7 +223,7 @@ public class KeyInfoFactoryTest {
     }
 
     @Test
-    public void testnewX509Data() {
+    void testnewX509Data() {
         // test newX509Data(List)
         X509Data x509 =
             factory.newX509Data(Collections.singletonList("cn=foo"));
@@ -231,7 +231,7 @@ public class KeyInfoFactoryTest {
     }
 
     @Test
-    public void testnewX509IssuerSerial() {
+    void testnewX509IssuerSerial() {
         String name = "CN=valeriep";
         // test newX509IssuerSerial(String, BigInteger)
         X509IssuerSerial x509is = factory.newX509IssuerSerial(name,

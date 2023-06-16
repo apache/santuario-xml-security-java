@@ -42,7 +42,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Unit test for javax.xml.crypto.dsig.XMLSignContext
  *
  */
-public class XMLSignContextTest {
+class XMLSignContextTest {
 
     private final XMLSignContext defContext;
     private final Key[] KEYS;
@@ -61,7 +61,7 @@ public class XMLSignContextTest {
     }
 
     @Test
-    public void testsetngetBaseURI() throws Exception {
+    void testsetngetBaseURI() throws Exception {
         assertNull(defContext.getBaseURI());
 
         String uri = "http://www.w3.org/2000/09/xmldsig#";
@@ -73,7 +73,7 @@ public class XMLSignContextTest {
 
 
     @Test
-    public void testsetngetProperty() throws Exception {
+    void testsetngetProperty() throws Exception {
         String name = "key";
         assertNull(defContext.getProperty(name));
         try {
@@ -94,7 +94,7 @@ public class XMLSignContextTest {
     }
 
     @Test
-    public void testsetngetURIDereferencer() throws Exception {
+    void testsetngetURIDereferencer() throws Exception {
         assertNull(defContext.getURIDereferencer());
         byte[] data = "simpleDereferencer".getBytes();
         URIDereferencer deref = new TestUtils.OctetStreamURIDereferencer(data);
@@ -106,7 +106,7 @@ public class XMLSignContextTest {
     }
 
     @Test
-    public void testsetngetKeySelector() throws Exception {
+    void testsetngetKeySelector() throws Exception {
         defContext.setKeySelector(null);
         assertNull(defContext.getKeySelector());
         KeySelector ks = KeySelector.singletonKeySelector(KEYS[0]);

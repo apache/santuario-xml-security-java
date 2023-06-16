@@ -48,7 +48,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Unit test for javax.xml.crypto.dsig.keyinfo.KeyInfo
  *
  */
-public class KeyInfoTest {
+class KeyInfoTest {
 
     private final KeyInfoFactory fac;
 
@@ -58,15 +58,14 @@ public class KeyInfoTest {
     }
 
     @Test
-    public void testgetId() {
+    void testgetId() {
         KeyInfo ki = fac.newKeyInfo
             (Collections.singletonList(fac.newKeyName("foo")), "skeleton");
         assertNotNull(ki.getId());
     }
 
     @Test
-    @SuppressWarnings("unchecked")
-    public void testgetContent() {
+    void testgetContent() {
         KeyInfo[] infos = new KeyInfo[2];
         infos[0] = fac.newKeyInfo
             (Collections.singletonList(fac.newKeyName("foo")), "skeleton");
@@ -85,7 +84,7 @@ public class KeyInfoTest {
     }
 
     @Test
-    public void testConstructor() {
+    void testConstructor() {
         final String id = "keyId";
         // test newKeyInfo(List, String id)
         KeyInfo ki = fac.newKeyInfo
@@ -100,7 +99,7 @@ public class KeyInfoTest {
     }
 
     @Test
-    public void testisFeatureSupported() {
+    void testisFeatureSupported() {
         KeyInfo ki = fac.newKeyInfo
             (Collections.singletonList(fac.newKeyName("foo")), "keyid");
         try {
@@ -112,7 +111,7 @@ public class KeyInfoTest {
     }
 
     @Test
-    public void testMarshal() throws Exception {
+    void testMarshal() throws Exception {
         KeyInfo ki = fac.newKeyInfo
             (Collections.singletonList(fac.newKeyName("foo")), "keyid");
         try {

@@ -33,13 +33,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  */
-public class IVSplittingOutputStreamTest {
+class IVSplittingOutputStreamTest {
 
     private static final String TEST_STR
         = "Within this class we test if the IVSplittingOutputStream works correctly under different conditions";
 
     @Test
-    public void testWriteBytes() throws Exception {
+    void testWriteBytes() throws Exception {
 
         int ivSize = 16;
 
@@ -65,7 +65,7 @@ public class IVSplittingOutputStreamTest {
     }
 
     @Test
-    public void testWriteBytesArray() throws Exception {
+    void testWriteBytesArray() throws Exception {
 
         int ivSize = 16;
 
@@ -88,7 +88,7 @@ public class IVSplittingOutputStreamTest {
     }
 
     @Test
-    public void testWriteBytesArrayIVLength() throws Exception {
+    void testWriteBytesArrayIVLength() throws Exception {
 
         int ivSize = 16;
 
@@ -117,7 +117,7 @@ public class IVSplittingOutputStreamTest {
     }
 
     @Test
-    public void testWriteBytesArrayIVLength2() throws Exception {
+    void testWriteBytesArrayIVLength2() throws Exception {
 
         int ivSize = 16;
 
@@ -144,7 +144,7 @@ public class IVSplittingOutputStreamTest {
     }
 
     @Test
-    public void testWriteBytesArrayWithOffset() throws Exception {
+    void testWriteBytesArrayWithOffset() throws Exception {
 
         int ivSize = 16;
 

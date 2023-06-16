@@ -43,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * testcases from Baltimore
  *
  */
-public class Baltimore23Test {
+class Baltimore23Test {
 
     private final File dir;
     private final URIDereferencer ud;
@@ -60,7 +60,7 @@ public class Baltimore23Test {
     }
 
     @Test
-    public void test_signature_enveloped_dsa() throws Exception {
+    void test_signature_enveloped_dsa() throws Exception {
         String file = "signature-enveloped-dsa.xml";
 
         SignatureValidator validator = new SignatureValidator(dir);
@@ -70,7 +70,7 @@ public class Baltimore23Test {
     }
 
     @Test
-    public void test_signature_enveloping_b64_dsa() throws Exception {
+    void test_signature_enveloping_b64_dsa() throws Exception {
         String file = "signature-enveloping-b64-dsa.xml";
 
         SignatureValidator validator = new SignatureValidator(dir);
@@ -80,7 +80,7 @@ public class Baltimore23Test {
     }
 
     @Test
-    public void test_signature_enveloping_dsa() throws Exception {
+    void test_signature_enveloping_dsa() throws Exception {
         String file = "signature-enveloping-dsa.xml";
 
         SignatureValidator validator = new SignatureValidator(dir);
@@ -90,7 +90,7 @@ public class Baltimore23Test {
     }
 
     @Test
-    public void test_signature_external_b64_dsa() throws Exception {
+    void test_signature_external_b64_dsa() throws Exception {
         String file = "signature-external-b64-dsa.xml";
 
         SignatureValidator validator = new SignatureValidator(dir);
@@ -100,7 +100,7 @@ public class Baltimore23Test {
     }
 
     @Test
-    public void test_signature_external_dsa() throws Exception {
+    void test_signature_external_dsa() throws Exception {
         String file = "signature-external-dsa.xml";
 
         SignatureValidator validator = new SignatureValidator(dir);
@@ -110,7 +110,7 @@ public class Baltimore23Test {
     }
 
     @Test
-    public void test_signature_enveloping_rsa() throws Exception {
+    void test_signature_enveloping_rsa() throws Exception {
         String file = "signature-enveloping-rsa.xml";
 
         SignatureValidator validator = new SignatureValidator(dir);
@@ -120,7 +120,7 @@ public class Baltimore23Test {
     }
 
     @Test
-    public void test_signature_enveloping_hmac_sha1() throws Exception {
+    void test_signature_enveloping_hmac_sha1() throws Exception {
         String file = "signature-enveloping-hmac-sha1.xml";
 
         KeySelector ks = new KeySelectors.SecretKeySelector
@@ -131,7 +131,7 @@ public class Baltimore23Test {
     }
 
     @Test
-    public void test_signature_enveloping_hmac_sha1_40() throws Exception {
+    void test_signature_enveloping_hmac_sha1_40() throws Exception {
         String file = "signature-enveloping-hmac-sha1-40.xml";
 
         KeySelector ks = new KeySelectors.SecretKeySelector
@@ -147,7 +147,7 @@ public class Baltimore23Test {
     }
 
     @Test
-    public void test_signature_keyname() throws Exception {
+    void test_signature_keyname() throws Exception {
         String file = "signature-keyname.xml";
 
         SignatureValidator validator = new SignatureValidator(dir);
@@ -157,7 +157,7 @@ public class Baltimore23Test {
     }
 
     @Test
-    public void test_signature_retrievalmethod_rawx509crt() throws Exception {
+    void test_signature_retrievalmethod_rawx509crt() throws Exception {
         String file = "signature-retrievalmethod-rawx509crt.xml";
 
         SignatureValidator validator = new SignatureValidator(dir);
@@ -167,7 +167,7 @@ public class Baltimore23Test {
     }
 
     @Test
-    public void test_signature_x509_crt_crl() throws Exception {
+    void test_signature_x509_crt_crl() throws Exception {
         String file = "signature-x509-crt-crl.xml";
 
         SignatureValidator validator = new SignatureValidator(dir);
@@ -177,7 +177,7 @@ public class Baltimore23Test {
     }
 
     @Test
-    public void test_signature_x509_crt() throws Exception {
+    void test_signature_x509_crt() throws Exception {
         String file = "signature-x509-crt.xml";
 
         SignatureValidator validator = new SignatureValidator(dir);
@@ -187,7 +187,7 @@ public class Baltimore23Test {
     }
 
     @Test
-    public void test_signature_x509_is() throws Exception {
+    void test_signature_x509_is() throws Exception {
         String file = "signature-x509-is.xml";
 
         SignatureValidator validator = new SignatureValidator(dir);
@@ -197,7 +197,7 @@ public class Baltimore23Test {
     }
 
     @Test
-    public void test_signature_x509_ski() throws Exception {
+    void test_signature_x509_ski() throws Exception {
         String file = "signature-x509-ski.xml";
 
         SignatureValidator validator = new SignatureValidator(dir);
@@ -207,7 +207,7 @@ public class Baltimore23Test {
     }
 
     @Test
-    public void test_signature_x509_sn() throws Exception {
+    void test_signature_x509_sn() throws Exception {
         String file = "signature-x509-sn.xml";
 
         SignatureValidator validator = new SignatureValidator(dir);

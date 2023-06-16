@@ -43,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Unit test for javax.xml.crypto.dsig.Manifest
  *
  */
-public class ManifestTest {
+class ManifestTest {
     private final XMLSignatureFactory fac;
 
     private static Reference VALID_REF = new
@@ -58,7 +58,7 @@ public class ManifestTest {
 
     @SuppressWarnings("rawtypes")
     @Test
-    public void testConstructor() throws Exception {
+    void testConstructor() throws Exception {
         Manifest man = null;
         String id = "manifest_id";
         List<Reference> refs = new ArrayList<>();
@@ -150,7 +150,7 @@ public class ManifestTest {
     }
 
     @Test
-    public void testisFeatureSupported() throws Exception {
+    void testisFeatureSupported() throws Exception {
         List<Reference> refs = new ArrayList<>();
         refs.add(VALID_REF);
 
@@ -165,7 +165,7 @@ public class ManifestTest {
     }
 
     @Test
-    public void testgetReferences() throws Exception {
+    void testgetReferences() throws Exception {
         List<Reference> refs = new ArrayList<>();
         refs.add(VALID_REF);
         Manifest man = fac.newManifest(refs);

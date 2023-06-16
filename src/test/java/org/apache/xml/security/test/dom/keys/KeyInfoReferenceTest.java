@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-public class KeyInfoReferenceTest {
+class KeyInfoReferenceTest {
 
     private static final String SEP = FileSystems.getDefault().getSeparator();
 
@@ -44,7 +44,7 @@ public class KeyInfoReferenceTest {
     private static final String URI_CONTROL = "http://www.example.org/keyinfo.xml";
 
     @Test
-    public void testSchema() throws Exception {
+    void testSchema() throws Exception {
         KeyInfoReference keyInfoReference = new KeyInfoReference(TestUtils.newDocument(), URI_CONTROL);
         Element element = keyInfoReference.getElement();
 
@@ -53,7 +53,7 @@ public class KeyInfoReferenceTest {
     }
 
     @Test
-    public void testURIFromElement() throws Exception {
+    void testURIFromElement() throws Exception {
         Document doc = loadXML("KeyInfoReference.xml");
         NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpec11NS, Constants._TAG_KEYINFOREFERENCE);
         Element element = (Element) nl.item(0);
@@ -64,13 +64,13 @@ public class KeyInfoReferenceTest {
     }
 
     @Test
-    public void testURIOnConstruction() throws Exception {
+    void testURIOnConstruction() throws Exception {
         KeyInfoReference keyInfoReference = new KeyInfoReference(TestUtils.newDocument(), URI_CONTROL);
         assertEquals(URI_CONTROL, keyInfoReference.getURI());
     }
 
     @Test
-    public void testId() throws Exception {
+    void testId() throws Exception {
         KeyInfoReference keyInfoReference = new KeyInfoReference(TestUtils.newDocument(), URI_CONTROL);
         assertEquals("", keyInfoReference.getId());
         assertNull(keyInfoReference.getElement().getAttributeNodeNS(null, Constants._ATT_ID));

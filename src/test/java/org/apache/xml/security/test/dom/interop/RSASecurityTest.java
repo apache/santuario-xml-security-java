@@ -38,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *
  * @see <A HREF="http://www.rsasecurity.com/products/bsafe/certj.html">RSA BSAFE Cert-J</A>
  */
-public class RSASecurityTest extends InteropTestBase {
+class RSASecurityTest extends InteropTestBase {
 
     private static final Logger LOG = System.getLogger(RSASecurityTest.class.getName());
 
@@ -51,7 +51,7 @@ public class RSASecurityTest extends InteropTestBase {
     }
 
     @Test
-    public void test_enveloping() throws Exception {
+    void test_enveloping() throws Exception {
 
         File filename = new File(blakesDir, "certj201_enveloping.xml");
         boolean followManifests = false;
@@ -66,7 +66,7 @@ public class RSASecurityTest extends InteropTestBase {
     }
 
     @Test
-    public void test_enveloped() throws Exception {
+    void test_enveloped() throws Exception {
 
         File filename = new File(blakesDir, "certj201_enveloped.xml");
         boolean followManifests = false;

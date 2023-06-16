@@ -53,7 +53,7 @@ import org.w3c.dom.Document;
  * These are separated out from PhaosTest as we have to change the default configuration to set
  * "AllowNotSameDocumentReferences" to "true".
  */
-public class PhaosRemoteReferenceTest {
+class PhaosRemoteReferenceTest {
 
     private final XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
     private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -73,7 +73,7 @@ public class PhaosRemoteReferenceTest {
 
     // See SANTUARIO-319
     @Test
-    public void test_signature_dsa_detached() throws Exception {
+    void test_signature_dsa_detached() throws Exception {
 
         Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
@@ -111,7 +111,7 @@ public class PhaosRemoteReferenceTest {
 
     // See SANTUARIO-319
     @Test
-    public void test_signature_hmac_sha1_exclusive_c14n_comments_detached() throws Exception {
+    void test_signature_hmac_sha1_exclusive_c14n_comments_detached() throws Exception {
 
         Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
@@ -154,7 +154,7 @@ public class PhaosRemoteReferenceTest {
 
     // See SANTUARIO-319
     @Test
-    public void test_signature_rsa_detached() throws Exception {
+    void test_signature_rsa_detached() throws Exception {
 
         Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 

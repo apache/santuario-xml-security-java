@@ -34,14 +34,14 @@ import org.w3c.dom.NodeList;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class NoKeyInfoTest {
+class NoKeyInfoTest {
 
     static {
         Init.init();
     }
 
     @Test
-    public void testNullKeyInfo() throws Exception {
+    void testNullKeyInfo() throws Exception {
         String filename = "src/test/resources/ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-enveloping-hmac-sha1.xml";
         File f = XmlSecTestEnvironment.resolveFile(filename);
         Document doc = XMLUtils.read(f, false);

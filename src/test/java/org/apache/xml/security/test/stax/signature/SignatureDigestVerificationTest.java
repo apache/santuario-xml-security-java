@@ -48,12 +48,12 @@ import static org.apache.xml.security.test.XmlSecTestEnvironment.TRANSMITTER_KS_
 /**
  * A set of test-cases for Signature verification with various digest algorithms
  */
-public class SignatureDigestVerificationTest extends AbstractSignatureVerificationTest {
+class SignatureDigestVerificationTest extends AbstractSignatureVerificationTest {
 
     private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
     @Test
-    public void testSHA1() throws Exception {
+    void testSHA1() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -98,7 +98,7 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
     }
 
     @Test
-    public void testSHA224() throws Exception {
+    void testSHA224() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -143,7 +143,7 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
     }
 
     @Test
-    public void testSHA256() throws Exception {
+    void testSHA256() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -188,7 +188,7 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
     }
 
     @Test
-    public void testSHA384() throws Exception {
+    void testSHA384() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -233,7 +233,7 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
     }
 
     @Test
-    public void testSHA512() throws Exception {
+    void testSHA512() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -278,7 +278,7 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
     }
 
     @Test
-    public void testRIPEMD160() throws Exception {
+    void testRIPEMD160() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
@@ -325,7 +325,7 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
     }
 
     @Test
-    public void testWhirlpool() throws Exception {
+    void testWhirlpool() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
@@ -372,7 +372,7 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
     }
 
     @Test
-    public void testSHA3_224() throws Exception {
+    void testSHA3_224() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
@@ -419,7 +419,7 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
     }
 
     @Test
-    public void testSHA3_256() throws Exception {
+    void testSHA3_256() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
@@ -466,7 +466,7 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
     }
 
     @Test
-    public void testSHA3_384() throws Exception {
+    void testSHA3_384() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
@@ -513,7 +513,7 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
     }
 
     @Test
-    public void testSHA3_512() throws Exception {
+    void testSHA3_512() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document

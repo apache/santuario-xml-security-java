@@ -69,7 +69,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Test a Signature and Validation, and check that we have access to the Element(s) that was
  * validated.
  */
-public class SignatureReferenceTest {
+class SignatureReferenceTest {
     public static final String DS_NS = "http://www.w3.org/2000/09/xmldsig#";
 
     public SignatureReferenceTest() throws Exception {
@@ -78,7 +78,7 @@ public class SignatureReferenceTest {
     }
 
     @Test
-    public void testSigningVerifyingReference() throws Throwable {
+    void testSigningVerifyingReference() throws Throwable {
         Document doc = getOriginalDocument();
         XMLSignature signature = signDocument(doc);
 
@@ -107,7 +107,7 @@ public class SignatureReferenceTest {
 
     // See SANTUARIO-465
     @Test
-    public void testNoReferenceChildren() throws ParserConfigurationException, XMLSecurityException {
+    void testNoReferenceChildren() throws ParserConfigurationException, XMLSecurityException {
         Document doc = TestUtils.newDocument();
         Element referenceElement = doc.createElementNS(Constants.SignatureSpecNS, "Reference");
         referenceElement.setAttributeNS(null, "URI", "#_12345");
@@ -141,7 +141,7 @@ public class SignatureReferenceTest {
     }
 
     @Test
-    public void testManifestReferences() throws Throwable {
+    void testManifestReferences() throws Throwable {
 
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xPath = xpf.newXPath();

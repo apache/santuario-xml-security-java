@@ -42,7 +42,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * testcases from IAIK
  *
  */
-public class IaikSignatureAlgosTest {
+class IaikSignatureAlgosTest {
 
     private final SignatureValidator validator;
 
@@ -56,7 +56,7 @@ public class IaikSignatureAlgosTest {
     }
 
     @Test
-    public void test_dsaSignature() throws Exception {
+    void test_dsaSignature() throws Exception {
         String file = "dSASignature.xml";
 
         boolean coreValidity = validator.validate(file, new
@@ -65,7 +65,7 @@ public class IaikSignatureAlgosTest {
     }
 
     @Test
-    public void test_rsaSignature() throws Exception {
+    void test_rsaSignature() throws Exception {
         String file = "rSASignature.xml";
 
         boolean coreValidity = validator.validate(file, new
@@ -74,7 +74,7 @@ public class IaikSignatureAlgosTest {
     }
 
     @Test
-    public void test_hmacShortSignature() throws Exception {
+    void test_hmacShortSignature() throws Exception {
         String file = "hMACShortSignature.xml";
 
         try {
@@ -88,7 +88,7 @@ public class IaikSignatureAlgosTest {
     }
 
     @Test
-    public void test_hmacSignature() throws Exception {
+    void test_hmacSignature() throws Exception {
         String file = "hMACSignature.xml";
 
         boolean coreValidity = validator.validate(file, new

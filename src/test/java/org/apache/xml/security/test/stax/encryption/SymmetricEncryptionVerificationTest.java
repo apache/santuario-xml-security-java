@@ -68,7 +68,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * A test to make sure that the various Symmetric Encryption algorithms are working
  */
-public class SymmetricEncryptionVerificationTest {
+class SymmetricEncryptionVerificationTest {
 
     private static boolean bcInstalled;
     private final XMLInputFactory xmlInputFactory;
@@ -109,7 +109,7 @@ public class SymmetricEncryptionVerificationTest {
     }
 
     @Test
-    public void testAES128() throws Exception {
+    void testAES128() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -159,7 +159,7 @@ public class SymmetricEncryptionVerificationTest {
     }
 
     @Test
-    public void testAES128_GCM() throws Exception {
+    void testAES128_GCM() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -209,7 +209,7 @@ public class SymmetricEncryptionVerificationTest {
     }
 
     @Test
-    public void testAES192() throws Exception {
+    void testAES192() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -259,7 +259,7 @@ public class SymmetricEncryptionVerificationTest {
     }
 
     @Test
-    public void testAES192_GCM() throws Exception {
+    void testAES192_GCM() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -309,7 +309,7 @@ public class SymmetricEncryptionVerificationTest {
     }
 
     @Test
-    public void testAES256() throws Exception {
+    void testAES256() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -359,7 +359,7 @@ public class SymmetricEncryptionVerificationTest {
     }
 
     @Test
-    public void testAES256_GCM() throws Exception {
+    void testAES256_GCM() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -409,7 +409,7 @@ public class SymmetricEncryptionVerificationTest {
     }
 
     @Test
-    public void testTRIPLE_DES() throws Exception {
+    void testTRIPLE_DES() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -458,7 +458,7 @@ public class SymmetricEncryptionVerificationTest {
     }
 
     @Test
-    public void testSEED_128() throws Exception {
+    void testSEED_128() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
@@ -510,7 +510,7 @@ public class SymmetricEncryptionVerificationTest {
     }
 
     @Test
-    public void testCAMELLIA_128() throws Exception {
+    void testCAMELLIA_128() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
@@ -562,7 +562,7 @@ public class SymmetricEncryptionVerificationTest {
     }
 
     @Test
-    public void testCAMELLIA_192() throws Exception {
+    void testCAMELLIA_192() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
@@ -614,7 +614,7 @@ public class SymmetricEncryptionVerificationTest {
     }
 
     @Test
-    public void testCAMELLIA_256() throws Exception {
+    void testCAMELLIA_256() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document

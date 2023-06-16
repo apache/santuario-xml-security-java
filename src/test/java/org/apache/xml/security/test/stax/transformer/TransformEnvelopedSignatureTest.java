@@ -46,7 +46,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  */
-public class TransformEnvelopedSignatureTest {
+class TransformEnvelopedSignatureTest {
 
     private XMLInputFactory xmlInputFactory;
 
@@ -59,7 +59,7 @@ public class TransformEnvelopedSignatureTest {
     }
 
     @Test
-    public void testXMLSecEventToXMLSecEventAPI() throws Exception {
+    void testXMLSecEventToXMLSecEventAPI() throws Exception {
         TransformEnvelopedSignature transformEnvelopedSignature = new TransformEnvelopedSignature();
 
         final List<XMLSecEvent> xmlSecEvents = new ArrayList<>();
@@ -114,7 +114,7 @@ public class TransformEnvelopedSignatureTest {
     }
 
     @Test
-    public void testXMLSecEventToInputStreamAPI() throws Exception {
+    void testXMLSecEventToInputStreamAPI() throws Exception {
         TransformEnvelopedSignature transformEnvelopedSignature = new TransformEnvelopedSignature();
 
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -173,7 +173,7 @@ public class TransformEnvelopedSignatureTest {
     }
 
     @Test
-    public void testXMLSecEventToOutputStreamStreamAPI() throws Exception {
+    void testXMLSecEventToOutputStreamStreamAPI() throws Exception {
         TransformEnvelopedSignature transformEnvelopedSignature = new TransformEnvelopedSignature();
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         transformEnvelopedSignature.setOutputStream(byteArrayOutputStream);

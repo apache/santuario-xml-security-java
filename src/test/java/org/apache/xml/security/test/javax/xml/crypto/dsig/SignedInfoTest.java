@@ -47,7 +47,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Unit test for javax.xml.crypto.dsig.SignedInfo
  *
  */
-public class SignedInfoTest {
+class SignedInfoTest {
     private final XMLSignatureFactory fac;
     private final CanonicalizationMethod cm;
     private final SignatureMethod sm;
@@ -73,7 +73,7 @@ public class SignedInfoTest {
 
     @SuppressWarnings("rawtypes")
     @Test
-    public void testConstructor() {
+    void testConstructor() {
         // test XMLSignatureFactory.newSignedInfo(
         //	CanonicalizationMethod cm,
         //      SignatureMethod sm, List references)

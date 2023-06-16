@@ -75,7 +75,7 @@ import static org.junit.jupiter.api.Assumptions.assumeFalse;
  *
  * TODO As of now all of the KeyWrapping tests are supported, but none of the KeyAgreement tests.
  */
-public class XMLEncryption11Test {
+class XMLEncryption11Test {
 
     private static String cardNumber;
     private static int nodeCount = 0;
@@ -124,7 +124,7 @@ public class XMLEncryption11Test {
      * rsa-oaep-mgf1p, Digest:SHA256, MGF:SHA1, PSource: None
      */
     @Test
-    public void testKeyWrappingRSA2048() throws Exception {
+    void testKeyWrappingRSA2048() throws Exception {
         if (haveISOPadding) {
             File keystore = resolveFile("src/test/resources/org/w3c/www/interop/xmlenc-core-11/RSA-2048_SHA256WithRSA.jks");
             KeyStore keyStore = loadKeyStore(keystore);
@@ -148,7 +148,7 @@ public class XMLEncryption11Test {
      * rsa-oaep-mgf1p, Digest:SHA256, MGF:SHA1, PSource: None
      */
     @Test
-    public void testKeyWrappingRSA2048EncryptDecrypt() throws Exception {
+    void testKeyWrappingRSA2048EncryptDecrypt() throws Exception {
 
         assumeFalse(isIBMJdK);
 
@@ -200,7 +200,7 @@ public class XMLEncryption11Test {
      * rsa-oaep-mgf1p, Digest:SHA256, MGF:SHA1, PSource: None
      */
     @Test
-    public void testKeyWrappingRSA2048EncryptDecryptWithSecureRandom() throws Exception {
+    void testKeyWrappingRSA2048EncryptDecryptWithSecureRandom() throws Exception {
         if (haveISOPadding) {
             File keystore = resolveFile("src/test/resources/org/w3c/www/interop/xmlenc-core-11/RSA-2048_SHA256WithRSA.jks");
             KeyStore keyStore = loadKeyStore(keystore);
@@ -250,7 +250,7 @@ public class XMLEncryption11Test {
      * rsa-oaep-mgf1p, Digest:SHA256, MGF:SHA1, PSource: None
      */
     @Test
-    public void testKeyWrappingRSA3072() throws Exception {
+    void testKeyWrappingRSA3072() throws Exception {
         if (haveISOPadding) {
             File keystore = resolveFile("src/test/resources/org/w3c/www/interop/xmlenc-core-11/RSA-3072_SHA256WithRSA.jks");
             KeyStore keyStore = loadKeyStore(keystore);
@@ -275,7 +275,7 @@ public class XMLEncryption11Test {
      * rsa-oaep-mgf1p, Digest:SHA256, MGF:SHA1, PSource: None
      */
     @Test
-    public void testKeyWrappingRSA3072EncryptDecrypt() throws Exception {
+    void testKeyWrappingRSA3072EncryptDecrypt() throws Exception {
         assumeFalse(isIBMJdK);
 
         if (haveISOPadding) {
@@ -327,7 +327,7 @@ public class XMLEncryption11Test {
      * rsa-oaep, Digest:SHA384, MGF:SHA1, PSource: None
      */
     @Test
-    public void testKeyWrappingRSA3072OAEP() throws Exception {
+    void testKeyWrappingRSA3072OAEP() throws Exception {
         if (haveISOPadding) {
             File keystore = resolveFile("src/test/resources/org/w3c/www/interop/xmlenc-core-11/RSA-3072_SHA256WithRSA.jks");
             KeyStore keyStore = loadKeyStore(keystore);
@@ -353,7 +353,7 @@ public class XMLEncryption11Test {
      * rsa-oaep, Digest:SHA384, MGF:SHA1, PSource: None
      */
     @Test
-    public void testKeyWrappingRSA3072OAEPEncryptDecrypt() throws Exception {
+    void testKeyWrappingRSA3072OAEPEncryptDecrypt() throws Exception {
         if (haveISOPadding) {
             File keystore = resolveFile("src/test/resources/org/w3c/www/interop/xmlenc-core-11/RSA-3072_SHA256WithRSA.jks");
             KeyStore keyStore = loadKeyStore(keystore);
@@ -402,7 +402,7 @@ public class XMLEncryption11Test {
      * rsa-oaep, Digest:SHA512, MGF:SHA1, PSource: Specified 8 bytes
      */
     @Test
-    public void testKeyWrappingRSA4096() throws Exception {
+    void testKeyWrappingRSA4096() throws Exception {
         if (haveISOPadding) {
             File keystore = resolveFile("src/test/resources/org/w3c/www/interop/xmlenc-core-11/RSA-4096_SHA256WithRSA.jks");
             KeyStore keyStore = loadKeyStore(keystore);
@@ -428,7 +428,7 @@ public class XMLEncryption11Test {
      * rsa-oaep, Digest:SHA512, MGF:SHA1, PSource: Specified 8 bytes
      */
     @Test
-    public void testKeyWrappingRSA4096EncryptDecrypt() throws Exception {
+    void testKeyWrappingRSA4096EncryptDecrypt() throws Exception {
         if (haveISOPadding) {
             File keystore = resolveFile("src/test/resources/org/w3c/www/interop/xmlenc-core-11/RSA-4096_SHA256WithRSA.jks");
             KeyStore keyStore = loadKeyStore(keystore);
@@ -474,7 +474,7 @@ public class XMLEncryption11Test {
     }
 
     @Test
-    public void testKeyWrappingRSA4096EncryptDecryptSHA224() throws Exception {
+    void testKeyWrappingRSA4096EncryptDecryptSHA224() throws Exception {
         if (haveISOPadding) {
             File keystore = resolveFile("src/test/resources/org/w3c/www/interop/xmlenc-core-11/RSA-4096_SHA256WithRSA.jks");
             KeyStore keyStore = loadKeyStore(keystore);

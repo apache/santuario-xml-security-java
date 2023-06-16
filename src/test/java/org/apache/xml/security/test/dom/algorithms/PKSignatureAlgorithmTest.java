@@ -54,7 +54,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * A test to make sure that the various Public Key Signature algorithms are working
  */
-public class PKSignatureAlgorithmTest {
+class PKSignatureAlgorithmTest {
 
     private static KeyPair rsaKeyPair, ecKeyPair;
     private static boolean bcInstalled;
@@ -97,7 +97,7 @@ public class PKSignatureAlgorithmTest {
     }
 
     @Test
-    public void testRSA_MD5() throws Exception {
+    void testRSA_MD5() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -111,7 +111,7 @@ public class PKSignatureAlgorithmTest {
     }
 
     @Test
-    public void testRSA_SHA1() throws Exception {
+    void testRSA_SHA1() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -125,7 +125,7 @@ public class PKSignatureAlgorithmTest {
     }
 
     @Test
-    public void testRSA_SHA_224() throws Exception {
+    void testRSA_SHA_224() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -139,7 +139,7 @@ public class PKSignatureAlgorithmTest {
     }
 
     @Test
-    public void testRSA_SHA_256() throws Exception {
+    void testRSA_SHA_256() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -153,7 +153,7 @@ public class PKSignatureAlgorithmTest {
     }
 
     @Test
-    public void testRSA_SHA_384() throws Exception {
+    void testRSA_SHA_384() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -167,7 +167,7 @@ public class PKSignatureAlgorithmTest {
     }
 
     @Test
-    public void testRSA_SHA_512() throws Exception {
+    void testRSA_SHA_512() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -181,7 +181,7 @@ public class PKSignatureAlgorithmTest {
     }
 
     @Test
-    public void testRSA_RIPEMD160() throws Exception {
+    void testRSA_RIPEMD160() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
@@ -197,7 +197,7 @@ public class PKSignatureAlgorithmTest {
     }
 
     @Test
-    public void testRSA_SHA1_MGF1() throws Exception {
+    void testRSA_SHA1_MGF1() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
@@ -213,7 +213,7 @@ public class PKSignatureAlgorithmTest {
     }
 
     @Test
-    public void testRSA_SHA224_MGF1() throws Exception {
+    void testRSA_SHA224_MGF1() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
@@ -229,7 +229,7 @@ public class PKSignatureAlgorithmTest {
     }
 
     @Test
-    public void testRSA_SHA256_MGF1() throws Exception {
+    void testRSA_SHA256_MGF1() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
@@ -245,7 +245,7 @@ public class PKSignatureAlgorithmTest {
     }
 
     @Test
-    public void testRSA_SHA384_MGF1() throws Exception {
+    void testRSA_SHA384_MGF1() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
@@ -261,7 +261,7 @@ public class PKSignatureAlgorithmTest {
     }
 
     @Test
-    public void testRSA_SHA512_MGF1() throws Exception {
+    void testRSA_SHA512_MGF1() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
@@ -277,7 +277,7 @@ public class PKSignatureAlgorithmTest {
     }
 
     @Test
-    public void testRSA_SHA3_224_MGF1() throws Exception {
+    void testRSA_SHA3_224_MGF1() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
@@ -293,7 +293,7 @@ public class PKSignatureAlgorithmTest {
     }
 
     @Test
-    public void testRSA_SHA3_256_MGF1() throws Exception {
+    void testRSA_SHA3_256_MGF1() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
@@ -309,7 +309,7 @@ public class PKSignatureAlgorithmTest {
     }
 
     @Test
-    public void testRSA_SHA3_384_MGF1() throws Exception {
+    void testRSA_SHA3_384_MGF1() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
@@ -325,7 +325,7 @@ public class PKSignatureAlgorithmTest {
     }
 
     @Test
-    public void testRSA_SHA3_512_MGF1() throws Exception {
+    void testRSA_SHA3_512_MGF1() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
@@ -341,7 +341,7 @@ public class PKSignatureAlgorithmTest {
     }
 
     @Test
-    public void testRSA_PSS() throws Exception {
+    void testRSA_PSS() throws Exception {
         Assumptions.assumeTrue(bcInstalled || TestUtils.isJava11Compatible());
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
@@ -357,7 +357,7 @@ public class PKSignatureAlgorithmTest {
     }
 
     @Test
-    public void testECDSA_SHA1() throws Exception {
+    void testECDSA_SHA1() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -371,7 +371,7 @@ public class PKSignatureAlgorithmTest {
     }
 
     @Test
-    public void testECDSA_SHA_224() throws Exception {
+    void testECDSA_SHA_224() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -385,7 +385,7 @@ public class PKSignatureAlgorithmTest {
     }
 
     @Test
-    public void testECDSA_SHA_256() throws Exception {
+    void testECDSA_SHA_256() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -399,7 +399,7 @@ public class PKSignatureAlgorithmTest {
     }
 
     @Test
-    public void testECDSA_SHA_384() throws Exception {
+    void testECDSA_SHA_384() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -413,7 +413,7 @@ public class PKSignatureAlgorithmTest {
     }
 
     @Test
-    public void testECDSA_SHA_512() throws Exception {
+    void testECDSA_SHA_512() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -427,7 +427,7 @@ public class PKSignatureAlgorithmTest {
     }
 
     @Test
-    public void testECDSA_RIPEMD160() throws Exception {
+    void testECDSA_RIPEMD160() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document

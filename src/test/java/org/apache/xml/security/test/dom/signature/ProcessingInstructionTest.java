@@ -46,7 +46,7 @@ import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 /**
  * A test-case for Bugzilla bug 45744 - "XPath transform and xml-stylesheet".
  */
-public class ProcessingInstructionTest {
+class ProcessingInstructionTest {
 
     static {
         org.apache.xml.security.Init.init();
@@ -59,7 +59,7 @@ public class ProcessingInstructionTest {
     }
 
     @Test
-    public void testProcessingInstruction() throws Exception {
+    void testProcessingInstruction() throws Exception {
         File f = new File(dir, "upp_sign.xml");
         Document doc = XMLUtils.read(f, false);
 

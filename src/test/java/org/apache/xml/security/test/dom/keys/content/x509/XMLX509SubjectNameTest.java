@@ -35,10 +35,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * Certificate parsing test.
  *
  */
-public class XMLX509SubjectNameTest {
+class XMLX509SubjectNameTest {
 
     @Test
-    public void testEqualsAndHashCode() throws Exception {
+    void testEqualsAndHashCode() throws Exception {
         File f = resolveFile("src/test/resources/ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/certs/lugh.crt");
         X509Certificate cert;
         try (FileInputStream fis = new FileInputStream(f)) {

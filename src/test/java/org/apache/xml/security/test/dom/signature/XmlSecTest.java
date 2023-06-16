@@ -51,15 +51,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Tests bug #44617.
  *
  */
-public class XmlSecTest {
+class XmlSecTest {
 
     @Test
-    public void testCheckXmlSignatureSoftwareStack() throws Exception {
+    void testCheckXmlSignatureSoftwareStack() throws Exception {
         checkXmlSignatureSoftwareStack(false);
     }
 
     @Test
-    public void testCheckXmlSignatureSoftwareStackWithCert() throws Exception {
+    void testCheckXmlSignatureSoftwareStackWithCert() throws Exception {
         checkXmlSignatureSoftwareStack(true);
     }
 

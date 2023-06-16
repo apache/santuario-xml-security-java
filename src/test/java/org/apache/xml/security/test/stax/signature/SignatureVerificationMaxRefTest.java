@@ -57,7 +57,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * These are separated out from SignatureVerificationTest as we have to change the default configuration to set
  * "MaximumAllowedReferencesPerManifest" to "2".
  */
-public class SignatureVerificationMaxRefTest extends AbstractSignatureVerificationTest {
+class SignatureVerificationMaxRefTest extends AbstractSignatureVerificationTest {
 
     private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
@@ -70,7 +70,7 @@ public class SignatureVerificationMaxRefTest extends AbstractSignatureVerificati
     }
 
     @Test
-    public void testMaximumAllowedReferencesPerManifest() throws Exception {
+    void testMaximumAllowedReferencesPerManifest() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);

@@ -39,10 +39,10 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Unit test for javax.xml.crypto.OctetStreamData
  *
  */
-public class OctetStreamDataTest {
+class OctetStreamDataTest {
 
     @Test
-    public void testConstructor() throws Exception {
+    void testConstructor() throws Exception {
         // test OctetStreamData(InputStream) and
         // OctetStreamData(InputStream, String, String)
         OctetStreamData osdata;

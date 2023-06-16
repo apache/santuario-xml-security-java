@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * testcases from Baltimore
  *
  */
-public class BaltimoreExcC14n1Test {
+class BaltimoreExcC14n1Test {
 
     private final SignatureValidator validator;
 
@@ -51,7 +51,7 @@ public class BaltimoreExcC14n1Test {
     }
 
     @Test
-    public void testExcSignature() throws Exception {
+    void testExcSignature() throws Exception {
         String file = "exc-signature.xml";
         boolean coreValidity = validator.validate(file, new KeySelectors.KeyValueKeySelector());
         assertTrue(coreValidity, "Signature failed core validation");

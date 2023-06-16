@@ -37,14 +37,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * This is a test for a forbidden number of references when secure validation is enabled.
  */
-public class JSRForbiddenRefCountTest {
+class JSRForbiddenRefCountTest {
 
     static {
         Security.insertProviderAt(new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI(), 1);
     }
 
     @Test
-    public void testReferenceCount() throws Exception {
+    void testReferenceCount() throws Exception {
         Element signedInfoElement =
             getSignedInfoElement("src/test/resources/interop/c14n/Y4", "signature-manifest.xml");
 

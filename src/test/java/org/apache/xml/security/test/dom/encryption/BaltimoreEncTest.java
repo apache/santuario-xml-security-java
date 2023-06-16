@@ -71,7 +71,7 @@ import static org.junit.jupiter.api.Assumptions.assumeFalse;
  * Interop test for XML Encryption
  *
  */
-public class BaltimoreEncTest {
+class BaltimoreEncTest {
 
     private static String cardNumber;
     private static String rsaCertSerialNumber;
@@ -157,7 +157,7 @@ public class BaltimoreEncTest {
      * Check the merlin-enc-five element content test for 3DES
      */
     @Test
-    public void test_five_content_3des_cbc() throws Exception {
+    void test_five_content_3des_cbc() throws Exception {
 
         if (haveISOPadding) {
             File file = resolveFile(
@@ -179,7 +179,7 @@ public class BaltimoreEncTest {
      * Check the merlin-enc-five element content test for AES256
      */
     @Test
-    public void test_five_content_aes256_cbc() throws Exception {
+    void test_five_content_aes256_cbc() throws Exception {
 
         if (haveISOPadding) {
             File file = resolveFile(
@@ -202,7 +202,7 @@ public class BaltimoreEncTest {
      * AES 192 key wrap
      */
     @Test
-    public void test_five_content_aes128_cbc_kw_aes192() throws Exception {
+    void test_five_content_aes128_cbc_kw_aes192() throws Exception {
         if (haveISOPadding && haveKeyWraps) {
             File file = resolveFile(
                 "src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-content-aes128-cbc-kw-aes192.xml");
@@ -224,7 +224,7 @@ public class BaltimoreEncTest {
      * AES 128 key wrap
      */
     @Test
-    public void test_five_content_3des_cbc_kw_aes128() throws Exception {
+    void test_five_content_3des_cbc_kw_aes128() throws Exception {
 
         if (haveISOPadding && haveKeyWraps) {
             File file = resolveFile(
@@ -247,7 +247,7 @@ public class BaltimoreEncTest {
      * RSA key wrap (PKCS 1.5 padding)
      */
     @Test
-    public void test_five_content_aes128_cbc_rsa_15() throws Exception {
+    void test_five_content_aes128_cbc_rsa_15() throws Exception {
         if (haveISOPadding) {
             File file = resolveFile(
                 "src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-element-aes128-cbc-rsa-1_5.xml");
@@ -269,7 +269,7 @@ public class BaltimoreEncTest {
      * a CipherReference element
      */
     @Test
-    public void test_five_element_aes192_cbc_ref() throws Exception {
+    void test_five_element_aes192_cbc_ref() throws Exception {
         if (haveISOPadding) {
             File file = resolveFile(
                 "src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-element-aes192-cbc-ref.xml");
@@ -293,7 +293,7 @@ public class BaltimoreEncTest {
      * key wrap
      */
     @Test
-    public void test_five_data_aes128_cbc() throws Exception {
+    void test_five_data_aes128_cbc() throws Exception {
         if (haveISOPadding) {
             File file = resolveFile("src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-data-aes128-cbc.xml");
             byte[] decrypt = decryptData(file);
@@ -313,7 +313,7 @@ public class BaltimoreEncTest {
      * key wrap
      */
     @Test
-    public void test_five_data_aes256_cbc_3des() throws Exception {
+    void test_five_data_aes256_cbc_3des() throws Exception {
         assumeFalse(isIBMJdK);
 
         if (haveISOPadding && haveKeyWraps) {
@@ -336,7 +336,7 @@ public class BaltimoreEncTest {
      * key wrap
      */
     @Test
-    public void test_five_data_aes192_cbc_aes256() throws Exception {
+    void test_five_data_aes192_cbc_aes256() throws Exception {
         if (haveISOPadding && haveKeyWraps) {
             File file = resolveFile(
                 "src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-data-aes192-cbc-kw-aes256.xml");
@@ -357,7 +357,7 @@ public class BaltimoreEncTest {
      * RSA key wrap (OAEP and no parameters)
      */
     @Test
-    public void test_five_data_3des_cbc_rsa_oaep() throws Exception {
+    void test_five_data_3des_cbc_rsa_oaep() throws Exception {
         if (haveISOPadding) {
             File file = resolveFile(
                 "src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p.xml");

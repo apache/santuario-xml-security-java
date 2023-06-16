@@ -42,7 +42,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Unit test for javax.xml.crypto.dsig.XMLObject
  *
  */
-public class XMLObjectTest {
+class XMLObjectTest {
 
     private final XMLSignatureFactory factory;
     private final String id = "id";
@@ -56,7 +56,7 @@ public class XMLObjectTest {
 
     @SuppressWarnings("rawtypes")
     @Test
-    public void testConstructor() {
+    void testConstructor() {
         // test XMLSignatureFactory.newXMLObject(List, String, String, String)
         XMLObject obj;
 
@@ -99,7 +99,7 @@ public class XMLObjectTest {
     }
 
     @Test
-    public void testisFeatureSupported() {
+    void testisFeatureSupported() {
         List<XMLStructure> list = new ArrayList<>();
         list.add(new TestUtils.MyOwnXMLStructure());
         XMLObject obj = factory.newXMLObject(list, id, mimeType, encoding);

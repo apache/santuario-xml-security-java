@@ -50,7 +50,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * testcases from IAIK
  *
  */
-public class IaikCoreFeaturesTest {
+class IaikCoreFeaturesTest {
 
     private final SignatureValidator validator;
     private final Path base;
@@ -67,7 +67,7 @@ public class IaikCoreFeaturesTest {
     }
 
     @Test
-    public void test_anonymousReferenceSignature() throws Exception {
+    void test_anonymousReferenceSignature() throws Exception {
         String file = "anonymousReferenceSignature.xml";
 
         boolean coreValidity = validator.validate(file, new KeySelectors.KeyValueKeySelector(),
@@ -76,7 +76,7 @@ public class IaikCoreFeaturesTest {
     }
 
     @Test
-    public void test_manifestSignature() throws Exception {
+    void test_manifestSignature() throws Exception {
         String file = "manifestSignature.xml";
 
         boolean coreValidity = validator.validate
@@ -85,7 +85,7 @@ public class IaikCoreFeaturesTest {
     }
 
     @Test
-    public void test_signatureTypesSignature() throws Exception {
+    void test_signatureTypesSignature() throws Exception {
         String file = "signatureTypesSignature.xml";
 
         boolean coreValidity = validator.validate

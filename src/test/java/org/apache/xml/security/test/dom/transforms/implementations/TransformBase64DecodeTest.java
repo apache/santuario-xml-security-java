@@ -47,7 +47,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * Unit test for {@link org.apache.xml.security.transforms.implementations.TransformBase64Decode}
  *
  */
-public class TransformBase64DecodeTest {
+class TransformBase64DecodeTest {
 
     private static final Logger LOG = System.getLogger(TransformBase64DecodeTest.class.getName());
 
@@ -56,7 +56,7 @@ public class TransformBase64DecodeTest {
     }
 
     @Test
-    public void test1() throws Exception {
+    void test1() throws Exception {
         // base64 encoded
         String s1 =
             "VGhlIFVSSSBvZiB0aGUgdHJhbnNmb3JtIGlzIGh0dHA6Ly93d3cudzMub3JnLzIwMDAvMDkveG1s\n"
@@ -75,7 +75,7 @@ public class TransformBase64DecodeTest {
     }
 
     @Test
-    public void test2() throws Exception {
+    void test2() throws Exception {
         // base64 encoded twice
         String s2 =
             "VkdobElGVlNTU0J2WmlCMGFHVWdkSEpoYm5ObWIzSnRJR2x6SUdoMGRIQTZMeTkzZDNjdWR6TXVi\n"
@@ -94,7 +94,7 @@ public class TransformBase64DecodeTest {
     }
 
     @Test
-    public void test3() throws Exception {
+    void test3() throws Exception {
         //J-
         String input = ""
             + "<Object xmlns:signature='http://www.w3.org/2000/09/xmldsig#'>\n"

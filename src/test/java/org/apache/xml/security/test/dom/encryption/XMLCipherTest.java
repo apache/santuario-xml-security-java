@@ -75,7 +75,7 @@ import static org.junit.jupiter.api.Assumptions.assumeFalse;
 /**
  *
  */
-public class XMLCipherTest {
+class XMLCipherTest {
 
     private static final Logger LOG = System.getLogger(XMLCipherTest.class.getName());
 
@@ -133,7 +133,7 @@ public class XMLCipherTest {
      * encrypted using a AES 192 bit key.  Then reverse using the KEK
      */
     @Test
-    public void testAES128ElementAES192KWCipherUsingKEK() throws Exception {
+    void testAES128ElementAES192KWCipherUsingKEK() throws Exception {
 
         Document d = document(); // source
         Document ed = null;
@@ -200,7 +200,7 @@ public class XMLCipherTest {
      * encrypted using an RSA key.  Reverse using KEK
      */
     @Test
-    public void testAES256ElementRSAKWCipherUsingKEK() throws Exception {
+    void testAES256ElementRSAKWCipherUsingKEK() throws Exception {
 
         Document d = document(); // source
         Document ed = null;
@@ -274,7 +274,7 @@ public class XMLCipherTest {
      * EncryptedKey by hand
      */
     @Test
-    public void testAES192Element3DESKWCipher() throws Exception {
+    void testAES192Element3DESKWCipher() throws Exception {
 
         assumeFalse(isIBMJdK);
 
@@ -358,7 +358,7 @@ public class XMLCipherTest {
     }
 
     @Test
-    public void testTripleDesElementCipher() throws Exception {
+    void testTripleDesElementCipher() throws Exception {
         Document d = document(); // source
         Document ed = null;      // target
         Document dd = null;      // target
@@ -401,7 +401,7 @@ public class XMLCipherTest {
     }
 
     @Test
-    public void testAes128ElementCipher() throws Exception {
+    void testAes128ElementCipher() throws Exception {
         byte[] bits128 = {
                           (byte) 0x10, (byte) 0x11, (byte) 0x12, (byte) 0x13,
                           (byte) 0x14, (byte) 0x15, (byte) 0x16, (byte) 0x17,
@@ -445,7 +445,7 @@ public class XMLCipherTest {
     }
 
     @Test
-    public void testAes192ElementCipher() throws Exception {
+    void testAes192ElementCipher() throws Exception {
         byte[] bits192 = {
                           (byte) 0x08, (byte) 0x09, (byte) 0x0A, (byte) 0x0B,
                           (byte) 0x0C, (byte) 0x0D, (byte) 0x0E, (byte) 0x0F,
@@ -489,7 +489,7 @@ public class XMLCipherTest {
     }
 
     @Test
-    public void testAes265ElementCipher() throws Exception {
+    void testAes265ElementCipher() throws Exception {
         byte[] bits256 = {
                           (byte) 0x00, (byte) 0x01, (byte) 0x02, (byte) 0x03,
                           (byte) 0x04, (byte) 0x05, (byte) 0x06, (byte) 0x07,
@@ -539,7 +539,7 @@ public class XMLCipherTest {
      * In this case the EncryptedData becomes the root element of the document
      */
     @Test
-    public void testTripleDesDocumentCipher() throws Exception {
+    void testTripleDesDocumentCipher() throws Exception {
         Document d = document(); // source
         Document ed = null;      // target
         Document dd = null;      // target
@@ -580,7 +580,7 @@ public class XMLCipherTest {
     }
 
     @Test
-    public void testEncryptionProperties() throws Exception {
+    void testEncryptionProperties() throws Exception {
         Document d = document(); // source
         Document ed = null;      // target
         Document dd = null;      // target
@@ -641,7 +641,7 @@ public class XMLCipherTest {
      * Test a Cipher Reference
      */
     @Test
-    public void testSameDocumentCipherReference() throws Exception {
+    void testSameDocumentCipherReference() throws Exception {
 
         if (haveISOPadding) {
             Document d = TestUtils.newDocument();
@@ -712,7 +712,7 @@ public class XMLCipherTest {
      * Test physical representation of decrypted element, see SANTUARIO-309
      */
     @Test
-    public void testPhysicalRepresentation() throws Exception {
+    void testPhysicalRepresentation() throws Exception {
 
         if (haveISOPadding) {
             byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes();
@@ -815,7 +815,7 @@ public class XMLCipherTest {
     }
 
     @Test
-    public void testSerializedData() throws Exception {
+    void testSerializedData() throws Exception {
         if (!haveISOPadding) {
             LOG.log(Level.WARNING, "Test testSerializedData skipped as necessary algorithms not available");
             return;
@@ -865,7 +865,7 @@ public class XMLCipherTest {
     }
 
     @Test
-    public void testEncryptedKeyWithRecipient() throws Exception {
+    void testEncryptedKeyWithRecipient() throws Exception {
         String filename =
             "src/test/resources/org/apache/xml/security/encryption/encryptedKey.xml";
         if (basedir != null && basedir.length() != 0) {
@@ -888,7 +888,7 @@ public class XMLCipherTest {
     }
 
     @Test
-    public void testEecryptToByteArray() throws Exception {
+    void testEecryptToByteArray() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
@@ -911,7 +911,7 @@ public class XMLCipherTest {
     }
 
     @Test
-    public void testMultipleKEKs() throws Exception {
+    void testMultipleKEKs() throws Exception {
 
         Document d = document(); // source
         Document ed = null;

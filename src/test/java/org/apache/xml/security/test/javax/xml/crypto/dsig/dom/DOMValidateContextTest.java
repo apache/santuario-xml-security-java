@@ -40,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Unit test for javax.xml.crypto.dsig.dom.DOMValidateContext
  *
  */
-public class DOMValidateContextTest {
+class DOMValidateContextTest {
     private final DOMValidateContext domVC;
 
     public DOMValidateContextTest() throws Exception {
@@ -51,7 +51,7 @@ public class DOMValidateContextTest {
     }
 
     @Test
-    public void testConstructor() throws Exception {
+    void testConstructor() throws Exception {
         assertNotNull(domVC);
         try {
             new DOMValidateContext(TestUtils.getPublicKey("RSA"), null);
@@ -63,7 +63,7 @@ public class DOMValidateContextTest {
     }
 
     @Test
-    public void testSetGetProperty() throws Exception {
+    void testSetGetProperty() throws Exception {
         try {
             domVC.setProperty(null, "value");
         } catch (NullPointerException npe) {
@@ -86,7 +86,7 @@ public class DOMValidateContextTest {
     }
 
     @Test
-    public void testSetGetNode() throws Exception {
+    void testSetGetNode() throws Exception {
         try {
             domVC.setNode(null);
         } catch (NullPointerException npe) {

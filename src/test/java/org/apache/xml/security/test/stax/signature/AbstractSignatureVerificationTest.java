@@ -69,7 +69,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  */
-public class AbstractSignatureVerificationTest {
+class AbstractSignatureVerificationTest {
 
     protected static boolean bcInstalled;
 

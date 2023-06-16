@@ -64,7 +64,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Unit test for javax.xml.crypto.dsig.Reference
  *
  */
-public class ReferenceTest {
+class ReferenceTest {
     private final XMLSignatureFactory fac;
     private final KeyInfoFactory kifac;
     private final DigestMethod dmSHA1;
@@ -91,7 +91,7 @@ public class ReferenceTest {
 
     @SuppressWarnings("rawtypes")
     @Test
-    public void testConstructor() throws Exception {
+    void testConstructor() throws Exception {
         Reference ref;
         // test XMLSignatureFactory.newReference(String uri,
         //     DigestMethod dm) for generating Reference objects
@@ -202,7 +202,7 @@ public class ReferenceTest {
     }
 
     @Test
-    public void testisFeatureSupported() throws Exception {
+    void testisFeatureSupported() throws Exception {
         Reference ref = fac.newReference(null, dmSHA1, null, null, null);
         try {
             ref.isFeatureSupported(null);
@@ -213,12 +213,12 @@ public class ReferenceTest {
     }
 
     @Test
-    public void testvalidate() throws Exception {
+    void testvalidate() throws Exception {
         testvalidate(false);
     }
 
     @Test
-    public void testvalidateWithCaching() throws Exception {
+    void testvalidateWithCaching() throws Exception {
         testvalidate(true);
     }
 

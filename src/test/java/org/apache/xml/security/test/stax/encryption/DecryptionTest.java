@@ -92,7 +92,7 @@ import static org.junit.jupiter.api.Assumptions.assumeFalse;
  * A set of test-cases for Decryption.
  *
  */
-public class DecryptionTest {
+class DecryptionTest {
 
     private XMLInputFactory xmlInputFactory;
     private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -108,7 +108,7 @@ public class DecryptionTest {
     }
 
     @Test
-    public void testDecryptElementValidation() throws Exception {
+    void testDecryptElementValidation() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -161,7 +161,7 @@ public class DecryptionTest {
 
 
     @Test
-    public void testDecryptContentValidation() throws Exception {
+    void testDecryptContentValidation() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -216,7 +216,7 @@ public class DecryptionTest {
     }
 
     @Test
-    public void testStrongDecryption() throws Exception {
+    void testStrongDecryption() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -273,7 +273,7 @@ public class DecryptionTest {
     }
 
     @Test
-    public void testDecryptMultipleElements() throws Exception {
+    void testDecryptMultipleElements() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -337,7 +337,7 @@ public class DecryptionTest {
      * encrypted using a AES 192 bit key.  Then reverse using the KEK
      */
     @Test
-    public void testAES128ElementAES192KWCipherUsingKEKInbound() throws Exception {
+    void testAES128ElementAES192KWCipherUsingKEKInbound() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -404,7 +404,7 @@ public class DecryptionTest {
      * encrypted using an RSA key.  Reverse using KEK
      */
     @Test
-    public void testAES256ElementRSAKWCipherUsingKEKInbound() throws Exception {
+    void testAES256ElementRSAKWCipherUsingKEKInbound() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -469,7 +469,7 @@ public class DecryptionTest {
     }
 
     @Test
-    public void testAES256ElementRSAKWCipherUsingKEKInboundIncludeEKKeyInfo() throws Exception {
+    void testAES256ElementRSAKWCipherUsingKEKInboundIncludeEKKeyInfo() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -538,7 +538,7 @@ public class DecryptionTest {
      * encrypted using a 3DES key.  Then reverse by decrypting EncryptedKey.
      */
     @Test
-    public void testAES192Element3DESKWCipherInbound() throws Exception {
+    void testAES192Element3DESKWCipherInbound() throws Exception {
         assumeFalse(isIBMJdK);
 
         // Read in plaintext document
@@ -605,7 +605,7 @@ public class DecryptionTest {
     }
 
     @Test
-    public void testTripleDesElementCipher() throws Exception {
+    void testTripleDesElementCipher() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -663,7 +663,7 @@ public class DecryptionTest {
     }
 
     @Test
-    public void testAes128ElementCipher() throws Exception {
+    void testAes128ElementCipher() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -723,7 +723,7 @@ public class DecryptionTest {
     }
 
     @Test
-    public void testAes192ElementCipher() throws Exception {
+    void testAes192ElementCipher() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -785,7 +785,7 @@ public class DecryptionTest {
     }
 
     @Test
-    public void testAes256ElementCipher() throws Exception {
+    void testAes256ElementCipher() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -851,7 +851,7 @@ public class DecryptionTest {
     // Test case for when the entire document is encrypted and decrypted
     // In this case the EncryptedData becomes the root element of the document
     @Test
-    public void testTripleDesDocumentCipher() throws Exception {
+    void testTripleDesDocumentCipher() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -908,7 +908,7 @@ public class DecryptionTest {
     }
 
     @Test
-    public void testPhysicalRepresentation() throws Exception {
+    void testPhysicalRepresentation() throws Exception {
         final String DATA1 =
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?><ns:root xmlns:ns=\"ns.com\"><ns:elem xmlns:ns2=\"ns2.com\">11</ns:elem></ns:root>";
         Document document = null;
@@ -975,7 +975,7 @@ public class DecryptionTest {
     }
 
     @Test
-    public void testPhysicalRepresentation2() throws Exception {
+    void testPhysicalRepresentation2() throws Exception {
         final String DATA1 =
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?><ns:root xmlns=\"defns.com\" xmlns:ns=\"ns.com\"><elem xmlns=\"\">11</elem></ns:root>";
         Document document = null;
@@ -1242,7 +1242,7 @@ public class DecryptionTest {
     }
 
     @Test
-    public void testMaximumAllowedXMLStructureDepth() throws Exception {
+    void testMaximumAllowedXMLStructureDepth() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -1292,7 +1292,7 @@ public class DecryptionTest {
     }
 
     @Test
-    public void testModifiedEncryptedKeyCipherValue() throws Exception {
+    void testModifiedEncryptedKeyCipherValue() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -1368,7 +1368,7 @@ public class DecryptionTest {
     }
 
     @Test
-    public void testKeyValue() throws Exception {
+    void testKeyValue() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -1423,7 +1423,7 @@ public class DecryptionTest {
     }
 
     @Test
-    public void testIssuerSerial() throws Exception {
+    void testIssuerSerial() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -1488,7 +1488,7 @@ public class DecryptionTest {
     }
 
     @Test
-    public void testX509Certificate() throws Exception {
+    void testX509Certificate() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -1553,7 +1553,7 @@ public class DecryptionTest {
     }
 
     @Test
-    public void testSubjectName() throws Exception {
+    void testSubjectName() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -1618,7 +1618,7 @@ public class DecryptionTest {
     }
 
     @Test
-    public void testSKI() throws Exception {
+    void testSKI() throws Exception {
 
         //
         // This test fails with the IBM JDK
@@ -1694,7 +1694,7 @@ public class DecryptionTest {
     }
 
     @Test
-    public void testNoKeyInfo() throws Exception {
+    void testNoKeyInfo() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -1750,7 +1750,7 @@ public class DecryptionTest {
     }
 
     @Test
-    public void testDecryptElementValidationInDecryptOnlyMode() throws Exception {
+    void testDecryptElementValidationInDecryptOnlyMode() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -1809,7 +1809,7 @@ public class DecryptionTest {
 
 
     @Test
-    public void testDecryptContentValidationInDecryptOnlyMode() throws Exception {
+    void testDecryptContentValidationInDecryptOnlyMode() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -1865,7 +1865,7 @@ public class DecryptionTest {
     }
 
     @Test
-    public void testDecryptWholeDocumentInDecryptOnlyMode() throws Exception {
+    void testDecryptWholeDocumentInDecryptOnlyMode() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);

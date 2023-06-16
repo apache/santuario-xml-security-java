@@ -73,10 +73,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * A set of test-cases for Signature creation.
  */
-public class SignatureCreationTest extends AbstractSignatureCreationTest {
+class SignatureCreationTest extends AbstractSignatureCreationTest {
 
     @Test
-    public void testSignatureCreation() throws Exception {
+    void testSignatureCreation() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -117,7 +117,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testSignatureCreationRetrieveSignatureValue() throws Exception {
+    void testSignatureCreationRetrieveSignatureValue() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -155,7 +155,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testExceptionOnElementToSignNotFound() throws Exception {
+    void testExceptionOnElementToSignNotFound() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -183,7 +183,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testEnvelopedSignatureCreation() throws Exception {
+    void testEnvelopedSignatureCreation() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -232,7 +232,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testEnvelopedSignatureCreationC14n11() throws Exception {
+    void testEnvelopedSignatureCreationC14n11() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -281,7 +281,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testSignRootElementInRequest() throws Exception {
+    void testSignRootElementInRequest() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -329,7 +329,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testSignAtSpecificPosition() throws Exception {
+    void testSignAtSpecificPosition() throws Exception {
         signAtSpecificPosition(-1);
         signAtSpecificPosition(0);
         signAtSpecificPosition(1);
@@ -338,7 +338,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testSignAtSpecificPositionViaQName() throws Exception {
+    void testSignAtSpecificPositionViaQName() throws Exception {
         signAtSpecificPosition(0, new QName("urn:example:po", "PurchaseOrder"), true);
         signAtSpecificPosition(0, new QName("urn:example:po", "Items"), true);
         signAtSpecificPosition(0, new QName("urn:example:po", "Items"), false);
@@ -426,7 +426,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testIdAttributeNS() throws Exception {
+    void testIdAttributeNS() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -467,7 +467,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
 
 
     @Test
-    public void testMultipleElements() throws Exception {
+    void testMultipleElements() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -500,7 +500,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testMultipleSignatures() throws Exception {
+    void testMultipleSignatures() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -561,7 +561,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testHMACSignatureCreation() throws Exception {
+    void testHMACSignatureCreation() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -591,7 +591,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testStrongSignatureCreation() throws Exception {
+    void testStrongSignatureCreation() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -624,7 +624,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testDSASignatureCreation() throws Exception {
+    void testDSASignatureCreation() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -665,7 +665,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testECDSASignatureCreation() throws Exception {
+    void testECDSASignatureCreation() throws Exception {
 
         Assumptions.assumeTrue(bcInstalled);
 
@@ -707,7 +707,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testStrongECDSASignatureCreation() throws Exception {
+    void testStrongECDSASignatureCreation() throws Exception {
 
         Assumptions.assumeTrue(bcInstalled);
 
@@ -750,7 +750,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testDifferentC14nMethod() throws Exception {
+    void testDifferentC14nMethod() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -782,7 +782,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testDifferentC14nMethodForReference() throws Exception {
+    void testDifferentC14nMethodForReference() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -835,7 +835,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testDifferentDigestMethodForReference() throws Exception {
+    void testDifferentDigestMethodForReference() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -888,7 +888,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testC14n11Method() throws Exception {
+    void testC14n11Method() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -920,7 +920,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testExcC14nInclusivePrefixes() throws Exception {
+    void testExcC14nInclusivePrefixes() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -958,7 +958,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testSignatureCreationRSAKeyValue() throws Exception {
+    void testSignatureCreationRSAKeyValue() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -989,7 +989,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testSignatureCreationECDSAKeyValue() throws Exception {
+    void testSignatureCreationECDSAKeyValue() throws Exception {
 
         Assumptions.assumeTrue(bcInstalled);
 
@@ -1032,7 +1032,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testSignatureCreationSKI() throws Exception {
+    void testSignatureCreationSKI() throws Exception {
 
         //
         // This test fails with the IBM JDK
@@ -1075,7 +1075,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testSignatureCreationX509Certificate() throws Exception {
+    void testSignatureCreationX509Certificate() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -1106,7 +1106,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testSignatureCreationX509SubjectName() throws Exception {
+    void testSignatureCreationX509SubjectName() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -1137,7 +1137,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testSignatureCreationMultipleKeyIdentifiers() throws Exception {
+    void testSignatureCreationMultipleKeyIdentifiers() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -1172,7 +1172,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testSignatureCreationTransformBase64() throws Exception {
+    void testSignatureCreationTransformBase64() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -1205,7 +1205,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testNoKeyInfo() throws Exception {
+    void testNoKeyInfo() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -1239,7 +1239,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testSignatureCreationKeyName() throws Exception {
+    void testSignatureCreationKeyName() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -1275,7 +1275,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testSignatureCreationWithoutId() throws Exception {
+    void testSignatureCreationWithoutId() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -1312,7 +1312,7 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testSignatureCreationWithoutOmittedDefaultTransform() throws Exception {
+    void testSignatureCreationWithoutOmittedDefaultTransform() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();

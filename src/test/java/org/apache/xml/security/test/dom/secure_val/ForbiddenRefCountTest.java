@@ -45,14 +45,14 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * This is a test for a forbidden number of references when secure validation is enabled.
  */
-public class ForbiddenRefCountTest extends InteropTestBase {
+class ForbiddenRefCountTest extends InteropTestBase {
 
     static {
         org.apache.xml.security.Init.init();
     }
 
     @Test
-    public void testReferenceCount() throws Exception {
+    void testReferenceCount() throws Exception {
         Document doc = getOriginalDocument();
         signDocument(doc, 31);
         assertTrue(verifySignature(doc, false));

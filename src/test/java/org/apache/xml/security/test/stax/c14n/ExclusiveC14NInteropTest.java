@@ -50,7 +50,7 @@ import org.w3c.dom.Document;
 /**
  * Interop test for exclusive canonical XML.
  */
-public class ExclusiveC14NInteropTest {
+class ExclusiveC14NInteropTest {
 
     // Define the Keys
     private static final String DSA_Y =
@@ -77,7 +77,7 @@ public class ExclusiveC14NInteropTest {
 
 
     @Test
-    public void test_Y1() throws Exception {
+    void test_Y1() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("interop/c14n/Y1/exc-signature.xml", getClass().getClassLoader(), false);
 

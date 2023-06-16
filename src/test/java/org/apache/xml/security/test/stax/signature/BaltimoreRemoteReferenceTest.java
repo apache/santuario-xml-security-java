@@ -76,7 +76,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  *  These are separated out from BaltimoreTest as we have to change the default configuration to set
  *  * "AllowNotSameDocumentReferences" to "true".
  */
-public class BaltimoreRemoteReferenceTest {
+class BaltimoreRemoteReferenceTest {
 
     // Define the Keys
     private static final String DSA_Y_15 =
@@ -122,7 +122,7 @@ public class BaltimoreRemoteReferenceTest {
 
     // See SANTUARIO-319
     @Test
-    public void test_fifteen_external_b64_dsa() throws Exception {
+    void test_fifteen_external_b64_dsa() throws Exception {
 
         Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
         try {
@@ -167,7 +167,7 @@ public class BaltimoreRemoteReferenceTest {
 
     // See SANTUARIO-319
     @Test
-    public void test_fifteen_external_dsa() throws Exception {
+    void test_fifteen_external_dsa() throws Exception {
 
         Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
@@ -213,7 +213,7 @@ public class BaltimoreRemoteReferenceTest {
 
     // See Santuario-319
     @Test
-    public void test_twenty_three_external_b64_dsa() throws Exception {
+    void test_twenty_three_external_b64_dsa() throws Exception {
 
         Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
@@ -259,7 +259,7 @@ public class BaltimoreRemoteReferenceTest {
 
     // See SANTUARIO-319
     @Test
-    public void test_twenty_three_external_dsa() throws Exception {
+    void test_twenty_three_external_dsa() throws Exception {
 
         Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
@@ -305,7 +305,7 @@ public class BaltimoreRemoteReferenceTest {
 
     // See SANTUARIO-319
     @Test
-    public void test_signature_keyname() throws Exception {
+    void test_signature_keyname() throws Exception {
 
         Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
@@ -357,7 +357,7 @@ public class BaltimoreRemoteReferenceTest {
 
     // See SANTUARIO-319
     @Test
-    public void test_signature_retrievalmethod_rawx509crt() throws Exception {
+    void test_signature_retrievalmethod_rawx509crt() throws Exception {
 
         Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
@@ -402,7 +402,7 @@ public class BaltimoreRemoteReferenceTest {
 
     // See SANTUARIO-319
     @Test
-    public void test_signature_x509_crt_crl() throws Exception {
+    void test_signature_x509_crt_crl() throws Exception {
 
         Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
@@ -438,7 +438,7 @@ public class BaltimoreRemoteReferenceTest {
 
     // See SANTUARIO-319
     @Test
-    public void test_signature_x509_crt() throws Exception {
+    void test_signature_x509_crt() throws Exception {
 
         Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
@@ -474,7 +474,7 @@ public class BaltimoreRemoteReferenceTest {
 
     // See SANTUARIO-319
     @Test
-    public void test_signature_x509_is() throws Exception {
+    void test_signature_x509_is() throws Exception {
 
         Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
@@ -527,7 +527,7 @@ public class BaltimoreRemoteReferenceTest {
 
     // See SANTUARIO-319
     @Test
-    public void test_signature_x509_ski() throws Exception {
+    void test_signature_x509_ski() throws Exception {
 
         Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
@@ -574,7 +574,7 @@ public class BaltimoreRemoteReferenceTest {
 
     // See SANTUARIO-319
     @Test
-    public void test_signature_x509_sn() throws Exception {
+    void test_signature_x509_sn() throws Exception {
 
         Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
@@ -626,7 +626,7 @@ public class BaltimoreRemoteReferenceTest {
     }
 
     @Test
-    public void test_signature_keyname_18() throws Exception {
+    void test_signature_keyname_18() throws Exception {
 
         Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
@@ -678,7 +678,7 @@ public class BaltimoreRemoteReferenceTest {
 
  // See SANTUARIO-319
     @Test
-    public void test_signature_retrievalmethod_rawx509crt_18() throws Exception {
+    void test_signature_retrievalmethod_rawx509crt_18() throws Exception {
 
         Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
@@ -724,7 +724,7 @@ public class BaltimoreRemoteReferenceTest {
 
     // See SANTUARIO-319
     @Test
-    public void test_signature_x509_crt_crl_18() throws Exception {
+    void test_signature_x509_crt_crl_18() throws Exception {
 
         Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
@@ -760,7 +760,7 @@ public class BaltimoreRemoteReferenceTest {
 
     // See SANTUARIO-319
     @Test
-    public void test_signature_x509_crt_18() throws Exception {
+    void test_signature_x509_crt_18() throws Exception {
 
         Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
@@ -796,7 +796,7 @@ public class BaltimoreRemoteReferenceTest {
 
     // See SANTUARIO-319
     @Test
-    public void test_signature_x509_is_18() throws Exception {
+    void test_signature_x509_is_18() throws Exception {
 
         Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
@@ -848,7 +848,7 @@ public class BaltimoreRemoteReferenceTest {
 
     // See SANTUARIO-319
     @Test
-    public void test_signature_x509_ski_18() throws Exception {
+    void test_signature_x509_ski_18() throws Exception {
 
         Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
@@ -894,7 +894,7 @@ public class BaltimoreRemoteReferenceTest {
 
     // See SANTUARIO-319
     @Test
-    public void test_signature_x509_sn_18() throws Exception {
+    void test_signature_x509_sn_18() throws Exception {
 
         Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 

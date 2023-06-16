@@ -43,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * https://issues.apache.org/jira/browse/SANTUARIO-273
  * "xml:base attribute not processed correctly in C14N11 canonicalization"
  */
-public class Santuario273Test {
+class Santuario273Test {
     public static String input = ""
         + "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
         + "<Signature xmlns=\"http://www.w3.org/2000/09/xmldsig#\" xml:base=\"http://www.acme.com/resources/\">\n"
@@ -80,7 +80,7 @@ public class Santuario273Test {
     }
 
     @Test
-    public void testC14n11Base() throws Exception {
+    void testC14n11Base() throws Exception {
         Document doc = null;
         try (InputStream is = new ByteArrayInputStream(input.getBytes())) {
             doc = XMLUtils.read(is, false);

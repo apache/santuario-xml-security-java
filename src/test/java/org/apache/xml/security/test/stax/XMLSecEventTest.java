@@ -51,10 +51,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  */
-public class XMLSecEventTest {
+class XMLSecEventTest {
 
     @Test
-    public void testWriteCharactersEncoded() throws Exception {
+    void testWriteCharactersEncoded() throws Exception {
         StringWriter stringWriter = new StringWriter();
         XMLSecCharacters xmlSecCharacters = new XMLSecCharactersImpl("test", false, false, false, null);
         xmlSecCharacters.writeAsEncodedUnicode(stringWriter);
@@ -87,7 +87,7 @@ public class XMLSecEventTest {
     }
 
     @Test
-    public void testWriteAttributeEncoded() throws Exception {
+    void testWriteAttributeEncoded() throws Exception {
         StringWriter stringWriter = new StringWriter();
         XMLSecAttribute xmlSecAttribute = new XMLSecAttributeImpl(new QName("test", "test", "test"), "test");
         xmlSecAttribute.writeAsEncodedUnicode(stringWriter);
@@ -110,7 +110,7 @@ public class XMLSecEventTest {
     }
 
     @Test
-    public void testWriteComment() throws Exception {
+    void testWriteComment() throws Exception {
         StringWriter stringWriter = new StringWriter();
         XMLSecComment xmlSecAttribute = new XMLSecCommentImpl(" < > & \" '", null);
         xmlSecAttribute.writeAsEncodedUnicode(stringWriter);
@@ -118,7 +118,7 @@ public class XMLSecEventTest {
     }
 
     @Test
-    public void testWriteEntityDeclaration() throws Exception {
+    void testWriteEntityDeclaration() throws Exception {
         StringWriter stringWriter = new StringWriter();
         XMLSecEntityDeclaration xmlSecEntityDeclaration = new XMLSecEntityDeclarationImpl("test");
         xmlSecEntityDeclaration.writeAsEncodedUnicode(stringWriter);
@@ -126,7 +126,7 @@ public class XMLSecEventTest {
     }
 
     @Test
-    public void testWriteEntityReference() throws Exception {
+    void testWriteEntityReference() throws Exception {
         StringWriter stringWriter = new StringWriter();
         XMLSecEntityReference xmlSecEntityReference = new XMLSecEntityReferenceImpl("test", null, null);
         xmlSecEntityReference.writeAsEncodedUnicode(stringWriter);
@@ -134,7 +134,7 @@ public class XMLSecEventTest {
     }
 
     @Test
-    public void testWriteNamespaceEncoded() throws Exception {
+    void testWriteNamespaceEncoded() throws Exception {
         StringWriter stringWriter = new StringWriter();
         XMLSecNamespace xmlSecNamespace = XMLSecNamespaceImpl.getInstance("test", "test");
         xmlSecNamespace.writeAsEncodedUnicode(stringWriter);
@@ -157,7 +157,7 @@ public class XMLSecEventTest {
     }
 
     @Test
-    public void testWriteProcessingInstruction() throws Exception {
+    void testWriteProcessingInstruction() throws Exception {
         StringWriter stringWriter = new StringWriter();
         XMLSecProcessingInstruction xmlSecProcessingInstruction =
                 new XMLSecProcessingInstructionImpl("test", "test", null);
@@ -166,7 +166,7 @@ public class XMLSecEventTest {
     }
 
     @Test
-    public void testwWiteAsEncodedUnicode() throws Exception {
+    void testwWiteAsEncodedUnicode() throws Exception {
         XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
         XMLStreamReader xmlStreamReader =
                 xmlInputFactory.createXMLStreamReader(this.getClass().getClassLoader().getResourceAsStream(

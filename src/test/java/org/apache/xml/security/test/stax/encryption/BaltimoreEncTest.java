@@ -67,7 +67,7 @@ import static org.junit.jupiter.api.Assumptions.assumeFalse;
  * Interop test for XML Encryption
  *
  */
-public class BaltimoreEncTest {
+class BaltimoreEncTest {
 
     private static String cardNumber;
     private static int nodeCount;
@@ -103,7 +103,7 @@ public class BaltimoreEncTest {
     }
 
     @Test
-    public void test_five_content_3des_cbc() throws Exception {
+    void test_five_content_3des_cbc() throws Exception {
 
         // Read in document
         Document document = XMLUtils.readResource(
@@ -140,7 +140,7 @@ public class BaltimoreEncTest {
     }
 
     @Test
-    public void test_five_content_aes256_cbc() throws Exception {
+    void test_five_content_aes256_cbc() throws Exception {
 
         // Read in document
         Document document = XMLUtils.readResource(
@@ -177,7 +177,7 @@ public class BaltimoreEncTest {
     }
 
     @Test
-    public void test_five_content_aes128_cbc_kw_aes192() throws Exception {
+    void test_five_content_aes128_cbc_kw_aes192() throws Exception {
         // Read in document
         Document document = XMLUtils.readResource(
             "ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-content-aes128-cbc-kw-aes192.xml",
@@ -213,7 +213,7 @@ public class BaltimoreEncTest {
     }
 
     @Test
-    public void test_five_content_3des_cbc_kw_aes128() throws Exception {
+    void test_five_content_3des_cbc_kw_aes128() throws Exception {
         // Read in document
         Document document = XMLUtils.readResource(
             "ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-element-tripledes-cbc-kw-aes128.xml",
@@ -249,7 +249,7 @@ public class BaltimoreEncTest {
     }
 
     @Test
-    public void test_five_content_aes128_cbc_rsa_15() throws Exception {
+    void test_five_content_aes128_cbc_rsa_15() throws Exception {
         // Read in document
         Document document = XMLUtils.readResource(
             "ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-element-aes128-cbc-rsa-1_5.xml",
@@ -281,7 +281,7 @@ public class BaltimoreEncTest {
     }
 
     @Test
-    public void test_five_data_aes128_cbc() throws Exception {
+    void test_five_data_aes128_cbc() throws Exception {
         // Read in document
         Document document = XMLUtils.readResource(
             "ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-data-aes128-cbc.xml",
@@ -315,7 +315,7 @@ public class BaltimoreEncTest {
     }
 
     @Test
-    public void test_five_data_aes256_cbc_3des() throws Exception {
+    void test_five_data_aes256_cbc_3des() throws Exception {
         assumeFalse(isIBMJdK);
 
         // Read in document
@@ -351,7 +351,7 @@ public class BaltimoreEncTest {
     }
 
     @Test
-    public void test_five_data_aes192_cbc_aes256() throws Exception {
+    void test_five_data_aes192_cbc_aes256() throws Exception {
         // Read in document
         Document document = XMLUtils.readResource(
             "ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-data-aes192-cbc-kw-aes256.xml",
@@ -385,7 +385,7 @@ public class BaltimoreEncTest {
     }
 
     @Test
-    public void test_five_data_3des_cbc_rsa_oaep() throws Exception {
+    void test_five_data_3des_cbc_rsa_oaep() throws Exception {
         // Read in document
         Document document = XMLUtils.readResource(
             "ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p.xml",

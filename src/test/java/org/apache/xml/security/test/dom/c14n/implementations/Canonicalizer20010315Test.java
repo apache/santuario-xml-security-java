@@ -62,7 +62,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * {@link org.apache.xml.security.c14n.implementations.Canonicalizer20010315WithXPath}
  *
  */
-public class Canonicalizer20010315Test {
+class Canonicalizer20010315Test {
 
     private static final Logger LOG = System.getLogger(Canonicalizer20010315Test.class.getName());
 
@@ -81,7 +81,7 @@ public class Canonicalizer20010315Test {
      * 3.1 PIs, Comments, and Outside of Document Element
      */
     @Test
-    public void test31withCommentsSubtree() throws Exception {
+    void test31withCommentsSubtree() throws Exception {
         String descri =
             "3.1: PIs, Comments, and Outside of Document Element. (commented)";
 
@@ -98,7 +98,7 @@ public class Canonicalizer20010315Test {
      * 3.1 PIs, Comments, and Outside of Document Element
      */
     @Test
-    public void test31withCommentsSubset() throws Exception {
+    void test31withCommentsSubset() throws Exception {
         String descri =
             "3.1: PIs, Comments, and Outside of Document Element. (commented)";
 
@@ -117,7 +117,7 @@ public class Canonicalizer20010315Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-OutsideDoc">the example from the spec</A>
      */
     @Test
-    public void test31subtree() throws Exception {
+    void test31subtree() throws Exception {
         String descri =
             "3.1: PIs, Comments, and Outside of Document Element. (uncommented)";
         File fileIn = resolveFile(prefix, "in", "31_input.xml");
@@ -135,7 +135,7 @@ public class Canonicalizer20010315Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-OutsideDoc">the example from the spec</A>
      */
     @Test
-    public void test31subset() throws Exception {
+    void test31subset() throws Exception {
 
         String descri =
             "3.1: PIs, Comments, and Outside of Document Element. (uncommented)";
@@ -154,7 +154,7 @@ public class Canonicalizer20010315Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-WhitespaceInContent">the example from the spec</A>
      */
     @Test
-    public void test32subtree() throws Exception {
+    void test32subtree() throws Exception {
         String descri = "3.2 Whitespace in Document Content. (uncommented)";
         File fileIn = resolveFile(prefix, "in", "32_input.xml");
         Path fileRef = resolvePath(prefix, "in", "32_c14n.xml");
@@ -171,7 +171,7 @@ public class Canonicalizer20010315Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-WhitespaceInContent">the example from the spec</A>
      */
     @Test
-    public void test32subset() throws Exception {
+    void test32subset() throws Exception {
         String descri = "3.2 Whitespace in Document Content. (uncommented)";
         File fileIn = resolveFile(prefix, "in", "32_input.xml");
         Path fileRef = resolvePath(prefix, "in", "32_c14n.xml");
@@ -188,7 +188,7 @@ public class Canonicalizer20010315Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-SETags">the example from the spec</A>
      */
     @Test
-    public void test33subtree() throws Exception {
+    void test33subtree() throws Exception {
         String descri = "3.3 Start and End Tags. (uncommented)";
         File fileIn = resolveFile(prefix, "in", "33_input.xml");
         Path fileRef = resolvePath(prefix, "in", "33_c14n.xml");
@@ -200,7 +200,7 @@ public class Canonicalizer20010315Test {
     }
 
     @Test
-    public void test33subset() throws Exception {
+    void test33subset() throws Exception {
         String descri = "3.3 Start and End Tags. (uncommented)";
         File fileIn = resolveFile(prefix, "in", "33_input.xml");
         Path fileRef = resolvePath(prefix, "in", "33_c14n.xml");
@@ -218,7 +218,7 @@ public class Canonicalizer20010315Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-Chars">the example from the spec</A>
      */
     @Test
-    public void test34() throws Exception {
+    void test34() throws Exception {
         String descri =
             "3.4 Character Modifications and Character References. (uncommented)";
         File fileIn = resolveFile(prefix, "in", "34_input.xml");
@@ -244,7 +244,7 @@ public class Canonicalizer20010315Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-Chars">the example from the spec</A>
      */
     @Test
-    public void test34subtree() throws Exception {
+    void test34subtree() throws Exception {
         String descri =
             "3.4 Character Modifications and Character References. (uncommented, patched to run on validating Parsers)";
         File fileIn = resolveFile(prefix, "in", "34_input_validatingParser.xml");
@@ -270,7 +270,7 @@ public class Canonicalizer20010315Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-Chars">the example from the spec</A>
      */
     @Test
-    public void test34subset() throws Exception {
+    void test34subset() throws Exception {
 
         String descri =
             "3.4 Character Modifications and Character References. (uncommented, patched to run on validating Parsers)";
@@ -289,7 +289,7 @@ public class Canonicalizer20010315Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-Entities">the example from the spec</A>
      */
     @Test
-    public void test35subtree() throws Exception{
+    void test35subtree() throws Exception {
         String descri = "3.5 Entity References. (uncommented)";
         File fileIn = resolveFile(prefix, "in", "35_input.xml");
         Path fileRef = resolvePath(prefix, "in", "35_c14n.xml");
@@ -306,7 +306,7 @@ public class Canonicalizer20010315Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-Entities">the example from the spec</A>
      */
     @Test
-    public void test35subset() throws Exception {
+    void test35subset() throws Exception {
         String descri = "3.5 Entity References. (uncommented)";
         File fileIn = resolveFile(prefix, "in", "35_input.xml");
         Path fileRef = resolvePath(prefix, "in", "35_c14n.xml");
@@ -323,7 +323,7 @@ public class Canonicalizer20010315Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-UTF8">the example from the spec</A>
      */
     @Test
-    public void test36subtree() throws Exception {
+    void test36subtree() throws Exception {
         String descri = "3.6 UTF-8 Encoding. (uncommented)";
         File fileIn = resolveFile(prefix, "in", "36_input.xml");
         Path fileRef = resolvePath(prefix, "in", "36_c14n.xml");
@@ -340,7 +340,7 @@ public class Canonicalizer20010315Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-UTF8">the example from the spec</A>
      */
     @Test
-    public void test36subset() throws Exception {
+    void test36subset() throws Exception {
         String descri = "3.6 UTF-8 Encoding. (uncommented)";
         File fileIn = resolveFile(prefix, "in", "36_input.xml");
         Path fileRef = resolvePath(prefix, "in", "36_c14n.xml");
@@ -357,7 +357,7 @@ public class Canonicalizer20010315Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-DocSubsets">the example from the spec</A>
      */
     @Test
-    public void test37() throws Exception {
+    void test37() throws Exception {
         String descri = "3.7 Document Subsets. (uncommented)";
         File fileIn = resolveFile(prefix, "in", "37_input.xml");
         Path fileRef = resolvePath(prefix, "in", "37_c14n.xml");
@@ -383,7 +383,7 @@ public class Canonicalizer20010315Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-DocSubsets">the example from the spec</A>
      */
     @Test
-    public void test37byNodeList() throws Exception {
+    void test37byNodeList() throws Exception {
 
         //String descri = "3.7 Document Subsets. (uncommented), c14n by NodeList";
         File fileIn = resolveFile(prefix, "in", "37_input.xml");
@@ -428,7 +428,7 @@ public class Canonicalizer20010315Test {
      * relative namespace URIs.
      */
     @Test
-    public void testRelativeNSbehaviour() throws Exception {
+    void testRelativeNSbehaviour() throws Exception {
 
         //J-
         String inputStr = ""
@@ -471,7 +471,7 @@ public class Canonicalizer20010315Test {
      * are OPTIONAL.
      */
     @Test
-    public void testTranslationFromUTF16toUTF8() throws Exception {
+    void testTranslationFromUTF16toUTF8() throws Exception {
         String val =
             "<UTF16>The german &amp;auml (which is Unicode &amp;#xE4;):  &quot;&#xE4;&quot;</UTF16>";
         byte[] utf16 = convertToUTF16(val.getBytes());
@@ -488,7 +488,7 @@ public class Canonicalizer20010315Test {
      * Method testXMLAttributes1
      */
     @Test
-    public void testXMLAttributes1() throws Exception {
+    void testXMLAttributes1() throws Exception {
         //J-
         String input = ""
             + "<included xml:lang='de'>"
@@ -513,7 +513,7 @@ public class Canonicalizer20010315Test {
      * Method testXMLAttributes2
      */
     @Test
-    public void testXMLAttributes2() throws Exception {
+    void testXMLAttributes2() throws Exception {
         //J-
         String input = ""
             + "<included xml:lang='uk'>"
@@ -538,7 +538,7 @@ public class Canonicalizer20010315Test {
      * Method testXMLAttributes3
      */
     @Test
-    public void testXMLAttributes3() throws Exception {
+    void testXMLAttributes3() throws Exception {
         //J-
         String input = ""
             + "<included xml:lang='de'>"
@@ -564,7 +564,7 @@ public class Canonicalizer20010315Test {
      */
     @Test
     @Disabled
-    public void _testXMLAttributes4() throws Exception {
+    void _testXMLAttributes4() throws Exception {
         //J-
         String input = ""
             + "<included xml:lang='de'>"
@@ -592,7 +592,7 @@ public class Canonicalizer20010315Test {
      */
     @Test
     @Disabled
-    public void _testXMLAttributes5() throws Exception {
+    void _testXMLAttributes5() throws Exception {
         //J-
         String input = ""
             + "<included xml:lang='de'>"
@@ -620,7 +620,7 @@ public class Canonicalizer20010315Test {
      */
     @Test
     @Disabled
-    public void _testXMLAttributes6() throws Exception {
+    void _testXMLAttributes6() throws Exception {
         //J-
         String input = ""
             + "<included xml:space='preserve'  xml:lang='de'>"

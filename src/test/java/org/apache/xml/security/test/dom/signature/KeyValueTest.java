@@ -36,14 +36,14 @@ import org.w3c.dom.NodeList;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class KeyValueTest {
+class KeyValueTest {
 
     static {
         Init.init();
     }
 
     @Test
-    public void testDSAPublicKey() throws Exception {
+    void testDSAPublicKey() throws Exception {
         String path =
             "src/test/resources/ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-enveloping-dsa.xml";
         File f = XmlSecTestEnvironment.resolveFile(path);

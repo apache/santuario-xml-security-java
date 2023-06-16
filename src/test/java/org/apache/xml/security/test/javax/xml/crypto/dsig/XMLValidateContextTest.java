@@ -39,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Unit test for javax.xml.crypto.dsig.XMLValidateContext
  *
  */
-public class XMLValidateContextTest {
+class XMLValidateContextTest {
 
     private final XMLValidateContext defContext;
     private final KeySelector[] KEY_SELECTORS;
@@ -55,7 +55,7 @@ public class XMLValidateContextTest {
     }
 
     @Test
-    public void testsetngetKeySelector() throws Exception {
+    void testsetngetKeySelector() throws Exception {
         defContext.setKeySelector(null);
         assertNull(defContext.getKeySelector());
 
@@ -66,7 +66,7 @@ public class XMLValidateContextTest {
     }
 
     @Test
-    public void testsetngetBaseURI() throws Exception {
+    void testsetngetBaseURI() throws Exception {
         assertNull(defContext.getBaseURI());
 
         String uri = "http://www.w3.org/2000/09/xmldsig#";
@@ -77,7 +77,7 @@ public class XMLValidateContextTest {
     }
 
     @Test
-    public void testsetngetProperty() throws Exception {
+    void testsetngetProperty() throws Exception {
         String name = "key";
         assertNull(defContext.getProperty(name));
         try {
@@ -98,7 +98,7 @@ public class XMLValidateContextTest {
     }
 
     @Test
-    public void testsetngetURIDereferencer() throws Exception {
+    void testsetngetURIDereferencer() throws Exception {
         assertNull(defContext.getURIDereferencer());
         byte[] data = "simpleDereferencer".getBytes();
         URIDereferencer deref = new TestUtils.OctetStreamURIDereferencer(data);

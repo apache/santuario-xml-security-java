@@ -66,7 +66,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Tests that create signatures.
  *
  */
-public class CreateSignatureTest {
+class CreateSignatureTest {
 
     private final KeyPair kp;
 
@@ -80,7 +80,7 @@ public class CreateSignatureTest {
      * ArrayIndexOutOfBoundsException.
      */
     @Test
-    public void testEmptyNodeSet() throws Exception {
+    void testEmptyNodeSet() throws Exception {
         Document doc = TestUtils.newDocument();
         Element envelope = doc.createElementNS("http://www.usps.gov/", "Envelope");
         envelope.appendChild(doc.createTextNode("\n"));
@@ -124,18 +124,18 @@ public class CreateSignatureTest {
     }
 
     @Test
-    public void testOne() throws Exception {
+    void testOne() throws Exception {
         doVerify(doSign());
         doVerify(doSign());
     }
 
     @Test
-    public void testTwo() throws Exception {
+    void testTwo() throws Exception {
         doSignWithCert();
     }
 
     @Test
-    public void testWithNSPrefixDisabled() throws Exception {
+    void testWithNSPrefixDisabled() throws Exception {
         String prefix = ElementProxy.getDefaultPrefix(Constants.SignatureSpecNS);
         try {
             ElementProxy.setDefaultPrefix(Constants.SignatureSpecNS, "");
@@ -148,7 +148,7 @@ public class CreateSignatureTest {
     }
 
     @Test
-    public void testXPathSignature() throws Exception {
+    void testXPathSignature() throws Exception {
         Document doc = TestUtils.newDocument();
         doc.appendChild(doc.createComment(" Comment before "));
         Element root = doc.createElementNS("", "RootElement");
@@ -201,7 +201,7 @@ public class CreateSignatureTest {
     }
 
     @Test
-    public void testCanonicalizedOctetStream() throws Exception {
+    void testCanonicalizedOctetStream() throws Exception {
         String signedXML = doSign();
 
         Document doc = null;
@@ -243,7 +243,7 @@ public class CreateSignatureTest {
     }
 
     @Test
-    public void testSHA256Digest() throws Exception {
+    void testSHA256Digest() throws Exception {
         PrivateKey privateKey = kp.getPrivate();
         Document doc = TestUtils.newDocument();
         doc.appendChild(doc.createComment(" Comment before "));
@@ -282,7 +282,7 @@ public class CreateSignatureTest {
     }
 
     @Test
-    public void testSignatureProperties() throws Exception {
+    void testSignatureProperties() throws Exception {
         PrivateKey privateKey = kp.getPrivate();
         Document doc = TestUtils.newDocument();
         Element root = doc.createElementNS("", "RootElement");
@@ -331,7 +331,7 @@ public class CreateSignatureTest {
     }
 
     @Test
-    public void testAddDuplicateKeyInfo() throws Exception {
+    void testAddDuplicateKeyInfo() throws Exception {
         PrivateKey privateKey = kp.getPrivate();
         Document doc = TestUtils.newDocument();
         Element root = doc.createElementNS("", "RootElement");
@@ -378,7 +378,7 @@ public class CreateSignatureTest {
     }
 
     @Test
-    public void testWrongSignatureName() throws Exception {
+    void testWrongSignatureName() throws Exception {
         PrivateKey privateKey = kp.getPrivate();
         Document doc = TestUtils.newDocument();
         Element root = doc.createElementNS("", "RootElement");

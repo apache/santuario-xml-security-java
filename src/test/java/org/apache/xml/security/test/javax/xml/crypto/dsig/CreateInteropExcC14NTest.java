@@ -64,7 +64,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * but with different keys.
  *
  */
-public class CreateInteropExcC14NTest {
+class CreateInteropExcC14NTest {
 
     private final XMLSignatureFactory fac;
     private final KeyInfoFactory kifac;
@@ -89,7 +89,7 @@ public class CreateInteropExcC14NTest {
     }
 
     @Test
-    public void test_create_Y1() throws Exception {
+    void test_create_Y1() throws Exception {
         List<Reference> refs = new ArrayList<>(4);
 
         // create reference 1

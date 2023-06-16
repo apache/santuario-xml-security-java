@@ -50,7 +50,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * org.apache.xml.security.samples.signature.CreateEnvelopingSignature</code>
  * </p>
  */
-public class UnknownAlgoSignatureTest {
+class UnknownAlgoSignatureTest {
 
     protected static final String KEYSTORE_TYPE = "JKS";
     protected static final String KEYSTORE_FILE = "src/test/resources/org/apache/xml/security/samples/input/keystore.jks";
@@ -73,12 +73,12 @@ public class UnknownAlgoSignatureTest {
     }
 
     @Test
-    public void testGood() throws Exception {
+    void testGood() throws Exception {
         assertTrue(checkSignature("signature-good.xml"));
     }
 
     @Test
-    public void testBadC14NAlgo() throws Exception {
+    void testBadC14NAlgo() throws Exception {
         try {
             assertTrue(checkSignature("signature-bad-c14n-algo.xml"));
             fail("Exception not caught");
@@ -88,7 +88,7 @@ public class UnknownAlgoSignatureTest {
     }
 
     @Test
-    public void testBadSigAlgo() throws Exception {
+    void testBadSigAlgo() throws Exception {
         try {
             assertTrue(checkSignature("signature-bad-sig-algo.xml"));
             fail("Exception not caught");
@@ -98,7 +98,7 @@ public class UnknownAlgoSignatureTest {
     }
 
     @Test
-    public void testBadTransformAlgo() throws Exception {
+    void testBadTransformAlgo() throws Exception {
         try {
             assertTrue(checkReferences("signature-bad-transform-algo.xml"));
             fail("Exception not caught");

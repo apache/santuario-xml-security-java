@@ -53,7 +53,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * data/com/ibm/xss4j-20030127/
  * then the interop test is performed against these values, too.
  */
-public class IBMTest extends InteropTestBase {
+class IBMTest extends InteropTestBase {
 
     private static final Logger LOG = System.getLogger(IBMTest.class.getName());
 
@@ -83,7 +83,7 @@ public class IBMTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_enveloping_hmac() throws Exception {
+    void test_enveloping_hmac() throws Exception {
         if (!runTests) {
             return;
         }
@@ -113,7 +113,7 @@ public class IBMTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_detached_dsa() throws Exception {
+    void test_detached_dsa() throws Exception {
         if (!runTests) {
             return;
         }
@@ -142,7 +142,7 @@ public class IBMTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_detached_rsa() throws Exception {
+    void test_detached_rsa() throws Exception {
         if (!runTests) {
             return;
         }
@@ -171,7 +171,7 @@ public class IBMTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_enveloped_dsa() throws Exception {
+    void test_enveloped_dsa() throws Exception {
         if (!runTests) {
             return;
         }
@@ -200,7 +200,7 @@ public class IBMTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_enveloped_rsa() throws Exception {
+    void test_enveloped_rsa() throws Exception {
         if (!runTests) {
             return;
         }
@@ -229,7 +229,7 @@ public class IBMTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_enveloping_dsa() throws Exception {
+    void test_enveloping_dsa() throws Exception {
         if (!runTests) {
             return;
         }
@@ -258,7 +258,7 @@ public class IBMTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_enveloping_rsa() throws Exception {
+    void test_enveloping_rsa() throws Exception {
         if (!runTests) {
             return;
         }
@@ -287,7 +287,7 @@ public class IBMTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_enveloping_dsa_soaped_broken() throws Exception {
+    void test_enveloping_dsa_soaped_broken() throws Exception {
         if (!runTests) {
             return;
         }

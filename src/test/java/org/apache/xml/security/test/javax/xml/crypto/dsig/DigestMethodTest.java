@@ -39,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Unit test for javax.xml.crypto.dsig.DigestMethod
  *
  */
-public class DigestMethodTest {
+class DigestMethodTest {
 
     private final XMLSignatureFactory factory;
 
@@ -53,7 +53,7 @@ public class DigestMethodTest {
     }
 
     @Test
-    public void testisFeatureSupported() throws Exception {
+    void testisFeatureSupported() throws Exception {
         DigestMethod dm;
         for (String algo : MD_ALGOS) {
             dm = factory.newDigestMethod(algo, null);
@@ -66,7 +66,7 @@ public class DigestMethodTest {
     }
 
     @Test
-    public void testConstructor() throws Exception {
+    void testConstructor() throws Exception {
         // test DSigStructureFactory.newDigestMethod
         // (String algorithm, AlgorithmParameterSpec params)
         // for generating DigestMethod objects

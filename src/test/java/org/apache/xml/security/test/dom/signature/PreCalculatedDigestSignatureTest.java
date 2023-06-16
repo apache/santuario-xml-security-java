@@ -57,7 +57,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-public class PreCalculatedDigestSignatureTest {
+class PreCalculatedDigestSignatureTest {
 
     private static final Logger LOG = System.getLogger(PreCalculatedDigestSignatureTest.class.getName());
 
@@ -90,7 +90,7 @@ public class PreCalculatedDigestSignatureTest {
     }
 
     @Test
-    public void validateSignatureWithCorrectDigestShouldBeValid() throws Exception {
+    void validateSignatureWithCorrectDigestShouldBeValid() throws Exception {
         XMLSignature signature = openSignature(signatureFile);
         //Add resource resolver for the external document (test.txt) with the pre-calculated digest (valid for this test)
         ExternalResourceResolver resolver = new ExternalResourceResolver(EXTERNAL_DOCUMENT_URI, PRE_CALCULATED_DIGEST);
@@ -100,7 +100,7 @@ public class PreCalculatedDigestSignatureTest {
     }
 
     @Test
-    public void validateSignatureWithWrongDigestShouldBeInvalid() throws Exception {
+    void validateSignatureWithWrongDigestShouldBeInvalid() throws Exception {
         XMLSignature signature = openSignature(signatureFile);
         //Add resource resolver for the external document (test.txt) with the pre-calculated digest (invalid for this test)
         ExternalResourceResolver resolver = new ExternalResourceResolver(EXTERNAL_DOCUMENT_URI, "BjVs1oFu54LZwQuUA+kHgZApH0pIc8PGOoo0YrLrNUI=");
@@ -110,7 +110,7 @@ public class PreCalculatedDigestSignatureTest {
     }
 
     @Test
-    public void createSignatureWithPreCalculatedDigestShouldBeValid() throws Exception {
+    void createSignatureWithPreCalculatedDigestShouldBeValid() throws Exception {
         XMLSignature signature = createXmlSignature();
 
         //Add external URI. This is a detached Reference.

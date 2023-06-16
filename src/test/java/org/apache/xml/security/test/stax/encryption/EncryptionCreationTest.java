@@ -75,7 +75,7 @@ import static org.junit.jupiter.api.Assumptions.assumeFalse;
  * A set of test-cases for Encryption.
  *
  */
-public class EncryptionCreationTest {
+class EncryptionCreationTest {
 
     private XMLInputFactory xmlInputFactory;
 
@@ -90,7 +90,7 @@ public class EncryptionCreationTest {
     }
 
     @Test
-    public void testEncryptionContentCreation() throws Exception {
+    void testEncryptionContentCreation() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -137,7 +137,7 @@ public class EncryptionCreationTest {
     }
 
     @Test
-    public void testEncryptRootElementInRequest() throws Exception {
+    void testEncryptRootElementInRequest() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -182,7 +182,7 @@ public class EncryptionCreationTest {
     }
 
     @Test
-    public void testExceptionOnElementToEncryptNotFound() throws Exception {
+    void testExceptionOnElementToEncryptNotFound() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -208,13 +208,13 @@ public class EncryptionCreationTest {
     }
 
     @Test
-    public void testEncryptionElementCreation() throws Exception {
+    void testEncryptionElementCreation() throws Exception {
         testEncryptElementCreation(XMLSecurityConstants.ENCRYPTION);
     }
 
     @SuppressWarnings("deprecation")
     @Test
-    public void testEncryptBackwardCompatibility() throws Exception {
+    void testEncryptBackwardCompatibility() throws Exception {
         testEncryptElementCreation(XMLSecurityConstants.ENCRYPT);
     }
 
@@ -265,7 +265,7 @@ public class EncryptionCreationTest {
     }
 
     @Test
-    public void testStrongEncryption() throws Exception {
+    void testStrongEncryption() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -313,7 +313,7 @@ public class EncryptionCreationTest {
     }
 
     @Test
-    public void testEncryptionMultipleElements() throws Exception {
+    void testEncryptionMultipleElements() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -356,7 +356,7 @@ public class EncryptionCreationTest {
 
     // Test encryption using a generated AES 128 bit key that is encrypted using a AES 192 bit key.
     @Test
-    public void testAES128ElementAES192KWCipherUsingKEKOutbound() throws Exception {
+    void testAES128ElementAES192KWCipherUsingKEKOutbound() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -411,7 +411,7 @@ public class EncryptionCreationTest {
 
     // Test encryption using a generated AES 256 bit key that is encrypted using an RSA key.
     @Test
-    public void testAES256ElementRSAKWCipherUsingKEKOutbound() throws Exception {
+    void testAES256ElementRSAKWCipherUsingKEKOutbound() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -468,7 +468,7 @@ public class EncryptionCreationTest {
     }
 
     @Test
-    public void testEncryptedKeyKeyValueReference() throws Exception {
+    void testEncryptedKeyKeyValueReference() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -526,7 +526,7 @@ public class EncryptionCreationTest {
     }
 
     @Test
-    public void testEncryptedKeyKeyNameReference() throws Exception {
+    void testEncryptedKeyKeyNameReference() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -585,7 +585,7 @@ public class EncryptionCreationTest {
     }
 
     @Test
-    public void testEncryptedKeyMultipleElements() throws Exception {
+    void testEncryptedKeyMultipleElements() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -638,7 +638,7 @@ public class EncryptionCreationTest {
     }
 
     @Test
-    public void testEncryptedKeyIssuerSerialReference() throws Exception {
+    void testEncryptedKeyIssuerSerialReference() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -694,7 +694,7 @@ public class EncryptionCreationTest {
     }
 
     @Test
-    public void testEncryptedKeyX509CertificateReference() throws Exception {
+    void testEncryptedKeyX509CertificateReference() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -750,7 +750,7 @@ public class EncryptionCreationTest {
     }
 
     @Test
-    public void testEncryptedKeySKI() throws Exception {
+    void testEncryptedKeySKI() throws Exception {
 
         //
         // This test fails with the IBM JDK
@@ -817,7 +817,7 @@ public class EncryptionCreationTest {
     }
 
     @Test
-    public void testEncryptedKeyX509SubjectName() throws Exception {
+    void testEncryptedKeyX509SubjectName() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -873,7 +873,7 @@ public class EncryptionCreationTest {
     }
 
     @Test
-    public void testEncryptedKeyNoKeyInfo() throws Exception {
+    void testEncryptedKeyNoKeyInfo() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -930,7 +930,7 @@ public class EncryptionCreationTest {
 
     // Test encryption using a generated AES 192 bit key that is encrypted using a 3DES key.
     @Test
-    public void testAES192Element3DESKWCipher() throws Exception {
+    void testAES192Element3DESKWCipher() throws Exception {
         assumeFalse(isIBMJdK);
 
         // Set up the Configuration
@@ -985,7 +985,7 @@ public class EncryptionCreationTest {
     }
 
     @Test
-    public void testTripleDesElementCipher() throws Exception {
+    void testTripleDesElementCipher() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -1035,7 +1035,7 @@ public class EncryptionCreationTest {
     }
 
     @Test
-    public void testAes128ElementCipher() throws Exception {
+    void testAes128ElementCipher() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -1087,7 +1087,7 @@ public class EncryptionCreationTest {
     }
 
     @Test
-    public void testAes192ElementCipher() throws Exception {
+    void testAes192ElementCipher() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -1141,7 +1141,7 @@ public class EncryptionCreationTest {
     }
 
     @Test
-    public void testAes256ElementCipher() throws Exception {
+    void testAes256ElementCipher() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -1198,7 +1198,7 @@ public class EncryptionCreationTest {
     // Test case for when the entire document is encrypted and decrypted
     // In this case the EncryptedData becomes the root element of the document
     @Test
-    public void testTripleDesDocumentCipher() throws Exception {
+    void testTripleDesDocumentCipher() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -1249,7 +1249,7 @@ public class EncryptionCreationTest {
 
     // Test physical representation of decrypted element, see SANTUARIO-309
     @Test
-    public void testPhysicalRepresentation1() throws Exception {
+    void testPhysicalRepresentation1() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -1310,7 +1310,7 @@ public class EncryptionCreationTest {
 
     // Test default namespace undeclaration is preserved
     @Test
-    public void testPhysicalRepresentation2() throws Exception {
+    void testPhysicalRepresentation2() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -1370,7 +1370,7 @@ public class EncryptionCreationTest {
     }
 
     @Test
-    public void testTransportKey() throws Exception {
+    void testTransportKey() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -1429,7 +1429,7 @@ public class EncryptionCreationTest {
     }
 
     @Test
-    public void testEncryptionIdToEncrypt() throws Exception {
+    void testEncryptionIdToEncrypt() throws Exception {
         SecurePart securePart = new SecurePart(SecurePart.Modifier.Element);
         securePart.setIdToSecure("abc");
         testEncryptionIdToEncrypt(securePart);
@@ -1437,7 +1437,7 @@ public class EncryptionCreationTest {
 
     @SuppressWarnings("deprecation")
     @Test
-    public void testEncryptionIdToSign() throws Exception {
+    void testEncryptionIdToSign() throws Exception {
         SecurePart securePart = new SecurePart(SecurePart.Modifier.Element);
         securePart.setIdToSign("abc");
         testEncryptionIdToEncrypt(securePart);
@@ -1474,7 +1474,7 @@ public class EncryptionCreationTest {
     }
 
     @Test
-    public void testEncryptionIdToSecureSupersedesName() throws Exception {
+    void testEncryptionIdToSecureSupersedesName() throws Exception {
         String xml = "<?xml version='1.0'?>\n" +
                 "<Root>\n" +
                 "  <Branch1 attr1='abc'/>\n" +

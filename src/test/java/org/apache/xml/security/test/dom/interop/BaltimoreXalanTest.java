@@ -40,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *
  * @see <A HREF="http://www.baltimore.com/keytools/xml/index.html">The KeyTools XML Website</A>
  */
-public class BaltimoreXalanTest extends InteropTestBase {
+class BaltimoreXalanTest extends InteropTestBase {
 
     private static final String CONFIG_FILE = "/config-xalan.xml";
 
@@ -70,7 +70,7 @@ public class BaltimoreXalanTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_sixteen_external_dsa() throws Exception {
+    void test_sixteen_external_dsa() throws Exception {
 
         File file = new File(merlinsDir16, "signature.xml");
         ResourceResolverSpi resolver = new OfflineResolver();
@@ -128,7 +128,7 @@ public class BaltimoreXalanTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_twenty_three_external_dsa_2() throws Exception {
+    void test_twenty_three_external_dsa_2() throws Exception {
 
         File filename = new File(merlinsDir23, "signature.xml");
         ResourceResolverSpi resolver = new OfflineResolver();

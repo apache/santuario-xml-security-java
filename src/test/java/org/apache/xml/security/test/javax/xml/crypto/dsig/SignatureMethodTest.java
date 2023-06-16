@@ -39,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Unit test for javax.xml.crypto.dsig.SignatureMethod
  *
  */
-public class SignatureMethodTest {
+class SignatureMethodTest {
 
     XMLSignatureFactory factory;
 
@@ -55,7 +55,7 @@ public class SignatureMethodTest {
     }
 
     @Test
-    public void testisFeatureSupported() throws Exception {
+    void testisFeatureSupported() throws Exception {
         SignatureMethod sm;
         for (String algo : SIG_ALGOS) {
             sm = factory.newSignatureMethod(algo, null);
@@ -69,7 +69,7 @@ public class SignatureMethodTest {
     }
 
     @Test
-    public void testConstructor() throws Exception {
+    void testConstructor() throws Exception {
         // test XMLSignatureFactory.newAlgorithmMethod
         // (String algorithm, AlgorithmParameterSpec params)
         // for generating SignatureMethod objects

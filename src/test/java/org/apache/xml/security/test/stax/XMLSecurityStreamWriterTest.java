@@ -52,7 +52,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  */
-public class XMLSecurityStreamWriterTest {
+class XMLSecurityStreamWriterTest {
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -61,7 +61,7 @@ public class XMLSecurityStreamWriterTest {
     }
 
     @Test
-    public void testIdentityTransformResult() throws Exception {
+    void testIdentityTransformResult() throws Exception {
         StringWriter securityStringWriter = new StringWriter();
         OutboundSecurityContextImpl securityContext = new OutboundSecurityContextImpl();
         OutputProcessorChainImpl outputProcessorChain = new OutputProcessorChainImpl(securityContext);
@@ -194,7 +194,7 @@ public class XMLSecurityStreamWriterTest {
 
     // @see https://issues.apache.org/jira/browse/SANTUARIO-433
     @Test
-    public void testNullPrefix() throws Exception {
+    void testNullPrefix() throws Exception {
         StringWriter securityStringWriter = new StringWriter();
         OutboundSecurityContextImpl securityContext = new OutboundSecurityContextImpl();
         OutputProcessorChainImpl outputProcessorChain = new OutputProcessorChainImpl(securityContext);

@@ -53,7 +53,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * This is a testcase to validate all "phaos-xmldsig-three"
  * testcases from Phaos
  */
-public class PhaosTest {
+class PhaosTest {
 
     private XMLInputFactory xmlInputFactory;
     private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -70,7 +70,7 @@ public class PhaosTest {
 
     // See Santuario-320
     @Test
-    public void test_signature_dsa_enveloped() throws Exception {
+    void test_signature_dsa_enveloped() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("com/phaos/phaos-xmldsig-three/signature-dsa-enveloped.xml",
             getClass().getClassLoader(), false);
@@ -98,7 +98,7 @@ public class PhaosTest {
     }
 
     @Test
-    public void test_signature_dsa_enveloping() throws Exception {
+    void test_signature_dsa_enveloping() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("com/phaos/phaos-xmldsig-three/signature-dsa-enveloping.xml",
             getClass().getClassLoader(), false);
@@ -127,7 +127,7 @@ public class PhaosTest {
 
     // See Santuario-320
     @Test
-    public void test_signature_hmac_sha1_exclusive_c14n_enveloped() throws Exception {
+    void test_signature_hmac_sha1_exclusive_c14n_enveloped() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("com/phaos/phaos-xmldsig-three/signature-hmac-sha1-exclusive-c14n-enveloped.xml",
             getClass().getClassLoader(), false);
@@ -161,7 +161,7 @@ public class PhaosTest {
 
     // See Santuario-320
     @Test
-    public void test_signature_rsa_enveloped_bad_digest_val() throws Exception {
+    void test_signature_rsa_enveloped_bad_digest_val() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("com/phaos/phaos-xmldsig-three/signature-rsa-enveloped-bad-digest-val.xml",
             getClass().getClassLoader(), false);
@@ -194,7 +194,7 @@ public class PhaosTest {
 
     // See Santuario-320
     @Test
-    public void test_signature_rsa_enveloped() throws Exception {
+    void test_signature_rsa_enveloped() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("com/phaos/phaos-xmldsig-three/signature-rsa-enveloped.xml",
             getClass().getClassLoader(), false);
@@ -222,7 +222,7 @@ public class PhaosTest {
     }
 
     @Test
-    public void test_signature_rsa_enveloping() throws Exception {
+    void test_signature_rsa_enveloping() throws Exception {
         // Read in plaintext document
         Document document = XMLUtils.readResource("com/phaos/phaos-xmldsig-three/signature-rsa-enveloping.xml",
             getClass().getClassLoader(), false);

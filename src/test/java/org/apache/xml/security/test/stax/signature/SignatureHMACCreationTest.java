@@ -45,10 +45,10 @@ import org.w3c.dom.Document;
 /**
  * A set of test-cases for Signature creation with various HMAC algorithms
  */
-public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
+class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
 
     @Test
-    public void testHMACSHA1() throws Exception {
+    void testHMACSHA1() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -82,7 +82,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testHMACSHA_224() throws Exception {
+    void testHMACSHA_224() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -116,7 +116,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testHMACSHA_256() throws Exception {
+    void testHMACSHA_256() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -150,7 +150,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testHMACSHA_384() throws Exception {
+    void testHMACSHA_384() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -184,7 +184,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testHMACSHA_512() throws Exception {
+    void testHMACSHA_512() throws Exception {
         // Set up the Configuration
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
@@ -218,7 +218,7 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
     }
 
     @Test
-    public void testRIPEMD160() throws Exception {
+    void testRIPEMD160() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration

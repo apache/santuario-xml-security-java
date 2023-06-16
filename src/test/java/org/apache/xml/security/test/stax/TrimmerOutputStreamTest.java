@@ -27,13 +27,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  */
-public class TrimmerOutputStreamTest {
+class TrimmerOutputStreamTest {
 
     private static final String TEST_STR
         = "Within this class we test if the TrimmerOutputStream works correctly under different conditions";
 
     @Test
-    public void testWriteSingleBytes() throws Exception {
+    void testWriteSingleBytes() throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         TrimmerOutputStream trimmerOutputStream = new TrimmerOutputStream(baos, 32, 3, 4);
 
@@ -48,7 +48,7 @@ public class TrimmerOutputStreamTest {
     }
 
     @Test
-    public void testWriteRandomByteSizes() throws Exception {
+    void testWriteRandomByteSizes() throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         TrimmerOutputStream trimmerOutputStream = new TrimmerOutputStream(baos, 32, 3, 4);
 
