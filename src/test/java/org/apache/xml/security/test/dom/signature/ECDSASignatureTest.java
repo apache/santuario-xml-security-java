@@ -70,7 +70,7 @@ public class ECDSASignatureTest {
 
         org.apache.xml.security.Init.init();
         try {
-            int javaVersion = Integer.getInteger("java.specification.version");
+            int javaVersion = Integer.getInteger("java.specification.version", 0);
             isJDK16up = javaVersion >= 16;
         } catch (NumberFormatException ex) {
             // ignore
