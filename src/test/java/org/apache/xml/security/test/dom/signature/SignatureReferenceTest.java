@@ -19,7 +19,6 @@
 package org.apache.xml.security.test.dom.signature;
 
 
-import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -147,10 +146,8 @@ public class SignatureReferenceTest {
         XPath xPath = xpf.newXPath();
         xPath.setNamespaceContext(new DSNamespaceContext());
 
-        InputStream sourceDocument =
-            this.getClass().getClassLoader().getResourceAsStream(
-                    "at/iaik/ixsil/coreFeatures/signatures/manifestSignature.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("at/iaik/ixsil/coreFeatures/signatures/manifestSignature.xml",
+            getClass().getClassLoader(), false);
 
         String expression = "//dsig:Signature[1]";
         Element sigElement =

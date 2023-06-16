@@ -84,7 +84,7 @@ import org.xml.sax.SAXException;
 
 /*
  */
-public class TestUtils {
+public final class TestUtils {
 
     private static final String DSA_Y =
         "07066284216756577193658833512863439617178933165631848358445549382240081120085333137303066923542492834619027404463194956043802393462371310375123430985057160";
@@ -245,30 +245,26 @@ public class TestUtils {
     public static class MyOwnSignatureMethodParameterSpec
         implements SignatureMethodParameterSpec {}
 
-    public static XMLValidateContext getXMLValidateContext(String type,
-                                                       File input,
-                                                       String tag)
-        throws Exception {
-        if ("dom".equalsIgnoreCase(type)) {
-            Document doc = XMLUtils.read(new FileInputStream(input), false);
-            if (tag == null) {
-                return new DOMValidateContext
-                    (TestUtils.getPublicKey("RSA", 2048),
-                     doc.getDocumentElement());
-            } else {
-                NodeList list = doc.getElementsByTagName(tag);
-                return new DOMValidateContext
-                    (TestUtils.getPublicKey("RSA", 2048), list.item(0));
-            }
-        } else {
+
+    public static XMLValidateContext getXMLValidateContext(String type, File input, String tag) throws Exception {
+        if (!"dom".equalsIgnoreCase(type)) {
             throw new Exception("Unsupported XMLValidateContext type: " + type);
         }
+        Document doc;
+        try (FileInputStream inputStream = new FileInputStream(input)) {
+            doc = XMLUtils.read(inputStream, false);
+        }
+        if (tag == null) {
+            return new DOMValidateContext(TestUtils.getPublicKey("RSA", 2048), doc.getDocumentElement());
+        }
+        NodeList list = doc.getElementsByTagName(tag);
+        return new DOMValidateContext(TestUtils.getPublicKey("RSA", 2048), list.item(0));
     }
 
     public static class MyOwnDOMReference extends DOMStructure
         implements Reference {
-        private String id;
-        private boolean status;
+        private final String id;
+        private final boolean status;
         private byte[] digest;
         private static MessageDigest MD;
         private static DigestMethod DIG_METHOD;
@@ -366,7 +362,7 @@ public class TestUtils {
 
     public static class OctetStreamURIDereferencer implements URIDereferencer {
 
-        private byte[] data;
+        private final byte[] data;
 
         public OctetStreamURIDereferencer(byte[] in) {
             data = in.clone();
@@ -399,7 +395,7 @@ public class TestUtils {
 
     public static class NodeSetURIDereferencer implements URIDereferencer {
 
-        private Node data;
+        private final Node data;
 
         public NodeSetURIDereferencer(Node node) {
             data = node;

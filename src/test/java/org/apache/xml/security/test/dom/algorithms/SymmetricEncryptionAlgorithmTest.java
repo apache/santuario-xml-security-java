@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.test.dom.algorithms;
 
-import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.security.Key;
 import java.security.Provider;
@@ -89,10 +88,8 @@ public class SymmetricEncryptionAlgorithmTest {
     @Test
     public void testAES128() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
@@ -121,10 +118,8 @@ public class SymmetricEncryptionAlgorithmTest {
     @Test
     public void testAES128_GCM() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
@@ -153,10 +148,8 @@ public class SymmetricEncryptionAlgorithmTest {
     @Test
     public void testAES192() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
@@ -185,10 +178,8 @@ public class SymmetricEncryptionAlgorithmTest {
     @Test
     public void testAES192_GCM() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
@@ -217,10 +208,8 @@ public class SymmetricEncryptionAlgorithmTest {
     @Test
     public void testAES256() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
@@ -249,10 +238,8 @@ public class SymmetricEncryptionAlgorithmTest {
     @Test
     public void testAES256_GCM() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
@@ -281,10 +268,8 @@ public class SymmetricEncryptionAlgorithmTest {
     @Test
     public void testTRIPLE_DES() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("DESede");
@@ -314,10 +299,8 @@ public class SymmetricEncryptionAlgorithmTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("SEED");
@@ -348,10 +331,8 @@ public class SymmetricEncryptionAlgorithmTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("Camellia");
@@ -382,10 +363,8 @@ public class SymmetricEncryptionAlgorithmTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("Camellia");
@@ -416,10 +395,8 @@ public class SymmetricEncryptionAlgorithmTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("Camellia");

@@ -34,6 +34,7 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class EmptyNamespaceTest {
@@ -79,7 +80,7 @@ public class EmptyNamespaceTest {
         transformer.setProperties(properties);
 
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            InputStream stream = new ByteArrayInputStream(message.getBytes(java.nio.charset.StandardCharsets.UTF_8))) {
+            InputStream stream = new ByteArrayInputStream(message.getBytes(UTF_8))) {
             transformer.setOutputStream(outputStream);
 
             transformer.transform(stream);
@@ -98,7 +99,7 @@ public class EmptyNamespaceTest {
         Canonicalizer20010315Excl transformer = new Canonicalizer20010315ExclOmitComments();
 
         Document document = null;
-        try (InputStream is = new ByteArrayInputStream(message.getBytes(java.nio.charset.StandardCharsets.UTF_8))) {
+        try (InputStream is = new ByteArrayInputStream(message.getBytes(UTF_8))) {
             document = XMLUtils.read(is, false);
         }
 
@@ -106,7 +107,7 @@ public class EmptyNamespaceTest {
         try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
             transformer.engineCanonicalizeSubTree(document, inclusiveNamespaces, output);
 
-            String result = new String(output.toByteArray(), java.nio.charset.StandardCharsets.UTF_8);
+            String result = new String(output.toByteArray(), UTF_8);
             assertEquals(message, result);
         }
     }

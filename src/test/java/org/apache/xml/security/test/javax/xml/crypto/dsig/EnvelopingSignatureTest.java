@@ -81,10 +81,11 @@ public class EnvelopingSignatureTest {
     @Test
     public void enveloping() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-            this.getClass().getClassLoader().getResourceAsStream(
-                "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = dbf.newDocumentBuilder().parse(sourceDocument);
+        Document document;
+        try (InputStream sourceDocument = this.getClass().getClassLoader()
+            .getResourceAsStream("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml")) {
+            document = dbf.newDocumentBuilder().parse(sourceDocument);
+        }
 
         DigestMethod digestMethod = fac.newDigestMethod(DigestMethod.SHA1, null);
         Reference reference = fac.newReference("#data", digestMethod);

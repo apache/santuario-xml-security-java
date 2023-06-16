@@ -22,11 +22,11 @@ package org.apache.xml.security.test.dom.c14n.implementations;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -45,13 +45,13 @@ import javax.xml.xpath.XPathFactory;
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
-import org.apache.xml.security.utils.JavaUtils;
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
+import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 import static org.apache.xml.security.test.XmlSecTestEnvironment.resolvePath;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -71,10 +71,10 @@ public class Canonicalizer20010315Test {
     }
 
     /** Field prefix */
-    private final String prefix;
+    private final Path prefix;
 
     public Canonicalizer20010315Test() {
-        prefix = resolvePath("src", "test", "resources", "org", "apache", "xml", "security", "c14n") + "/";
+        prefix = resolvePath("src", "test", "resources", "org", "apache", "xml", "security", "c14n");
     }
 
     /**
@@ -85,9 +85,9 @@ public class Canonicalizer20010315Test {
         String descri =
             "3.1: PIs, Comments, and Outside of Document Element. (commented)";
 
-        String fileIn = prefix + "in/31_input.xml";
+        File fileIn = resolveFile(prefix, "in", "31_input.xml");
         Path fileRef = resolvePath(prefix, "in", "31_c14n-comments.xml");
-        String fileOut = prefix + "out/xpath_31_output-comments.xml";
+        File fileOut = resolveFile(prefix, "out", "xpath_31_output-comments.xml");
         String c14nURI = Canonicalizer.ALGO_ID_C14N_WITH_COMMENTS;
         String xpath = null;
 
@@ -102,9 +102,9 @@ public class Canonicalizer20010315Test {
         String descri =
             "3.1: PIs, Comments, and Outside of Document Element. (commented)";
 
-        String fileIn = prefix + "in/31_input.xml";
+        File fileIn = resolveFile(prefix, "in", "31_input.xml");
         Path fileRef = resolvePath(prefix, "in", "31_c14n-comments.xml");
-        String fileOut = prefix + "out/xpath_31_output-comments.xml";
+        File fileOut = resolveFile(prefix, "out", "xpath_31_output-comments.xml");
         String c14nURI = Canonicalizer.ALGO_ID_C14N_WITH_COMMENTS;
         String xpath = Canonicalizer.XPATH_C14N_WITH_COMMENTS_SINGLE_NODE;
 
@@ -120,9 +120,9 @@ public class Canonicalizer20010315Test {
     public void test31subtree() throws Exception {
         String descri =
             "3.1: PIs, Comments, and Outside of Document Element. (uncommented)";
-        String fileIn = prefix + "in/31_input.xml";
+        File fileIn = resolveFile(prefix, "in", "31_input.xml");
         Path fileRef = resolvePath(prefix, "in", "31_c14n.xml");
-        String fileOut = prefix + "out/xpath_31_output.xml";
+        File fileOut = resolveFile(prefix, "out", "xpath_31_output.xml");
         String c14nURI = Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS;
         String xpath = null;
 
@@ -139,9 +139,9 @@ public class Canonicalizer20010315Test {
 
         String descri =
             "3.1: PIs, Comments, and Outside of Document Element. (uncommented)";
-        String fileIn = prefix + "in/31_input.xml";
+        File fileIn = resolveFile(prefix, "in", "31_input.xml");
         Path fileRef = resolvePath(prefix, "in", "31_c14n.xml");
-        String fileOut = prefix + "out/xpath_31_output.xml";
+        File fileOut = resolveFile(prefix, "out", "xpath_31_output.xml");
         String c14nURI = Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS;
         String xpath = Canonicalizer.XPATH_C14N_WITH_COMMENTS_SINGLE_NODE;
 
@@ -156,9 +156,9 @@ public class Canonicalizer20010315Test {
     @Test
     public void test32subtree() throws Exception {
         String descri = "3.2 Whitespace in Document Content. (uncommented)";
-        String fileIn = prefix + "in/32_input.xml";
+        File fileIn = resolveFile(prefix, "in", "32_input.xml");
         Path fileRef = resolvePath(prefix, "in", "32_c14n.xml");
-        String fileOut = prefix + "out/xpath_32_output.xml";
+        File fileOut = resolveFile(prefix, "out", "xpath_32_output.xml");
         String c14nURI = Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS;
         String xpath = null;
 
@@ -173,9 +173,9 @@ public class Canonicalizer20010315Test {
     @Test
     public void test32subset() throws Exception {
         String descri = "3.2 Whitespace in Document Content. (uncommented)";
-        String fileIn = prefix + "in/32_input.xml";
+        File fileIn = resolveFile(prefix, "in", "32_input.xml");
         Path fileRef = resolvePath(prefix, "in", "32_c14n.xml");
-        String fileOut = prefix + "out/xpath_32_output.xml";
+        File fileOut = resolveFile(prefix, "out", "xpath_32_output.xml");
         String c14nURI = Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS;
         String xpath = Canonicalizer.XPATH_C14N_WITH_COMMENTS_SINGLE_NODE;
 
@@ -190,9 +190,9 @@ public class Canonicalizer20010315Test {
     @Test
     public void test33subtree() throws Exception {
         String descri = "3.3 Start and End Tags. (uncommented)";
-        String fileIn = prefix + "in/33_input.xml";
+        File fileIn = resolveFile(prefix, "in", "33_input.xml");
         Path fileRef = resolvePath(prefix, "in", "33_c14n.xml");
-        String fileOut = prefix + "out/xpath_33_output.xml";
+        File fileOut = resolveFile(prefix, "out", "xpath_33_output.xml");
         String c14nURI = Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS;
         String xpath = null;    // Canonicalizer.XPATH_C14N_OMIT_COMMENTS_SINGLE_NODE;
 
@@ -202,9 +202,9 @@ public class Canonicalizer20010315Test {
     @Test
     public void test33subset() throws Exception {
         String descri = "3.3 Start and End Tags. (uncommented)";
-        String fileIn = prefix + "in/33_input.xml";
+        File fileIn = resolveFile(prefix, "in", "33_input.xml");
         Path fileRef = resolvePath(prefix, "in", "33_c14n.xml");
-        String fileOut = prefix + "out/xpath_33_output.xml";
+        File fileOut = resolveFile(prefix, "out", "xpath_33_output.xml");
         String c14nURI = Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS;
         String xpath = Canonicalizer.XPATH_C14N_WITH_COMMENTS_SINGLE_NODE;
 
@@ -221,9 +221,9 @@ public class Canonicalizer20010315Test {
     public void test34() throws Exception {
         String descri =
             "3.4 Character Modifications and Character References. (uncommented)";
-        String fileIn = prefix + "in/34_input.xml";
+        File fileIn = resolveFile(prefix, "in", "34_input.xml");
         Path fileRef = resolvePath(prefix, "in", "34_c14n.xml");
-        String fileOut = prefix + "out/xpath_34_output.xml";
+        File fileOut = resolveFile(prefix, "out", "xpath_34_output.xml");
         String c14nURI = Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS;
         String xpath = null;
 
@@ -247,9 +247,9 @@ public class Canonicalizer20010315Test {
     public void test34subtree() throws Exception {
         String descri =
             "3.4 Character Modifications and Character References. (uncommented, patched to run on validating Parsers)";
-        String fileIn = prefix + "in/34_input_validatingParser.xml";
+        File fileIn = resolveFile(prefix, "in", "34_input_validatingParser.xml");
         Path fileRef = resolvePath(prefix, "in", "34_c14n_validatingParser.xml");
-        String fileOut = prefix + "out/xpath_34_output_validatingParser.xml";
+        File fileOut = resolveFile(prefix, "out", "xpath_34_output_validatingParser.xml");
         String c14nURI = Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS;
         String xpath = null;
 
@@ -274,9 +274,9 @@ public class Canonicalizer20010315Test {
 
         String descri =
             "3.4 Character Modifications and Character References. (uncommented, patched to run on validating Parsers)";
-        String fileIn = prefix + "in/34_input_validatingParser.xml";
+        File fileIn = resolveFile(prefix, "in", "34_input_validatingParser.xml");
         Path fileRef = resolvePath(prefix, "in", "34_c14n_validatingParser.xml");
-        String fileOut = prefix + "out/xpath_34_output_validatingParser.xml";
+        File fileOut = resolveFile(prefix, "out", "xpath_34_output_validatingParser.xml");
         String c14nURI = Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS;
         String xpath = Canonicalizer.XPATH_C14N_WITH_COMMENTS_SINGLE_NODE;
 
@@ -291,9 +291,9 @@ public class Canonicalizer20010315Test {
     @Test
     public void test35subtree() throws Exception{
         String descri = "3.5 Entity References. (uncommented)";
-        String fileIn = prefix + "in/35_input.xml";
+        File fileIn = resolveFile(prefix, "in", "35_input.xml");
         Path fileRef = resolvePath(prefix, "in", "35_c14n.xml");
-        String fileOut = prefix + "out/xpath_35_output.xml";
+        File fileOut = resolveFile(prefix, "out", "xpath_35_output.xml");
         String c14nURI = Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS;
         String xpath = null;
 
@@ -308,9 +308,9 @@ public class Canonicalizer20010315Test {
     @Test
     public void test35subset() throws Exception {
         String descri = "3.5 Entity References. (uncommented)";
-        String fileIn = prefix + "in/35_input.xml";
+        File fileIn = resolveFile(prefix, "in", "35_input.xml");
         Path fileRef = resolvePath(prefix, "in", "35_c14n.xml");
-        String fileOut = prefix + "out/xpath_35_output.xml";
+        File fileOut = resolveFile(prefix, "out", "xpath_35_output.xml");
         String c14nURI = Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS;
         String xpath = Canonicalizer.XPATH_C14N_WITH_COMMENTS_SINGLE_NODE;
 
@@ -325,9 +325,9 @@ public class Canonicalizer20010315Test {
     @Test
     public void test36subtree() throws Exception {
         String descri = "3.6 UTF-8 Encoding. (uncommented)";
-        String fileIn = prefix + "in/36_input.xml";
+        File fileIn = resolveFile(prefix, "in", "36_input.xml");
         Path fileRef = resolvePath(prefix, "in", "36_c14n.xml");
-        String fileOut = prefix + "out/xpath_36_output.xml";
+        File fileOut = resolveFile(prefix, "out", "xpath_36_output.xml");
         String c14nURI = Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS;
         String xpath = null;
 
@@ -342,9 +342,9 @@ public class Canonicalizer20010315Test {
     @Test
     public void test36subset() throws Exception {
         String descri = "3.6 UTF-8 Encoding. (uncommented)";
-        String fileIn = prefix + "in/36_input.xml";
+        File fileIn = resolveFile(prefix, "in", "36_input.xml");
         Path fileRef = resolvePath(prefix, "in", "36_c14n.xml");
-        String fileOut = prefix + "out/xpath_36_output.xml";
+        File fileOut = resolveFile(prefix, "out", "xpath_36_output.xml");
         String c14nURI = Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS;
         String xpath = Canonicalizer.XPATH_C14N_WITH_COMMENTS_SINGLE_NODE;
 
@@ -359,9 +359,9 @@ public class Canonicalizer20010315Test {
     @Test
     public void test37() throws Exception {
         String descri = "3.7 Document Subsets. (uncommented)";
-        String fileIn = prefix + "in/37_input.xml";
+        File fileIn = resolveFile(prefix, "in", "37_input.xml");
         Path fileRef = resolvePath(prefix, "in", "37_c14n.xml");
-        String fileOut = prefix + "out/xpath_37_output.xml";
+        File fileOut = resolveFile(prefix, "out", "xpath_37_output.xml");
         String c14nURI = Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS;
 
         Map<String, String> namespace = new HashMap<>();
@@ -386,11 +386,11 @@ public class Canonicalizer20010315Test {
     public void test37byNodeList() throws Exception {
 
         //String descri = "3.7 Document Subsets. (uncommented), c14n by NodeList";
-        String fileIn = prefix + "in/37_input.xml";
+        File fileIn = resolveFile(prefix, "in", "37_input.xml");
         Path fileRef = resolvePath(prefix, "in", "37_c14n.xml");
         //String c14nURI = Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS;
 
-        Document doc = XMLUtils.read(new FileInputStream(fileIn), false);
+        Document doc = XMLUtils.read(fileIn, false);
 
         String xpath = "(//. | //@* | //namespace::*)"
             + "[ "
@@ -475,14 +475,11 @@ public class Canonicalizer20010315Test {
         String val =
             "<UTF16>The german &amp;auml (which is Unicode &amp;#xE4;):  &quot;&#xE4;&quot;</UTF16>";
         byte[] utf16 = convertToUTF16(val.getBytes());
-        Canonicalizer c14n =
-            Canonicalizer.getInstance(Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS);
+        Canonicalizer c14n = Canonicalizer.getInstance(Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS);
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             c14n.canonicalize(utf16, baos, true);
-            InputStream refStream = new FileInputStream(prefix + "/in/testTranslationFromUTF16toUTF8.xml");
-            byte[] refBytes = JavaUtils.getBytesFromStream(refStream);
+            byte[] refBytes = Files.readAllBytes(resolvePath(prefix, "in", "testTranslationFromUTF16toUTF8.xml"));
             boolean equal = java.security.MessageDigest.isEqual(refBytes, baos.toByteArray());
-
             assertTrue(equal, "Parser does not translate to UCS character domain");
         }
     }
@@ -683,9 +680,9 @@ public class Canonicalizer20010315Test {
     }
 
     private boolean c14nAndCompare(
-                                   String fileIn,
+                                   File fileIn,
                                    Path fileRef,
-                                   String fileOut,
+                                   File fileOut,
                                    String c14nURI,
                                    String xpath
                                ) throws Exception {
@@ -695,9 +692,9 @@ public class Canonicalizer20010315Test {
     }
 
     private boolean c14nAndCompare(
-        String fileIn,
+        File fileIn,
         Path fileRef,
-        String fileOut,
+        File fileOut,
         String c14nURI,
         String xpath,
         Map<String, String> namespaces
@@ -738,18 +735,16 @@ public class Canonicalizer20010315Test {
         boolean result = java.security.MessageDigest.isEqual(refBytes, c14nBytes);
 
         if (!result) {
-            File f = new File(fileOut);
-            if (!f.exists()) {
-                File parent = new File(f.getParent());
+            if (!fileOut.exists()) {
+                File parent = new File(fileOut.getParent());
                 parent.mkdirs();
-                f.createNewFile();
+                fileOut.createNewFile();
             }
-            FileOutputStream fos = new FileOutputStream(f);
-
-            fos.write(c14nBytes);
-            LOG.log(Level.DEBUG, "Wrote erroneous result to file " + f.toURI().toURL().toString());
-            assertEquals(new String(refBytes),new String(c14nBytes));
-            fos.close();
+            try (FileOutputStream fos = new FileOutputStream(fileOut)) {
+                fos.write(c14nBytes);
+                LOG.log(Level.DEBUG, "Wrote erroneous result to file " + fileOut.toURI().toURL().toString());
+                assertEquals(new String(refBytes), new String(c14nBytes));
+            }
         }
 
         return result;
@@ -762,17 +757,14 @@ public class Canonicalizer20010315Test {
      * @param input
      */
     public static byte[] convertToUTF16(byte[] input) throws Exception {
-        //String ENCODING_ISO8859_1 = "ISO-8859-1";
-        //String ENCODING_UTF8 = java.nio.charset.StandardCharsets.UTF_8;
-        String ENCODING_UTF16 = "UTF-16";
-        Document doc = null;
+        Document doc;
         try (InputStream is = new ByteArrayInputStream(input)) {
             doc = XMLUtils.read(is, false);
         }
         TransformerFactory tFactory = TransformerFactory.newInstance();
         Transformer transformer = tFactory.newTransformer();
 
-        transformer.setOutputProperty(OutputKeys.ENCODING, ENCODING_UTF16);
+        transformer.setOutputProperty(OutputKeys.ENCODING, StandardCharsets.UTF_16.name());
         transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
 
         DOMSource source = new DOMSource(doc);

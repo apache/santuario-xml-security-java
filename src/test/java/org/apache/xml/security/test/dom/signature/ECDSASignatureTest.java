@@ -89,10 +89,11 @@ public class ECDSASignatureTest {
         assumeTrue(!isJDK16up);
 
         KeyStore keyStore = KeyStore.getInstance("JKS");
-        keyStore.load(new FileInputStream(ECDSA_JKS), ECDSA_JKS_PASSWORD.toCharArray());
+        try (FileInputStream inputStream = new FileInputStream(ECDSA_JKS)) {
+            keyStore.load(inputStream, ECDSA_JKS_PASSWORD.toCharArray());
+        }
 
-        PrivateKey privateKey =
-            (PrivateKey)keyStore.getKey("ECDSA", ECDSA_JKS_PASSWORD.toCharArray());
+        PrivateKey privateKey = (PrivateKey) keyStore.getKey("ECDSA", ECDSA_JKS_PASSWORD.toCharArray());
 
         doVerify(doSign(privateKey, (X509Certificate)keyStore.getCertificate("ECDSA"), null));
         doVerify(doSign(privateKey, (X509Certificate)keyStore.getCertificate("ECDSA"), null));

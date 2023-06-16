@@ -23,7 +23,6 @@ package org.apache.xml.security.test.javax.xml.crypto.dsig;
 
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
@@ -340,8 +339,7 @@ public class XMLSignatureTest {
     public void testSignTemplateWithObjectNSDefs() throws Exception {
         File f = resolveFile(
             "src/test/resources/org/apache/xml/security/test/javax/xml/crypto/dsig/signature-enveloping-rsa-template.xml");
-
-        Document doc = XMLUtils.read(new FileInputStream(f), false);
+        Document doc = XMLUtils.read(f, false);
 
         // Find Signature element
         NodeList nl =

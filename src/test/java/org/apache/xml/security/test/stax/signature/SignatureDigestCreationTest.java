@@ -19,9 +19,7 @@
 package org.apache.xml.security.test.stax.signature;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.KeyStore;
 import java.security.cert.X509Certificate;
@@ -29,15 +27,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
 
-import org.apache.xml.security.stax.ext.OutboundXMLSec;
 import org.apache.xml.security.stax.ext.SecurePart;
-import org.apache.xml.security.stax.ext.XMLSec;
 import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.stax.ext.XMLSecurityProperties;
-import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
+import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
@@ -45,6 +39,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import static org.apache.xml.security.test.XmlSecTestEnvironment.TRANSMITTER_KS_PASSWORD;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -61,12 +56,8 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         properties.setActions(actions);
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-                this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-                "default".toCharArray()
-        );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         properties.setSignatureKey(key);
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setSignatureCerts(new X509Certificate[]{cert});
@@ -80,21 +71,10 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
                 digestAlgorithm);
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
-
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
-
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties, null);
+        // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(output)) {
             document = XMLUtils.read(is, false);
         }
 
@@ -116,12 +96,8 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         properties.setActions(actions);
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-                this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-                "default".toCharArray()
-        );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         properties.setSignatureKey(key);
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setSignatureCerts(new X509Certificate[]{cert});
@@ -135,21 +111,10 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
                 digestAlgorithm);
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
-
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
-
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties, null);
+        // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(output)) {
             document = XMLUtils.read(is, false);
         }
 
@@ -171,12 +136,8 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         properties.setActions(actions);
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-                this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-                "default".toCharArray()
-        );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         properties.setSignatureKey(key);
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setSignatureCerts(new X509Certificate[]{cert});
@@ -190,21 +151,10 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
                 digestAlgorithm);
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
-
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
-
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties, null);
+        // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(output)) {
             document = XMLUtils.read(is, false);
         }
 
@@ -226,12 +176,8 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         properties.setActions(actions);
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-                this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-                "default".toCharArray()
-        );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         properties.setSignatureKey(key);
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setSignatureCerts(new X509Certificate[]{cert});
@@ -245,21 +191,10 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
                 digestAlgorithm);
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
-
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
-
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties, null);
+        // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(output)) {
             document = XMLUtils.read(is, false);
         }
 
@@ -281,12 +216,8 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         properties.setActions(actions);
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-                this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-                "default".toCharArray()
-        );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         properties.setSignatureKey(key);
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setSignatureCerts(new X509Certificate[]{cert});
@@ -300,21 +231,10 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
                 digestAlgorithm);
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
-
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
-
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties, null);
+        // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(output)) {
             document = XMLUtils.read(is, false);
         }
 
@@ -338,12 +258,8 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         properties.setActions(actions);
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-                this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-                "default".toCharArray()
-        );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         properties.setSignatureKey(key);
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setSignatureCerts(new X509Certificate[]{cert});
@@ -357,21 +273,10 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
                 digestAlgorithm);
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
-
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
-
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties, null);
+        // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(output)) {
             document = XMLUtils.read(is, false);
         }
 
@@ -395,12 +300,8 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         properties.setActions(actions);
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-                this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-                "default".toCharArray()
-        );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         properties.setSignatureKey(key);
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setSignatureCerts(new X509Certificate[]{cert});
@@ -414,21 +315,10 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
                 digestAlgorithm);
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
-
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
-
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties, null);
+        // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(output)) {
             document = XMLUtils.read(is, false);
         }
 
@@ -452,12 +342,8 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         properties.setActions(actions);
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-                this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-                "default".toCharArray()
-        );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         properties.setSignatureKey(key);
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setSignatureCerts(new X509Certificate[]{cert});
@@ -471,21 +357,10 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
                 digestAlgorithm);
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
-
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
-
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties, null);
+        // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(output)) {
             document = XMLUtils.read(is, false);
         }
 
@@ -509,12 +384,8 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         properties.setActions(actions);
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-                this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-                "default".toCharArray()
-        );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         properties.setSignatureKey(key);
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setSignatureCerts(new X509Certificate[]{cert});
@@ -528,21 +399,10 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
                 digestAlgorithm);
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
-
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
-
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties, null);
+        // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(output)) {
             document = XMLUtils.read(is, false);
         }
 
@@ -566,12 +426,8 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         properties.setActions(actions);
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-                this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-                "default".toCharArray()
-        );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         properties.setSignatureKey(key);
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setSignatureCerts(new X509Certificate[]{cert});
@@ -585,21 +441,10 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
                 digestAlgorithm);
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
-
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
-
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties, null);
+        // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(output)) {
             document = XMLUtils.read(is, false);
         }
 
@@ -623,12 +468,8 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         properties.setActions(actions);
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-                this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-                "default".toCharArray()
-        );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         properties.setSignatureKey(key);
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setSignatureCerts(new X509Certificate[]{cert});
@@ -642,21 +483,10 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
                 digestAlgorithm);
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
-
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
-
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties, null);
+        // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(output)) {
             document = XMLUtils.read(is, false);
         }
 

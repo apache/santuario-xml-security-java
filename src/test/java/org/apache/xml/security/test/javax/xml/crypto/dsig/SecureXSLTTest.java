@@ -19,7 +19,6 @@
 package org.apache.xml.security.test.javax.xml.crypto.dsig;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.security.Security;
 
 import javax.xml.crypto.dsig.XMLSignature;
@@ -34,7 +33,6 @@ import org.w3c.dom.NodeList;
 
 import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.fail;
 
 
 public class SecureXSLTTest {
@@ -64,29 +62,19 @@ public class SecureXSLTTest {
     private void testSignature(File signatureFile) throws Exception {
 
         XMLSignatureFactory fac = XMLSignatureFactory.getInstance("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
-        File f = new File("doc.xml");
-
-        Document doc = XMLUtils.read(new FileInputStream(signatureFile), false);
+        Document doc = XMLUtils.read(signatureFile, false);
 
         NodeList nl = doc.getElementsByTagNameNS(XMLSignature.XMLNS, "Signature");
         if (nl.getLength() == 0) {
             throw new Exception("Cannot find Signature element");
         }
 
-        DOMValidateContext valContext = new DOMValidateContext
-            (new KeySelectors.KeyValueKeySelector(), nl.item(0));
+        DOMValidateContext valContext = new DOMValidateContext(new KeySelectors.KeyValueKeySelector(), nl.item(0));
         // enable reference caching in your validation context
         valContext.setProperty("javax.xml.crypto.dsig.cacheReference", Boolean.TRUE);
 
-        try {
-            XMLSignature sig = fac.unmarshalXMLSignature(valContext);
-            assertFalse(sig.validate(valContext));
-            sig.getSignedInfo().getReferences().get(0);
-        } finally {
-            if (f.exists()) {
-                f.delete(); // cleanup file. comment out when debugging
-                fail("Test FAILED: doc.xml was successfully created");
-            }
-        }
+        XMLSignature sig = fac.unmarshalXMLSignature(valContext);
+        assertFalse(sig.validate(valContext));
+        sig.getSignedInfo().getReferences().get(0);
     }
 }

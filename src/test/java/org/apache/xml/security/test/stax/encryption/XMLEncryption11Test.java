@@ -23,6 +23,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.security.GeneralSecurityException;
 import java.security.Key;
 import java.security.KeyStore;
 import java.security.PrivateKey;
@@ -98,7 +99,7 @@ public class XMLEncryption11Test {
         xmlInputFactory.setEventAllocator(new XMLSecEventAllocator());
 
         String filename = "org/w3c/www/interop/xmlenc-core-11/plaintext.xml";
-        Document doc = XMLUtils.read(this.getClass().getClassLoader().getResourceAsStream(filename), false);
+        Document doc = XMLUtils.readResource(filename, getClass().getClassLoader(), false);
 
         cardNumber = retrieveCCNumber(doc);
         nodeCount = countNodes(doc);
@@ -111,10 +112,7 @@ public class XMLEncryption11Test {
     public void testKeyWrappingRSA2048Outbound() throws Exception {
         assumeFalse(isIBMJdK);
 
-        String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-2048_SHA256WithRSA.jks";
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(this.getClass().getClassLoader().getResourceAsStream(keystore), "passwd".toCharArray());
-
+        KeyStore keyStore = loadKeyStore("org/w3c/www/interop/xmlenc-core-11/RSA-2048_SHA256WithRSA.jks");
         KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
                 keyStore.getEntry("importkey", new KeyStore.PasswordProtection("passwd".toCharArray()));
         PrivateKey rsaKey = pkEntry.getPrivateKey();
@@ -133,10 +131,7 @@ public class XMLEncryption11Test {
 
         assumeFalse(isIBMJdK);
 
-        String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-2048_SHA256WithRSA.jks";
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(this.getClass().getClassLoader().getResourceAsStream(keystore), "passwd".toCharArray());
-
+        KeyStore keyStore = loadKeyStore("org/w3c/www/interop/xmlenc-core-11/RSA-2048_SHA256WithRSA.jks");
         KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
                 keyStore.getEntry("importkey", new KeyStore.PasswordProtection("passwd".toCharArray()));
         PrivateKey rsaKey = pkEntry.getPrivateKey();
@@ -172,10 +167,7 @@ public class XMLEncryption11Test {
 
         assumeFalse(isIBMJdK);
 
-        String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-3072_SHA256WithRSA.jks";
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(this.getClass().getClassLoader().getResourceAsStream(keystore), "passwd".toCharArray());
-
+        KeyStore keyStore = loadKeyStore("org/w3c/www/interop/xmlenc-core-11/RSA-3072_SHA256WithRSA.jks");
         KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
                 keyStore.getEntry("importkey", new KeyStore.PasswordProtection("passwd".toCharArray()));
         PrivateKey rsaKey = pkEntry.getPrivateKey();
@@ -195,10 +187,7 @@ public class XMLEncryption11Test {
 
         assumeFalse(isIBMJdK);
 
-        String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-3072_SHA256WithRSA.jks";
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(this.getClass().getClassLoader().getResourceAsStream(keystore), "passwd".toCharArray());
-
+        KeyStore keyStore = loadKeyStore("org/w3c/www/interop/xmlenc-core-11/RSA-3072_SHA256WithRSA.jks");
         KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
                 keyStore.getEntry("importkey", new KeyStore.PasswordProtection("passwd".toCharArray()));
         PrivateKey rsaKey = pkEntry.getPrivateKey();
@@ -236,10 +225,7 @@ public class XMLEncryption11Test {
 
         assumeFalse(isIBMJdK);
 
-        String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-3072_SHA256WithRSA.jks";
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(this.getClass().getClassLoader().getResourceAsStream(keystore), "passwd".toCharArray());
-
+        KeyStore keyStore = loadKeyStore("org/w3c/www/interop/xmlenc-core-11/RSA-3072_SHA256WithRSA.jks");
         KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
                 keyStore.getEntry("importkey", new KeyStore.PasswordProtection("passwd".toCharArray()));
         PrivateKey rsaKey = pkEntry.getPrivateKey();
@@ -259,10 +245,7 @@ public class XMLEncryption11Test {
 
         assumeFalse(isIBMJdK);
 
-        String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-3072_SHA256WithRSA.jks";
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(this.getClass().getClassLoader().getResourceAsStream(keystore), "passwd".toCharArray());
-
+        KeyStore keyStore = loadKeyStore("org/w3c/www/interop/xmlenc-core-11/RSA-3072_SHA256WithRSA.jks");
         KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
                 keyStore.getEntry("importkey", new KeyStore.PasswordProtection("passwd".toCharArray()));
         PrivateKey rsaKey = pkEntry.getPrivateKey();
@@ -300,10 +283,7 @@ public class XMLEncryption11Test {
 
         assumeFalse(isIBMJdK);
 
-        String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-4096_SHA256WithRSA.jks";
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(this.getClass().getClassLoader().getResourceAsStream(keystore), "passwd".toCharArray());
-
+        KeyStore keyStore = loadKeyStore("org/w3c/www/interop/xmlenc-core-11/RSA-4096_SHA256WithRSA.jks");
         KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
                 keyStore.getEntry("importkey", new KeyStore.PasswordProtection("passwd".toCharArray()));
         PrivateKey rsaKey = pkEntry.getPrivateKey();
@@ -323,11 +303,7 @@ public class XMLEncryption11Test {
 
         assumeFalse(isIBMJdK);
 
-        String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-4096_SHA256WithRSA.jks";
-
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(this.getClass().getClassLoader().getResourceAsStream(keystore), "passwd".toCharArray());
-
+        KeyStore keyStore = loadKeyStore("org/w3c/www/interop/xmlenc-core-11/RSA-4096_SHA256WithRSA.jks");
         KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
                 keyStore.getEntry("importkey", new KeyStore.PasswordProtection("passwd".toCharArray()));
         PrivateKey rsaKey = pkEntry.getPrivateKey();
@@ -365,11 +341,7 @@ public class XMLEncryption11Test {
 
         assumeFalse(isIBMJdK);
 
-        String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-4096_SHA256WithRSA.jks";
-
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(this.getClass().getClassLoader().getResourceAsStream(keystore), "passwd".toCharArray());
-
+        KeyStore keyStore = loadKeyStore("org/w3c/www/interop/xmlenc-core-11/RSA-4096_SHA256WithRSA.jks");
         KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
                 keyStore.getEntry("importkey", new KeyStore.PasswordProtection("passwd".toCharArray()));
         PrivateKey rsaKey = pkEntry.getPrivateKey();
@@ -407,11 +379,7 @@ public class XMLEncryption11Test {
 
         assumeFalse(isIBMJdK);
 
-        String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-4096_SHA256WithRSA.jks";
-
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(this.getClass().getClassLoader().getResourceAsStream(keystore), "passwd".toCharArray());
-
+        KeyStore keyStore = loadKeyStore("org/w3c/www/interop/xmlenc-core-11/RSA-4096_SHA256WithRSA.jks");
         KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
                 keyStore.getEntry("importkey", new KeyStore.PasswordProtection("passwd".toCharArray()));
         PrivateKey rsaKey = pkEntry.getPrivateKey();
@@ -453,6 +421,14 @@ public class XMLEncryption11Test {
         }
     }
 
+    private KeyStore loadKeyStore(final String ksFile) throws IOException, GeneralSecurityException {
+        KeyStore keyStore = KeyStore.getInstance("jks");
+        try (InputStream stream = getClass().getClassLoader().getResourceAsStream(ksFile)) {
+            keyStore.load(stream, "passwd".toCharArray());
+        }
+        return keyStore;
+    }
+
     /**
      * Method decryptElement
      * <p></p>
@@ -460,8 +436,7 @@ public class XMLEncryption11Test {
      * decrypt it and return the resulting document
      */
     private Document decryptElement(String filename, Key rsaKey) throws Exception {
-        Document doc = XMLUtils.read(this.getClass().getClassLoader().getResourceAsStream(filename), false);
-
+        Document doc = XMLUtils.readResource(filename, getClass().getClassLoader(), false);
         return decryptElement(doc, rsaKey);
     }
 
@@ -559,15 +534,11 @@ public class XMLEncryption11Test {
         OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
-
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(filename);
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
-
-        Document document = null;
+        try (InputStream sourceDocument = getClass().getClassLoader().getResourceAsStream(filename)) {
+            XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+            XmlReaderToWriter.writeAllAndClose(xmlStreamReader, xmlStreamWriter);
+        }
+        Document document;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
             document = XMLUtils.read(is, false);
         }
@@ -631,13 +602,10 @@ public class XMLEncryption11Test {
      *
      * @param doc The document to retrieve the card number from
      * @return The retrieved credit card number
-     * @throws javax.xml.xpath.XPathExpressionException
+     * @throws XPathExpressionException
      *
      */
-    private static String retrieveCCNumber(Document doc)
-            throws javax.xml.transform.TransformerException,
-            XPathExpressionException {
-
+    private static String retrieveCCNumber(Document doc) throws XPathExpressionException {
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();
         Map<String, String> namespace = new HashMap<>();

@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.test.dom.algorithms;
 
-import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.security.Key;
 import java.security.KeyPair;
@@ -100,10 +99,8 @@ public class PKSignatureAlgorithmTest {
     @Test
     public void testRSA_MD5() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
@@ -116,10 +113,8 @@ public class PKSignatureAlgorithmTest {
     @Test
     public void testRSA_SHA1() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
@@ -132,10 +127,8 @@ public class PKSignatureAlgorithmTest {
     @Test
     public void testRSA_SHA_224() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
@@ -148,10 +141,8 @@ public class PKSignatureAlgorithmTest {
     @Test
     public void testRSA_SHA_256() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
@@ -164,10 +155,8 @@ public class PKSignatureAlgorithmTest {
     @Test
     public void testRSA_SHA_384() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
@@ -180,10 +169,8 @@ public class PKSignatureAlgorithmTest {
     @Test
     public void testRSA_SHA_512() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
@@ -198,10 +185,8 @@ public class PKSignatureAlgorithmTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
@@ -216,10 +201,8 @@ public class PKSignatureAlgorithmTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
@@ -234,10 +217,8 @@ public class PKSignatureAlgorithmTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
@@ -252,10 +233,8 @@ public class PKSignatureAlgorithmTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
@@ -270,10 +249,8 @@ public class PKSignatureAlgorithmTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
@@ -288,10 +265,8 @@ public class PKSignatureAlgorithmTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
@@ -306,10 +281,8 @@ public class PKSignatureAlgorithmTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
@@ -324,10 +297,8 @@ public class PKSignatureAlgorithmTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
@@ -342,10 +313,8 @@ public class PKSignatureAlgorithmTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
@@ -360,10 +329,8 @@ public class PKSignatureAlgorithmTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
@@ -377,10 +344,8 @@ public class PKSignatureAlgorithmTest {
     public void testRSA_PSS() throws Exception {
         Assumptions.assumeTrue(bcInstalled || TestUtils.isJava11Compatible());
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
@@ -394,10 +359,8 @@ public class PKSignatureAlgorithmTest {
     @Test
     public void testECDSA_SHA1() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
@@ -410,10 +373,8 @@ public class PKSignatureAlgorithmTest {
     @Test
     public void testECDSA_SHA_224() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
@@ -426,10 +387,8 @@ public class PKSignatureAlgorithmTest {
     @Test
     public void testECDSA_SHA_256() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
@@ -442,10 +401,8 @@ public class PKSignatureAlgorithmTest {
     @Test
     public void testECDSA_SHA_384() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
@@ -458,10 +415,8 @@ public class PKSignatureAlgorithmTest {
     @Test
     public void testECDSA_SHA_512() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
@@ -476,10 +431,8 @@ public class PKSignatureAlgorithmTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");

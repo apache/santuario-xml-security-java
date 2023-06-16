@@ -93,25 +93,26 @@ public class XMLSignatureInputTest {
     @Test
     public void testSetOctetStreamGetOctetStream()
         throws IOException, CanonicalizationException, InvalidCanonicalizerException {
-        InputStream inputStream =
-            new ByteArrayInputStream(_octetStreamTextInput.getBytes(java.nio.charset.StandardCharsets.UTF_8));
-        XMLSignatureInput input = new XMLSignatureInput(inputStream);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        InputStream res = input.getOctetStream();
-        int off = 0;
+        try (InputStream inputStream = new ByteArrayInputStream(
+            _octetStreamTextInput.getBytes(java.nio.charset.StandardCharsets.UTF_8))) {
+            XMLSignatureInput input = new XMLSignatureInput(inputStream);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            InputStream res = input.getOctetStream();
+            int off = 0;
 
-        while (res.available() > 0) {
-            byte[] array = new byte[1024];
-            int len = res.read(array);
+            while (res.available() > 0) {
+                byte[] array = new byte[1024];
+                int len = res.read(array);
 
-            baos.write(array, off, len);
-            off += len;
+                baos.write(array, off, len);
+                off += len;
+            }
+
+            byte[] resBytes = baos.toByteArray();
+            String resString = new String(resBytes, java.nio.charset.StandardCharsets.UTF_8);
+
+            assertEquals(resString, _octetStreamTextInput);
         }
-
-        byte[] resBytes = baos.toByteArray();
-        String resString = new String(resBytes, java.nio.charset.StandardCharsets.UTF_8);
-
-        assertEquals(resString, _octetStreamTextInput);
     }
 
     @Test

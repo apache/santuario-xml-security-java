@@ -19,6 +19,7 @@
 package org.apache.xml.security.test.dom.encryption;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.nio.charset.StandardCharsets;
@@ -414,16 +415,17 @@ public class BaltimoreEncTest {
         XMLCipher cipher;
 
         // Parse the document in question
-        Document doc = XMLUtils.read(new java.io.FileInputStream(file), false);
+        Document doc;
+        try (FileInputStream inputStream = new FileInputStream(file)) {
+            doc = XMLUtils.read(inputStream, false);
+        }
 
         // Now we have the document, lets build the XMLCipher element
-        Element ee = null;
-
         // Create the XMLCipher element
         cipher = XMLCipher.getInstance();
 
         // Need to pre-load the Encrypted Data so we can get the key info
-        ee = (Element) doc.getElementsByTagName("EncryptedData").item(0);
+        Element ee = (Element) doc.getElementsByTagName("EncryptedData").item(0);
         cipher.init(XMLCipher.DECRYPT_MODE, null);
         EncryptedData encryptedData = cipher.loadEncryptedData(doc, ee);
 

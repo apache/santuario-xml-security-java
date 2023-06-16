@@ -126,11 +126,10 @@ public class PreCalculatedDigestSignatureTest {
     }
 
     private XMLSignature openSignature(File signatureFile) throws Exception {
-        Document document = XMLUtils.read(new FileInputStream(signatureFile), false);
+        Document document = XMLUtils.read(signatureFile, false);
         Element root = document.getDocumentElement();
         Element signatureDocument = (Element) root.getFirstChild();
-        String baseURI = "";
-        XMLSignature signature = new XMLSignature(signatureDocument, baseURI);
+        XMLSignature signature = new XMLSignature(signatureDocument, "");
         return signature;
     }
 

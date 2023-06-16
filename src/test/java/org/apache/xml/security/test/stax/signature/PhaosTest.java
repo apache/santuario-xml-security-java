@@ -56,7 +56,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class PhaosTest {
 
     private XMLInputFactory xmlInputFactory;
-    private TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -72,10 +72,8 @@ public class PhaosTest {
     @Test
     public void test_signature_dsa_enveloped() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "com/phaos/phaos-xmldsig-three/signature-dsa-enveloped.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("com/phaos/phaos-xmldsig-three/signature-dsa-enveloped.xml",
+            getClass().getClassLoader(), false);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -102,10 +100,8 @@ public class PhaosTest {
     @Test
     public void test_signature_dsa_enveloping() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "com/phaos/phaos-xmldsig-three/signature-dsa-enveloping.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("com/phaos/phaos-xmldsig-three/signature-dsa-enveloping.xml",
+            getClass().getClassLoader(), false);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -133,10 +129,8 @@ public class PhaosTest {
     @Test
     public void test_signature_hmac_sha1_exclusive_c14n_enveloped() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "com/phaos/phaos-xmldsig-three/signature-hmac-sha1-exclusive-c14n-enveloped.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("com/phaos/phaos-xmldsig-three/signature-hmac-sha1-exclusive-c14n-enveloped.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the key
         byte[] hmacKey = "test".getBytes(StandardCharsets.US_ASCII);
@@ -169,10 +163,8 @@ public class PhaosTest {
     @Test
     public void test_signature_rsa_enveloped_bad_digest_val() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "com/phaos/phaos-xmldsig-three/signature-rsa-enveloped-bad-digest-val.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("com/phaos/phaos-xmldsig-three/signature-rsa-enveloped-bad-digest-val.xml",
+            getClass().getClassLoader(), false);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -204,10 +196,8 @@ public class PhaosTest {
     @Test
     public void test_signature_rsa_enveloped() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "com/phaos/phaos-xmldsig-three/signature-rsa-enveloped.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("com/phaos/phaos-xmldsig-three/signature-rsa-enveloped.xml",
+            getClass().getClassLoader(), false);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -234,10 +224,8 @@ public class PhaosTest {
     @Test
     public void test_signature_rsa_enveloping() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "com/phaos/phaos-xmldsig-three/signature-rsa-enveloping.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("com/phaos/phaos-xmldsig-three/signature-rsa-enveloping.xml",
+            getClass().getClassLoader(), false);
 
         // XMLUtils.outputDOM(document, System.out);
 

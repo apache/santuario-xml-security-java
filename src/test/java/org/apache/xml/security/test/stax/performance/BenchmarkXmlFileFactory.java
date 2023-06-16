@@ -53,6 +53,7 @@ import org.apache.xml.security.stax.ext.XMLSec;
 import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.stax.ext.XMLSecurityProperties;
 import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
+import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.XMLUtils;
@@ -66,7 +67,6 @@ public class BenchmarkXmlFileFactory {
     private static final Logger LOG = System.getLogger(BenchmarkXmlFileFactory.class.getName());
 
     private static final String KS_PASSWORD = "default";
-    private static final String TRANSMITTER_JKS = "transmitter.jks";
     private static final String ALIAS_ENCRYPTION_SYM_KEY = "encryptionSymKey";
 
     private final SecretKey encryptionSymKey;
@@ -92,11 +92,8 @@ public class BenchmarkXmlFileFactory {
             }
             encryptionSymKey = (SecretKey) symKeyStore.getKey(ALIAS_ENCRYPTION_SYM_KEY, KS_PASSWORD.toCharArray());
 
-            KeyStore keyStore = KeyStore.getInstance("JKS");
-            try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(TRANSMITTER_JKS)) {
-                keyStore.load(inputStream, KS_PASSWORD.toCharArray());
-            }
-            key = keyStore.getKey("transmitter", KS_PASSWORD.toCharArray());
+            KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
+            key = keyStore.getKey("transmitter", XmlSecTestEnvironment.TRANSMITTER_KS_PASSWORD.toCharArray());
             cert = (X509Certificate) keyStore.getCertificate("transmitter");
             // sign and verify stream
             outboundSignatureXMLSec = createOutboundSignatureXMLSec(key, cert);
