@@ -18,19 +18,17 @@
  */
 package org.apache.xml.security.test.dom.utils.resolver;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.xml.security.signature.XMLSignatureInput;
+import org.apache.xml.security.signature.XMLSignatureFileInput;
 import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.apache.xml.security.utils.resolver.ResourceResolverException;
@@ -51,10 +49,10 @@ public class OfflineResolver extends ResourceResolverSpi {
     private static final Logger LOG = System.getLogger(OfflineResolver.class.getName());
 
     /** Field _uriMap */
-    static Map<String, String> _uriMap = null;
+    static Map<String, String> _uriMap;
 
     /** Field _mimeMap */
-    static Map<String, String> _mimeMap = null;
+    static Map<String, String> _mimeMap;
 
     static {
         org.apache.xml.security.Init.init();
@@ -108,7 +106,7 @@ public class OfflineResolver extends ResourceResolverSpi {
                 String absolutePath = OfflineResolver._uriMap.get(URI);
                 LOG.log(Level.DEBUG, "Mapped {0} to {1}", URI, absolutePath);
 
-                XMLSignatureInput result = new XMLSignatureInput(Files.readAllBytes(Path.of(absolutePath)));
+                XMLSignatureInput result = new XMLSignatureFileInput(Path.of(absolutePath));
                 result.setSourceURI(URI);
                 result.setMIMEType(OfflineResolver._mimeMap.get(URI));
                 return result;

@@ -38,6 +38,8 @@ import org.apache.xml.security.c14n.implementations.Canonicalizer20010315ExclWit
 import org.apache.xml.security.c14n.implementations.Canonicalizer20010315WithComments;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureInput;
+import org.apache.xml.security.signature.XMLSignatureNodeInput;
+import org.apache.xml.security.signature.XMLSignatureNodeSetInput;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.utils.Constants;
@@ -65,7 +67,6 @@ public class Canonicalizer20010315ExclusiveTest {
         ResourceResolver.register(new ResolverLocalFilesystem(), false);
     }
 
-
     /**
      * Method testA
      */
@@ -79,27 +80,21 @@ public class Canonicalizer20010315ExclusiveTest {
         assertTrue(fileIn.exists(), "file exists");
 
         Document doc = XMLUtils.read(fileIn, false);
-        Element signatureElement =
-            (Element) doc.getElementsByTagNameNS(
-                Constants.SignatureSpecNS, Constants._TAG_SIGNATURE).item(0);
-        XMLSignature xmlSignature = new XMLSignature(signatureElement,
-                                                     fileIn.toURI().toURL().toString(), false);
-        boolean verify =
-            xmlSignature.checkSignatureValue(xmlSignature.getKeyInfo().getPublicKey());
+        Element signatureElement = (Element) doc
+            .getElementsByTagNameNS(Constants.SignatureSpecNS, Constants._TAG_SIGNATURE).item(0);
+
+        XMLSignature xmlSignature = new XMLSignature(signatureElement, fileIn.toURI().toURL().toString(), false);
+        boolean verify = xmlSignature.checkSignatureValue(xmlSignature.getKeyInfo().getPublicKey());
         int length = xmlSignature.getSignedInfo().getLength();
         int numberOfPositiveReferences = 0;
-
         for (int i = 0; i < length; i++) {
-            boolean singleResult =
-                xmlSignature.getSignedInfo().getVerificationResult(i);
-
+            boolean singleResult = xmlSignature.getSignedInfo().getVerificationResult(i);
             if (singleResult) {
                 numberOfPositiveReferences++;
             }
         }
 
-        assertTrue(verify, "Verification failed; only " + numberOfPositiveReferences
-                   + "/" + length + " matched");
+        assertTrue(verify, "Verification failed; only " + numberOfPositiveReferences + "/" + length + " matched");
     }
 
     /**
@@ -242,7 +237,7 @@ public class Canonicalizer20010315ExclusiveTest {
             new Canonicalizer20010315ExclOmitComments();
         Set<Node> nodeSet = new HashSet<>();
         XMLUtils.getSet(doc.getDocumentElement().getFirstChild(), nodeSet, null, false);
-        XMLSignatureInput input = new XMLSignatureInput(nodeSet);
+        XMLSignatureInput input = new XMLSignatureNodeSetInput(nodeSet);
         try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
             c14n.engineCanonicalize(input, "env ns0 xsi wsu", writer, false);
             assertEquals(c14nXML, new String(writer.toByteArray()));
@@ -307,7 +302,7 @@ public class Canonicalizer20010315ExclusiveTest {
      */
     @Test
     public void testDefaultNSInInclusiveNamespacePrefixList1() throws Exception {
-        final String XML =
+        final String xml =
                 "<env:Envelope"
                         + " xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\""
                         + " xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\""
@@ -332,11 +327,11 @@ public class Canonicalizer20010315ExclusiveTest {
                         + "</ns0:Ping>"
                         + "</env:Body>";
 
-        Document doc = XMLUtils.read(new ByteArrayInputStream(XML.getBytes(StandardCharsets.UTF_8)), false);
+        Document doc = XMLUtils.read(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)), false);
         {
             Canonicalizer20010315ExclOmitComments c14n =
                     new Canonicalizer20010315ExclOmitComments();
-            XMLSignatureInput input = new XMLSignatureInput(doc.getDocumentElement().getFirstChild());
+            XMLSignatureInput input = new XMLSignatureNodeInput(doc.getDocumentElement().getFirstChild());
             try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
                 c14n.engineCanonicalize(input, "#default xsi", writer, false);
                 assertEquals(c14nXML, new String(writer.toByteArray()));
@@ -346,7 +341,7 @@ public class Canonicalizer20010315ExclusiveTest {
             //exactly the same outcome is expected if #default is not set:
             Canonicalizer20010315ExclOmitComments c14n =
                     new Canonicalizer20010315ExclOmitComments();
-            XMLSignatureInput input = new XMLSignatureInput(doc.getDocumentElement().getFirstChild());
+            XMLSignatureInput input = new XMLSignatureNodeInput(doc.getDocumentElement().getFirstChild());
             try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
                 c14n.engineCanonicalize(input, "xsi", writer, false);
                 assertEquals(c14nXML, new String(writer.toByteArray()));
@@ -361,7 +356,7 @@ public class Canonicalizer20010315ExclusiveTest {
      */
     @Test
     public void testDefaultNSInInclusiveNamespacePrefixList2() throws Exception {
-        final String XML =
+        final String xml =
                 "<env:Envelope"
                         + " xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\""
                         + " xmlns=\"http://example.com\""
@@ -399,11 +394,11 @@ public class Canonicalizer20010315ExclusiveTest {
                         + "</ns0:Ping>"
                         + "</env:Body>";
 
-        Document doc = XMLUtils.read(new ByteArrayInputStream(XML.getBytes(StandardCharsets.UTF_8)), false);
+        Document doc = XMLUtils.read(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)), false);
         {
             Canonicalizer20010315ExclOmitComments c14n =
                     new Canonicalizer20010315ExclOmitComments();
-            XMLSignatureInput input = new XMLSignatureInput(doc.getDocumentElement().getFirstChild());
+            XMLSignatureInput input = new XMLSignatureNodeInput(doc.getDocumentElement().getFirstChild());
             try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
                 c14n.engineCanonicalize(input, "#default xsi", writer, false);
                 assertEquals(c14nXML1, new String(writer.toByteArray()));
@@ -412,7 +407,7 @@ public class Canonicalizer20010315ExclusiveTest {
         {
             Canonicalizer20010315ExclOmitComments c14n =
                     new Canonicalizer20010315ExclOmitComments();
-            XMLSignatureInput input = new XMLSignatureInput(doc.getDocumentElement().getFirstChild());
+            XMLSignatureInput input = new XMLSignatureNodeInput(doc.getDocumentElement().getFirstChild());
             try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
                 c14n.engineCanonicalize(input, "xsi", writer, false);
                 assertEquals(c14nXML2, new String(writer.toByteArray()));
@@ -427,7 +422,7 @@ public class Canonicalizer20010315ExclusiveTest {
      */
     @Test
     public void testDefaultNSInInclusiveNamespacePrefixList3() throws Exception {
-        final String XML =
+        final String xml =
                 "<env:Envelope"
                         + " xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\""
                         + " xmlns=\"\""
@@ -453,11 +448,11 @@ public class Canonicalizer20010315ExclusiveTest {
                         + "</ns0:Ping>"
                         + "</env:Body>";
 
-        Document doc = XMLUtils.read(new ByteArrayInputStream(XML.getBytes(StandardCharsets.UTF_8)), false);
+        Document doc = XMLUtils.read(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)), false);
         {
             Canonicalizer20010315ExclOmitComments c14n =
                     new Canonicalizer20010315ExclOmitComments();
-            XMLSignatureInput input = new XMLSignatureInput(doc.getDocumentElement().getFirstChild());
+            XMLSignatureInput input = new XMLSignatureNodeInput(doc.getDocumentElement().getFirstChild());
             try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
                 c14n.engineCanonicalize(input, "#default xsi", writer, false);
                 assertEquals(c14nXML, new String(writer.toByteArray()));
@@ -467,7 +462,7 @@ public class Canonicalizer20010315ExclusiveTest {
             //exactly the same outcome is expected if #default is not set:
             Canonicalizer20010315ExclOmitComments c14n =
                     new Canonicalizer20010315ExclOmitComments();
-            XMLSignatureInput input = new XMLSignatureInput(doc.getDocumentElement().getFirstChild());
+            XMLSignatureInput input = new XMLSignatureNodeInput(doc.getDocumentElement().getFirstChild());
             try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
                 c14n.engineCanonicalize(input, "xsi", writer, false);
                 assertEquals(c14nXML, new String(writer.toByteArray()));
@@ -482,7 +477,7 @@ public class Canonicalizer20010315ExclusiveTest {
      */
     @Test
     public void testDefaultNSInInclusiveNamespacePrefixList4() throws Exception {
-        final String XML =
+        final String xml =
                 "<env:Envelope"
                         + " xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\""
                         + " xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\""
@@ -507,11 +502,11 @@ public class Canonicalizer20010315ExclusiveTest {
                         + "</ns0:Ping>"
                         + "</env:Body>";
 
-        Document doc = XMLUtils.read(new ByteArrayInputStream(XML.getBytes(StandardCharsets.UTF_8)), false);
+        Document doc = XMLUtils.read(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)), false);
         {
             Canonicalizer20010315ExclOmitComments c14n =
                     new Canonicalizer20010315ExclOmitComments();
-            XMLSignatureInput input = new XMLSignatureInput(doc.getDocumentElement().getFirstChild());
+            XMLSignatureInput input = new XMLSignatureNodeInput(doc.getDocumentElement().getFirstChild());
             try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
                 c14n.engineCanonicalize(input, "#default xsi", writer, false);
                 assertEquals(c14nXML, new String(writer.toByteArray()));
@@ -521,7 +516,7 @@ public class Canonicalizer20010315ExclusiveTest {
             //exactly the same outcome is expected if #default is not set:
             Canonicalizer20010315ExclOmitComments c14n =
                     new Canonicalizer20010315ExclOmitComments();
-            XMLSignatureInput input = new XMLSignatureInput(doc.getDocumentElement().getFirstChild());
+            XMLSignatureInput input = new XMLSignatureNodeInput(doc.getDocumentElement().getFirstChild());
             try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
                 c14n.engineCanonicalize(input, "xsi", writer, false);
                 assertEquals(c14nXML, new String(writer.toByteArray()));
@@ -536,7 +531,7 @@ public class Canonicalizer20010315ExclusiveTest {
      */
     @Test
     public void testPropagateDefaultNs1() throws Exception {
-        final String XML =
+        final String xml =
                 "<env:Envelope"
                         + " xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\""
                         + " xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\""
@@ -561,7 +556,7 @@ public class Canonicalizer20010315ExclusiveTest {
                         + "</ns0:Ping>"
                         + "</env:Body>";
 
-        Document doc = XMLUtils.read(new ByteArrayInputStream(XML.getBytes(StandardCharsets.UTF_8)), false);
+        Document doc = XMLUtils.read(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)), false);
         Canonicalizer20010315ExclOmitComments c14n =
                 new Canonicalizer20010315ExclOmitComments();
         try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
@@ -572,7 +567,7 @@ public class Canonicalizer20010315ExclusiveTest {
 
     @Test
     public void testPropagateDefaultNs2() throws Exception {
-        final String XML =
+        final String xml =
                 "<env:Envelope"
                         + " xmlns=\"http://example.com\""
                         + " xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\""
@@ -598,7 +593,7 @@ public class Canonicalizer20010315ExclusiveTest {
                         + "</ns0:Ping>"
                         + "</env:Body>";
 
-        Document doc = XMLUtils.read(new ByteArrayInputStream(XML.getBytes(StandardCharsets.UTF_8)), false);
+        Document doc = XMLUtils.read(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)), false);
         Canonicalizer20010315ExclOmitComments c14n =
                 new Canonicalizer20010315ExclOmitComments();
         try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
@@ -609,7 +604,7 @@ public class Canonicalizer20010315ExclusiveTest {
 
     @Test
     public void testPropagateDefaultNs3() throws Exception {
-        final String XML =
+        final String xml =
                 "<Envelope"
                         + " xmlns=\"http://example.com\""
                         + " xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\""
@@ -635,7 +630,7 @@ public class Canonicalizer20010315ExclusiveTest {
                         + "</ns0:Ping>"
                         + "</env:Body>";
 
-        Document doc = XMLUtils.read(new ByteArrayInputStream(XML.getBytes(StandardCharsets.UTF_8)), false);
+        Document doc = XMLUtils.read(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)), false);
         Canonicalizer20010315ExclOmitComments c14n =
                 new Canonicalizer20010315ExclOmitComments();
         try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
@@ -646,7 +641,7 @@ public class Canonicalizer20010315ExclusiveTest {
 
     @Test
     public void testPropagateDefaultNs4() throws Exception {
-        final String XML =
+        final String xml =
                 "<Envelope"
                         + " xmlns=\"\""
                         + " xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\""
@@ -672,7 +667,7 @@ public class Canonicalizer20010315ExclusiveTest {
                         + "</ns0:Ping>"
                         + "</env:Body>";
 
-        Document doc = XMLUtils.read(new ByteArrayInputStream(XML.getBytes(StandardCharsets.UTF_8)), false);
+        Document doc = XMLUtils.read(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)), false);
         Canonicalizer20010315ExclOmitComments c14n =
                 new Canonicalizer20010315ExclOmitComments();
         try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
@@ -683,7 +678,7 @@ public class Canonicalizer20010315ExclusiveTest {
 
     @Test
     public void testPropagateDefaultNs5() throws Exception {
-        final String XML =
+        final String xml =
                 "<env:Envelope"
                         + " xmlns=\"http://example.com\""
                         + " xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\""
@@ -704,7 +699,7 @@ public class Canonicalizer20010315ExclusiveTest {
                         + "<ns0:text xsi:type=\"xsd:string\">hello</ns0:text>"
                         + "</ns0:Ping>";
 
-        Document doc = XMLUtils.read(new ByteArrayInputStream(XML.getBytes(StandardCharsets.UTF_8)), false);
+        Document doc = XMLUtils.read(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)), false);
         Canonicalizer20010315ExclOmitComments c14n =
                 new Canonicalizer20010315ExclOmitComments();
         try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {

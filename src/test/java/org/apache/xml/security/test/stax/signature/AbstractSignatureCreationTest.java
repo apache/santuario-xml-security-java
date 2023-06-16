@@ -37,6 +37,7 @@ import javax.xml.xpath.XPathFactory;
 import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureInput;
+import org.apache.xml.security.signature.XMLSignatureNodeInput;
 import org.apache.xml.security.stax.ext.OutboundXMLSec;
 import org.apache.xml.security.stax.ext.SecurePart;
 import org.apache.xml.security.stax.ext.XMLSec;
@@ -292,7 +293,7 @@ public class AbstractSignatureCreationTest {
             if (!context.uriToResolve.isEmpty()) {
                 throw new ResourceResolverException("This resolved can only handle empty URIs", context.uriToResolve, context.baseUri);
             }
-            return new XMLSignatureInput(signedElement);
+            return new XMLSignatureNodeInput(signedElement);
         }
 
         @Override

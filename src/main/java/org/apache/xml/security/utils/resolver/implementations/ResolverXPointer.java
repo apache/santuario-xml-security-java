@@ -22,6 +22,7 @@ import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 
 import org.apache.xml.security.signature.XMLSignatureInput;
+import org.apache.xml.security.signature.XMLSignatureNodeInput;
 import org.apache.xml.security.utils.XMLUtils;
 import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.apache.xml.security.utils.resolver.ResourceResolverException;
@@ -86,7 +87,7 @@ public class ResolverXPointer extends ResourceResolverSpi {
             }
         }
 
-        XMLSignatureInput result = new XMLSignatureInput(resultNode);
+        XMLSignatureInput result = new XMLSignatureNodeInput(resultNode);
         result.setSecureValidation(context.secureValidation);
 
         result.setMIMEType("text/xml");

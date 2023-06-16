@@ -136,7 +136,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
             if (input.isExcludeComments()) {
                 includeComments = false;
             }
-            if (input.isOctetStream()) {
+            if (input.hasUnprocessedInput()) {
                 engineCanonicalize(input.getBytes(), writer, secureValidation);
             } else if (input.isElement()) {
                 engineCanonicalizeSubTree(input.getSubNode(), input.getExcludeNode(), writer);
@@ -145,10 +145,10 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
 
                 circumventBugIfNeeded(input);
 
-                if (input.getSubNode() != null) {
-                    engineCanonicalizeXPathNodeSetInternal(input.getSubNode(), writer);
-                } else {
+                if (input.getSubNode() == null) {
                     engineCanonicalizeXPathNodeSet(input.getNodeSet(), writer);
+                } else {
+                    engineCanonicalizeXPathNodeSetInternal(input.getSubNode(), writer);
                 }
             }
         } catch (XMLParserException | IOException ex) {

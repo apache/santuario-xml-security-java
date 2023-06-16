@@ -44,6 +44,9 @@ import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.c14n.InvalidCanonicalizerException;
 import org.apache.xml.security.signature.XMLSignatureInput;
+import org.apache.xml.security.signature.XMLSignatureNodeInput;
+import org.apache.xml.security.signature.XMLSignatureNodeSetInput;
+import org.apache.xml.security.signature.XMLSignatureStreamInput;
 import org.apache.xml.security.transforms.Transform;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -136,33 +139,32 @@ public abstract class ApacheCanonicalizer extends TransformService {
                 XMLSignatureInput in =
                     ((ApacheData)data).getXMLSignatureInput();
                 if (in.isElement()) {
-                    if (inclusiveNamespaces != null) {
-                        canonicalizer.canonicalizeSubtree(in.getSubNode(), inclusiveNamespaces, writer);
+                    if (inclusiveNamespaces == null) {
+                        canonicalizer.canonicalizeSubtree(in.getSubNode(), writer);
                         return new OctetStreamData(new ByteArrayInputStream(getC14nBytes(writer, isByteArrayOutputStream)));
                     } else {
-                        canonicalizer.canonicalizeSubtree(in.getSubNode(), writer);
+                        canonicalizer.canonicalizeSubtree(in.getSubNode(), inclusiveNamespaces, writer);
                         return new OctetStreamData(new ByteArrayInputStream(getC14nBytes(writer, isByteArrayOutputStream)));
                     }
                 } else if (in.isNodeSet()) {
                     nodeSet = in.getNodeSet();
                 } else {
-                    canonicalizer.canonicalize(Utils.readBytesFromStream(in.getOctetStream()), writer, secVal);
+                    canonicalizer.canonicalize(Utils.readBytesFromStream(in.getUnprocessedInput()), writer, secVal);
                     return new OctetStreamData(new ByteArrayInputStream(getC14nBytes(writer, isByteArrayOutputStream)));
                 }
             } else if (data instanceof DOMSubTreeData) {
-                DOMSubTreeData subTree = (DOMSubTreeData)data;
-                if (inclusiveNamespaces != null) {
-                    canonicalizer.canonicalizeSubtree(subTree.getRoot(), inclusiveNamespaces, writer);
+                DOMSubTreeData subTree = (DOMSubTreeData) data;
+                if (inclusiveNamespaces == null) {
+                    canonicalizer.canonicalizeSubtree(subTree.getRoot(), writer);
                     return new OctetStreamData(new ByteArrayInputStream(getC14nBytes(writer, isByteArrayOutputStream)));
                 } else {
-                    canonicalizer.canonicalizeSubtree(subTree.getRoot(), writer);
+                    canonicalizer.canonicalizeSubtree(subTree.getRoot(), inclusiveNamespaces, writer);
                     return new OctetStreamData(new ByteArrayInputStream(getC14nBytes(writer, isByteArrayOutputStream)));
                 }
             } else if (data instanceof NodeSetData) {
-                NodeSetData nsd = (NodeSetData)data;
                 // convert Iterator to Set
                 @SuppressWarnings("unchecked")
-                Set<Node> ns = Utils.toNodeSet(nsd.iterator());
+                Set<Node> ns = Utils.toNodeSet(((NodeSetData<Node>)data).iterator());
                 nodeSet = ns;
                 LOG.log(Level.DEBUG, "Canonicalizing {0} nodes", nodeSet.size());
             } else {
@@ -224,19 +226,17 @@ public abstract class ApacheCanonicalizer extends TransformService {
             LOG.log(Level.DEBUG, "isNodeSet() = true");
             if (data instanceof DOMSubTreeData) {
                 DOMSubTreeData subTree = (DOMSubTreeData)data;
-                in = new XMLSignatureInput(subTree.getRoot());
+                in = new XMLSignatureNodeInput(subTree.getRoot());
                 in.setExcludeComments(subTree.excludeComments());
             } else {
-                @SuppressWarnings("unchecked")
-                Set<Node> nodeSet =
-                    Utils.toNodeSet(((NodeSetData)data).iterator());
-                in = new XMLSignatureInput(nodeSet);
+                @SuppressWarnings({"unchecked", "rawtypes"})
+                Set<Node> nodeSet = Utils.toNodeSet(((NodeSetData) data).iterator());
+                in = new XMLSignatureNodeSetInput(nodeSet);
             }
         } else {
             LOG.log(Level.DEBUG, "isNodeSet() = false");
             try {
-                in = new XMLSignatureInput
-                    (((OctetStreamData)data).getOctetStream());
+                in = new XMLSignatureStreamInput(((OctetStreamData) data).getOctetStream());
             } catch (Exception ex) {
                 throw new TransformException(ex);
             }
@@ -247,7 +247,7 @@ public abstract class ApacheCanonicalizer extends TransformService {
 
         try {
             in = apacheTransform.performTransform(in, os, secVal);
-            if (in.isOctetStream()) {
+            if (in.hasUnprocessedInput()) {
                 return new ApacheOctetStreamData(in);
             } else {
                 return new ApacheNodeSetData(in);

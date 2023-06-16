@@ -303,10 +303,10 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
             return;
         }
         Document doc = null;
-        if (input.getSubNode() != null) {
-            doc = XMLUtils.getOwnerDocument(input.getSubNode());
-        } else {
+        if (input.getSubNode() == null) {
             doc = XMLUtils.getOwnerDocument(input.getNodeSet());
+        } else {
+            doc = XMLUtils.getOwnerDocument(input.getSubNode());
         }
         XMLUtils.circumventBug2650(doc);
     }

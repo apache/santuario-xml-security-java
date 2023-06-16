@@ -348,8 +348,7 @@ public class Manifest extends SignatureElementProxy {
                     LOG.log(Level.DEBUG, "We have to follow a nested Manifest");
 
                     try {
-                        XMLSignatureInput signedManifestNodes =
-                            currentRef.dereferenceURIandPerformTransforms(null);
+                        XMLSignatureInput signedManifestNodes = currentRef.dereferenceURIandPerformTransforms(null);
                         Set<Node> nl = signedManifestNodes.getNodeSet();
                         Manifest referencedManifest = null;
 
@@ -375,7 +374,7 @@ public class Manifest extends SignatureElementProxy {
                             // The Reference stated that it points to a ds:Manifest
                             // but we did not find a ds:Manifest in the signed area
                             throw new MissingResourceFailureException(currentRef, "empty",
-                                                                      new Object[]{"No Manifest found"});
+                                new Object[] {"No Manifest found"});
                         }
 
                         referencedManifest.perManifestResolvers = this.perManifestResolvers;

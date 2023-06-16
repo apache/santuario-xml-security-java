@@ -48,7 +48,7 @@ public abstract class CanonicalizerSpi {
     public void engineCanonicalize(byte[] inputBytes, OutputStream writer, boolean secureValidation)
         throws XMLParserException, java.io.IOException, CanonicalizationException {
 
-        Document document = null;
+        Document document;
         try (InputStream bais = new ByteArrayInputStream(inputBytes)) {
             document = XMLUtils.read(bais, secureValidation);
         }

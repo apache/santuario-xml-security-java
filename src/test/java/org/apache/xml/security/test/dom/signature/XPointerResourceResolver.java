@@ -32,6 +32,8 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.apache.xml.security.signature.XMLSignatureInput;
+import org.apache.xml.security.signature.XMLSignatureNodeInput;
+import org.apache.xml.security.signature.XMLSignatureNodeSetInput;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.apache.xml.security.utils.resolver.ResourceResolverException;
@@ -165,10 +167,9 @@ public class XPointerResourceResolver extends ResourceResolverSpi {
                 }
             }
 
-            XMLSignatureInput result = null;
-
+            final XMLSignatureInput result;
             if (node != null) {
-                result = new XMLSignatureInput(node);
+                result = new XMLSignatureNodeInput(node);
             } else if (nodes != null) {
                 Set<Node> nodeSet = new HashSet<>(nodes.getLength());
 
@@ -176,7 +177,7 @@ public class XPointerResourceResolver extends ResourceResolverSpi {
                     nodeSet.add(nodes.item(j));
                 }
 
-                result = new XMLSignatureInput(nodeSet);
+                result = new XMLSignatureNodeSetInput(nodeSet);
             } else {
                 return null;
             }

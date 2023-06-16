@@ -43,7 +43,6 @@ import java.security.Provider;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -70,6 +69,7 @@ import javax.xml.crypto.dsig.XMLValidateContext;
 import org.apache.jcp.xml.dsig.internal.DigesterOutputStream;
 import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
 import org.apache.xml.security.signature.XMLSignatureInput;
+import org.apache.xml.security.signature.XMLSignatureStreamInput;
 import org.apache.xml.security.utils.UnsyncBufferedOutputStream;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Attr;
@@ -91,9 +91,11 @@ public final class DOMReference extends DOMStructure
 
    /**
     * Look up useC14N11 system property. If true, an explicit C14N11 transform
-    * will be added if necessary when generating the signature. See section
-    * 3.1.1 of http://www.w3.org/2007/xmlsec/Drafts/xmldsig-core/ for more info.
-    *
+    * will be added if necessary when generating the signature.
+    * See section 3.1.1 of
+    * <a href="https://www.w3.org/TR/xmldsig-core/#sec-ReferenceGeneration"
+    * >XmlDSig-Core Reference Generation</a>
+    * <p>
     * If true, overrides the same property if set in the XMLSignContext.
     */
     private static boolean useC14N11 =
@@ -478,7 +480,7 @@ public final class DOMReference extends DOMStructure
         }
         Data data = dereferencedData;
         XMLSignatureInput xi = null;
-        try (OutputStream os = new UnsyncBufferedOutputStream(dos)) { //NOPMD
+        try (OutputStream os = new UnsyncBufferedOutputStream(dos)) {
             for (int i = 0, size = transforms.size(); i < size; i++) {
                 DOMTransform transform = (DOMTransform)transforms.get(i);
                 if (i < size - 1) {
@@ -488,7 +490,11 @@ public final class DOMReference extends DOMStructure
                 }
             }
 
-            if (data != null) {
+            if (data == null) {
+                LOG.log(Level.WARNING, "The input bytes to the digest operation are null. " +
+                   "This may be due to a problem with the Reference URI " +
+                   "or its Transforms.");
+            } else {
                 // explicitly use C14N 1.1 when generating signature
                 // first check system property, then context property
                 boolean c14n11 = useC14N11;
@@ -508,8 +514,7 @@ public final class DOMReference extends DOMStructure
                 if (data instanceof ApacheData) {
                     xi = ((ApacheData)data).getXMLSignatureInput();
                 } else if (data instanceof OctetStreamData) {
-                    xi = new XMLSignatureInput
-                        (((OctetStreamData)data).getOctetStream());
+                    xi = new XMLSignatureStreamInput(((OctetStreamData) data).getOctetStream());
                 } else if (data instanceof NodeSetData) {
                     TransformService spi = null;
                     if (provider == null) {
@@ -522,16 +527,16 @@ public final class DOMReference extends DOMStructure
                         }
                     }
                     data = spi.transform(data, context);
-                    xi = new XMLSignatureInput
-                        (((OctetStreamData)data).getOctetStream());
+                    xi = new XMLSignatureStreamInput(((OctetStreamData) data).getOctetStream());
                 } else {
                     throw new XMLSignatureException("unrecognized Data type");
                 }
 
                 boolean secVal = Utils.secureValidation(context);
                 xi.setSecureValidation(secVal);
-                if (context instanceof XMLSignContext && c14n11
-                    && !xi.isOctetStream() && !xi.isOutputStreamSet()) {
+                if (!(context instanceof XMLSignContext) || !c14n11 || xi.hasUnprocessedInput() || xi.isOutputStreamSet()) {
+                    xi.write(os);
+                } else {
                     TransformService spi = null;
                     if (provider == null) {
                         spi = TransformService.getInstance(c14nalg, "DOM");
@@ -547,25 +552,16 @@ public final class DOMReference extends DOMStructure
                     Element transformsElem = null;
                     String dsPrefix = DOMUtils.getSignaturePrefix(context);
                     if (allTransforms.isEmpty()) {
-                        transformsElem = DOMUtils.createElement(
-                            refElem.getOwnerDocument(),
-                            "Transforms", XMLSignature.XMLNS, dsPrefix);
-                        refElem.insertBefore(transformsElem,
-                            DOMUtils.getFirstChildElement(refElem));
+                        transformsElem = DOMUtils.createElement(refElem.getOwnerDocument(), "Transforms",
+                            XMLSignature.XMLNS, dsPrefix);
+                        refElem.insertBefore(transformsElem, DOMUtils.getFirstChildElement(refElem));
                     } else {
                         transformsElem = DOMUtils.getFirstChildElement(refElem);
                     }
-                    t.marshal(transformsElem, dsPrefix,
-                              (DOMCryptoContext)context);
+                    t.marshal(transformsElem, dsPrefix, (DOMCryptoContext) context);
                     allTransforms.add(t);
-                    xi.updateOutputStream(os, true);
-                } else {
-                    xi.updateOutputStream(os);
+                    xi.write(os, true);
                 }
-            } else {
-                LOG.log(Level.WARNING, "The input bytes to the digest operation are null. " +
-                   "This may be due to a problem with the Reference URI " +
-                   "or its Transforms.");
             }
             os.flush();
             if (cache != null && cache) {
@@ -575,10 +571,10 @@ public final class DOMReference extends DOMStructure
         } catch (NoSuchAlgorithmException | TransformException | MarshalException
                 | IOException | org.apache.xml.security.c14n.CanonicalizationException e) {
             throw new XMLSignatureException(e);
-        } finally { //NOPMD
-            if (xi != null && xi.getOctetStreamReal() != null) {
+        } finally {
+            if (xi != null && xi.hasUnprocessedInput()) {
                 try {
-                    xi.getOctetStreamReal().close();
+                    xi.getUnprocessedInput().close();
                 } catch (IOException e) {
                     throw new XMLSignatureException(e);
                 }
@@ -655,26 +651,18 @@ public final class DOMReference extends DOMStructure
             XMLSignatureInput xsi = ad.getXMLSignatureInput();
             if (xsi.isNodeSet()) {
                 try {
-                    final Set<Node> s = xsi.getNodeSet();
-                    return new NodeSetData() {
-                        @Override
-                        public Iterator<Node> iterator() { return s.iterator(); }
-                    };
+                    final Set<Node> set = xsi.getNodeSet();
+                    return (NodeSetData) set::iterator;
                 } catch (Exception e) {
-                    // LOG a warning
                     LOG.log(Level.WARNING, "cannot cache dereferenced data", e);
                     return null;
                 }
             } else if (xsi.isElement()) {
-                return new DOMSubTreeData
-                    (xsi.getSubNode(), xsi.isExcludeComments());
-            } else if (xsi.isOctetStream() || xsi.isByteArray()) {
+                return new DOMSubTreeData(xsi.getSubNode(), xsi.isExcludeComments());
+            } else if (xsi.hasUnprocessedInput()) {
                 try {
-                    return new OctetStreamData
-                        (xsi.getOctetStream(), xsi.getSourceURI(),
-                         xsi.getMIMEType());
+                    return new OctetStreamData(xsi.getUnprocessedInput(), xsi.getSourceURI(), xsi.getMIMEType());
                 } catch (IOException ioe) {
-                    // LOG a warning
                     LOG.log(Level.WARNING, "cannot cache dereferenced data", ioe);
                     return null;
                 }
