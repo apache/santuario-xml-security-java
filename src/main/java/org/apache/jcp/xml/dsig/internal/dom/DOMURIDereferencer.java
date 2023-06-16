@@ -101,10 +101,10 @@ public final class DOMURIDereferencer implements URIDereferencer {
                 }
 
                 result.setMIMEType("text/xml");
-                if (baseURI != null && baseURI.length() > 0) {
-                    result.setSourceURI(baseURI.concat(uriAttr.getNodeValue()));
-                } else {
+                if (baseURI == null || baseURI.isEmpty()) {
                     result.setSourceURI(uriAttr.getNodeValue());
+                } else {
+                    result.setSourceURI(baseURI.concat(uriAttr.getNodeValue()));
                 }
                 return new ApacheNodeSetData(result);
             }
@@ -116,9 +116,8 @@ public final class DOMURIDereferencer implements URIDereferencer {
                 XMLSignatureInput in = ResourceResolver.resolve(resContext);
                 if (in.hasUnprocessedInput()) {
                     return new ApacheOctetStreamData(in);
-                } else {
-                    return new ApacheNodeSetData(in);
                 }
+                return new ApacheNodeSetData(in);
             } catch (Exception e) {
                 throw new URIReferenceException(e);
             }

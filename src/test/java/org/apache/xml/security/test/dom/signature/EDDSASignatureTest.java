@@ -51,7 +51,7 @@ import org.w3c.dom.Element;
  * Tests of the EDDSA Ed25519 and Ed448 signatures.
  * @since 2.3.3.
  */
-public class EDDSASignatureTest extends EdDSATestAbstract {
+class EDDSASignatureTest extends EdDSATestAbstract {
     static {
         if (!org.apache.xml.security.Init.isInitialized()) {
             org.apache.xml.security.Init.init();
@@ -59,7 +59,7 @@ public class EDDSASignatureTest extends EdDSATestAbstract {
     }
 
     @Test
-    public void testEd22519() throws Exception {
+    void testEd22519() throws Exception {
 
         KeyStore keyStore = KeyStore.getInstance(EDDSA_KS_TYPE);
         keyStore.load(Files.newInputStream(Paths.get(EDDSA_KS)), EDDSA_KS_PASSWORD.toCharArray());
@@ -71,7 +71,7 @@ public class EDDSASignatureTest extends EdDSATestAbstract {
     }
 
     @Test
-    public void testEd22519VerifyXML() throws Exception {
+    void testEd22519VerifyXML() throws Exception {
 
         try (InputStream xmlSignatureExample
                      = EDDSASignatureTest.class.getResourceAsStream("/org/apache/xml/security/samples/input/eddsaEd25519Signature.xml")) {
@@ -80,7 +80,7 @@ public class EDDSASignatureTest extends EdDSATestAbstract {
     }
 
     @Test
-    public void testEd448VerifyXML() throws Exception {
+    void testEd448VerifyXML() throws Exception {
 
         try (InputStream xmlSignatureExample
                      = EDDSASignatureTest.class.getResourceAsStream("/org/apache/xml/security/samples/input/eddsaEd448Signature.xml")) {
@@ -89,7 +89,7 @@ public class EDDSASignatureTest extends EdDSATestAbstract {
     }
 
     @Test
-    public void testEd448() throws Exception {
+    void testEd448() throws Exception {
 
         KeyStore keyStore = KeyStore.getInstance(EDDSA_KS_TYPE);
         keyStore.load(Files.newInputStream(Paths.get(EDDSA_KS)), EDDSA_KS_PASSWORD.toCharArray());
