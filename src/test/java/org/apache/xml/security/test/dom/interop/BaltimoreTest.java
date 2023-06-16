@@ -18,17 +18,16 @@
  */
 package org.apache.xml.security.test.dom.interop;
 
-import org.apache.xml.security.signature.MissingResourceFailureException;
-import org.apache.xml.security.test.dom.utils.resolver.OfflineResolver;
-import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
-
-import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
-
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 
+import org.apache.xml.security.signature.MissingResourceFailureException;
 import org.apache.xml.security.signature.XMLSignatureException;
+import org.apache.xml.security.test.dom.utils.resolver.OfflineResolver;
+import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
+import org.junit.jupiter.api.Test;
 
+import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -70,7 +69,7 @@ public class BaltimoreTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_fifteen_enveloping_hmac_sha1() throws Exception {
 
         File filename = new File(merlinsDir15, "signature-enveloping-hmac-sha1.xml");
@@ -89,7 +88,7 @@ public class BaltimoreTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_fifteen_enveloping_hmac_sha1_40() throws Exception {
 
         File filename = new File(merlinsDir15, "signature-enveloping-hmac-sha1-40.xml");
@@ -115,7 +114,7 @@ public class BaltimoreTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_fifteen_enveloped_dsa() throws Exception {
 
         File filename = new File(merlinsDir15, "signature-enveloped-dsa.xml");
@@ -142,7 +141,7 @@ public class BaltimoreTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_fifteen_enveloping_b64_dsa() throws Exception {
 
         File filename = new File(merlinsDir15, "signature-enveloping-b64-dsa.xml");
@@ -169,7 +168,7 @@ public class BaltimoreTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_fifteen_enveloping_dsa() throws Exception {
 
         File filename = new File(merlinsDir15, "signature-enveloping-dsa.xml");
@@ -196,7 +195,7 @@ public class BaltimoreTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_fifteen_enveloping_rsa() throws Exception {
 
         File filename = new File(merlinsDir15, "signature-enveloping-rsa.xml");
@@ -223,7 +222,7 @@ public class BaltimoreTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_fifteen_external_b64_dsa() throws Exception {
 
         File filename = new File(merlinsDir15, "signature-external-b64-dsa.xml");
@@ -250,7 +249,7 @@ public class BaltimoreTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_fifteen_external_dsa() throws Exception {
 
         File filename = new File(merlinsDir15, "signature-external-dsa.xml");
@@ -276,7 +275,7 @@ public class BaltimoreTest extends InteropTestBase {
      * Method test_sixteen_bad_signature. This should fail due to lack of support for the here() function
      * as we don't have Xalan installed.
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_sixteen_bad_signature() throws Exception {
 
         File filename = new File(merlinsDir16, "bad-signature.xml");
@@ -296,7 +295,7 @@ public class BaltimoreTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_twenty_three_enveloping_hmac_sha1() throws Exception {
 
         File filename = new File(merlinsDir23, "signature-enveloping-hmac-sha1.xml");
@@ -315,7 +314,7 @@ public class BaltimoreTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_twenty_three_enveloping_hmac_sha1_40() throws Exception {
 
         File filename = new File(merlinsDir23, "signature-enveloping-hmac-sha1-40.xml");
@@ -341,7 +340,7 @@ public class BaltimoreTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_twenty_three_enveloped_dsa() throws Exception {
 
         File filename = new File(merlinsDir23, "signature-enveloped-dsa.xml");
@@ -368,7 +367,7 @@ public class BaltimoreTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_twenty_three_enveloping_b64_dsa() throws Exception {
 
         File filename = new File(merlinsDir23, "signature-enveloping-b64-dsa.xml");
@@ -395,7 +394,7 @@ public class BaltimoreTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_twenty_three_enveloping_dsa() throws Exception {
 
         File filename = new File(merlinsDir23, "signature-enveloping-dsa.xml");
@@ -422,7 +421,7 @@ public class BaltimoreTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_twenty_three_enveloping_rsa() throws Exception {
 
         File filename = new File(merlinsDir23, "signature-enveloping-rsa.xml");
@@ -449,7 +448,7 @@ public class BaltimoreTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_twenty_three_external_b64_dsa() throws Exception {
 
         File filename = new File(merlinsDir23, "signature-external-b64-dsa.xml");
@@ -476,7 +475,7 @@ public class BaltimoreTest extends InteropTestBase {
      *
      * @throws Exception
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_twenty_three_external_dsa() throws Exception {
 
         File filename = new File(merlinsDir23, "signature-external-dsa.xml");

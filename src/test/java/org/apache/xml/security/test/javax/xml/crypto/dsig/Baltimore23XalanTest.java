@@ -32,6 +32,7 @@ import javax.xml.crypto.URIDereferencer;
 import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -68,7 +69,7 @@ public class Baltimore23XalanTest {
         ud = new LocalHttpCacheURIDereferencer();
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature() throws Exception {
 
         //

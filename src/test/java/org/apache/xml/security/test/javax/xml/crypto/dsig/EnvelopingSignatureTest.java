@@ -18,9 +18,6 @@
  */
 package org.apache.xml.security.test.javax.xml.crypto.dsig;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import java.io.InputStream;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -53,15 +50,18 @@ import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 /**
  * A test for Enveloping XML Signature
  */
 public class EnvelopingSignatureTest {
 
-    private KeyPair rsaKeyPair;
-    private XMLSignatureFactory fac;
-    private KeyInfoFactory kif;
-    private DocumentBuilderFactory dbf;
+    private final KeyPair rsaKeyPair;
+    private final XMLSignatureFactory fac;
+    private final KeyInfoFactory kif;
+    private final DocumentBuilderFactory dbf;
 
     static {
         Security.insertProviderAt(new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI(), 1);

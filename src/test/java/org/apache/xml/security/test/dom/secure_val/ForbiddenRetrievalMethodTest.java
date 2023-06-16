@@ -24,6 +24,7 @@ import java.io.File;
 import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -39,7 +40,7 @@ public class ForbiddenRetrievalMethodTest {
         org.apache.xml.security.Init.init();
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testMultipleRetrievalMethods() throws Exception {
         String filename = "src/test/resources/org/apache/xml/security/keyresolver/retrievalmethod3.xml";
         File fis = XmlSecTestEnvironment.resolveFile(filename);

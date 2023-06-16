@@ -22,9 +22,14 @@
 package org.apache.xml.security.test.javax.xml.crypto.dsig;
 
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.crypto.XMLStructure;
-import javax.xml.crypto.dsig.*;
+import javax.xml.crypto.dsig.XMLObject;
+import javax.xml.crypto.dsig.XMLSignatureFactory;
+
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,10 +44,10 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class XMLObjectTest {
 
-    private XMLSignatureFactory factory;
-    private String id = "id";
-    private String mimeType = "mime";
-    private String encoding = "encoding";
+    private final XMLSignatureFactory factory;
+    private final String id = "id";
+    private final String mimeType = "mime";
+    private final String encoding = "encoding";
 
     public XMLObjectTest() throws Exception {
         factory = XMLSignatureFactory.getInstance
@@ -50,7 +55,7 @@ public class XMLObjectTest {
     }
 
     @SuppressWarnings("rawtypes")
-    @org.junit.jupiter.api.Test
+    @Test
     public void testConstructor() {
         // test XMLSignatureFactory.newXMLObject(List, String, String, String)
         XMLObject obj;
@@ -93,7 +98,7 @@ public class XMLObjectTest {
         assertArrayEquals(unmodifiable.toArray(), list.toArray());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testisFeatureSupported() {
         List<XMLStructure> list = new ArrayList<>();
         list.add(new TestUtils.MyOwnXMLStructure());

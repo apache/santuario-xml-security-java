@@ -39,6 +39,7 @@ import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.test.javax.xml.crypto.KeySelectors;
 import org.apache.xml.security.utils.resolver.ResourceResolver;
 import org.apache.xml.security.utils.resolver.implementations.ResolverLocalFilesystem;
+import org.junit.jupiter.api.Test;
 
 import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 import static org.apache.xml.security.test.XmlSecTestEnvironment.resolvePath;
@@ -65,7 +66,7 @@ public class IaikCoreFeaturesTest {
         validator = new SignatureValidator(resolvePath(base, "coreFeatures", "signatures").toFile());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_anonymousReferenceSignature() throws Exception {
         String file = "anonymousReferenceSignature.xml";
 
@@ -74,7 +75,7 @@ public class IaikCoreFeaturesTest {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_manifestSignature() throws Exception {
         String file = "manifestSignature.xml";
 
@@ -83,7 +84,7 @@ public class IaikCoreFeaturesTest {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signatureTypesSignature() throws Exception {
         String file = "signatureTypesSignature.xml";
 

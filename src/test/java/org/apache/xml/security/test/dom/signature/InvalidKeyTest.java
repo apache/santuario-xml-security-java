@@ -26,6 +26,7 @@ import java.security.PublicKey;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -44,7 +45,7 @@ public class InvalidKeyTest {
         Init.init();
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test() throws Exception {
         KeyStore trustStore = KeyStore.getInstance("JKS");
         try (FileInputStream input = new FileInputStream(

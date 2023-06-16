@@ -36,8 +36,10 @@ import org.apache.xml.security.encryption.XMLCipher;
 import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -79,12 +81,12 @@ public class SymmetricEncryptionAlgorithmTest {
         }
     }
 
-    @org.junit.jupiter.api.AfterAll
+    @AfterAll
     public static void cleanup() throws Exception {
         Security.removeProvider("BC");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testAES128() throws Exception {
         // Read in plaintext document
         InputStream sourceDocument =
@@ -116,7 +118,7 @@ public class SymmetricEncryptionAlgorithmTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testAES128_GCM() throws Exception {
         // Read in plaintext document
         InputStream sourceDocument =
@@ -148,7 +150,7 @@ public class SymmetricEncryptionAlgorithmTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testAES192() throws Exception {
         // Read in plaintext document
         InputStream sourceDocument =
@@ -180,7 +182,7 @@ public class SymmetricEncryptionAlgorithmTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testAES192_GCM() throws Exception {
         // Read in plaintext document
         InputStream sourceDocument =
@@ -212,7 +214,7 @@ public class SymmetricEncryptionAlgorithmTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testAES256() throws Exception {
         // Read in plaintext document
         InputStream sourceDocument =
@@ -244,7 +246,7 @@ public class SymmetricEncryptionAlgorithmTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testAES256_GCM() throws Exception {
         // Read in plaintext document
         InputStream sourceDocument =
@@ -276,7 +278,7 @@ public class SymmetricEncryptionAlgorithmTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testTRIPLE_DES() throws Exception {
         // Read in plaintext document
         InputStream sourceDocument =
@@ -307,7 +309,7 @@ public class SymmetricEncryptionAlgorithmTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSEED_128() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
@@ -341,7 +343,7 @@ public class SymmetricEncryptionAlgorithmTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testCAMELLIA_128() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
@@ -375,7 +377,7 @@ public class SymmetricEncryptionAlgorithmTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testCAMELLIA_192() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
@@ -409,7 +411,7 @@ public class SymmetricEncryptionAlgorithmTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testCAMELLIA_256() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 

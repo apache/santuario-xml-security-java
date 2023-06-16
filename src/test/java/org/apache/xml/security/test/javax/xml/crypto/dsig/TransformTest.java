@@ -21,17 +21,21 @@
  */
 package org.apache.xml.security.test.javax.xml.crypto.dsig;
 
+import java.security.InvalidAlgorithmParameterException;
+import java.security.NoSuchAlgorithmException;
+import java.security.Security;
 import java.util.Collections;
+
 import javax.xml.crypto.XMLStructure;
-import javax.xml.crypto.dsig.*;
+import javax.xml.crypto.dsig.Transform;
+import javax.xml.crypto.dsig.XMLSignatureFactory;
 import javax.xml.crypto.dsig.spec.TransformParameterSpec;
-import javax.xml.crypto.dsig.spec.XPathType;
-import javax.xml.crypto.dsig.spec.XPathFilterParameterSpec;
 import javax.xml.crypto.dsig.spec.XPathFilter2ParameterSpec;
+import javax.xml.crypto.dsig.spec.XPathFilterParameterSpec;
+import javax.xml.crypto.dsig.spec.XPathType;
 import javax.xml.crypto.dsig.spec.XSLTTransformParameterSpec;
 
-
-import java.security.*;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -65,11 +69,10 @@ public class TransformTest {
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testisFeatureSupported() throws Exception {
         Transform tm;
-        for (int i = 0; i < TRANSFORM_ALGOS.length; i++) {
-            String algo = TRANSFORM_ALGOS[i];
+        for (String algo : TRANSFORM_ALGOS) {
             TransformParameterSpec params = null;
             if (algo.equals(Transform.XPATH)) {
                 params = new XPathFilterParameterSpec("xPath");
@@ -83,7 +86,7 @@ public class TransformTest {
             tm = factory.newTransform(algo, params);
             try {
                 tm.isFeatureSupported(null);
-                fail(TRANSFORM_ALGOS[i] +
+                fail(algo +
                      ": Should raise a NPE for null feature");
             } catch (NullPointerException npe) {}
 
@@ -91,14 +94,13 @@ public class TransformTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testConstructor() throws Exception {
         // test newTransform(String algorithm,
         //                   AlgorithmParameterSpec params)
         // for generating Transform objects
         Transform tm;
-        for (int i = 0; i < TRANSFORM_ALGOS.length; i++) {
-            String algo = TRANSFORM_ALGOS[i];
+        for (String algo : TRANSFORM_ALGOS) {
             TransformParameterSpec params = null;
             if (algo.equals(Transform.XPATH)) {
                 params = new XPathFilterParameterSpec("xPath");
@@ -115,16 +117,16 @@ public class TransformTest {
                 assertEquals(tm.getAlgorithm(), algo);
                 assertEquals(tm.getParameterSpec(), params);
             } catch (Exception ex) {
-                fail(TRANSFORM_ALGOS[i] + ": Unexpected exception " + ex);
+                fail(algo + ": Unexpected exception " + ex);
             }
             try {
                 tm = factory.newTransform
                     (algo, new TestUtils.MyOwnC14nParameterSpec());
-                fail(TRANSFORM_ALGOS[i] +
+                fail(algo +
                      ": Should raise an IAPE for invalid parameters");
             } catch (InvalidAlgorithmParameterException iape) {
             } catch (Exception ex) {
-                fail(TRANSFORM_ALGOS[i] +
+                fail(algo +
                      ": Should raise a IAPE instead of " + ex);
             }
         }
@@ -148,6 +150,7 @@ public class TransformTest {
     }
 
     private static class XSLTStructure implements XMLStructure {
+        @Override
         public boolean isFeatureSupported(String feature) { return false; }
     }
 }

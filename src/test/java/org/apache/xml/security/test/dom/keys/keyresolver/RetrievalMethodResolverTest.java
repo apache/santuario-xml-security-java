@@ -23,6 +23,7 @@ import java.security.Security;
 import org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI;
 import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 
 import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
@@ -38,7 +39,7 @@ public class RetrievalMethodResolverTest {
         Security.insertProviderAt(new XMLDSigRI(), 1);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testReferenceToSameRetrievalMethod() throws Exception {
         String filename = "src/test/resources/org/apache/xml/security/keyresolver/retrievalmethod1.xml";
         Document doc = XMLUtils.read(resolveFile(filename), false);
@@ -49,7 +50,7 @@ public class RetrievalMethodResolverTest {
         keyInfo.getX509Certificate();
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testLoopBetweenRetrievalMethods() throws Exception {
         String filename = "src/test/resources/org/apache/xml/security/keyresolver/retrievalmethod2.xml";
         Document doc = XMLUtils.read(resolveFile(filename), false);

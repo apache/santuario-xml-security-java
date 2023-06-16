@@ -40,6 +40,7 @@ import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
 import org.apache.xml.security.test.dom.TestUtils;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -67,7 +68,7 @@ public class SignatureAlgorithmTest {
         keyPair = keyPairGenerator.generateKeyPair();
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSameKeySeveralAlgorithmSigning() throws Exception {
         Document doc = TestUtils.newDocument();
         SignatureAlgorithm signatureAlgorithm =
@@ -93,7 +94,7 @@ public class SignatureAlgorithmTest {
         otherSignatureAlgorithm.sign();
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testConstructionWithProvider() throws Exception {
         Field algorithmHashField = SignatureAlgorithm.class.getDeclaredField("algorithmHash");
         algorithmHashField.setAccessible(true);
@@ -117,7 +118,7 @@ public class SignatureAlgorithmTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testRSASigningKeyIsPrivateKey() throws Exception {
         Document doc = TestUtils.newDocument();
         SignatureAlgorithm signatureAlgorithm =
@@ -127,7 +128,7 @@ public class SignatureAlgorithmTest {
             signatureAlgorithm.initSign(secretKey));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testDSASigningKeyIsPrivateKey() throws Exception {
         Document doc = TestUtils.newDocument();
         SignatureAlgorithm signatureAlgorithm =
@@ -137,7 +138,7 @@ public class SignatureAlgorithmTest {
                 signatureAlgorithm.initSign(secretKey));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testECDSASigningKeyIsPrivateKey() throws Exception {
         Document doc = TestUtils.newDocument();
         SignatureAlgorithm signatureAlgorithm =
@@ -147,7 +148,7 @@ public class SignatureAlgorithmTest {
                 signatureAlgorithm.initSign(secretKey));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testRSAVerifyingKeyIsPublicKey() throws Exception {
         Document doc = TestUtils.newDocument();
         SignatureAlgorithm signatureAlgorithm =
@@ -157,7 +158,7 @@ public class SignatureAlgorithmTest {
                 signatureAlgorithm.initVerify(secretKey));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testDSAVerifyingKeyIsPublicKey() throws Exception {
         Document doc = TestUtils.newDocument();
         SignatureAlgorithm signatureAlgorithm =
@@ -167,7 +168,7 @@ public class SignatureAlgorithmTest {
                 signatureAlgorithm.initVerify(secretKey));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testECDSAVerifyingKeyIsPublicKey() throws Exception {
         Document doc = TestUtils.newDocument();
         SignatureAlgorithm signatureAlgorithm =
@@ -177,7 +178,7 @@ public class SignatureAlgorithmTest {
                 signatureAlgorithm.initVerify(secretKey));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testHMACSigningKeyIsSecretKey() throws Exception {
         Document doc = TestUtils.newDocument();
         SignatureAlgorithm signatureAlgorithm =
@@ -187,7 +188,7 @@ public class SignatureAlgorithmTest {
                 signatureAlgorithm.initSign(keyPair.getPrivate()));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testHMACVerifyingKeyIsSecretKey() throws Exception {
         Document doc = TestUtils.newDocument();
         SignatureAlgorithm signatureAlgorithm =
@@ -197,7 +198,7 @@ public class SignatureAlgorithmTest {
                 signatureAlgorithm.initVerify(keyPair.getPublic()));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testAlreadyRegisteredException() throws Exception {
         assertThrows(AlgorithmAlreadyRegisteredException.class, () ->
             SignatureAlgorithm.register(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA256,
@@ -205,7 +206,7 @@ public class SignatureAlgorithmTest {
         );
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testAlreadyRegisteredExceptionFromString() throws Exception {
         assertThrows(AlgorithmAlreadyRegisteredException.class, () ->
                 SignatureAlgorithm.register(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA256,

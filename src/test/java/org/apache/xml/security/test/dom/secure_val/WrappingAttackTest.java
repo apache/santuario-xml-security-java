@@ -26,6 +26,7 @@ import org.apache.xml.security.signature.XMLSignatureException;
 import org.apache.xml.security.test.dom.interop.InteropTestBase;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Element;
 
 import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
@@ -43,7 +44,7 @@ public class WrappingAttackTest extends InteropTestBase {
         org.apache.xml.security.Init.init();
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testWrappingAttack() throws Exception {
         boolean success = readAndVerifySignature("manifestSignatureWrapping.xml");
         assertTrue(success);

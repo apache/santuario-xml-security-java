@@ -43,6 +43,7 @@ import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Element;
 
 
@@ -57,7 +58,7 @@ public class EDDSASignatureTest extends EdDSATestAbstract {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testEd22519() throws Exception {
 
         KeyStore keyStore = KeyStore.getInstance(EDDSA_KS_TYPE);
@@ -69,7 +70,7 @@ public class EDDSASignatureTest extends EdDSATestAbstract {
         doVerify(doSign(privateKey, (X509Certificate) keyStore.getCertificate("Ed25519"), null, XMLSignature.ALGO_ID_SIGNATURE_EDDSA_ED25519));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testEd22519VerifyXML() throws Exception {
 
         try (InputStream xmlSignatureExample
@@ -78,7 +79,7 @@ public class EDDSASignatureTest extends EdDSATestAbstract {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testEd448VerifyXML() throws Exception {
 
         try (InputStream xmlSignatureExample
@@ -87,7 +88,7 @@ public class EDDSASignatureTest extends EdDSATestAbstract {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testEd448() throws Exception {
 
         KeyStore keyStore = KeyStore.getInstance(EDDSA_KS_TYPE);

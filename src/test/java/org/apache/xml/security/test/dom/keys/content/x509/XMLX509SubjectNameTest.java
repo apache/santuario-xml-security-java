@@ -25,6 +25,7 @@ import java.security.cert.X509Certificate;
 
 import org.apache.xml.security.keys.content.x509.XMLX509SubjectName;
 import org.apache.xml.security.test.dom.TestUtils;
+import org.junit.jupiter.api.Test;
 
 import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -36,9 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  */
 public class XMLX509SubjectNameTest {
 
-    private static final String SEP = System.getProperty("file.separator");
-
-    @org.junit.jupiter.api.Test
+    @Test
     public void testEqualsAndHashCode() throws Exception {
         File f = resolveFile("src/test/resources/ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/certs/lugh.crt");
         X509Certificate cert;

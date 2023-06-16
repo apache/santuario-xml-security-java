@@ -32,6 +32,7 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -43,7 +44,7 @@ public class X509DataTest {
 
     KeyStore ks;
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testAddX509SubjectName() throws Exception {
         Init.init();
 

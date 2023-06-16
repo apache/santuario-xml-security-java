@@ -20,6 +20,8 @@ package org.apache.xml.security.test.dom.c14n.helper;
 
 
 import org.apache.xml.security.c14n.helper.C14nHelper;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -38,7 +40,7 @@ public class C14nHelperTest {
     /**
      * Method testNamespaceIsAbsolute01
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void testNamespaceIsAbsolute01() {
 
         String namespaceURI = "http://www.w3.org/Signature/";
@@ -49,7 +51,7 @@ public class C14nHelperTest {
     /**
      * @see <A HREF="http://lists.w3.org/Archives/Public/w3c-ietf-xmldsig/2001JulSep/0068.html">The list</A>
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void testNamespaceIsAbsolute02() {
 
         String namespaceURI = "http://www.w3.org/../blah";
@@ -60,7 +62,7 @@ public class C14nHelperTest {
     /**
      * Method testNamespaceIsAbsolute03
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void testNamespaceIsAbsolute03() {
 
         // unknown protocol?
@@ -72,7 +74,7 @@ public class C14nHelperTest {
     /**
      * Method testNamespaceIsRelative01
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void testNamespaceIsRelative01() {
 
         String namespaceURI = "../blah";
@@ -83,7 +85,7 @@ public class C14nHelperTest {
     /**
      * Method testNamespaceIsRelative02
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void testNamespaceIsRelative02() {
 
         String namespaceURI = "blah";
@@ -94,8 +96,8 @@ public class C14nHelperTest {
     /**
      * Method testNamespaceIsRelative03
      */
-    @org.junit.jupiter.api.Test
-    @org.junit.jupiter.api.Disabled
+    @Test
+    @Disabled
     public void testNamespaceIsRelative03() {
 
         String namespaceURI = "http://...";

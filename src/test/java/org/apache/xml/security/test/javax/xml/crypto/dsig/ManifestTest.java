@@ -22,8 +22,15 @@
 package org.apache.xml.security.test.javax.xml.crypto.dsig;
 
 
-import java.util.*;
-import javax.xml.crypto.dsig.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
+
+import javax.xml.crypto.dsig.Manifest;
+import javax.xml.crypto.dsig.Reference;
+import javax.xml.crypto.dsig.XMLSignatureFactory;
+
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -37,7 +44,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  *
  */
 public class ManifestTest {
-    private XMLSignatureFactory fac;
+    private final XMLSignatureFactory fac;
 
     private static Reference VALID_REF = new
         TestUtils.MyOwnDOMReference("ref#1", true);
@@ -50,7 +57,7 @@ public class ManifestTest {
     }
 
     @SuppressWarnings("rawtypes")
-    @org.junit.jupiter.api.Test
+    @Test
     public void testConstructor() throws Exception {
         Manifest man = null;
         String id = "manifest_id";
@@ -142,7 +149,7 @@ public class ManifestTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testisFeatureSupported() throws Exception {
         List<Reference> refs = new ArrayList<>();
         refs.add(VALID_REF);
@@ -157,7 +164,7 @@ public class ManifestTest {
         assertFalse(man.isFeatureSupported("not supported"));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testgetReferences() throws Exception {
         List<Reference> refs = new ArrayList<>();
         refs.add(VALID_REF);

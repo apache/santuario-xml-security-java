@@ -21,10 +21,13 @@
  */
 package org.apache.xml.security.test.javax.xml.crypto.dsig;
 
-import javax.xml.crypto.dsig.*;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.NoSuchAlgorithmException;
 
+import javax.xml.crypto.dsig.SignatureMethod;
+import javax.xml.crypto.dsig.XMLSignatureFactory;
 
-import java.security.*;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -51,11 +54,10 @@ public class SignatureMethodTest {
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testisFeatureSupported() throws Exception {
         SignatureMethod sm;
-        for (int i = 0; i < SIG_ALGOS.length; i++) {
-            String algo = SIG_ALGOS[i];
+        for (String algo : SIG_ALGOS) {
             sm = factory.newSignatureMethod(algo, null);
             try {
                 sm.isFeatureSupported(null);
@@ -66,14 +68,13 @@ public class SignatureMethodTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testConstructor() throws Exception {
         // test XMLSignatureFactory.newAlgorithmMethod
         // (String algorithm, AlgorithmParameterSpec params)
         // for generating SignatureMethod objects
         SignatureMethod sm;
-        for (int i = 0; i < SIG_ALGOS.length; i++) {
-            String algo = SIG_ALGOS[i];
+        for (String algo : SIG_ALGOS) {
             sm = factory.newSignatureMethod(algo, null);
             assertEquals(sm.getAlgorithm(), algo);
 

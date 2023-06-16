@@ -47,6 +47,7 @@ import org.apache.xml.security.utils.I18n;
 import org.apache.xml.security.utils.JDKXPathFactory;
 import org.apache.xml.security.utils.XMLUtils;
 import org.apache.xml.security.utils.resolver.ResourceResolver;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -77,7 +78,7 @@ public class JDKXPathFactoryTest {
         kp = KeyPairGenerator.getInstance("RSA").genKeyPair();
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testXPathSignature() throws Exception {
         Document doc = TestUtils.newDocument();
         doc.appendChild(doc.createComment(" Comment before "));

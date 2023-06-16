@@ -38,6 +38,7 @@ import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -54,7 +55,7 @@ public class XMLParserTest {
     static org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(XMLParserTest.class);
 
-    private KeyPair rsaKeyPair;
+    private final KeyPair rsaKeyPair;
 
     @BeforeAll
     public static void setup() {
@@ -71,7 +72,7 @@ public class XMLParserTest {
         rsaKeyPair = KeyPairGenerator.getInstance("RSA").genKeyPair();
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testRSA_SHA1() throws Exception {
         assertFalse(CustomXMLParserImpl.isCalled());
 

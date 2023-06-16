@@ -53,6 +53,7 @@ import org.apache.xml.security.test.stax.signature.TestSecurityEventListener;
 import org.apache.xml.security.test.stax.utils.StAX2DOM;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -70,8 +71,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class SymmetricEncryptionVerificationTest {
 
     private static boolean bcInstalled;
-    private XMLInputFactory xmlInputFactory;
-    private TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    private final XMLInputFactory xmlInputFactory;
+    private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
     @BeforeAll
     public static void setup() throws Exception {
@@ -102,7 +103,7 @@ public class SymmetricEncryptionVerificationTest {
         xmlInputFactory.setEventAllocator(new XMLSecEventAllocator());
     }
 
-    @org.junit.jupiter.api.AfterAll
+    @AfterAll
     public static void cleanup() throws Exception {
         Security.removeProvider("BC");
     }

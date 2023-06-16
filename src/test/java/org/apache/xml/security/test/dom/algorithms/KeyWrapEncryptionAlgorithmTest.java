@@ -41,8 +41,10 @@ import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -87,12 +89,12 @@ public class KeyWrapEncryptionAlgorithmTest {
         rsaKeyPair = KeyPairGenerator.getInstance("RSA").genKeyPair();
     }
 
-    @org.junit.jupiter.api.AfterAll
+    @AfterAll
     public static void cleanup() throws Exception {
         Security.removeProvider("BC");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testAES128KW() throws Exception {
         // Read in plaintext document
         InputStream sourceDocument =
@@ -132,7 +134,7 @@ public class KeyWrapEncryptionAlgorithmTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testAES192KW() throws Exception {
         // Read in plaintext document
         InputStream sourceDocument =
@@ -172,7 +174,7 @@ public class KeyWrapEncryptionAlgorithmTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testAES256KW() throws Exception {
         // Read in plaintext document
         InputStream sourceDocument =
@@ -212,7 +214,7 @@ public class KeyWrapEncryptionAlgorithmTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testTripleDESKW() throws Exception {
         // Read in plaintext document
         InputStream sourceDocument =
@@ -250,7 +252,7 @@ public class KeyWrapEncryptionAlgorithmTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testRSAv15KW() throws Exception {
         // Read in plaintext document
         InputStream sourceDocument =
@@ -286,7 +288,7 @@ public class KeyWrapEncryptionAlgorithmTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testRSAOAEPKW() throws Exception {
         // Read in plaintext document
         InputStream sourceDocument =
@@ -322,7 +324,7 @@ public class KeyWrapEncryptionAlgorithmTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testRSAOAEP11KW() throws Exception {
         // Read in plaintext document
         InputStream sourceDocument =
@@ -358,7 +360,7 @@ public class KeyWrapEncryptionAlgorithmTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testCamellia128KW() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
@@ -400,7 +402,7 @@ public class KeyWrapEncryptionAlgorithmTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testCamellia192KW() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
@@ -442,7 +444,7 @@ public class KeyWrapEncryptionAlgorithmTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testCamellia256KW() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
@@ -484,7 +486,7 @@ public class KeyWrapEncryptionAlgorithmTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSEED128KW() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 

@@ -34,6 +34,7 @@ import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.test.dom.interop.InteropTestBase;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.Constants;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -50,7 +51,7 @@ public class ForbiddenRefCountTest extends InteropTestBase {
         org.apache.xml.security.Init.init();
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testReferenceCount() throws Exception {
         Document doc = getOriginalDocument();
         signDocument(doc, 31);

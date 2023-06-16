@@ -28,6 +28,7 @@ import java.security.Security;
 import org.apache.xml.security.test.javax.xml.crypto.KeySelectors;
 import org.apache.xml.security.utils.resolver.ResourceResolver;
 import org.apache.xml.security.utils.resolver.implementations.ResolverLocalFilesystem;
+import org.junit.jupiter.api.Test;
 
 import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 import static org.apache.xml.security.test.XmlSecTestEnvironment.resolvePath;
@@ -52,7 +53,7 @@ public class IaikTransformsTest {
         validator = new SignatureValidator(resolveFile(base, "transforms", "signatures"));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_base64DecodeSignature() throws Exception {
         String file = "base64DecodeSignature.xml";
 
@@ -62,7 +63,7 @@ public class IaikTransformsTest {
 
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_envelopedSignatureSignature() throws Exception {
         String file = "envelopedSignatureSignature.xml";
 
@@ -71,7 +72,7 @@ public class IaikTransformsTest {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_c14nSignature() throws Exception {
         String file = "c14nSignature.xml";
 
@@ -80,7 +81,7 @@ public class IaikTransformsTest {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_xPathSignature() throws Exception {
         String file = "xPathSignature.xml";
 

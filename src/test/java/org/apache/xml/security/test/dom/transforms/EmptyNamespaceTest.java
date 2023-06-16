@@ -18,13 +18,6 @@
  */
 package org.apache.xml.security.test.dom.transforms;
 
-import org.apache.xml.security.c14n.implementations.Canonicalizer20010315Excl;
-import org.apache.xml.security.c14n.implementations.Canonicalizer20010315ExclOmitComments;
-import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer20010315_Excl;
-import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer20010315_ExclOmitCommentsTransformer;
-import org.apache.xml.security.utils.XMLUtils;
-import org.w3c.dom.Document;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -32,6 +25,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.xml.security.c14n.implementations.Canonicalizer20010315Excl;
+import org.apache.xml.security.c14n.implementations.Canonicalizer20010315ExclOmitComments;
+import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer20010315_Excl;
+import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer20010315_ExclOmitCommentsTransformer;
+import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Test;
+import org.w3c.dom.Document;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -65,7 +66,7 @@ public class EmptyNamespaceTest {
             "\t</ec:SubmitRetrieveInterchangeAgreementsRequestResponse>\n" +
             "</SOAP-ENV:Body>";
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void doStAXTest() throws Exception {
         org.apache.xml.security.Init.init();
         org.apache.xml.security.stax.config.Init.init(null, EmptyNamespaceTest.class);
@@ -89,7 +90,7 @@ public class EmptyNamespaceTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void doDOMTest() throws Exception {
         org.apache.xml.security.Init.init();
         org.apache.xml.security.stax.config.Init.init(null, EmptyNamespaceTest.class);

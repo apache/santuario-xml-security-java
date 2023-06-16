@@ -34,6 +34,7 @@ import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -48,7 +49,7 @@ public class HMACOutputLengthTest {
         Init.init();
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_enveloping_hmac_sha1_trunclen_0() throws Exception {
         try {
             validate("signature-enveloping-hmac-sha1-trunclen-0-attack.xml");
@@ -61,7 +62,7 @@ public class HMACOutputLengthTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_signature_enveloping_hmac_sha1_trunclen_8() throws Exception {
         try {
             validate("signature-enveloping-hmac-sha1-trunclen-8-attack.xml");
@@ -73,7 +74,7 @@ public class HMACOutputLengthTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_generate_hmac_sha1_40() throws Exception {
         Document doc = TestUtils.newDocument();
         try {
@@ -90,7 +91,7 @@ public class HMACOutputLengthTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testValidHMACOutputLength() throws Exception {
         Document doc = TestUtils.newDocument();
 

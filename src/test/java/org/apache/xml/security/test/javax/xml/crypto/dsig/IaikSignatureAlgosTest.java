@@ -29,6 +29,7 @@ import java.security.Security;
 import javax.xml.crypto.dsig.XMLSignatureException;
 
 import org.apache.xml.security.test.javax.xml.crypto.KeySelectors;
+import org.junit.jupiter.api.Test;
 
 import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 import static org.apache.xml.security.test.XmlSecTestEnvironment.resolvePath;
@@ -54,7 +55,7 @@ public class IaikSignatureAlgosTest {
         validator = new SignatureValidator(resolveFile(base, "signatureAlgorithms", "signatures"));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_dsaSignature() throws Exception {
         String file = "dSASignature.xml";
 
@@ -63,7 +64,7 @@ public class IaikSignatureAlgosTest {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_rsaSignature() throws Exception {
         String file = "rSASignature.xml";
 
@@ -72,7 +73,7 @@ public class IaikSignatureAlgosTest {
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_hmacShortSignature() throws Exception {
         String file = "hMACShortSignature.xml";
 
@@ -86,7 +87,7 @@ public class IaikSignatureAlgosTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_hmacSignature() throws Exception {
         String file = "hMACSignature.xml";
 

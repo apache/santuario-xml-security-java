@@ -18,13 +18,11 @@
  */
 package org.apache.xml.security.test.stax.c14n;
 
-import org.junit.jupiter.api.Test;
-
-import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
-import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer11_OmitCommentsTransformer;
-import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer11_WithCommentsTransformer;
-import org.apache.xml.security.stax.impl.transformer.canonicalizer.CanonicalizerBase;
-import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
@@ -32,12 +30,13 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLResolver;
 import javax.xml.stream.XMLStreamException;
 
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
+import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
+import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer11_OmitCommentsTransformer;
+import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer11_WithCommentsTransformer;
+import org.apache.xml.security.stax.impl.transformer.canonicalizer.CanonicalizerBase;
+import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -220,7 +219,7 @@ public class Canonicalizer11Test {
      * @see <A HREF="http://www.w3.org/TR/2007/CR-xml-c14n11-20070621/#Example-DocSubsetsXMLAttrs">the example from the spec</A>
      */
     @Test
-    @org.junit.jupiter.api.Disabled
+    @Disabled
     public void test38() throws Exception {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

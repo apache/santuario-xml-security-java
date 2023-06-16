@@ -27,6 +27,7 @@ import java.security.Security;
 
 import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.test.javax.xml.crypto.KeySelectors;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -49,7 +50,7 @@ public class ComRSASecurityTest {
     }
 
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_certj201_enveloping() throws Exception {
         String file = "certj201_enveloping.xml";
 
@@ -58,7 +59,7 @@ public class ComRSASecurityTest {
     }
 
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void test_certj201_enveloped() throws Exception {
         String file = "certj201_enveloped.xml";
 

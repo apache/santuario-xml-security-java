@@ -22,8 +22,15 @@
 package org.apache.xml.security.test.javax.xml.crypto.dsig;
 
 
-import java.util.*;
-import javax.xml.crypto.dsig.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import javax.xml.crypto.dsig.SignatureProperties;
+import javax.xml.crypto.dsig.SignatureProperty;
+import javax.xml.crypto.dsig.XMLSignatureFactory;
+
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -38,9 +45,9 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class SignaturePropertiesTest {
 
-    private XMLSignatureFactory factory;
-    private String id = "id";
-    private SignatureProperty prop;
+    private final XMLSignatureFactory factory;
+    private final String id = "id";
+    private final SignatureProperty prop;
 
     public SignaturePropertiesTest() throws Exception {
         factory = XMLSignatureFactory.getInstance
@@ -51,7 +58,7 @@ public class SignaturePropertiesTest {
     }
 
     @SuppressWarnings("rawtypes")
-    @org.junit.jupiter.api.Test
+    @Test
     public void testConstructor() {
         // test XMLSignatureFactory.newSignatureProperties(List, String)
         SignatureProperties props;
@@ -103,7 +110,7 @@ public class SignaturePropertiesTest {
         assertEquals(props.getId(), id);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testisFeatureSupported() {
         List<SignatureProperty> list = new ArrayList<>();
         list.add(prop);

@@ -22,11 +22,17 @@
 package org.apache.xml.security.test.javax.xml.crypto.dsig;
 
 
-import java.security.*;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.NoSuchAlgorithmException;
+import java.security.Security;
 import java.security.spec.AlgorithmParameterSpec;
-import javax.xml.crypto.dsig.*;
+
+import javax.xml.crypto.dsig.CanonicalizationMethod;
+import javax.xml.crypto.dsig.XMLSignatureFactory;
 import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 import javax.xml.crypto.dsig.spec.ExcC14NParameterSpec;
+
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -61,7 +67,7 @@ public class CanonicalizationMethodTest {
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testIsFeatureSupported() throws Exception {
         CanonicalizationMethod cm;
         for (int i = 0; i < C14N_ALGOS.length; i++) {
@@ -80,7 +86,7 @@ public class CanonicalizationMethodTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testConstructor() throws Exception {
         // test newAlgorithmMethod(String algorithm,
         //                         AlgorithmParameterSpec params)

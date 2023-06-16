@@ -39,6 +39,7 @@ import org.apache.xml.security.utils.resolver.ResourceResolver;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -62,7 +63,7 @@ public class InitTest {
         System.clearProperty("org.apache.xml.security.resource.config");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testFileInit() throws Exception {
         assertFalse(Init.isInitialized());
         Init.init();
@@ -73,7 +74,7 @@ public class InitTest {
         assertEquals("MessageDigest", JCEMapper.getAlgorithmClassFromURI(MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void checkConfigFileImplementationsExist() throws Exception {
         try (InputStream is = ClassLoaderUtils.getResourceAsStream(CONFIG_FILE, InitTest.class)) {
             /* read library configuration file */

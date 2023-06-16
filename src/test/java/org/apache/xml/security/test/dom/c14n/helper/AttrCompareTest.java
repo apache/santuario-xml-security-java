@@ -24,6 +24,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.xml.security.c14n.helper.AttrCompare;
 import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.utils.Constants;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -50,7 +51,7 @@ public class AttrCompareTest {
      *
      * @throws ParserConfigurationException
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void testA1() throws ParserConfigurationException {
 
         Document doc = createDoc("documentElement");
@@ -77,7 +78,7 @@ public class AttrCompareTest {
         assertTrue(attrCompare.compare(attr1, attr0) > 0, attr1 + " < " + attr0);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testA2() throws ParserConfigurationException {
 
         Document doc = createDoc("documentElement");
@@ -98,7 +99,7 @@ public class AttrCompareTest {
      *
      * @throws ParserConfigurationException
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void __testA2() throws ParserConfigurationException {
 
         Document doc = createDoc("documentElement");
@@ -134,7 +135,7 @@ public class AttrCompareTest {
      *
      * @throws ParserConfigurationException
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void testComplete() throws ParserConfigurationException {
 
         /* <e5 xmlns="http://example.org"

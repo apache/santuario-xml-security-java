@@ -22,9 +22,12 @@
 package org.apache.xml.security.test.javax.xml.crypto;
 
 
-import java.io.*;
-import java.util.*;
-import javax.xml.crypto.*;
+import java.io.ByteArrayInputStream;
+import java.util.Random;
+
+import javax.xml.crypto.OctetStreamData;
+
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -38,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class OctetStreamDataTest {
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testConstructor() throws Exception {
         // test OctetStreamData(InputStream) and
         // OctetStreamData(InputStream, String, String)

@@ -29,6 +29,7 @@ import java.security.Security;
 import javax.xml.crypto.dsig.CanonicalizationMethod;
 
 import org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI;
+import org.junit.jupiter.api.Test;
 
 import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 
@@ -42,7 +43,7 @@ public class ClassLoaderTest {
     private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(ClassLoaderTest.class);
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testMultipleLoaders() throws Exception {
         File file0 = resolveFile("build", "classes");
         File file1 = resolveFile("build", "test");
@@ -62,7 +63,7 @@ public class ClassLoaderTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testProviderMultipleLoaders() throws Exception {
         File file0 = resolveFile("build", "classes");
         File file1 = resolveFile("build", "test");
@@ -95,7 +96,7 @@ public class ClassLoaderTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testProviderMultipleLoadersTwo() throws Exception {
         File file0 = resolveFile("build", "classes");
         File file1 = resolveFile("build", "test");

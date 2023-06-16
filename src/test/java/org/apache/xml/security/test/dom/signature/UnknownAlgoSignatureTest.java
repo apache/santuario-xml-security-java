@@ -35,6 +35,7 @@ import org.apache.xml.security.signature.XMLSignatureException;
 import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -71,12 +72,12 @@ public class UnknownAlgoSignatureTest {
         publicKey = cert.getPublicKey();
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testGood() throws Exception {
         assertTrue(checkSignature("signature-good.xml"));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testBadC14NAlgo() throws Exception {
         try {
             assertTrue(checkSignature("signature-bad-c14n-algo.xml"));
@@ -86,7 +87,7 @@ public class UnknownAlgoSignatureTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testBadSigAlgo() throws Exception {
         try {
             assertTrue(checkSignature("signature-bad-sig-algo.xml"));
@@ -96,7 +97,7 @@ public class UnknownAlgoSignatureTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testBadTransformAlgo() throws Exception {
         try {
             assertTrue(checkReferences("signature-bad-transform-algo.xml"));

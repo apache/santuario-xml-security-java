@@ -60,6 +60,7 @@ import javax.xml.crypto.dsig.spec.TransformParameterSpec;
 
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -129,7 +130,7 @@ public class XMLSignatureTest {
     }
 
     @SuppressWarnings("rawtypes")
-    @org.junit.jupiter.api.Test
+    @Test
     public void testConstructor() throws Exception {
         XMLSignature sig = null;
         // test XMLSignatureFactory.newXMLSignature(SignedInfo, KeyInfo)
@@ -178,7 +179,7 @@ public class XMLSignatureTest {
         assertEquals(sig.getSignedInfo(), defSi);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testisFeatureSupported() throws Exception {
 
         XMLSignature sig = fac.newXMLSignature(defSi, null);
@@ -191,7 +192,7 @@ public class XMLSignatureTest {
         assertFalse(sig.isFeatureSupported("not supported"));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testsignANDvalidate() throws Exception {
         XMLSignature sig;
         SignedInfo si;
@@ -224,7 +225,7 @@ public class XMLSignatureTest {
         assertTrue(status);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSignWithProvider() throws Exception {
         XMLSignature sig;
         SignedInfo si;
@@ -260,7 +261,7 @@ public class XMLSignatureTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSignWithEmptyNSPrefix() throws Exception {
         SignedInfo si = createSignedInfo(SIG_METHODS[1]);
         KeyInfo ki = kifac.newKeyInfo(Collections.singletonList
@@ -278,7 +279,7 @@ public class XMLSignatureTest {
 */
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSignWithReferenceManifestDependencies() throws Exception {
         // create references
         DigestMethod dm = fac.newDigestMethod(DigestMethod.SHA1, null);
@@ -335,7 +336,7 @@ public class XMLSignatureTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSignTemplateWithObjectNSDefs() throws Exception {
         File f = resolveFile(
             "src/test/resources/org/apache/xml/security/test/javax/xml/crypto/dsig/signature-enveloping-rsa-template.xml");
@@ -372,7 +373,7 @@ public class XMLSignatureTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testCreateSignatureWithEmptyId() throws Exception {
         // create references
         DigestMethod dm = fac.newDigestMethod(DigestMethod.SHA1, null);
@@ -401,7 +402,7 @@ public class XMLSignatureTest {
         sig.sign(dsc);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testCreateDSA2048Signature() throws Exception {
 
         // check if SHA256withDSA is supported
@@ -428,7 +429,7 @@ public class XMLSignatureTest {
         assertTrue(sig.validate(validateContext));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testBadXPointer() throws Exception {
         Document doc = TestUtils.newDocument();
         Element root = doc.createElementNS(null, "Root");

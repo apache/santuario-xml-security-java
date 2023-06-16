@@ -54,6 +54,7 @@ import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.apache.xml.security.utils.resolver.ResourceResolverException;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
 import org.apache.xml.security.utils.resolver.implementations.ResolverXPointer;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -76,7 +77,7 @@ public class SignatureReferenceTest {
         ElementProxy.setDefaultPrefix(Constants.SignatureSpecNS, "ds");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSigningVerifyingReference() throws Throwable {
         Document doc = getOriginalDocument();
         XMLSignature signature = signDocument(doc);
@@ -105,7 +106,7 @@ public class SignatureReferenceTest {
     }
 
     // See SANTUARIO-465
-    @org.junit.jupiter.api.Test
+    @Test
     public void testNoReferenceChildren() throws ParserConfigurationException, XMLSecurityException {
         Document doc = TestUtils.newDocument();
         Element referenceElement = doc.createElementNS(Constants.SignatureSpecNS, "Reference");
@@ -139,7 +140,7 @@ public class SignatureReferenceTest {
         new WrappedReference(referenceElement, "_54321", null);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testManifestReferences() throws Throwable {
 
         XPathFactory xpf = XPathFactory.newInstance();

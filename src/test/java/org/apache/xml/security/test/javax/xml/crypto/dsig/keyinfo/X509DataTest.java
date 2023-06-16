@@ -21,13 +21,16 @@
  */
 package org.apache.xml.security.test.javax.xml.crypto.dsig.keyinfo;
 
-import java.util.*;
-import java.security.cert.X509Certificate;
-
-
 import java.security.cert.X509CRL;
-import javax.xml.crypto.*;
-import javax.xml.crypto.dsig.keyinfo.*;
+import java.security.cert.X509Certificate;
+import java.util.Collections;
+import java.util.List;
+
+import javax.xml.crypto.XMLStructure;
+import javax.xml.crypto.dsig.keyinfo.KeyInfoFactory;
+import javax.xml.crypto.dsig.keyinfo.X509Data;
+
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -40,40 +43,40 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class X509DataTest {
 
-    private KeyInfoFactory fac;
+    private final KeyInfoFactory fac;
 
     public X509DataTest() throws Exception {
         fac = KeyInfoFactory.getInstance
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testgetTypes() {
         X509Data x509 = fac.newX509Data(Collections.singletonList("cn=foo"));
         List<?> li = x509.getContent();
         assertNotNull(li);
         if (!li.isEmpty()) {
             Object[] content = li.toArray();
-            for (int j=0; j<content.length; j++) {
-                if (!(content[j] instanceof String) &&
-                    !(content[j] instanceof byte[]) &&
-                    !(content[j] instanceof X509Certificate) &&
-                    !(content[j] instanceof X509CRL) &&
-                    !(content[j] instanceof XMLStructure)) {
+            for (Object element : content) {
+                if (!(element instanceof String) &&
+                    !(element instanceof byte[]) &&
+                    !(element instanceof X509Certificate) &&
+                    !(element instanceof X509CRL) &&
+                    !(element instanceof XMLStructure)) {
                     fail("X509 element has the wrong type");
                 }
             }
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testConstructor() {
         // test newX509Data()
         X509Data x509 = fac.newX509Data(Collections.singletonList("cn=foo"));
         assertNotNull(x509);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testisFeatureSupported() {
 
         X509Data x509 = fac.newX509Data(Collections.singletonList("cn=foo"));
