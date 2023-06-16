@@ -91,7 +91,7 @@
     </distributionManagement>
 
     <properties>
-        <bcprov.version>1.73</bcprov.version>
+        <bcprov.version>1.74</bcprov.version>
         <clirr.version>2.8</clirr.version>
         <commons.codec.version>1.15</commons.codec.version>
         <hamcrest.version>2.2</hamcrest.version>
