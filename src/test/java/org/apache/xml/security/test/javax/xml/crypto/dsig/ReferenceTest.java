@@ -28,7 +28,6 @@ import java.security.Security;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -275,10 +274,7 @@ public class ReferenceTest {
                 boolean result = sig.validate(validateContext);
                 assertTrue(result);
 
-                @SuppressWarnings("unchecked")
-                Iterator<Reference> iter = sig.getSignedInfo().getReferences().iterator();
-                while (iter.hasNext()) {
-                    Reference validated_ref = iter.next();
+                for (Reference validated_ref : sig.getSignedInfo().getReferences()) {
                     if (!cache) {
                         assertNull(validated_ref.getDereferencedData());
                         assertNull(validated_ref.getDigestInputStream());
@@ -301,13 +297,14 @@ public class ReferenceTest {
 
     private boolean digestInputEqual(Reference ref) throws Exception {
         MessageDigest md = MessageDigest.getInstance("SHA1");
-        InputStream is = ref.getDigestInputStream();
-        int nbytes;
-        byte[] buf = new byte[256];
-        while ((nbytes = is.read(buf, 0, buf.length)) != -1) {
-            md.update(buf, 0, nbytes);
+        try (InputStream is = ref.getDigestInputStream()) {
+            int nbytes;
+            byte[] buf = new byte[256];
+            while ((nbytes = is.read(buf, 0, buf.length)) != -1) {
+                md.update(buf, 0, nbytes);
+            }
+            return Arrays.equals(md.digest(), ref.getDigestValue());
         }
-        return Arrays.equals(md.digest(), ref.getDigestValue());
     }
 
     @SuppressWarnings({

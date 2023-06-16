@@ -53,11 +53,9 @@ public class HttpRequestRedirectorProxy {
         int port = startPort;
 
         while (true) {
-            try {
-                ServerSocket ss = new ServerSocket(port);
+            try (ServerSocket ss = new ServerSocket(port)) {
                 ss.setReuseAddress(true);
                 //ok no exception so the port must be free
-                ss.close();
                 break;
             } catch (IOException e) {
                 port++;

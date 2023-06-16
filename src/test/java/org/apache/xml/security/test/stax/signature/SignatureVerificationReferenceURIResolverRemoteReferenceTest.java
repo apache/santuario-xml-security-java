@@ -42,6 +42,7 @@ import org.apache.xml.security.stax.ext.InboundXMLSec;
 import org.apache.xml.security.stax.ext.XMLSec;
 import org.apache.xml.security.stax.ext.XMLSecurityProperties;
 import org.apache.xml.security.stax.impl.resourceResolvers.ResolverHttp;
+import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.test.stax.utils.HttpRequestRedirectorProxy;
 import org.apache.xml.security.test.stax.utils.StAX2DOM;
 import org.apache.xml.security.utils.XMLUtils;
@@ -52,6 +53,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 
+import static org.apache.xml.security.test.XmlSecTestEnvironment.TEST_KS_PASSWORD;
 import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 
 /**
@@ -73,18 +75,12 @@ public class SignatureVerificationReferenceURIResolverRemoteReferenceTest extend
     @Test
     public void testSignatureVerificationWithExternalFilesystemXMLReference() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-                this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-                "default".toCharArray()
-        );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
+        Key key = keyStore.getKey("transmitter", TEST_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate) keyStore.getCertificate("transmitter");
 
         // Sign using DOM
@@ -135,18 +131,12 @@ public class SignatureVerificationReferenceURIResolverRemoteReferenceTest extend
     @Test
     public void testSignatureVerificationWithExternalFilesystemBinaryReference() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-                this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-                "default".toCharArray()
-        );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
+        Key key = keyStore.getKey("transmitter", TEST_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate) keyStore.getCertificate("transmitter");
 
         // Sign using DOM
@@ -210,18 +200,12 @@ public class SignatureVerificationReferenceURIResolverRemoteReferenceTest extend
             ResolverDirectHTTP resolverDirectHTTP = new ResolverDirectHTTP(resolverProperties);
 
             // Read in plaintext document
-            InputStream sourceDocument =
-                    this.getClass().getClassLoader().getResourceAsStream(
-                            "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
             // Set up the Key
-            KeyStore keyStore = KeyStore.getInstance("jks");
-            keyStore.load(
-                    this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-                    "default".toCharArray()
-            );
-            Key key = keyStore.getKey("transmitter", "default".toCharArray());
+            KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
+            Key key = keyStore.getKey("transmitter", TEST_KS_PASSWORD.toCharArray());
             X509Certificate cert = (X509Certificate) keyStore.getCertificate("transmitter");
 
             // Sign using DOM

@@ -65,7 +65,6 @@ public class Canonicalizer20010315ExclusiveTest {
         ResourceResolver.register(new ResolverLocalFilesystem(), false);
     }
 
-    private static final Logger LOG = System.getLogger(Canonicalizer20010315ExclusiveTest.class.getName());
 
     /**
      * Method testA

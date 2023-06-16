@@ -129,10 +129,8 @@ public class BaltimoreRemoteReferenceTest {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
-                    this.getClass().getClassLoader().getResourceAsStream(
-                            "ie/baltimore/merlin-examples/merlin-xmldsig-fifteen/signature-external-b64-dsa.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            String name = "ie/baltimore/merlin-examples/merlin-xmldsig-fifteen/signature-external-b64-dsa.xml";
+            Document document = XMLUtils.readResource(name, this.getClass().getClassLoader(), false);
 
             // Set up the Key
             Key publicKey = getPublicKey("DSA", 15);
@@ -144,7 +142,7 @@ public class BaltimoreRemoteReferenceTest {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             transformer.transform(new DOMSource(document), new StreamResult(baos));
 
-            XMLStreamReader xmlStreamReader = null;
+            XMLStreamReader xmlStreamReader;
             try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
                xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
             }
@@ -177,10 +175,8 @@ public class BaltimoreRemoteReferenceTest {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
-                    this.getClass().getClassLoader().getResourceAsStream(
-                            "ie/baltimore/merlin-examples/merlin-xmldsig-fifteen/signature-external-dsa.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            String name = "ie/baltimore/merlin-examples/merlin-xmldsig-fifteen/signature-external-dsa.xml";
+            Document document = XMLUtils.readResource(name, this.getClass().getClassLoader(), false);
 
             // Set up the Key
             Key publicKey = getPublicKey("DSA", 15);
@@ -225,10 +221,8 @@ public class BaltimoreRemoteReferenceTest {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
-                    this.getClass().getClassLoader().getResourceAsStream(
-                            "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-external-b64-dsa.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            String name = "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-external-b64-dsa.xml";
+            Document document = XMLUtils.readResource(name, this.getClass().getClassLoader(), false);
 
             // Set up the Key
             Key publicKey = getPublicKey("DSA", 23);
@@ -273,10 +267,8 @@ public class BaltimoreRemoteReferenceTest {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
-                    this.getClass().getClassLoader().getResourceAsStream(
-                            "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-external-dsa.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            String name = "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-external-dsa.xml";
+            Document document = XMLUtils.readResource(name, this.getClass().getClassLoader(), false);
 
             // Set up the Key
             Key publicKey = getPublicKey("DSA", 23);
@@ -321,18 +313,17 @@ public class BaltimoreRemoteReferenceTest {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
-                    this.getClass().getClassLoader().getResourceAsStream(
-                            "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-keyname.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            String name = "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-keyname.xml";
+            Document document = XMLUtils.readResource(name, this.getClass().getClassLoader(), false);
 
             // Set up the Key
-            CertificateFactory cf = CertificateFactory.getInstance("X509");
-            InputStream sourceCert =
-                    this.getClass().getClassLoader().getResourceAsStream(
-                            "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/certs/lugh.crt");
+            Certificate cert;
+            try (InputStream sourceCert = this.getClass().getClassLoader()
+                .getResourceAsStream("ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/certs/lugh.crt")) {
+                CertificateFactory cf = CertificateFactory.getInstance("X509");
+                cert = cf.generateCertificate(sourceCert);
+            }
 
-            Certificate cert = cf.generateCertificate(sourceCert);
 
             // XMLUtils.outputDOM(document, System.out);
 
@@ -341,7 +332,7 @@ public class BaltimoreRemoteReferenceTest {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             transformer.transform(new DOMSource(document), new StreamResult(baos));
 
-            XMLStreamReader xmlStreamReader = null;
+            XMLStreamReader xmlStreamReader;
             try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
                xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
             }
@@ -374,18 +365,16 @@ public class BaltimoreRemoteReferenceTest {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
-                    this.getClass().getClassLoader().getResourceAsStream(
-                            "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-retrievalmethod-rawx509crt.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            String name = "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-retrievalmethod-rawx509crt.xml";
+            Document document = XMLUtils.readResource(name, this.getClass().getClassLoader(), false);
 
             // Set up the Key
-            CertificateFactory cf = CertificateFactory.getInstance("X509");
-            InputStream sourceCert =
-                    this.getClass().getClassLoader().getResourceAsStream(
-                            "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/certs/balor.crt");
-
-            Certificate cert = cf.generateCertificate(sourceCert);
+            Certificate cert;
+            try (InputStream sourceCert = this.getClass().getClassLoader()
+                .getResourceAsStream("ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/certs/balor.crt")) {
+                CertificateFactory cf = CertificateFactory.getInstance("X509");
+                cert = cf.generateCertificate(sourceCert);
+            }
 
             // XMLUtils.outputDOM(document, System.out);
 
@@ -421,10 +410,8 @@ public class BaltimoreRemoteReferenceTest {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
-                    this.getClass().getClassLoader().getResourceAsStream(
-                            "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-x509-crt-crl.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            String name = "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-x509-crt-crl.xml";
+            Document document = XMLUtils.readResource(name, this.getClass().getClassLoader(), false);
 
             // XMLUtils.outputDOM(document, System.out);
 
@@ -459,10 +446,8 @@ public class BaltimoreRemoteReferenceTest {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
-                    this.getClass().getClassLoader().getResourceAsStream(
-                            "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-x509-crt.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            String name = "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-x509-crt.xml";
+            Document document = XMLUtils.readResource(name, this.getClass().getClassLoader(), false);
 
             // XMLUtils.outputDOM(document, System.out);
 
@@ -497,20 +482,20 @@ public class BaltimoreRemoteReferenceTest {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
-                    this.getClass().getClassLoader().getResourceAsStream(
-                            "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-x509-is.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            String name = "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-x509-is.xml";
+            Document document = XMLUtils.readResource(name, this.getClass().getClassLoader(), false);
 
             // XMLUtils.outputDOM(document, System.out);
 
             // Set up the Key
-            CertificateFactory cf = CertificateFactory.getInstance("X509");
-            InputStream sourceCert =
+            Certificate cert;
+            try (InputStream sourceCert =
                     this.getClass().getClassLoader().getResourceAsStream(
-                            "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/certs/macha.crt");
+                            "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/certs/macha.crt")) {
+                CertificateFactory cf = CertificateFactory.getInstance("X509");
+                cert = cf.generateCertificate(sourceCert);
+            }
 
-            Certificate cert = cf.generateCertificate(sourceCert);
 
             // Convert Document to a Stream Reader
             javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
@@ -550,27 +535,27 @@ public class BaltimoreRemoteReferenceTest {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
-                    this.getClass().getClassLoader().getResourceAsStream(
-                            "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-x509-ski.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            String name = "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-x509-ski.xml";
+            Document document = XMLUtils.readResource(name, this.getClass().getClassLoader(), false);
 
             // XMLUtils.outputDOM(document, System.out);
 
             // Set up the Key
-            CertificateFactory cf = CertificateFactory.getInstance("X509");
-            InputStream sourceCert =
+            Certificate cert;
+            try (InputStream sourceCert =
                     this.getClass().getClassLoader().getResourceAsStream(
-                            "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/certs/nemain.crt");
+                            "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/certs/nemain.crt")) {
+                CertificateFactory cf = CertificateFactory.getInstance("X509");
+                cert = cf.generateCertificate(sourceCert);
+            }
 
-            Certificate cert = cf.generateCertificate(sourceCert);
 
             // Convert Document to a Stream Reader
             javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             transformer.transform(new DOMSource(document), new StreamResult(baos));
 
-            XMLStreamReader xmlStreamReader = null;
+            XMLStreamReader xmlStreamReader;
             try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
                xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
             }
@@ -597,20 +582,20 @@ public class BaltimoreRemoteReferenceTest {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
-                    this.getClass().getClassLoader().getResourceAsStream(
-                            "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-x509-sn.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            String name = "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-x509-sn.xml";
+            Document document = XMLUtils.readResource(name, this.getClass().getClassLoader(), false);
 
             // XMLUtils.outputDOM(document, System.out);
 
             // Set up the Key
-            CertificateFactory cf = CertificateFactory.getInstance("X509");
-            InputStream sourceCert =
+            Certificate cert;
+            try (InputStream sourceCert =
                     this.getClass().getClassLoader().getResourceAsStream(
-                            "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/certs/badb.crt");
+                            "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/certs/badb.crt")) {
+                CertificateFactory cf = CertificateFactory.getInstance("X509");
+                cert = cf.generateCertificate(sourceCert);
+            }
 
-            Certificate cert = cf.generateCertificate(sourceCert);
 
             // Convert Document to a Stream Reader
             javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
@@ -649,18 +634,17 @@ public class BaltimoreRemoteReferenceTest {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
-                    this.getClass().getClassLoader().getResourceAsStream(
-                            "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/signature-keyname.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            String name = "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/signature-keyname.xml";
+            Document document = XMLUtils.readResource(name, this.getClass().getClassLoader(), false);
 
             // Set up the Key
-            CertificateFactory cf = CertificateFactory.getInstance("X509");
-            InputStream sourceCert =
-                    this.getClass().getClassLoader().getResourceAsStream(
-                            "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/certs/lugh.crt");
+            Certificate cert;
+            try (InputStream sourceCert = this.getClass().getClassLoader()
+                .getResourceAsStream("ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/certs/lugh.crt")) {
+                CertificateFactory cf = CertificateFactory.getInstance("X509");
+                cert = cf.generateCertificate(sourceCert);
+            }
 
-            Certificate cert = cf.generateCertificate(sourceCert);
 
             // XMLUtils.outputDOM(document, System.out);
 
@@ -669,7 +653,7 @@ public class BaltimoreRemoteReferenceTest {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             transformer.transform(new DOMSource(document), new StreamResult(baos));
 
-            XMLStreamReader xmlStreamReader = null;
+            XMLStreamReader xmlStreamReader;
             try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
                xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
             }
@@ -686,7 +670,7 @@ public class BaltimoreRemoteReferenceTest {
 
             // Check the SecurityEvents
             checkSignatureToken(securityEventListener, cert.getPublicKey(),
-                    SecurityTokenConstants.KeyIdentifier_KeyName);
+                SecurityTokenConstants.KeyIdentifier_KeyName);
         } finally {
             HttpRequestRedirectorProxy.stopHttpEngine();
         }
@@ -702,18 +686,17 @@ public class BaltimoreRemoteReferenceTest {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
-                    this.getClass().getClassLoader().getResourceAsStream(
-                            "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/signature-retrievalmethod-rawx509crt.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            String name = "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/signature-retrievalmethod-rawx509crt.xml";
+            Document document = XMLUtils.readResource(name, this.getClass().getClassLoader(), false);
 
             // Set up the Key
-            CertificateFactory cf = CertificateFactory.getInstance("X509");
-            InputStream sourceCert =
-                    this.getClass().getClassLoader().getResourceAsStream(
-                            "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/certs/balor.crt");
+            Certificate cert;
+            try (InputStream sourceCert = this.getClass().getClassLoader()
+                .getResourceAsStream("ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/certs/balor.crt")) {
+                CertificateFactory cf = CertificateFactory.getInstance("X509");
+                cert = cf.generateCertificate(sourceCert);
+            }
 
-            Certificate cert = cf.generateCertificate(sourceCert);
 
             // XMLUtils.outputDOM(document, System.out);
 
@@ -749,10 +732,8 @@ public class BaltimoreRemoteReferenceTest {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
-                    this.getClass().getClassLoader().getResourceAsStream(
-                            "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/signature-x509-crt-crl.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            String name = "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/signature-x509-crt-crl.xml";
+            Document document = XMLUtils.readResource(name, this.getClass().getClassLoader(), false);
 
             // XMLUtils.outputDOM(document, System.out);
 
@@ -761,7 +742,7 @@ public class BaltimoreRemoteReferenceTest {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             transformer.transform(new DOMSource(document), new StreamResult(baos));
 
-            XMLStreamReader xmlStreamReader = null;
+            XMLStreamReader xmlStreamReader;
             try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
                xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
             }
@@ -787,10 +768,8 @@ public class BaltimoreRemoteReferenceTest {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
-                    this.getClass().getClassLoader().getResourceAsStream(
-                            "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/signature-x509-crt.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            String name = "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/signature-x509-crt.xml";
+            Document document = XMLUtils.readResource(name, this.getClass().getClassLoader(), false);
 
             // XMLUtils.outputDOM(document, System.out);
 
@@ -799,7 +778,7 @@ public class BaltimoreRemoteReferenceTest {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             transformer.transform(new DOMSource(document), new StreamResult(baos));
 
-            XMLStreamReader xmlStreamReader = null;
+            XMLStreamReader xmlStreamReader;
             try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
                xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
             }
@@ -825,27 +804,26 @@ public class BaltimoreRemoteReferenceTest {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
-                    this.getClass().getClassLoader().getResourceAsStream(
-                            "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/signature-x509-is.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            String name = "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/signature-x509-is.xml";
+            Document document = XMLUtils.readResource(name, this.getClass().getClassLoader(), false);
 
             // XMLUtils.outputDOM(document, System.out);
 
             // Set up the Key
-            CertificateFactory cf = CertificateFactory.getInstance("X509");
-            InputStream sourceCert =
-                    this.getClass().getClassLoader().getResourceAsStream(
-                            "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/certs/macha.crt");
+            Certificate cert;
+            try (InputStream sourceCert = this.getClass().getClassLoader()
+                .getResourceAsStream("ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/certs/macha.crt")) {
+                CertificateFactory cf = CertificateFactory.getInstance("X509");
+                cert = cf.generateCertificate(sourceCert);
+            }
 
-            Certificate cert = cf.generateCertificate(sourceCert);
 
             // Convert Document to a Stream Reader
             javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             transformer.transform(new DOMSource(document), new StreamResult(baos));
 
-            XMLStreamReader xmlStreamReader = null;
+            XMLStreamReader xmlStreamReader;
             try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
                xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
             }
@@ -878,27 +856,26 @@ public class BaltimoreRemoteReferenceTest {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
-                    this.getClass().getClassLoader().getResourceAsStream(
-                            "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/signature-x509-ski.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            String name = "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/signature-x509-ski.xml";
+            Document document = XMLUtils.readResource(name, this.getClass().getClassLoader(), false);
 
             // XMLUtils.outputDOM(document, System.out);
 
             // Set up the Key
-            CertificateFactory cf = CertificateFactory.getInstance("X509");
-            InputStream sourceCert =
-                    this.getClass().getClassLoader().getResourceAsStream(
-                            "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/certs/nemain.crt");
+            Certificate cert;
+            try (InputStream sourceCert = this.getClass().getClassLoader()
+                .getResourceAsStream("ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/certs/nemain.crt")) {
+                CertificateFactory cf = CertificateFactory.getInstance("X509");
+                cert = cf.generateCertificate(sourceCert);
+            }
 
-            Certificate cert = cf.generateCertificate(sourceCert);
 
             // Convert Document to a Stream Reader
             javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             transformer.transform(new DOMSource(document), new StreamResult(baos));
 
-            XMLStreamReader xmlStreamReader = null;
+            XMLStreamReader xmlStreamReader;
             try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
                xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
             }
@@ -925,20 +902,19 @@ public class BaltimoreRemoteReferenceTest {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
-                    this.getClass().getClassLoader().getResourceAsStream(
-                            "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/signature-x509-sn.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            String name = "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/signature-x509-sn.xml";
+            Document document = XMLUtils.readResource(name, this.getClass().getClassLoader(), false);
 
             // XMLUtils.outputDOM(document, System.out);
 
+            Certificate cert;
             // Set up the Key
-            CertificateFactory cf = CertificateFactory.getInstance("X509");
-            InputStream sourceCert =
-                    this.getClass().getClassLoader().getResourceAsStream(
-                            "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/certs/badb.crt");
+            try (InputStream sourceCert = this.getClass().getClassLoader()
+                .getResourceAsStream("ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/certs/badb.crt")) {
+                CertificateFactory cf = CertificateFactory.getInstance("X509");
+                cert = cf.generateCertificate(sourceCert);
+            }
 
-            Certificate cert = cf.generateCertificate(sourceCert);
 
             // Convert Document to a Stream Reader
             javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();

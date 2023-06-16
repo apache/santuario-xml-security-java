@@ -70,21 +70,10 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
-
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
-
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(output)) {
             document = XMLUtils.read(is, false);
         }
 
@@ -115,21 +104,10 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
-
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
-
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(output)) {
             document = XMLUtils.read(is, false);
         }
 
@@ -160,21 +138,10 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
-
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
-
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(output)) {
             document = XMLUtils.read(is, false);
         }
 
@@ -205,21 +172,10 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
-
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
-
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(output)) {
             document = XMLUtils.read(is, false);
         }
 
@@ -250,21 +206,10 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
-
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
-
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(output)) {
             document = XMLUtils.read(is, false);
         }
 
@@ -297,21 +242,10 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
-
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
-
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(output)) {
             document = XMLUtils.read(is, false);
         }
 

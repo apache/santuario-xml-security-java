@@ -347,18 +347,20 @@ public class XMLSecurityStreamReaderTest {
         } while (true);
     }
 
+
     private String readTestFile() throws Exception {
-        InputStream inputStream =
-            this.getClass().getClassLoader().getResourceAsStream(
-                "org/apache/xml/security/c14n/inExcl/plain-soap-1.1.xml");
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-        char[] buf = new char[1024];
-        int read;
-        StringBuilder stringBuilder = new StringBuilder();
-        while ((read = bufferedReader.read(buf)) != -1) {
-            stringBuilder.append(buf, 0, read);
+        try (
+            InputStream inputStream = getClass().getClassLoader()
+                .getResourceAsStream("org/apache/xml/security/c14n/inExcl/plain-soap-1.1.xml");
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))) {
+            char[] buf = new char[1024];
+            int read;
+            StringBuilder stringBuilder = new StringBuilder();
+            while ((read = bufferedReader.read(buf)) != -1) {
+                stringBuilder.append(buf, 0, read);
+            }
+            return stringBuilder.toString();
         }
-        return stringBuilder.toString();
     }
 
     private static XMLStreamReader createXmlStreamReader() throws XMLStreamException {

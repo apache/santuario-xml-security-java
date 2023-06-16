@@ -43,15 +43,13 @@ import org.w3c.dom.Document;
  */
 public class RSASecurityTest extends AbstractSignatureVerificationTest {
 
-    private TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
     @Test
     public void test_enveloping() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "com/rsasecurity/bdournaee/certj201_enveloping.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("com/rsasecurity/bdournaee/certj201_enveloping.xml",
+            getClass().getClassLoader(), false);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -83,10 +81,8 @@ public class RSASecurityTest extends AbstractSignatureVerificationTest {
     @Test
     public void test_enveloped() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "com/rsasecurity/bdournaee/certj201_enveloped.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("com/rsasecurity/bdournaee/certj201_enveloped.xml",
+            getClass().getClassLoader(), false);
 
         // XMLUtils.outputDOM(document, System.out);
 

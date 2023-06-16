@@ -19,7 +19,6 @@
 package org.apache.xml.security.test.dom.parser;
 
 
-import java.io.InputStream;
 import java.lang.System.Logger;
 import java.security.Key;
 import java.security.KeyPair;
@@ -77,10 +76,8 @@ public class XMLParserTest {
         assertFalse(CustomXMLParserImpl.isCalled());
 
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");

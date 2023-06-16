@@ -18,6 +18,7 @@
  */
 package org.apache.xml.security.test.dom.signature;
 
+import java.io.InputStream;
 import java.net.URL;
 
 import javax.xml.xpath.XPath;
@@ -51,7 +52,10 @@ public class Santuario499Test {
         URL signatureFile = this.getClass().getResource("Arbeidstijd_anonymous.xml");
         assertNotNull(signatureFile);
 
-        Document doc = XMLUtils.read(signatureFile.openStream(), false);
+        Document doc;
+        try (InputStream input = signatureFile.openStream()) {
+            doc = XMLUtils.read(input, false);
+        }
 
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();

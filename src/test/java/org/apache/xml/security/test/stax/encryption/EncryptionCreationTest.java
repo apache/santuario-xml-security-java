@@ -52,6 +52,7 @@ import org.apache.xml.security.stax.ext.XMLSec;
 import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.stax.ext.XMLSecurityProperties;
 import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
+import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
 import org.apache.xml.security.utils.XMLUtils;
@@ -62,6 +63,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import static org.apache.xml.security.test.XmlSecTestEnvironment.TRANSMITTER_KS_PASSWORD;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -104,22 +106,11 @@ public class EncryptionCreationTest {
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Content);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
 
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
-
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
-
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(output)) {
             document = XMLUtils.read(is, false);
         }
 
@@ -163,22 +154,11 @@ public class EncryptionCreationTest {
         securePart.setSecureEntireRequest(true);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
 
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
-
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
-
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(output)) {
             document = XMLUtils.read(is, false);
         }
 
@@ -218,18 +198,8 @@ public class EncryptionCreationTest {
                 new SecurePart(new QName("urn:example:po", "NotExistingElement"), SecurePart.Modifier.Content);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
-
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
         try {
-            XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-            xmlStreamWriter.close();
+            process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
             fail("Exception expected");
         } catch (XMLStreamException e) {
             assertTrue(e.getCause() instanceof XMLSecurityException);
@@ -242,6 +212,7 @@ public class EncryptionCreationTest {
         testEncryptElementCreation(XMLSecurityConstants.ENCRYPTION);
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void testEncryptBackwardCompatibility() throws Exception {
         testEncryptElementCreation(XMLSecurityConstants.ENCRYPT);
@@ -263,22 +234,11 @@ public class EncryptionCreationTest {
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
 
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
-
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
-
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(output)) {
             document = XMLUtils.read(is, false);
         }
 
@@ -322,22 +282,11 @@ public class EncryptionCreationTest {
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Content);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
 
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
-
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
-
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(output)) {
             document = XMLUtils.read(is, false);
         }
 
@@ -383,22 +332,11 @@ public class EncryptionCreationTest {
             new SecurePart(new QName("urn:example:po", "ShippingAddress"), SecurePart.Modifier.Content);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
 
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
-
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
-
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(output)) {
             document = XMLUtils.read(is, false);
         }
 
@@ -441,22 +379,11 @@ public class EncryptionCreationTest {
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
 
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
-
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
-
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(output)) {
             document = XMLUtils.read(is, false);
         }
 
@@ -510,22 +437,11 @@ public class EncryptionCreationTest {
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
 
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
-
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
-
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(output)) {
             document = XMLUtils.read(is, false);
         }
 
@@ -579,22 +495,11 @@ public class EncryptionCreationTest {
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
 
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
-
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
-
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(output)) {
             document = XMLUtils.read(is, false);
         }
 
@@ -649,22 +554,11 @@ public class EncryptionCreationTest {
                 new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
 
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
-
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
-
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(output)) {
             document = XMLUtils.read(is, false);
         }
 
@@ -721,22 +615,11 @@ public class EncryptionCreationTest {
             new SecurePart(new QName("urn:example:po", "ShippingAddress"), SecurePart.Modifier.Content);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
 
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
-
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
-
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(output)) {
             document = XMLUtils.read(is, false);
         }
 
@@ -763,12 +646,8 @@ public class EncryptionCreationTest {
         properties.setActions(actions);
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-            this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-            "default".toCharArray()
-        );
-        PrivateKey priv = (PrivateKey)keyStore.getKey("transmitter", "default".toCharArray());
+        KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
+        PrivateKey priv = (PrivateKey)keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setEncryptionUseThisCertificate(cert);
         properties.setEncryptionKeyTransportAlgorithm("http://www.w3.org/2001/04/xmlenc#rsa-1_5");
@@ -784,22 +663,11 @@ public class EncryptionCreationTest {
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
 
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
-
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
-
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(output)) {
             document = XMLUtils.read(is, false);
         }
 
@@ -834,12 +702,8 @@ public class EncryptionCreationTest {
         properties.setActions(actions);
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-            this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-            "default".toCharArray()
-        );
-        PrivateKey priv = (PrivateKey)keyStore.getKey("transmitter", "default".toCharArray());
+        KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
+        Key priv = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setEncryptionUseThisCertificate(cert);
         properties.setEncryptionKeyTransportAlgorithm("http://www.w3.org/2001/04/xmlenc#rsa-1_5");
@@ -855,22 +719,11 @@ public class EncryptionCreationTest {
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
 
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
-
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
-
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(output)) {
             document = XMLUtils.read(is, false);
         }
 
@@ -914,10 +767,9 @@ public class EncryptionCreationTest {
 
         // Set the key up
         KeyStore keyStore = KeyStore.getInstance("JCEKS");
-        keyStore.load(
-            this.getClass().getClassLoader().getResource("test.jceks").openStream(),
-            "secret".toCharArray()
-        );
+        try (InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("test.jceks")) {
+            keyStore.load(inputStream, "secret".toCharArray());
+        }
         PrivateKey priv = (PrivateKey)keyStore.getKey("rsakey", "secret".toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("rsakey");
         properties.setEncryptionUseThisCertificate(cert);
@@ -934,22 +786,11 @@ public class EncryptionCreationTest {
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
 
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
-
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
-
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(output)) {
             document = XMLUtils.read(is, false);
         }
 
@@ -984,12 +825,8 @@ public class EncryptionCreationTest {
         properties.setActions(actions);
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-            this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-            "default".toCharArray()
-        );
-        PrivateKey priv = (PrivateKey)keyStore.getKey("transmitter", "default".toCharArray());
+        KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
+        PrivateKey priv = (PrivateKey)keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setEncryptionUseThisCertificate(cert);
         properties.setEncryptionKeyTransportAlgorithm("http://www.w3.org/2001/04/xmlenc#rsa-1_5");
@@ -1005,22 +842,11 @@ public class EncryptionCreationTest {
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
 
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
-
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
-
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(output)) {
             document = XMLUtils.read(is, false);
         }
 
@@ -1055,12 +881,8 @@ public class EncryptionCreationTest {
         properties.setActions(actions);
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-            this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-            "default".toCharArray()
-        );
-        PrivateKey priv = (PrivateKey)keyStore.getKey("transmitter", "default".toCharArray());
+        KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
+        PrivateKey priv = (PrivateKey)keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setEncryptionUseThisCertificate(cert);
         properties.setEncryptionKeyTransportAlgorithm("http://www.w3.org/2001/04/xmlenc#rsa-1_5");
@@ -1076,22 +898,11 @@ public class EncryptionCreationTest {
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
 
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
-
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
-
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(output)) {
             document = XMLUtils.read(is, false);
         }
 
@@ -1143,22 +954,11 @@ public class EncryptionCreationTest {
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
 
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
-
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
-
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(output)) {
             document = XMLUtils.read(is, false);
         }
 
@@ -1204,22 +1004,11 @@ public class EncryptionCreationTest {
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
 
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
-
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
-
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(output)) {
             document = XMLUtils.read(is, false);
         }
 
@@ -1267,22 +1056,11 @@ public class EncryptionCreationTest {
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
 
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
-
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
-
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(output)) {
             document = XMLUtils.read(is, false);
         }
 
@@ -1332,22 +1110,11 @@ public class EncryptionCreationTest {
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
 
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
-
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
-
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(output)) {
             document = XMLUtils.read(is, false);
         }
 
@@ -1399,23 +1166,13 @@ public class EncryptionCreationTest {
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
 
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
-
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
-
-        Document document =
-            XMLUtils.read(new ByteArrayInputStream(baos.toByteArray()), false);
-
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(output)) {
+            document = XMLUtils.read(is, false);
+        }
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
         assertEquals(nodeList.getLength(), 0);
 
@@ -1460,22 +1217,11 @@ public class EncryptionCreationTest {
                new SecurePart(new QName("urn:example:po", "PurchaseOrder"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
 
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
-
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
-
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(output)) {
             document = XMLUtils.read(is, false);
         }
 
@@ -1530,14 +1276,12 @@ public class EncryptionCreationTest {
                 "<ns:root xmlns:ns=\"ns.com\"><ns:elem xmlns:ns2=\"ns2.com\">11</ns:elem></ns:root>";
         try (InputStream sourceDocument = new ByteArrayInputStream(DATA1.getBytes(StandardCharsets.UTF_8))) {
             XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-            XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-            xmlStreamWriter.close();
+            XmlReaderToWriter.writeAllAndClose(xmlStreamReader, xmlStreamWriter);
         }
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
 
-        Document document = null;
+        Document document;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
             document = XMLUtils.read(is, false);
         }
@@ -1593,14 +1337,12 @@ public class EncryptionCreationTest {
                 "<ns:root xmlns=\"defns.com\" xmlns:ns=\"ns.com\"><elem xmlns=\"\">11</elem></ns:root>";
         try (InputStream sourceDocument = new ByteArrayInputStream(DATA2.getBytes(StandardCharsets.UTF_8))) {
             XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-            XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-            xmlStreamWriter.close();
+            XmlReaderToWriter.writeAllAndClose(xmlStreamReader, xmlStreamWriter);
         }
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
 
-        Document document = null;
+        Document document;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
             document = XMLUtils.read(is, false);
         }
@@ -1646,22 +1388,11 @@ public class EncryptionCreationTest {
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        byte[] output = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", properties);
+        // System.out.println("Got:\n" + new String(output, StandardCharsets.UTF_8));
 
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
-
-        // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
-
-        Document document = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(output)) {
             document = XMLUtils.read(is, false);
         }
 
@@ -1704,6 +1435,7 @@ public class EncryptionCreationTest {
         testEncryptionIdToEncrypt(securePart);
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void testEncryptionIdToSign() throws Exception {
         SecurePart securePart = new SecurePart(SecurePart.Modifier.Element);
@@ -1730,8 +1462,7 @@ public class EncryptionCreationTest {
         XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(encryptedOut, StandardCharsets.UTF_8.name());
         InputStream sourceDocument = new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8));
         XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
+        XmlReaderToWriter.writeAllAndClose(xmlStreamReader, xmlStreamWriter);
         byte[] encryptedData = encryptedOut.toByteArray();
 //        System.out.println(new String(encryptedOut.toByteArray(), StandardCharsets.UTF_8));
         Document document = XMLUtils.read(new ByteArrayInputStream(encryptedData), false);
@@ -1765,8 +1496,7 @@ public class EncryptionCreationTest {
         XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(encryptedOut, StandardCharsets.UTF_8.name());
         InputStream sourceDocument = new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8));
         XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
-        XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.close();
+        XmlReaderToWriter.writeAllAndClose(xmlStreamReader, xmlStreamWriter);
         byte[] encryptedData = encryptedOut.toByteArray();
 //        System.out.println(new String(encryptedOut.toByteArray(), StandardCharsets.UTF_8));
         Document document = XMLUtils.read(new ByteArrayInputStream(encryptedData), false);
@@ -1778,6 +1508,19 @@ public class EncryptionCreationTest {
         assertEquals(1, document.getElementsByTagName("Branch1").getLength());
         assertEquals(0, document.getElementsByTagName("Branch2").getLength());
     }
+
+
+    private byte[] process(String xmlFile, XMLSecurityProperties properties) throws Exception {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try (InputStream sourceDocument = getClass().getClassLoader().getResourceAsStream(xmlFile)) {
+            XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+            OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+            XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+            XmlReaderToWriter.writeAllAndClose(xmlStreamReader, xmlStreamWriter);
+        }
+        return baos.toByteArray();
+    }
+
 
     /**
      * Decrypt the document using DOM API and run some tests on the decrypted Document.

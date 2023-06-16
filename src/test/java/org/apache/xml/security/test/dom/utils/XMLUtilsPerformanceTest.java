@@ -71,14 +71,14 @@ public class XMLUtilsPerformanceTest {
 
 
     @Benchmark
-    public void testXMLUtils() throws Exception {
+    public void benchmarkXMLUtils() throws Exception {
         InputStream inputStream = new ByteArrayInputStream("<xml>123</xml>".getBytes(StandardCharsets.UTF_8));
         assertNotNull(XMLUtils.read(inputStream, false));
     }
 
 
     @Benchmark
-    public void testCreateDocumentBuilder() throws Exception {
+    public void benchmarkCreateDocumentBuilder() throws Exception {
         DocumentBuilderFactory dfactory = DocumentBuilderFactory.newInstance();
         dfactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
         dfactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);

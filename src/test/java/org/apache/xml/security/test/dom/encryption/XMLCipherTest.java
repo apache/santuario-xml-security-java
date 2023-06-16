@@ -871,9 +871,7 @@ public class XMLCipherTest {
         if (basedir != null && basedir.length() != 0) {
             filename = basedir + "/" + filename;
         }
-        File f = new File(filename);
-
-        Document document = XMLUtils.read(new FileInputStream(f), false);
+        Document document = XMLUtils.read(new File(filename), false);
 
         XMLCipher keyCipher = XMLCipher.getInstance();
         keyCipher.init(XMLCipher.UNWRAP_MODE, null);
@@ -993,7 +991,9 @@ public class XMLCipherTest {
 
     private Document document() throws XMLParserException, IOException {
         File f = new File(documentName);
-        return XMLUtils.read(new FileInputStream(f), false);
+        try (FileInputStream inputStream = new FileInputStream(f)) {
+            return XMLUtils.read(inputStream, false);
+        }
     }
 
     private String element() {
