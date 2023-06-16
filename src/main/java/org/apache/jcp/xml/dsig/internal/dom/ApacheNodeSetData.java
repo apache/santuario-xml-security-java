@@ -35,9 +35,9 @@ import org.apache.xml.security.transforms.TransformationException;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Node;
 
-public class ApacheNodeSetData implements ApacheData, NodeSetData {
+public class ApacheNodeSetData implements ApacheData, NodeSetData<Node> {
 
-    private XMLSignatureInput xi;
+    private final XMLSignatureInput xi;
 
     public ApacheNodeSetData(XMLSignatureInput xi) {
         this.xi = xi;
@@ -67,13 +67,11 @@ public class ApacheNodeSetData implements ApacheData, NodeSetData {
 
     private Set<Node> getNodeSet(List<NodeFilter> nodeFilters) throws TransformationException {
         if (xi.isNeedsToBeExpanded()) {
-            XMLUtils.circumventBug2650
-                (XMLUtils.getOwnerDocument(xi.getSubNode()));
+            XMLUtils.circumventBug2650(XMLUtils.getOwnerDocument(xi.getSubNode()));
         }
 
         Set<Node> inputSet = new LinkedHashSet<>();
-        XMLUtils.getSet(xi.getSubNode(), inputSet,
-                        null, !xi.isExcludeComments());
+        XMLUtils.getSet(xi.getSubNode(), inputSet, null, !xi.isExcludeComments());
         Set<Node> nodeSet = new LinkedHashSet<>();
         for (Node currentNode : inputSet) {
             Iterator<NodeFilter> it = nodeFilters.iterator();

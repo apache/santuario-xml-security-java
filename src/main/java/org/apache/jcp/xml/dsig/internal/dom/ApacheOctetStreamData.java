@@ -27,15 +27,12 @@ import javax.xml.crypto.OctetStreamData;
 
 import org.apache.xml.security.signature.XMLSignatureInput;
 
-public class ApacheOctetStreamData extends OctetStreamData
-    implements ApacheData {
+public class ApacheOctetStreamData extends OctetStreamData implements ApacheData {
 
-    private XMLSignatureInput xi;
+    private final XMLSignatureInput xi;
 
-    public ApacheOctetStreamData(XMLSignatureInput xi)
-        throws IOException
-    {
-        super(xi.getOctetStream(), xi.getSourceURI(), xi.getMIMEType());
+    public ApacheOctetStreamData(XMLSignatureInput xi) throws IOException {
+        super(xi.getUnprocessedInput(), xi.getSourceURI(), xi.getMIMEType());
         this.xi = xi;
     }
 

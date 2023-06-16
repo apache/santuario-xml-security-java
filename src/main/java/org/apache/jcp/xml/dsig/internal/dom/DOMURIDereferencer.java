@@ -31,6 +31,7 @@ import javax.xml.crypto.dom.DOMURIReference;
 
 import org.apache.xml.security.Init;
 import org.apache.xml.security.signature.XMLSignatureInput;
+import org.apache.xml.security.signature.XMLSignatureNodeInput;
 import org.apache.xml.security.utils.XMLUtils;
 import org.apache.xml.security.utils.resolver.ResourceResolver;
 import org.apache.xml.security.utils.resolver.ResourceResolverContext;
@@ -93,7 +94,7 @@ public final class DOMURIDereferencer implements URIDereferencer {
                     }
                 }
 
-                XMLSignatureInput result = new XMLSignatureInput(referencedElem);
+                XMLSignatureInput result = new XMLSignatureNodeInput(referencedElem);
                 result.setSecureValidation(secVal);
                 if (!uri.substring(1).startsWith("xpointer(id(")) {
                     result.setExcludeComments(true);
@@ -113,7 +114,7 @@ public final class DOMURIDereferencer implements URIDereferencer {
         if ((uriRef instanceof javax.xml.crypto.dsig.Reference) || resContext.isURISafeToResolve()) {
             try {
                 XMLSignatureInput in = ResourceResolver.resolve(resContext);
-                if (in.isOctetStream()) {
+                if (in.hasUnprocessedInput()) {
                     return new ApacheOctetStreamData(in);
                 } else {
                     return new ApacheNodeSetData(in);

@@ -557,7 +557,7 @@ public class Reference extends SignatureElementProxy {
                     InclusiveNamespaces.prefixStr2Set(in.getInclusiveNamespaces());
             }
 
-            return nodes.getHTMLRepresentation(inclusiveNamespaces);
+            return new XMLSignatureInputDebugger(nodes, inclusiveNamespaces).getHTMLRepresentation();
         } catch (XMLSecurityException ex) {
             throw new XMLSignatureException(ex);
         }
@@ -612,7 +612,7 @@ public class Reference extends SignatureElementProxy {
                 referenceData = new ReferenceNodeSetData() {
                     @Override
                     public Iterator<Node> iterator() {
-                        return new Iterator<Node>() {
+                        return new Iterator<>() {
 
                             final Iterator<Node> sIterator = s.iterator();
 
@@ -638,13 +638,11 @@ public class Reference extends SignatureElementProxy {
                 LOG.log(Level.WARNING, "cannot cache dereferenced data", e);
             }
         } else if (input.isElement()) {
-            referenceData = new ReferenceSubTreeData
-                (input.getSubNode(), input.isExcludeComments());
-        } else if (input.isOctetStream() || input.isByteArray()) {
+            referenceData = new ReferenceSubTreeData(input.getSubNode(), input.isExcludeComments());
+        } else if (input.hasUnprocessedInput()) {
             try {
-                referenceData = new ReferenceOctetStreamData
-                    (input.getOctetStream(), input.getSourceURI(),
-                        input.getMIMEType());
+                referenceData = new ReferenceOctetStreamData(input.getUnprocessedInput(), input.getSourceURI(),
+                    input.getMIMEType());
             } catch (IOException ioe) {
                 LOG.log(Level.WARNING, "cannot cache dereferenced data.", ioe);
             }
@@ -695,7 +693,7 @@ public class Reference extends SignatureElementProxy {
     private byte[] calculateDigest(boolean validating)
         throws ReferenceNotInitializedException, XMLSignatureException {
         XMLSignatureInput input = this.getContentsBeforeTransformation();
-        if (input.isPreCalculatedDigest()) {
+        if (input.getPreCalculatedDigest() != null) {
             return getPreCalculatedDigest(input);
         }
 
@@ -714,16 +712,16 @@ public class Reference extends SignatureElementProxy {
             // if signing and c14n11 property == true explicitly add
             // C14N11 transform if needed
             if (Reference.useC14N11 && !validating && !output.isOutputStreamSet()
-                && !output.isOctetStream()) {
+                && !output.hasUnprocessedInput()) {
                 if (transforms == null) {
                     transforms = new Transforms(getDocument());
                     transforms.setSecureValidation(secureValidation);
                     getElement().insertBefore(transforms.getElement(), digestMethodElem);
                 }
                 transforms.addTransform(Transforms.TRANSFORM_C14N11_OMIT_COMMENTS);
-                output.updateOutputStream(os, true);
+                output.write(os, true);
             } else {
-                output.updateOutputStream(os);
+                output.write(os);
             }
             os.flush();
 
@@ -735,8 +733,8 @@ public class Reference extends SignatureElementProxy {
             throw new ReferenceNotInitializedException(ex);
         } finally { //NOPMD
             try {
-                if (output != null && output.getOctetStreamReal() != null) {
-                    output.getOctetStreamReal().close();
+                if (output != null && output.hasUnprocessedInput()) {
+                    output.getUnprocessedInput().close();
                 }
             } catch (IOException ex) {
                 throw new ReferenceNotInitializedException(ex);

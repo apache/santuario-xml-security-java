@@ -22,6 +22,7 @@ import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 
 import org.apache.xml.security.signature.XMLSignatureInput;
+import org.apache.xml.security.signature.XMLSignatureNodeInput;
 import org.apache.xml.security.utils.XMLUtils;
 import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.apache.xml.security.utils.resolver.ResourceResolverException;
@@ -90,15 +91,14 @@ public class ResolverFragment extends ResourceResolverSpi {
             );
         }
 
-        XMLSignatureInput result = new XMLSignatureInput(selectedElem);
+        XMLSignatureInput result = new XMLSignatureNodeInput(selectedElem);
         result.setSecureValidation(context.secureValidation);
         result.setExcludeComments(true);
-
         result.setMIMEType("text/xml");
-        if (context.baseUri != null && context.baseUri.length() > 0) {
-            result.setSourceURI(context.baseUri.concat(context.uriToResolve));
-        } else {
+        if (context.baseUri == null || context.baseUri.isEmpty()) {
             result.setSourceURI(context.uriToResolve);
+        } else {
+            result.setSourceURI(context.baseUri.concat(context.uriToResolve));
         }
         return result;
     }

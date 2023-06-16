@@ -24,7 +24,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
-import org.apache.xml.security.signature.XMLSignatureInput;
+import org.apache.xml.security.signature.XMLSignatureNodeInput;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.transforms.Transform;
 import org.apache.xml.security.transforms.Transforms;
@@ -62,7 +62,7 @@ public class TransformXSLTTest {
         Element transformEl = (Element) xpath.evaluate(expression, doc1, XPathConstants.NODE);
 
         Transform transform = new Transform(doc1, Transforms.TRANSFORM_XSLT, transformEl.getChildNodes());
-        transform.performTransform(new XMLSignatureInput(doc2), false);
+        transform.performTransform(new XMLSignatureNodeInput(doc2), false);
     }
 
     private static Document getDocument(String fileName) throws Exception {

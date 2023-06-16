@@ -18,15 +18,14 @@
  */
 package org.apache.xml.security.utils.resolver.implementations;
 
-import java.io.InputStream;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import org.apache.xml.security.signature.XMLSignatureInput;
+import org.apache.xml.security.signature.XMLSignatureFileInput;
 import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.apache.xml.security.utils.resolver.ResourceResolverException;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
@@ -47,13 +46,9 @@ public class ResolverLocalFilesystem extends ResourceResolverSpi {
         try {
             // calculate new URI
             URI uriNew = getNewURI(context.uriToResolve, context.baseUri);
-
-            InputStream inputStream = Files.newInputStream(Paths.get(uriNew));  //NOPMD
-            XMLSignatureInput result = new XMLSignatureInput(inputStream);
+            XMLSignatureInput result = new XMLSignatureFileInput(Paths.get(uriNew));
             result.setSecureValidation(context.secureValidation);
-
             result.setSourceURI(uriNew.toString());
-
             return result;
         } catch (Exception e) {
             throw new ResourceResolverException(e, context.uriToResolve, context.baseUri, "generic.EmptyMessage");

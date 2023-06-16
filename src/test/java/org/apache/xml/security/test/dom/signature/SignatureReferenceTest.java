@@ -39,6 +39,7 @@ import org.apache.xml.security.signature.Reference;
 import org.apache.xml.security.signature.SignedInfo;
 import org.apache.xml.security.signature.VerifiedReference;
 import org.apache.xml.security.signature.XMLSignature;
+import org.apache.xml.security.signature.XMLSignatureDigestInput;
 import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.signature.reference.ReferenceData;
 import org.apache.xml.security.signature.reference.ReferenceNodeSetData;
@@ -246,7 +247,7 @@ public class SignatureReferenceTest {
         @Override
         public XMLSignatureInput engineResolveURI(ResourceResolverContext context)
             throws ResourceResolverException {
-            XMLSignatureInput result = new XMLSignatureInput("xyz");
+            XMLSignatureInput result = new XMLSignatureDigestInput("xyz");
 
             result.setSourceURI(context.uriToResolve);
 

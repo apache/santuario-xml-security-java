@@ -19,7 +19,6 @@
 package org.apache.xml.security.test.dom.signature;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.System.Logger;
@@ -35,6 +34,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
+import org.apache.xml.security.signature.XMLSignatureDigestInput;
 import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.test.dom.TestUtils;
@@ -136,7 +136,7 @@ public class PreCalculatedDigestSignatureTest {
     private boolean validateSignature(XMLSignature signature) throws XMLSecurityException {
         PublicKey publicKey = signature.getKeyInfo().getPublicKey();
         boolean validSignature = signature.checkSignatureValue(publicKey);
-        LOG.log(Level.DEBUG, "Is signature valid: " + validSignature);
+        LOG.log(Level.DEBUG, "Is signature valid: {0}", validSignature);
         return validSignature;
     }
 
@@ -169,14 +169,10 @@ public class PreCalculatedDigestSignatureTest {
 
     private void writeSignature(Document doc) throws IOException {
         String signatureFilePath = Files.createFile(testFolder.resolve("signature.xml")).toString();
-        FileOutputStream fileOutputStream = null;
-        try {
-            fileOutputStream = new FileOutputStream(signatureFilePath);
+        try (FileOutputStream fileOutputStream = new FileOutputStream(signatureFilePath)) {
             XMLUtils.outputDOMc14nWithComments(doc, fileOutputStream);
-            LOG.log(Level.DEBUG, "Wrote signature to " + signatureFilePath);
-        } finally {
-            fileOutputStream.close();
         }
+        LOG.log(Level.DEBUG, "Wrote signature to {0}", signatureFilePath);
     }
 
     /**
@@ -201,7 +197,7 @@ public class PreCalculatedDigestSignatureTest {
         @Override
         public XMLSignatureInput engineResolveURI(ResourceResolverContext context) throws ResourceResolverException {
             String documentUri = extractDocumentUri(context);
-            XMLSignatureInput result = new XMLSignatureInput(preCalculatedDigest);
+            XMLSignatureInput result = new XMLSignatureDigestInput(preCalculatedDigest);
             result.setSourceURI(documentUri);
             result.setMIMEType("text/plain");
             return result;

@@ -29,7 +29,9 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
+import org.apache.xml.security.signature.XMLSignatureByteInput;
 import org.apache.xml.security.signature.XMLSignatureInput;
+import org.apache.xml.security.signature.XMLSignatureNodeInput;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.transforms.Transforms;
@@ -65,7 +67,7 @@ public class TransformBase64DecodeTest {
         doc.appendChild(t.getElement());
         t.addTransform(Transforms.TRANSFORM_BASE64_DECODE);
 
-        XMLSignatureInput in = new XMLSignatureInput(s1.getBytes(UTF_8));
+        XMLSignatureInput in = new XMLSignatureByteInput(s1.getBytes(UTF_8));
         XMLSignatureInput out = t.performTransforms(in);
         String result = new String(out.getBytes(), UTF_8);
 
@@ -84,7 +86,7 @@ public class TransformBase64DecodeTest {
 
         t.addTransform(Transforms.TRANSFORM_BASE64_DECODE);
 
-        XMLSignatureInput in = new XMLSignatureInput(s2.getBytes(UTF_8));
+        XMLSignatureInput in = new XMLSignatureByteInput(s2.getBytes(UTF_8));
         XMLSignatureInput out = t.performTransforms(t.performTransforms(in));
         String result = new String(out.getBytes(), UTF_8);
 
@@ -118,7 +120,7 @@ public class TransformBase64DecodeTest {
         Node base64Node =
             (Node) xpath.evaluate(expression, doc, XPathConstants.NODE);
 
-        XMLSignatureInput xmlinput = new XMLSignatureInput(base64Node);
+        XMLSignatureInput xmlinput = new XMLSignatureNodeInput(base64Node);
 
         Document doc2 = TransformBase64DecodeTest.createDocument();
         Transforms t = new Transforms(doc2);

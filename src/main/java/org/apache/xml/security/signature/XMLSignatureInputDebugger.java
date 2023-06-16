@@ -113,10 +113,10 @@ public class XMLSignatureInputDebugger {
      * @param xmlSignatureInput the signature to pretty print
      */
     public XMLSignatureInputDebugger(XMLSignatureInput xmlSignatureInput) {
-        if (!xmlSignatureInput.isNodeSet()) {
-            this.xpathNodeSet = null;
-        } else {
+        if (xmlSignatureInput.isNodeSet()) {
             this.xpathNodeSet = xmlSignatureInput.getInputNodeSet();
+        } else {
+            this.xpathNodeSet = null;
         }
     }
 
@@ -126,10 +126,7 @@ public class XMLSignatureInputDebugger {
      * @param xmlSignatureInput the signature to pretty print
      * @param inclusiveNamespace
      */
-    public XMLSignatureInputDebugger(
-        XMLSignatureInput xmlSignatureInput,
-        Set<String> inclusiveNamespace
-    ) {
+    public XMLSignatureInputDebugger(XMLSignatureInput xmlSignatureInput, Set<String> inclusiveNamespace) {
         this(xmlSignatureInput);
         this.inclusiveNamespaces = inclusiveNamespace;
     }
