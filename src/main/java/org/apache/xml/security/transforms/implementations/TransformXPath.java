@@ -29,7 +29,11 @@ import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.transforms.TransformSpi;
 import org.apache.xml.security.transforms.TransformationException;
 import org.apache.xml.security.transforms.Transforms;
-import org.apache.xml.security.utils.*;
+import org.apache.xml.security.utils.Constants;
+import org.apache.xml.security.utils.JDKXPathFactory;
+import org.apache.xml.security.utils.XMLUtils;
+import org.apache.xml.security.utils.XPathAPI;
+import org.apache.xml.security.utils.XPathFactory;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -130,6 +134,7 @@ public class TransformXPath extends TransformSpi {
         /**
          * @see org.apache.xml.security.signature.NodeFilter#isNodeInclude(org.w3c.dom.Node)
          */
+        @Override
         public int isNodeInclude(Node currentNode) throws TransformationException {
             try {
                 boolean include = xPathAPI.evaluate(currentNode, xpathnode, str, xpathElement);
@@ -142,6 +147,7 @@ public class TransformXPath extends TransformSpi {
             }
         }
 
+        @Override
         public int isNodeIncludeDO(Node n, int level) throws TransformationException {
             return isNodeInclude(n);
         }

@@ -128,7 +128,7 @@ public class XMLSec {
         }
 
         // Check for duplicate actions
-        if (new HashSet<XMLSecurityConstants.Action>(securityProperties.getActions()).size()
+        if (new HashSet<>(securityProperties.getActions()).size()
             != securityProperties.getActions().size()) {
             throw new XMLSecurityConfigurationException("stax.duplicateActions");
         }

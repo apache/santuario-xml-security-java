@@ -27,7 +27,11 @@ import java.security.spec.AlgorithmParameterSpec;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.xml.security.algorithms.implementations.*;
+import org.apache.xml.security.algorithms.implementations.IntegrityHmac;
+import org.apache.xml.security.algorithms.implementations.SignatureBaseRSA;
+import org.apache.xml.security.algorithms.implementations.SignatureDSA;
+import org.apache.xml.security.algorithms.implementations.SignatureECDSA;
+import org.apache.xml.security.algorithms.implementations.SignatureEDDSA;
 import org.apache.xml.security.exceptions.AlgorithmAlreadyRegisteredException;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
@@ -521,6 +525,7 @@ public class SignatureAlgorithm extends Algorithm {
      *
      * @return URI of this element
      */
+    @Override
     public String getBaseNamespace() {
         return Constants.SignatureSpecNS;
     }
@@ -530,6 +535,7 @@ public class SignatureAlgorithm extends Algorithm {
      *
      * @return Local name
      */
+    @Override
     public String getBaseLocalName() {
         return Constants._TAG_SIGNATUREMETHOD;
     }

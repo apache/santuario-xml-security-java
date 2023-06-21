@@ -18,11 +18,18 @@
  */
 package org.apache.xml.security.stax.impl.algorithms;
 
-import org.apache.xml.security.exceptions.XMLSecurityException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.Key;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.SecureRandom;
+import java.security.spec.AlgorithmParameterSpec;
 
 import javax.crypto.Mac;
-import java.security.*;
-import java.security.spec.AlgorithmParameterSpec;
+
+import org.apache.xml.security.exceptions.XMLSecurityException;
 
 /**
  */

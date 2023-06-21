@@ -104,6 +104,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
      * @param writer OutputStream to write the canonicalization result
      * @throws CanonicalizationException
      */
+    @Override
     public void engineCanonicalizeSubTree(Node rootNode, OutputStream writer)
         throws CanonicalizationException {
         engineCanonicalizeSubTree(rootNode, (Node)null, writer);
@@ -116,6 +117,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
      * @param writer OutputStream to write the canonicalization result
      * @throws CanonicalizationException
      */
+    @Override
     public void engineCanonicalizeXPathNodeSet(Set<Node> xpathNodeSet, OutputStream writer)
         throws CanonicalizationException {
         this.xpathNodeSet = xpathNodeSet;

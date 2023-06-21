@@ -24,7 +24,6 @@ import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.Iterator;
 
-
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.keys.content.x509.XMLX509SubjectName;
 import org.apache.xml.security.keys.keyresolver.KeyResolverException;

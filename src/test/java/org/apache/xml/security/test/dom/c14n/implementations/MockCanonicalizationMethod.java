@@ -24,7 +24,6 @@ import java.util.Set;
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.CanonicalizerSpi;
 import org.apache.xml.security.c14n.implementations.Canonicalizer11_OmitComments;
-
 import org.w3c.dom.Node;
 
 public class MockCanonicalizationMethod extends CanonicalizerSpi {
@@ -36,32 +35,38 @@ public class MockCanonicalizationMethod extends CanonicalizerSpi {
         _impl = new Canonicalizer11_OmitComments();
     }
 
+    @Override
     public void engineCanonicalizeSubTree(Node rootNode, OutputStream writer)
         throws CanonicalizationException {
         _impl.engineCanonicalizeSubTree(rootNode, writer);
     }
 
+    @Override
     public void engineCanonicalizeSubTree(Node rootNode, String inclusiveNamespaces, OutputStream writer)
         throws CanonicalizationException {
         _impl.engineCanonicalizeSubTree(rootNode, inclusiveNamespaces, writer);
     }
 
+    @Override
     public void engineCanonicalizeSubTree(Node rootNode, String inclusiveNamespaces,
                                             boolean propagateDefaultNamespace, OutputStream writer)
             throws CanonicalizationException {
         _impl.engineCanonicalizeSubTree(rootNode, inclusiveNamespaces, propagateDefaultNamespace, writer);
     }
 
+    @Override
     public void engineCanonicalizeXPathNodeSet(Set<Node> xpathNodeSet, OutputStream writer)
         throws CanonicalizationException {
         _impl.engineCanonicalizeXPathNodeSet(xpathNodeSet, writer);
     }
 
+    @Override
     public void engineCanonicalizeXPathNodeSet(Set<Node> xpathNodeSet, String inclusiveNamespaces, OutputStream writer)
         throws CanonicalizationException {
         _impl.engineCanonicalizeXPathNodeSet(xpathNodeSet, inclusiveNamespaces, writer);
     }
 
+    @Override
     public String engineGetURI() {
         return MOCK_CANONICALIZATION_METHOD;
     }

@@ -18,14 +18,23 @@
  */
 package org.apache.xml.security.stax.impl.algorithms;
 
+import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.Key;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.SecureRandom;
+import java.security.Signature;
+import java.security.SignatureException;
+import java.security.interfaces.ECPrivateKey;
+import java.security.spec.AlgorithmParameterSpec;
+
 import org.apache.xml.security.algorithms.implementations.ECDSAUtils;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.utils.JavaUtils;
-
-import java.io.IOException;
-import java.security.*;
-import java.security.interfaces.ECPrivateKey;
-import java.security.spec.AlgorithmParameterSpec;
 
 /**
  */

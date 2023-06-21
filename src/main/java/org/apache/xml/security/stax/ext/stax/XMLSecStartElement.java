@@ -18,8 +18,9 @@
  */
 package org.apache.xml.security.stax.ext.stax;
 
-import javax.xml.stream.events.StartElement;
 import java.util.List;
+
+import javax.xml.stream.events.StartElement;
 
 /**
  */

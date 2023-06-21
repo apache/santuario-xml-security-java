@@ -50,6 +50,7 @@ public class DocumentSerializer extends AbstractSerializer {
      * @return the Node resulting from the parse of the source
      * @throws XMLEncryptionException
      */
+    @Override
     public Node deserialize(byte[] source, Node ctx) throws XMLEncryptionException, IOException {
         byte[] fragment = createContext(source, ctx);
         try (InputStream is = new ByteArrayInputStream(fragment)) {

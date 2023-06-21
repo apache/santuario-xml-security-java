@@ -80,6 +80,7 @@ public class DOMNamespaceContext implements NamespaceContext {
         this.context = context;
     }
 
+    @Override
     public String getNamespaceURI(String prefix) {
         if (prefix == null) {
             throw new IllegalArgumentException("prefix is null");
@@ -103,6 +104,7 @@ public class DOMNamespaceContext implements NamespaceContext {
         return NULL_NS_URI;
     }
 
+    @Override
     public String getPrefix(String namespaceURI) {
         if (namespaceURI == null) {
             throw new IllegalArgumentException("namespace URI is null");
@@ -136,6 +138,7 @@ public class DOMNamespaceContext implements NamespaceContext {
     /**
      * Throws {@link UnsupportedOperationException}.
      */
+    @Override
     public Iterator<String> getPrefixes(String namespaceURI) {
         throw new UnsupportedOperationException();
     }

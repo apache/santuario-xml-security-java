@@ -19,14 +19,15 @@
 
 package org.apache.xml.security.stax.impl;
 
-import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
+import java.util.Deque;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
-import java.util.Deque;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+
+import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 
 /**
  */

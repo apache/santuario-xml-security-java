@@ -18,17 +18,18 @@
  */
 package org.apache.xml.security.stax.impl.stax;
 
-import org.apache.xml.security.stax.ext.stax.XMLSecNamespace;
-
-import javax.xml.XMLConstants;
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Collections;
 import java.util.Map;
 import java.util.WeakHashMap;
+
+import javax.xml.XMLConstants;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+
+import org.apache.xml.security.stax.ext.stax.XMLSecNamespace;
 
 /**
  * Class to let XML-Namespaces be comparable how it is requested by C14N
@@ -37,7 +38,7 @@ import java.util.WeakHashMap;
 public final class XMLSecNamespaceImpl extends XMLSecEventBaseImpl implements XMLSecNamespace {
 
     private static final Map<String, Map<String, XMLSecNamespace>> XMLSEC_NS_MAP =
-            Collections.synchronizedMap(new WeakHashMap<String, Map<String, XMLSecNamespace>>());
+            Collections.synchronizedMap(new WeakHashMap<>());
 
     private String prefix;
     private final String uri;

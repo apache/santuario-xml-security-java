@@ -18,16 +18,16 @@
  */
 package org.apache.xml.security.stax.config;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.xml.security.configuration.ResolverType;
+import org.apache.xml.security.configuration.ResourceResolversType;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.ext.ResourceResolver;
 import org.apache.xml.security.stax.ext.ResourceResolverLookup;
 import org.apache.xml.security.utils.ClassLoaderUtils;
 import org.apache.xml.security.utils.JavaUtils;
-import org.apache.xml.security.configuration.ResolverType;
-import org.apache.xml.security.configuration.ResourceResolversType;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  */

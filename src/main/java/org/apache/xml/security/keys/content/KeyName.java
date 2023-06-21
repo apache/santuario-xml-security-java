@@ -61,6 +61,7 @@ public class KeyName extends SignatureElementProxy implements KeyInfoContent {
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getBaseLocalName() {
         return Constants._TAG_KEYNAME;
     }

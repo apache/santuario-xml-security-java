@@ -21,18 +21,20 @@
  */
 package org.apache.jcp.xml.dsig.internal.dom;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-import javax.xml.crypto.*;
+import javax.xml.crypto.MarshalException;
+import javax.xml.crypto.XMLStructure;
 import javax.xml.crypto.dom.DOMCryptoContext;
 import javax.xml.crypto.dsig.XMLSignature;
 import javax.xml.crypto.dsig.keyinfo.PGPData;
 
+import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-
-import org.apache.xml.security.utils.XMLUtils;
 
 /**
  * DOM-based implementation of PGPData.
@@ -167,14 +169,17 @@ public final class DOMPGPData extends DOMStructure implements PGPData {
         this.externalElements = Collections.unmodifiableList(other);
     }
 
+    @Override
     public byte[] getKeyId() {
         return keyId == null ? null : keyId.clone();
     }
 
+    @Override
     public byte[] getKeyPacket() {
         return keyPacket == null ? null : keyPacket.clone();
     }
 
+    @Override
     public List<XMLStructure> getExternalElements() {
         return externalElements;
     }

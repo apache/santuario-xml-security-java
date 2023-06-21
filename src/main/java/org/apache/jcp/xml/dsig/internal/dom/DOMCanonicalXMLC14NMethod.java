@@ -21,11 +21,13 @@
  */
 package org.apache.jcp.xml.dsig.internal.dom;
 
-import javax.xml.crypto.*;
-import javax.xml.crypto.dsig.*;
-import javax.xml.crypto.dsig.spec.TransformParameterSpec;
-
 import java.security.InvalidAlgorithmParameterException;
+
+import javax.xml.crypto.Data;
+import javax.xml.crypto.XMLCryptoContext;
+import javax.xml.crypto.dsig.CanonicalizationMethod;
+import javax.xml.crypto.dsig.TransformException;
+import javax.xml.crypto.dsig.spec.TransformParameterSpec;
 
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.c14n.InvalidCanonicalizerException;
@@ -37,6 +39,7 @@ import org.apache.xml.security.c14n.InvalidCanonicalizerException;
  */
 public final class DOMCanonicalXMLC14NMethod extends ApacheCanonicalizer {
 
+    @Override
     public void init(TransformParameterSpec params)
         throws InvalidAlgorithmParameterException {
         if (params != null) {
@@ -45,6 +48,7 @@ public final class DOMCanonicalXMLC14NMethod extends ApacheCanonicalizer {
         }
     }
 
+    @Override
     public Data transform(Data data, XMLCryptoContext xc)
         throws TransformException {
 

@@ -18,9 +18,9 @@
  */
 package org.apache.xml.security.stax.ext;
 
-import org.apache.xml.security.exceptions.XMLSecurityException;
-
 import javax.xml.stream.XMLStreamException;
+
+import org.apache.xml.security.exceptions.XMLSecurityException;
 
 /**
  * Basic interface for Output- and Input-Processor chains

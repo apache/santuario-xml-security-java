@@ -18,14 +18,14 @@
  */
 package org.apache.xml.security.stax.impl;
 
-import org.apache.xml.security.stax.ext.OutboundSecurityContext;
-import org.apache.xml.security.stax.securityToken.SecurityTokenProvider;
-import org.apache.xml.security.stax.securityToken.OutboundSecurityToken;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.xml.security.stax.ext.OutboundSecurityContext;
+import org.apache.xml.security.stax.securityToken.OutboundSecurityToken;
+import org.apache.xml.security.stax.securityToken.SecurityTokenProvider;
 
 /**
  * Concrete security context implementation
@@ -51,6 +51,6 @@ public class OutboundSecurityContextImpl extends AbstractSecurityContextImpl imp
 
     @Override
     public List<SecurityTokenProvider<OutboundSecurityToken>> getRegisteredSecurityTokenProviders() {
-        return new ArrayList<SecurityTokenProvider<OutboundSecurityToken>>(securityTokenProviders.values());
+        return new ArrayList<>(securityTokenProviders.values());
     }
 }

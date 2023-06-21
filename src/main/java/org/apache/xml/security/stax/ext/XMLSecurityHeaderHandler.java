@@ -18,10 +18,10 @@
  */
 package org.apache.xml.security.stax.ext;
 
+import java.util.Deque;
+
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
-
-import java.util.Deque;
 
 /**
  */

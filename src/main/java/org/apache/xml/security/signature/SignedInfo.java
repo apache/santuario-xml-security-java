@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.security.Provider;
 import java.security.spec.AlgorithmParameterSpec;
+
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -34,7 +35,6 @@ import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.transforms.params.InclusiveNamespaces;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -397,6 +397,7 @@ public class SignedInfo extends Manifest {
      * {@inheritDoc}
      *
      */
+    @Override
     public String getBaseLocalName() {
         return Constants._TAG_SIGNEDINFO;
     }

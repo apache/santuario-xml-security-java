@@ -18,11 +18,11 @@
  */
 package org.apache.xml.security.stax.config;
 
-import org.apache.xml.security.configuration.PropertiesType;
-import org.apache.xml.security.configuration.PropertyType;
-
 import java.util.List;
 import java.util.Properties;
+
+import org.apache.xml.security.configuration.PropertiesType;
+import org.apache.xml.security.configuration.PropertyType;
 
 /**
  * Configuration Properties

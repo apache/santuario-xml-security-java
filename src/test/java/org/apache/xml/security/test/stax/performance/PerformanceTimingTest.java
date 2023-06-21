@@ -18,16 +18,16 @@
  */
 package org.apache.xml.security.test.stax.performance;
 
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
+
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 /**
  */

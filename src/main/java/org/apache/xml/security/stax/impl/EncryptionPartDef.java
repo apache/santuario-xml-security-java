@@ -18,9 +18,9 @@
  */
 package org.apache.xml.security.stax.impl;
 
-import org.apache.xml.security.stax.ext.SecurePart;
-
 import java.security.Key;
+
+import org.apache.xml.security.stax.ext.SecurePart;
 
 /**
  * EncryptionPartDef holds information about parts to be encrypt

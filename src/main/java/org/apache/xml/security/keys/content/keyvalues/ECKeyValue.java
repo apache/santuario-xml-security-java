@@ -36,16 +36,15 @@ import java.util.Arrays;
 
 import javax.xml.crypto.MarshalException;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.Text;
-
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.I18n;
 import org.apache.xml.security.utils.Signature11ElementProxy;
 import org.apache.xml.security.utils.XMLUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.Text;
 
 public class ECKeyValue extends Signature11ElementProxy implements KeyValueContent {
 
@@ -157,6 +156,7 @@ public class ECKeyValue extends Signature11ElementProxy implements KeyValueConte
     }
 
     /** {@inheritDoc} */
+    @Override
     public PublicKey getPublicKey() throws XMLSecurityException {
         try {
             ECParameterSpec ecParams = null;
@@ -206,6 +206,7 @@ public class ECKeyValue extends Signature11ElementProxy implements KeyValueConte
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getBaseLocalName() {
         return Constants._TAG_ECKEYVALUE;
     }

@@ -1224,6 +1224,7 @@ public class KeyInfo extends SignatureElementProxy {
 
 
     /** {@inheritDoc} */
+    @Override
     public String getBaseLocalName() {
         return Constants._TAG_KEYINFO;
     }

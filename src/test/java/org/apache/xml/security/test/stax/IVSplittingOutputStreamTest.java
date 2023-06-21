@@ -18,15 +18,15 @@
  */
 package org.apache.xml.security.test.stax;
 
-import org.junit.jupiter.api.Test;
-
-import org.apache.xml.security.stax.impl.util.IVSplittingOutputStream;
-import org.apache.xml.security.stax.impl.util.ReplaceableOuputStream;
+import java.io.ByteArrayOutputStream;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
-import java.io.ByteArrayOutputStream;
+
+import org.apache.xml.security.stax.impl.util.IVSplittingOutputStream;
+import org.apache.xml.security.stax.impl.util.ReplaceableOuputStream;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
