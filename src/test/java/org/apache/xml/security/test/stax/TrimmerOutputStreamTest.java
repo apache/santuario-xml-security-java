@@ -18,11 +18,10 @@
  */
 package org.apache.xml.security.test.stax;
 
-import org.junit.jupiter.api.Test;
+import java.io.ByteArrayOutputStream;
 
 import org.apache.xml.security.stax.impl.util.TrimmerOutputStream;
-
-import java.io.ByteArrayOutputStream;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

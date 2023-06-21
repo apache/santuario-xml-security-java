@@ -18,13 +18,13 @@
  */
 package org.apache.xml.security.stax.impl.resourceResolvers;
 
+import java.io.InputStream;
+import java.net.URI;
+
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.ext.ResourceResolver;
 import org.apache.xml.security.stax.ext.ResourceResolverLookup;
 import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
-
-import java.io.InputStream;
-import java.net.URI;
 
 /**
  * Resolver for local filesystem resources. Use the standard java security-manager to

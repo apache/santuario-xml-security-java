@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.stax.impl.processor.input;
 
+import jakarta.xml.bind.JAXBElement;
+
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
@@ -33,7 +35,6 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.OAEPParameterSpec;
 import javax.crypto.spec.PSource;
 import javax.crypto.spec.SecretKeySpec;
-import jakarta.xml.bind.JAXBElement;
 
 import org.apache.xml.security.binding.xmldsig.DigestMethodType;
 import org.apache.xml.security.binding.xmldsig.KeyInfoType;

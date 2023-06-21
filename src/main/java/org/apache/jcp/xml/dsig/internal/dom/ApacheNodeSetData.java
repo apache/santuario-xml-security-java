@@ -26,13 +26,14 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+
 import javax.xml.crypto.NodeSetData;
 
-import org.apache.xml.security.transforms.TransformationException;
-import org.w3c.dom.Node;
 import org.apache.xml.security.signature.NodeFilter;
 import org.apache.xml.security.signature.XMLSignatureInput;
+import org.apache.xml.security.transforms.TransformationException;
 import org.apache.xml.security.utils.XMLUtils;
+import org.w3c.dom.Node;
 
 public class ApacheNodeSetData implements ApacheData, NodeSetData {
 

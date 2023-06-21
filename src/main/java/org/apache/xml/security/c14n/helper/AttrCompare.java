@@ -18,10 +18,11 @@
  */
 package org.apache.xml.security.c14n.helper;
 
-import org.apache.xml.security.utils.Constants;
-import org.w3c.dom.Attr;
 import java.io.Serializable;
 import java.util.Comparator;
+
+import org.apache.xml.security.utils.Constants;
+import org.w3c.dom.Attr;
 
 /**
  * Compares two attributes based on the C14n specification.

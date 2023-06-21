@@ -18,9 +18,10 @@
  */
 package org.apache.xml.security.stax.ext.stax;
 
+import java.util.List;
+
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.XMLEvent;
-import java.util.List;
 
 /**
  */

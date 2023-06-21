@@ -52,7 +52,6 @@ import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer
 import org.apache.xml.security.stax.impl.util.DigestOutputStream;
 import org.apache.xml.security.utils.UnsyncBufferedOutputStream;
 import org.apache.xml.security.utils.XMLUtils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

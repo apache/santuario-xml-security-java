@@ -18,12 +18,13 @@
  */
 package org.apache.xml.security.stax.ext;
 
+import java.util.List;
+
+import javax.xml.stream.XMLStreamException;
+
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
-
-import javax.xml.stream.XMLStreamException;
-import java.util.List;
 
 /**
  * The OutputProcessorChain manages the OutputProcessors and controls the XMLEvent flow

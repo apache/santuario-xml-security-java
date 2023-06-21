@@ -18,13 +18,14 @@
  */
 package org.apache.xml.security.stax.impl.stax;
 
-import org.apache.xml.security.stax.ext.stax.XMLSecProcessingInstruction;
-import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
+import java.io.IOException;
+import java.io.Writer;
 
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
-import java.io.IOException;
-import java.io.Writer;
+
+import org.apache.xml.security.stax.ext.stax.XMLSecProcessingInstruction;
+import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
 
 /**
  */

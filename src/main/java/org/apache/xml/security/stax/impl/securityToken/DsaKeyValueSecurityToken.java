@@ -18,18 +18,18 @@
  */
 package org.apache.xml.security.stax.impl.securityToken;
 
-import org.apache.xml.security.binding.xmldsig.DSAKeyValueType;
-import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.stax.ext.InboundSecurityContext;
-import org.apache.xml.security.stax.impl.util.IDGenerator;
-import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
-
 import java.math.BigInteger;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.spec.DSAPublicKeySpec;
 import java.security.spec.InvalidKeySpecException;
+
+import org.apache.xml.security.binding.xmldsig.DSAKeyValueType;
+import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.stax.ext.InboundSecurityContext;
+import org.apache.xml.security.stax.impl.util.IDGenerator;
+import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 
 /**
  */

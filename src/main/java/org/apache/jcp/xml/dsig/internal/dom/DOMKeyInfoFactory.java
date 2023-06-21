@@ -24,8 +24,8 @@ package org.apache.jcp.xml.dsig.internal.dom;
 import java.math.BigInteger;
 import java.security.KeyException;
 import java.security.PublicKey;
-import java.security.interfaces.ECPublicKey;
 import java.security.interfaces.DSAPublicKey;
+import java.security.interfaces.ECPublicKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.List;
 

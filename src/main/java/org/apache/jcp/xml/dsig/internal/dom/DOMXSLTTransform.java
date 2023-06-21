@@ -22,12 +22,15 @@
 package org.apache.jcp.xml.dsig.internal.dom;
 
 import java.security.InvalidAlgorithmParameterException;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
-import javax.xml.crypto.*;
+import javax.xml.crypto.MarshalException;
+import javax.xml.crypto.XMLCryptoContext;
+import javax.xml.crypto.XMLStructure;
 import javax.xml.crypto.dsig.spec.TransformParameterSpec;
 import javax.xml.crypto.dsig.spec.XSLTTransformParameterSpec;
+
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 /**
  * DOM-based implementation of XSLT Transform.

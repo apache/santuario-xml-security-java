@@ -21,11 +21,6 @@
  */
 package org.apache.jcp.xml.dsig.internal.dom;
 
-import javax.xml.crypto.*;
-import javax.xml.crypto.dsig.*;
-import javax.xml.crypto.dsig.spec.HMACParameterSpec;
-import javax.xml.crypto.dsig.spec.SignatureMethodParameterSpec;
-
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
@@ -34,12 +29,22 @@ import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
 import java.security.SignatureException;
 import java.security.spec.AlgorithmParameterSpec;
+
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import javax.xml.crypto.MarshalException;
+import javax.xml.crypto.dsig.SignatureMethod;
+import javax.xml.crypto.dsig.SignedInfo;
+import javax.xml.crypto.dsig.XMLSignContext;
+import javax.xml.crypto.dsig.XMLSignature;
+import javax.xml.crypto.dsig.XMLSignatureException;
+import javax.xml.crypto.dsig.XMLValidateContext;
+import javax.xml.crypto.dsig.spec.HMACParameterSpec;
+import javax.xml.crypto.dsig.spec.SignatureMethodParameterSpec;
 
 import org.apache.jcp.xml.dsig.internal.MacOutputStream;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  * DOM-based implementation of HMAC SignatureMethod.

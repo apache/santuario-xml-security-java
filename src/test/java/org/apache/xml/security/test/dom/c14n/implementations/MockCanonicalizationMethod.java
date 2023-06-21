@@ -24,7 +24,6 @@ import java.util.Set;
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.CanonicalizerSpi;
 import org.apache.xml.security.c14n.implementations.Canonicalizer11_OmitComments;
-
 import org.w3c.dom.Node;
 
 public class MockCanonicalizationMethod extends CanonicalizerSpi {

@@ -19,6 +19,7 @@
 package org.apache.jcp.xml.dsig.internal;
 
 import java.io.ByteArrayOutputStream;
+
 import javax.crypto.Mac;
 
 /**

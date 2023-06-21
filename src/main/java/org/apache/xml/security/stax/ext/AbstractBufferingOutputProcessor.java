@@ -18,11 +18,13 @@
  */
 package org.apache.xml.security.stax.ext;
 
-import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 import javax.xml.stream.XMLStreamException;
-import java.util.*;
+
+import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 
 /**
  * An abstract OutputProcessor class for reusabilty

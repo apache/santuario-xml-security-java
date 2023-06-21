@@ -18,8 +18,8 @@
  */
 package org.apache.xml.security.stax.securityEvent;
 
-import org.apache.xml.security.stax.securityToken.SecurityToken;
 import org.apache.xml.security.stax.securityEvent.SecurityEventConstants.Event;
+import org.apache.xml.security.stax.securityToken.SecurityToken;
 
 /**
  */

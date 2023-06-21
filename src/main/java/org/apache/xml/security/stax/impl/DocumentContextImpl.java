@@ -18,10 +18,15 @@
  */
 package org.apache.xml.security.stax.impl;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 import org.apache.xml.security.stax.ext.DocumentContext;
 import org.apache.xml.security.stax.ext.XMLSecurityConstants;
-
-import java.util.*;
 
 /**
  * A concrete DocumentContext Implementation

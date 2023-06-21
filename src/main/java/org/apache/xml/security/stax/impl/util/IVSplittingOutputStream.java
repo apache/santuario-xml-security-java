@@ -18,10 +18,6 @@
  */
 package org.apache.xml.security.stax.impl.util;
 
-import javax.crypto.Cipher;
-
-import org.apache.xml.security.encryption.XMLCipherUtil;
-
 import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -29,6 +25,10 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.spec.AlgorithmParameterSpec;
+
+import javax.crypto.Cipher;
+
+import org.apache.xml.security.encryption.XMLCipherUtil;
 
 /**
  * IV splitting from the first few bytes in the stream.

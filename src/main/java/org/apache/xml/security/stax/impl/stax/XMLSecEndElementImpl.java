@@ -18,15 +18,16 @@
  */
 package org.apache.xml.security.stax.impl.stax;
 
-import org.apache.xml.security.stax.ext.stax.XMLSecEndElement;
-import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.Iterator;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
-import java.io.IOException;
-import java.io.Writer;
-import java.util.Iterator;
+
+import org.apache.xml.security.stax.ext.stax.XMLSecEndElement;
+import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
 
 /**
  */

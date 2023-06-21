@@ -18,6 +18,9 @@
  */
 package org.apache.xml.security.stax.ext;
 
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.interfaces.DSAPrivateKey;
@@ -25,8 +28,6 @@ import java.security.interfaces.RSAPrivateKey;
 import java.util.HashSet;
 
 import javax.crypto.SecretKey;
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBException;
 import javax.xml.validation.Schema;
 
 import org.apache.xml.security.exceptions.XMLSecurityException;

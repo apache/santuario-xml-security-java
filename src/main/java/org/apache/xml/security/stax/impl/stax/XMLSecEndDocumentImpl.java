@@ -18,11 +18,12 @@
  */
 package org.apache.xml.security.stax.impl.stax;
 
-import org.apache.xml.security.stax.ext.stax.XMLSecEndDocument;
+import java.io.Writer;
 
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
-import java.io.Writer;
+
+import org.apache.xml.security.stax.ext.stax.XMLSecEndDocument;
 
 /**
  */

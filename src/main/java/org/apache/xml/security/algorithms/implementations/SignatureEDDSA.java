@@ -18,15 +18,21 @@
  */
 package org.apache.xml.security.algorithms.implementations;
 
+import java.security.InvalidAlgorithmParameterException;
+import java.security.Key;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.Provider;
+import java.security.SecureRandom;
+import java.security.Signature;
+import java.security.SignatureException;
+import java.security.spec.AlgorithmParameterSpec;
+
 import org.apache.xml.security.algorithms.JCEMapper;
 import org.apache.xml.security.algorithms.SignatureAlgorithmSpi;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
 import org.apache.xml.security.utils.XMLUtils;
-
-import java.io.IOException;
-import java.security.*;
-import java.security.spec.AlgorithmParameterSpec;
 
 /**
  *

@@ -18,13 +18,17 @@
  */
 package org.apache.xml.security.test.stax.utils;
 
-import org.w3c.dom.*;
-
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.Location;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.UserDataHandler;
 
 /**
  */

@@ -22,7 +22,9 @@
 package org.apache.jcp.xml.dsig.internal.dom;
 
 import java.io.IOException;
+
 import javax.xml.crypto.OctetStreamData;
+
 import org.apache.xml.security.signature.XMLSignatureInput;
 
 public class ApacheOctetStreamData extends OctetStreamData

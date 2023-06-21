@@ -18,11 +18,12 @@
  */
 package org.apache.xml.security.stax.securityEvent;
 
-import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
-
-import javax.xml.namespace.QName;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.namespace.QName;
+
+import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 
 /**
  */

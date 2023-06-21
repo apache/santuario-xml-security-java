@@ -18,20 +18,25 @@
  */
 package org.apache.xml.security.test.stax;
 
+import java.io.StringWriter;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLEventWriter;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
+import javax.xml.stream.events.XMLEvent;
+
 import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.stax.ext.stax.XMLSecEventFactory;
+import org.apache.xml.security.stax.impl.XMLSecurityEventWriter;
 import org.apache.xml.security.stax.impl.stax.XMLSecEndElementImpl;
 import org.apache.xml.security.stax.impl.stax.XMLSecNamespaceImpl;
 import org.apache.xml.security.stax.impl.stax.XMLSecStartElementImpl;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Test;
 import org.xmlunit.matchers.CompareMatcher;
-import org.apache.xml.security.stax.impl.XMLSecurityEventWriter;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.*;
-import javax.xml.stream.events.XMLEvent;
-import java.io.StringWriter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

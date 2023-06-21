@@ -28,10 +28,18 @@
  */
 package org.apache.jcp.xml.dsig.internal.dom;
 
-import java.util.*;
-import java.security.*;
+import java.security.AccessController;
+import java.security.InvalidParameterException;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivilegedAction;
+import java.security.Provider;
+import java.security.ProviderException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
-import javax.xml.crypto.dsig.*;
+import javax.xml.crypto.dsig.CanonicalizationMethod;
+import javax.xml.crypto.dsig.Transform;
 
 /**
  * The XMLDSig RI Provider.
