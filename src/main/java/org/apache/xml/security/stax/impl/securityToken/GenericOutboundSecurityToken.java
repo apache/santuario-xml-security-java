@@ -116,6 +116,7 @@ public class GenericOutboundSecurityToken extends AbstractSecurityToken implemen
         return null;
     }
 
+    @Override
     public Element getCustomTokenReference() {
         return customTokenReference;
     }

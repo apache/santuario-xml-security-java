@@ -156,6 +156,7 @@ public class ECKeyValue extends Signature11ElementProxy implements KeyValueConte
     }
 
     /** {@inheritDoc} */
+    @Override
     public PublicKey getPublicKey() throws XMLSecurityException {
         try {
             ECParameterSpec ecParams = null;
@@ -205,6 +206,7 @@ public class ECKeyValue extends Signature11ElementProxy implements KeyValueConte
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getBaseLocalName() {
         return Constants._TAG_ECKEYVALUE;
     }

@@ -289,30 +289,37 @@ public final class DOMReference extends DOMStructure
         this.provider = provider;
     }
 
+    @Override
     public DigestMethod getDigestMethod() {
         return digestMethod;
     }
 
+    @Override
     public String getId() {
         return id;
     }
 
+    @Override
     public String getURI() {
         return uri;
     }
 
+    @Override
     public String getType() {
         return type;
     }
 
+    @Override
     public List<Transform> getTransforms() {
         return Collections.unmodifiableList(allTransforms);
     }
 
+    @Override
     public byte[] getDigestValue() {
         return digestValue == null ? null : digestValue.clone();
     }
 
+    @Override
     public byte[] getCalculatedDigestValue() {
         return calcDigestValue == null ? null
                                         : calcDigestValue.clone();
@@ -391,6 +398,7 @@ public final class DOMReference extends DOMStructure
         LOG.debug("Reference digesting completed");
     }
 
+    @Override
     public boolean validate(XMLValidateContext validateContext)
         throws XMLSignatureException
     {
@@ -413,10 +421,12 @@ public final class DOMReference extends DOMStructure
         return validationStatus;
     }
 
+    @Override
     public Data getDereferencedData() {
         return derefData;
     }
 
+    @Override
     public InputStream getDigestInputStream() {
         return dis;
     }
@@ -581,6 +591,7 @@ public final class DOMReference extends DOMStructure
         }
     }
 
+    @Override
     public Node getHere() {
         return here;
     }
@@ -644,6 +655,7 @@ public final class DOMReference extends DOMStructure
                 try {
                     final Set<Node> s = xsi.getNodeSet();
                     return new NodeSetData() {
+                        @Override
                         public Iterator<Node> iterator() { return s.iterator(); }
                     };
                 } catch (Exception e) {

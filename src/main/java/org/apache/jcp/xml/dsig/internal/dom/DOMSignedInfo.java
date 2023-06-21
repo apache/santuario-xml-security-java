@@ -196,22 +196,27 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
         references = Collections.unmodifiableList(refList);
     }
 
+    @Override
     public CanonicalizationMethod getCanonicalizationMethod() {
         return canonicalizationMethod;
     }
 
+    @Override
     public SignatureMethod getSignatureMethod() {
         return signatureMethod;
     }
 
+    @Override
     public String getId() {
         return id;
     }
 
+    @Override
     public List<Reference> getReferences() {
         return references;
     }
 
+    @Override
     public InputStream getCanonicalizedData() {
         return canonData;
     }

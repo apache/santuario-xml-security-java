@@ -78,6 +78,7 @@ public abstract class AbstractInboundSecurityToken extends AbstractSecurityToken
         invoked = false;
     }
 
+    @Override
     public SecurityTokenConstants.KeyIdentifier getKeyIdentifier() {
         return keyIdentifier;
     }

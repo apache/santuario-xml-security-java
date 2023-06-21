@@ -62,11 +62,13 @@ public abstract class ApacheCanonicalizer extends TransformService {
     protected Document ownerDoc;
     protected Element transformElem;
 
+    @Override
     public final AlgorithmParameterSpec getParameterSpec()
     {
         return params;
     }
 
+    @Override
     public void init(XMLStructure parent, XMLCryptoContext context)
         throws InvalidAlgorithmParameterException
     {
@@ -85,6 +87,7 @@ public abstract class ApacheCanonicalizer extends TransformService {
         ownerDoc = DOMUtils.getOwnerDocument(transformElem);
     }
 
+    @Override
     public void marshalParams(XMLStructure parent, XMLCryptoContext context)
         throws MarshalException
     {
@@ -185,6 +188,7 @@ public abstract class ApacheCanonicalizer extends TransformService {
         return null;
     }
 
+    @Override
     public Data transform(Data data, XMLCryptoContext xc, OutputStream os)
         throws TransformException
     {
@@ -252,6 +256,7 @@ public abstract class ApacheCanonicalizer extends TransformService {
         }
     }
 
+    @Override
     public final boolean isFeatureSupported(String feature) {
         if (feature == null) {
             throw new NullPointerException();

@@ -146,18 +146,22 @@ public final class DOMXMLObject extends DOMStructure implements XMLObject {
         this.objectElem = objElem;
     }
 
+    @Override
     public List<XMLStructure> getContent() {
         return content;
     }
 
+    @Override
     public String getId() {
         return id;
     }
 
+    @Override
     public String getMimeType() {
         return mimeType;
     }
 
+    @Override
     public String getEncoding() {
         return encoding;
     }

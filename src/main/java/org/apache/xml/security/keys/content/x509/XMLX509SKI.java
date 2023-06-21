@@ -141,6 +141,7 @@ public class XMLX509SKI extends SignatureElementProxy implements XMLX509DataCont
     }
 
     /** {@inheritDoc} */
+    @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof XMLX509SKI)) {
             return false;
@@ -155,6 +156,7 @@ public class XMLX509SKI extends SignatureElementProxy implements XMLX509DataCont
         }
     }
 
+    @Override
     public int hashCode() {
         int result = 17;
         try {
@@ -170,6 +172,7 @@ public class XMLX509SKI extends SignatureElementProxy implements XMLX509DataCont
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getBaseLocalName() {
         return Constants._TAG_X509SKI;
     }

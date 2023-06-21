@@ -56,6 +56,7 @@ public abstract class AbstractSerializer implements Serializer {
      *   <code>Element</code>.
      * @throws Exception
      */
+    @Override
     public byte[] serializeToByteArray(Element element) throws Exception {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             canon.canonicalizeSubtree(element, baos);
@@ -72,6 +73,7 @@ public abstract class AbstractSerializer implements Serializer {
      *   <code>NodeList</code>.
      * @throws Exception
      */
+    @Override
     public byte[] serializeToByteArray(NodeList content) throws Exception {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             for (int i = 0; i < content.getLength(); i++) {

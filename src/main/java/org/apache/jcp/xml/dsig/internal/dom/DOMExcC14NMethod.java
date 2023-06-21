@@ -48,6 +48,7 @@ import org.w3c.dom.Element;
  */
 public final class DOMExcC14NMethod extends ApacheCanonicalizer {
 
+    @Override
     public void init(TransformParameterSpec params)
         throws InvalidAlgorithmParameterException
     {
@@ -60,6 +61,7 @@ public final class DOMExcC14NMethod extends ApacheCanonicalizer {
         }
     }
 
+    @Override
     public void init(XMLStructure parent, XMLCryptoContext context)
         throws InvalidAlgorithmParameterException
     {
@@ -138,6 +140,7 @@ public final class DOMExcC14NMethod extends ApacheCanonicalizer {
         return CanonicalizationMethod.EXCLUSIVE;
     }
 
+    @Override
     public Data transform(Data data, XMLCryptoContext xc)
         throws TransformException
     {

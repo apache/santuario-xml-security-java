@@ -220,8 +220,11 @@ public class TestUtils {
         return new SecretKey() {
             private static final long serialVersionUID = 5629454124145851381L;
 
+            @Override
             public String getFormat()	{ return "RAW"; }
+            @Override
             public byte[] getEncoded()	{ return secret; }
+            @Override
             public String getAlgorithm(){ return "SECRET"; }
         };
     }
@@ -290,6 +293,7 @@ public class TestUtils {
             digest = null;
         }
 
+        @Override
         public byte[] getDigestValue() {
             if (digest == null) {
                 byte[] inBytes = id.getBytes();
@@ -301,28 +305,35 @@ public class TestUtils {
             return digest;
         }
 
+        @Override
         public byte[] getCalculatedDigestValue() {
             return new byte[0];
         }
 
+        @Override
         public DigestMethod getDigestMethod() { return DIG_METHOD; }
 
+        @Override
         public String getId() {
             return id;
         }
 
+        @Override
         public String getType() {
             return null;
         }
 
+        @Override
         public String getURI() {
             return null;
         }
 
+        @Override
         public List<Transform> getTransforms() {
             return Collections.emptyList();
         }
 
+        @Override
         public boolean validate(XMLValidateContext vCtx)
             throws XMLSignatureException {
             this.dis = new ByteArrayInputStream(id.getBytes());
@@ -330,10 +341,12 @@ public class TestUtils {
             return status;
         }
 
+        @Override
         public Data getDereferencedData() {
             return derefData;
         }
 
+        @Override
         public InputStream getDigestInputStream() {
             return dis;
         }
@@ -341,6 +354,7 @@ public class TestUtils {
 
     public static class MyOwnXMLStructure implements XMLStructure {
 
+        @Override
         public boolean isFeatureSupported(String feature)
             throws NullPointerException {
             if (feature == null) {
@@ -358,6 +372,7 @@ public class TestUtils {
             data = in.clone();
         }
 
+        @Override
         public Data dereference(URIReference ref, XMLCryptoContext ctxt) {
             return new OctetStreamData(new ByteArrayInputStream(data));
         }
@@ -366,6 +381,7 @@ public class TestUtils {
             return data;
         }
 
+        @Override
         public boolean equals(Object obj) {
             if (obj instanceof OctetStreamURIDereferencer) {
                 return Arrays.equals
@@ -375,6 +391,7 @@ public class TestUtils {
             }
         }
 
+        @Override
         public int hashCode() {
             return 5678;
         }
@@ -388,8 +405,10 @@ public class TestUtils {
             data = node;
         }
 
+        @Override
         public Data dereference(URIReference ref, XMLCryptoContext ctxt) {
             return new NodeSetData() {
+                @Override
                 public Iterator<Node> iterator() {
                     return Collections.singletonList(data).iterator();
                 }

@@ -124,14 +124,14 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
                             referenceType.getURI(), inputProcessorChain.getDocumentContext().getBaseURI());
 
             if (resourceResolver.isSameDocumentReference()) {
-                sameDocumentReferences.add(new KeyValue<ResourceResolver, ReferenceType>(resourceResolver, referenceType));
+                sameDocumentReferences.add(new KeyValue<>(resourceResolver, referenceType));
             } else {
                 if (!allowNotSameDocumentReferences) {
                     throw new XMLSecurityException(
                             "secureProcessing.AllowNotSameDocumentReferences"
                     );
                 }
-                externalReferences.add(new KeyValue<ResourceResolver, ReferenceType>(resourceResolver, referenceType));
+                externalReferences.add(new KeyValue<>(resourceResolver, referenceType));
             }
         }
     }

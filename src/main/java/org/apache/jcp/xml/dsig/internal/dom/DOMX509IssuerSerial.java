@@ -84,10 +84,12 @@ public final class DOMX509IssuerSerial extends DOMStructure
         serialNumber = new BigInteger(sNElem.getFirstChild().getNodeValue());
     }
 
+    @Override
     public String getIssuerName() {
         return issuerName;
     }
 
+    @Override
     public BigInteger getSerialNumber() {
         return serialNumber;
     }

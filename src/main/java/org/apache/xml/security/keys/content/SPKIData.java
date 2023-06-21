@@ -41,6 +41,7 @@ public class SPKIData extends SignatureElementProxy implements KeyInfoContent {
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getBaseLocalName() {
         return Constants._TAG_SPKIDATA;
     }

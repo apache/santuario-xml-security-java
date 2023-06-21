@@ -42,7 +42,7 @@ public abstract class XMLSecEventBaseImpl implements XMLSecEvent {
 
     @SuppressWarnings("unchecked")
     protected static <T> EmptyIterator<T> getEmptyIterator() {
-        return (EmptyIterator<T>)EMPTY_ITERATOR;
+        return EMPTY_ITERATOR;
     }
 
     @Override

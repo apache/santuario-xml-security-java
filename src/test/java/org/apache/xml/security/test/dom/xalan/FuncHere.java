@@ -67,6 +67,7 @@ public class FuncHere extends Function {
      * @return the xobject
      * @throws TransformerException
      */
+    @Override
     public XObject execute(XPathContext xctxt) throws TransformerException {
 
         Node xpathOwnerNode = (Node) xctxt.getOwnerObject();
@@ -139,6 +140,7 @@ public class FuncHere extends Function {
      * @param vars
      * @param globalsSize
      */
+    @Override
     public void fixupVariables(@SuppressWarnings("rawtypes") java.util.Vector vars, int globalsSize) { //NOPMD
         // do nothing
     }

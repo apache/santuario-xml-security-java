@@ -51,6 +51,6 @@ public class OutboundSecurityContextImpl extends AbstractSecurityContextImpl imp
 
     @Override
     public List<SecurityTokenProvider<OutboundSecurityToken>> getRegisteredSecurityTokenProviders() {
-        return new ArrayList<SecurityTokenProvider<OutboundSecurityToken>>(securityTokenProviders.values());
+        return new ArrayList<>(securityTokenProviders.values());
     }
 }

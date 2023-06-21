@@ -66,6 +66,7 @@ public class AttrCompare implements Comparator<Attr>, Serializable {
      *   obj0 is less than, equal to, or greater than obj1
      *
      */
+    @Override
     public int compare(Attr attr0, Attr attr1) {
         String namespaceURI0 = attr0.getNamespaceURI();
         String namespaceURI1 = attr1.getNamespaceURI();

@@ -35,6 +35,7 @@ import org.w3c.dom.Node;
  */
 public abstract class DOMStructure implements XMLStructure {
 
+    @Override
     public final boolean isFeatureSupported(String feature) {
         if (feature == null) {
             throw new NullPointerException();
@@ -43,7 +44,7 @@ public abstract class DOMStructure implements XMLStructure {
         }
     }
 
-    public abstract void marshal(Node parent, String dsPrefix, 
+    public abstract void marshal(Node parent, String dsPrefix,
         DOMCryptoContext context) throws MarshalException;
 
     protected boolean equalsContent(List<XMLStructure> content, List<XMLStructure> otherContent) {

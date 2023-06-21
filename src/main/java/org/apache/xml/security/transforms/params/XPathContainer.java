@@ -70,6 +70,7 @@ public class XPathContainer extends SignatureElementProxy implements TransformPa
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getBaseLocalName() {
         return Constants._TAG_XPATH;
     }

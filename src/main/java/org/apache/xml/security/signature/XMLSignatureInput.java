@@ -387,6 +387,7 @@ public class XMLSignatureInput {
      * Method toString
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         if (isNodeSet()) {
             return "XMLSignatureInput/NodeSet/" + inputNodeSet.size()

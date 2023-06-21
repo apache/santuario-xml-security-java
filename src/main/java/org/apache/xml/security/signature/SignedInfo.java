@@ -397,6 +397,7 @@ public class SignedInfo extends Manifest {
      * {@inheritDoc}
      *
      */
+    @Override
     public String getBaseLocalName() {
         return Constants._TAG_SIGNEDINFO;
     }

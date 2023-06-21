@@ -201,6 +201,7 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
      * @param context
      * @return true if can be resolved
      */
+    @Override
     public boolean engineCanResolveURI(ResourceResolverContext context) {
         if (context.uriToResolve == null) {
             LOG.debug("quick fail, uri == null");

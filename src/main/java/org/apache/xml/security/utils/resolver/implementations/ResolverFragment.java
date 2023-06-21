@@ -106,6 +106,7 @@ public class ResolverFragment extends ResourceResolverSpi {
      * {@inheritDoc}
      * @param context
      */
+    @Override
     public boolean engineCanResolveURI(ResourceResolverContext context) {
         if (context.uriToResolve == null) {
             LOG.debug("Quick fail for null uri");

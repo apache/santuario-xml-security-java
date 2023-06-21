@@ -114,6 +114,7 @@ public final class DOMManifest extends DOMStructure implements Manifest {
         this.references = Collections.unmodifiableList(refs);
     }
 
+    @Override
     public String getId() {
         return id;
     }

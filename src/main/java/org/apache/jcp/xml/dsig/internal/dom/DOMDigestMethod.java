@@ -145,6 +145,7 @@ public abstract class DOMDigestMethod extends DOMStructure
         }
     }
 
+    @Override
     public final AlgorithmParameterSpec getParameterSpec() {
         return params;
     }
@@ -249,9 +250,11 @@ public abstract class DOMDigestMethod extends DOMStructure
         SHA1(Element dmElem) throws MarshalException {
             super(dmElem);
         }
+        @Override
         public String getAlgorithm() {
             return DigestMethod.SHA1;
         }
+        @Override
         String getMessageDigestAlgorithm() {
             return "SHA-1";
         }
@@ -283,9 +286,11 @@ public abstract class DOMDigestMethod extends DOMStructure
         SHA256(Element dmElem) throws MarshalException {
             super(dmElem);
         }
+        @Override
         public String getAlgorithm() {
             return DigestMethod.SHA256;
         }
+        @Override
         String getMessageDigestAlgorithm() {
             return "SHA-256";
         }
@@ -299,9 +304,11 @@ public abstract class DOMDigestMethod extends DOMStructure
         SHA384(Element dmElem) throws MarshalException {
             super(dmElem);
         }
+        @Override
         public String getAlgorithm() {
             return SHA384;
         }
+        @Override
         String getMessageDigestAlgorithm() {
             return "SHA-384";
         }
@@ -315,9 +322,11 @@ public abstract class DOMDigestMethod extends DOMStructure
         SHA512(Element dmElem) throws MarshalException {
             super(dmElem);
         }
+        @Override
         public String getAlgorithm() {
             return DigestMethod.SHA512;
         }
+        @Override
         String getMessageDigestAlgorithm() {
             return "SHA-512";
         }

@@ -93,7 +93,7 @@ public class DocumentContextImpl implements DocumentContext, Cloneable {
 
     @Override
     public List<XMLSecurityConstants.ContentType> getProtectionOrder() {
-        return new ArrayList<XMLSecurityConstants.ContentType>(contentTypeMap.values());
+        return new ArrayList<>(contentTypeMap.values());
     }
 
     @Override

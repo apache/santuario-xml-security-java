@@ -129,6 +129,7 @@ public final class DOMX509Data extends DOMStructure implements X509Data {
         this.content = Collections.unmodifiableList(newContent);
     }
 
+    @Override
     public List<Object> getContent() {
         return content;
     }

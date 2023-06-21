@@ -43,6 +43,7 @@ public class ApacheNodeSetData implements ApacheData, NodeSetData {
         this.xi = xi;
     }
 
+    @Override
     public Iterator<Node> iterator() {
         // If nodefilters are set, must execute them first to create node-set
         try {
@@ -59,6 +60,7 @@ public class ApacheNodeSetData implements ApacheData, NodeSetData {
         }
     }
 
+    @Override
     public XMLSignatureInput getXMLSignatureInput() {
         return xi;
     }

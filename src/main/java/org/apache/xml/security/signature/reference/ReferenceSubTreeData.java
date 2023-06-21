@@ -48,6 +48,7 @@ public class ReferenceSubTreeData implements ReferenceNodeSetData {
         this.excludeComments = excludeComments;
     }
 
+    @Override
     public Iterator<Node> iterator() {
         return new DelayedNodeIterator(root, excludeComments);
     }
@@ -75,6 +76,7 @@ public class ReferenceSubTreeData implements ReferenceNodeSetData {
             this.withComments = !excludeComments;
         }
 
+        @Override
         public boolean hasNext() {
             if (nodeSet == null) {
                 nodeSet = dereferenceSameDocumentURI(root);
@@ -83,6 +85,7 @@ public class ReferenceSubTreeData implements ReferenceNodeSetData {
             return li.hasNext();
         }
 
+        @Override
         public Node next() {
             if (nodeSet == null) {
                 nodeSet = dereferenceSameDocumentURI(root);
@@ -95,6 +98,7 @@ public class ReferenceSubTreeData implements ReferenceNodeSetData {
             }
         }
 
+        @Override
         public void remove() {
             throw new UnsupportedOperationException();
         }

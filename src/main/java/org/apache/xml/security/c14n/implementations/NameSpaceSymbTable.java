@@ -306,6 +306,7 @@ class NameSpaceSymbEntry implements Cloneable {
     }
 
     /** {@inheritDoc} */
+    @Override
     public NameSpaceSymbEntry clone() { //NOPMD
         try {
             return (NameSpaceSymbEntry)super.clone();

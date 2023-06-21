@@ -35,32 +35,38 @@ public class MockCanonicalizationMethod extends CanonicalizerSpi {
         _impl = new Canonicalizer11_OmitComments();
     }
 
+    @Override
     public void engineCanonicalizeSubTree(Node rootNode, OutputStream writer)
         throws CanonicalizationException {
         _impl.engineCanonicalizeSubTree(rootNode, writer);
     }
 
+    @Override
     public void engineCanonicalizeSubTree(Node rootNode, String inclusiveNamespaces, OutputStream writer)
         throws CanonicalizationException {
         _impl.engineCanonicalizeSubTree(rootNode, inclusiveNamespaces, writer);
     }
 
+    @Override
     public void engineCanonicalizeSubTree(Node rootNode, String inclusiveNamespaces,
                                             boolean propagateDefaultNamespace, OutputStream writer)
             throws CanonicalizationException {
         _impl.engineCanonicalizeSubTree(rootNode, inclusiveNamespaces, propagateDefaultNamespace, writer);
     }
 
+    @Override
     public void engineCanonicalizeXPathNodeSet(Set<Node> xpathNodeSet, OutputStream writer)
         throws CanonicalizationException {
         _impl.engineCanonicalizeXPathNodeSet(xpathNodeSet, writer);
     }
 
+    @Override
     public void engineCanonicalizeXPathNodeSet(Set<Node> xpathNodeSet, String inclusiveNamespaces, OutputStream writer)
         throws CanonicalizationException {
         _impl.engineCanonicalizeXPathNodeSet(xpathNodeSet, inclusiveNamespaces, writer);
     }
 
+    @Override
     public String engineGetURI() {
         return MOCK_CANONICALIZATION_METHOD;
     }

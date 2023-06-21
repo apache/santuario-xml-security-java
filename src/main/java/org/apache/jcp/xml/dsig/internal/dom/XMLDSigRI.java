@@ -133,6 +133,7 @@ public final class XMLDSigRI extends Provider {
 
         final Provider p = this;
         AccessController.doPrivileged(new PrivilegedAction<Void>() {
+            @Override
             public Void run() {
                 Map<String, String> MECH_TYPE = new HashMap<>();
                 MECH_TYPE.put("MechanismType", "DOM");

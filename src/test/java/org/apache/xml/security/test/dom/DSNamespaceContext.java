@@ -42,6 +42,7 @@ public class DSNamespaceContext implements NamespaceContext {
         namespaceMap.putAll(namespaces);
     }
 
+    @Override
     public String getNamespaceURI(String arg0) {
         return namespaceMap.get(arg0);
     }
@@ -50,6 +51,7 @@ public class DSNamespaceContext implements NamespaceContext {
         namespaceMap.put(prefix, namespace);
     }
 
+    @Override
     public String getPrefix(String arg0) {
         for (String key : namespaceMap.keySet()) {
             String value = namespaceMap.get(key);
@@ -60,6 +62,7 @@ public class DSNamespaceContext implements NamespaceContext {
         return null;
     }
 
+    @Override
     public Iterator<String> getPrefixes(String arg0) {
         return namespaceMap.keySet().iterator();
     }

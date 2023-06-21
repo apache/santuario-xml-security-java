@@ -289,10 +289,12 @@ public class KeyResolver {
             it = res.iterator();
         }
 
+        @Override
         public boolean hasNext() {
             return it.hasNext();
         }
 
+        @Override
         public KeyResolverSpi next() {
             KeyResolverSpi resolver = it.next();
             if (resolver == null) {
@@ -302,6 +304,7 @@ public class KeyResolver {
             return resolver;
         }
 
+        @Override
         public void remove() {
             throw new UnsupportedOperationException("Can't remove resolvers using the iterator");
         }

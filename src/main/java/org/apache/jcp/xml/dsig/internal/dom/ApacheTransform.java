@@ -67,6 +67,7 @@ public abstract class ApacheTransform extends TransformService {
         return params;
     }
 
+    @Override
     public void init(XMLStructure parent, XMLCryptoContext context)
         throws InvalidAlgorithmParameterException
     {
@@ -85,6 +86,7 @@ public abstract class ApacheTransform extends TransformService {
         ownerDoc = DOMUtils.getOwnerDocument(transformElem);
     }
 
+    @Override
     public void marshalParams(XMLStructure parent, XMLCryptoContext context)
         throws MarshalException
     {
@@ -103,6 +105,7 @@ public abstract class ApacheTransform extends TransformService {
         ownerDoc = DOMUtils.getOwnerDocument(transformElem);
     }
 
+    @Override
     public Data transform(Data data, XMLCryptoContext xc)
         throws TransformException
     {
@@ -112,6 +115,7 @@ public abstract class ApacheTransform extends TransformService {
         return transformIt(data, xc, null);
     }
 
+    @Override
     public Data transform(Data data, XMLCryptoContext xc, OutputStream os)
         throws TransformException
     {
@@ -200,6 +204,7 @@ public abstract class ApacheTransform extends TransformService {
         }
     }
 
+    @Override
     public final boolean isFeatureSupported(String feature) {
         if (feature == null) {
             throw new NullPointerException();

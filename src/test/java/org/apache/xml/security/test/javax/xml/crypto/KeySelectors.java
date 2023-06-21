@@ -72,6 +72,7 @@ public class KeySelectors {
             this.key = key;
         }
 
+        @Override
         public KeySelectorResult select(KeyInfo ki,
                                         KeySelector.Purpose purpose,
                                         AlgorithmMethod method,
@@ -84,14 +85,17 @@ public class KeySelectors {
             return new SecretKey() {
                 private static final long serialVersionUID = 3457835482691931082L;
 
+                    @Override
                     public String getFormat() {
                         return "RAW";
                     }
 
+                    @Override
                     public String getAlgorithm() {
                         return "Secret key";
                     }
 
+                    @Override
                     public byte[] getEncoded() {
                         return bytes.clone();
                     }
@@ -107,6 +111,7 @@ public class KeySelectors {
      */
     public static class RawX509KeySelector extends KeySelector {
 
+        @Override
         public KeySelectorResult select(KeyInfo keyInfo,
                                         KeySelector.Purpose purpose,
                                         AlgorithmMethod method,
@@ -158,6 +163,7 @@ public class KeySelectors {
      * then the public key will be ignored.
      */
     public static class KeyValueKeySelector extends KeySelector {
+        @Override
         public KeySelectorResult select(KeyInfo keyInfo,
                                         KeySelector.Purpose purpose,
                                         AlgorithmMethod method,
@@ -274,6 +280,7 @@ public class KeySelectors {
             return matchResult;
         }
 
+        @Override
         public KeySelectorResult select(KeyInfo keyInfo,
                                         KeySelector.Purpose purpose,
                                         AlgorithmMethod method,
@@ -412,6 +419,7 @@ public class KeySelectors {
 
         SimpleKSResult(Key key) { this.key = key; }
 
+        @Override
         public Key getKey() { return key; }
     }
 }

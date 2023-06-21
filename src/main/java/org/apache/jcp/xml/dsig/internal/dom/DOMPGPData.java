@@ -169,14 +169,17 @@ public final class DOMPGPData extends DOMStructure implements PGPData {
         this.externalElements = Collections.unmodifiableList(other);
     }
 
+    @Override
     public byte[] getKeyId() {
         return keyId == null ? null : keyId.clone();
     }
 
+    @Override
     public byte[] getKeyPacket() {
         return keyPacket == null ? null : keyPacket.clone();
     }
 
+    @Override
     public List<XMLStructure> getExternalElements() {
         return externalElements;
     }

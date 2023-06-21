@@ -114,9 +114,11 @@ public final class ClassLoaderUtils {
         }
         List<URL> ret = new ArrayList<>();
         Enumeration<URL> urls = new Enumeration<URL>() {
+            @Override
             public boolean hasMoreElements() {
                 return false;
             }
+            @Override
             public URL nextElement() {
                 return null;
             }

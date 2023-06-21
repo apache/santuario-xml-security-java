@@ -69,6 +69,6 @@ public class InboundSecurityContextImpl extends AbstractSecurityContextImpl impl
 
     @Override
     public List<SecurityTokenProvider<? extends InboundSecurityToken>> getRegisteredSecurityTokenProviders() {
-        return new ArrayList<SecurityTokenProvider<? extends InboundSecurityToken>>(securityTokenProviders.values());
+        return new ArrayList<>(securityTokenProviders.values());
     }
 }

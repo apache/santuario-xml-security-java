@@ -62,6 +62,7 @@ public class ResolverLocalFilesystem extends ResourceResolverSpi {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean engineCanResolveURI(ResourceResolverContext context) {
         if (context.uriToResolve == null) {
             return false;

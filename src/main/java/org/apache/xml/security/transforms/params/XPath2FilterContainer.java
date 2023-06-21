@@ -264,7 +264,8 @@ public final class XPath2FilterContainer extends ElementProxy implements Transfo
      *
      * @return the XPATH2 tag
      */
-    public final String getBaseLocalName() {
+    @Override
+    public String getBaseLocalName() {
         return XPath2FilterContainer._TAG_XPATH2;
     }
 
@@ -273,7 +274,8 @@ public final class XPath2FilterContainer extends ElementProxy implements Transfo
      *
      * @return XPATH2 tag namespace
      */
-    public final String getBaseNamespace() {
+    @Override
+    public String getBaseNamespace() {
         return XPath2FilterContainer.XPathFilter2NS;
     }
 }

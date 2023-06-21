@@ -134,6 +134,7 @@ public class TransformXPath extends TransformSpi {
         /**
          * @see org.apache.xml.security.signature.NodeFilter#isNodeInclude(org.w3c.dom.Node)
          */
+        @Override
         public int isNodeInclude(Node currentNode) throws TransformationException {
             try {
                 boolean include = xPathAPI.evaluate(currentNode, xpathnode, str, xpathElement);
@@ -146,6 +147,7 @@ public class TransformXPath extends TransformSpi {
             }
         }
 
+        @Override
         public int isNodeIncludeDO(Node n, int level) throws TransformationException {
             return isNodeInclude(n);
         }

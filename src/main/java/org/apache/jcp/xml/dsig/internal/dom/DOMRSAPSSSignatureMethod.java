@@ -142,10 +142,12 @@ public abstract class DOMRSAPSSSignatureMethod extends AbstractDOMSignatureMetho
         }
     }
 
+    @Override
     public final AlgorithmParameterSpec getParameterSpec() {
         return params;
     }
 
+    @Override
     void marshalParams(Element parent, String prefix)
         throws MarshalException
     {
@@ -178,6 +180,7 @@ public abstract class DOMRSAPSSSignatureMethod extends AbstractDOMSignatureMetho
         parent.appendChild(rsaPssParamsElement);
     }
 
+    @Override
     SignatureMethodParameterSpec unmarshalParams(Element paramsElem)
         throws MarshalException
     {
@@ -215,6 +218,7 @@ public abstract class DOMRSAPSSSignatureMethod extends AbstractDOMSignatureMetho
         return getDefaultParameterSpec();
     }
 
+    @Override
     boolean verify(Key key, SignedInfo si, byte[] sig,
                    XMLValidateContext context)
         throws InvalidKeyException, SignatureException, XMLSignatureException
@@ -256,6 +260,7 @@ public abstract class DOMRSAPSSSignatureMethod extends AbstractDOMSignatureMetho
         }
     }
 
+    @Override
     byte[] sign(Key key, SignedInfo si, XMLSignContext context)
         throws InvalidKeyException, XMLSignatureException
     {

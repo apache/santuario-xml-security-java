@@ -183,26 +183,32 @@ public final class DOMXMLSignature extends DOMStructure
         }
     }
 
+    @Override
     public String getId() {
         return id;
     }
 
+    @Override
     public KeyInfo getKeyInfo() {
         return ki;
     }
 
+    @Override
     public SignedInfo getSignedInfo() {
         return si;
     }
 
+    @Override
     public List<XMLObject> getObjects() {
         return objects;
     }
 
+    @Override
     public SignatureValue getSignatureValue() {
         return sv;
     }
 
+    @Override
     public KeySelectorResult getKeySelectorResult() {
         return ksr;
     }
@@ -527,10 +533,12 @@ public final class DOMXMLSignature extends DOMStructure
             this.sigValueElem = sigValueElem;
         }
 
+        @Override
         public String getId() {
             return id;
         }
 
+        @Override
         public byte[] getValue() {
             return (value == null) ? null : value.clone();
         }
@@ -614,6 +622,7 @@ public final class DOMXMLSignature extends DOMStructure
             return result;
         }
 
+        @Override
         public void marshal(Node parent, String dsPrefix,
                             DOMCryptoContext context)
             throws MarshalException

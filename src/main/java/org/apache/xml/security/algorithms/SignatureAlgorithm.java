@@ -525,6 +525,7 @@ public class SignatureAlgorithm extends Algorithm {
      *
      * @return URI of this element
      */
+    @Override
     public String getBaseNamespace() {
         return Constants.SignatureSpecNS;
     }
@@ -534,6 +535,7 @@ public class SignatureAlgorithm extends Algorithm {
      *
      * @return Local name
      */
+    @Override
     public String getBaseLocalName() {
         return Constants._TAG_SIGNATUREMETHOD;
     }

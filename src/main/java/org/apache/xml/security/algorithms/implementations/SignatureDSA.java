@@ -56,6 +56,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
      *
      * {@inheritDoc}
      */
+    @Override
     protected String engineGetURI() {
         return XMLSignature.ALGO_ID_SIGNATURE_DSA;
     }
@@ -96,6 +97,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void engineSetParameter(AlgorithmParameterSpec params)
         throws XMLSignatureException {
         try {
@@ -108,6 +110,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected boolean engineVerify(byte[] signature)
         throws XMLSignatureException {
         try {
@@ -126,6 +129,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void engineInitVerify(Key publicKey) throws XMLSignatureException {
         engineInitVerify(publicKey, this.signatureAlgorithm);
         size = ((DSAKey)publicKey).getParams().getQ().bitLength();
@@ -134,6 +138,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected byte[] engineSign() throws XMLSignatureException {
         try {
             byte[] jcebytes = this.signatureAlgorithm.sign();
@@ -147,6 +152,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void engineInitSign(Key privateKey, SecureRandom secureRandom)
         throws XMLSignatureException {
         engineInitSign(privateKey, secureRandom, this.signatureAlgorithm);
@@ -156,6 +162,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void engineInitSign(Key privateKey) throws XMLSignatureException {
         engineInitSign(privateKey, (SecureRandom)null);
     }
@@ -163,6 +170,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void engineUpdate(byte[] input) throws XMLSignatureException {
         try {
             this.signatureAlgorithm.update(input);
@@ -174,6 +182,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void engineUpdate(byte input) throws XMLSignatureException {
         try {
             this.signatureAlgorithm.update(input);
@@ -185,6 +194,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void engineUpdate(byte[] buf, int offset, int len) throws XMLSignatureException {
         try {
             this.signatureAlgorithm.update(buf, offset, len);
@@ -198,6 +208,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
      *
      * {@inheritDoc}
      */
+    @Override
     protected String engineGetJCEAlgorithmString() {
         return this.signatureAlgorithm.getAlgorithm();
     }
@@ -207,6 +218,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
      *
      * {@inheritDoc}
      */
+    @Override
     protected String engineGetJCEProviderName() {
         return this.signatureAlgorithm.getProvider().getName();
     }
@@ -217,6 +229,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
      * @param HMACOutputLength
      * @throws XMLSignatureException
      */
+    @Override
     protected void engineSetHMACOutputLength(int HMACOutputLength) throws XMLSignatureException {
         throw new XMLSignatureException("algorithms.HMACOutputLengthOnlyForHMAC");
     }
@@ -228,6 +241,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
      * @param algorithmParameterSpec
      * @throws XMLSignatureException
      */
+    @Override
     protected void engineInitSign(
         Key signingKey, AlgorithmParameterSpec algorithmParameterSpec
     ) throws XMLSignatureException {

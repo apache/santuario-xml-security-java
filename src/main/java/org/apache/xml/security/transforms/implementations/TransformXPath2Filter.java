@@ -158,6 +158,7 @@ class XPath2NodeFilter implements NodeFilter {
     /**
      * @see org.apache.xml.security.signature.NodeFilter#isNodeInclude(org.w3c.dom.Node)
      */
+    @Override
     public int isNodeInclude(Node currentNode) {
         int result = 1;
 
@@ -180,6 +181,7 @@ class XPath2NodeFilter implements NodeFilter {
         return result;
     }
 
+    @Override
     public int isNodeIncludeDO(Node n, int level) {
         int result = 1;
         if (hasSubtractFilter) {

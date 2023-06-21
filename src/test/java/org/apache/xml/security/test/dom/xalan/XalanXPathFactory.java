@@ -30,6 +30,7 @@ public class XalanXPathFactory extends XPathFactory {
     /**
      * Get a new XPathAPI instance
      */
+    @Override
     public XPathAPI newXPathAPI() {
         return new XalanXPathAPI();
     }

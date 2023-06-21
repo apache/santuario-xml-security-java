@@ -117,10 +117,12 @@ public final class DOMSignatureProperties extends DOMStructure
         }
     }
 
+    @Override
     public List<SignatureProperty> getProperties() {
         return properties;
     }
 
+    @Override
     public String getId() {
         return id;
     }
