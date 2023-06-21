@@ -18,19 +18,20 @@
  */
 package org.apache.xml.security.stax.impl.stax;
 
-import org.apache.xml.security.stax.ext.stax.XMLSecCharacters;
-import org.apache.xml.security.stax.ext.stax.XMLSecEndElement;
-import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
-import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.Location;
-import javax.xml.stream.XMLStreamException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.Location;
+import javax.xml.stream.XMLStreamException;
+
+import org.apache.xml.security.stax.ext.stax.XMLSecCharacters;
+import org.apache.xml.security.stax.ext.stax.XMLSecEndElement;
+import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
+import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
 
 /**
  */
@@ -41,7 +42,7 @@ public abstract class XMLSecEventBaseImpl implements XMLSecEvent {
 
     @SuppressWarnings("unchecked")
     protected static <T> EmptyIterator<T> getEmptyIterator() {
-        return (EmptyIterator<T>)EMPTY_ITERATOR;
+        return EMPTY_ITERATOR;
     }
 
     @Override

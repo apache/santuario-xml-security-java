@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.test.dom.xalan;
 
+import javax.xml.transform.TransformerException;
+
 import org.apache.xml.dtm.DTM;
 import org.apache.xml.security.utils.I18n;
 import org.apache.xml.security.utils.XMLUtils;
@@ -29,8 +31,6 @@ import org.apache.xpath.objects.XObject;
 import org.apache.xpath.res.XPATHErrorResources;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-
-import javax.xml.transform.TransformerException;
 
 /**
  * The 'here()' function returns a node-set containing the attribute or
@@ -67,6 +67,7 @@ public class FuncHere extends Function {
      * @return the xobject
      * @throws TransformerException
      */
+    @Override
     public XObject execute(XPathContext xctxt) throws TransformerException {
 
         Node xpathOwnerNode = (Node) xctxt.getOwnerObject();
@@ -139,6 +140,7 @@ public class FuncHere extends Function {
      * @param vars
      * @param globalsSize
      */
+    @Override
     public void fixupVariables(@SuppressWarnings("rawtypes") java.util.Vector vars, int globalsSize) { //NOPMD
         // do nothing
     }

@@ -18,6 +18,9 @@
  */
 package org.apache.xml.security.test.dom.utils.resolver;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.xml.security.Init;
 import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.utils.resolver.ResourceResolverContext;
@@ -31,9 +34,6 @@ import org.w3c.dom.Document;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
-
-import java.util.HashMap;
-import java.util.Map;
 
 
 public class ResolverDirectHTTPTest {

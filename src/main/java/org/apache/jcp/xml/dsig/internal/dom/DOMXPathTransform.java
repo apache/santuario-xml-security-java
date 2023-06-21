@@ -57,6 +57,7 @@ public final class DOMXPathTransform extends ApacheTransform {
         this.params = params;
     }
 
+    @Override
     public void init(XMLStructure parent, XMLCryptoContext context)
         throws InvalidAlgorithmParameterException
     {
@@ -85,6 +86,7 @@ public final class DOMXPathTransform extends ApacheTransform {
         }
     }
 
+    @Override
     public void marshalParams(XMLStructure parent, XMLCryptoContext context)
         throws MarshalException
     {

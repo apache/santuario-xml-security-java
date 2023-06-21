@@ -122,6 +122,7 @@ public class SignatureProperty extends SignatureElementProxy {
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getBaseLocalName() {
         return Constants._TAG_SIGNATUREPROPERTY;
     }

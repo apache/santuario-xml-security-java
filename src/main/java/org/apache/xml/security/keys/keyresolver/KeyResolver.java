@@ -26,9 +26,6 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-
 import org.apache.xml.security.keys.keyresolver.implementations.DEREncodedKeyValueResolver;
 import org.apache.xml.security.keys.keyresolver.implementations.DSAKeyValueResolver;
 import org.apache.xml.security.keys.keyresolver.implementations.ECKeyValueResolver;
@@ -43,6 +40,8 @@ import org.apache.xml.security.keys.keyresolver.implementations.X509SubjectNameR
 import org.apache.xml.security.keys.storage.StorageResolver;
 import org.apache.xml.security.utils.ClassLoaderUtils;
 import org.apache.xml.security.utils.JavaUtils;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 /**
  * KeyResolver is factory class for subclass of KeyResolverSpi that
@@ -290,10 +289,12 @@ public class KeyResolver {
             it = res.iterator();
         }
 
+        @Override
         public boolean hasNext() {
             return it.hasNext();
         }
 
+        @Override
         public KeyResolverSpi next() {
             KeyResolverSpi resolver = it.next();
             if (resolver == null) {
@@ -303,6 +304,7 @@ public class KeyResolver {
             return resolver;
         }
 
+        @Override
         public void remove() {
             throw new UnsupportedOperationException("Can't remove resolvers using the iterator");
         }

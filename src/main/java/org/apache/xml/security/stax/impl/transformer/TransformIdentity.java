@@ -18,6 +18,18 @@
  */
 package org.apache.xml.security.stax.impl.transformer;
 
+import java.io.FilterOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Map;
+
+import javax.xml.stream.XMLEventWriter;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.ext.Transformer;
 import org.apache.xml.security.stax.ext.XMLSecurityConstants;
@@ -26,10 +38,6 @@ import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 import org.apache.xml.security.stax.impl.processor.input.XMLEventReaderInputProcessor;
 import org.apache.xml.security.utils.UnsyncByteArrayInputStream;
 import org.apache.xml.security.utils.UnsyncByteArrayOutputStream;
-
-import javax.xml.stream.*;
-import java.io.*;
-import java.util.Map;
 
 /**
  */

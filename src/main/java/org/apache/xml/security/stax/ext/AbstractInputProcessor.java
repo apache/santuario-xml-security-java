@@ -18,14 +18,15 @@
  */
 package org.apache.xml.security.stax.ext;
 
-import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
-
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.Attribute;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.Attribute;
+
+import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
 
 /**
  * An abstract InputProcessor class for reusabilty

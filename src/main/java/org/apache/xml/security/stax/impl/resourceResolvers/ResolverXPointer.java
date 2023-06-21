@@ -18,17 +18,18 @@
  */
 package org.apache.xml.security.stax.impl.resourceResolvers;
 
+import java.io.InputStream;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.events.Attribute;
+
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.ext.ResourceResolver;
 import org.apache.xml.security.stax.ext.ResourceResolverLookup;
 import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.events.Attribute;
-import java.io.InputStream;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Resolver for xpointer references in the same document.

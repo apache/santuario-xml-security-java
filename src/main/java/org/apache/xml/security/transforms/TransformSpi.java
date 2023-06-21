@@ -20,6 +20,7 @@ package org.apache.xml.security.transforms;
 
 import java.io.IOException;
 import java.io.OutputStream;
+
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.xml.security.c14n.CanonicalizationException;

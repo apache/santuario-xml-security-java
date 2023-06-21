@@ -18,10 +18,11 @@
  */
 package org.apache.xml.security.c14n.helper;
 
-import org.apache.xml.security.utils.Constants;
-import org.w3c.dom.Attr;
 import java.io.Serializable;
 import java.util.Comparator;
+
+import org.apache.xml.security.utils.Constants;
+import org.w3c.dom.Attr;
 
 /**
  * Compares two attributes based on the C14n specification.
@@ -65,6 +66,7 @@ public class AttrCompare implements Comparator<Attr>, Serializable {
      *   obj0 is less than, equal to, or greater than obj1
      *
      */
+    @Override
     public int compare(Attr attr0, Attr attr1) {
         String namespaceURI0 = attr0.getNamespaceURI();
         String namespaceURI1 = attr1.getNamespaceURI();

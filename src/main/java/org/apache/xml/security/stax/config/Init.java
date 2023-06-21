@@ -18,25 +18,26 @@
  */
 package org.apache.xml.security.stax.config;
 
-import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.stax.ext.XMLSecurityConfigurationException;
-import org.apache.xml.security.utils.ClassLoaderUtils;
-import org.apache.xml.security.utils.I18n;
-import org.apache.xml.security.configuration.ConfigurationType;
-import org.apache.xml.security.configuration.ObjectFactory;
-
-import javax.xml.XMLConstants;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBElement;
 import jakarta.xml.bind.Unmarshaller;
 import jakarta.xml.bind.UnmarshallerHandler;
+
+import java.net.URI;
+import java.net.URL;
+
+import javax.xml.XMLConstants;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
-import java.net.URI;
-import java.net.URL;
+import org.apache.xml.security.configuration.ConfigurationType;
+import org.apache.xml.security.configuration.ObjectFactory;
+import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.stax.ext.XMLSecurityConfigurationException;
+import org.apache.xml.security.utils.ClassLoaderUtils;
+import org.apache.xml.security.utils.I18n;
 
 /**
  * Class to load the algorithms-mappings from a configuration file.

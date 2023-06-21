@@ -21,12 +21,12 @@ package org.apache.xml.security.encryption;
 import java.io.IOException;
 
 import org.apache.xml.security.c14n.CanonicalizationException;
+import org.apache.xml.security.signature.XMLSignatureInput;
+import org.apache.xml.security.transforms.TransformationException;
 import org.apache.xml.security.utils.XMLUtils;
 import org.apache.xml.security.utils.resolver.ResourceResolver;
 import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.apache.xml.security.utils.resolver.ResourceResolverException;
-import org.apache.xml.security.signature.XMLSignatureInput;
-import org.apache.xml.security.transforms.TransformationException;
 import org.w3c.dom.Attr;
 
 /**

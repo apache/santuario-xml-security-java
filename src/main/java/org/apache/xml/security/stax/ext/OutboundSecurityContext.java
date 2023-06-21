@@ -18,10 +18,10 @@
  */
 package org.apache.xml.security.stax.ext;
 
-import org.apache.xml.security.stax.securityToken.SecurityTokenProvider;
-import org.apache.xml.security.stax.securityToken.OutboundSecurityToken;
-
 import java.util.List;
+
+import org.apache.xml.security.stax.securityToken.OutboundSecurityToken;
+import org.apache.xml.security.stax.securityToken.SecurityTokenProvider;
 
 /**
  * The document security context

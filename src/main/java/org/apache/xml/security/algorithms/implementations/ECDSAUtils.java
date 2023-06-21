@@ -21,7 +21,12 @@ package org.apache.xml.security.algorithms.implementations;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.interfaces.ECPublicKey;
-import java.security.spec.*;
+import java.security.spec.ECField;
+import java.security.spec.ECFieldF2m;
+import java.security.spec.ECFieldFp;
+import java.security.spec.ECParameterSpec;
+import java.security.spec.ECPoint;
+import java.security.spec.EllipticCurve;
 import java.util.ArrayList;
 import java.util.List;
 

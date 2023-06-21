@@ -18,10 +18,10 @@
  */
 package org.apache.xml.security.stax.impl.securityToken;
 
+import java.math.BigInteger;
+
 import org.apache.xml.security.stax.ext.InboundSecurityContext;
 import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
-
-import java.math.BigInteger;
 
 /**
  */

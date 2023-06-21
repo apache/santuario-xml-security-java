@@ -19,6 +19,7 @@
 package org.apache.xml.security.encryption;
 
 import java.util.Iterator;
+
 import org.apache.xml.security.keys.KeyInfo;
 import org.w3c.dom.Element;
 

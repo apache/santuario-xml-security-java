@@ -1027,6 +1027,7 @@ public final class XMLSignature extends SignatureElementProxy {
      *
      * @return Constants._TAG_SIGNATURE
      */
+    @Override
     public String getBaseLocalName() {
         return Constants._TAG_SIGNATURE;
     }

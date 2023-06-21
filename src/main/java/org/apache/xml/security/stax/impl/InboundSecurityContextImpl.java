@@ -18,16 +18,19 @@
  */
 package org.apache.xml.security.stax.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.config.ConfigurationProperties;
 import org.apache.xml.security.stax.ext.InboundSecurityContext;
-import org.apache.xml.security.stax.securityToken.InboundSecurityToken;
-import org.apache.xml.security.stax.securityToken.SecurityTokenProvider;
 import org.apache.xml.security.stax.securityEvent.AlgorithmSuiteSecurityEvent;
 import org.apache.xml.security.stax.securityEvent.SecurityEvent;
 import org.apache.xml.security.stax.securityEvent.SecurityEventConstants;
-
-import java.util.*;
+import org.apache.xml.security.stax.securityToken.InboundSecurityToken;
+import org.apache.xml.security.stax.securityToken.SecurityTokenProvider;
 
 /**
  * Concrete security context implementation
@@ -66,6 +69,6 @@ public class InboundSecurityContextImpl extends AbstractSecurityContextImpl impl
 
     @Override
     public List<SecurityTokenProvider<? extends InboundSecurityToken>> getRegisteredSecurityTokenProviders() {
-        return new ArrayList<SecurityTokenProvider<? extends InboundSecurityToken>>(securityTokenProviders.values());
+        return new ArrayList<>(securityTokenProviders.values());
     }
 }

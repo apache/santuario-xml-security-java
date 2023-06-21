@@ -18,14 +18,19 @@
  */
 package org.apache.xml.security.stax.ext;
 
-import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
-
 import java.security.Key;
 import java.security.cert.X509Certificate;
 import java.security.spec.AlgorithmParameterSpec;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import javax.xml.namespace.QName;
+
+import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 
 
 /**

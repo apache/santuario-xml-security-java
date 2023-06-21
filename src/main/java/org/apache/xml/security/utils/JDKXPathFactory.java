@@ -27,6 +27,7 @@ public class JDKXPathFactory extends XPathFactory {
     /**
      * Get a new XPathAPI instance
      */
+    @Override
     public XPathAPI newXPathAPI() {
         return new JDKXPathAPI();
     }

@@ -126,6 +126,7 @@ public class ObjectContainer extends SignatureElementProxy {
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getBaseLocalName() {
         return Constants._TAG_OBJECT;
     }

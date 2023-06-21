@@ -18,11 +18,11 @@
  */
 package org.apache.xml.security.stax.impl.securityToken;
 
+import jakarta.xml.bind.JAXBElement;
+
 import java.security.Key;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
-
-import jakarta.xml.bind.JAXBElement;
 
 import org.apache.xml.security.binding.xmldsig.KeyInfoType;
 import org.apache.xml.security.binding.xmldsig.ObjectFactory;

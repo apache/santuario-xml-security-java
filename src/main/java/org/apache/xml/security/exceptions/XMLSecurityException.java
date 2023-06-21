@@ -156,6 +156,7 @@ public class XMLSecurityException extends Exception {
     }
 
     /** {@inheritDoc} */
+    @Override
     public String toString() {
         String s = this.getClass().getName();
         String message = super.getLocalizedMessage();
@@ -177,6 +178,7 @@ public class XMLSecurityException extends Exception {
      * Method printStackTrace
      *
      */
+    @Override
     public void printStackTrace() {
         synchronized (System.err) {
             super.printStackTrace(System.err);

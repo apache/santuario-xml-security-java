@@ -18,25 +18,25 @@
  */
 package org.apache.xml.security.stax.ext;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.apache.xml.security.stax.impl.DocumentContextImpl;
-import org.apache.xml.security.stax.impl.InputProcessorChainImpl;
-import org.apache.xml.security.stax.impl.InboundSecurityContextImpl;
-import org.apache.xml.security.stax.impl.XMLSecurityStreamReader;
-import org.apache.xml.security.stax.impl.processor.input.LogInputProcessor;
-import org.apache.xml.security.stax.impl.processor.input.XMLEventReaderInputProcessor;
-import org.apache.xml.security.stax.impl.processor.input.XMLSecurityInputProcessor;
-import org.apache.xml.security.stax.securityEvent.SecurityEvent;
-import org.apache.xml.security.stax.securityEvent.SecurityEventListener;
+import java.util.Collections;
+import java.util.List;
 
 import javax.xml.stream.Location;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import java.util.Collections;
-import java.util.List;
+import org.apache.xml.security.stax.impl.DocumentContextImpl;
+import org.apache.xml.security.stax.impl.InboundSecurityContextImpl;
+import org.apache.xml.security.stax.impl.InputProcessorChainImpl;
+import org.apache.xml.security.stax.impl.XMLSecurityStreamReader;
+import org.apache.xml.security.stax.impl.processor.input.LogInputProcessor;
+import org.apache.xml.security.stax.impl.processor.input.XMLEventReaderInputProcessor;
+import org.apache.xml.security.stax.impl.processor.input.XMLSecurityInputProcessor;
+import org.apache.xml.security.stax.securityEvent.SecurityEvent;
+import org.apache.xml.security.stax.securityEvent.SecurityEventListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Inbound Streaming-XML-Security

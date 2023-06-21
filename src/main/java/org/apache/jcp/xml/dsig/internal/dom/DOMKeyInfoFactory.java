@@ -24,8 +24,8 @@ package org.apache.jcp.xml.dsig.internal.dom;
 import java.math.BigInteger;
 import java.security.KeyException;
 import java.security.PublicKey;
-import java.security.interfaces.ECPublicKey;
 import java.security.interfaces.DSAPublicKey;
+import java.security.interfaces.ECPublicKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.List;
 
@@ -55,20 +55,24 @@ public final class DOMKeyInfoFactory extends KeyInfoFactory {
 
     public DOMKeyInfoFactory() { }
 
+    @Override
     @SuppressWarnings("rawtypes")
     public KeyInfo newKeyInfo(List content) {
         return newKeyInfo(content, null);
     }
 
+    @Override
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public KeyInfo newKeyInfo(List content, String id) {
         return new DOMKeyInfo(content, id);
     }
 
+    @Override
     public KeyName newKeyName(String name) {
         return new DOMKeyName(name);
     }
 
+    @Override
     public KeyValue newKeyValue(PublicKey key)  throws KeyException {
         String algorithm = key.getAlgorithm();
         if ("DSA".equals(algorithm)) {
@@ -82,24 +86,29 @@ public final class DOMKeyInfoFactory extends KeyInfoFactory {
         }
     }
 
+    @Override
     public PGPData newPGPData(byte[] keyId) {
         return newPGPData(keyId, null, null);
     }
 
+    @Override
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public PGPData newPGPData(byte[] keyId, byte[] keyPacket, List other) {
         return new DOMPGPData(keyId, keyPacket, other);
     }
 
+    @Override
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public PGPData newPGPData(byte[] keyPacket, List other) {
         return new DOMPGPData(keyPacket, other);
     }
 
+    @Override
     public RetrievalMethod newRetrievalMethod(String uri) {
         return newRetrievalMethod(uri, null, null);
     }
 
+    @Override
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public RetrievalMethod newRetrievalMethod(String uri, String type,
         List transforms) {
@@ -109,6 +118,7 @@ public final class DOMKeyInfoFactory extends KeyInfoFactory {
         return new DOMRetrievalMethod(uri, type, transforms);
     }
 
+    @Override
     @SuppressWarnings({ "rawtypes" })
     public X509Data newX509Data(List content) {
         return new DOMX509Data(content);
@@ -120,6 +130,7 @@ public final class DOMKeyInfoFactory extends KeyInfoFactory {
         return new DOMX509IssuerSerial(issuerName, serialNumber);
     }
 
+    @Override
     public boolean isFeatureSupported(String feature) {
         if (feature == null) {
             throw new NullPointerException();
@@ -128,6 +139,7 @@ public final class DOMKeyInfoFactory extends KeyInfoFactory {
         }
     }
 
+    @Override
     public URIDereferencer getURIDereferencer() {
         return DOMURIDereferencer.INSTANCE;
     }

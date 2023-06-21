@@ -67,6 +67,7 @@ public class DigesterOutputStream extends OutputStream {
         }
     }
 
+    @Override
     public void write(int input) {
         if (buffer) {
             bos.write(input);

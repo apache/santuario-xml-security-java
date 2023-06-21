@@ -18,11 +18,12 @@
  */
 package org.apache.xml.security.stax.ext;
 
-import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
+import java.util.Set;
 
 import javax.xml.stream.XMLStreamException;
-import java.util.Set;
+
+import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 
 /**
  * This is the Interface which every InputProcessor must implement.

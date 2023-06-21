@@ -18,12 +18,13 @@
  */
 package org.apache.xml.security.stax.ext;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
+
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.namespace.QName;
