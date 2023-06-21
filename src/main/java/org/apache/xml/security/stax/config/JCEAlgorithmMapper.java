@@ -35,8 +35,7 @@ public final class JCEAlgorithmMapper extends JCEMapper {
     protected static synchronized void init(JCEAlgorithmMappingsType jceAlgorithmMappingsType) throws Exception {
         List<AlgorithmType> algorithms = jceAlgorithmMappingsType.getAlgorithm();
 
-        for (int i = 0; i < algorithms.size(); i++) {
-            AlgorithmType algorithmType = algorithms.get(i);
+        for (AlgorithmType algorithmType : algorithms) {
             int keyLength = 0;
             if (algorithmType.getKeyLength() != null) {
                 keyLength = algorithmType.getKeyLength();

@@ -73,11 +73,11 @@ public final class DOMXMLSignature extends DOMStructure
 
     private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(DOMXMLSignature.class);
-    private String id;
-    private SignatureValue sv;
+    private final String id;
+    private final SignatureValue sv;
     private KeyInfo ki;
     private List<XMLObject> objects;
-    private SignedInfo si;
+    private final SignedInfo si;
     private Document ownerDoc = null;
     private Element localSigElem = null;
     private Element sigElem = null;
@@ -249,8 +249,8 @@ public final class DOMXMLSignature extends DOMStructure
         }
 
         // create and append Object elements if necessary
-        for (int i = 0, size = objects.size(); i < size; i++) {
-            ((DOMXMLObject)objects.get(i)).marshal(sigElem, dsPrefix, context);
+        for (XMLObject object : objects) {
+            ((DOMXMLObject)object).marshal(sigElem, dsPrefix, context);
         }
 
         // append Id attribute
@@ -475,13 +475,12 @@ public final class DOMXMLSignature extends DOMStructure
             if (parsedId != null && signatureIdMap.containsKey(parsedId)) {
                 XMLStructure xs = signatureIdMap.get(parsedId);
                 if (xs instanceof DOMReference) {
-                    digestReference((DOMReference)xs, signContext);
+                    digestReference((DOMReference) xs, signContext);
                 } else if (xs instanceof Manifest) {
-                    Manifest man = (Manifest)xs;
+                    Manifest man = (Manifest) xs;
                     List<Reference> manRefs = DOMManifest.getManifestReferences(man);
-                    for (int i = 0, size = manRefs.size(); i < size; i++) {
-                        digestReference((DOMReference)manRefs.get(i),
-                                        signContext);
+                    for (Reference manRef : manRefs) {
+                        digestReference((DOMReference) manRef, signContext);
                     }
                 }
             }

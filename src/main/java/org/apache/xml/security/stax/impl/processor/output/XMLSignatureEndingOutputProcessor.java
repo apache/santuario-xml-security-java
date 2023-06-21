@@ -206,9 +206,7 @@ public class XMLSignatureEndingOutputProcessor extends AbstractSignatureEndingOu
             createStartElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsig_Transforms, false, null);
 
             String[] transforms = signaturePartDef.getTransforms();
-            for (int i = 0; i < transforms.length; i++) {
-                String transform = transforms[i];
-
+            for (String transform : transforms) {
                 if (!shouldIncludeTransform(transform)) {
                     continue;
                 }

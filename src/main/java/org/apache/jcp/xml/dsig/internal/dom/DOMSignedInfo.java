@@ -71,9 +71,9 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
     private static final String ALGO_ID_MAC_HMAC_NOT_RECOMMENDED_MD5 =
         Constants.MoreAlgorithmsSpecNS + "hmac-md5";
 
-    private List<Reference> references;
-    private CanonicalizationMethod canonicalizationMethod;
-    private SignatureMethod signatureMethod;
+    private final List<Reference> references;
+    private final CanonicalizationMethod canonicalizationMethod;
+    private final SignatureMethod signatureMethod;
     private String id;
     private Document ownerDoc;
     private Element localSiElem;
@@ -100,17 +100,13 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
         }
         this.canonicalizationMethod = cm;
         this.signatureMethod = sm;
-        this.references = Collections.unmodifiableList(
-            new ArrayList<>(references));
+        this.references = Collections.unmodifiableList(new ArrayList<>(references));
         if (this.references.isEmpty()) {
-            throw new IllegalArgumentException("list of references must " +
-                "contain at least one entry");
+            throw new IllegalArgumentException("list of references must contain at least one entry");
         }
-        for (int i = 0, size = this.references.size(); i < size; i++) {
-            Object obj = this.references.get(i);
+        for (Object obj : this.references) {
             if (!(obj instanceof Reference)) {
-                throw new ClassCastException("list of references contains " +
-                    "an illegal type");
+                throw new ClassCastException("list of references contains an illegal " + obj.getClass());
             }
         }
     }
@@ -240,8 +236,8 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Canonicalized SignedInfo:");
                 StringBuilder sb = new StringBuilder(signedInfoBytes.length);
-                for (int i = 0; i < signedInfoBytes.length; i++) {
-                    sb.append((char)signedInfoBytes[i]);
+                for (byte signedInfoByte : signedInfoBytes) {
+                    sb.append((char) signedInfoByte);
                 }
                 LOG.debug(sb.toString());
                 LOG.debug("Data to be signed/verified:" + XMLUtils.encodeToString(signedInfoBytes));

@@ -53,8 +53,8 @@ public class IVSplittingOutputStreamTest {
         ReplaceableOuputStream replaceableOuputStream = new ReplaceableOuputStream(ivSplittingOutputStream);
         ivSplittingOutputStream.setParentOutputStream(replaceableOuputStream);
         byte[] testBytes = TEST_STR.getBytes();
-        for (int i = 0; i < testBytes.length; i++) {
-            replaceableOuputStream.write(testBytes[i]);
+        for (byte testByte : testBytes) {
+            replaceableOuputStream.write(testByte);
         }
         replaceableOuputStream.close();
 

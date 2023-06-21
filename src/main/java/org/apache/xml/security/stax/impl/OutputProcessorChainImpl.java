@@ -146,8 +146,7 @@ public class OutputProcessorChainImpl implements OutputProcessorChain {
         }
         if (LOG.isDebugEnabled()) {
             LOG.debug("Added {} to output chain: ", newOutputProcessor.getClass().getName());
-            for (int i = 0; i < outputProcessors.size(); i++) {
-                OutputProcessor outputProcessor = outputProcessors.get(i);
+            for (OutputProcessor outputProcessor : outputProcessors) {
                 LOG.debug("Name: {} phase: {}", outputProcessor.getClass().getName(), outputProcessor.getPhase());
             }
         }

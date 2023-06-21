@@ -41,8 +41,7 @@ public final class ConfigurationProperties {
             Class<?> callingClass) throws Exception {
         properties = new Properties();
         List<PropertyType> handlerList = propertiesType.getProperty();
-        for (int i = 0; i < handlerList.size(); i++) {
-            PropertyType propertyType = handlerList.get(i);
+        for (PropertyType propertyType : handlerList) {
             properties.setProperty(propertyType.getNAME(), propertyType.getVAL());
         }
         ConfigurationProperties.callingClass = callingClass;

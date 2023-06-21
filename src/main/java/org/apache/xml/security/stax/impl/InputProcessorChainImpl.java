@@ -162,8 +162,7 @@ public class InputProcessorChainImpl implements InputProcessorChain {
         }
         if (LOG.isDebugEnabled()) {
             LOG.debug("Added {} to input chain: ", newInputProcessor.getClass().getName());
-            for (int i = 0; i < inputProcessors.size(); i++) {
-                InputProcessor inputProcessor = inputProcessors.get(i);
+            for (InputProcessor inputProcessor : inputProcessors) {
                 LOG.debug("Name: {} phase: {}", inputProcessor.getClass().getName(), inputProcessor.getPhase());
             }
         }

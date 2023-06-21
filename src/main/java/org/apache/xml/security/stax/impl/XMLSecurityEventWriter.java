@@ -66,14 +66,12 @@ public class XMLSecurityEventWriter implements XMLEventWriter {
                 this.xmlStreamWriter.writeStartElement(n.getPrefix(), n.getLocalPart(), n.getNamespaceURI());
 
                 List<XMLSecNamespace> xmlSecNamespaces = xmlSecStartElement.getOnElementDeclaredNamespaces();
-                for (int i = 0; i < xmlSecNamespaces.size(); i++) {
-                    Namespace namespace = xmlSecNamespaces.get(i);
+                for (XMLSecNamespace namespace : xmlSecNamespaces) {
                     add(namespace);
                 }
 
                 List<XMLSecAttribute> xmlSecAttributes = xmlSecStartElement.getOnElementDeclaredAttributes();
-                for (int i = 0; i < xmlSecAttributes.size(); i++) {
-                    XMLSecAttribute xmlSecAttribute = xmlSecAttributes.get(i);
+                for (XMLSecAttribute xmlSecAttribute : xmlSecAttributes) {
                     add(xmlSecAttribute);
                 }
                 break;

@@ -50,8 +50,7 @@ public final class ResourceResolverMapper {
     }
 
     public static ResourceResolver getResourceResolver(String uri, String baseURI) throws XMLSecurityException {
-        for (int i = 0; i < resourceResolvers.size(); i++) {
-            ResourceResolverLookup resourceResolver = resourceResolvers.get(i);
+        for (ResourceResolverLookup resourceResolver : resourceResolvers) {
             ResourceResolverLookup rr = resourceResolver.canResolve(uri, baseURI);
             if (rr != null) {
                 return rr.newInstance(uri, baseURI);
