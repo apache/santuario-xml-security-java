@@ -37,7 +37,7 @@ public class JCEMapper {
 
     private static Map<String, Algorithm> algorithmsMap = new ConcurrentHashMap<>();
 
-    private static String providerName;
+    private static ThreadLocal<String> providerName = new ThreadLocal<>();
 
     /**
      * Method register
@@ -434,7 +434,7 @@ public class JCEMapper {
      * @return the default providerId.
      */
     public static String getProviderId() {
-        return providerName;
+        return providerName.get();
     }
 
     /**
@@ -445,7 +445,7 @@ public class JCEMapper {
      */
     public static void setProviderId(String provider) {
         JavaUtils.checkRegisterPermission();
-        providerName = provider;
+        providerName.set(provider);
     }
 
     /**

@@ -22,19 +22,50 @@ import org.apache.xml.security.algorithms.JCEMapper;
 import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
-public class JCEMapperTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
+class JCEMapperTest {
 
     static {
         org.apache.xml.security.Init.init();
     }
 
     @Test
-    public void testSHA1() throws Exception {
+    void testSHA1() {
         assertEquals("MessageDigest", JCEMapper.getAlgorithmClassFromURI(MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA1));
         assertEquals("SHA-1", JCEMapper.translateURItoJCEID(MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA1));
     }
 
+    @Test
+    void testConcurrency() throws InterruptedException {
+
+        CompletableFuture<Void> futureForProviderA = CompletableFuture.runAsync(() -> {
+            final String providerToUse = "ProviderA";
+            JCEMapper.setProviderId(providerToUse);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            assertEquals(providerToUse, JCEMapper.getProviderId());
+        });
+
+        CompletableFuture<Void> futureForProviderB = CompletableFuture.runAsync(() -> {
+            final String providerToUse = "ProviderB";
+            JCEMapper.setProviderId(providerToUse);
+            assertEquals(providerToUse, JCEMapper.getProviderId());
+        });
+
+        try {
+            futureForProviderA.get();
+            futureForProviderB.get();
+        } catch (ExecutionException e) {
+            fail(e.getCause().getMessage());
+        }
+    }
 
 }
