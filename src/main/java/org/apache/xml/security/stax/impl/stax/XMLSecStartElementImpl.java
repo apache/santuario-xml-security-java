@@ -169,8 +169,7 @@ public class XMLSecStartElementImpl extends XMLSecEventBaseImpl implements XMLSe
 
     @Override
     public Attribute getAttributeByName(QName name) {
-        for (int i = 0; i < attributes.size(); i++) {
-            Attribute comparableAttribute = attributes.get(i);
+        for (XMLSecAttribute comparableAttribute : attributes) {
             if (name.equals(comparableAttribute.getName())) {
                 return comparableAttribute;
             }
@@ -183,8 +182,7 @@ public class XMLSecStartElementImpl extends XMLSecEventBaseImpl implements XMLSe
         return new NamespaceContext() {
             @Override
             public String getNamespaceURI(String prefix) {
-                for (int i = 0; i < namespaces.size(); i++) {
-                    Namespace comparableNamespace = namespaces.get(i);
+                for (XMLSecNamespace comparableNamespace : namespaces) {
                     if (prefix.equals(comparableNamespace.getPrefix())) {
                         return comparableNamespace.getNamespaceURI();
                     }
@@ -197,8 +195,7 @@ public class XMLSecStartElementImpl extends XMLSecEventBaseImpl implements XMLSe
 
             @Override
             public String getPrefix(String namespaceURI) {
-                for (int i = 0; i < namespaces.size(); i++) {
-                    Namespace comparableNamespace = namespaces.get(i);
+                for (XMLSecNamespace comparableNamespace : namespaces) {
                     if (namespaceURI.equals(comparableNamespace.getNamespaceURI())) {
                         return comparableNamespace.getPrefix();
                     }
@@ -218,8 +215,7 @@ public class XMLSecStartElementImpl extends XMLSecEventBaseImpl implements XMLSe
                 List<XMLSecNamespace> xmlSecNamespaces = new ArrayList<>();
                 getNamespacesFromCurrentScope(xmlSecNamespaces);
 
-                for (int i = 0; i < xmlSecNamespaces.size(); i++) {
-                    Namespace xmlSecNamespace = xmlSecNamespaces.get(i);
+                for (XMLSecNamespace xmlSecNamespace : xmlSecNamespaces) {
                     if (namespaceURI.equals(xmlSecNamespace.getNamespaceURI())) {
                         prefixes.add(xmlSecNamespace.getPrefix());
                     }
@@ -231,8 +227,7 @@ public class XMLSecStartElementImpl extends XMLSecEventBaseImpl implements XMLSe
 
     @Override
     public String getNamespaceURI(String prefix) {
-        for (int i = 0; i < namespaces.size(); i++) {
-            Namespace comparableNamespace = namespaces.get(i);
+        for (XMLSecNamespace comparableNamespace : namespaces) {
             if (prefix.equals(comparableNamespace.getPrefix())) {
                 return comparableNamespace.getNamespaceURI();
             }

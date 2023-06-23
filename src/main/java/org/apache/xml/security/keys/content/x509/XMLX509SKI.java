@@ -161,8 +161,8 @@ public class XMLX509SKI extends SignatureElementProxy implements XMLX509DataCont
         int result = 17;
         try {
             byte[] bytes = getSKIBytes();
-            for (int i = 0; i < bytes.length; i++) {
-                result = 31 * result + bytes[i];
+            for (byte element : bytes) {
+                result = 31 * result + element;
             }
         } catch (XMLSecurityException e) {
             LOG.debug(e.getMessage(), e);

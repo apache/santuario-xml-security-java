@@ -96,18 +96,15 @@ public class X509SubjectNameResolver extends KeyResolverSpi {
 
             Iterator<Certificate> storageIterator = storage.getIterator();
             while (storageIterator.hasNext()) {
-                X509Certificate cert = (X509Certificate)storageIterator.next();
-                XMLX509SubjectName certSN =
-                    new XMLX509SubjectName(element.getOwnerDocument(), cert);
-
+                X509Certificate cert = (X509Certificate) storageIterator.next();
+                XMLX509SubjectName certSN = new XMLX509SubjectName(element.getOwnerDocument(), cert);
                 LOG.debug("Found Certificate SN: {}", certSN.getSubjectName());
 
-                for (int i = 0; i < x509childObject.length; i++) {
-                    LOG.debug("Found Element SN:     {}", x509childObject[i].getSubjectName());
+                for (XMLX509SubjectName childSubject : x509childObject) {
+                    LOG.debug("Found Element SN:     {}", childSubject.getSubjectName());
 
-                    if (certSN.equals(x509childObject[i])) {
+                    if (certSN.equals(childSubject)) {
                         LOG.debug("match !!! ");
-
                         return cert;
                     }
                     LOG.debug("no match...");
@@ -117,7 +114,6 @@ public class X509SubjectNameResolver extends KeyResolverSpi {
             return null;
         } catch (XMLSecurityException ex) {
             LOG.debug("XMLSecurityException", ex);
-
             throw new KeyResolverException(ex);
         }
     }

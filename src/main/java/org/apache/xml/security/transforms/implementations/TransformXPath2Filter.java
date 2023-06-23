@@ -92,9 +92,7 @@ public class TransformXPath2Filter extends TransformSpi {
             }
 
             XPathFactory xpathFactory = getXPathFactory();
-            for (int i = 0; i < xpathElements.length; i++) {
-                Element xpathElement = xpathElements[i];
-
+            for (Element xpathElement : xpathElements) {
                 XPath2FilterContainer xpathContainer =
                     XPath2FilterContainer.newInstance(xpathElement, input.getSourceURI());
 

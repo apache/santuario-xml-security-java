@@ -38,8 +38,8 @@ public class TrimmerOutputStreamTest {
         TrimmerOutputStream trimmerOutputStream = new TrimmerOutputStream(baos, 32, 3, 4);
 
         byte[] TEST_STRBytes = ("<a>" + TEST_STR + "</a>").getBytes();
-        for (int i = 0; i < TEST_STRBytes.length; i++) {
-            trimmerOutputStream.write(TEST_STRBytes[i]);
+        for (byte test_STRByte : TEST_STRBytes) {
+            trimmerOutputStream.write(test_STRByte);
         }
         trimmerOutputStream.close();
 

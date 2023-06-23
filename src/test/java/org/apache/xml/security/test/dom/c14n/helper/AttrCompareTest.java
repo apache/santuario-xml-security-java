@@ -161,16 +161,15 @@ public class AttrCompareTest {
                         createAttr(doc, "a:attr", "out", "http://www.w3.org") };
 
         //J+
-        for (int i = 0; i < attrs.length; i++) {
-            root.setAttributeNode(attrs[i]);
+        for (Attr attr : attrs) {
+            root.setAttributeNode(attr);
         }
 
         NamedNodeMap nnm = root.getAttributes();
 
         assertEquals(nnm.getLength(), attrs.length, "nnm.getLength()");
 
-        for (int i = 0; i < attrs.length; i++) {
-            Attr attr = attrs[i];
+        for (Attr attr : attrs) {
             assertNotNull(attr, "Attribute attr");
         }
 
