@@ -99,6 +99,7 @@
         <jetty.version>11.0.15</jetty.version>
         <jmh.version>1.36</jmh.version>
         <junit.version>5.9.3</junit.version>
+        <slf4j.version>2.0.7</slf4j.version>
         <xalan.version>2.7.3</xalan.version>
         <xmlunit.version>2.9.1</xmlunit.version>
         <xml.bind.api.version>4.0.0</xml.bind.api.version>
@@ -114,13 +115,14 @@
         <!-- Important for FuncHere.java aka here() -->
         <maven.test.argLine>
           -Dfile.encoding=UTF-8
+          -Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties
           --add-exports org.apache.santuario.xmlsec/org.apache.xml.security.test.dom.utils.jmh_generated=ALL-UNNAMED
           --add-exports org.apache.santuario.xmlsec/org.apache.xml.security.test.dom.xalan=ALL-UNNAMED
           --add-exports org.apache.santuario.xmlsec/org.apache.xml.security.test.stax.performance.jmh_generated=ALL-UNNAMED
         </maven.test.argLine>
         <skipUT>false</skipUT>
         <skipIT>true</skipIT>
-        <test.logging.level>info</test.logging.level>
+        <test.logging.level>INFO</test.logging.level>
     </properties>
 
     <dependencies>
@@ -188,6 +190,12 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jdk14</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-server</artifactId>
             <version>${jetty.version}</version>
@@ -240,7 +248,6 @@
 
     <build>
         <defaultGoal>install</defaultGoal>
-
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -258,13 +265,13 @@
                 <directory>src/test/resources</directory>
                 <filtering>true</filtering>
                 <includes>
-                    <include>log4j2.xml</include>
+                    <include>logging.properties</include>
                 </includes>
             </testResource>
             <testResource>
                 <directory>src/test/resources</directory>
                 <excludes>
-                    <exclude>log4j2.xml</exclude>
+                    <exclude>logging.properties</exclude>
                 </excludes>
             </testResource>
             <testResource>
