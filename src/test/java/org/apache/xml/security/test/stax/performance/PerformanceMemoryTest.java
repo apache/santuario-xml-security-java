@@ -20,10 +20,10 @@ package org.apache.xml.security.test.stax.performance;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import org.junit.jupiter.api.MethodOrderer;
@@ -95,9 +95,7 @@ public class PerformanceMemoryTest extends AbstractPerformanceTest {
         FileWriter inSignatureSamplesWriter = new FileWriter("target/signatureInMemorySamples.txt", false);
 
         int run = 1;
-        Iterator<Map.Entry<Integer, File>> mapIterator = signedFiles.entrySet().iterator();
-        while (mapIterator.hasNext()) {
-            Map.Entry<Integer, File> entry = mapIterator.next();
+        for (Entry<Integer, File> entry : signedFiles.entrySet()) {
             System.out.println("Run " + (run++));
 
             File file = entry.getValue();
@@ -175,9 +173,7 @@ public class PerformanceMemoryTest extends AbstractPerformanceTest {
         FileWriter inEncryptionSamplesWriter = new FileWriter("target/encryptionInMemorySamples.txt", false);
 
         int run = 1;
-        Iterator<Map.Entry<Integer, File>> mapIterator = encryptedFiles.entrySet().iterator();
-        while (mapIterator.hasNext()) {
-            Map.Entry<Integer, File> entry = mapIterator.next();
+        for (Entry<Integer, File> entry : encryptedFiles.entrySet()) {
             System.out.println("Run " + (run++));
 
             File file = entry.getValue();
@@ -262,8 +258,7 @@ public class PerformanceMemoryTest extends AbstractPerformanceTest {
         public int getMaxUsedMemory() {
             System.out.println("Collected " + memory.size() + " samples");
             int maxMem = Integer.MIN_VALUE;
-            for (int i = 0; i < memory.size(); i++) {
-                int mem = memory.get(i);
+            for (Integer mem : memory) {
                 maxMem = mem > maxMem ? mem : maxMem;
             }
             System.out.println("Max memory usage: " + maxMem + "MB");

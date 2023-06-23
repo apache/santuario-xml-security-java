@@ -155,8 +155,7 @@ public class XMLSecurityUtils {
 
     @SuppressWarnings("unchecked")
     public static <T> T getQNameType(List<Object> objects, QName qName) {
-        for (int i = 0; i < objects.size(); i++) {
-            Object o = objects.get(i);
+        for (Object o : objects) {
             if (o instanceof JAXBElement) {
                 JAXBElement<?> jaxbElement = (JAXBElement<?>) o;
                 if (jaxbElement.getName().equals(qName)) {
@@ -434,8 +433,7 @@ public class XMLSecurityUtils {
             }
 
             if (excludeVisible) {
-                for (int i = 0; i < onElementDeclaredNamespaces.size(); i++) {
-                    XMLSecNamespace xmlSecNamespace = onElementDeclaredNamespaces.get(i);
+                for (XMLSecNamespace xmlSecNamespace : onElementDeclaredNamespaces) {
                     String prefix = xmlSecNamespace.getPrefix();
                     if (prefix == null || prefix.isEmpty()) {
                         prefixes.remove("#default");

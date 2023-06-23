@@ -26,16 +26,16 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 
+import org.apache.xml.security.algorithms.JCEMapper;
 import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.stax.config.JCEAlgorithmMapper;
 import org.apache.xml.security.stax.config.ResourceResolverMapper;
 import org.apache.xml.security.stax.ext.AbstractOutputProcessor;
 import org.apache.xml.security.stax.ext.OutputProcessorChain;
@@ -147,26 +147,25 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
     protected void verifySignatureParts(OutputProcessorChain outputProcessorChain) throws XMLSecurityException {
         List<SignaturePartDef> signaturePartDefs = getSignaturePartDefList();
         Map<Object, SecurePart> dynamicSecureParts = outputProcessorChain.getSecurityContext().getAsMap(XMLSecurityConstants.SIGNATURE_PARTS);
-        if (dynamicSecureParts != null) {
-            Iterator<Map.Entry<Object, SecurePart>> securePartsMapIterator = dynamicSecureParts.entrySet().iterator();
-            loop:
-            while (securePartsMapIterator.hasNext()) {
-                Map.Entry<Object, SecurePart> securePartEntry = securePartsMapIterator.next();
-                final SecurePart securePart = securePartEntry.getValue();
-
-                if (securePart.isRequired()) {
-                    for (int i = 0; i < signaturePartDefs.size(); i++) {
-                        SignaturePartDef signaturePartDef = signaturePartDefs.get(i);
-
-                        if (signaturePartDef.getSecurePart() == securePart) {
-                            continue loop;
-                        }
-                    }
-                    throw new XMLSecurityException("stax.signature.securePartNotFound",
-                                                   new Object[] {securePart.getName()});
-                }
+        if (dynamicSecureParts == null) {
+            return;
+        }
+        for (Entry<Object, SecurePart> securePartEntry : dynamicSecureParts.entrySet()) {
+            final SecurePart securePart = securePartEntry.getValue();
+            if (securePart.isRequired() && !findSecurePart(securePart, signaturePartDefs)) {
+                throw new XMLSecurityException("stax.signature.securePartNotFound",
+                    new Object[] {securePart.getName()});
             }
         }
+    }
+
+    private boolean findSecurePart(final SecurePart securePart, List<SignaturePartDef> signaturePartDefs) {
+        for (SignaturePartDef signaturePartDef : signaturePartDefs) {
+            if (signaturePartDef.getSecurePart() == securePart) {
+                return true;
+            }
+        }
+        return false;
     }
 
     protected InternalSignatureOutputProcessor getActiveInternalSignatureOutputProcessor() {
@@ -181,8 +180,8 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
     protected DigestOutputStream createMessageDigestOutputStream(String digestAlgorithm)
             throws XMLSecurityException {
 
-        String jceName = JCEAlgorithmMapper.translateURItoJCEID(digestAlgorithm);
-        String jceProvider = JCEAlgorithmMapper.getJCEProviderFromURI(digestAlgorithm);
+        String jceName = JCEMapper.translateURItoJCEID(digestAlgorithm);
+        String jceProvider = JCEMapper.getJCEProviderFromURI(digestAlgorithm);
         if (jceName == null) {
             throw new XMLSecurityException("algorithms.NoSuchMap",
                                            new Object[] {digestAlgorithm});
@@ -251,8 +250,8 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
 
     public class InternalSignatureOutputProcessor extends AbstractOutputProcessor {
 
-        private SignaturePartDef signaturePartDef;
-        private XMLSecStartElement xmlSecStartElement;
+        private final SignaturePartDef signaturePartDef;
+        private final XMLSecStartElement xmlSecStartElement;
         private int elementCounter;
 
         private OutputStream bufferedDigestOutputStream;

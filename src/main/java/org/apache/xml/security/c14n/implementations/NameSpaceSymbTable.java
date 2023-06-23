@@ -69,16 +69,16 @@ public class NameSpaceSymbTable {
      * @param result the list where to fill the unrendered xmlns definitions.
      **/
     public void getUnrenderedNodes(Collection<Attr> result) {
-        for (NameSpaceSymbEntry n : symb.entrySet()) {
+        for (NameSpaceSymbEntry nsEntry : symb.entrySet()) {
             //put them rendered?
-            if (!n.rendered && n.n != null) {
-                n = n.clone();
+            if (!nsEntry.rendered && nsEntry.n != null) {
+                nsEntry = nsEntry.clone();
                 needsClone();
-                symb.put(n.prefix, n);
-                n.lastrendered = n.uri;
-                n.rendered = true;
+                symb.put(nsEntry.prefix, nsEntry);
+                nsEntry.lastrendered = nsEntry.uri;
+                nsEntry.rendered = true;
 
-                result.add(n.n);
+                result.add(nsEntry.n);
             }
         }
     }
@@ -340,9 +340,9 @@ class SymbMap implements Cloneable {
 
     List<NameSpaceSymbEntry> entrySet() {
         List<NameSpaceSymbEntry> a = new ArrayList<>();
-        for (int i = 0;i < entries.length;i++) {
-            if (entries[i] != null && entries[i].uri.length() != 0) {
-                a.add(entries[i]);
+        for (NameSpaceSymbEntry nsEntry : entries) {
+            if (nsEntry != null && !nsEntry.uri.isEmpty()) {
+                a.add(nsEntry);
             }
         }
         return a;

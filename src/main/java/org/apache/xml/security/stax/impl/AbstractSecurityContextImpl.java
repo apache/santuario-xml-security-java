@@ -46,8 +46,7 @@ public class AbstractSecurityContextImpl {
     }
 
     protected void forwardSecurityEvent(SecurityEvent securityEvent) throws XMLSecurityException {
-        for (int i = 0; i < securityEventListeners.size(); i++) {
-            SecurityEventListener securityEventListener = securityEventListeners.get(i);
+        for (SecurityEventListener securityEventListener : securityEventListeners) {
             securityEventListener.registerSecurityEvent(securityEvent);
         }
     }

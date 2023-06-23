@@ -48,8 +48,7 @@ public final class TransformerAlgorithmMapper {
         algorithmsClassMapIn = new HashMap<>();
         algorithmsClassMapOut = new HashMap<>();
 
-        for (int i = 0; i < algorithms.size(); i++) {
-            TransformAlgorithmType algorithmType = algorithms.get(i);
+        for (TransformAlgorithmType algorithmType : algorithms) {
             if (algorithmType.getINOUT() == null) {
                 algorithmsClassMapInOut.put(algorithmType.getURI(),
                         ClassLoaderUtils.loadClass(algorithmType.getJAVACLASS(), callingClass));

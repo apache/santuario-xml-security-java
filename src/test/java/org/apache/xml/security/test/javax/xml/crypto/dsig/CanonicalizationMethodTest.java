@@ -92,8 +92,7 @@ public class CanonicalizationMethodTest {
         //                         AlgorithmParameterSpec params)
         // for generating CanonicalizationMethod objects
         CanonicalizationMethod cm;
-        for (int i = 0; i < C14N_ALGOS.length; i++) {
-            String algo = C14N_ALGOS[i];
+        for (String algo : C14N_ALGOS) {
             cm = factory.newCanonicalizationMethod(algo,
                 (C14NMethodParameterSpec) null);
             assertNotNull(cm);
