@@ -46,7 +46,7 @@ public class DigesterOutputStream extends ByteArrayOutputStream {
 
     /** {@inheritDoc} */
     @Override
-    public void write(int arg0) {
+    public synchronized void write(int arg0) {
         mda.update((byte)arg0);
     }
 
