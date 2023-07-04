@@ -2,6 +2,8 @@
 /.classpath
 /.project
 /.settings/
+/.eclipse-pmd
+/.checkstyle
 
 # IntelliJ
 /.idea/
@@ -12,4 +14,4 @@
 
 .pmd
 .pmdruleset.xml
-/.settings/
+
