@@ -38,7 +38,7 @@ import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
  */
 public class ResolverXPointer implements ResourceResolver, ResourceResolverLookup {
 
-    private Pattern pattern = Pattern.compile("^#xpointer\\((/)|(id\\([\"\']([^\"\']*)[\"\']\\))\\)");
+    private final Pattern pattern = Pattern.compile("^#xpointer\\((/)|(id\\([\"\']([^\"\']*)[\"\']\\))\\)");
     private String id;
     private boolean rootNodeOccured = false;
 

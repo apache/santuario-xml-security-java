@@ -55,8 +55,8 @@ import org.w3c.dom.Document;
  */
 public class PhaosRemoteReferenceTest {
 
-    private XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
-    private TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    private final XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+    private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
     @BeforeAll
     public static void setUp() throws Exception {

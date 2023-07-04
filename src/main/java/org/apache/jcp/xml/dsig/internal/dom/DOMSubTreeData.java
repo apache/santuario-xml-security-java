@@ -41,8 +41,8 @@ import org.w3c.dom.Node;
  */
 public class DOMSubTreeData implements NodeSetData {
 
-    private boolean excludeComments;
-    private Node root;
+    private final boolean excludeComments;
+    private final Node root;
 
     public DOMSubTreeData(Node root, boolean excludeComments) {
         this.root = root;
@@ -67,10 +67,10 @@ public class DOMSubTreeData implements NodeSetData {
      * not populated until the caller first attempts to advance the iterator.
      */
     static class DelayedNodeIterator implements Iterator<Node> {
-        private Node root;
+        private final Node root;
         private List<Node> nodeSet;
         private ListIterator<Node> li;
-        private boolean withComments;
+        private final boolean withComments;
 
         DelayedNodeIterator(Node root, boolean excludeComments) {
             this.root = root;

@@ -40,7 +40,7 @@ import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
  */
 public class ECKeyValueSecurityToken extends AbstractInboundSecurityToken {
 
-    private ECKeyValueType ecKeyValueType;
+    private final ECKeyValueType ecKeyValueType;
 
     public ECKeyValueSecurityToken(ECKeyValueType ecKeyValueType, InboundSecurityContext inboundSecurityContext)
             throws XMLSecurityException {

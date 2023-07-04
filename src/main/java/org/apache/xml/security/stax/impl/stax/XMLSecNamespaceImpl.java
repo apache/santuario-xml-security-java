@@ -40,7 +40,7 @@ public final class XMLSecNamespaceImpl extends XMLSecEventBaseImpl implements XM
     private static final Map<String, Map<String, XMLSecNamespace>> XMLSEC_NS_MAP =
             Collections.synchronizedMap(new WeakHashMap<>());
 
-    private String prefix;
+    private final String prefix;
     private final String uri;
     private QName qName;
 

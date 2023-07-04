@@ -26,7 +26,7 @@ import org.apache.xml.security.utils.UnsyncByteArrayOutputStream;
 
 public class FullyBufferedOutputStream extends FilterOutputStream {
 
-    private UnsyncByteArrayOutputStream buf = new UnsyncByteArrayOutputStream();
+    private final UnsyncByteArrayOutputStream buf = new UnsyncByteArrayOutputStream();
 
     public FullyBufferedOutputStream(OutputStream out) {
         super(out);

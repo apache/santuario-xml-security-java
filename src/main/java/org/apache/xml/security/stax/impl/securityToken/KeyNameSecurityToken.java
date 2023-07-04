@@ -27,7 +27,7 @@ import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
  */
 public class KeyNameSecurityToken extends AbstractInboundSecurityToken {
 
-    private String keyName;
+    private final String keyName;
 
     public KeyNameSecurityToken(String keyName, InboundSecurityContext inboundSecurityContext) {
         super(inboundSecurityContext, IDGenerator.generateID(null), SecurityTokenConstants.KeyIdentifier_KeyName, false);

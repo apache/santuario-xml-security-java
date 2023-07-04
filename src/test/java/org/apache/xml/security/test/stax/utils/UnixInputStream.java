@@ -33,7 +33,7 @@ import java.io.InputStream;
  */
 public class UnixInputStream extends InputStream {
 
-    private InputStream inputStream;
+    private final InputStream inputStream;
 
     public UnixInputStream(InputStream in) {
         super();

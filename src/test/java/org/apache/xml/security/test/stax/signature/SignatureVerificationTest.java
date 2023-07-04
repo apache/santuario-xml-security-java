@@ -77,7 +77,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class SignatureVerificationTest extends AbstractSignatureVerificationTest {
 
-    private TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
     @Test
     public void testSignatureVerification() throws Exception {

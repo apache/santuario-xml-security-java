@@ -27,7 +27,7 @@ import java.io.InputStream;
  * A representation of a <code>ReferenceData</code> type containing an OctetStream.
  */
 public class ReferenceOctetStreamData implements ReferenceData {
-    private InputStream octetStream;
+    private final InputStream octetStream;
     private String uri;
     private String mimeType;
 

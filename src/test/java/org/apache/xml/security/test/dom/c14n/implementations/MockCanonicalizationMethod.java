@@ -29,7 +29,7 @@ import org.w3c.dom.Node;
 public class MockCanonicalizationMethod extends CanonicalizerSpi {
 
     public static final String MOCK_CANONICALIZATION_METHOD = "mock.canonicalization.method";
-    private Canonicalizer11_OmitComments _impl;
+    private final Canonicalizer11_OmitComments _impl;
 
     public MockCanonicalizationMethod() {
         _impl = new Canonicalizer11_OmitComments();

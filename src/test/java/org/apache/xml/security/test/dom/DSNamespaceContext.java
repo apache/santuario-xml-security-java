@@ -29,7 +29,7 @@ import javax.xml.namespace.NamespaceContext;
  */
 public class DSNamespaceContext implements NamespaceContext {
 
-    private Map<String, String> namespaceMap =
+    private final Map<String, String> namespaceMap =
         new HashMap<>();
 
     public DSNamespaceContext() {

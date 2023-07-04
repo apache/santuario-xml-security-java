@@ -80,7 +80,7 @@ public class IAIKRemoteReferenceTest {
     private static final String RSA_PUB =
             "3";
 
-    private XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+    private final XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
 
     @BeforeAll
     public static void setUp() throws Exception {

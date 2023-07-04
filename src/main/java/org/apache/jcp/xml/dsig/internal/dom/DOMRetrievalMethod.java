@@ -65,8 +65,8 @@ public final class DOMRetrievalMethod extends DOMStructure
     implements RetrievalMethod, DOMURIReference {
 
     private final List<Transform> transforms;
-    private String uri;
-    private String type;
+    private final String uri;
+    private final String type;
     private Attr here;
 
     /**

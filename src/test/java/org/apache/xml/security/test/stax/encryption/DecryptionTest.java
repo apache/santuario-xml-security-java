@@ -93,9 +93,9 @@ import static org.junit.jupiter.api.Assumptions.assumeFalse;
 public class DecryptionTest {
 
     private XMLInputFactory xmlInputFactory;
-    private TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
-    private boolean isIBMJdK = System.getProperty("java.vendor").contains("IBM");
+    private final boolean isIBMJdK = System.getProperty("java.vendor").contains("IBM");
 
     @BeforeEach
     public void setUp() throws Exception {

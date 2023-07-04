@@ -34,7 +34,7 @@ public class XMLSecEntityDeclarationImpl extends XMLSecEventBaseImpl implements 
         this.name = name;
     }
 
-    private String name;
+    private final String name;
 
     @Override
     public String getPublicId() {

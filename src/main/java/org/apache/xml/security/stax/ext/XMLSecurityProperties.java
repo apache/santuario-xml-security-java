@@ -67,7 +67,7 @@ public class XMLSecurityProperties {
     private Key signatureKey;
     private X509Certificate[] signatureCerts;
     private boolean addExcC14NInclusivePrefixes = false;
-    private List<SecurityTokenConstants.KeyIdentifier> signatureKeyIdentifiers = new ArrayList<>();
+    private final List<SecurityTokenConstants.KeyIdentifier> signatureKeyIdentifiers = new ArrayList<>();
     private String signatureKeyName;
     private boolean useSingleCert = true;
 

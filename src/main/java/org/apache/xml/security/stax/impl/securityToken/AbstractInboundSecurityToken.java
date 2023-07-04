@@ -45,10 +45,10 @@ public abstract class AbstractInboundSecurityToken extends AbstractSecurityToken
     //prevent recursive key references
     private boolean invoked = false;
 
-    private InboundSecurityContext inboundSecurityContext;
+    private final InboundSecurityContext inboundSecurityContext;
     private List<QName> elementPath;
     private XMLSecEvent xmlSecEvent;
-    private SecurityTokenConstants.KeyIdentifier keyIdentifier;
+    private final SecurityTokenConstants.KeyIdentifier keyIdentifier;
     private final List<InboundSecurityToken> wrappedTokens = new ArrayList<>();
     private InboundSecurityToken keyWrappingToken;
     private boolean includedInMessage = false;

@@ -372,10 +372,10 @@ public class XMLSecurityStreamWriter implements XMLStreamWriter {
 
     private static class Element {
 
-        private Element parentElement;
+        private final Element parentElement;
 
         private QName qName;
-        private String elementName;
+        private final String elementName;
         private String elementNamespace;
         private String elementPrefix;
         private boolean emptyElement;
@@ -484,7 +484,7 @@ public class XMLSecurityStreamWriter implements XMLStreamWriter {
 
     private static class NSContext implements NamespaceContext {
 
-        private NamespaceContext parentNamespaceContext;
+        private final NamespaceContext parentNamespaceContext;
         private List<String> prefixNsList = Collections.emptyList();
 
         NSContext(NamespaceContext parentNamespaceContext) {

@@ -52,8 +52,8 @@ public class OutputProcessorChainTest {
     static abstract class AbstractOutputProcessor implements OutputProcessor {
 
         private XMLSecurityConstants.Phase phase = XMLSecurityConstants.Phase.PROCESSING;
-        private Set<Class<? extends OutputProcessor>> beforeProcessors = new HashSet<>();
-        private Set<Class<? extends OutputProcessor>> afterProcessors = new HashSet<>();
+        private final Set<Class<? extends OutputProcessor>> beforeProcessors = new HashSet<>();
+        private final Set<Class<? extends OutputProcessor>> afterProcessors = new HashSet<>();
         private XMLSecurityConstants.Action action;
         private int actionOrder = -1;
 

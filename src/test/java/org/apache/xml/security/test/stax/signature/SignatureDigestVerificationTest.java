@@ -47,7 +47,7 @@ import org.w3c.dom.Document;
  */
 public class SignatureDigestVerificationTest extends AbstractSignatureVerificationTest {
 
-    private TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
     @Test
     public void testSHA1() throws Exception {

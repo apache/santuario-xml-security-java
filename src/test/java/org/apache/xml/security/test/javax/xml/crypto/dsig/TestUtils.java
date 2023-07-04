@@ -267,8 +267,8 @@ public class TestUtils {
 
     public static class MyOwnDOMReference extends DOMStructure
         implements Reference {
-        private String id;
-        private boolean status;
+        private final String id;
+        private final boolean status;
         private byte[] digest;
         private static MessageDigest MD;
         private static DigestMethod DIG_METHOD;
@@ -366,7 +366,7 @@ public class TestUtils {
 
     public static class OctetStreamURIDereferencer implements URIDereferencer {
 
-        private byte[] data;
+        private final byte[] data;
 
         public OctetStreamURIDereferencer(byte[] in) {
             data = in.clone();
@@ -399,7 +399,7 @@ public class TestUtils {
 
     public static class NodeSetURIDereferencer implements URIDereferencer {
 
-        private Node data;
+        private final Node data;
 
         public NodeSetURIDereferencer(Node node) {
             data = node;

@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestSecurityEventListener implements SecurityEventListener {
-    private List<SecurityEvent> events = new ArrayList<>();
+    private final List<SecurityEvent> events = new ArrayList<>();
 
     @Override
     public void registerSecurityEvent(SecurityEvent securityEvent)

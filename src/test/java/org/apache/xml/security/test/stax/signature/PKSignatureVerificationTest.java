@@ -50,7 +50,7 @@ import static java.security.spec.MGF1ParameterSpec.SHA256;
  */
 public class PKSignatureVerificationTest extends AbstractSignatureVerificationTest {
     private static KeyPair rsaKeyPair, ecKeyPair;
-    private TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
     @BeforeAll
     public static void createKeys() throws Exception {

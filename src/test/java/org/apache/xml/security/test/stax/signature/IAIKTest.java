@@ -91,7 +91,7 @@ public class IAIKTest {
             "3";
 
     private XMLInputFactory xmlInputFactory;
-    private TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
     @BeforeEach
     public void setUp() throws Exception {

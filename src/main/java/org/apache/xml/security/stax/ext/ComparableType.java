@@ -23,7 +23,7 @@ package org.apache.xml.security.stax.ext;
 */
 public abstract class ComparableType<T extends ComparableType> implements Comparable<T> {
 
-    private String name;
+    private final String name;
 
     public ComparableType(String name) {
         this.name = name;

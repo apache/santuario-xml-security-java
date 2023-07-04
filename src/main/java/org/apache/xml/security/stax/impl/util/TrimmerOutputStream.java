@@ -28,12 +28,12 @@ import java.io.OutputStream;
  */
 public class TrimmerOutputStream extends FilterOutputStream {
 
-    private byte[] buffer;
+    private final byte[] buffer;
     private int bufferedCount;
 
     private int preTrimmed;
-    private int startTrimLength;
-    private int endTrimLength;
+    private final int startTrimLength;
+    private final int endTrimLength;
 
     public TrimmerOutputStream(OutputStream out, int bufferSize, int startTrimLength, int endTrimLength) {
         super(out);

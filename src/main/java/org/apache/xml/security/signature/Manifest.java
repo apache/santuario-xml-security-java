@@ -64,7 +64,7 @@ public class Manifest extends SignatureElementProxy {
                                                                 Integer.toString(MAXIMUM_REFERENCE_COUNT))));
 
     /** Field references */
-    private List<Reference> references;
+    private final List<Reference> references;
     private Element[] referencesEl;
 
     /** Field verificationResults[] */

@@ -58,7 +58,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class UnknownAlgoSignatureTest {
 
     private XMLInputFactory xmlInputFactory;
-    private TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
     @BeforeEach
     public void setUp() throws Exception {

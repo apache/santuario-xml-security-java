@@ -30,7 +30,7 @@ import org.apache.xml.security.signature.XMLSignatureInput;
 public class ApacheOctetStreamData extends OctetStreamData
     implements ApacheData {
 
-    private XMLSignatureInput xi;
+    private final XMLSignatureInput xi;
 
     public ApacheOctetStreamData(XMLSignatureInput xi)
         throws IOException

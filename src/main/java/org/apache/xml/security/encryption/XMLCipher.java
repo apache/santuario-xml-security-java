@@ -286,7 +286,7 @@ public class XMLCipher {
 
     private boolean secureValidation = true;
 
-    private String digestAlg;
+    private final String digestAlg;
 
     /** List of internal KeyResolvers for DECRYPT and UNWRAP modes. */
     private List<KeyResolverSpi> internalKeyResolvers;
@@ -2511,10 +2511,10 @@ public class XMLCipher {
 
         private class AgreementMethodImpl implements AgreementMethod {
             private byte[] kaNonce;
-            private List<Element> agreementMethodInformation;
+            private final List<Element> agreementMethodInformation;
             private KeyInfo originatorKeyInfo;
             private KeyInfo recipientKeyInfo;
-            private String algorithmURI;
+            private final String algorithmURI;
 
             /**
              * @param algorithm
@@ -2666,9 +2666,9 @@ public class XMLCipher {
         }
 
         private class CipherReferenceImpl implements CipherReference {
-            private String referenceURI;
+            private final String referenceURI;
             private Transforms referenceTransforms;
-            private Attr referenceNode;
+            private final Attr referenceNode;
 
             /**
              * @param uri
@@ -2921,7 +2921,7 @@ public class XMLCipher {
             private String encoding;
             private EncryptionMethod encryptionMethod;
             private KeyInfo keyInfo;
-            private CipherData cipherData;
+            private final CipherData cipherData;
             private EncryptionProperties encryptionProperties;
 
             /**
@@ -3075,10 +3075,10 @@ public class XMLCipher {
         }
 
         private class EncryptionMethodImpl implements EncryptionMethod {
-            private String algorithm;
+            private final String algorithm;
             private int keySize = Integer.MIN_VALUE;
             private byte[] oaepParams;
-            private List<Element> encryptionMethodInformation;
+            private final List<Element> encryptionMethodInformation;
             private String digestAlgorithm;
             private String mgfAlgorithm;
 
@@ -3225,7 +3225,7 @@ public class XMLCipher {
 
         private class EncryptionPropertiesImpl implements EncryptionProperties {
             private String id;
-            private List<EncryptionProperty> encryptionProperties;
+            private final List<EncryptionProperty> encryptionProperties;
 
             /**
              * Constructor.
@@ -3284,8 +3284,8 @@ public class XMLCipher {
         private class EncryptionPropertyImpl implements EncryptionProperty {
             private String target;
             private String id;
-            private Map<String, String> attributeMap = new HashMap<>();
-            private List<Element> encryptionInformation;
+            private final Map<String, String> attributeMap = new HashMap<>();
+            private final List<Element> encryptionInformation;
 
             /**
              * Constructor.
@@ -3462,7 +3462,7 @@ public class XMLCipher {
 
         private class ReferenceListImpl implements ReferenceList {
             private Class<?> sentry;
-            private List<Reference> references;
+            private final List<Reference> references;
 
             /**
              * Constructor.
@@ -3548,7 +3548,7 @@ public class XMLCipher {
              */
             private abstract class ReferenceImpl implements Reference {
                 private String uri;
-                private List<Element> referenceInformation;
+                private final List<Element> referenceInformation;
 
                 ReferenceImpl(String uri) {
                     this.uri = uri;

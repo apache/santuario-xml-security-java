@@ -58,7 +58,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class SignatureVerificationMaxRefTest extends AbstractSignatureVerificationTest {
 
-    private TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
     @BeforeAll
     public static void setup() throws Exception {

@@ -43,7 +43,7 @@ import org.w3c.dom.Document;
  */
 public class RSASecurityTest extends AbstractSignatureVerificationTest {
 
-    private TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
     @Test
     public void test_enveloping() throws Exception {

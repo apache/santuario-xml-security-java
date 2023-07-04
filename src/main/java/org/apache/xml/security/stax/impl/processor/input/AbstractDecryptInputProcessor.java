@@ -620,7 +620,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
         private boolean encryptedHeader = false;
         private final InboundSecurityToken inboundSecurityToken;
         private boolean rootElementProcessed;
-        private EncryptedDataType encryptedDataType;
+        private final EncryptedDataType encryptedDataType;
         private Thread decryptionThread;
 
         public AbstractDecryptedEventReaderInputProcessor(

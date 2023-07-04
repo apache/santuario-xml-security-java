@@ -46,7 +46,7 @@ import org.w3c.dom.Document;
  */
 public class SignatureHMACVerificationTest extends AbstractSignatureVerificationTest {
 
-    private TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
     @Test
     public void testHMACSHA1() throws Exception {

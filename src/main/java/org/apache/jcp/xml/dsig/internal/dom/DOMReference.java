@@ -118,7 +118,7 @@ public final class DOMReference extends DOMStructure
     private Data derefData;
     private InputStream dis;
     private MessageDigest md;
-    private Provider provider;
+    private final Provider provider;
 
     /**
      * Creates a <code>Reference</code> from the specified parameters.

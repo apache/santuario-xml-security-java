@@ -35,7 +35,7 @@ import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
  */
 public class RsaKeyValueSecurityToken extends AbstractInboundSecurityToken {
 
-    private RSAKeyValueType rsaKeyValueType;
+    private final RSAKeyValueType rsaKeyValueType;
 
     public RsaKeyValueSecurityToken(RSAKeyValueType rsaKeyValueType, InboundSecurityContext inboundSecurityContext) {
         super(inboundSecurityContext, IDGenerator.generateID(null), SecurityTokenConstants.KeyIdentifier_KeyValue, true);

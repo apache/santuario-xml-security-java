@@ -48,7 +48,7 @@ public class XMLCipherInput {
         org.slf4j.LoggerFactory.getLogger(XMLCipherInput.class);
 
     /** The data we are working with */
-    private CipherData cipherData;
+    private final CipherData cipherData;
 
     private boolean secureValidation = true;
 

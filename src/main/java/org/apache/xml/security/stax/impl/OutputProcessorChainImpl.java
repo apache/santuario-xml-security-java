@@ -42,7 +42,7 @@ public class OutputProcessorChainImpl implements OutputProcessorChain {
 
     protected static final transient Logger LOG = LoggerFactory.getLogger(OutputProcessorChainImpl.class);
 
-    private List<OutputProcessor> outputProcessors;
+    private final List<OutputProcessor> outputProcessors;
     private int startPos;
     private int curPos;
     private XMLSecStartElement parentXmlSecStartElement;

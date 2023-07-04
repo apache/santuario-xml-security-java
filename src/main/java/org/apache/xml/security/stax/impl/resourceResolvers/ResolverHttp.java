@@ -42,7 +42,7 @@ public class ResolverHttp implements ResourceResolver, ResourceResolverLookup {
 
     private String uri;
     private String baseURI;
-    private Pattern pattern = Pattern.compile("^http[s]?://.*");
+    private final Pattern pattern = Pattern.compile("^http[s]?://.*");
 
     public ResolverHttp() {
     }

@@ -35,7 +35,7 @@ import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
  */
 public class DsaKeyValueSecurityToken extends AbstractInboundSecurityToken {
 
-    private DSAKeyValueType dsaKeyValueType;
+    private final DSAKeyValueType dsaKeyValueType;
 
     public DsaKeyValueSecurityToken(DSAKeyValueType dsaKeyValueType, InboundSecurityContext inboundSecurityContext) {
         super(inboundSecurityContext, IDGenerator.generateID(null), SecurityTokenConstants.KeyIdentifier_KeyValue, true);

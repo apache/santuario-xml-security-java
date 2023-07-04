@@ -41,7 +41,7 @@ public class InputProcessorChainImpl implements InputProcessorChain {
 
     protected static final transient Logger LOG = LoggerFactory.getLogger(InputProcessorChainImpl.class);
 
-    private List<InputProcessor> inputProcessors;
+    private final List<InputProcessor> inputProcessors;
     private int startPos;
     private int curPos;
 

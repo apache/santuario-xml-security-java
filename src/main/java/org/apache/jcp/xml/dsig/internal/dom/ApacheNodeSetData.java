@@ -37,7 +37,7 @@ import org.w3c.dom.Node;
 
 public class ApacheNodeSetData implements ApacheData, NodeSetData {
 
-    private XMLSignatureInput xi;
+    private final XMLSignatureInput xi;
 
     public ApacheNodeSetData(XMLSignatureInput xi) {
         this.xi = xi;

@@ -52,8 +52,8 @@ public class SignedInfo extends Manifest {
     /** Field c14nizedBytes           */
     private byte[] c14nizedBytes;
 
-    private Element c14nMethod;
-    private Element signatureMethod;
+    private final Element c14nMethod;
+    private final Element signatureMethod;
 
     /**
      * Overwrites {@link Manifest#addDocument} because it creates another

@@ -64,7 +64,7 @@ public class KeySelectors {
      * constructor.
      */
     public static class SecretKeySelector extends KeySelector {
-        private SecretKey key;
+        private final SecretKey key;
         public SecretKeySelector(byte[] bytes) {
             key = wrapBytes(bytes);
         }
